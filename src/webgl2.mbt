@@ -301,6 +301,28 @@ pub extern "js" fn JsValue::to_web_gl2_rendering_context(
 ) -> WebGL2RenderingContext =
   #| (self) => self
 
+///|
+/// Error type for throwing methods
+pub(all) enum WebGL2RenderingContextCompileShaderError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebGL2RenderingContextShaderSourceError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebGL2RenderingContextMakeXRCompatibleError {
+  AbortError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
 // WebGL2RenderingContext.DEPTH_BUFFER_BIT
 
 ///|
@@ -2021,8 +2043,8 @@ pub extern "js" fn WebGL2RenderingContext::color_mask(
 pub extern "js" fn WebGL2RenderingContext::compile_shader(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
-) -> Unit =
-  #| (self, shader) => self.compileShader(shader)
+) -> Result[Unit, WebGL2RenderingContextCompileShaderError] =
+  #| (self, shader) => (() => { try { self.compileShader(shader); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::copy_tex_image_2d(
@@ -2536,8 +2558,8 @@ pub extern "js" fn WebGL2RenderingContext::shader_source(
   self : WebGL2RenderingContext,
   shader : WebGLShader,
   source : String,
-) -> Unit =
-  #| (self, shader, source) => self.shaderSource(shader, source)
+) -> Result[Unit, WebGL2RenderingContextShaderSourceError] =
+  #| (self, shader, source) => (() => { try { self.shaderSource(shader, source); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebGL2RenderingContext::stencil_func(
@@ -2795,8 +2817,8 @@ pub extern "js" fn WebGL2RenderingContext::viewport(
 ///|
 pub extern "js" fn WebGL2RenderingContext::make_xr_compatible(
   self : WebGL2RenderingContext,
-) -> Promise[Unit] =
-  #| (self) => self.makeXRCompatible()
+) -> Promise[Result[Unit, WebGL2RenderingContextMakeXRCompatibleError]] =
+  #| (self) => self.makeXRCompatible().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 // WebGL2RenderingContext.READ_BUFFER
 

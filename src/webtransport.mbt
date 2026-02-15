@@ -810,7 +810,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::get_max_datagram_size(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_incoming_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => (self.incomingMaxAge) ?? undefined
+  #| (self) => (() => { const v = self.incomingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
@@ -823,7 +823,7 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_max_age(
 pub extern "js" fn WebTransportDatagramDuplexStream::get_outgoing_max_age(
   self : WebTransportDatagramDuplexStream,
 ) -> Double? =
-  #| (self) => (self.outgoingMaxAge) ?? undefined
+  #| (self) => (() => { const v = self.outgoingMaxAge; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_max_age(
@@ -889,21 +889,53 @@ pub extern "js" fn JsValue::to_web_transport(self : JsValue) -> WebTransport =
   #| (self) => self
 
 ///|
-pub extern "js" fn WebTransport::new(url : String) -> WebTransport =
-  #| (url) => new WebTransport(url)
+/// Error type for throwing methods
+pub(all) enum WebTransportConstructorError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportCloseError {
+  WebTransportError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportCreateBidirectionalStreamError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportCreateUnidirectionalStreamError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn WebTransport::new(
+  url : String,
+) -> Result[WebTransport, WebTransportConstructorError] =
+  #| (url) => (() => { try { return { $tag: 1, _0: new WebTransport(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WebTransport::new_with_options_ffi(
   url : String,
   options : JsValue,
-) -> WebTransport =
-  #| (url, options) => new WebTransport(url, options)
+) -> Result[WebTransport, WebTransportConstructorError] =
+  #| (url, options) => (() => { try { return { $tag: 1, _0: new WebTransport(url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn WebTransport::new_with_options(
   url : String,
   options : WebTransportOptions,
-) -> WebTransport {
+) -> Result[WebTransport, WebTransportConstructorError] {
   WebTransport::new_with_options_ffi(url, options.to_js())
 }
 
@@ -1004,21 +1036,23 @@ pub extern "js" fn WebTransport::get_draining(
   #| (self) => self.draining
 
 ///|
-pub extern "js" fn WebTransport::close(self : WebTransport) -> Unit =
-  #| (self) => self.close()
+pub extern "js" fn WebTransport::close(
+  self : WebTransport,
+) -> Result[Unit, WebTransportCloseError] =
+  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'WebTransportError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WebTransport::close_with_close_info_ffi(
   self : WebTransport,
   close_info : JsValue,
-) -> Unit =
-  #| (self, close_info) => self.close(close_info)
+) -> Result[Unit, WebTransportCloseError] =
+  #| (self, close_info) => (() => { try { self.close(close_info); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'WebTransportError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn WebTransport::close_with_close_info(
   self : WebTransport,
   close_info : WebTransportCloseInfo,
-) -> Unit {
+) -> Result[Unit, WebTransportCloseError] {
   WebTransport::close_with_close_info_ffi(self, close_info.to_js())
 }
 
@@ -1031,21 +1065,36 @@ pub extern "js" fn WebTransport::get_datagrams(
 ///|
 pub extern "js" fn WebTransport::create_bidirectional_stream(
   self : WebTransport,
-) -> Promise[WebTransportBidirectionalStream] =
-  #| (self) => self.createBidirectionalStream()
+) -> Promise[
+  Result[
+    WebTransportBidirectionalStream,
+    WebTransportCreateBidirectionalStreamError,
+  ],
+] =
+  #| (self) => self.createBidirectionalStream().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn WebTransport::create_bidirectional_stream_with_options_ffi(
   self : WebTransport,
   options : JsValue,
-) -> Promise[WebTransportBidirectionalStream] =
-  #| (self, options) => self.createBidirectionalStream(options)
+) -> Promise[
+  Result[
+    WebTransportBidirectionalStream,
+    WebTransportCreateBidirectionalStreamError,
+  ],
+] =
+  #| (self, options) => self.createBidirectionalStream(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn WebTransport::create_bidirectional_stream_with_options(
   self : WebTransport,
   options : WebTransportSendStreamOptions,
-) -> Promise[WebTransportBidirectionalStream] {
+) -> Promise[
+  Result[
+    WebTransportBidirectionalStream,
+    WebTransportCreateBidirectionalStreamError,
+  ],
+] {
   WebTransport::create_bidirectional_stream_with_options_ffi(
     self,
     options.to_js(),
@@ -1061,21 +1110,27 @@ pub extern "js" fn WebTransport::get_incoming_bidirectional_streams(
 ///|
 pub extern "js" fn WebTransport::create_unidirectional_stream(
   self : WebTransport,
-) -> Promise[WebTransportSendStream] =
-  #| (self) => self.createUnidirectionalStream()
+) -> Promise[
+  Result[WebTransportSendStream, WebTransportCreateUnidirectionalStreamError],
+] =
+  #| (self) => self.createUnidirectionalStream().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 extern "js" fn WebTransport::create_unidirectional_stream_with_options_ffi(
   self : WebTransport,
   options : JsValue,
-) -> Promise[WebTransportSendStream] =
-  #| (self, options) => self.createUnidirectionalStream(options)
+) -> Promise[
+  Result[WebTransportSendStream, WebTransportCreateUnidirectionalStreamError],
+] =
+  #| (self, options) => self.createUnidirectionalStream(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub fn WebTransport::create_unidirectional_stream_with_options(
   self : WebTransport,
   options : WebTransportSendStreamOptions,
-) -> Promise[WebTransportSendStream] {
+) -> Promise[
+  Result[WebTransportSendStream, WebTransportCreateUnidirectionalStreamError],
+] {
   WebTransport::create_unidirectional_stream_with_options_ffi(
     self,
     options.to_js(),

@@ -12,4 +12,5 @@ fn test_menu_element() -> Unit {
   assert_true(menu.get_compact(), label="compact set true")
   menu.set_compact(false)
   assert_false(menu.get_compact(), label="compact set false")
+  println("  menu_element: ok")
 }

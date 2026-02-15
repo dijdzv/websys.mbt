@@ -102,15 +102,39 @@ pub extern "js" fn WebSocket::to_event_target(self : WebSocket) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn WebSocket::new(url : String) -> WebSocket =
-  #| (url) => new WebSocket(url)
+/// Error type for throwing methods
+pub(all) enum WebSocketConstructorError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebSocketCloseError {
+  SyntaxError(JsError)
+  InvalidAccessError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebSocketSendError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn WebSocket::new(
+  url : String,
+) -> Result[WebSocket, WebSocketConstructorError] =
+  #| (url) => (() => { try { return { $tag: 1, _0: new WebSocket(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::new_with_protocols(
   url : String,
   protocols : StringOrArrayOfString,
-) -> WebSocket =
-  #| (url, protocols) => new WebSocket(url, protocols)
+) -> Result[WebSocket, WebSocketConstructorError] =
+  #| (url, protocols) => (() => { try { return { $tag: 1, _0: new WebSocket(url, protocols) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::get_url(self : WebSocket) -> String =
@@ -145,37 +169,37 @@ pub extern "js" fn WebSocket::get_buffered_amount(self : WebSocket) -> Int64 =
   #| (self) => (() => { const n = self.bufferedAmount; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
 
 ///|
-pub extern "js" fn WebSocket::get_onopen(self : WebSocket) -> EventHandler =
-  #| (self) => self.onopen
-
-///|
 pub extern "js" fn WebSocket::set_onopen(
   self : WebSocket,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onopen = value }
+  #| (self, handler) => { self.onopen = (e) => handler(e) }
 
 ///|
-pub extern "js" fn WebSocket::get_onerror(self : WebSocket) -> EventHandler =
-  #| (self) => self.onerror
+pub extern "js" fn WebSocket::clear_onopen(self : WebSocket) -> Unit =
+  #| (self) => { self.onopen = null }
 
 ///|
 pub extern "js" fn WebSocket::set_onerror(
   self : WebSocket,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
 
 ///|
-pub extern "js" fn WebSocket::get_onclose(self : WebSocket) -> EventHandler =
-  #| (self) => self.onclose
+pub extern "js" fn WebSocket::clear_onerror(self : WebSocket) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn WebSocket::set_onclose(
   self : WebSocket,
-  value : EventHandler,
+  handler : (CloseEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onclose = value }
+  #| (self, handler) => { self.onclose = (e) => handler(e) }
+
+///|
+pub extern "js" fn WebSocket::clear_onclose(self : WebSocket) -> Unit =
+  #| (self) => { self.onclose = null }
 
 ///|
 pub extern "js" fn WebSocket::get_extensions(self : WebSocket) -> String =
@@ -186,27 +210,29 @@ pub extern "js" fn WebSocket::get_protocol(self : WebSocket) -> String =
   #| (self) => self.protocol
 
 ///|
-pub extern "js" fn WebSocket::close(self : WebSocket) -> Unit =
-  #| (self) => self.close()
+pub extern "js" fn WebSocket::close(
+  self : WebSocket,
+) -> Result[Unit, WebSocketCloseError] =
+  #| (self) => (() => { try { self.close(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::close_with_reason(
   self : WebSocket,
   code : Int,
   reason : String,
-) -> Unit =
-  #| (self, code, reason) => self.close(code, reason)
-
-///|
-pub extern "js" fn WebSocket::get_onmessage(self : WebSocket) -> EventHandler =
-  #| (self) => self.onmessage
+) -> Result[Unit, WebSocketCloseError] =
+  #| (self, code, reason) => (() => { try { self.close(code, reason); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'InvalidAccessError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebSocket::set_onmessage(
   self : WebSocket,
-  value : EventHandler,
+  handler : (MessageEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onmessage = value }
+  #| (self, handler) => { self.onmessage = (e) => handler(e) }
+
+///|
+pub extern "js" fn WebSocket::clear_onmessage(self : WebSocket) -> Unit =
+  #| (self) => { self.onmessage = null }
 
 ///|
 pub extern "js" fn WebSocket::get_binary_type(self : WebSocket) -> BinaryType =
@@ -223,8 +249,8 @@ pub extern "js" fn WebSocket::set_binary_type(
 pub extern "js" fn WebSocket::send(
   self : WebSocket,
   data : BufferSourceOrBlobOrString,
-) -> Unit =
-  #| (self, data) => self.send(data)
+) -> Result[Unit, WebSocketSendError] =
+  #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CloseEvent interface

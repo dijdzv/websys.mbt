@@ -108,17 +108,17 @@ pub extern "js" fn XRLightProbe::get_probe_space(
   #| (self) => self.probeSpace
 
 ///|
-pub extern "js" fn XRLightProbe::get_onreflectionchange(
-  self : XRLightProbe,
-) -> EventHandler =
-  #| (self) => self.onreflectionchange
-
-///|
 pub extern "js" fn XRLightProbe::set_onreflectionchange(
   self : XRLightProbe,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onreflectionchange = value }
+  #| (self, handler) => { self.onreflectionchange = (e) => handler(e) }
+
+///|
+pub extern "js" fn XRLightProbe::clear_onreflectionchange(
+  self : XRLightProbe,
+) -> Unit =
+  #| (self) => { self.onreflectionchange = null }
 
 ///|
 /// XRLightEstimate interface

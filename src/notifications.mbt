@@ -345,21 +345,31 @@ pub extern "js" fn Notification::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn Notification::new(title : String) -> Notification =
-  #| (title) => new Notification(title)
+/// Error type for throwing methods
+pub(all) enum NotificationConstructorError {
+  TypeError(JsError)
+  DataCloneError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn Notification::new(
+  title : String,
+) -> Result[Notification, NotificationConstructorError] =
+  #| (title) => (() => { try { return { $tag: 1, _0: new Notification(title) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Notification::new_with_options_ffi(
   title : String,
   options : JsValue,
-) -> Notification =
-  #| (title, options) => new Notification(title, options)
+) -> Result[Notification, NotificationConstructorError] =
+  #| (title, options) => (() => { try { return { $tag: 1, _0: new Notification(title, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn Notification::new_with_options(
   title : String,
   options : NotificationOptions,
-) -> Notification {
+) -> Result[Notification, NotificationConstructorError] {
   Notification::new_with_options_ffi(title, options.to_js())
 }
 
@@ -386,56 +396,48 @@ pub extern "js" fn Notification::get_max_actions(self : Notification) -> Int =
   #| (self) => self.maxActions
 
 ///|
-pub extern "js" fn Notification::get_onclick(
-  self : Notification,
-) -> EventHandler =
-  #| (self) => self.onclick
-
-///|
 pub extern "js" fn Notification::set_onclick(
   self : Notification,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onclick = value }
+  #| (self, handler) => { self.onclick = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Notification::get_onshow(
-  self : Notification,
-) -> EventHandler =
-  #| (self) => self.onshow
+pub extern "js" fn Notification::clear_onclick(self : Notification) -> Unit =
+  #| (self) => { self.onclick = null }
 
 ///|
 pub extern "js" fn Notification::set_onshow(
   self : Notification,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onshow = value }
+  #| (self, handler) => { self.onshow = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Notification::get_onerror(
-  self : Notification,
-) -> EventHandler =
-  #| (self) => self.onerror
+pub extern "js" fn Notification::clear_onshow(self : Notification) -> Unit =
+  #| (self) => { self.onshow = null }
 
 ///|
 pub extern "js" fn Notification::set_onerror(
   self : Notification,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
 
 ///|
-pub extern "js" fn Notification::get_onclose(
-  self : Notification,
-) -> EventHandler =
-  #| (self) => self.onclose
+pub extern "js" fn Notification::clear_onerror(self : Notification) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn Notification::set_onclose(
   self : Notification,
-  value : EventHandler,
+  handler : (Event) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onclose = value }
+  #| (self, handler) => { self.onclose = (e) => handler(e) }
+
+///|
+pub extern "js" fn Notification::clear_onclose(self : Notification) -> Unit =
+  #| (self) => { self.onclose = null }
 
 ///|
 pub extern "js" fn Notification::get_title(self : Notification) -> String =

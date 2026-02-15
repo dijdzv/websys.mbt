@@ -196,6 +196,48 @@ pub extern "js" fn JsValue::to_storage_access_handle(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleGetDirectoryError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleEstimateError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleCreateObjectURLError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleRevokeObjectURLError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleBroadcastChannelError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum StorageAccessHandleSharedWorkerError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn StorageAccessHandle::get_session_storage(
   self : StorageAccessHandle,
 ) -> Storage =
@@ -228,50 +270,52 @@ pub extern "js" fn StorageAccessHandle::get_caches(
 ///|
 pub extern "js" fn StorageAccessHandle::get_directory(
   self : StorageAccessHandle,
-) -> Promise[FileSystemDirectoryHandle] =
-  #| (self) => self.getDirectory()
+) -> Promise[
+  Result[FileSystemDirectoryHandle, StorageAccessHandleGetDirectoryError],
+] =
+  #| (self) => self.getDirectory().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn StorageAccessHandle::estimate(
   self : StorageAccessHandle,
-) -> Promise[StorageEstimate] =
+) -> Promise[Result[StorageEstimate, StorageAccessHandleEstimateError]] =
   #| (self) => self.estimate().then(v => ({
   #|   usage: v.usage,
   #|   quota: v.quota
-  #| }))
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn StorageAccessHandle::create_object_url(
   self : StorageAccessHandle,
   obj : BlobOrMediaSource,
-) -> String =
-  #| (self, obj) => self.createObjectURL(obj)
+) -> Result[String, StorageAccessHandleCreateObjectURLError] =
+  #| (self, obj) => (() => { try { return { $tag: 1, _0: self.createObjectURL(obj) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn StorageAccessHandle::revoke_object_url(
   self : StorageAccessHandle,
   url : String,
-) -> Unit =
-  #| (self, url) => self.revokeObjectURL(url)
+) -> Result[Unit, StorageAccessHandleRevokeObjectURLError] =
+  #| (self, url) => (() => { try { self.revokeObjectURL(url); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn StorageAccessHandle::broadcast_channel(
   self : StorageAccessHandle,
   name : String,
-) -> BroadcastChannel =
-  #| (self, name) => self.BroadcastChannel(name)
+) -> Result[BroadcastChannel, StorageAccessHandleBroadcastChannelError] =
+  #| (self, name) => (() => { try { return { $tag: 1, _0: self.BroadcastChannel(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn StorageAccessHandle::shared_worker(
   self : StorageAccessHandle,
   script_url : String,
-) -> SharedWorker =
-  #| (self, script_url) => self.SharedWorker(script_url)
+) -> Result[SharedWorker, StorageAccessHandleSharedWorkerError] =
+  #| (self, script_url) => (() => { try { return { $tag: 1, _0: self.SharedWorker(script_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn StorageAccessHandle::shared_worker_with_options(
   self : StorageAccessHandle,
   script_url : String,
   options : StringOrSharedWorkerOptions,
-) -> SharedWorker =
-  #| (self, script_url, options) => self.SharedWorker(script_url, options)
+) -> Result[SharedWorker, StorageAccessHandleSharedWorkerError] =
+  #| (self, script_url, options) => (() => { try { return { $tag: 1, _0: self.SharedWorker(script_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()

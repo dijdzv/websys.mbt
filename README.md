@@ -31,7 +31,7 @@ This package is auto-generated from WebIDL specifications using [webidl-bindgen.
 bun install
 
 # Regenerate bindings
-bun run generate
+just generate
 ```
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)

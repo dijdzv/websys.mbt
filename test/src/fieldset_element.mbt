@@ -18,4 +18,5 @@ fn test_fieldset_element() -> Unit {
   assert_eq(elements.get_length(), 0, label="elements initially empty")
   // validation
   assert_true(fieldset.check_validity(), label="checkValidity")
+  println("  fieldset_element: ok")
 }

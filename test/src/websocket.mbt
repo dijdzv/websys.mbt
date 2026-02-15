@@ -7,7 +7,7 @@
 /// Note: WebSocket will attempt to connect, but we test properties immediately.
 pub fn test_websocket() -> Unit {
   // Use wss:// URL — connection will fail but object is valid
-  let ws = @websys.WebSocket::new("wss://localhost:0/test")
+  let ws = @websys.WebSocket::new("wss://localhost:0/test").unwrap()
 
   // url — reflects the constructor argument
   assert_eq(ws.get_url(), "wss://localhost:0/test", label="url")
@@ -34,7 +34,7 @@ pub fn test_websocket() -> Unit {
   let _bt2 = ws.get_binary_type()
 
   // close — should not throw (already connecting/failed)
-  ws.close()
+  ws.close().unwrap()
   println("  websocket: ok")
 }
 

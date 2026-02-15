@@ -174,7 +174,7 @@ pub extern "js" fn CSSNumberish::is_css_numeric_value(
 ///|
 /// Try to get CSSNumberish as Double
 pub extern "js" fn CSSNumberish::as_double(self : CSSNumberish) -> Double? =
-  #| (self) => (typeof self === 'number') ? self : undefined
+  #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Try to get CSSNumberish as CSSNumericValue
@@ -1311,8 +1311,24 @@ pub extern "js" fn CSSKeywordValue::to_css_style_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSKeywordValue::new(value : String) -> CSSKeywordValue =
-  #| (value) => new CSSKeywordValue(value)
+/// Error type for throwing methods
+pub(all) enum CSSKeywordValueConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSKeywordValueSetValueError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn CSSKeywordValue::new(
+  value : String,
+) -> Result[CSSKeywordValue, CSSKeywordValueConstructorError] =
+  #| (value) => (() => { try { return { $tag: 1, _0: new CSSKeywordValue(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSKeywordValue::get_value(self : CSSKeywordValue) -> String =
@@ -1322,8 +1338,8 @@ pub extern "js" fn CSSKeywordValue::get_value(self : CSSKeywordValue) -> String 
 pub extern "js" fn CSSKeywordValue::set_value(
   self : CSSKeywordValue,
   value : String,
-) -> Unit =
-  #| (self, value) => { self.value = value }
+) -> Result[Unit, CSSKeywordValueSetValueError] =
+  #| (self, value) => (() => { try { self.value = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSNumericValue interface
@@ -1424,46 +1440,110 @@ pub extern "js" fn CSSNumericValue::as_css_math_clamp(
   #| (self) => (self instanceof CSSMathClamp) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueAddError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueSubError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueMulError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueDivError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueMinError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueMaxError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueToError {
+  TypeError(JsError)
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueToSumError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSNumericValueParseError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn CSSNumericValue::add(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
+) -> Result[CSSNumericValue, CSSNumericValueAddError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.add(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::sub(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
+) -> Result[CSSNumericValue, CSSNumericValueSubError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.sub(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::mul(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
+) -> Result[CSSNumericValue, CSSNumericValueMulError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.mul(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::div(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
+) -> Result[CSSNumericValue, CSSNumericValueDivError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.div(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::min(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
+) -> Result[CSSNumericValue, CSSNumericValueMinError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.min(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::max(
   self : CSSNumericValue,
   values : CSSNumberish,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
+) -> Result[CSSNumericValue, CSSNumericValueMaxError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.max(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::equals(
@@ -1476,15 +1556,15 @@ pub extern "js" fn CSSNumericValue::equals(
 pub extern "js" fn CSSNumericValue::to(
   self : CSSNumericValue,
   unit : String,
-) -> CSSUnitValue =
-  #| (self, unit) => self.to(unit)
+) -> Result[CSSUnitValue, CSSNumericValueToError] =
+  #| (self, unit) => (() => { try { return { $tag: 1, _0: self.to(unit) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::to_sum(
   self : CSSNumericValue,
   units : String,
-) -> CSSMathSum =
-  #| (self, units) => self.toSum(units)
+) -> Result[CSSMathSum, CSSNumericValueToSumError] =
+  #| (self, units) => (() => { try { return { $tag: 1, _0: self.toSum(units) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::type_(
@@ -1493,92 +1573,94 @@ pub extern "js" fn CSSNumericValue::type_(
   #| (self) => self.type()
 
 ///|
-pub extern "js" fn CSSNumericValue::parse(css_text : String) -> CSSNumericValue =
-  #| (css_text) => CSSNumericValue.parse(css_text)
+pub extern "js" fn CSSNumericValue::parse(
+  css_text : String,
+) -> Result[CSSNumericValue, CSSNumericValueParseError] =
+  #| (css_text) => (() => { try { return { $tag: 1, _0: CSSNumericValue.parse(css_text) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::add_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
+) -> Result[CSSNumericValue, CSSNumericValueAddError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.add(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::add_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.add(values)
+) -> Result[CSSNumericValue, CSSNumericValueAddError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.add(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::sub_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
+) -> Result[CSSNumericValue, CSSNumericValueSubError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.sub(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::sub_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.sub(values)
+) -> Result[CSSNumericValue, CSSNumericValueSubError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.sub(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::mul_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
+) -> Result[CSSNumericValue, CSSNumericValueMulError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.mul(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::mul_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.mul(values)
+) -> Result[CSSNumericValue, CSSNumericValueMulError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.mul(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::div_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
+) -> Result[CSSNumericValue, CSSNumericValueDivError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.div(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::div_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.div(values)
+) -> Result[CSSNumericValue, CSSNumericValueDivError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.div(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::min_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
+) -> Result[CSSNumericValue, CSSNumericValueMinError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.min(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::min_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.min(values)
+) -> Result[CSSNumericValue, CSSNumericValueMinError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.min(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::max_with_double(
   self : CSSNumericValue,
   values : Double,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
+) -> Result[CSSNumericValue, CSSNumericValueMaxError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.max(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::max_with_css_numeric_value(
   self : CSSNumericValue,
   values : CSSNumericValue,
-) -> CSSNumericValue =
-  #| (self, values) => self.max(values)
+) -> Result[CSSNumericValue, CSSNumericValueMaxError] =
+  #| (self, values) => (() => { try { return { $tag: 1, _0: self.max(values) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSNumericValue::equals_with_double(
@@ -2011,8 +2093,17 @@ pub extern "js" fn CSSMathInvert::to_css_style_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathInvert::new(arg : CSSNumberish) -> CSSMathInvert =
-  #| (arg) => new CSSMathInvert(arg)
+/// Error type for throwing methods
+pub(all) enum CSSMathInvertConstructorError {
+  RangeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn CSSMathInvert::new(
+  arg : CSSNumberish,
+) -> Result[CSSMathInvert, CSSMathInvertConstructorError] =
+  #| (arg) => (() => { try { return { $tag: 1, _0: new CSSMathInvert(arg) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathInvert::get_value(
@@ -2023,14 +2114,14 @@ pub extern "js" fn CSSMathInvert::get_value(
 ///|
 pub extern "js" fn CSSMathInvert::new_with_double(
   arg : Double,
-) -> CSSMathInvert =
-  #| (arg) => new CSSMathInvert(arg)
+) -> Result[CSSMathInvert, CSSMathInvertConstructorError] =
+  #| (arg) => (() => { try { return { $tag: 1, _0: new CSSMathInvert(arg) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathInvert::new_with_css_numeric_value(
   arg : CSSNumericValue,
-) -> CSSMathInvert =
-  #| (arg) => new CSSMathInvert(arg)
+) -> Result[CSSMathInvert, CSSMathInvertConstructorError] =
+  #| (arg) => (() => { try { return { $tag: 1, _0: new CSSMathInvert(arg) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSMathMin interface
@@ -2079,22 +2170,33 @@ pub extern "js" fn CSSMathMin::to_css_style_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathMin::new(args : CSSNumberish) -> CSSMathMin =
-  #| (args) => new CSSMathMin(args)
+/// Error type for throwing methods
+pub(all) enum CSSMathMinConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn CSSMathMin::new(
+  args : CSSNumberish,
+) -> Result[CSSMathMin, CSSMathMinConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMin(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathMin::get_values(self : CSSMathMin) -> CSSNumericArray =
   #| (self) => self.values
 
 ///|
-pub extern "js" fn CSSMathMin::new_with_double(args : Double) -> CSSMathMin =
-  #| (args) => new CSSMathMin(args)
+pub extern "js" fn CSSMathMin::new_with_double(
+  args : Double,
+) -> Result[CSSMathMin, CSSMathMinConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMin(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathMin::new_with_css_numeric_value(
   args : CSSNumericValue,
-) -> CSSMathMin =
-  #| (args) => new CSSMathMin(args)
+) -> Result[CSSMathMin, CSSMathMinConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMin(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSMathMax interface
@@ -2143,22 +2245,33 @@ pub extern "js" fn CSSMathMax::to_css_style_value(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSMathMax::new(args : CSSNumberish) -> CSSMathMax =
-  #| (args) => new CSSMathMax(args)
+/// Error type for throwing methods
+pub(all) enum CSSMathMaxConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn CSSMathMax::new(
+  args : CSSNumberish,
+) -> Result[CSSMathMax, CSSMathMaxConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMax(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathMax::get_values(self : CSSMathMax) -> CSSNumericArray =
   #| (self) => self.values
 
 ///|
-pub extern "js" fn CSSMathMax::new_with_double(args : Double) -> CSSMathMax =
-  #| (args) => new CSSMathMax(args)
+pub extern "js" fn CSSMathMax::new_with_double(
+  args : Double,
+) -> Result[CSSMathMax, CSSMathMaxConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMax(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSMathMax::new_with_css_numeric_value(
   args : CSSNumericValue,
-) -> CSSMathMax =
-  #| (args) => new CSSMathMax(args)
+) -> Result[CSSMathMax, CSSMathMaxConstructorError] =
+  #| (args) => (() => { try { return { $tag: 1, _0: new CSSMathMax(args) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSMathClamp interface
@@ -2364,10 +2477,24 @@ pub extern "js" fn CSSTransformValue::to_css_style_value(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSTransformValueConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CSSTransformValueToMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn CSSTransformValue::new(
   transforms : Array[CSSTransformComponent],
-) -> CSSTransformValue =
-  #| (transforms) => new CSSTransformValue(transforms)
+) -> Result[CSSTransformValue, CSSTransformValueConstructorError] =
+  #| (transforms) => (() => { try { return { $tag: 1, _0: new CSSTransformValue(transforms) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSTransformValue::keys(self : CSSTransformValue) -> JsValue =
@@ -2424,8 +2551,8 @@ pub extern "js" fn CSSTransformValue::get_is_2d(
 ///|
 pub extern "js" fn CSSTransformValue::to_matrix(
   self : CSSTransformValue,
-) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+) -> Result[DOMMatrix, CSSTransformValueToMatrixError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.toMatrix() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSTransformComponent interface
@@ -2514,6 +2641,13 @@ pub extern "js" fn CSSTransformComponent::as_css_matrix_component(
   #| (self) => (self instanceof CSSMatrixComponent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSTransformComponentToMatrixError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn CSSTransformComponent::get_is_2d(
   self : CSSTransformComponent,
 ) -> Bool =
@@ -2529,8 +2663,8 @@ pub extern "js" fn CSSTransformComponent::set_is_2d(
 ///|
 pub extern "js" fn CSSTransformComponent::to_matrix(
   self : CSSTransformComponent,
-) -> DOMMatrix =
-  #| (self) => self.toMatrix()
+) -> Result[DOMMatrix, CSSTransformComponentToMatrixError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.toMatrix() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSTranslate interface
@@ -2569,19 +2703,26 @@ pub extern "js" fn CSSTranslate::to_css_transform_component(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSTranslateConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn CSSTranslate::new(
   x : CSSNumericValue,
   y : CSSNumericValue,
-) -> CSSTranslate =
-  #| (x, y) => new CSSTranslate(x, y)
+) -> Result[CSSTranslate, CSSTranslateConstructorError] =
+  #| (x, y) => (() => { try { return { $tag: 1, _0: new CSSTranslate(x, y) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSTranslate::new_with_z(
   x : CSSNumericValue,
   y : CSSNumericValue,
   z : CSSNumericValue,
-) -> CSSTranslate =
-  #| (x, y, z) => new CSSTranslate(x, y, z)
+) -> Result[CSSTranslate, CSSTranslateConstructorError] =
+  #| (x, y, z) => (() => { try { return { $tag: 1, _0: new CSSTranslate(x, y, z) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSTranslate::get_x(self : CSSTranslate) -> CSSNumericValue =
@@ -2651,8 +2792,17 @@ pub extern "js" fn CSSRotate::to_css_transform_component(
   #| (self) => self
 
 ///|
-pub extern "js" fn CSSRotate::new(angle : CSSNumericValue) -> CSSRotate =
-  #| (angle) => new CSSRotate(angle)
+/// Error type for throwing methods
+pub(all) enum CSSRotateConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn CSSRotate::new(
+  angle : CSSNumericValue,
+) -> Result[CSSRotate, CSSRotateConstructorError] =
+  #| (angle) => (() => { try { return { $tag: 1, _0: new CSSRotate(angle) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSRotate::new_with_y_and_z_and_angle(
@@ -2660,8 +2810,8 @@ pub extern "js" fn CSSRotate::new_with_y_and_z_and_angle(
   y : CSSNumberish,
   z : CSSNumberish,
   angle : CSSNumericValue,
-) -> CSSRotate =
-  #| (x, y, z, angle) => new CSSRotate(x, y, z, angle)
+) -> Result[CSSRotate, CSSRotateConstructorError] =
+  #| (x, y, z, angle) => (() => { try { return { $tag: 1, _0: new CSSRotate(x, y, z, angle) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSRotate::get_x(self : CSSRotate) -> CSSNumberish =
@@ -2713,8 +2863,8 @@ pub extern "js" fn CSSRotate::new_with_double(
   y : CSSNumberish,
   z : CSSNumberish,
   angle : CSSNumericValue,
-) -> CSSRotate =
-  #| (x, y, z, angle) => new CSSRotate(x, y, z, angle)
+) -> Result[CSSRotate, CSSRotateConstructorError] =
+  #| (x, y, z, angle) => (() => { try { return { $tag: 1, _0: new CSSRotate(x, y, z, angle) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSRotate::new_with_css_numeric_value(
@@ -2722,8 +2872,8 @@ pub extern "js" fn CSSRotate::new_with_css_numeric_value(
   y : CSSNumberish,
   z : CSSNumberish,
   angle : CSSNumericValue,
-) -> CSSRotate =
-  #| (x, y, z, angle) => new CSSRotate(x, y, z, angle)
+) -> Result[CSSRotate, CSSRotateConstructorError] =
+  #| (x, y, z, angle) => (() => { try { return { $tag: 1, _0: new CSSRotate(x, y, z, angle) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSScale interface
@@ -3027,10 +3177,17 @@ pub extern "js" fn CSSPerspective::to_css_transform_component(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum CSSPerspectiveConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn CSSPerspective::new(
   length : CSSPerspectiveValue,
-) -> CSSPerspective =
-  #| (length) => new CSSPerspective(length)
+) -> Result[CSSPerspective, CSSPerspectiveConstructorError] =
+  #| (length) => (() => { try { return { $tag: 1, _0: new CSSPerspective(length) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSPerspective::get_length(
@@ -3048,14 +3205,14 @@ pub extern "js" fn CSSPerspective::set_length(
 ///|
 pub extern "js" fn CSSPerspective::new_with_css_numeric_value(
   length : CSSNumericValue,
-) -> CSSPerspective =
-  #| (length) => new CSSPerspective(length)
+) -> Result[CSSPerspective, CSSPerspectiveConstructorError] =
+  #| (length) => (() => { try { return { $tag: 1, _0: new CSSPerspective(length) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn CSSPerspective::new_with_css_keywordish(
   length : CSSKeywordish,
-) -> CSSPerspective =
-  #| (length) => new CSSPerspective(length)
+) -> Result[CSSPerspective, CSSPerspectiveConstructorError] =
+  #| (length) => (() => { try { return { $tag: 1, _0: new CSSPerspective(length) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CSSMatrixComponent interface

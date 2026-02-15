@@ -2,16 +2,16 @@
 // Tests codegen patterns: error handling, null returns, invalid arguments
 
 ///|
-/// Test querySelector with invalid selector throws DOMException.
+/// Test querySelector with invalid selector returns Err(SyntaxError).
 pub fn test_error_invalid_selector() -> Unit {
   let doc = get_document()
   let div = doc.create_element("div")
 
-  // Invalid CSS selector should throw
-  assert_true(
-    @websys.try_catch(fn() { let _ = div.query_selector(">>>invalid") }) != "",
-    label="invalid selector throws",
-  )
+  // Invalid CSS selector should return Err
+  match div.query_selector(">>>invalid") {
+    Err(SyntaxError(_)) => ()
+    _ => abort("FAIL: expected SyntaxError for invalid selector")
+  }
   println("  error_invalid_selector: ok")
 }
 
@@ -29,7 +29,7 @@ pub fn test_error_null_returns() -> Unit {
   // querySelector for non-matching selector
   let div = doc.create_element("div")
   assert_true(
-    div.query_selector(".no-such-class") is None,
+    div.query_selector(".no-such-class").unwrap() is None,
     label="querySelector returns None",
   )
 
@@ -59,7 +59,7 @@ pub fn test_boundary_values() -> Unit {
   assert_eq(div.get_id(), "", label="empty id")
 
   // Zero-length NodeList
-  let list = div.query_selector_all("span")
+  let list = div.query_selector_all("span").unwrap()
   assert_eq(list.get_length(), 0, label="empty NodeList length")
   assert_true(list.item(0) is None, label="NodeList item(0) on empty")
 
@@ -68,7 +68,7 @@ pub fn test_boundary_values() -> Unit {
   assert_eq(div.get_class_name(), "", label="empty className")
 
   // URL with empty components
-  let url = @websys.URL::new("https://example.com")
+  let url = @websys.URL::new("https://example.com").unwrap()
   assert_eq(url.get_pathname(), "/", label="URL default pathname")
   assert_eq(url.get_hash(), "", label="URL empty hash")
   assert_eq(url.get_search(), "", label="URL empty search")
@@ -81,11 +81,11 @@ pub fn test_boundary_values() -> Unit {
 pub fn test_error_invalid_css() -> Unit {
   let sheet = @websys.CSSStyleSheet::new()
 
-  // deleteRule with out-of-range index should throw IndexSizeError
-  assert_true(
-    @websys.try_catch(fn() { sheet.delete_rule(999) }) != "",
-    label="deleteRule out-of-range throws",
-  )
+  // deleteRule with out-of-range index should return Err
+  match sheet.delete_rule(999) {
+    Err(_) => ()
+    Ok(_) => abort("FAIL: expected error for deleteRule out-of-range")
+  }
   println("  error_invalid_css: ok")
 }
 
@@ -96,23 +96,17 @@ pub fn test_error_dom_exception() -> Unit {
   let div = doc.create_element("div")
   let span = doc.create_element("span")
 
-  // removeChild on non-child should throw
-  assert_true(
-    @websys.try_catch(fn() {
-      let _ = div.to_node().remove_child(span.to_node())
-    }) !=
-    "",
-    label="removeChild non-child throws",
-  )
+  // removeChild on non-child should return Err
+  match div.to_node().remove_child(span.to_node()) {
+    Err(_) => ()
+    Ok(_) => abort("FAIL: expected error for removeChild non-child")
+  }
 
-  // insertBefore with invalid reference should throw
+  // insertBefore with invalid reference should return Err
   let child = doc.create_element("p")
-  assert_true(
-    @websys.try_catch(fn() {
-      let _ = div.to_node().insert_before(child.to_node(), Some(span.to_node()))
-    }) !=
-    "",
-    label="insertBefore invalid ref throws",
-  )
+  match div.to_node().insert_before(child.to_node(), Some(span.to_node())) {
+    Err(_) => ()
+    Ok(_) => abort("FAIL: expected error for insertBefore invalid ref")
+  }
   println("  error_dom_exception: ok")
 }

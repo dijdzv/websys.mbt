@@ -217,6 +217,24 @@ pub extern "js" fn FileSystemDirectoryEntry::to_file_system_entry(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum FileSystemDirectoryEntryGetFileError {
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  TypeMismatchError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum FileSystemDirectoryEntryGetDirectoryError {
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  TypeMismatchError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn FileSystemDirectoryEntry::create_reader(
   self : FileSystemDirectoryEntry,
 ) -> FileSystemDirectoryReader =
@@ -225,8 +243,8 @@ pub extern "js" fn FileSystemDirectoryEntry::create_reader(
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::get_file(
   self : FileSystemDirectoryEntry,
-) -> Unit =
-  #| (self) => self.getFile()
+) -> Result[Unit, FileSystemDirectoryEntryGetFileError] =
+  #| (self) => (() => { try { self.getFile(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'TypeMismatchError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn FileSystemDirectoryEntry::get_file_with_error_callback_ffi(
@@ -235,8 +253,8 @@ extern "js" fn FileSystemDirectoryEntry::get_file_with_error_callback_ffi(
   options : JsValue,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, path, options, success_callback, error_callback) => self.getFile(path, options, success_callback, error_callback)
+) -> Result[Unit, FileSystemDirectoryEntryGetFileError] =
+  #| (self, path, options, success_callback, error_callback) => (() => { try { self.getFile(path, options, success_callback, error_callback); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'TypeMismatchError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn FileSystemDirectoryEntry::get_file_with_error_callback(
@@ -245,7 +263,7 @@ pub fn FileSystemDirectoryEntry::get_file_with_error_callback(
   options : FileSystemFlags,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit {
+) -> Result[Unit, FileSystemDirectoryEntryGetFileError] {
   FileSystemDirectoryEntry::get_file_with_error_callback_ffi(
     self,
     path,
@@ -258,8 +276,8 @@ pub fn FileSystemDirectoryEntry::get_file_with_error_callback(
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::get_directory(
   self : FileSystemDirectoryEntry,
-) -> Unit =
-  #| (self) => self.getDirectory()
+) -> Result[Unit, FileSystemDirectoryEntryGetDirectoryError] =
+  #| (self) => (() => { try { self.getDirectory(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'TypeMismatchError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn FileSystemDirectoryEntry::get_directory_with_error_callback_ffi(
@@ -268,8 +286,8 @@ extern "js" fn FileSystemDirectoryEntry::get_directory_with_error_callback_ffi(
   options : JsValue,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit =
-  #| (self, path, options, success_callback, error_callback) => self.getDirectory(path, options, success_callback, error_callback)
+) -> Result[Unit, FileSystemDirectoryEntryGetDirectoryError] =
+  #| (self, path, options, success_callback, error_callback) => (() => { try { self.getDirectory(path, options, success_callback, error_callback); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'TypeMismatchError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn FileSystemDirectoryEntry::get_directory_with_error_callback(
@@ -278,7 +296,7 @@ pub fn FileSystemDirectoryEntry::get_directory_with_error_callback(
   options : FileSystemFlags,
   success_callback : FileSystemEntryCallback,
   error_callback : ErrorCallback,
-) -> Unit {
+) -> Result[Unit, FileSystemDirectoryEntryGetDirectoryError] {
   FileSystemDirectoryEntry::get_directory_with_error_callback_ffi(
     self,
     path,

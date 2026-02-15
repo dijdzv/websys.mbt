@@ -3,6 +3,7 @@ fn test_dom_exception() -> Unit {
   let ex = @websys.DOMException::new()
   assert_eq(ex.get_name(), "Error", label="default name")
   assert_eq(ex.get_message(), "", label="default message")
+  println("  dom_exception: ok")
 }
 
 ///|
@@ -14,6 +15,7 @@ fn test_dom_exception_with_name() -> Unit {
   assert_eq(ex.get_message(), "Invalid state", label="message")
   // code for InvalidStateError is 11
   assert_eq(ex.get_code(), 11, label="code")
+  println("  dom_exception_with_name: ok")
 }
 
 ///|
@@ -31,4 +33,5 @@ fn test_dom_exception_codes() -> Unit {
   assert_eq(not_supported.get_code(), 9, label="NotSupportedError code")
   let syntax = @websys.DOMException::new_with_name("", "SyntaxError")
   assert_eq(syntax.get_code(), 12, label="SyntaxError code")
+  println("  dom_exception_codes: ok")
 }

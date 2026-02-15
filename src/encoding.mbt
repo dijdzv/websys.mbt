@@ -160,42 +160,61 @@ pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
   #| (self) => self
 
 ///|
-pub extern "js" fn TextDecoder::new() -> TextDecoder =
-  #| () => new TextDecoder()
+/// Error type for throwing methods
+pub(all) enum TextDecoderConstructorError {
+  RangeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum TextDecoderDecodeError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn TextDecoder::new() -> Result[
+  TextDecoder,
+  TextDecoderConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: new TextDecoder() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn TextDecoder::new_with_options_ffi(
   label : String,
   options : JsValue,
-) -> TextDecoder =
-  #| (label, options) => new TextDecoder(label, options)
+) -> Result[TextDecoder, TextDecoderConstructorError] =
+  #| (label, options) => (() => { try { return { $tag: 1, _0: new TextDecoder(label, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn TextDecoder::new_with_options(
   label : String,
   options : TextDecoderOptions,
-) -> TextDecoder {
+) -> Result[TextDecoder, TextDecoderConstructorError] {
   TextDecoder::new_with_options_ffi(label, options.to_js())
 }
 
 ///|
-pub extern "js" fn TextDecoder::decode(self : TextDecoder) -> String =
-  #| (self) => self.decode()
+pub extern "js" fn TextDecoder::decode(
+  self : TextDecoder,
+) -> Result[String, TextDecoderDecodeError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.decode() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn TextDecoder::decode_with_options_ffi(
   self : TextDecoder,
   input : AllowSharedBufferSource,
   options : JsValue,
-) -> String =
-  #| (self, input, options) => self.decode(input, options)
+) -> Result[String, TextDecoderDecodeError] =
+  #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn TextDecoder::decode_with_options(
   self : TextDecoder,
   input : AllowSharedBufferSource,
   options : TextDecodeOptions,
-) -> String {
+) -> Result[String, TextDecoderDecodeError] {
   TextDecoder::decode_with_options_ffi(self, input, options.to_js())
 }
 
@@ -216,24 +235,24 @@ pub extern "js" fn TextDecoder::decode_with_array_buffer(
   self : TextDecoder,
   input : ArrayBuffer,
   options : TextDecodeOptions,
-) -> String =
-  #| (self, input, options) => self.decode(input, options)
+) -> Result[String, TextDecoderDecodeError] =
+  #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TextDecoder::decode_with_shared_array_buffer(
   self : TextDecoder,
   input : SharedArrayBuffer,
   options : TextDecodeOptions,
-) -> String =
-  #| (self, input, options) => self.decode(input, options)
+) -> Result[String, TextDecoderDecodeError] =
+  #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TextDecoder::decode_with_array_buffer_view(
   self : TextDecoder,
   input : ArrayBufferView,
   options : TextDecodeOptions,
-) -> String =
-  #| (self, input, options) => self.decode(input, options)
+) -> Result[String, TextDecoderDecodeError] =
+  #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// TextEncoder interface
@@ -329,21 +348,31 @@ pub extern "js" fn JsValue::to_text_decoder_stream(
   #| (self) => self
 
 ///|
-pub extern "js" fn TextDecoderStream::new() -> TextDecoderStream =
-  #| () => new TextDecoderStream()
+/// Error type for throwing methods
+pub(all) enum TextDecoderStreamConstructorError {
+  RangeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+pub extern "js" fn TextDecoderStream::new() -> Result[
+  TextDecoderStream,
+  TextDecoderStreamConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: new TextDecoderStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn TextDecoderStream::new_with_options_ffi(
   label : String,
   options : JsValue,
-) -> TextDecoderStream =
-  #| (label, options) => new TextDecoderStream(label, options)
+) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] =
+  #| (label, options) => (() => { try { return { $tag: 1, _0: new TextDecoderStream(label, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn TextDecoderStream::new_with_options(
   label : String,
   options : TextDecoderOptions,
-) -> TextDecoderStream {
+) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] {
   TextDecoderStream::new_with_options_ffi(label, options.to_js())
 }
 

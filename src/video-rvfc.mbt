@@ -58,7 +58,7 @@ extern "js" fn VideoFrameCallbackMetadata::to_js_ffi(
   #|   height: self.height,
   #|   mediaTime: self.mediaTime,
   #|   presentedFrames: self.presentedFrames,
-  #|   processingDuration: self.processingDuration,
+  #|   processingDuration: ((() => { const v = self.processingDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   receiveTime: ((() => { const v = self.receiveTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rtpTimestamp: self.rtpTimestamp
@@ -83,7 +83,7 @@ extern "js" fn VideoFrameCallbackMetadata::from_js_ffi(
   #|   height: v.height,
   #|   mediaTime: v.mediaTime,
   #|   presentedFrames: v.presentedFrames,
-  #|   processingDuration: v.processingDuration,
+  #|   processingDuration: (v.processingDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.processingDuration }),
   #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
   #|   receiveTime: (v.receiveTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.receiveTime }),
   #|   rtpTimestamp: v.rtpTimestamp

@@ -431,6 +431,7 @@ pub extern "js" fn FileReader::read_as_array_buffer(
   #| (self, blob) => self.readAsArrayBuffer(blob)
 
 ///|
+/// @alert deprecated "readAsBinaryString is deprecated"
 pub extern "js" fn FileReader::read_as_binary_string(
   self : FileReader,
   blob : Blob,
@@ -493,74 +494,70 @@ pub extern "js" fn FileReader::get_error(self : FileReader) -> DOMException? =
   #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn FileReader::get_onloadstart(
-  self : FileReader,
-) -> EventHandler =
-  #| (self) => self.onloadstart
-
-///|
 pub extern "js" fn FileReader::set_onloadstart(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadstart = value }
+  #| (self, handler) => { self.onloadstart = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FileReader::get_onprogress(
-  self : FileReader,
-) -> EventHandler =
-  #| (self) => self.onprogress
+pub extern "js" fn FileReader::clear_onloadstart(self : FileReader) -> Unit =
+  #| (self) => { self.onloadstart = null }
 
 ///|
 pub extern "js" fn FileReader::set_onprogress(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onprogress = value }
+  #| (self, handler) => { self.onprogress = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FileReader::get_onload(self : FileReader) -> EventHandler =
-  #| (self) => self.onload
+pub extern "js" fn FileReader::clear_onprogress(self : FileReader) -> Unit =
+  #| (self) => { self.onprogress = null }
 
 ///|
 pub extern "js" fn FileReader::set_onload(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onload = value }
+  #| (self, handler) => { self.onload = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FileReader::get_onabort(self : FileReader) -> EventHandler =
-  #| (self) => self.onabort
+pub extern "js" fn FileReader::clear_onload(self : FileReader) -> Unit =
+  #| (self) => { self.onload = null }
 
 ///|
 pub extern "js" fn FileReader::set_onabort(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onabort = value }
+  #| (self, handler) => { self.onabort = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FileReader::get_onerror(self : FileReader) -> EventHandler =
-  #| (self) => self.onerror
+pub extern "js" fn FileReader::clear_onabort(self : FileReader) -> Unit =
+  #| (self) => { self.onabort = null }
 
 ///|
 pub extern "js" fn FileReader::set_onerror(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onerror = value }
+  #| (self, handler) => { self.onerror = (e) => handler(e) }
 
 ///|
-pub extern "js" fn FileReader::get_onloadend(self : FileReader) -> EventHandler =
-  #| (self) => self.onloadend
+pub extern "js" fn FileReader::clear_onerror(self : FileReader) -> Unit =
+  #| (self) => { self.onerror = null }
 
 ///|
 pub extern "js" fn FileReader::set_onloadend(
   self : FileReader,
-  value : EventHandler,
+  handler : (ProgressEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onloadend = value }
+  #| (self, handler) => { self.onloadend = (e) => handler(e) }
+
+///|
+pub extern "js" fn FileReader::clear_onloadend(self : FileReader) -> Unit =
+  #| (self) => { self.onloadend = null }
 
 ///|
 /// FileReaderSync interface
@@ -599,6 +596,46 @@ pub extern "js" fn JsValue::to_file_reader_sync(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum FileReaderSyncReadAsArrayBufferError {
+  EncodingError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotReadableError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum FileReaderSyncReadAsBinaryStringError {
+  EncodingError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotReadableError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum FileReaderSyncReadAsTextError {
+  EncodingError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotReadableError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum FileReaderSyncReadAsDataURLError {
+  EncodingError(JsError)
+  NotFoundError(JsError)
+  SecurityError(JsError)
+  NotReadableError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn FileReaderSync::new() -> FileReaderSync =
   #| () => new FileReaderSync()
 
@@ -606,34 +643,35 @@ pub extern "js" fn FileReaderSync::new() -> FileReaderSync =
 pub extern "js" fn FileReaderSync::read_as_array_buffer(
   self : FileReaderSync,
   blob : Blob,
-) -> ArrayBuffer =
-  #| (self, blob) => self.readAsArrayBuffer(blob)
+) -> Result[ArrayBuffer, FileReaderSyncReadAsArrayBufferError] =
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsArrayBuffer(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
+/// @alert deprecated "readAsBinaryString is deprecated"
 pub extern "js" fn FileReaderSync::read_as_binary_string(
   self : FileReaderSync,
   blob : Blob,
-) -> String =
-  #| (self, blob) => self.readAsBinaryString(blob)
+) -> Result[String, FileReaderSyncReadAsBinaryStringError] =
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsBinaryString(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_text(
   self : FileReaderSync,
   blob : Blob,
-) -> String =
-  #| (self, blob) => self.readAsText(blob)
+) -> Result[String, FileReaderSyncReadAsTextError] =
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsText(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_text_with_encoding(
   self : FileReaderSync,
   blob : Blob,
   encoding : String,
-) -> String =
-  #| (self, blob, encoding) => self.readAsText(blob, encoding)
+) -> Result[String, FileReaderSyncReadAsTextError] =
+  #| (self, blob, encoding) => (() => { try { return { $tag: 1, _0: self.readAsText(blob, encoding) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn FileReaderSync::read_as_data_url(
   self : FileReaderSync,
   blob : Blob,
-) -> String =
-  #| (self, blob) => self.readAsDataURL(blob)
+) -> Result[String, FileReaderSyncReadAsDataURLError] =
+  #| (self, blob) => (() => { try { return { $tag: 1, _0: self.readAsDataURL(blob) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()

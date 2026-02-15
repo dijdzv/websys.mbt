@@ -38,12 +38,12 @@ pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
 pub(all) struct RTCRtpEncodingParameters {
   priority : RTCPriorityType?
   networkPriority : RTCPriorityType?
+  scalabilityMode : String?
   active : Bool?
   codec : RTCRtpCodec?
   maxBitrate : Int?
   maxFramerate : Double?
   scaleResolutionDownBy : Double?
-  scalabilityMode : String?
 }
 
 ///|
@@ -52,12 +52,12 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   RTCRtpEncodingParameters::{
     priority: None,
     networkPriority: None,
+    scalabilityMode: None,
     active: None,
     codec: None,
     maxBitrate: None,
     maxFramerate: None,
     scaleResolutionDownBy: None,
-    scalabilityMode: None,
   }
 }
 
@@ -68,12 +68,12 @@ extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
   #| (self) => ({
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
   #|   networkPriority: ((() => { const v = self.networkPriority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
+  #|   scalabilityMode: self.scalabilityMode,
   #|   active: (self.active === -1 ? undefined : self.active),
   #|   codec: ((() => { const v = self.codec; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   maxBitrate: self.maxBitrate,
-  #|   maxFramerate: self.maxFramerate,
-  #|   scaleResolutionDownBy: self.scaleResolutionDownBy,
-  #|   scalabilityMode: self.scalabilityMode
+  #|   maxFramerate: ((() => { const v = self.maxFramerate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   scaleResolutionDownBy: ((() => { const v = self.scaleResolutionDownBy; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -91,12 +91,12 @@ extern "js" fn RTCRtpEncodingParameters::from_js_ffi(
   #| (v) => ({
   #|   priority: (v.priority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.priority)),
   #|   networkPriority: (v.networkPriority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.networkPriority)),
+  #|   scalabilityMode: v.scalabilityMode,
   #|   active: (v.active === undefined ? -1 : v.active),
   #|   codec: (v.codec === undefined ? { $tag: 0 } : { $tag: 1, _0: v.codec }),
   #|   maxBitrate: v.maxBitrate,
-  #|   maxFramerate: v.maxFramerate,
-  #|   scaleResolutionDownBy: v.scaleResolutionDownBy,
-  #|   scalabilityMode: v.scalabilityMode
+  #|   maxFramerate: (v.maxFramerate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxFramerate }),
+  #|   scaleResolutionDownBy: (v.scaleResolutionDownBy === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleResolutionDownBy })
   #| })
 
 ///|

@@ -8,7 +8,7 @@ pub fn test_rtc_data_channel() -> Unit {
   let pc = @websys.RTCPeerConnection::new()
 
   // createDataChannel — returns RTCDataChannel
-  let dc = pc.create_data_channel("test-channel")
+  let dc = pc.create_data_channel("test-channel").unwrap()
 
   // label
   assert_eq(dc.get_label(), "test-channel", label="label")
@@ -46,7 +46,7 @@ pub fn test_rtc_data_channel_with_init() -> Unit {
     maxRetransmits: Some(3),
     protocol: Some("test-protocol"),
   }
-  let dc = pc.create_data_channel_with_data_channel_dict("ordered-ch", init)
+  let dc = pc.create_data_channel_with_data_channel_dict("ordered-ch", init).unwrap()
 
   assert_eq(dc.get_label(), "ordered-ch", label="label with init")
   assert_eq(dc.get_protocol(), "test-protocol", label="protocol with init")
@@ -65,7 +65,7 @@ pub fn test_rtc_ice_candidate() -> Unit {
     sdpMid: @websys.Nullable::Value("0"),
     sdpMLineIndex: @websys.Nullable::Value(0),
   }
-  let candidate = @websys.RTCIceCandidate::new_with_candidate_init_dict(init)
+  let candidate = @websys.RTCIceCandidate::new_with_candidate_init_dict(init).unwrap()
 
   // candidate
   assert_eq(candidate.get_candidate(), "", label="candidate")

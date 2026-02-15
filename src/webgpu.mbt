@@ -2786,8 +2786,8 @@ extern "js" fn GPUSamplerDescriptor::to_js_ffi(
   #|   magFilter: ((() => { const v = self.magFilter; if (v === undefined) return undefined; return ['nearest', 'linear'][v]; })()),
   #|   minFilter: ((() => { const v = self.minFilter; if (v === undefined) return undefined; return ['nearest', 'linear'][v]; })()),
   #|   mipmapFilter: ((() => { const v = self.mipmapFilter; if (v === undefined) return undefined; return ['nearest', 'linear'][v]; })()),
-  #|   lodMinClamp: self.lodMinClamp,
-  #|   lodMaxClamp: self.lodMaxClamp,
+  #|   lodMinClamp: ((() => { const v = self.lodMinClamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   lodMaxClamp: ((() => { const v = self.lodMaxClamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   compare: ((() => { const v = self.compare; if (v === undefined) return undefined; return ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'][v]; })()),
   #|   maxAnisotropy: self.maxAnisotropy
   #| })
@@ -2810,8 +2810,8 @@ extern "js" fn GPUSamplerDescriptor::from_js_ffi(
   #|   magFilter: (v.magFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.magFilter)),
   #|   minFilter: (v.minFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.minFilter)),
   #|   mipmapFilter: (v.mipmapFilter === undefined ? undefined : ['nearest', 'linear'].indexOf(v.mipmapFilter)),
-  #|   lodMinClamp: v.lodMinClamp,
-  #|   lodMaxClamp: v.lodMaxClamp,
+  #|   lodMinClamp: (v.lodMinClamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lodMinClamp }),
+  #|   lodMaxClamp: (v.lodMaxClamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lodMaxClamp }),
   #|   compare: (v.compare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.compare)),
   #|   maxAnisotropy: v.maxAnisotropy
   #| })
@@ -4067,8 +4067,8 @@ extern "js" fn GPUDepthStencilState::to_js_ffi(
   #|   stencilReadMask: ((() => { const v = self.stencilReadMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   stencilWriteMask: ((() => { const v = self.stencilWriteMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthBias: ((() => { const v = self.depthBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthBiasSlopeScale: self.depthBiasSlopeScale,
-  #|   depthBiasClamp: self.depthBiasClamp
+  #|   depthBiasSlopeScale: ((() => { const v = self.depthBiasSlopeScale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthBiasClamp: ((() => { const v = self.depthBiasClamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -4090,8 +4090,8 @@ extern "js" fn GPUDepthStencilState::from_js_ffi(
   #|   stencilReadMask: (v.stencilReadMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilReadMask }),
   #|   stencilWriteMask: (v.stencilWriteMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilWriteMask }),
   #|   depthBias: (v.depthBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBias }),
-  #|   depthBiasSlopeScale: v.depthBiasSlopeScale,
-  #|   depthBiasClamp: v.depthBiasClamp
+  #|   depthBiasSlopeScale: (v.depthBiasSlopeScale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBiasSlopeScale }),
+  #|   depthBiasClamp: (v.depthBiasClamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBiasClamp })
   #| })
 
 ///|
@@ -5010,7 +5010,7 @@ extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   view: self.view,
-  #|   depthClearValue: self.depthClearValue,
+  #|   depthClearValue: ((() => { const v = self.depthClearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthLoadOp: ((() => { const v = self.depthLoadOp; if (v === undefined) return undefined; return ['load', 'clear'][v]; })()),
   #|   depthStoreOp: ((() => { const v = self.depthStoreOp; if (v === undefined) return undefined; return ['store', 'discard'][v]; })()),
   #|   depthReadOnly: (self.depthReadOnly === -1 ? undefined : self.depthReadOnly),
@@ -5034,7 +5034,7 @@ extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(
 ) -> GPURenderPassDepthStencilAttachment =
   #| (v) => ({
   #|   view: v.view,
-  #|   depthClearValue: v.depthClearValue,
+  #|   depthClearValue: (v.depthClearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthClearValue }),
   #|   depthLoadOp: (v.depthLoadOp === undefined ? undefined : ['load', 'clear'].indexOf(v.depthLoadOp)),
   #|   depthStoreOp: (v.depthStoreOp === undefined ? undefined : ['store', 'discard'].indexOf(v.depthStoreOp)),
   #|   depthReadOnly: (v.depthReadOnly === undefined ? -1 : v.depthReadOnly),
@@ -6130,6 +6130,14 @@ pub extern "js" fn JsValue::to_gpu_adapter(self : JsValue) -> GPUAdapter =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUAdapterRequestDeviceError {
+  TypeError(JsError)
+  OperationError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn GPUAdapter::get_features(
   self : GPUAdapter,
 ) -> GPUSupportedFeatures =
@@ -6148,21 +6156,21 @@ pub extern "js" fn GPUAdapter::get_info(self : GPUAdapter) -> GPUAdapterInfo =
 ///|
 pub extern "js" fn GPUAdapter::request_device(
   self : GPUAdapter,
-) -> Promise[GPUDevice] =
-  #| (self) => self.requestDevice()
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+  #| (self) => self.requestDevice().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn GPUAdapter::request_device_with_descriptor_ffi(
   self : GPUAdapter,
   descriptor : JsValue,
-) -> Promise[GPUDevice] =
-  #| (self, descriptor) => self.requestDevice(descriptor)
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+  #| (self, descriptor) => self.requestDevice(descriptor).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn GPUAdapter::request_device_with_descriptor(
   self : GPUAdapter,
   descriptor : GPUDeviceDescriptor,
-) -> Promise[GPUDevice] {
+) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] {
   GPUAdapter::request_device_with_descriptor_ffi(self, descriptor.to_js())
 }
 
@@ -6199,6 +6207,20 @@ pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUDeviceCreateBufferError {
+  RangeError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum GPUDeviceImportExternalTextureError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn GPUDevice::get_features(
   self : GPUDevice,
 ) -> GPUSupportedFeatures =
@@ -6228,14 +6250,14 @@ pub extern "js" fn GPUDevice::destroy(self : GPUDevice) -> Unit =
 extern "js" fn GPUDevice::create_buffer_ffi(
   self : GPUDevice,
   descriptor : JsValue,
-) -> GPUBuffer =
-  #| (self, descriptor) => self.createBuffer(descriptor)
+) -> Result[GPUBuffer, GPUDeviceCreateBufferError] =
+  #| (self, descriptor) => (() => { try { return { $tag: 1, _0: self.createBuffer(descriptor) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn GPUDevice::create_buffer(
   self : GPUDevice,
   descriptor : GPUBufferDescriptor,
-) -> GPUBuffer {
+) -> Result[GPUBuffer, GPUDeviceCreateBufferError] {
   GPUDevice::create_buffer_ffi(self, descriptor.to_js())
 }
 
@@ -6277,14 +6299,14 @@ pub fn GPUDevice::create_sampler_with_descriptor(
 extern "js" fn GPUDevice::import_external_texture_ffi(
   self : GPUDevice,
   descriptor : JsValue,
-) -> GPUExternalTexture =
-  #| (self, descriptor) => self.importExternalTexture(descriptor)
+) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] =
+  #| (self, descriptor) => (() => { try { return { $tag: 1, _0: self.importExternalTexture(descriptor) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn GPUDevice::import_external_texture(
   self : GPUDevice,
   descriptor : GPUExternalTextureDescriptor,
-) -> GPUExternalTexture {
+) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] {
   GPUDevice::import_external_texture_ffi(self, descriptor.to_js())
 }
 
@@ -6482,17 +6504,15 @@ pub extern "js" fn GPUDevice::pop_error_scope(
   #| (self) => self.popErrorScope()
 
 ///|
-pub extern "js" fn GPUDevice::get_onuncapturederror(
-  self : GPUDevice,
-) -> EventHandler =
-  #| (self) => self.onuncapturederror
-
-///|
 pub extern "js" fn GPUDevice::set_onuncapturederror(
   self : GPUDevice,
-  value : EventHandler,
+  handler : (GPUUncapturedErrorEvent) -> Unit,
 ) -> Unit =
-  #| (self, value) => { self.onuncapturederror = value }
+  #| (self, handler) => { self.onuncapturederror = (e) => handler(e) }
+
+///|
+pub extern "js" fn GPUDevice::clear_onuncapturederror(self : GPUDevice) -> Unit =
+  #| (self) => { self.onuncapturederror = null }
 
 ///|
 pub extern "js" fn GPUDevice::get_label(self : GPUDevice) -> String =
@@ -8416,6 +8436,21 @@ pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUQueueWriteBufferError {
+  OperationError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
+/// Error type for throwing methods
+pub(all) enum GPUQueueCopyExternalImageToTextureError {
+  SecurityError(JsError)
+  OperationError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn GPUQueue::submit(
   self : GPUQueue,
   command_buffers : Array[GPUCommandBuffer],
@@ -8434,8 +8469,8 @@ pub extern "js" fn GPUQueue::write_buffer(
   buffer : GPUBuffer,
   buffer_offset : GPUSize64,
   data : AllowSharedBufferSource,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data) => self.writeBuffer(buffer, buffer_offset, data)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data) => (() => { try { self.writeBuffer(buffer, buffer_offset, data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_size(
@@ -8445,8 +8480,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_size(
   data : AllowSharedBufferSource,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn GPUQueue::write_texture_ffi(
@@ -8481,8 +8516,8 @@ extern "js" fn GPUQueue::copy_external_image_to_texture_ffi(
   source : JsValue,
   destination : JsValue,
   copy_size : GPUExtent3D,
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn GPUQueue::copy_external_image_to_texture(
@@ -8490,7 +8525,7 @@ pub fn GPUQueue::copy_external_image_to_texture(
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : GPUExtent3D,
-) -> Unit {
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
   GPUQueue::copy_external_image_to_texture_ffi(
     self,
     source.to_js(),
@@ -8515,8 +8550,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_array_buffer(
   data : ArrayBuffer,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(
@@ -8526,8 +8561,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(
   data : SharedArrayBuffer,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
@@ -8537,8 +8572,8 @@ pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
   data : ArrayBufferView,
   data_offset : GPUSize64,
   size : GPUSize64,
-) -> Unit =
-  #| (self, buffer, buffer_offset, data, data_offset, size) => self.writeBuffer(buffer, buffer_offset, data, data_offset, size)
+) -> Result[Unit, GPUQueueWriteBufferError] =
+  #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, buffer_offset, data, data_offset, size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::write_texture_with_array_buffer(
@@ -8576,8 +8611,8 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_in
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : Array[GPUIntegerCoordinate],
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
@@ -8585,8 +8620,8 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_d
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : GPUExtent3DDict,
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyExternalImageToTexture(source, destination, copy_size)
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// GPUQuerySet interface
@@ -8678,6 +8713,13 @@ pub extern "js" fn JsValue::to_gpu_canvas_context(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum GPUCanvasContextGetCurrentTextureError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Show)
+
+///|
 pub extern "js" fn GPUCanvasContext::get_canvas(
   self : GPUCanvasContext,
 ) -> HTMLCanvasElementOrOffscreenCanvas =
@@ -8713,8 +8755,8 @@ pub extern "js" fn GPUCanvasContext::get_configuration(
 ///|
 pub extern "js" fn GPUCanvasContext::get_current_texture(
   self : GPUCanvasContext,
-) -> GPUTexture =
-  #| (self) => self.getCurrentTexture()
+) -> Result[GPUTexture, GPUCanvasContextGetCurrentTextureError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getCurrentTexture() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// GPUDeviceLostInfo interface

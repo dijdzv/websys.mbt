@@ -38,3 +38,53 @@ pub fn RTCDegradationPreference::from_string(
     _ => None
   }
 }
+
+///|
+/// RTCRtpSendParameters dictionary
+pub(all) struct RTCRtpSendParameters {
+  degradationPreference : RTCDegradationPreference?
+  transactionId : String
+  encodings : Array[RTCRtpEncodingParameters]
+}
+
+///|
+/// Create a new RTCRtpSendParameters with default values
+pub fn RTCRtpSendParameters::default() -> RTCRtpSendParameters {
+  RTCRtpSendParameters::{
+    degradationPreference: None,
+    transactionId: "",
+    encodings: [],
+  }
+}
+
+///|
+extern "js" fn RTCRtpSendParameters::to_js_ffi(
+  self : RTCRtpSendParameters,
+) -> JsValue =
+  #| (self) => ({
+  #|   degradationPreference: ((() => { const v = self.degradationPreference; if (v === undefined) return undefined; return ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'][v]; })()),
+  #|   transactionId: self.transactionId,
+  #|   encodings: self.encodings
+  #| })
+
+///|
+/// Convert to JsValue
+pub fn RTCRtpSendParameters::to_js(self : RTCRtpSendParameters) -> JsValue {
+  RTCRtpSendParameters::to_js_ffi(self)
+}
+
+///|
+extern "js" fn RTCRtpSendParameters::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpSendParameters =
+  #| (v) => ({
+  #|   degradationPreference: (v.degradationPreference === undefined ? undefined : ['maintain-framerate', 'maintain-resolution', 'balanced', 'maintain-framerate-and-resolution'].indexOf(v.degradationPreference)),
+  #|   transactionId: v.transactionId,
+  #|   encodings: v.encodings
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn RTCRtpSendParameters::from_js(value : JsValue) -> RTCRtpSendParameters {
+  RTCRtpSendParameters::from_js_ffi(value)
+}

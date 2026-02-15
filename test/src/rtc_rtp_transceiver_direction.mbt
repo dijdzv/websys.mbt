@@ -22,7 +22,7 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
   let tr1 = pc1.add_transceiver_with_init(
     @websys.MediaStreamTrackOrString::from_string("audio"),
     init,
-  )
+  ).unwrap()
   let dir = tr1.get_direction()
   assert_eq(
     dir,
@@ -34,6 +34,7 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
     cur is None,
     label="current_direction should be None before negotiation",
   )
+  println("  rtc_rtp_transceiver_direction: ok")
 }
 
 // --- Async test: full SDP exchange ---
@@ -52,7 +53,7 @@ async fn test_rtc_sdp_exchange() -> Unit {
   let tr1 = pc1.add_transceiver_with_init(
     @websys.MediaStreamTrackOrString::from_string("audio"),
     init,
-  )
+  ).unwrap()
 
   // Before SDP exchange
   assert_eq(
@@ -67,22 +68,22 @@ async fn test_rtc_sdp_exchange() -> Unit {
   let pc2 = @websys.RTCPeerConnection::new()
 
   // Exchange SDPs — pure MoonBit (no JS helper needed)
-  let offer = pc1.create_offer().wait()
+  let offer = pc1.create_offer().wait().unwrap()
   pc1
   .set_local_description_with_description(@websys.RTCLocalSessionDescriptionInit::{
     type_: Some(offer.type_),
     sdp: offer.sdp,
   })
   .wait()
-  pc2.set_remote_description(offer).wait()
-  let answer = pc2.create_answer().wait()
+  pc2.set_remote_description(offer).wait().unwrap()
+  let answer = pc2.create_answer().wait().unwrap()
   pc2
   .set_local_description_with_description(@websys.RTCLocalSessionDescriptionInit::{
     type_: Some(answer.type_),
     sdp: answer.sdp,
   })
   .wait()
-  pc1.set_remote_description(answer).wait()
+  pc1.set_remote_description(answer).wait().unwrap()
 
   // After SDP exchange: verify pc1's transceiver
   assert_eq(

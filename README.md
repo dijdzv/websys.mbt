@@ -43,7 +43,8 @@ mise run generate
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
 Development uses MoonBit `0.10.12+1634b282e` and `moonbitlang/async` `0.21.3`.
-Bindings currently support JavaScript; WasmGC support is not implemented yet.
+Published bindings currently support JavaScript. An [experimental WasmGC backend](generator/WASM.md)
+generates and tests a restricted DOM surface; it does not yet cover the published API.
 Change the generator rather than editing generated `src/*.mbt` files.
 Generation reads MDN metadata over the network for typed errors and event types.
 

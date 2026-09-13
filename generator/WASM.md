@@ -1,0 +1,39 @@
+# Experimental WasmGC backend
+
+The generator can emit WasmGC imports and a matching JavaScript host module from
+a restricted WebIDL file. This is an experimental path, not WasmGC support for
+the published `dijdzv/websys` package or the complete Webref corpus.
+
+Run `mise run test-wasm` to generate the DOM fixture, compile it and exercise it
+in headless Chromium. `mise run test` includes this verification automatically.
+The generator flag is `--wasm-gc-input <file> -o <directory>`; it writes
+`bindings.mbt` and `runtime.mjs` after generation succeeds. The default JS
+generation path is unchanged.
+
+## ABI choices
+
+- DOM values use opaque `#external` references, not integer handles.
+- Strings use MoonBit's `use-js-builtin-string` link option. Instantiate with
+  `builtins: ['js-string']` and `importedStringConstants: '_'`.
+- The generated `createImports()` supplies `websys` and the official
+  `moonbit:ffi.make_closure` hook. No dependency on Wasm closure layout is needed.
+- Construct an opaque callback handle once and reuse it for registration and
+  removal. Reconstructing a listener creates a different JS function.
+- JavaScript is generated only for the browser boundary; generation and test
+  assertions remain in MoonBit. Host exceptions currently propagate unchanged.
+
+These choices follow the [MoonBit FFI ABI](https://docs.moonbitlang.com/en/latest/language/ffi.html)
+and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moon/package.html).
+
+## Current scope
+
+Supported: non-inheriting interfaces, instance attributes/operations, DOM strings,
+boolean/long/double values, references to declared interfaces, and one-argument
+void callbacks. The fixture is a deliberately narrowed DOM surface, not a copy
+of the complete DOM IDL. It tests Unicode round-trips, booleans, captured callback
+state, duplicate listener registration and removal in two Wasm instances.
+
+Unsupported definitions/types are rejected rather than silently omitted. Full
+Webref generation needs inheritance/mixins, nullable values, optional arguments,
+overloads, dictionaries, sequences, enum/union conversions, Promise support and
+typed exception handling. Linear-memory Wasm is outside this backend's scope.

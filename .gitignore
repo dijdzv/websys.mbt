@@ -20,6 +20,8 @@ src/*.md
 
 # Generated interface files
 *.mbti
+test/wasm/generated/bindings.mbt
+test/wasm/generated/runtime.mjs
 
 # OS
 .DS_Store

@@ -102,3 +102,15 @@ test "typed browser errors expose Debug without deprecated derivation" {
   assert_true(!code.contains("derive(Show)"))
   assert_true(code.contains("OtherError(JsError)"))
 }
+
+///|
+test "WasmGC constructors are not inherited as child constructors" {
+  let parsed = parse_webidl_raw(
+    "interface Parent { constructor(); }; interface Child : Parent {};",
+  )
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("Parent::new("))
+  assert_true(!code.contains("Child::new("))
+  assert_true(runtime.contains("new globalThis.Parent("))
+}

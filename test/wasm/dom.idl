@@ -25,7 +25,17 @@ interface mixin EventTargetMethods {
 };
 EventTarget includes EventTargetMethods;
 interface Event {
+  constructor(DOMString type, EventInit init);
   readonly attribute DOMString type;
+  readonly attribute boolean bubbles;
+  readonly attribute boolean cancelable;
+  readonly attribute boolean defaultPrevented;
+  undefined preventDefault();
+};
+dictionary EventInit {
+  boolean bubbles = false;
+  boolean cancelable = false;
+  boolean composed = false;
 };
 callback EventListener = undefined (Event event);
 dictionary ScrollToOptions {

@@ -49,6 +49,12 @@ the complete standard Event constructor signature or real keyboard/IME input.
 
 ### External module boundary
 
+The event fixture also covers a narrowed `CompositionEvent`/`UIEvent` inheritance
+chain: Unicode data, inherited init fields, omitted data defaulting to an empty
+string, dispatch through an Event upcast and listener removal. These are
+constructed DOM events, not physical IME input. UIEvent view/detail, optional
+constructor arguments and checked Event downcasts are not covered by this case.
+
 The WasmGC test imports generated bindings from the separate
 `dijdzv/websys-wasm-fixture` module through a local MoonBit workspace. Its host
 runtime is generated in the same invocation as the bindings, and the consumer

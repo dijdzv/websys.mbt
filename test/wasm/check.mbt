@@ -149,6 +149,13 @@ pub fn dictionary_sample(
     } else {
       Some(0)
     },
+    unsignedCount: if mode == 0 {
+      None
+    } else if mode == 1 {
+      Some(2147483648U)
+    } else {
+      Some(4294967295U)
+    },
   }
   options.to_js()
 }

@@ -50,7 +50,7 @@ run = '"{{mise_bin}}" exec -- node test/run.mjs'
 description = "Generate and verify the experimental WasmGC DOM subset in headless Chromium"
 run = [
   '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
-  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/wasm/dom.idl -o test/wasm/generated',
+  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/wasm/dom.idl --wasm-gc-module dijdzv/websys-wasm-fixture -o test/wasm/generated',
   '"{{env.MOON_HOME}}/bin/moon" -C test/wasm build --target wasm-gc --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/run.mjs --wasm-gc',
 ]

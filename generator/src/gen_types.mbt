@@ -11,7 +11,7 @@ fn has_safe_default(mem : DictionaryMember) -> Bool {
 ///|
 /// Get safe default value for a dictionary member
 fn get_safe_default_value(mem : DictionaryMember) -> String {
-  match mem.default_value {
+  match plan_dictionary_field(mem).default_value {
     Some(v) => v
     None =>
       match mem.idl_type {
@@ -56,19 +56,7 @@ pub fn gen_dictionary(
   result = dict.members
     .iter()
     .fold(init=result, fn(acc, mem) {
-      let moonbit_type = mem.idl_type.to_moonbit_simple()
-      // Handle optional fields
-      let type_str = if !mem.required {
-        // For double nullable (type already ends with ?), convert to Nullable[T]
-        if ends_with_question(moonbit_type) {
-          let base_type = remove_trailing_question(moonbit_type)
-          "Nullable[" + base_type + "]"
-        } else {
-          moonbit_type + "?"
-        }
-      } else {
-        moonbit_type
-      }
+      let type_str = plan_dictionary_field(mem).public_type()
       acc + "  " + field_name_to_moonbit(mem.name) + " : " + type_str + "\n"
     })
   result = result + "}\n\n"

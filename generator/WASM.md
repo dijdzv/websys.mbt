@@ -47,6 +47,16 @@ options, dispatch them to a DOM element, and verify preventDefault for cancelabl
 and non-cancelable events. This is event construction evidence, not support for
 the complete standard Event constructor signature or real keyboard/IME input.
 
+### External module boundary
+
+The WasmGC test imports generated bindings from the separate
+`dijdzv/websys-wasm-fixture` module through a local MoonBit workspace. Its host
+runtime is generated in the same invocation as the bindings, and the consumer
+sets the compiler's string-builtin and imported-string-constant options.
+`mise run test-wasm` verifies this module boundary using the existing browser
+assertions in two Wasm instances. The fixture is not a published package;
+registry distribution and complete consumer API coverage remain separate work.
+
 ### Corpus inventory
 
 After building the generator, run

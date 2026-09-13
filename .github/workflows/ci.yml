@@ -10,49 +10,12 @@ jobs:
   check-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup MoonBit
-        run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Setup Node for Playwright
-        uses: actions/setup-node@v4
-        with:
-          node-version: '26.8.1'
-
-      - name: Setup just
-        uses: taiki-e/install-action@just
-
-      - name: Fetch MoonBit dependencies
-        run: moon update
-
-      - name: Check
-        run: |
-          moon check --target js --deny-warn
-          moon -C generator check --target js --deny-warn
-          moon -C generator test --target js
-
-      - name: Formatting check
-        run: |
-          moon fmt --check
-          moon -C generator fmt --check
-          moon -C test fmt --check
-
-      - name: Install test dependencies
-        run: |
-          bun install --frozen-lockfile
-          cd test && bun install --frozen-lockfile
-
-      - name: Install Playwright Chromium
-        run: cd test && bunx playwright install --with-deps chromium
-
-      - name: Run browser tests
-        run: just test
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: mise run install
+      - run: mise run check
+      - run: mise run fmt-check
+      - name: Install Chromium and its Linux dependencies
+        run: mise exec -- node test/node_modules/playwright/cli.js install --with-deps chromium
+      - run: mise run test

@@ -11,11 +11,12 @@ async fn main {
   for name in @fs.readdir(stage + "/src") {
     if name.has_suffix(".mbt") { @fs.remove(stage + "/src/" + name) }
   }
-  @fs.write_file(stage + "/moon.mod", @fs.read_file("moon.mod"))
+  if @fs.exists(stage + "/moon.mod") { @fs.remove(stage + "/moon.mod") }
+  @fs.write_file(stage + "/moon.mod.json", @fs.read_file("moon.mod.json"))
   @fs.write_file(stage + "/src/moon.pkg", @fs.read_file("src/moon.pkg"))
-  assert_eq(@process.run("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "-o", stage + "/src"]), 0)
+  assert_eq(@process.run("mise", ["exec", "--", "bun", "generator/_build/js/release/build/webidl-bindgen.js", "-o", stage + "/src"]), 0)
   let moon = ".tools/moonbit/bin/moon"
-  assert_eq(@process.run(moon, ["-C", stage, "fmt"]), 0)
+  assert_eq(@process.run(moon, ["-C", stage, "fmt", "src"]), 0)
   assert_eq(@process.run(moon, ["-C", stage, "check", "--target", "js", "--deny-warn"]), 0)
   let generated = @fs.readdir(stage + "/src")
   assert_true(generated.contains("shared.mbt"))

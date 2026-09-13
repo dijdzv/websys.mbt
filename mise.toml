@@ -1,6 +1,14 @@
+[task_config]
+shell = "{% if os() == 'windows' %}cmd /d /s /c{% else %}sh -e -c{% endif %}"
+
+[vars]
+compiler_archive = "{% if arch() != 'x64' %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}{% if os() == 'windows' %}moonbit-windows-x86_64.zip{% elif os() == 'linux' %}moonbit-linux-x86_64.tar.gz{% else %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}"
+compiler_sha = "{% if os() == 'windows' %}3e5449e862d4979b2fc64e6a248ec5babbd110440c8f2a7bf813c6fa01d8581f{% else %}9bbda7d342fa39654a65c23805e5ff5a3915a26b36627a2565a6b1a99d099e01{% endif %}"
+
 [tools]
 bun = "1.3.14"
 node = "26.8.1"
+"github:dijdzv/moon-release" = "0.3.2"
 
 [env]
 MOON_HOME = "{{config_root}}/.tools/moonbit"
@@ -10,10 +18,10 @@ _.path = ["{{config_root}}/.tools/moonbit/bin"]
 run = ['"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn', '"{{env.MOON_HOME}}/bin/moon" run scripts/generate.mbtx']
 
 [tasks.setup]
-description = "Install the pinned Windows x64 MoonBit compiler and core with mise"
+description = "Install the pinned MoonBit compiler and core (Windows/Linux x64)"
 run = [
-  'mise install-into "http:websys-moonbit[url=https://cli.moonbitlang.com/binaries/0.10.12%2B1634b282e/moonbit-windows-x86_64.zip,checksum=sha256:3e5449e862d4979b2fc64e6a248ec5babbd110440c8f2a7bf813c6fa01d8581f]@0.10.12" .tools/moonbit',
-  'mise install-into "http:websys-core[url=https://cli.moonbitlang.com/cores/core-0.10.12%2B1634b282e.zip,checksum=sha256:f770d1f314f4aa88389e854c7e76814a534a2d84e93fe33e1737a516614d327f]@0.10.12" .tools/moonbit/lib/core',
+  'mise install-into --yes "http:websys-moonbit[url=https://cli.moonbitlang.com/binaries/0.10.12%2B1634b282e/{{vars.compiler_archive}},checksum=sha256:{{vars.compiler_sha}}]@0.10.12" .tools/moonbit',
+  'mise install-into --yes "http:websys-core[url=https://cli.moonbitlang.com/cores/core-0.10.12%2B1634b282e.zip,checksum=sha256:f770d1f314f4aa88389e854c7e76814a534a2d84e93fe33e1737a516614d327f]@0.10.12" .tools/moonbit/lib/core',
   '"{{env.MOON_HOME}}/bin/moon" -C .tools/moonbit/lib/core bundle --all',
   '"{{env.MOON_HOME}}/bin/moon" update',
 ]
@@ -22,4 +30,23 @@ run = [
 run = ['"{{env.MOON_HOME}}/bin/moon" check --target js --deny-warn', '"{{env.MOON_HOME}}/bin/moon" -C generator check --target js --deny-warn']
 
 [tasks.test]
-run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', "node test/run.mjs"]
+run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs']
+
+[tasks.install]
+run = ['"{{mise_bin}}" exec -- bun install --frozen-lockfile', '"{{mise_bin}}" exec -- bun install --cwd test --frozen-lockfile']
+
+[tasks."setup-test"]
+depends = ["install"]
+run = '"{{mise_bin}}" exec -- node test/node_modules/playwright/cli.js install chromium'
+
+[tasks."build-test"]
+run = '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn'
+
+[tasks."test-run"]
+run = '"{{mise_bin}}" exec -- node test/run.mjs'
+
+[tasks.fmt]
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src']
+
+[tasks."fmt-check"]
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src']

@@ -4,6 +4,7 @@ fn emit_wasm_dictionary(
   mbt : StringBuilder,
   js : StringBuilder,
   references : Array[String],
+  dictionaries : Array[String],
 ) -> Unit {
   let name = dict.name
   mbt.write_string("pub(all) struct \{name} {\n")
@@ -35,7 +36,11 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    let typ = require_wasm_type(value_type, references)
+    let typ = if value_type is Named(name) && dictionaries.contains(name) {
+      "JsValue"
+    } else {
+      require_wasm_type(value_type, references)
+    }
     mbt.write_string(
       "fn websys_dict_\{name}_\{key}(target : JsValue, value : \{typ}) -> Unit = \"websys\" \"dict_\{name}_\{key}\"\n",
     )
@@ -49,7 +54,12 @@ fn emit_wasm_dictionary(
   )
   for field in dict.members {
     let key = field_name_to_moonbit(field.name)
-    let set = "websys_dict_\{name}_\{key}(target, value)"
+    let nested = match field.idl_type {
+      Named(name) | Nullable(Named(name)) => dictionaries.contains(name)
+      _ => false
+    }
+    let converted = if nested { "value.to_js()" } else { "value" }
+    let set = "websys_dict_\{name}_\{key}(target, \{converted})"
     let null = "websys_dict_null(target, \"\{field.name}\")"
     match plan_dictionary_field(field).presence {
       Required =>
@@ -59,7 +69,7 @@ fn emit_wasm_dictionary(
           )
         } else {
           mbt.write_string(
-            "  websys_dict_\{name}_\{key}(target, self.\{key})\n",
+            "  websys_dict_\{name}_\{key}(target, self.\{key}\{if nested { ".to_js()" } else { "" }})\n",
           )
         }
       Optional =>

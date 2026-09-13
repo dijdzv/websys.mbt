@@ -326,12 +326,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   for definition in definitions {
     match definition {
       Dictionary(dict) =>
-        emit_wasm_dictionary(
-          dict,
-          mbt,
-          js,
-          names.filter(name => !dictionaries.contains(name)),
-        )
+        emit_wasm_dictionary(dict, mbt, js, names, dictionaries)
       CallbackInterface(cb) => {
         guard cb.arguments.length() == 1 && cb.return_type is Some(Void) else {
           abort(

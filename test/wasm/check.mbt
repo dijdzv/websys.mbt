@@ -150,6 +150,30 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
 }
 
 ///|
+pub fn nested_dictionary_sample(mode : Int) -> @bindings.JsValue {
+  let child : @bindings.NestedLeaf = { label: "入れ子😀", count: Some(0), }
+  let options : @bindings.NestedOptions = {
+    child,
+    requiredNullable: if mode == 0 {
+      None
+    } else {
+      Some(child)
+    },
+    optionalChild: if mode == 0 {
+      None
+    } else {
+      Some(child)
+    },
+    nullableChild: match mode {
+      0 => @bindings.Undefined
+      1 => @bindings.Null
+      _ => @bindings.Value(child)
+    },
+  }
+  options.to_js()
+}
+
+///|
 pub fn dictionary_sample(
   mode : Int,
   document : @bindings.Document,

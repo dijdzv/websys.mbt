@@ -136,12 +136,19 @@ fields retain explicit null. No MoonBit record or enum layout crosses the ABI.
 
 Dictionary inheritance reuses the shared resolver after validation of missing
 parents, cycles and duplicate fields. Supported field values are strings,
-boolean/long/double and declared interface/callback references, including nullable
+boolean/long/double, nested dictionary records and declared interface/callback references, including nullable
 fields. Methods can receive non-null dictionaries. The browser suite exercises
 `scrollTo` and separately inspects a synthetic dictionary for inherited required
 fields, omission, null, empty strings, false and zero in two Wasm instances.
 
-Dictionary results, nested dictionaries, nullable dictionary arguments, partial
+Nested records are converted recursively with `to_js()` before the opaque host
+object enters FFI. Each conversion creates a new host dictionary; shared MoonBit
+record values do not imply shared JavaScript object identity. The external
+consumer checks nested required values, omission, explicit null, Unicode and
+zero in four Wasm instances. This does not add conversion from a returned host
+dictionary into a MoonBit record.
+
+Dictionary results, nullable dictionary arguments, partial
 dictionaries and generated convenience constructors are not implemented. Use
 record literals for the supported input path. This is not full parity with the
 published JS dictionary API or full EventInit/Fetch/WebGPU coverage.

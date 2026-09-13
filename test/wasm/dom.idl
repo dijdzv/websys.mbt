@@ -58,6 +58,14 @@ callback EventListener = undefined (Event event);
 
 // Narrowed inheritance chain: view/detail remain outside this fixture.
 interface UIEvent : Event {};
+interface Window {
+  unsigned long requestAnimationFrame(FrameRequestCallback callback);
+  undefined cancelAnimationFrame(unsigned long handle);
+};
+callback FrameRequestCallback = undefined (double timestamp);
+interface InputEvent : UIEvent {
+  readonly attribute boolean isComposing;
+};
 interface CompositionEvent : UIEvent {
   constructor(DOMString type, CompositionEventInit init);
   readonly attribute DOMString data;

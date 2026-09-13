@@ -1,0 +1,91 @@
+///|
+priv struct InputLifecycle {
+  window : @bindings.Window
+  input : @bindings.HTMLInputElement
+  listener : @bindings.EventListener
+  active : Ref[Bool]
+  pending : Ref[UInt?]
+}
+
+///|
+let lifecycle : Ref[InputLifecycle?] = Ref(None)
+
+///|
+let callbacks : Ref[Int] = Ref(0)
+
+///|
+let frames : Ref[Int] = Ref(0)
+
+///|
+let observed_text : Ref[String] = Ref("")
+
+///|
+pub fn input_stop() -> Unit {
+  if lifecycle.val is Some(state) {
+    state.active.val = false
+    if state.pending.val is Some(handle) {
+      state.window.cancel_animation_frame(handle)
+      state.pending.val = None
+    }
+    state.input.remove_event_listener("input", state.listener, false)
+    state.input.remove_event_listener(
+      "compositionupdate",
+      state.listener,
+      false,
+    )
+    lifecycle.val = None
+  }
+}
+
+///|
+pub fn input_start(
+  window : @bindings.Window,
+  input : @bindings.HTMLInputElement,
+) -> Unit {
+  input_stop()
+  let active = Ref(true)
+  let pending : Ref[UInt?] = Ref(None)
+  let listener = @bindings.EventListener::new(fn(event) {
+    if !active.val {
+      return
+    }
+    callbacks.val += 1
+    if @bindings.InputEvent::from_event_opt(event) is Some(typed) &&
+      typed.is_composing() {
+      return
+    }
+    if event.type_() == "compositionupdate" {
+      guard @bindings.CompositionEvent::from_event_opt(event) is Some(_) else {
+        return
+      }
+    }
+    if pending.val is None {
+      let callback = @bindings.FrameRequestCallback::new(fn(_timestamp) {
+        pending.val = None
+        if active.val {
+          frames.val += 1
+          observed_text.val = input.value()
+        }
+      })
+      pending.val = Some(window.request_animation_frame(callback))
+    }
+  })
+  input.add_event_listener("input", listener, false)
+  input.add_event_listener("compositionupdate", listener, false)
+  lifecycle.val = Some({ window, input, listener, active, pending, })
+}
+
+///|
+pub fn input_callbacks() -> Int {
+  callbacks.val
+}
+
+///|
+pub fn input_frames() -> Int {
+  frames.val
+}
+
+///|
+pub fn input_text_matches(value : String) -> Bool {
+  observed_text.val == value
+}

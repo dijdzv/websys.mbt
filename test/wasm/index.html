@@ -24,8 +24,35 @@ try {
         if (mode === 1 ? value.node !== null : !(value.node instanceof Element && value.node.tagName === 'SPAN')) throw new Error('Dictionary reference changed');
       }
     }
+    const api = instance.exports;
+    const input = document.createElement('input');
+    document.body.append(input);
+    const nextFrames = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    try {
+      api.input_start(window, input);
+      input.value = '変換中';
+      input.dispatchEvent(new InputEvent('input', { isComposing: true }));
+      await nextFrames();
+      if (api.input_frames() !== 0 || api.input_callbacks() !== 1) throw new Error('Composing input was applied');
+      input.dispatchEvent(new CompositionEvent('compositionupdate', { data: 'あ😀' }));
+      input.value = 'あ😀';
+      await nextFrames();
+      if (api.input_frames() !== 1 || !api.input_text_matches('あ😀')) throw new Error('Frame did not observe updated DOM');
+      input.dispatchEvent(new InputEvent('input'));
+      api.input_stop();
+      input.value = 'disposed';
+      input.dispatchEvent(new InputEvent('input'));
+      await nextFrames();
+      if (api.input_frames() !== 1 || api.input_callbacks() !== 3 || !api.input_text_matches('あ😀')) throw new Error('Disposed input mutated state');
+      api.input_start(window, input);
+      api.input_start(window, input);
+      input.value = '再開';
+      input.dispatchEvent(new InputEvent('input'));
+      await nextFrames();
+      if (api.input_frames() !== 2 || api.input_callbacks() !== 4 || !api.input_text_matches('再開')) throw new Error('Restart duplicated listeners');
+    } finally { api.input_stop(); input.remove(); }
   }
-  console.log('WasmGC DOM, Unicode, callback identity and removal: passed');
+  console.log('WasmGC DOM, Unicode, callback identity and input lifecycle: passed');
   window.__testsPassed = true;
 } catch (error) {
   console.error(error.stack || String(error));

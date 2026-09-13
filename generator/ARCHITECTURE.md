@@ -47,6 +47,37 @@ identity and error propagation. A missing WasmGC adapter is an upstream design
 question, not proof that a library is broken or unmaintained. Upstream work must
 include a minimal reproduction and a clearly delimited public API proposal.
 
+### Selected dependency boundary
+
+Do not introduce a mandatory general-purpose JS value library at this stage.
+Keep generated host calls on the official typed FFI boundary and retain the
+official JS Promise alias. The conversion-plan layer owns WebIDL-specific
+conversions; it must not grow a general JS standard library or scheduler.
+
+The two-backend consumer evaluation found that a candidate's generic primitive
+and closure identity conversions can build but produce invalid Wasm. Boolean
+boxing also needs conversion from Wasm i32 to a JS boolean. Local typed-import
+proposals work in Chromium, including integer bounds and DOM listener removal,
+but are not available as an accepted dependency API. Requiring that dependency
+now would add an unpublished patch set without eliminating the necessary FFI
+conversion work. This is a current suitability decision, not a rejection of
+future reuse or of upstream contributions. Detailed reproductions remain in
+the dependency evaluation Issue.
+
+Reconsider adoption once an available version passes the external-consumer
+contract and removes more local boundary maintenance than it introduces.
+Dictionary planning and other WebIDL-only work need not wait for that adoption.
+
+WasmGC Promise waiting has a separate gate. Compiler async suspension and the
+official closure hook can deliver fulfillment and arbitrary rejection values,
+but this is not the official async package's cancellation contract. The inspected
+package also selects an unimplemented event loop for WasmGC. An upstream adapter
+therefore needs event-loop scheduling, coroutine ownership, abort propagation
+and late-settlement cleanup; changing only `js_async` host imports is insufficient.
+Do not expose a replacement `wait` claiming those guarantees until they have
+been verified. Host Promise observation and structured async waiting remain
+separate APIs and separate acceptance requirements.
+
 ## Generation pipeline
 
 1. Parse into a lossless WebIDL representation, retaining source location,

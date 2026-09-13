@@ -35,6 +35,39 @@ async fn test_js_input_lifecycle() -> Unit {
       (fn() { field.get_value() }, fn(value) { field.set_value(value) })
     }
     let target = element.to_event_target()
+    let selection = fn() {
+      if @websys.HTMLInputElement::from_js_value_opt(element.to_js_value())
+        is Some(field) {
+        (
+          field.get_selection_start(),
+          field.get_selection_end(),
+          field.get_selection_direction(),
+        )
+      } else {
+        let field = @websys.HTMLTextAreaElement::from_js_value_opt(
+          element.to_js_value(),
+        ).unwrap()
+        (
+          Some(field.get_selection_start()),
+          Some(field.get_selection_end()),
+          Some(field.get_selection_direction()),
+        )
+      }
+    }
+    let select = fn(start : Int, end : Int, direction : String) {
+      if @websys.HTMLInputElement::from_js_value_opt(element.to_js_value())
+        is Some(field) {
+        field.set_selection_range_with_direction(start, end, direction).unwrap()
+      } else {
+        @websys.HTMLTextAreaElement::from_js_value_opt(element.to_js_value())
+        .unwrap()
+        .set_selection_range_with_direction(start, end, direction)
+      }
+    }
+    let observed_selection : Ref[(Int?, Int?, String?)] = Ref(
+      (None, None, None),
+    )
+    let preedit = Ref("")
     let pending : Ref[Int?] = Ref(None)
     let active = Ref(true)
     let frames = Ref(0)
@@ -55,12 +88,20 @@ async fn test_js_input_lifecycle() -> Unit {
       if event.get_type() == "compositionend" {
         cancel()
         observed.val = read()
+        observed_selection.val = selection()
         return
       }
       if @websys.InputEvent::from_js_value_opt(event.to_js_value())
         is Some(input) &&
         input.get_is_composing() {
         return
+      }
+      if event.get_type() == "compositionupdate" {
+        preedit.val = @websys.CompositionEvent::from_js_value_opt(
+            event.to_js_value(),
+          )
+          .unwrap()
+          .get_data()
       }
       if pending.val is None {
         pending.val = Some(
@@ -70,6 +111,7 @@ async fn test_js_input_lifecycle() -> Unit {
               if active.val {
                 frames.val += 1
                 observed.val = read()
+                observed_selection.val = selection()
               }
             }),
           ),
@@ -112,15 +154,25 @@ async fn test_js_input_lifecycle() -> Unit {
       }).to_event(),
     )
     write("あ😀")
+    select(1, 3, "backward")
     next_input_frames().wait()
     assert_eq(observed.val, "あ😀", label="frame observes updated DOM")
+    assert_eq(observed_selection.val, (Some(1), Some(3), Some("backward")))
+    assert_eq(preedit.val, "あ😀")
     assert_eq(frames.val, 1)
-    dispatch(@websys.CompositionEvent::new("compositionupdate").to_event())
+    dispatch(
+      @websys.CompositionEvent::new_with_event_init_dict("compositionupdate", {
+        data: Some("確定"),
+      }).to_event(),
+    )
     write("確定")
+    select(2, 2, "forward")
     dispatch(@websys.CompositionEvent::new("compositionend").to_event())
     write("late DOM change")
     next_input_frames().wait()
     assert_eq(observed.val, "確定", label="composition end cancels frame")
+    assert_eq(observed_selection.val, (Some(2), Some(2), Some("forward")))
+    assert_eq(preedit.val, "確定")
     assert_eq(frames.val, 1)
     dispatch(@websys.InputEvent::new("input").to_event())
     stop()
@@ -128,14 +180,17 @@ async fn test_js_input_lifecycle() -> Unit {
     dispatch(@websys.InputEvent::new("input").to_event())
     next_input_frames().wait()
     assert_eq(observed.val, "確定", label="disposed field stable")
+    assert_eq(observed_selection.val, (Some(2), Some(2), Some("forward")))
     assert_eq(frames.val, 1)
     assert_eq(calls.val, 5)
     bind()
     bind()
     write("再開")
+    select(0, 2, "backward")
     dispatch(@websys.InputEvent::new("input").to_event())
     next_input_frames().wait()
     assert_eq(observed.val, "再開")
+    assert_eq(observed_selection.val, (Some(0), Some(2), Some("backward")))
     assert_eq(frames.val, 2)
     assert_eq(calls.val, 6, label="restart listener identity")
   }

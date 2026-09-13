@@ -20,6 +20,12 @@ let frames : Ref[Int] = Ref(0)
 let observed_text : Ref[String] = Ref("")
 
 ///|
+let observed_selection : Ref[(UInt?, UInt?, String?)] = Ref((None, None, None))
+
+///|
+let observed_preedit : Ref[String] = Ref("")
+
+///|
 pub fn input_stop() -> Unit {
   if lifecycle.val is Some(state) {
     state.active.val = false
@@ -56,6 +62,22 @@ pub fn input_start(
     abort("Expected input or textarea")
   }
   let active = Ref(true)
+  let read_selection = fn() {
+    if @bindings.HTMLInputElement::from_element_opt(input) is Some(field) {
+      (
+        field.selection_start(),
+        field.selection_end(),
+        field.selection_direction(),
+      )
+    } else {
+      let field = @bindings.HTMLTextAreaElement::from_element_opt(input).unwrap()
+      (
+        Some(field.selection_start()),
+        Some(field.selection_end()),
+        Some(field.selection_direction()),
+      )
+    }
+  }
   let pending : Ref[UInt?] = Ref(None)
   let listener = @bindings.EventListener::new(fn(event) {
     if !active.val {
@@ -68,6 +90,7 @@ pub fn input_start(
         pending.val = None
       }
       observed_text.val = read_value()
+      observed_selection.val = read_selection()
       return
     }
     if @bindings.InputEvent::from_event_opt(event) is Some(typed) &&
@@ -75,9 +98,11 @@ pub fn input_start(
       return
     }
     if event.type_() == "compositionupdate" {
-      guard @bindings.CompositionEvent::from_event_opt(event) is Some(_) else {
+      guard @bindings.CompositionEvent::from_event_opt(event)
+        is Some(composition) else {
         return
       }
+      observed_preedit.val = composition.data()
     }
     if pending.val is None {
       let callback = @bindings.FrameRequestCallback::new(fn(_timestamp) {
@@ -85,6 +110,7 @@ pub fn input_start(
         if active.val {
           frames.val += 1
           observed_text.val = read_value()
+          observed_selection.val = read_selection()
         }
       })
       pending.val = Some(window.request_animation_frame(callback))
@@ -109,6 +135,17 @@ pub fn input_frames() -> Int {
 ///|
 pub fn input_text_matches(value : String) -> Bool {
   observed_text.val == value
+}
+
+///|
+pub fn input_snapshot_matches(
+  start : UInt,
+  end : UInt,
+  direction : String,
+  preedit : String,
+) -> Bool {
+  observed_selection.val == (Some(start), Some(end), Some(direction)) &&
+  observed_preedit.val == preedit
 }
 
 ///|

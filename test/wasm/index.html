@@ -41,18 +41,24 @@ try {
       input.value = 'あ😀';
       await nextFrames();
       if (api.input_frames() !== 1 || !api.input_text_matches('あ😀')) throw new Error('Frame did not observe updated DOM');
+      input.dispatchEvent(new CompositionEvent('compositionupdate', { data: '確定' }));
+      input.value = '確定';
+      input.dispatchEvent(new CompositionEvent('compositionend', { data: '確定' }));
+      input.value = 'late DOM change';
+      await nextFrames();
+      if (api.input_frames() !== 1 || !api.input_text_matches('確定')) throw new Error('Composition-end frame was not canceled');
       input.dispatchEvent(new InputEvent('input'));
       api.input_stop();
       input.value = 'disposed';
       input.dispatchEvent(new InputEvent('input'));
       await nextFrames();
-      if (api.input_frames() !== 1 || api.input_callbacks() !== 3 || !api.input_text_matches('あ😀')) throw new Error('Disposed input mutated state');
+      if (api.input_frames() !== 1 || api.input_callbacks() !== 5 || !api.input_text_matches('確定')) throw new Error('Disposed input mutated state');
       api.input_start(window, input);
       api.input_start(window, input);
       input.value = '再開';
       input.dispatchEvent(new InputEvent('input'));
       await nextFrames();
-      if (api.input_frames() !== 2 || api.input_callbacks() !== 4 || !api.input_text_matches('再開')) throw new Error('Restart duplicated listeners');
+      if (api.input_frames() !== 2 || api.input_callbacks() !== 6 || !api.input_text_matches('再開')) throw new Error('Restart duplicated listeners');
     } finally { api.input_stop(); input.remove(); }
   }
   console.log('WasmGC DOM, Unicode, callback identity and input lifecycle: passed');

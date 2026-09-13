@@ -28,6 +28,7 @@ pub fn input_stop() -> Unit {
       state.pending.val = None
     }
     state.input.remove_event_listener("input", state.listener, false)
+    state.input.remove_event_listener("compositionend", state.listener, false)
     state.input.remove_event_listener(
       "compositionupdate",
       state.listener,
@@ -61,6 +62,14 @@ pub fn input_start(
       return
     }
     callbacks.val += 1
+    if event.type_() == "compositionend" {
+      if pending.val is Some(handle) {
+        window.cancel_animation_frame(handle)
+        pending.val = None
+      }
+      observed_text.val = read_value()
+      return
+    }
     if @bindings.InputEvent::from_event_opt(event) is Some(typed) &&
       typed.is_composing() {
       return
@@ -82,6 +91,7 @@ pub fn input_start(
     }
   })
   input.add_event_listener("input", listener, false)
+  input.add_event_listener("compositionend", listener, false)
   input.add_event_listener("compositionupdate", listener, false)
   lifecycle.val = Some({ window, input, listener, active, pending, })
 }

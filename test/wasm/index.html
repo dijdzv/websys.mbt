@@ -24,6 +24,22 @@ try {
     if (result !== 0) throw new Error(`WasmGC assertion ${result} failed (instance ${i})`);
     for (let mode = 0; mode < 3; mode++) {
       const value = instance.exports.dictionary_sample(mode, document);
+      const nested = instance.exports.nested_dictionary_sample(mode);
+      const checkLeaf = leaf => {
+        if (Object.getPrototypeOf(leaf) !== Object.prototype || leaf.label !== '入れ子😀' || leaf.count !== 0) throw new Error('Nested record did not become a host dictionary');
+      };
+      checkLeaf(nested.child);
+      if (mode === 0) {
+        if (nested.requiredNullable !== null || Object.hasOwn(nested, 'optionalChild') || Object.hasOwn(nested, 'nullableChild')) throw new Error('Nested omission/null changed');
+      } else {
+        checkLeaf(nested.requiredNullable);
+        checkLeaf(nested.optionalChild);
+        if (mode === 1) {
+          if (nested.nullableChild !== null) throw new Error('Nested explicit null changed');
+        } else {
+          checkLeaf(nested.nullableChild);
+        }
+      }
       if (value.title !== '日本語😀' || value.requiredNote !== (mode === 2 ? '確定😀' : null)) throw new Error('Required dictionary values changed');
       if (mode === 0) {
         if (Object.hasOwn(value, 'node') || Object.hasOwn(value, 'note') || Object.hasOwn(value, 'enabled') || Object.hasOwn(value, 'count') || Object.hasOwn(value, 'unsignedCount')) throw new Error('Omitted fields became present');

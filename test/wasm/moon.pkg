@@ -12,6 +12,7 @@ options(
         "buffer_roundtrip",
         "buffer_clear",
         "dictionary_sample",
+        "nested_dictionary_sample",
         "input_start",
         "input_stop",
         "input_callbacks",

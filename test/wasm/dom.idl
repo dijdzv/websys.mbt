@@ -100,3 +100,13 @@ dictionary TestOptionsBase {
   required DOMString title;
   required DOMString? requiredNote;
 };
+dictionary NestedLeaf {
+  required DOMString label;
+  long count;
+};
+dictionary NestedOptions {
+  required NestedLeaf child;
+  required NestedLeaf? requiredNullable;
+  NestedLeaf optionalChild;
+  NestedLeaf? nullableChild;
+};

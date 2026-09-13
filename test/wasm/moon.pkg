@@ -9,6 +9,8 @@ options(
     "wasm-gc": {
       "exports": [
         "run",
+        "buffer_roundtrip",
+        "buffer_clear",
         "dictionary_sample",
         "input_start",
         "input_stop",

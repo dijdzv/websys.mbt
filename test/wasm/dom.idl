@@ -1,4 +1,10 @@
 // Deliberately restricted DOM surface for the experimental backend.
+// Synthetic receiver isolates the standard built-in buffer value conversion.
+interface BufferFixture {
+  readonly attribute ArrayBuffer value;
+  attribute ArrayBuffer? optionalValue;
+  ArrayBuffer echo(ArrayBuffer value);
+};
 interface Document {
   readonly attribute Element? activeElement;
   Element createElement(DOMString localName);

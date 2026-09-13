@@ -34,6 +34,19 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### ArrayBuffer references
+
+The built-in WebIDL `ArrayBuffer` type is an opaque host reference. Operation
+arguments/results and attributes, including nullable values, preserve identity;
+they do not copy bytes or expose a MoonBit array layout. A synthetic receiver in
+the external-module browser fixture checks identity, shared mutation, null and
+detached-buffer reference preservation in four Wasm instances. Preserving a
+detached reference does not make it valid for a browser API requiring live bytes.
+
+Buffer construction, element access, SharedArrayBuffer, TypedArray, BufferSource
+unions and Promise settlement are not provided by this change. This is not yet
+a usable Web Crypto digest path. The JS generation path remains unchanged.
+
 ### Constructors and events
 
 Declared constructors with explicit, non-variadic arguments generate `Type::new`.

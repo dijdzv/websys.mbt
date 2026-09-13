@@ -22,6 +22,7 @@ description = "Install the pinned MoonBit compiler and core (Windows/Linux x64)"
 run = [
   'mise install-into --yes "http:websys-moonbit[url=https://cli.moonbitlang.com/binaries/0.10.12%2B1634b282e/{{vars.compiler_archive}},checksum=sha256:{{vars.compiler_sha}}]@0.10.12" .tools/moonbit',
   'mise install-into --yes "http:websys-core[url=https://cli.moonbitlang.com/cores/core-0.10.12%2B1634b282e.zip,checksum=sha256:f770d1f314f4aa88389e854c7e76814a534a2d84e93fe33e1737a516614d327f]@0.10.12" .tools/moonbit/lib/core',
+  '{% if os() == "linux" %}chmod u+x .tools/moonbit/bin/*{% else %}"{{env.MOON_HOME}}/bin/moon" version{% endif %}',
   '"{{env.MOON_HOME}}/bin/moon" -C .tools/moonbit/lib/core bundle --all',
   '"{{env.MOON_HOME}}/bin/moon" update',
 ]

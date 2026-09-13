@@ -1,11 +1,21 @@
 ///|
 test "WasmGC refuses types with no implemented ABI conversion" {
   assert_eq(wasm_type(Sequence(String), []), None)
-  assert_eq(wasm_type(Nullable(String), []), None)
+  assert_eq(wasm_type(Nullable(Primitive("long")), []), None)
   assert_eq(wasm_type(Promise(String), []), None)
   assert_eq(wasm_type(Primitive("long long"), []), None)
   assert_eq(wasm_type(Named("Missing"), []), None)
   assert_eq(wasm_type(Named("Event"), ["Event"]), Some("Event"))
+}
+
+///|
+test "WasmGC nullable references and strings expose Option" {
+  assert_eq(wasm_type(Nullable(String), []), Some("String?"))
+  assert_eq(
+    wasm_type(Nullable(Named("Element")), ["Element"]),
+    Some("Element?"),
+  )
+  assert_eq(wasm_type(Nullable(Named("Missing")), []), None)
 }
 
 ///|

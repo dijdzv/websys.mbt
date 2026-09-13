@@ -34,6 +34,7 @@ struct CliArgs {
   output : String
   help : Bool
   wasm_input : String?
+  wasm_module : String?
   wasm_audit : Bool
 }
 
@@ -43,6 +44,7 @@ fn parse_args() -> CliArgs {
   let mut output = "./"
   let mut help = false
   let mut wasm_input = None
+  let mut wasm_module = None
   let mut wasm_audit = false
   let mut i = 2 // Skip node and script path
   while i < argc {
@@ -51,6 +53,10 @@ fn parse_args() -> CliArgs {
       help = true
     } else if arg == "--audit-wasm-gc" {
       wasm_audit = true
+    } else if arg == "--wasm-gc-module" {
+      i = i + 1
+      guard i < argc else { abort("--wasm-gc-module requires a module name") }
+      wasm_module = Some(get_argv_string(i))
     } else if arg == "--wasm-gc-input" {
       i = i + 1
       guard i < argc else { abort("--wasm-gc-input requires an IDL file") }
@@ -63,7 +69,7 @@ fn parse_args() -> CliArgs {
     }
     i = i + 1
   }
-  { output, help, wasm_input, wasm_audit, }
+  { output, help, wasm_input, wasm_module, wasm_audit, }
 }
 
 ///|
@@ -82,6 +88,9 @@ fn print_usage() -> Unit {
   println(
     "  --wasm-gc-input <file>  Generate the experimental WasmGC subset from an IDL file",
   )
+  println(
+    "  --wasm-gc-module <owner/name>  Also generate MoonBit module metadata",
+  )
 }
 
 ///|
@@ -90,6 +99,11 @@ async fn main {
   if args.help {
     print_usage()
     return
+  }
+  if args.wasm_module is Some(name) {
+    guard args.wasm_input is Some(_) && valid_wasm_module_name(name) else {
+      abort("--wasm-gc-module requires --wasm-gc-input and a valid owner/name")
+    }
   }
   guard !(args.wasm_audit && args.wasm_input is Some(_)) else {
     abort("Choose audit or file generation, not both")
@@ -125,6 +139,16 @@ async fn main {
     mkdir_sync(args.output)
     write_file_sync(path_join(args.output, "bindings.mbt"), moonbit)
     write_file_sync(path_join(args.output, "runtime.mjs"), runtime)
+    if args.wasm_module is Some(name) {
+      write_file_sync(
+        path_join(args.output, "moon.mod"),
+        wasm_module_manifest(name),
+      )
+      write_file_sync(
+        path_join(args.output, "moon.pkg"),
+        "supported_targets = \"wasm-gc\"\n",
+      )
+    }
     return
   }
 

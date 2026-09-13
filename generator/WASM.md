@@ -13,6 +13,21 @@ The generator flag is `--wasm-gc-input <file> -o <directory>`; it writes
 `bindings.mbt` and `runtime.mjs` after generation succeeds. The default JS
 generation path is unchanged.
 
+For a standalone module directory, additionally pass
+`--wasm-gc-module owner/package`. This explicitly writes `moon.mod` and `moon.pkg`
+alongside the bindings and matching runtime. Use a dedicated generated directory:
+the option replaces its module metadata and does not manage release versions.
+Without this option, generation continues to write only the original two files.
+Names use slash-separated nonempty ASCII letter/digit/underscore/hyphen segments,
+with at least an owner and package segment. Relative paths and manifest syntax
+are rejected before output is written.
+
+Add the generated directory to the consumer workspace, import that module, and
+instantiate its Wasm with `createImports()` from the runtime generated in the same
+invocation. The consumer still supplies the string-builtin linker configuration
+described below. This does not publish a registry package or expand the supported
+WebIDL surface.
+
 ## ABI choices
 
 - DOM values use opaque `#external` references, not integer handles.

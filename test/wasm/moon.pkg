@@ -1,0 +1,15 @@
+supported_targets = "wasm-gc"
+
+import {
+  "dijdzv/websys-wasm-test/generated" @bindings,
+}
+
+options(
+  link: {
+    "wasm-gc": {
+      "exports": [ "run" ],
+      "use-js-builtin-string": true,
+      "imported-string-constants": "_",
+    },
+  },
+)

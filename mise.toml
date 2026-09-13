@@ -31,7 +31,7 @@ run = [
 run = ['"{{env.MOON_HOME}}/bin/moon" check --target js --deny-warn', '"{{env.MOON_HOME}}/bin/moon" -C generator check --target js --deny-warn']
 
 [tasks.test]
-run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs']
+run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm']
 
 [tasks.install]
 run = ['"{{mise_bin}}" exec -- bun install --frozen-lockfile', '"{{mise_bin}}" exec -- bun install --cwd test --frozen-lockfile']
@@ -46,8 +46,17 @@ run = '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-w
 [tasks."test-run"]
 run = '"{{mise_bin}}" exec -- node test/run.mjs'
 
+[tasks."test-wasm"]
+description = "Generate and verify the experimental WasmGC DOM subset in headless Chromium"
+run = [
+  '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
+  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/wasm/dom.idl -o test/wasm/generated',
+  '"{{env.MOON_HOME}}/bin/moon" -C test/wasm build --target wasm-gc --release --deny-warn',
+  '"{{mise_bin}}" exec -- node test/run.mjs --wasm-gc',
+]
+
 [tasks.fmt]
-run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src']
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt check.mbt']
 
 [tasks."fmt-check"]
-run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src']
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt --check check.mbt']

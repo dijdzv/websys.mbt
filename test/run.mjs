@@ -49,7 +49,8 @@ try {
 
   // Navigate and wait for tests to complete
   page.on("pageerror", error => console.error(error));
-  await page.goto(`http://127.0.0.1:${server.address().port}/`);
+  const entry = process.argv.includes('--wasm-gc') ? '/wasm/index.html' : '/';
+  await page.goto(`http://127.0.0.1:${server.address().port}${entry}`);
   await page.waitForFunction(() => window.__testsDone === true, null, { timeout: 30000 });
   const passed = await page.evaluate(() => window.__testsPassed);
   process.exitCode = passed ? 0 : 1;

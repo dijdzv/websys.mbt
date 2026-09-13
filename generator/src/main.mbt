@@ -33,6 +33,7 @@ extern "js" fn process_stdout_write(s : String) -> Unit =
 struct CliArgs {
   output : String
   help : Bool
+  wasm_input : String?
 }
 
 ///|
@@ -40,11 +41,16 @@ fn parse_args() -> CliArgs {
   let argc = get_argv_length()
   let mut output = "./"
   let mut help = false
+  let mut wasm_input = None
   let mut i = 2 // Skip node and script path
   while i < argc {
     let arg = get_argv_string(i)
     if arg == "--help" || arg == "-h" {
       help = true
+    } else if arg == "--wasm-gc-input" {
+      i = i + 1
+      guard i < argc else { abort("--wasm-gc-input requires an IDL file") }
+      wasm_input = Some(get_argv_string(i))
     } else if arg == "--output" || arg == "-o" {
       i = i + 1
       if i < argc {
@@ -53,7 +59,7 @@ fn parse_args() -> CliArgs {
     }
     i = i + 1
   }
-  { output, help, }
+  { output, help, wasm_input, }
 }
 
 ///|
@@ -66,6 +72,9 @@ fn print_usage() -> Unit {
   println("Options:")
   println("  -o, --output <dir>  Output directory (default: ./)")
   println("  -h, --help          Show this help message")
+  println(
+    "  --wasm-gc-input <file>  Generate the experimental WasmGC subset from an IDL file",
+  )
 }
 
 ///|
@@ -73,6 +82,18 @@ async fn main {
   let args = parse_args()
   if args.help {
     print_usage()
+    return
+  }
+  if args.wasm_input is Some(input) {
+    let parsed = parse_webidl_raw(read_wasm_input(input))
+    guard is_parse_success(parsed) else { abort(get_parse_error(parsed)) }
+    if validate_wasm_input(parsed) is Some(message) {
+      abort(message)
+    }
+    let (moonbit, runtime) = generate_wasm(convert_to_definitions(parsed))
+    mkdir_sync(args.output)
+    write_file_sync(path_join(args.output, "bindings.mbt"), moonbit)
+    write_file_sync(path_join(args.output, "runtime.mjs"), runtime)
     return
   }
 

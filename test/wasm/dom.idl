@@ -1,0 +1,16 @@
+// Deliberately restricted DOM surface for the experimental backend.
+interface Document {
+  Element createElement(DOMString localName);
+};
+interface Element {
+  attribute DOMString id;
+  undefined setAttribute(DOMString name, DOMString value);
+  boolean hasAttribute(DOMString name);
+  undefined addEventListener(DOMString type, EventListener callback, boolean capture);
+  undefined removeEventListener(DOMString type, EventListener callback, boolean capture);
+  boolean dispatchEvent(Event event);
+};
+interface Event {
+  readonly attribute DOMString type;
+};
+callback EventListener = undefined (Event event);

@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>WasmGC browser binding tests</title>
+<script type="module">
+import { createImports } from './generated/runtime.mjs';
+try {
+  const bytes = await (await fetch('./_build/wasm-gc/release/build/websys-wasm-test.wasm')).arrayBuffer();
+  for (let i = 0; i < 2; i++) {
+    const { instance } = await WebAssembly.instantiate(bytes, createImports(), {
+      builtins: ['js-string'], importedStringConstants: '_',
+    });
+    const result = instance.exports.run(document, new Event('click'));
+    if (result !== 0) throw new Error(`WasmGC assertion ${result} failed (instance ${i})`);
+  }
+  console.log('WasmGC DOM, Unicode, callback identity and removal: passed');
+  window.__testsPassed = true;
+} catch (error) {
+  console.error(error.stack || String(error));
+  window.__testsPassed = false;
+} finally {
+  window.__testsDone = true;
+}
+</script>

@@ -10,6 +10,9 @@ on:
         type: boolean
         default: false
 
+env:
+  MOON_HOME: ${{ github.workspace }}/.tools/moonbit
+
 permissions:
   contents: write
   pull-requests: write
@@ -24,20 +27,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup MoonBit
-        run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> $GITHUB_PATH
-
-      - name: Fetch dependencies
-        run: moon update
-
-      - name: Install moon-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/dijdzv/moon-release/main/install.sh | bash
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - uses: ./.github/actions/setup
 
       - name: Configure Git
         run: |
@@ -53,7 +43,7 @@ jobs:
           if [ "$DRY_RUN" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
-          moon-release release-pr $DRY_RUN_FLAG --verbose
+          mise exec -- moon-release release-pr $DRY_RUN_FLAG --verbose
 
   release:
     if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'chore:') && contains(github.event.head_commit.message, 'release v')
@@ -64,20 +54,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup MoonBit
-        run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> $GITHUB_PATH
-
-      - name: Fetch dependencies
-        run: moon update
-
-      - name: Install moon-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/dijdzv/moon-release/main/install.sh | bash
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - uses: ./.github/actions/setup
 
       - name: Configure Git
         run: |
@@ -93,12 +70,12 @@ jobs:
             echo "No mooncakes token configured, skipping credentials setup"
             exit 0
           fi
-          mkdir -p ~/.moon
+          mkdir -p "$MOON_HOME"
           jq -n --arg token "$MOONCAKES_TOKEN" --arg username "$MOONCAKES_USERNAME" \
-            '{"token": $token, "username": $username}' > ~/.moon/credentials.json
-          chmod 600 ~/.moon/credentials.json
+            '{"token": $token, "username": $username}' > "$MOON_HOME/credentials.json"
+          chmod 600 "$MOON_HOME/credentials.json"
 
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: moon-release release --verbose
+        run: mise exec -- moon-release release --verbose

@@ -1,0 +1,8 @@
+name: Setup development environment
+description: Install the same mise-managed toolchain used locally
+runs:
+  using: composite
+  steps:
+    - uses: jdx/mise-action@v3
+    - shell: bash
+      run: mise run setup

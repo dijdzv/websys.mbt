@@ -5,7 +5,7 @@ https://github.com/dijdzv/webidl-bindgen.mbt now live with their generated bindi
 The import originates at commit `a1fe54c31fd2ae543dd77cb698a24132f059d500`.
 The separate npm packaging and release workflow are intentionally not included.
 
-From the repository root, run `bun install`, then `mise run generate`.
+From the repository root, run `mise run install`, then `mise run generate`.
 `webidl2` and `@webref/idl` are pinned in the root dependency lockfile.
 Bun hosts the existing Node-style imports; MoonBit owns generation logic.
 

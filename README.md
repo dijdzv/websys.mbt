@@ -28,12 +28,13 @@ This package is generated from WebIDL specifications by the local MoonBit
 generator in [`generator/`](generator/). The generator is not published to npm.
 
 ```bash
-# Prepare the pinned compiler (Windows x64)
+# Prepare the pinned compiler (Windows/Linux x64)
 mise trust
+mise install
 mise run setup
 
 # Install generation dependencies
-bun install
+mise run install
 
 # Regenerate bindings
 mise run generate
@@ -48,9 +49,20 @@ Generation reads MDN metadata over the network for typed errors and event types.
 
 Run `mise run check` for warning-free compiler checks and `mise run test` for
 generator tests plus headless browser integration. Install the browser once with
-`cd test && bun install && bunx playwright install chromium`. An existing
+`mise run setup-test`. An existing
 Chromium can be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 Playwright runs on Node; Bun remains the generator host and dependency installer.
+
+Environment and task configuration lives only in `mise.toml`; Nix/devenv,
+direnv and just are not required. Nix-managed Linux machines can supply mise
+through their system configuration. NixOS may additionally need its usual
+foreign-binary support to run the downloaded Linux tools.
+Use `mise run fmt` / `mise run fmt-check` for formatting.
+
+The library continues to publish to Mooncakes through the Release workflow.
+Only the generator's npm publication has been retired. The published module
+keeps `moon.mod.json` because moon-release 0.3.2 does not yet read `moon.mod`;
+both formats are supported by the pinned MoonBit compiler. Keep a single manifest.
 
 This update uses `FixedArray` for generated WebIDL sequences and `Debug` for
 generated debugging representations. Callers using explicit `Array` types or

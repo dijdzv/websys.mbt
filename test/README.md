@@ -6,16 +6,16 @@ Playwright + Chromium headless で実ブラウザ上でバインディングの�
 
 ```bash
 # 初回セットアップ（プロジェクトルートから）
-just setup-test
+mise run setup-test
 
 # ビルド＆テスト実行
-just test
+mise run test
 
 # テスト実行のみ（ビルド済みの場合）
-just test-run
+mise run test-run
 
 # テストのビルドのみ
-just build-test
+mise run build-test
 ```
 
 ## 構成

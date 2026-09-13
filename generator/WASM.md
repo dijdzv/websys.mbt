@@ -47,6 +47,23 @@ options, dispatch them to a DOM element, and verify preventDefault for cancelabl
 and non-cancelable events. This is event construction evidence, not support for
 the complete standard Event constructor signature or real keyboard/IME input.
 
+### Corpus inventory
+
+After building the generator, run
+`mise exec -- bun generator/_build/js/release/build/webidl-bindgen.js --audit-wasm-gc -o .work/wasm-inventory`.
+This reads the installed, lockfile-pinned `@webref/idl` corpus without fetching
+MDN data or generating bindings. `wasm-inventory.json` contains per-specification
+definition counts, construct/type occurrences, parse errors and the first raw
+WasmGC validation rejection. Preserve the lockfile and generator revision when
+comparing reports from different runs.
+
+This is a planning inventory, not a support percentage. Passing raw validation
+does not prove dependency resolution, code generation, compilation or runtime
+behavior. Counts include repeated occurrences rather than unique APIs; only the
+first raw rejection is reported, so later unsupported features can remain.
+Missing optional report fields indicate no recorded error at that stage.
+Use focused generation and browser tests to establish support for each API.
+
 ### Dictionary inputs
 
 Input dictionaries use public MoonBit records and explicit `to_js()` conversion.

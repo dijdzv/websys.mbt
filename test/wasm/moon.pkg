@@ -15,6 +15,7 @@ options(
         "input_callbacks",
         "input_frames",
         "input_text_matches",
+        "input_snapshot_matches",
         "input_focus",
         "input_is_focused",
       ],

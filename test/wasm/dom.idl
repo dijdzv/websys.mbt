@@ -1,5 +1,6 @@
 // Deliberately restricted DOM surface for the experimental backend.
 interface Document {
+  readonly attribute Element? activeElement;
   Element createElement(DOMString localName);
   Element? querySelector(DOMString selectors);
 };
@@ -14,11 +15,14 @@ interface Element : Node {
   undefined scrollTo(ScrollToOptions options);
 };
 interface Node : EventTarget {
+  boolean isSameNode(Node? otherNode);
   attribute DOMString? textContent;
   readonly attribute Element? parentElement;
 };
 // Required direction narrows the optional standard argument for this fixture.
-interface HTMLElement : Element {};
+interface HTMLElement : Element {
+  undefined focus();
+};
 interface HTMLInputElement : HTMLElement {
   attribute DOMString value;
   attribute DOMString type;
@@ -58,6 +62,14 @@ callback EventListener = undefined (Event event);
 
 // Narrowed inheritance chain: view/detail remain outside this fixture.
 interface UIEvent : Event {};
+interface Window {
+  unsigned long requestAnimationFrame(FrameRequestCallback callback);
+  undefined cancelAnimationFrame(unsigned long handle);
+};
+callback FrameRequestCallback = undefined (double timestamp);
+interface InputEvent : UIEvent {
+  readonly attribute boolean isComposing;
+};
 interface CompositionEvent : UIEvent {
   constructor(DOMString type, CompositionEventInit init);
   readonly attribute DOMString data;

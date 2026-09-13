@@ -7,7 +7,7 @@ try {
   const response = await fetch('./_build/wasm-gc/release/build/dijdzv/websys-wasm-test/websys-wasm-test.wasm');
   if (!response.ok) throw new Error(`Wasm consumer build unavailable: ${response.status}`);
   const bytes = await response.arrayBuffer();
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 4; i++) {
     const { instance } = await WebAssembly.instantiate(bytes, createImports(), {
       builtins: ['js-string'], importedStringConstants: '_',
     });
@@ -24,8 +24,44 @@ try {
         if (mode === 1 ? value.node !== null : !(value.node instanceof Element && value.node.tagName === 'SPAN')) throw new Error('Dictionary reference changed');
       }
     }
+    const api = instance.exports;
+    const input = document.createElement(i % 2 === 0 ? 'input' : 'textarea');
+    document.body.append(input);
+    const nextFrames = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    try {
+      if (api.input_is_focused(document, input)) throw new Error('Unfocused field reported focused');
+      api.input_focus(input);
+      if (!api.input_is_focused(document, input)) throw new Error('Focus identity was lost');
+      api.input_start(window, input);
+      input.value = '変換中';
+      input.dispatchEvent(new InputEvent('input', { isComposing: true }));
+      await nextFrames();
+      if (api.input_frames() !== 0 || api.input_callbacks() !== 1) throw new Error('Composing input was applied');
+      input.dispatchEvent(new CompositionEvent('compositionupdate', { data: 'あ😀' }));
+      input.value = 'あ😀';
+      await nextFrames();
+      if (api.input_frames() !== 1 || !api.input_text_matches('あ😀')) throw new Error('Frame did not observe updated DOM');
+      input.dispatchEvent(new CompositionEvent('compositionupdate', { data: '確定' }));
+      input.value = '確定';
+      input.dispatchEvent(new CompositionEvent('compositionend', { data: '確定' }));
+      input.value = 'late DOM change';
+      await nextFrames();
+      if (api.input_frames() !== 1 || !api.input_text_matches('確定')) throw new Error('Composition-end frame was not canceled');
+      input.dispatchEvent(new InputEvent('input'));
+      api.input_stop();
+      input.value = 'disposed';
+      input.dispatchEvent(new InputEvent('input'));
+      await nextFrames();
+      if (api.input_frames() !== 1 || api.input_callbacks() !== 5 || !api.input_text_matches('確定')) throw new Error('Disposed input mutated state');
+      api.input_start(window, input);
+      api.input_start(window, input);
+      input.value = '再開';
+      input.dispatchEvent(new InputEvent('input'));
+      await nextFrames();
+      if (api.input_frames() !== 2 || api.input_callbacks() !== 6 || !api.input_text_matches('再開')) throw new Error('Restart duplicated listeners');
+    } finally { api.input_stop(); input.remove(); }
   }
-  console.log('WasmGC DOM, Unicode, callback identity and removal: passed');
+  console.log('WasmGC DOM, Unicode, callback identity and input lifecycle: passed');
   window.__testsPassed = true;
 } catch (error) {
   console.error(error.stack || String(error));

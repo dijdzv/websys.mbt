@@ -373,6 +373,7 @@ async fn main {
   // --- Async tests ---
   // These use Promise::wait() (equivalent to Rust's JsFuture::from().await)
   let async_tests : Array[(String, async () -> Unit)] = [
+    ("input_frame_cleanup", async fn() { test_input_frame_cleanup() }),
     ("opfs_access_storage", async fn() { test_opfs_access_storage() }),
     ("opfs_create_directory", async fn() { test_opfs_create_directory() }),
     ("opfs_create_file", async fn() { test_opfs_create_file() }),

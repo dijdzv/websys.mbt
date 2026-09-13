@@ -7,7 +7,17 @@ import {
 options(
   link: {
     "wasm-gc": {
-      "exports": [ "run", "dictionary_sample" ],
+      "exports": [
+        "run",
+        "dictionary_sample",
+        "input_start",
+        "input_stop",
+        "input_callbacks",
+        "input_frames",
+        "input_text_matches",
+        "input_focus",
+        "input_is_focused",
+      ],
       "use-js-builtin-string": true,
       "imported-string-constants": "_",
     },

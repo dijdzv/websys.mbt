@@ -56,7 +56,7 @@ run = [
 ]
 
 [tasks.fmt]
-run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt check.mbt']
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt check.mbt input_lifecycle.mbt']
 
 [tasks."fmt-check"]
-run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt --check check.mbt']
+run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt --check check.mbt input_lifecycle.mbt']

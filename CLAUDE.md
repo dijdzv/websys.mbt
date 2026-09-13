@@ -1,12 +1,1 @@
-# Repository guidance
-
-環境管理とタスク実行は mise に統一する。コマンドは
-[README](README.md) を正本とし、ここに重複して記載しない。
-
-- `src/*.mbt` は自動生成物。修正は `generator/src/` で行い再生成する。
-- JS の値表現変更は、型検査と影響するブラウザ境界のテストで検証する。
-- websys の Mooncakes 公開は維持する。生成器はローカル専用で npm 公開しない。
-- 公開モジュールの `moon.mod.json` は現行 moon-release との互換性のため維持する。
-  同じモジュールの設定を二重管理しない。
-- コミットには変更理由を残し、生成 API の変更は `feat` / `fix` を使う。
-- 旧生成器リポジトリの削除・アーカイブ・公開範囲変更は所有者が行う。
+See [AGENTS.md](AGENTS.md) for repository instructions.

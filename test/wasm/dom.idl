@@ -3,18 +3,26 @@ interface Document {
   Element createElement(DOMString localName);
   Element? querySelector(DOMString selectors);
 };
-interface Element {
+partial interface Element {
   attribute DOMString id;
-  attribute DOMString? textContent;
-  readonly attribute Element? parentElement;
+};
+interface Element : Node {
   DOMString? getAttribute(DOMString name);
   Element? insertBefore(Element node, Element? child);
   undefined setAttribute(DOMString name, DOMString value);
   boolean hasAttribute(DOMString name);
+};
+interface Node : EventTarget {
+  attribute DOMString? textContent;
+  readonly attribute Element? parentElement;
+};
+interface EventTarget {};
+interface mixin EventTargetMethods {
   undefined addEventListener(DOMString type, EventListener callback, boolean capture);
   undefined removeEventListener(DOMString type, EventListener callback, boolean capture);
   boolean dispatchEvent(Event event);
 };
+EventTarget includes EventTargetMethods;
 interface Event {
   readonly attribute DOMString type;
 };

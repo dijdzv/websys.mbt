@@ -20,6 +20,9 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   guard element.parent_element() is None else { return 14 }
   element.set_text_content(Some("日本語😀 é"))
   guard element.text_content() == Some("日本語😀 é") else { return 15 }
+  guard element.as_node().text_content() == element.text_content() else {
+    return 20
+  }
   element.set_text_content(None)
   guard element.text_content() == Some("") else { return 16 }
   let child = document.create_element("span")
@@ -41,7 +44,7 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   element.add_event_listener("click", callback, false)
   guard element.dispatch_event(event) else { return 6 }
   guard calls.val == 1 else { return 4 }
-  element.remove_event_listener("click", callback, false)
+  element.as_event_target().remove_event_listener("click", callback, false)
   ignore(element.dispatch_event(event))
   guard calls.val == 1 else { return 5 }
   0

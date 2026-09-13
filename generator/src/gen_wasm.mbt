@@ -20,15 +20,14 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
   let items = get_parse_data(parsed)
   for i = 0; i < js_array_length(items); i = i + 1 {
     let item = js_array_get(items, i)
-    if is_partial(item) ||
-      get_inheritance(item) != "" ||
+    if (is_partial(item) && get_type(item) != "interface") ||
       js_array_length(get_ext_attrs(item)) != 0 {
       return Some(
-        "WasmGC partial definitions, inheritance and extended attributes are not implemented",
+        "WasmGC non-interface partials and extended attributes are not implemented",
       )
     }
     match get_type(item) {
-      "interface" => {
+      "interface" | "interface mixin" => {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
           let mem = js_array_get(members, j)
@@ -48,6 +47,7 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
           }
         }
       }
+      "includes" => ()
       "callback" =>
         if wasm_has_argument_annotations(item) ||
           js_array_length(get_ext_attrs(get_idl_type(item))) != 0 {
@@ -158,6 +158,10 @@ fn emit_wasm_function(
 
 ///|
 fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
+  let definitions = match compose_wasm_interfaces(definitions) {
+    Ok(definitions) => definitions
+    Err(message) => abort(message)
+  }
   let names : Array[String] = []
   for definition in definitions {
     let name = match definition {
@@ -260,12 +264,25 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
         js.write_string("    \{name}_new: callback => callback,\n")
       }
       Interface(iface) => {
-        guard iface.inheritance is None else {
-          abort("WasmGC inheritance is not implemented")
-        }
         let name = iface.name
         mbt.write_string("#external\npub type \{name}\n")
         let emitted : Array[String] = []
+        let mut parent = iface.inheritance
+        while parent is Some(ancestor) {
+          let conversion = "as_" + to_snake_case(ancestor)
+          emitted.push(conversion)
+          mbt.write_string(
+            "pub fn \{name}::\{conversion}(self : \{name}) -> \{ancestor} = \"websys\" \"\{name}_\{conversion}\"\n",
+          )
+          js.write_string("    \{name}_\{conversion}: self => self,\n")
+          parent = None
+          for definition in definitions {
+            if definition is Interface(value) && value.name == ancestor {
+              parent = value.inheritance
+              break
+            }
+          }
+        }
         for mem in iface.members {
           match mem {
             Attribute(attr) => {

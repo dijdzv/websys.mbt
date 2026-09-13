@@ -11,6 +11,16 @@ try {
     });
     const result = instance.exports.run(document, new Event('click'));
     if (result !== 0) throw new Error(`WasmGC assertion ${result} failed (instance ${i})`);
+    for (let mode = 0; mode < 3; mode++) {
+      const value = instance.exports.dictionary_sample(mode, document);
+      if (value.title !== '日本語😀' || value.requiredNote !== (mode === 2 ? '確定😀' : null)) throw new Error('Required dictionary values changed');
+      if (mode === 0) {
+        if (Object.hasOwn(value, 'node') || Object.hasOwn(value, 'note') || Object.hasOwn(value, 'enabled') || Object.hasOwn(value, 'count')) throw new Error('Omitted fields became present');
+      } else {
+        if (value.note !== (mode === 1 ? null : '') || value.enabled !== false || value.count !== 0) throw new Error('Explicit dictionary values changed');
+        if (mode === 1 ? value.node !== null : !(value.node instanceof Element && value.node.tagName === 'SPAN')) throw new Error('Dictionary reference changed');
+      }
+    }
   }
   console.log('WasmGC DOM, Unicode, callback identity and removal: passed');
   window.__testsPassed = true;

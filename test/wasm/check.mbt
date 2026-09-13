@@ -1,6 +1,7 @@
 ///|
 pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   let element = document.create_element("button")
+  element.scroll_to(@bindings.ScrollToOptions::{ left: Some(0.0), top: None, })
   element.set_id("日本語😀 é")
   guard element.id() == "日本語😀 é" else { return 1 }
   element.set_attribute("data-test", "yes")
@@ -48,4 +49,44 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   ignore(element.dispatch_event(event))
   guard calls.val == 1 else { return 5 }
   0
+}
+
+///|
+pub fn dictionary_sample(
+  mode : Int,
+  document : @bindings.Document,
+) -> @bindings.JsValue {
+  let options : @bindings.TestOptions = {
+    title: "日本語😀",
+    requiredNote: if mode == 2 {
+      Some("確定😀")
+    } else {
+      None
+    },
+    node: if mode == 0 {
+      Undefined
+    } else if mode == 1 {
+      Null
+    } else {
+      Value(document.create_element("span"))
+    },
+    note: if mode == 0 {
+      Undefined
+    } else if mode == 1 {
+      Null
+    } else {
+      Value("")
+    },
+    enabled: if mode == 0 {
+      None
+    } else {
+      Some(false)
+    },
+    count: if mode == 0 {
+      None
+    } else {
+      Some(0)
+    },
+  }
+  options.to_js()
 }

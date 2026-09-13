@@ -48,6 +48,18 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
         }
       }
       "includes" => ()
+      "dictionary" => {
+        let members = get_members(item)
+        for j = 0; j < js_array_length(members); j = j + 1 {
+          let field = js_array_get(members, j)
+          if js_array_length(get_ext_attrs(field)) != 0 ||
+            js_array_length(get_ext_attrs(get_idl_type(field))) != 0 {
+            return Some(
+              "WasmGC dictionary extended attributes are not implemented",
+            )
+          }
+        }
+      }
       "callback" =>
         if wasm_has_argument_annotations(item) ||
           js_array_length(get_ext_attrs(get_idl_type(item))) != 0 {
@@ -101,14 +113,28 @@ fn emit_wasm_function(
   params : Array[(String, IdlType)],
   result : IdlType,
   names : Array[String],
+  dictionaries? : Array[String] = [],
 ) -> Unit {
+  if result is Named(name) && dictionaries.contains(name) {
+    abort("WasmGC dictionary results are not implemented")
+  }
+  if result is Nullable(Named(name)) && dictionaries.contains(name) {
+    abort("Nullable WasmGC dictionaries are not implemented")
+  }
+  for param in params {
+    if param.1 is Nullable(Named(name)) && dictionaries.contains(name) {
+      abort("Nullable WasmGC dictionaries are not implemented")
+    }
+  }
   let public_params = params
     .map(p => p.0 + " : " + require_wasm_type(p.1, names))
     .join(", ")
   let result_type = require_wasm_type(result, names)
   let key = owner + "_" + member_name
   let needs_wrapper = result is Nullable(_) ||
-    params.any(p => p.1 is Nullable(_))
+    params.any(p => {
+      p.1 is Nullable(_) || (p.1 is Named(name) && dictionaries.contains(name))
+    })
   if !needs_wrapper {
     out.write_string(
       "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} = \"websys\" \"\{key}\"\n",
@@ -121,6 +147,8 @@ fn emit_wasm_function(
       " : " +
       (if p.1 is Nullable(_) {
         "WebsysNullable"
+      } else if p.1 is Named(name) && dictionaries.contains(name) {
+        "JsValue"
       } else {
         require_wasm_type(p.1, names)
       })
@@ -134,6 +162,7 @@ fn emit_wasm_function(
   let args = params
     .map(p => {
       match p.1 {
+        Named(name) if dictionaries.contains(name) => p.0 + ".to_js()"
         Nullable(inner) =>
           "match \{p.0} { None => websys_null(); Some(v) => websys_wrap_\{require_wasm_type(inner, names)}(v) }"
         _ => p.0
@@ -158,15 +187,24 @@ fn emit_wasm_function(
 
 ///|
 fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
+  let definitions = match prepare_wasm_dictionaries(definitions) {
+    Ok(values) => values
+    Err(message) => abort(message)
+  }
   let definitions = match compose_wasm_interfaces(definitions) {
     Ok(definitions) => definitions
     Err(message) => abort(message)
   }
   let names : Array[String] = []
+  let dictionaries : Array[String] = []
   for definition in definitions {
     let name = match definition {
       Interface(value) => value.name
       CallbackInterface(value) => value.name
+      Dictionary(value) => {
+        dictionaries.push(value.name)
+        value.name
+      }
       _ => abort("Unsupported WasmGC definition")
     }
     guard !names.contains(name) else {
@@ -208,6 +246,22 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     }
   }
   mbt.write_string("// Generated from WebIDL. Do not edit.\n")
+  if !dictionaries.is_empty() {
+    guard !names.contains("JsValue") && !names.contains("Nullable") else {
+      abort("Reserved dictionary support type name")
+    }
+    mbt.write_string(
+      "#external\npub type JsValue\npub(all) enum Nullable[T] { Undefined; Null; Value(T) }\nfn websys_dict_new() -> JsValue = \"websys\" \"dict_new\"\n",
+    )
+    if definitions.any(def => {
+        def is Dictionary(dict) &&
+        dict.members.any(field => field.idl_type is Nullable(_))
+      }) {
+      mbt.write_string(
+        "fn websys_dict_null(target : JsValue, key : String) -> Unit = \"websys\" \"dict_null\"\n",
+      )
+    }
+  }
   if !inputs.is_empty() || !outputs.is_empty() {
     guard !names.contains("WebsysNullable") else {
       abort("Reserved WasmGC type name: WebsysNullable")
@@ -240,8 +294,20 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   js.write_string(
     "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value,\n",
   )
+  if !dictionaries.is_empty() {
+    js.write_string(
+      "    dict_new: () => ({}), dict_null: (target, key) => { target[key] = null; },\n",
+    )
+  }
   for definition in definitions {
     match definition {
+      Dictionary(dict) =>
+        emit_wasm_dictionary(
+          dict,
+          mbt,
+          js,
+          names.filter(name => !dictionaries.contains(name)),
+        )
       CallbackInterface(cb) => {
         guard cb.arguments.length() == 1 && cb.return_type is Some(Void) else {
           abort(
@@ -249,6 +315,9 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
           )
         }
         let event = require_wasm_type(cb.arguments[0].idl_type, names)
+        guard !dictionaries.contains(event) else {
+          abort("WasmGC dictionary callback values are not implemented")
+        }
         guard !(cb.arguments[0].idl_type is Nullable(_)) else {
           abort("Nullable WasmGC callback arguments are not implemented")
         }
@@ -298,6 +367,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
                 [("self", Named(name))],
                 attr.idl_type,
                 names,
+                dictionaries~,
               )
               js.write_string(
                 "    \{name}_\{getter}: self => self.\{attr.name},\n",
@@ -315,6 +385,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
                   [("self", Named(name)), ("value", attr.idl_type)],
                   Void,
                   names,
+                  dictionaries~,
                 )
                 let value = wasm_js_arg(attr.idl_type, "value")
                 js.write_string(
@@ -359,6 +430,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
                 parameters,
                 op.return_type,
                 names,
+                dictionaries~,
               )
               let js_params = if op.arguments.is_empty() {
                 "self"

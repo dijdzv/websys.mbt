@@ -22,6 +22,20 @@ test "dictionary presence preserves required nullable and optional states" {
 }
 
 ///|
+test "WasmGC dictionary arguments use host conversion instead of struct ABI" {
+  let parsed = parse_webidl_raw(
+    "dictionary Options { DOMString? label; boolean enabled = true; }; interface X { undefined apply(Options options); };",
+  )
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("arg0.to_js()"))
+  assert_true(code.contains("arg0 : JsValue"))
+  assert_true(code.contains("Undefined => ()"))
+  assert_true(runtime.contains("Boolean(value)"))
+  assert_true(!runtime.contains("$tag"))
+}
+
+///|
 test "dictionary defaults do not erase omission" {
   let plan = plan_dictionary_field({
     name: "enabled",
@@ -46,4 +60,19 @@ test "dictionary field planning retains existing public record signatures" {
   assert_true(generated.contains("name : String"))
   assert_true(generated.contains("label : Nullable[String]"))
   assert_true(generated.contains("enabled : Bool?"))
+}
+
+///|
+test "WasmGC dictionary inheritance rejects unresolved and ambiguous fields" {
+  for
+    source in [
+      "dictionary A : Missing {};", "dictionary A : B {}; dictionary B : A {};",
+      "dictionary A { long x; }; dictionary B : A { long x; };", "dictionary A {}; dictionary A {};",
+    ] {
+    let parsed = parse_webidl_raw(source)
+    assert_true(is_parse_success(parsed))
+    assert_true(
+      prepare_wasm_dictionaries(convert_to_definitions(parsed)) is Err(_),
+    )
+  }
 }

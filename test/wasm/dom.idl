@@ -11,6 +11,7 @@ interface Element : Node {
   Element? insertBefore(Element node, Element? child);
   undefined setAttribute(DOMString name, DOMString value);
   boolean hasAttribute(DOMString name);
+  undefined scrollTo(ScrollToOptions options);
 };
 interface Node : EventTarget {
   attribute DOMString? textContent;
@@ -27,3 +28,18 @@ interface Event {
   readonly attribute DOMString type;
 };
 callback EventListener = undefined (Event event);
+dictionary ScrollToOptions {
+  double left;
+  double top;
+};
+// Synthetic boundary fixture: required, omitted, null and explicit values.
+dictionary TestOptions : TestOptionsBase {
+  Element? node;
+  DOMString? note;
+  boolean enabled = true;
+  long count;
+};
+dictionary TestOptionsBase {
+  required DOMString title;
+  required DOMString? requiredNote;
+};

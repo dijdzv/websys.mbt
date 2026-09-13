@@ -1,5 +1,8 @@
 # Experimental WasmGC backend
 
+The [binding architecture](ARCHITECTURE.md) defines responsibility boundaries,
+reuse decisions and the conversion model for further backend work.
+
 The generator can emit WasmGC imports and a matching JavaScript host module from
 a restricted WebIDL file. This is an experimental path, not WasmGC support for
 the published `dijdzv/websys` package or the complete Webref corpus.

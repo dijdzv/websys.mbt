@@ -34,6 +34,7 @@ struct CliArgs {
   output : String
   help : Bool
   wasm_input : String?
+  wasm_audit : Bool
 }
 
 ///|
@@ -42,11 +43,14 @@ fn parse_args() -> CliArgs {
   let mut output = "./"
   let mut help = false
   let mut wasm_input = None
+  let mut wasm_audit = false
   let mut i = 2 // Skip node and script path
   while i < argc {
     let arg = get_argv_string(i)
     if arg == "--help" || arg == "-h" {
       help = true
+    } else if arg == "--audit-wasm-gc" {
+      wasm_audit = true
     } else if arg == "--wasm-gc-input" {
       i = i + 1
       guard i < argc else { abort("--wasm-gc-input requires an IDL file") }
@@ -59,7 +63,7 @@ fn parse_args() -> CliArgs {
     }
     i = i + 1
   }
-  { output, help, wasm_input, }
+  { output, help, wasm_input, wasm_audit, }
 }
 
 ///|
@@ -73,6 +77,9 @@ fn print_usage() -> Unit {
   println("  -o, --output <dir>  Output directory (default: ./)")
   println("  -h, --help          Show this help message")
   println(
+    "  --audit-wasm-gc     Inventory installed Webref IDL without generating bindings",
+  )
+  println(
     "  --wasm-gc-input <file>  Generate the experimental WasmGC subset from an IDL file",
   )
 }
@@ -82,6 +89,30 @@ async fn main {
   let args = parse_args()
   if args.help {
     print_usage()
+    return
+  }
+  guard !(args.wasm_audit && args.wasm_input is Some(_)) else {
+    abort("Choose audit or file generation, not both")
+  }
+  if args.wasm_audit {
+    let specs = list_all_specs()
+    let names = get_all_spec_names(specs)
+    let reports : Map[String, WasmInventory] = Map([])
+    for name in names {
+      reports[name] = inventory_wasm_source(
+        get_spec_idl_text(get_spec_object(specs, name)),
+      )
+    }
+    mkdir_sync(args.output)
+    write_file_sync(
+      path_join(args.output, "wasm-inventory.json"),
+      reports.to_json().stringify(),
+    )
+    println(
+      "Inventoried " +
+      names.length().to_string() +
+      " specifications; raw acceptance is not generation or runtime support",
+    )
     return
   }
   if args.wasm_input is Some(input) {

@@ -22,9 +22,8 @@ test "WasmGC nullable references and strings expose Option" {
 test "WasmGC rejects definitions lost by the shared AST conversion" {
   for
     source in [
-      "interface X { static undefined f(); };", "partial interface X { undefined f(); };",
-      "interface X { stringifier; };", "interface mixin X { undefined f(); };", "[Exposed=Window] interface X {};",
-      "callback X = undefined ([Clamp] long value);",
+      "interface X { static undefined f(); };", "partial interface mixin X { undefined f(); };",
+      "interface X { stringifier; };", "[Exposed=Window] interface X {};", "callback X = undefined ([Clamp] long value);",
     ] {
     let parsed = parse_webidl_raw(source)
     assert_true(is_parse_success(parsed))
@@ -39,6 +38,55 @@ test "IDL sequences use a stable JS foreign array representation" {
     idl_type_to_moonbit(Sequence(Sequence(String))),
     "FixedArray[FixedArray[String]]",
   )
+}
+
+///|
+test "WasmGC composes partials and shared mixins regardless of definition order" {
+  let parsed = parse_webidl_raw(
+    "partial interface A { readonly attribute DOMString id; }; A includes Shared; interface B {}; B includes Shared; interface mixin Shared { undefined ping(); }; interface A {};",
+  )
+  assert_true(is_parse_success(parsed))
+  assert_eq(validate_wasm_input(parsed), None)
+  let definitions = convert_to_definitions(parsed)
+  let (code, runtime) = generate_wasm(definitions)
+  assert_true(code.contains("A::id("))
+  assert_true(code.contains("A::ping("))
+  assert_true(code.contains("B::ping("))
+  assert_true(!code.contains("type Shared"))
+  assert_true(runtime.contains("self.ping("))
+  let (again, _) = generate_wasm(definitions)
+  assert_eq(code, again)
+}
+
+///|
+test "WasmGC rejects unresolved and duplicate composition references" {
+  for
+    source in [
+      "partial interface Missing {};", "interface A {}; A includes Missing;", "interface mixin Shared {}; Missing includes Shared;",
+      "interface A {}; interface mixin Shared {}; A includes Shared; A includes Shared;",
+      "interface A {}; interface mixin A {};", "interface A : Missing {};", "interface A : B {}; interface B : A {};",
+    ] {
+    let parsed = parse_webidl_raw(source)
+    assert_true(is_parse_success(parsed))
+    assert_true(
+      compose_wasm_interfaces(convert_to_definitions(parsed)) is Err(_),
+    )
+  }
+}
+
+///|
+test "WasmGC inherits partial and mixin members and exposes ancestor conversions" {
+  let parsed = parse_webidl_raw(
+    "interface Child : Parent {}; interface Parent : Root {}; interface Root {}; partial interface Root { readonly attribute DOMString id; }; interface mixin Shared { undefined ping(); }; Root includes Shared;",
+  )
+  assert_true(is_parse_success(parsed))
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("Child::id("))
+  assert_true(code.contains("Child::ping("))
+  assert_true(code.contains("Child::as_parent("))
+  assert_true(code.contains("Child::as_root("))
+  assert_true(runtime.contains("Child_as_root: self => self"))
 }
 
 ///|

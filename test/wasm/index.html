@@ -61,9 +61,11 @@ try {
       api.input_start(window, input);
       api.input_start(window, input);
       input.value = '再開';
+      input.setSelectionRange(0, 2, 'backward');
       input.dispatchEvent(new InputEvent('input'));
       await nextFrames();
       if (api.input_frames() !== 2 || api.input_callbacks() !== 6 || !api.input_text_matches('再開')) throw new Error('Restart duplicated listeners');
+      if (!api.input_snapshot_matches(0, 2, 'backward', '確定')) throw new Error('Restart selection was not refreshed');
     } finally { api.input_stop(); input.remove(); }
   }
   console.log('WasmGC DOM, Unicode, callback identity and input lifecycle: passed');

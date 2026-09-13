@@ -186,9 +186,11 @@ async fn test_js_input_lifecycle() -> Unit {
     bind()
     bind()
     write("再開")
+    select(0, 2, "backward")
     dispatch(@websys.InputEvent::new("input").to_event())
     next_input_frames().wait()
     assert_eq(observed.val, "再開")
+    assert_eq(observed_selection.val, (Some(0), Some(2), Some("backward")))
     assert_eq(frames.val, 2)
     assert_eq(calls.val, 6, label="restart listener identity")
   }

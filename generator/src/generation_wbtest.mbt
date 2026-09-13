@@ -1,4 +1,12 @@
 ///|
+test "WasmGC ArrayBuffer uses an opaque reference including nullable values" {
+  assert_eq(wasm_type(Named("ArrayBuffer"), []), Some("ArrayBuffer"))
+  assert_eq(wasm_type(Nullable(Named("ArrayBuffer")), []), Some("ArrayBuffer?"))
+  assert_eq(wasm_type(Named("SharedArrayBuffer"), []), None)
+  assert_eq(wasm_type(Named("Uint8Array"), []), None)
+}
+
+///|
 test "WasmGC refuses types with no implemented ABI conversion" {
   assert_eq(wasm_type(Sequence(String), []), None)
   assert_eq(wasm_type(Nullable(Primitive("long")), []), None)

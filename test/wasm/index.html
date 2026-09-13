@@ -12,6 +12,15 @@ try {
       builtins: ['js-string'], importedStringConstants: '_',
     });
     const result = instance.exports.run(document, new Event('click'));
+    const original = new Uint8Array([0, 127, 128, 255]).buffer;
+    const receiver = { value: original, optionalValue: null, echo(value) { return value; } };
+    const returned = instance.exports.buffer_roundtrip(receiver);
+    if (returned !== original || receiver.optionalValue !== original) throw new Error('Buffer identity changed');
+    new Uint8Array(returned)[2] = 42;
+    if (new Uint8Array(original)[2] !== 42) throw new Error('Buffer was copied');
+    if (!instance.exports.buffer_clear(receiver) || receiver.optionalValue !== null) throw new Error('Nullable buffer did not clear');
+    structuredClone(original, { transfer: [original] });
+    if (instance.exports.buffer_roundtrip(receiver) !== original || original.byteLength !== 0) throw new Error('Detached buffer identity changed');
     if (result !== 0) throw new Error(`WasmGC assertion ${result} failed (instance ${i})`);
     for (let mode = 0; mode < 3; mode++) {
       const value = instance.exports.dictionary_sample(mode, document);

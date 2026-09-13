@@ -85,9 +85,11 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     Primitive("long") => Some("Int")
     Primitive("unsigned long") => Some("UInt")
     Primitive("double") => Some("Double")
+    Named("ArrayBuffer") => Some("ArrayBuffer")
     Named(name) if names.contains(name) => Some(name)
     Nullable(String) => Some("String?")
     Nullable(Primitive("unsigned long")) => Some("UInt?")
+    Nullable(Named("ArrayBuffer")) => Some("ArrayBuffer?")
     Nullable(Named(name)) if names.contains(name) => Some(name + "?")
     _ => None
   }
@@ -258,6 +260,11 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     }
   }
   mbt.write_string("// Generated from WebIDL. Do not edit.\n")
+  // ArrayBuffer is a WebIDL builtin, not an interface declaration or MoonBit array.
+  guard !names.contains("ArrayBuffer") else {
+    abort("Reserved WebIDL buffer type name: ArrayBuffer")
+  }
+  mbt.write_string("#external\npub type ArrayBuffer\n")
   if !dictionaries.is_empty() {
     guard !names.contains("JsValue") && !names.contains("Nullable") else {
       abort("Reserved dictionary support type name")

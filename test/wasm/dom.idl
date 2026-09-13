@@ -59,6 +59,7 @@ dictionary TestOptions : TestOptionsBase {
   DOMString? note;
   boolean enabled = true;
   long count;
+  unsigned long unsignedCount;
 };
 dictionary TestOptionsBase {
   required DOMString title;

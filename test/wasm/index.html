@@ -4,7 +4,9 @@
 <script type="module">
 import { createImports } from './generated/runtime.mjs';
 try {
-  const bytes = await (await fetch('./_build/wasm-gc/release/build/websys-wasm-test.wasm')).arrayBuffer();
+  const response = await fetch('./_build/wasm-gc/release/build/dijdzv/websys-wasm-test/websys-wasm-test.wasm');
+  if (!response.ok) throw new Error(`Wasm consumer build unavailable: ${response.status}`);
+  const bytes = await response.arrayBuffer();
   for (let i = 0; i < 2; i++) {
     const { instance } = await WebAssembly.instantiate(bytes, createImports(), {
       builtins: ['js-string'], importedStringConstants: '_',
@@ -15,9 +17,10 @@ try {
       const value = instance.exports.dictionary_sample(mode, document);
       if (value.title !== '日本語😀' || value.requiredNote !== (mode === 2 ? '確定😀' : null)) throw new Error('Required dictionary values changed');
       if (mode === 0) {
-        if (Object.hasOwn(value, 'node') || Object.hasOwn(value, 'note') || Object.hasOwn(value, 'enabled') || Object.hasOwn(value, 'count')) throw new Error('Omitted fields became present');
+        if (Object.hasOwn(value, 'node') || Object.hasOwn(value, 'note') || Object.hasOwn(value, 'enabled') || Object.hasOwn(value, 'count') || Object.hasOwn(value, 'unsignedCount')) throw new Error('Omitted fields became present');
       } else {
         if (value.note !== (mode === 1 ? null : '') || value.enabled !== false || value.count !== 0) throw new Error('Explicit dictionary values changed');
+        if (value.unsignedCount !== (mode === 1 ? 2147483648 : 4294967295)) throw new Error('Unsigned dictionary value changed sign');
         if (mode === 1 ? value.node !== null : !(value.node instanceof Element && value.node.tagName === 'SPAN')) throw new Error('Dictionary reference changed');
       }
     }

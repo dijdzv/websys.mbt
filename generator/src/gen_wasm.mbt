@@ -83,6 +83,7 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     String => Some("String")
     Primitive("boolean") => Some("Bool")
     Primitive("long") => Some("Int")
+    Primitive("unsigned long") => Some("UInt")
     Primitive("double") => Some("Double")
     Named(name) if names.contains(name) => Some(name)
     Nullable(String) => Some("String?")
@@ -106,6 +107,7 @@ fn require_wasm_type(t : IdlType, names : Array[String]) -> String {
 fn wasm_js_arg(t : IdlType, name : String) -> String {
   match t {
     Primitive("boolean") => "Boolean(" + name + ")"
+    Primitive("unsigned long") => "(" + name + " >>> 0)"
     _ => name
   }
 }

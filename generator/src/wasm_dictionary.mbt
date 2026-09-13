@@ -19,8 +19,13 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    ignore(require_wasm_type(value_type, references))
-    mbt.write_string("  \{key} : \{plan.public_type()}\n")
+    let typ = require_wasm_type(value_type, references)
+    let public_type = match plan.presence {
+      Required => if field.idl_type is Nullable(_) { typ + "?" } else { typ }
+      Optional => typ + "?"
+      OptionalNullable => "Nullable[" + typ + "]"
+    }
+    mbt.write_string("  \{key} : \{public_type}\n")
   }
   mbt.write_string("}\n")
   for field in dict.members {

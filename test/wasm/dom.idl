@@ -22,7 +22,7 @@ interface HTMLElement : Element {};
 interface HTMLInputElement : HTMLElement {
   attribute DOMString value;
   attribute DOMString type;
-  readonly attribute unsigned long? selectionStart;
+  attribute unsigned long? selectionStart;
   readonly attribute unsigned long? selectionEnd;
   readonly attribute DOMString? selectionDirection;
   undefined setSelectionRange(unsigned long start, unsigned long end, DOMString direction);

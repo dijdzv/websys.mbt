@@ -13,6 +13,10 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
     input.selection_direction() == Some("backward") else {
     return 32
   }
+  input.set_selection_start(Some(4294967295U))
+  guard input.selection_start() == Some(5U) else { return 36 }
+  input.set_selection_start(None)
+  guard input.selection_start() == Some(0U) else { return 37 }
   input.set_type_("number")
   guard input.selection_start() is None &&
     input.selection_end() is None &&

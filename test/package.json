@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "moon build --target js",
+    "build": "mise run build-test",
     "test": "mise run test",
-    "install:browser": "bunx playwright install chromium"
+    "install:browser": "mise run setup-test"
   },
   "devDependencies": {
-    "playwright": "^1.50.0"
+    "playwright": "1.63.0"
   }
 }

@@ -132,6 +132,7 @@ async fn main {
     ("anchor_element", test_anchor_element),
     ("button_element", test_button_element),
     ("input_element", test_input_element),
+    ("input_values", test_input_values),
     ("input_image", test_input_image),
     ("input_validation", test_input_validation),
     ("input_checkbox", test_input_checkbox),

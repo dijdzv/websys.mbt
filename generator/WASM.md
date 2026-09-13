@@ -34,6 +34,27 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### Dictionary inputs
+
+Input dictionaries use public MoonBit records and explicit `to_js()` conversion.
+Required fields are provided in record literals; optional fields use `Option`,
+and optional nullable fields use `Nullable::{Undefined, Null, Value}` as in the
+JS API. Omitted fields are not written to the host object, including fields with
+WebIDL defaults; the receiving browser API applies its defaults. Required nullable
+fields retain explicit null. No MoonBit record or enum layout crosses the ABI.
+
+Dictionary inheritance reuses the shared resolver after validation of missing
+parents, cycles and duplicate fields. Supported field values are strings,
+boolean/long/double and declared interface/callback references, including nullable
+fields. Methods can receive non-null dictionaries. The browser suite exercises
+`scrollTo` and separately inspects a synthetic dictionary for inherited required
+fields, omission, null, empty strings, false and zero in two Wasm instances.
+
+Dictionary results, nested dictionaries, nullable dictionary arguments, partial
+dictionaries and generated convenience constructors are not implemented. Use
+record literals for the supported input path. This is not full parity with the
+published JS dictionary API or full EventInit/Fetch/WebGPU coverage.
+
 Supported: interfaces with inheritance, partial interfaces, mixins/includes,
 instance attributes/operations, DOM strings,
 boolean/long/double values, references to declared interfaces, and one-argument
@@ -54,5 +75,5 @@ overloads remain unsupported and produce generation errors.
 
 Unsupported definitions/types are rejected rather than silently omitted. Full
 Webref generation needs partial mixins, nullable callback arguments, optional arguments,
-overloads, dictionaries, sequences, enum/union conversions, Promise support and
+overloads, remaining dictionary conversions, sequences, enum/union conversions, Promise support and
 typed exception handling. Linear-memory Wasm is outside this backend's scope.

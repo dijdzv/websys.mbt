@@ -3,7 +3,7 @@
 
 ///|
 /// ReportList typedef
-pub type ReportList = Array[Report]
+pub type ReportList = FixedArray[Report]
 
 ///|
 /// ReportingObserverCallback callback interface
@@ -12,7 +12,7 @@ pub type ReportingObserverCallback
 ///|
 /// Create ReportingObserverCallback from a MoonBit function
 pub extern "js" fn ReportingObserverCallback::from_fn(
-  handler : (Array[Report], ReportingObserver) -> Unit,
+  handler : (FixedArray[Report], ReportingObserver) -> Unit,
 ) -> ReportingObserverCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -23,7 +23,7 @@ pub(all) struct ReportBody {}
 ///|
 /// Create a new ReportBody with default values
 pub fn ReportBody::default() -> ReportBody {
-  ReportBody::{  }
+  ReportBody::{ }
 }
 
 ///|
@@ -59,7 +59,7 @@ pub(all) struct Report {
 ///|
 /// Create a new Report with default values
 pub fn Report::default() -> Report {
-  Report::{ type_: None, url: None, body: Nullable::Undefined }
+  Report::{ type_: None, url: None, body: Nullable::Undefined, }
 }
 
 ///|
@@ -93,14 +93,14 @@ pub fn Report::from_js(value : JsValue) -> Report {
 ///|
 /// ReportingObserverOptions dictionary
 pub(all) struct ReportingObserverOptions {
-  types : Array[String]?
+  types : FixedArray[String]?
   buffered : Bool?
 }
 
 ///|
 /// Create a new ReportingObserverOptions with default values
 pub fn ReportingObserverOptions::default() -> ReportingObserverOptions {
-  ReportingObserverOptions::{ types: None, buffered: None }
+  ReportingObserverOptions::{ types: None, buffered: None, }
 }
 
 ///|
@@ -108,7 +108,7 @@ extern "js" fn ReportingObserverOptions::to_js_ffi(
   self : ReportingObserverOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: self.types,
   #|   buffered: (self.buffered === -1 ? undefined : self.buffered)
   #| })
 
@@ -125,7 +125,7 @@ extern "js" fn ReportingObserverOptions::from_js_ffi(
   value : JsValue,
 ) -> ReportingObserverOptions =
   #| (v) => ({
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   types: v.types,
   #|   buffered: (v.buffered === undefined ? -1 : v.buffered)
   #| })
 
@@ -147,7 +147,7 @@ pub(all) struct GenerateTestReportParameters {
 ///|
 /// Create a new GenerateTestReportParameters with default values
 pub fn GenerateTestReportParameters::default() -> GenerateTestReportParameters {
-  GenerateTestReportParameters::{ message: "", group: None }
+  GenerateTestReportParameters::{ message: "", group: None, }
 }
 
 ///|

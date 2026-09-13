@@ -2,7 +2,7 @@
 fn test_progress_element() -> Unit {
   let doc = get_document()
   let progress = @websys.HTMLProgressElement::from_js_value(
-    doc.create_element("progress").to_js_value(),
+    create_element(doc, "progress").to_js_value(),
   )
   // max
   progress.set_max(100.0)
@@ -23,7 +23,7 @@ fn test_progress_element() -> Unit {
 fn test_meter_element() -> Unit {
   let doc = get_document()
   let meter = @websys.HTMLMeterElement::from_js_value(
-    doc.create_element("meter").to_js_value(),
+    create_element(doc, "meter").to_js_value(),
   )
   // min/max
   meter.set_min(0.0)

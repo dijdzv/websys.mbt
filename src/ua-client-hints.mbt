@@ -11,7 +11,7 @@ pub(all) struct NavigatorUABrandVersion {
 ///|
 /// Create a new NavigatorUABrandVersion with default values
 pub fn NavigatorUABrandVersion::default() -> NavigatorUABrandVersion {
-  NavigatorUABrandVersion::{ brand: None, version: None }
+  NavigatorUABrandVersion::{ brand: None, version: None, }
 }
 
 ///|
@@ -53,9 +53,9 @@ pub fn NavigatorUABrandVersion::from_js(
 pub(all) struct UADataValues {
   architecture : String?
   bitness : String?
-  brands : Array[NavigatorUABrandVersion]?
-  formFactors : Array[String]?
-  fullVersionList : Array[NavigatorUABrandVersion]?
+  brands : FixedArray[NavigatorUABrandVersion]?
+  formFactors : FixedArray[String]?
+  fullVersionList : FixedArray[NavigatorUABrandVersion]?
   model : String?
   mobile : Bool?
   platform : String?
@@ -87,9 +87,9 @@ extern "js" fn UADataValues::to_js_ffi(self : UADataValues) -> JsValue =
   #| (self) => ({
   #|   architecture: self.architecture,
   #|   bitness: self.bitness,
-  #|   brands: ((() => { const v = self.brands; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   formFactors: ((() => { const v = self.formFactors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   fullVersionList: ((() => { const v = self.fullVersionList; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   brands: self.brands,
+  #|   formFactors: self.formFactors,
+  #|   fullVersionList: self.fullVersionList,
   #|   model: self.model,
   #|   mobile: (self.mobile === -1 ? undefined : self.mobile),
   #|   platform: self.platform,
@@ -109,9 +109,9 @@ extern "js" fn UADataValues::from_js_ffi(value : JsValue) -> UADataValues =
   #| (v) => ({
   #|   architecture: v.architecture,
   #|   bitness: v.bitness,
-  #|   brands: (v.brands === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brands }),
-  #|   formFactors: (v.formFactors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.formFactors }),
-  #|   fullVersionList: (v.fullVersionList === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fullVersionList }),
+  #|   brands: v.brands,
+  #|   formFactors: v.formFactors,
+  #|   fullVersionList: v.fullVersionList,
   #|   model: v.model,
   #|   mobile: (v.mobile === undefined ? -1 : v.mobile),
   #|   platform: v.platform,
@@ -129,7 +129,7 @@ pub fn UADataValues::from_js(value : JsValue) -> UADataValues {
 ///|
 /// UALowEntropyJSON dictionary
 pub(all) struct UALowEntropyJSON {
-  brands : Array[NavigatorUABrandVersion]?
+  brands : FixedArray[NavigatorUABrandVersion]?
   mobile : Bool?
   platform : String?
 }
@@ -137,13 +137,13 @@ pub(all) struct UALowEntropyJSON {
 ///|
 /// Create a new UALowEntropyJSON with default values
 pub fn UALowEntropyJSON::default() -> UALowEntropyJSON {
-  UALowEntropyJSON::{ brands: None, mobile: None, platform: None }
+  UALowEntropyJSON::{ brands: None, mobile: None, platform: None, }
 }
 
 ///|
 extern "js" fn UALowEntropyJSON::to_js_ffi(self : UALowEntropyJSON) -> JsValue =
   #| (self) => ({
-  #|   brands: ((() => { const v = self.brands; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   brands: self.brands,
   #|   mobile: (self.mobile === -1 ? undefined : self.mobile),
   #|   platform: self.platform
   #| })
@@ -159,7 +159,7 @@ extern "js" fn UALowEntropyJSON::from_js_ffi(
   value : JsValue,
 ) -> UALowEntropyJSON =
   #| (v) => ({
-  #|   brands: (v.brands === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brands }),
+  #|   brands: v.brands,
   #|   mobile: (v.mobile === undefined ? -1 : v.mobile),
   #|   platform: v.platform
   #| })
@@ -213,12 +213,12 @@ pub extern "js" fn JsValue::to_navigator_ua_data(
 pub(all) enum NavigatorUADataGetHighEntropyValuesError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NavigatorUAData::get_brands(
   self : NavigatorUAData,
-) -> Array[NavigatorUABrandVersion] =
+) -> FixedArray[NavigatorUABrandVersion] =
   #| (self) => self.brands
 
 ///|
@@ -234,14 +234,14 @@ pub extern "js" fn NavigatorUAData::get_platform(
 ///|
 pub extern "js" fn NavigatorUAData::get_high_entropy_values(
   self : NavigatorUAData,
-  hints : Array[String],
+  hints : FixedArray[String],
 ) -> Promise[Result[UADataValues, NavigatorUADataGetHighEntropyValuesError]] =
   #| (self, hints) => self.getHighEntropyValues(hints).then(v => ({
   #|   architecture: v.architecture,
   #|   bitness: v.bitness,
-  #|   brands: (v.brands === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brands }),
-  #|   formFactors: (v.formFactors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.formFactors }),
-  #|   fullVersionList: (v.fullVersionList === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fullVersionList }),
+  #|   brands: v.brands,
+  #|   formFactors: v.formFactors,
+  #|   fullVersionList: v.fullVersionList,
   #|   model: v.model,
   #|   mobile: (v.mobile === undefined ? -1 : v.mobile),
   #|   platform: v.platform,

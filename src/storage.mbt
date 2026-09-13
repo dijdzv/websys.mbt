@@ -11,7 +11,7 @@ pub(all) struct StorageEstimate {
 ///|
 /// Create a new StorageEstimate with default values
 pub fn StorageEstimate::default() -> StorageEstimate {
-  StorageEstimate::{ usage: None, quota: None }
+  StorageEstimate::{ usage: None, quota: None, }
 }
 
 ///|
@@ -81,21 +81,21 @@ pub extern "js" fn JsValue::to_storage_manager(
 pub(all) enum StorageManagerPersistedError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageManagerPersistError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageManagerEstimateError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -103,7 +103,7 @@ pub(all) enum StorageManagerGetDirectoryError {
   UnknownError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn StorageManager::persisted(

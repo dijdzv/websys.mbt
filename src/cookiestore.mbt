@@ -3,7 +3,7 @@
 
 ///|
 /// CookieList typedef
-pub type CookieList = Array[CookieListItem]
+pub type CookieList = FixedArray[CookieListItem]
 
 ///|
 /// CookieSameSite enum
@@ -11,7 +11,7 @@ pub(all) enum CookieSameSite {
   Strict
   Lax
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -44,7 +44,7 @@ pub(all) struct CookieStoreGetOptions {
 ///|
 /// Create a new CookieStoreGetOptions with default values
 pub fn CookieStoreGetOptions::default() -> CookieStoreGetOptions {
-  CookieStoreGetOptions::{ name: None, url: None }
+  CookieStoreGetOptions::{ name: None, url: None, }
 }
 
 ///|
@@ -211,7 +211,7 @@ pub(all) struct CookieListItem {
 ///|
 /// Create a new CookieListItem with default values
 pub fn CookieListItem::default() -> CookieListItem {
-  CookieListItem::{ name: None, value: None }
+  CookieListItem::{ name: None, value: None, }
 }
 
 ///|
@@ -250,7 +250,7 @@ pub(all) struct CookieChangeEventInit {
 ///|
 /// Create a new CookieChangeEventInit with default values
 pub fn CookieChangeEventInit::default() -> CookieChangeEventInit {
-  CookieChangeEventInit::{ changed: None, deleted: None }
+  CookieChangeEventInit::{ changed: None, deleted: None, }
 }
 
 ///|
@@ -293,7 +293,7 @@ pub(all) struct ExtendableCookieChangeEventInit {
 ///|
 /// Create a new ExtendableCookieChangeEventInit with default values
 pub fn ExtendableCookieChangeEventInit::default() -> ExtendableCookieChangeEventInit {
-  ExtendableCookieChangeEventInit::{ changed: None, deleted: None }
+  ExtendableCookieChangeEventInit::{ changed: None, deleted: None, }
 }
 
 ///|
@@ -370,7 +370,7 @@ pub(all) enum CookieStoreGetError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -378,7 +378,7 @@ pub(all) enum CookieStoreGetAllError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -386,7 +386,7 @@ pub(all) enum CookieStoreSetError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -394,7 +394,7 @@ pub(all) enum CookieStoreDeleteError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CookieStore::get(
@@ -554,32 +554,32 @@ pub extern "js" fn JsValue::to_cookie_store_manager(
 pub(all) enum CookieStoreManagerSubscribeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CookieStoreManagerUnsubscribeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CookieStoreManager::subscribe(
   self : CookieStoreManager,
-  subscriptions : Array[CookieStoreGetOptions],
+  subscriptions : FixedArray[CookieStoreGetOptions],
 ) -> Promise[Result[Unit, CookieStoreManagerSubscribeError]] =
   #| (self, subscriptions) => self.subscribe(subscriptions).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CookieStoreManager::get_subscriptions(
   self : CookieStoreManager,
-) -> Promise[Array[CookieStoreGetOptions]] =
+) -> Promise[FixedArray[CookieStoreGetOptions]] =
   #| (self) => self.getSubscriptions()
 
 ///|
 pub extern "js" fn CookieStoreManager::unsubscribe(
   self : CookieStoreManager,
-  subscriptions : Array[CookieStoreGetOptions],
+  subscriptions : FixedArray[CookieStoreGetOptions],
 ) -> Promise[Result[Unit, CookieStoreManagerUnsubscribeError]] =
   #| (self, subscriptions) => self.unsubscribe(subscriptions).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
@@ -652,13 +652,13 @@ pub fn CookieChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn CookieChangeEvent::get_changed(
   self : CookieChangeEvent,
-) -> Array[CookieListItem] =
+) -> FixedArray[CookieListItem] =
   #| (self) => self.changed
 
 ///|
 pub extern "js" fn CookieChangeEvent::get_deleted(
   self : CookieChangeEvent,
-) -> Array[CookieListItem] =
+) -> FixedArray[CookieListItem] =
   #| (self) => self.deleted
 
 ///|
@@ -738,11 +738,11 @@ pub fn ExtendableCookieChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn ExtendableCookieChangeEvent::get_changed(
   self : ExtendableCookieChangeEvent,
-) -> Array[CookieListItem] =
+) -> FixedArray[CookieListItem] =
   #| (self) => self.changed
 
 ///|
 pub extern "js" fn ExtendableCookieChangeEvent::get_deleted(
   self : ExtendableCookieChangeEvent,
-) -> Array[CookieListItem] =
+) -> FixedArray[CookieListItem] =
   #| (self) => self.deleted

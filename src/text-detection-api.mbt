@@ -2,17 +2,104 @@
 // Source: @webref/idl/text-detection-api
 
 ///|
+/// TextDetectorOptions dictionary
+pub(all) struct TextDetectorOptions {
+  languages : FixedArray[String]
+}
+
+///|
+/// Create a new TextDetectorOptions with default values
+pub fn TextDetectorOptions::default() -> TextDetectorOptions {
+  TextDetectorOptions::{ languages: [], }
+}
+
+///|
+extern "js" fn TextDetectorOptions::to_js_ffi(
+  self : TextDetectorOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   languages: self.languages
+  #| })
+
+///|
+/// Convert to JsValue
+pub fn TextDetectorOptions::to_js(self : TextDetectorOptions) -> JsValue {
+  TextDetectorOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextDetectorOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDetectorOptions =
+  #| (v) => ({
+  #|   languages: v.languages
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDetectorOptions::from_js(value : JsValue) -> TextDetectorOptions {
+  TextDetectorOptions::from_js_ffi(value)
+}
+
+///|
+/// TextDetectorCreateOptions dictionary
+pub(all) struct TextDetectorCreateOptions {
+  signal : AbortSignal?
+  languages : FixedArray[String]?
+}
+
+///|
+/// Create a new TextDetectorCreateOptions with default values
+pub fn TextDetectorCreateOptions::default() -> TextDetectorCreateOptions {
+  TextDetectorCreateOptions::{ signal: None, languages: None, }
+}
+
+///|
+extern "js" fn TextDetectorCreateOptions::to_js_ffi(
+  self : TextDetectorCreateOptions,
+) -> JsValue =
+  #| (self) => ({
+  #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   languages: self.languages
+  #| })
+
+///|
+/// Convert to JsValue
+pub fn TextDetectorCreateOptions::to_js(
+  self : TextDetectorCreateOptions,
+) -> JsValue {
+  TextDetectorCreateOptions::to_js_ffi(self)
+}
+
+///|
+extern "js" fn TextDetectorCreateOptions::from_js_ffi(
+  value : JsValue,
+) -> TextDetectorCreateOptions =
+  #| (v) => ({
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
+  #|   languages: v.languages
+  #| })
+
+///|
+/// Convert from JsValue
+pub fn TextDetectorCreateOptions::from_js(
+  value : JsValue,
+) -> TextDetectorCreateOptions {
+  TextDetectorCreateOptions::from_js_ffi(value)
+}
+
+///|
 /// DetectedText dictionary
 pub(all) struct DetectedText {
   boundingBox : DOMRectReadOnly
   rawValue : String
-  cornerPoints : Array[Point2D]
+  cornerPoints : FixedArray[Point2D]
 }
 
 ///|
 /// Create a new DetectedText
 pub fn DetectedText::new(boundingBox~ : DOMRectReadOnly) -> DetectedText {
-  DetectedText::{ boundingBox, rawValue: "", cornerPoints: [] }
+  DetectedText::{ boundingBox, rawValue: "", cornerPoints: [], }
 }
 
 ///|
@@ -78,29 +165,59 @@ pub extern "js" fn TextDetector::new() -> TextDetector =
   #| () => new TextDetector()
 
 ///|
+extern "js" fn TextDetector::availability_ffi(
+  options : JsValue,
+) -> Promise[Availability] =
+  #| (options) => TextDetector.availability(options)
+
+///|
+pub fn TextDetector::availability(
+  options : TextDetectorOptions,
+) -> Promise[Availability] {
+  TextDetector::availability_ffi(options.to_js())
+}
+
+///|
+pub extern "js" fn TextDetector::create() -> Promise[TextDetector] =
+  #| () => TextDetector.create()
+
+///|
+extern "js" fn TextDetector::create_with_options_ffi(
+  options : JsValue,
+) -> Promise[TextDetector] =
+  #| (options) => TextDetector.create(options)
+
+///|
+pub fn TextDetector::create_with_options(
+  options : TextDetectorCreateOptions,
+) -> Promise[TextDetector] {
+  TextDetector::create_with_options_ffi(options.to_js())
+}
+
+///|
 pub extern "js" fn TextDetector::detect(
   self : TextDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedText]] =
+) -> Promise[FixedArray[DetectedText]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn TextDetector::detect_with_canvas_image_source(
   self : TextDetector,
   image : CanvasImageSource,
-) -> Promise[Array[DetectedText]] =
+) -> Promise[FixedArray[DetectedText]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn TextDetector::detect_with_blob(
   self : TextDetector,
   image : Blob,
-) -> Promise[Array[DetectedText]] =
+) -> Promise[FixedArray[DetectedText]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn TextDetector::detect_with_image_data(
   self : TextDetector,
   image : ImageData,
-) -> Promise[Array[DetectedText]] =
+) -> Promise[FixedArray[DetectedText]] =
   #| (self, image) => self.detect(image)

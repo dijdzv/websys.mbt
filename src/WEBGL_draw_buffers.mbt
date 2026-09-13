@@ -212,6 +212,6 @@ pub let webgl_draw_buffers_max_draw_buffers_webgl : Int = 0x8824
 ///|
 pub extern "js" fn WEBGL_draw_buffers::draw_buffers_webgl(
   self : WEBGL_draw_buffers,
-  buffers : Array[GLenum],
+  buffers : FixedArray[GLenum],
 ) -> Unit =
   #| (self, buffers) => self.drawBuffersWEBGL(buffers)

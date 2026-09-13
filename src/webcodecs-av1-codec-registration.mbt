@@ -72,7 +72,7 @@ pub(all) struct VideoEncoderEncodeOptionsForAv1 {
 ///|
 /// Create a new VideoEncoderEncodeOptionsForAv1 with default values
 pub fn VideoEncoderEncodeOptionsForAv1::default() -> VideoEncoderEncodeOptionsForAv1 {
-  VideoEncoderEncodeOptionsForAv1::{ quantizer: Nullable::Undefined }
+  VideoEncoderEncodeOptionsForAv1::{ quantizer: Nullable::Undefined, }
 }
 
 ///|

@@ -7,7 +7,7 @@ pub(all) enum XRDOMOverlayType {
   Screen
   Floating
   HeadLocked
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -77,7 +77,7 @@ pub(all) struct XRDOMOverlayState {
 ///|
 /// Create a new XRDOMOverlayState with default values
 pub fn XRDOMOverlayState::default() -> XRDOMOverlayState {
-  XRDOMOverlayState::{ type_: None }
+  XRDOMOverlayState::{ type_: None, }
 }
 
 ///|

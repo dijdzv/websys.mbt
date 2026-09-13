@@ -6,7 +6,7 @@
 fn test_ins_element() -> Unit {
   let doc = get_document()
   let ins = @websys.HTMLModElement::from_js_value(
-    doc.create_element("ins").to_js_value(),
+    create_element(doc, "ins").to_js_value(),
   )
   // cite (URL-reflected attribute)
   assert_eq(ins.get_cite(), "", label="cite default")
@@ -25,7 +25,7 @@ fn test_ins_element() -> Unit {
 fn test_del_element() -> Unit {
   let doc = get_document()
   let del = @websys.HTMLModElement::from_js_value(
-    doc.create_element("del").to_js_value(),
+    create_element(doc, "del").to_js_value(),
   )
   // cite (URL-reflected attribute)
   del.set_cite("https://example.com/errata")

@@ -9,7 +9,7 @@ pub(all) enum ContentCategory {
   Article
   Video
   Audio
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub(all) struct ContentDescription {
   title : String
   description : String
   category : ContentCategory?
-  icons : Array[ImageResource]?
+  icons : FixedArray[ImageResource]?
   url : String
 }
 
@@ -69,7 +69,7 @@ extern "js" fn ContentDescription::to_js_ffi(
   #|   title: self.title,
   #|   description: self.description,
   #|   category: ((() => { const v = self.category; if (v === undefined) return undefined; return ['', 'homepage', 'article', 'video', 'audio'][v]; })()),
-  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: self.icons,
   #|   url: self.url
   #| })
 
@@ -88,7 +88,7 @@ extern "js" fn ContentDescription::from_js_ffi(
   #|   title: v.title,
   #|   description: v.description,
   #|   category: (v.category === undefined ? undefined : ['', 'homepage', 'article', 'video', 'audio'].indexOf(v.category)),
-  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   icons: v.icons,
   #|   url: v.url
   #| })
 
@@ -107,7 +107,7 @@ pub(all) struct ContentIndexEventInit {
 ///|
 /// Create a new ContentIndexEventInit with default values
 pub fn ContentIndexEventInit::default() -> ContentIndexEventInit {
-  ContentIndexEventInit::{ id: "" }
+  ContentIndexEventInit::{ id: "", }
 }
 
 ///|
@@ -173,7 +173,7 @@ pub extern "js" fn JsValue::to_content_index(self : JsValue) -> ContentIndex =
 pub(all) enum ContentIndexAddError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn ContentIndex::add_ffi(
@@ -200,7 +200,7 @@ pub extern "js" fn ContentIndex::delete(
 ///|
 pub extern "js" fn ContentIndex::get_all(
   self : ContentIndex,
-) -> Promise[Array[ContentDescription]] =
+) -> Promise[FixedArray[ContentDescription]] =
   #| (self) => self.getAll()
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum RTCIceTransportPolicy {
   Relay
   All
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum RTCBundlePolicy {
   Balanced
   MaxCompat
   MaxBundle
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -60,7 +60,7 @@ pub fn RTCBundlePolicy::from_string(s : String) -> RTCBundlePolicy? {
 /// RTCRtcpMuxPolicy enum
 pub(all) enum RTCRtcpMuxPolicy {
   Require
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -88,7 +88,7 @@ pub(all) enum RTCSignalingState {
   HaveLocalPranswer
   HaveRemotePranswer
   Closed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -123,7 +123,7 @@ pub(all) enum RTCIceGatheringState {
   New
   Gathering
   Complete
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -155,7 +155,7 @@ pub(all) enum RTCPeerConnectionState {
   New
   Connecting
   Connected
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -198,7 +198,7 @@ pub(all) enum RTCIceConnectionState {
   Checking
   Completed
   Connected
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -236,7 +236,7 @@ pub(all) enum RTCSdpType {
   Pranswer
   Answer
   Rollback
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -266,7 +266,7 @@ pub fn RTCSdpType::from_string(s : String) -> RTCSdpType? {
 pub(all) enum RTCIceProtocol {
   Udp
   Tcp
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -293,7 +293,7 @@ pub(all) enum RTCIceTcpCandidateType {
   Active
   Passive
   So
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -327,7 +327,7 @@ pub(all) enum RTCIceCandidateType {
   Srflx
   Prflx
   Relay
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -358,7 +358,7 @@ pub(all) enum RTCIceServerTransportProtocol {
   Udp
   Tcp
   Tls
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -393,7 +393,7 @@ pub(all) enum RTCRtpTransceiverDirection {
   Recvonly
   Inactive
   Stopped
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -432,7 +432,7 @@ pub(all) enum RTCDtlsTransportState {
   Connected
   Closed
   Failed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -465,7 +465,7 @@ pub(all) enum RTCIceGathererState {
   New
   Gathering
   Complete
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -498,7 +498,7 @@ pub(all) enum RTCIceTransportState {
   Checking
   Completed
   Connected
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -535,7 +535,7 @@ pub(all) enum RTCIceRole {
   Unknown
   Controlling
   Controlled
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -563,7 +563,7 @@ pub fn RTCIceRole::from_string(s : String) -> RTCIceRole? {
 pub(all) enum RTCIceComponent {
   Rtp
   Rtcp
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -590,7 +590,7 @@ pub(all) enum RTCSctpTransportState {
   Connecting
   Connected
   Closed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -620,7 +620,7 @@ pub(all) enum RTCDataChannelState {
   Open
   Closing
   Closed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -655,7 +655,7 @@ pub(all) enum RTCErrorDetailType {
   SdpSyntaxError
   HardwareEncoderNotAvailable
   HardwareEncoderError
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -721,7 +721,7 @@ pub(all) struct RTCIceServer {
 ///|
 /// Create a new RTCIceServer
 pub fn RTCIceServer::new(urls~ : StringOrArrayOfString) -> RTCIceServer {
-  RTCIceServer::{ urls, username: None, credential: None }
+  RTCIceServer::{ urls, username: None, credential: None, }
 }
 
 ///|
@@ -759,7 +759,7 @@ pub(all) struct RTCOfferAnswerOptions {}
 ///|
 /// Create a new RTCOfferAnswerOptions with default values
 pub fn RTCOfferAnswerOptions::default() -> RTCOfferAnswerOptions {
-  RTCOfferAnswerOptions::{  }
+  RTCOfferAnswerOptions::{ }
 }
 
 ///|
@@ -841,7 +841,7 @@ pub(all) struct RTCAnswerOptions {}
 ///|
 /// Create a new RTCAnswerOptions with default values
 pub fn RTCAnswerOptions::default() -> RTCAnswerOptions {
-  RTCAnswerOptions::{  }
+  RTCAnswerOptions::{ }
 }
 
 ///|
@@ -880,7 +880,7 @@ pub(all) struct RTCSessionDescriptionInit {
 pub fn RTCSessionDescriptionInit::new(
   type_~ : RTCSdpType,
 ) -> RTCSessionDescriptionInit {
-  RTCSessionDescriptionInit::{ type_, sdp: None }
+  RTCSessionDescriptionInit::{ type_, sdp: None, }
 }
 
 ///|
@@ -927,7 +927,7 @@ pub(all) struct RTCLocalSessionDescriptionInit {
 ///|
 /// Create a new RTCLocalSessionDescriptionInit with default values
 pub fn RTCLocalSessionDescriptionInit::default() -> RTCLocalSessionDescriptionInit {
-  RTCLocalSessionDescriptionInit::{ type_: None, sdp: None }
+  RTCLocalSessionDescriptionInit::{ type_: None, sdp: None, }
 }
 
 ///|
@@ -1205,7 +1205,7 @@ pub(all) struct RTCCertificateExpiration {
 ///|
 /// Create a new RTCCertificateExpiration with default values
 pub fn RTCCertificateExpiration::default() -> RTCCertificateExpiration {
-  RTCCertificateExpiration::{ expires: None }
+  RTCCertificateExpiration::{ expires: None, }
 }
 
 ///|
@@ -1244,14 +1244,18 @@ pub fn RTCCertificateExpiration::from_js(
 /// RTCRtpTransceiverInit dictionary
 pub(all) struct RTCRtpTransceiverInit {
   direction : RTCRtpTransceiverDirection?
-  streams : Array[MediaStream]?
-  sendEncodings : Array[RTCRtpEncodingParameters]?
+  streams : FixedArray[MediaStream]?
+  sendEncodings : FixedArray[RTCRtpEncodingParameters]?
 }
 
 ///|
 /// Create a new RTCRtpTransceiverInit with default values
 pub fn RTCRtpTransceiverInit::default() -> RTCRtpTransceiverInit {
-  RTCRtpTransceiverInit::{ direction: None, streams: None, sendEncodings: None }
+  RTCRtpTransceiverInit::{
+    direction: None,
+    streams: None,
+    sendEncodings: None,
+  }
 }
 
 ///|
@@ -1260,8 +1264,8 @@ extern "js" fn RTCRtpTransceiverInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'][v]; })()),
-  #|   streams: ((() => { const v = self.streams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sendEncodings: ((() => { const v = self.sendEncodings; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   streams: self.streams,
+  #|   sendEncodings: self.sendEncodings
   #| })
 
 ///|
@@ -1276,8 +1280,8 @@ extern "js" fn RTCRtpTransceiverInit::from_js_ffi(
 ) -> RTCRtpTransceiverInit =
   #| (v) => ({
   #|   direction: (v.direction === undefined ? undefined : ['sendrecv', 'sendonly', 'recvonly', 'inactive', 'stopped'].indexOf(v.direction)),
-  #|   streams: (v.streams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.streams }),
-  #|   sendEncodings: (v.sendEncodings === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sendEncodings })
+  #|   streams: v.streams,
+  #|   sendEncodings: v.sendEncodings
   #| })
 
 ///|
@@ -1289,15 +1293,15 @@ pub fn RTCRtpTransceiverInit::from_js(value : JsValue) -> RTCRtpTransceiverInit 
 ///|
 /// RTCRtpParameters dictionary
 pub(all) struct RTCRtpParameters {
-  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
+  headerExtensions : FixedArray[RTCRtpHeaderExtensionParameters]
   rtcp : RTCRtcpParameters
-  codecs : Array[RTCRtpCodecParameters]
+  codecs : FixedArray[RTCRtpCodecParameters]
 }
 
 ///|
 /// Create a new RTCRtpParameters
 pub fn RTCRtpParameters::new(rtcp~ : RTCRtcpParameters) -> RTCRtpParameters {
-  RTCRtpParameters::{ headerExtensions: [], rtcp, codecs: [] }
+  RTCRtpParameters::{ headerExtensions: [], rtcp, codecs: [], }
 }
 
 ///|
@@ -1333,9 +1337,9 @@ pub fn RTCRtpParameters::from_js(value : JsValue) -> RTCRtpParameters {
 ///|
 /// RTCRtpReceiveParameters dictionary
 pub(all) struct RTCRtpReceiveParameters {
-  headerExtensions : Array[RTCRtpHeaderExtensionParameters]
+  headerExtensions : FixedArray[RTCRtpHeaderExtensionParameters]
   rtcp : RTCRtcpParameters
-  codecs : Array[RTCRtpCodecParameters]
+  codecs : FixedArray[RTCRtpCodecParameters]
 }
 
 ///|
@@ -1343,7 +1347,7 @@ pub(all) struct RTCRtpReceiveParameters {
 pub fn RTCRtpReceiveParameters::new(
   rtcp~ : RTCRtcpParameters,
 ) -> RTCRtpReceiveParameters {
-  RTCRtpReceiveParameters::{ headerExtensions: [], rtcp, codecs: [] }
+  RTCRtpReceiveParameters::{ headerExtensions: [], rtcp, codecs: [], }
 }
 
 ///|
@@ -1391,7 +1395,7 @@ pub(all) struct RTCRtpCodingParameters {
 ///|
 /// Create a new RTCRtpCodingParameters with default values
 pub fn RTCRtpCodingParameters::default() -> RTCRtpCodingParameters {
-  RTCRtpCodingParameters::{ rid: None }
+  RTCRtpCodingParameters::{ rid: None, }
 }
 
 ///|
@@ -1434,7 +1438,7 @@ pub(all) struct RTCRtcpParameters {
 ///|
 /// Create a new RTCRtcpParameters with default values
 pub fn RTCRtcpParameters::default() -> RTCRtcpParameters {
-  RTCRtcpParameters::{ cname: None, reducedSize: None }
+  RTCRtcpParameters::{ cname: None, reducedSize: None, }
 }
 
 ///|
@@ -1478,7 +1482,7 @@ pub(all) struct RTCRtpHeaderExtensionParameters {
 ///|
 /// Create a new RTCRtpHeaderExtensionParameters with default values
 pub fn RTCRtpHeaderExtensionParameters::default() -> RTCRtpHeaderExtensionParameters {
-  RTCRtpHeaderExtensionParameters::{ uri: "", id: 0, encrypted: None }
+  RTCRtpHeaderExtensionParameters::{ uri: "", id: 0, encrypted: None, }
 }
 
 ///|
@@ -1529,7 +1533,12 @@ pub(all) struct RTCRtpCodec {
 ///|
 /// Create a new RTCRtpCodec with default values
 pub fn RTCRtpCodec::default() -> RTCRtpCodec {
-  RTCRtpCodec::{ mimeType: "", clockRate: 0, channels: None, sdpFmtpLine: None }
+  RTCRtpCodec::{
+    mimeType: "",
+    clockRate: 0,
+    channels: None,
+    sdpFmtpLine: None,
+  }
 }
 
 ///|
@@ -1623,14 +1632,14 @@ pub fn RTCRtpCodecParameters::from_js(value : JsValue) -> RTCRtpCodecParameters 
 ///|
 /// RTCRtpCapabilities dictionary
 pub(all) struct RTCRtpCapabilities {
-  codecs : Array[RTCRtpCodec]
-  headerExtensions : Array[RTCRtpHeaderExtensionCapability]
+  codecs : FixedArray[RTCRtpCodec]
+  headerExtensions : FixedArray[RTCRtpHeaderExtensionCapability]
 }
 
 ///|
 /// Create a new RTCRtpCapabilities with default values
 pub fn RTCRtpCapabilities::default() -> RTCRtpCapabilities {
-  RTCRtpCapabilities::{ codecs: [], headerExtensions: [] }
+  RTCRtpCapabilities::{ codecs: [], headerExtensions: [], }
 }
 
 ///|
@@ -1672,7 +1681,7 @@ pub(all) struct RTCRtpHeaderExtensionCapability {
 ///|
 /// Create a new RTCRtpHeaderExtensionCapability with default values
 pub fn RTCRtpHeaderExtensionCapability::default() -> RTCRtpHeaderExtensionCapability {
-  RTCRtpHeaderExtensionCapability::{ uri: "" }
+  RTCRtpHeaderExtensionCapability::{ uri: "", }
 }
 
 ///|
@@ -1714,7 +1723,7 @@ pub(all) struct RTCSetParameterOptions {}
 ///|
 /// Create a new RTCSetParameterOptions with default values
 pub fn RTCSetParameterOptions::default() -> RTCSetParameterOptions {
-  RTCSetParameterOptions::{  }
+  RTCSetParameterOptions::{ }
 }
 
 ///|
@@ -1875,7 +1884,7 @@ pub(all) struct RTCDtlsFingerprint {
 ///|
 /// Create a new RTCDtlsFingerprint with default values
 pub fn RTCDtlsFingerprint::default() -> RTCDtlsFingerprint {
-  RTCDtlsFingerprint::{ algorithm: None, value: None }
+  RTCDtlsFingerprint::{ algorithm: None, value: None, }
 }
 
 ///|
@@ -1913,7 +1922,7 @@ pub fn RTCDtlsFingerprint::from_js(value : JsValue) -> RTCDtlsFingerprint {
 pub(all) struct RTCTrackEventInit {
   receiver : RTCRtpReceiver
   track : MediaStreamTrack
-  streams : Array[MediaStream]?
+  streams : FixedArray[MediaStream]?
   transceiver : RTCRtpTransceiver
 }
 
@@ -1924,7 +1933,7 @@ pub fn RTCTrackEventInit::new(
   track~ : MediaStreamTrack,
   transceiver~ : RTCRtpTransceiver,
 ) -> RTCTrackEventInit {
-  RTCTrackEventInit::{ receiver, track, streams: None, transceiver }
+  RTCTrackEventInit::{ receiver, track, streams: None, transceiver, }
 }
 
 ///|
@@ -1934,7 +1943,7 @@ extern "js" fn RTCTrackEventInit::to_js_ffi(
   #| (self) => ({
   #|   receiver: self.receiver,
   #|   track: self.track,
-  #|   streams: ((() => { const v = self.streams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   streams: self.streams,
   #|   transceiver: self.transceiver
   #| })
 
@@ -1951,7 +1960,7 @@ extern "js" fn RTCTrackEventInit::from_js_ffi(
   #| (v) => ({
   #|   receiver: v.receiver,
   #|   track: v.track,
-  #|   streams: (v.streams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.streams }),
+  #|   streams: v.streams,
   #|   transceiver: v.transceiver
   #| })
 
@@ -2016,7 +2025,7 @@ pub(all) struct RTCDTMFToneChangeEventInit {
 ///|
 /// Create a new RTCDTMFToneChangeEventInit with default values
 pub fn RTCDTMFToneChangeEventInit::default() -> RTCDTMFToneChangeEventInit {
-  RTCDTMFToneChangeEventInit::{ tone: None }
+  RTCDTMFToneChangeEventInit::{ tone: None, }
 }
 
 ///|
@@ -2065,7 +2074,7 @@ pub fn RTCStats::new(
   timestamp~ : DOMHighResTimeStamp,
   type_~ : RTCStatsType,
 ) -> RTCStats {
-  RTCStats::{ timestamp, type_, id: "" }
+  RTCStats::{ timestamp, type_, id: "", }
 }
 
 ///|
@@ -2187,7 +2196,7 @@ pub(all) enum RTCPeerConnectionCreateOfferError {
   NotReadableError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2195,7 +2204,7 @@ pub(all) enum RTCPeerConnectionCreateAnswerError {
   OperationError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2207,7 +2216,7 @@ pub(all) enum RTCPeerConnectionSetRemoteDescriptionError {
   InvalidAccessError(JsError)
   InvalidSessionDescriptionError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2216,7 +2225,7 @@ pub(all) enum RTCPeerConnectionAddIceCandidateError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2227,14 +2236,14 @@ pub(all) enum RTCPeerConnectionSetConfigurationError {
   InvalidAccessError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionGenerateCertificateError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2242,14 +2251,14 @@ pub(all) enum RTCPeerConnectionAddTrackError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionRemoveTrackError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2259,7 +2268,7 @@ pub(all) enum RTCPeerConnectionAddTransceiverError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2270,14 +2279,14 @@ pub(all) enum RTCPeerConnectionCreateDataChannelError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCPeerConnectionGetStatsError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCPeerConnection::new() -> RTCPeerConnection =
@@ -2795,19 +2804,19 @@ pub extern "js" fn RTCPeerConnection::generate_certificate(
 ///|
 pub extern "js" fn RTCPeerConnection::get_senders(
   self : RTCPeerConnection,
-) -> Array[RTCRtpSender] =
+) -> FixedArray[RTCRtpSender] =
   #| (self) => self.getSenders()
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_receivers(
   self : RTCPeerConnection,
-) -> Array[RTCRtpReceiver] =
+) -> FixedArray[RTCRtpReceiver] =
   #| (self) => self.getReceivers()
 
 ///|
 pub extern "js" fn RTCPeerConnection::get_transceivers(
   self : RTCPeerConnection,
-) -> Array[RTCRtpTransceiver] =
+) -> FixedArray[RTCRtpTransceiver] =
   #| (self) => self.getTransceivers()
 
 ///|
@@ -3045,7 +3054,7 @@ pub extern "js" fn JsValue::to_rtc_ice_candidate(
 pub(all) enum RTCIceCandidateConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCIceCandidate::new() -> Result[
@@ -3379,7 +3388,7 @@ pub extern "js" fn RTCCertificate::get_expires(
 ///|
 pub extern "js" fn RTCCertificate::get_fingerprints(
   self : RTCCertificate,
-) -> Array[RTCDtlsFingerprint] =
+) -> FixedArray[RTCDtlsFingerprint] =
   #| (self) => self.getFingerprints()
 
 ///|
@@ -3420,7 +3429,7 @@ pub(all) enum RTCRtpSenderSetParametersError {
   InvalidStateError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -3429,14 +3438,14 @@ pub(all) enum RTCRtpSenderReplaceTrackError {
   InvalidStateError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpSenderSetStreamsError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCRtpSender::get_track(
@@ -3578,7 +3587,7 @@ pub extern "js" fn JsValue::to_rtc_rtp_receiver(
 pub(all) enum RTCRtpReceiverSetJitterBufferTargetError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCRtpReceiver::get_track(
@@ -3607,13 +3616,13 @@ pub extern "js" fn RTCRtpReceiver::get_parameters(
 ///|
 pub extern "js" fn RTCRtpReceiver::get_contributing_sources(
   self : RTCRtpReceiver,
-) -> Array[RTCRtpContributingSource] =
+) -> FixedArray[RTCRtpContributingSource] =
   #| (self) => self.getContributingSources()
 
 ///|
 pub extern "js" fn RTCRtpReceiver::get_synchronization_sources(
   self : RTCRtpReceiver,
-) -> Array[RTCRtpSynchronizationSource] =
+) -> FixedArray[RTCRtpSynchronizationSource] =
   #| (self) => self.getSynchronizationSources()
 
 ///|
@@ -3692,14 +3701,14 @@ pub(all) enum RTCRtpTransceiverSetDirectionError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RTCRtpTransceiverStopError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -3707,7 +3716,7 @@ pub(all) enum RTCRtpTransceiverSetCodecPreferencesError {
   InvalidAccessError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCRtpTransceiver::get_mid(
@@ -3755,7 +3764,7 @@ pub extern "js" fn RTCRtpTransceiver::stop(
 ///|
 pub extern "js" fn RTCRtpTransceiver::set_codec_preferences(
   self : RTCRtpTransceiver,
-  codecs : Array[RTCRtpCodec],
+  codecs : FixedArray[RTCRtpCodec],
 ) -> Result[Unit, RTCRtpTransceiverSetCodecPreferencesError] =
   #| (self, codecs) => (() => { try { self.setCodecPreferences(codecs); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidAccessError') return { $tag: 0, _0: e }; if (n === 'InvalidModificationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
@@ -3818,7 +3827,7 @@ pub extern "js" fn RTCDtlsTransport::get_state(
 ///|
 pub extern "js" fn RTCDtlsTransport::get_remote_certificates(
   self : RTCDtlsTransport,
-) -> Array[ArrayBuffer] =
+) -> FixedArray[ArrayBuffer] =
   #| (self) => self.getRemoteCertificates()
 
 ///|
@@ -3918,13 +3927,13 @@ pub extern "js" fn RTCIceTransport::get_gathering_state(
 ///|
 pub extern "js" fn RTCIceTransport::get_local_candidates(
   self : RTCIceTransport,
-) -> Array[RTCIceCandidate] =
+) -> FixedArray[RTCIceCandidate] =
   #| (self) => self.getLocalCandidates()
 
 ///|
 pub extern "js" fn RTCIceTransport::get_remote_candidates(
   self : RTCIceTransport,
-) -> Array[RTCIceCandidate] =
+) -> FixedArray[RTCIceCandidate] =
   #| (self) => self.getRemoteCandidates()
 
 ///|
@@ -4198,7 +4207,7 @@ pub extern "js" fn RTCTrackEvent::get_track(
 ///|
 pub extern "js" fn RTCTrackEvent::get_streams(
   self : RTCTrackEvent,
-) -> Array[MediaStream] =
+) -> FixedArray[MediaStream] =
   #| (self) => self.streams
 
 ///|
@@ -4337,7 +4346,7 @@ pub(all) enum RTCDataChannelSendError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCDataChannel::get_label(self : RTCDataChannel) -> String =
@@ -4721,7 +4730,7 @@ pub(all) enum RTCDTMFSenderInsertDTMFError {
   InvalidStateError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RTCDTMFSender::insert_dtmf(

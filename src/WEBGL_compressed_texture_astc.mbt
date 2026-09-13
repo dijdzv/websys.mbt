@@ -182,5 +182,5 @@ pub let webgl_compressed_texture_astc_compressed_srgb8_alpha8_astc_12x12_khr : I
 ///|
 pub extern "js" fn WEBGL_compressed_texture_astc::get_supported_profiles(
   self : WEBGL_compressed_texture_astc,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.getSupportedProfiles()

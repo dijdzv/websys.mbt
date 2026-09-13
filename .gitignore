@@ -5,6 +5,8 @@ target
 
 # Node.js
 node_modules/
+.tools/
+.work/
 
 # Nix/devenv
 .devenv/

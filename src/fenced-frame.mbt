@@ -137,7 +137,7 @@ pub fn ReportEventType::bind_as_string(value : ReportEventType?) -> String? {
 /// OpaqueProperty enum
 pub(all) enum OpaqueProperty {
   Opaque
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -164,7 +164,7 @@ pub(all) enum FenceReportingDestination {
   ComponentSeller
   DirectSeller
   SharedStorageSelectUrl
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -202,7 +202,7 @@ pub fn FenceReportingDestination::from_string(
 pub(all) struct FenceEvent {
   eventType : String?
   eventData : String?
-  destination : Array[FenceReportingDestination]?
+  destination : FixedArray[FenceReportingDestination]?
   crossOriginExposed : Bool?
   once : Bool?
   destinationURL : String?
@@ -226,7 +226,7 @@ extern "js" fn FenceEvent::to_js_ffi(self : FenceEvent) -> JsValue =
   #| (self) => ({
   #|   eventType: self.eventType,
   #|   eventData: self.eventData,
-  #|   destination: ((() => { const v = self.destination; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   destination: self.destination,
   #|   crossOriginExposed: (self.crossOriginExposed === -1 ? undefined : self.crossOriginExposed),
   #|   once: (self.once === -1 ? undefined : self.once),
   #|   destinationURL: self.destinationURL
@@ -243,7 +243,7 @@ extern "js" fn FenceEvent::from_js_ffi(value : JsValue) -> FenceEvent =
   #| (v) => ({
   #|   eventType: v.eventType,
   #|   eventData: v.eventData,
-  #|   destination: (v.destination === undefined ? { $tag: 0 } : { $tag: 1, _0: v.destination }),
+  #|   destination: v.destination,
   #|   crossOriginExposed: (v.crossOriginExposed === undefined ? -1 : v.crossOriginExposed),
   #|   once: (v.once === undefined ? -1 : v.once),
   #|   destinationURL: v.destinationURL
@@ -322,12 +322,14 @@ pub extern "js" fn HTMLFencedFrameElement::new() -> HTMLFencedFrameElement =
   #| () => new HTMLFencedFrameElement()
 
 ///|
+/// @alert deprecated "config is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::get_config(
   self : HTMLFencedFrameElement,
 ) -> FencedFrameConfig? =
   #| (self) => (() => { const v = self.config; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
+/// @alert deprecated "config is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::set_config(
   self : HTMLFencedFrameElement,
   value : FencedFrameConfig?,
@@ -335,12 +337,14 @@ pub extern "js" fn HTMLFencedFrameElement::set_config(
   #| (self, value) => { self.config = (value.$tag === 1 ? value._0 : null) }
 
 ///|
+/// @alert deprecated "width is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::get_width(
   self : HTMLFencedFrameElement,
 ) -> String =
   #| (self) => self.width
 
 ///|
+/// @alert deprecated "width is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::set_width(
   self : HTMLFencedFrameElement,
   value : String,
@@ -348,12 +352,14 @@ pub extern "js" fn HTMLFencedFrameElement::set_width(
   #| (self, value) => { self.width = value }
 
 ///|
+/// @alert deprecated "height is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::get_height(
   self : HTMLFencedFrameElement,
 ) -> String =
   #| (self) => self.height
 
 ///|
+/// @alert deprecated "height is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::set_height(
   self : HTMLFencedFrameElement,
   value : String,
@@ -367,12 +373,14 @@ pub extern "js" fn HTMLFencedFrameElement::get_sandbox(
   #| (self) => self.sandbox
 
 ///|
+/// @alert deprecated "allow is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::get_allow(
   self : HTMLFencedFrameElement,
 ) -> String =
   #| (self) => self.allow
 
 ///|
+/// @alert deprecated "allow is deprecated"
 pub extern "js" fn HTMLFencedFrameElement::set_allow(
   self : HTMLFencedFrameElement,
   value : String,
@@ -422,6 +430,7 @@ pub extern "js" fn FencedFrameConfig::new(url : String) -> FencedFrameConfig =
   #| (url) => new FencedFrameConfig(url)
 
 ///|
+/// @alert deprecated "setSharedStorageContext is deprecated"
 pub extern "js" fn FencedFrameConfig::set_shared_storage_context(
   self : FencedFrameConfig,
   context_string : String,
@@ -457,6 +466,7 @@ pub extern "js" fn JsValue::to_fence(self : JsValue) -> Fence =
   #| (self) => self
 
 ///|
+/// @alert deprecated "reportEvent is deprecated"
 pub extern "js" fn Fence::report_event(self : Fence) -> Unit =
   #| (self) => self.reportEvent()
 
@@ -468,6 +478,7 @@ pub extern "js" fn Fence::report_event_with_event(
   #| (self, event) => self.reportEvent(event)
 
 ///|
+/// @alert deprecated "setReportEventDataForAutomaticBeacons is deprecated"
 pub extern "js" fn Fence::set_report_event_data_for_automatic_beacons(
   self : Fence,
 ) -> Unit =
@@ -492,9 +503,10 @@ pub fn Fence::set_report_event_data_for_automatic_beacons_with_event(
 }
 
 ///|
+/// @alert deprecated "getNestedConfigs is deprecated"
 pub extern "js" fn Fence::get_nested_configs(
   self : Fence,
-) -> Array[FencedFrameConfig] =
+) -> FixedArray[FencedFrameConfig] =
   #| (self) => self.getNestedConfigs()
 
 ///|

@@ -7,7 +7,7 @@ pub(all) enum LandmarkType {
   Mouth
   Eye
   Nose
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -47,7 +47,7 @@ pub(all) enum BarcodeFormat {
   Unknown
   UpcA
   UpcE
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -102,7 +102,7 @@ pub(all) struct FaceDetectorOptions {
 ///|
 /// Create a new FaceDetectorOptions with default values
 pub fn FaceDetectorOptions::default() -> FaceDetectorOptions {
-  FaceDetectorOptions::{ maxDetectedFaces: None, fastMode: None }
+  FaceDetectorOptions::{ maxDetectedFaces: None, fastMode: None, }
 }
 
 ///|
@@ -139,13 +139,13 @@ pub fn FaceDetectorOptions::from_js(value : JsValue) -> FaceDetectorOptions {
 /// DetectedFace dictionary
 pub(all) struct DetectedFace {
   boundingBox : DOMRectReadOnly
-  landmarks : Array[Landmark]
+  landmarks : FixedArray[Landmark]
 }
 
 ///|
 /// Create a new DetectedFace
 pub fn DetectedFace::new(boundingBox~ : DOMRectReadOnly) -> DetectedFace {
-  DetectedFace::{ boundingBox, landmarks: [] }
+  DetectedFace::{ boundingBox, landmarks: [], }
 }
 
 ///|
@@ -177,14 +177,14 @@ pub fn DetectedFace::from_js(value : JsValue) -> DetectedFace {
 ///|
 /// Landmark dictionary
 pub(all) struct Landmark {
-  locations : Array[Point2D]
+  locations : FixedArray[Point2D]
   type_ : LandmarkType?
 }
 
 ///|
 /// Create a new Landmark with default values
 pub fn Landmark::default() -> Landmark {
-  Landmark::{ locations: [], type_: None }
+  Landmark::{ locations: [], type_: None, }
 }
 
 ///|
@@ -216,13 +216,13 @@ pub fn Landmark::from_js(value : JsValue) -> Landmark {
 ///|
 /// BarcodeDetectorOptions dictionary
 pub(all) struct BarcodeDetectorOptions {
-  formats : Array[BarcodeFormat]?
+  formats : FixedArray[BarcodeFormat]?
 }
 
 ///|
 /// Create a new BarcodeDetectorOptions with default values
 pub fn BarcodeDetectorOptions::default() -> BarcodeDetectorOptions {
-  BarcodeDetectorOptions::{ formats: None }
+  BarcodeDetectorOptions::{ formats: None, }
 }
 
 ///|
@@ -230,7 +230,7 @@ extern "js" fn BarcodeDetectorOptions::to_js_ffi(
   self : BarcodeDetectorOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   formats: ((() => { const v = self.formats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   formats: self.formats
   #| })
 
 ///|
@@ -244,7 +244,7 @@ extern "js" fn BarcodeDetectorOptions::from_js_ffi(
   value : JsValue,
 ) -> BarcodeDetectorOptions =
   #| (v) => ({
-  #|   formats: (v.formats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.formats })
+  #|   formats: v.formats
   #| })
 
 ///|
@@ -261,7 +261,7 @@ pub(all) struct DetectedBarcode {
   boundingBox : DOMRectReadOnly
   rawValue : String
   format : BarcodeFormat
-  cornerPoints : Array[Point2D]
+  cornerPoints : FixedArray[Point2D]
 }
 
 ///|
@@ -270,7 +270,7 @@ pub fn DetectedBarcode::new(
   boundingBox~ : DOMRectReadOnly,
   format~ : BarcodeFormat,
 ) -> DetectedBarcode {
-  DetectedBarcode::{ boundingBox, rawValue: "", format, cornerPoints: [] }
+  DetectedBarcode::{ boundingBox, rawValue: "", format, cornerPoints: [], }
 }
 
 ///|
@@ -356,28 +356,28 @@ pub fn FaceDetector::new_with_face_detector_options(
 pub extern "js" fn FaceDetector::detect(
   self : FaceDetector,
   image : ImageBitmapSource,
-) -> Promise[Array[DetectedFace]] =
+) -> Promise[FixedArray[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn FaceDetector::detect_with_canvas_image_source(
   self : FaceDetector,
   image : CanvasImageSource,
-) -> Promise[Array[DetectedFace]] =
+) -> Promise[FixedArray[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn FaceDetector::detect_with_blob(
   self : FaceDetector,
   image : Blob,
-) -> Promise[Array[DetectedFace]] =
+) -> Promise[FixedArray[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
 pub extern "js" fn FaceDetector::detect_with_image_data(
   self : FaceDetector,
   image : ImageData,
-) -> Promise[Array[DetectedFace]] =
+) -> Promise[FixedArray[DetectedFace]] =
   #| (self, image) => self.detect(image)
 
 ///|
@@ -423,7 +423,7 @@ pub extern "js" fn JsValue::to_barcode_detector(
 pub(all) enum BarcodeDetectorConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -432,7 +432,7 @@ pub(all) enum BarcodeDetectorDetectError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn BarcodeDetector::new() -> Result[
@@ -458,7 +458,7 @@ pub fn BarcodeDetector::new_with_barcode_detector_options(
 
 ///|
 pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
-  Array[BarcodeFormat],
+  FixedArray[BarcodeFormat],
 ] =
   #| () => BarcodeDetector.getSupportedFormats()
 
@@ -466,26 +466,26 @@ pub extern "js" fn BarcodeDetector::get_supported_formats() -> Promise[
 pub extern "js" fn BarcodeDetector::detect(
   self : BarcodeDetector,
   image : ImageBitmapSource,
-) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+) -> Promise[Result[FixedArray[DetectedBarcode], BarcodeDetectorDetectError]] =
   #| (self, image) => self.detect(image).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_canvas_image_source(
   self : BarcodeDetector,
   image : CanvasImageSource,
-) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+) -> Promise[Result[FixedArray[DetectedBarcode], BarcodeDetectorDetectError]] =
   #| (self, image) => self.detect(image).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_blob(
   self : BarcodeDetector,
   image : Blob,
-) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+) -> Promise[Result[FixedArray[DetectedBarcode], BarcodeDetectorDetectError]] =
   #| (self, image) => self.detect(image).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn BarcodeDetector::detect_with_image_data(
   self : BarcodeDetector,
   image : ImageData,
-) -> Promise[Result[Array[DetectedBarcode], BarcodeDetectorDetectError]] =
+) -> Promise[Result[FixedArray[DetectedBarcode], BarcodeDetectorDetectError]] =
   #| (self, image) => self.detect(image).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))

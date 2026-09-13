@@ -79,7 +79,7 @@ pub fn LineAndPositionSetting::bind_as_auto_keyword(
 /// AutoKeyword enum
 pub(all) enum AutoKeyword {
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -104,7 +104,7 @@ pub(all) enum DirectionSetting {
   Empty
   Rl
   Lr
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -133,7 +133,7 @@ pub(all) enum LineAlignSetting {
   Start
   Center
   End
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -163,7 +163,7 @@ pub(all) enum PositionAlignSetting {
   Center
   LineRight
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -196,7 +196,7 @@ pub(all) enum AlignSetting {
   End
   Left
   Right
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -228,7 +228,7 @@ pub fn AlignSetting::from_string(s : String) -> AlignSetting? {
 pub(all) enum ScrollSetting {
   Empty
   Up
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -434,6 +434,41 @@ pub extern "js" fn JsValue::to_vtt_region(self : JsValue) -> VTTRegion =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum VTTRegionSetWidthError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum VTTRegionSetRegionAnchorXError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum VTTRegionSetRegionAnchorYError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum VTTRegionSetViewportAnchorXError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum VTTRegionSetViewportAnchorYError {
+  IndexSizeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn VTTRegion::new() -> VTTRegion =
   #| () => new VTTRegion()
 
@@ -453,8 +488,8 @@ pub extern "js" fn VTTRegion::get_width(self : VTTRegion) -> Double =
 pub extern "js" fn VTTRegion::set_width(
   self : VTTRegion,
   value : Double,
-) -> Unit =
-  #| (self, value) => { self.width = value }
+) -> Result[Unit, VTTRegionSetWidthError] =
+  #| (self, value) => (() => { try { self.width = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VTTRegion::get_lines(self : VTTRegion) -> Int =
@@ -472,8 +507,8 @@ pub extern "js" fn VTTRegion::get_region_anchor_x(self : VTTRegion) -> Double =
 pub extern "js" fn VTTRegion::set_region_anchor_x(
   self : VTTRegion,
   value : Double,
-) -> Unit =
-  #| (self, value) => { self.regionAnchorX = value }
+) -> Result[Unit, VTTRegionSetRegionAnchorXError] =
+  #| (self, value) => (() => { try { self.regionAnchorX = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VTTRegion::get_region_anchor_y(self : VTTRegion) -> Double =
@@ -483,8 +518,8 @@ pub extern "js" fn VTTRegion::get_region_anchor_y(self : VTTRegion) -> Double =
 pub extern "js" fn VTTRegion::set_region_anchor_y(
   self : VTTRegion,
   value : Double,
-) -> Unit =
-  #| (self, value) => { self.regionAnchorY = value }
+) -> Result[Unit, VTTRegionSetRegionAnchorYError] =
+  #| (self, value) => (() => { try { self.regionAnchorY = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VTTRegion::get_viewport_anchor_x(self : VTTRegion) -> Double =
@@ -494,8 +529,8 @@ pub extern "js" fn VTTRegion::get_viewport_anchor_x(self : VTTRegion) -> Double 
 pub extern "js" fn VTTRegion::set_viewport_anchor_x(
   self : VTTRegion,
   value : Double,
-) -> Unit =
-  #| (self, value) => { self.viewportAnchorX = value }
+) -> Result[Unit, VTTRegionSetViewportAnchorXError] =
+  #| (self, value) => (() => { try { self.viewportAnchorX = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VTTRegion::get_viewport_anchor_y(self : VTTRegion) -> Double =
@@ -505,8 +540,8 @@ pub extern "js" fn VTTRegion::get_viewport_anchor_y(self : VTTRegion) -> Double 
 pub extern "js" fn VTTRegion::set_viewport_anchor_y(
   self : VTTRegion,
   value : Double,
-) -> Unit =
-  #| (self, value) => { self.viewportAnchorY = value }
+) -> Result[Unit, VTTRegionSetViewportAnchorYError] =
+  #| (self, value) => (() => { try { self.viewportAnchorY = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn VTTRegion::get_scroll(self : VTTRegion) -> ScrollSetting =

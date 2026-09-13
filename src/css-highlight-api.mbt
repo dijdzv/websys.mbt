@@ -7,7 +7,7 @@ pub(all) enum HighlightType {
   Highlight
   SpellingError
   GrammarError
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -34,13 +34,13 @@ pub fn HighlightType::from_string(s : String) -> HighlightType? {
 /// HighlightHitResult dictionary
 pub(all) struct HighlightHitResult {
   highlight : Highlight?
-  ranges : Array[AbstractRange]?
+  ranges : FixedArray[AbstractRange]?
 }
 
 ///|
 /// Create a new HighlightHitResult with default values
 pub fn HighlightHitResult::default() -> HighlightHitResult {
-  HighlightHitResult::{ highlight: None, ranges: None }
+  HighlightHitResult::{ highlight: None, ranges: None, }
 }
 
 ///|
@@ -49,7 +49,7 @@ extern "js" fn HighlightHitResult::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   highlight: ((() => { const v = self.highlight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ranges: ((() => { const v = self.ranges; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   ranges: self.ranges
   #| })
 
 ///|
@@ -64,7 +64,7 @@ extern "js" fn HighlightHitResult::from_js_ffi(
 ) -> HighlightHitResult =
   #| (v) => ({
   #|   highlight: (v.highlight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.highlight }),
-  #|   ranges: (v.ranges === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ranges })
+  #|   ranges: v.ranges
   #| })
 
 ///|
@@ -76,13 +76,13 @@ pub fn HighlightHitResult::from_js(value : JsValue) -> HighlightHitResult {
 ///|
 /// HighlightsFromPointOptions dictionary
 pub(all) struct HighlightsFromPointOptions {
-  shadowRoots : Array[ShadowRoot]?
+  shadowRoots : FixedArray[ShadowRoot]?
 }
 
 ///|
 /// Create a new HighlightsFromPointOptions with default values
 pub fn HighlightsFromPointOptions::default() -> HighlightsFromPointOptions {
-  HighlightsFromPointOptions::{ shadowRoots: None }
+  HighlightsFromPointOptions::{ shadowRoots: None, }
 }
 
 ///|
@@ -90,7 +90,7 @@ extern "js" fn HighlightsFromPointOptions::to_js_ffi(
   self : HighlightsFromPointOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: self.shadowRoots
   #| })
 
 ///|
@@ -106,7 +106,7 @@ extern "js" fn HighlightsFromPointOptions::from_js_ffi(
   value : JsValue,
 ) -> HighlightsFromPointOptions =
   #| (v) => ({
-  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #|   shadowRoots: v.shadowRoots
   #| })
 
 ///|
@@ -272,7 +272,7 @@ pub extern "js" fn HighlightRegistry::highlights_from_point(
   self : HighlightRegistry,
   x : Double,
   y : Double,
-) -> Array[HighlightHitResult] =
+) -> FixedArray[HighlightHitResult] =
   #| (self, x, y) => self.highlightsFromPoint(x, y)
 
 ///|
@@ -281,7 +281,7 @@ extern "js" fn HighlightRegistry::highlights_from_point_with_options_ffi(
   x : Double,
   y : Double,
   options : JsValue,
-) -> Array[HighlightHitResult] =
+) -> FixedArray[HighlightHitResult] =
   #| (self, x, y, options) => self.highlightsFromPoint(x, y, options)
 
 ///|
@@ -290,7 +290,7 @@ pub fn HighlightRegistry::highlights_from_point_with_options(
   x : Double,
   y : Double,
   options : HighlightsFromPointOptions,
-) -> Array[HighlightHitResult] {
+) -> FixedArray[HighlightHitResult] {
   HighlightRegistry::highlights_from_point_with_options_ffi(
     self,
     x,

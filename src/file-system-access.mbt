@@ -80,7 +80,7 @@ pub fn StartInDirectory::bind_as_file_system_handle(
 pub(all) enum FileSystemPermissionMode {
   Read
   Readwrite
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -114,7 +114,7 @@ pub(all) enum WellKnownDirectory {
   Music
   Pictures
   Videos
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -155,7 +155,7 @@ pub(all) struct FileSystemPermissionDescriptor {
 pub fn FileSystemPermissionDescriptor::new(
   handle~ : FileSystemHandle,
 ) -> FileSystemPermissionDescriptor {
-  FileSystemPermissionDescriptor::{ handle, mode: None }
+  FileSystemPermissionDescriptor::{ handle, mode: None, }
 }
 
 ///|
@@ -201,7 +201,7 @@ pub(all) struct FileSystemHandlePermissionDescriptor {
 ///|
 /// Create a new FileSystemHandlePermissionDescriptor with default values
 pub fn FileSystemHandlePermissionDescriptor::default() -> FileSystemHandlePermissionDescriptor {
-  FileSystemHandlePermissionDescriptor::{ mode: None }
+  FileSystemHandlePermissionDescriptor::{ mode: None, }
 }
 
 ///|
@@ -246,7 +246,7 @@ pub(all) struct FilePickerAcceptType {
 ///|
 /// Create a new FilePickerAcceptType with default values
 pub fn FilePickerAcceptType::default() -> FilePickerAcceptType {
-  FilePickerAcceptType::{ description: None, accept: None }
+  FilePickerAcceptType::{ description: None, accept: None, }
 }
 
 ///|
@@ -282,7 +282,7 @@ pub fn FilePickerAcceptType::from_js(value : JsValue) -> FilePickerAcceptType {
 ///|
 /// FilePickerOptions dictionary
 pub(all) struct FilePickerOptions {
-  types : Array[FilePickerAcceptType]?
+  types : FixedArray[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?
@@ -304,7 +304,7 @@ extern "js" fn FilePickerOptions::to_js_ffi(
   self : FilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
   #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
@@ -321,7 +321,7 @@ extern "js" fn FilePickerOptions::from_js_ffi(
   value : JsValue,
 ) -> FilePickerOptions =
   #| (v) => ({
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   types: v.types,
   #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
   #|   id: v.id,
   #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn })
@@ -336,7 +336,7 @@ pub fn FilePickerOptions::from_js(value : JsValue) -> FilePickerOptions {
 ///|
 /// OpenFilePickerOptions dictionary
 pub(all) struct OpenFilePickerOptions {
-  types : Array[FilePickerAcceptType]?
+  types : FixedArray[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?
@@ -360,7 +360,7 @@ extern "js" fn OpenFilePickerOptions::to_js_ffi(
   self : OpenFilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
   #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
@@ -378,7 +378,7 @@ extern "js" fn OpenFilePickerOptions::from_js_ffi(
   value : JsValue,
 ) -> OpenFilePickerOptions =
   #| (v) => ({
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   types: v.types,
   #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
   #|   id: v.id,
   #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn }),
@@ -394,7 +394,7 @@ pub fn OpenFilePickerOptions::from_js(value : JsValue) -> OpenFilePickerOptions 
 ///|
 /// SaveFilePickerOptions dictionary
 pub(all) struct SaveFilePickerOptions {
-  types : Array[FilePickerAcceptType]?
+  types : FixedArray[FilePickerAcceptType]?
   excludeAcceptAllOption : Bool?
   id : String?
   startIn : StartInDirectory?
@@ -418,7 +418,7 @@ extern "js" fn SaveFilePickerOptions::to_js_ffi(
   self : SaveFilePickerOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
   #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
@@ -436,7 +436,7 @@ extern "js" fn SaveFilePickerOptions::from_js_ffi(
   value : JsValue,
 ) -> SaveFilePickerOptions =
   #| (v) => ({
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   types: v.types,
   #|   excludeAcceptAllOption: (v.excludeAcceptAllOption === undefined ? -1 : v.excludeAcceptAllOption),
   #|   id: v.id,
   #|   startIn: (v.startIn === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startIn }),
@@ -460,7 +460,7 @@ pub(all) struct DirectoryPickerOptions {
 ///|
 /// Create a new DirectoryPickerOptions with default values
 pub fn DirectoryPickerOptions::default() -> DirectoryPickerOptions {
-  DirectoryPickerOptions::{ id: None, startIn: None, mode: None }
+  DirectoryPickerOptions::{ id: None, startIn: None, mode: None, }
 }
 
 ///|

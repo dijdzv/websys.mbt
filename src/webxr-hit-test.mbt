@@ -7,7 +7,7 @@ pub(all) enum XRHitTestTrackableType {
   Point
   Plane
   Mesh
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,14 +38,14 @@ pub fn XRHitTestTrackableType::from_string(
 /// XRHitTestOptionsInit dictionary
 pub(all) struct XRHitTestOptionsInit {
   space : XRSpace
-  entityTypes : Array[XRHitTestTrackableType]?
+  entityTypes : FixedArray[XRHitTestTrackableType]?
   offsetRay : XRRay?
 }
 
 ///|
 /// Create a new XRHitTestOptionsInit
 pub fn XRHitTestOptionsInit::new(space~ : XRSpace) -> XRHitTestOptionsInit {
-  XRHitTestOptionsInit::{ space, entityTypes: None, offsetRay: None }
+  XRHitTestOptionsInit::{ space, entityTypes: None, offsetRay: None, }
 }
 
 ///|
@@ -54,7 +54,7 @@ extern "js" fn XRHitTestOptionsInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
-  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   entityTypes: self.entityTypes,
   #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -70,7 +70,7 @@ extern "js" fn XRHitTestOptionsInit::from_js_ffi(
 ) -> XRHitTestOptionsInit =
   #| (v) => ({
   #|   space: v.space,
-  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   entityTypes: v.entityTypes,
   #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
   #| })
 
@@ -84,7 +84,7 @@ pub fn XRHitTestOptionsInit::from_js(value : JsValue) -> XRHitTestOptionsInit {
 /// XRTransientInputHitTestOptionsInit dictionary
 pub(all) struct XRTransientInputHitTestOptionsInit {
   profile : String
-  entityTypes : Array[XRHitTestTrackableType]?
+  entityTypes : FixedArray[XRHitTestTrackableType]?
   offsetRay : XRRay?
 }
 
@@ -104,7 +104,7 @@ extern "js" fn XRTransientInputHitTestOptionsInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   profile: self.profile,
-  #|   entityTypes: ((() => { const v = self.entityTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   entityTypes: self.entityTypes,
   #|   offsetRay: ((() => { const v = self.offsetRay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -122,7 +122,7 @@ extern "js" fn XRTransientInputHitTestOptionsInit::from_js_ffi(
 ) -> XRTransientInputHitTestOptionsInit =
   #| (v) => ({
   #|   profile: v.profile,
-  #|   entityTypes: (v.entityTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entityTypes }),
+  #|   entityTypes: v.entityTypes,
   #|   offsetRay: (v.offsetRay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offsetRay })
   #| })
 
@@ -146,7 +146,7 @@ pub(all) struct XRRayDirectionInit {
 ///|
 /// Create a new XRRayDirectionInit with default values
 pub fn XRRayDirectionInit::default() -> XRRayDirectionInit {
-  XRRayDirectionInit::{ x: None, y: None, z: None, w: None }
+  XRRayDirectionInit::{ x: None, y: None, z: None, w: None, }
 }
 
 ///|
@@ -367,7 +367,7 @@ pub extern "js" fn XRTransientInputHitTestResult::get_input_source(
 ///|
 pub extern "js" fn XRTransientInputHitTestResult::get_results(
   self : XRTransientInputHitTestResult,
-) -> Array[XRHitTestResult] =
+) -> FixedArray[XRHitTestResult] =
   #| (self) => self.results
 
 ///|
@@ -403,7 +403,7 @@ pub extern "js" fn JsValue::to_xr_ray(self : JsValue) -> XRRay =
 pub(all) enum XRRayConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRRay::new() -> Result[XRRay, XRRayConstructorError] =

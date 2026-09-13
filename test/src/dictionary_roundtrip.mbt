@@ -49,6 +49,23 @@ pub fn test_dict_mutation_observer_init_roundtrip() -> Unit {
     label="characterData None preserved",
   )
   println("  dict_mutation_observer_init_roundtrip: ok")
+  let absent = @websys.MutationObserverInit::from_js(
+    @websys.MutationObserverInit::default().to_js(),
+  )
+  assert_true(
+    absent.attributeFilter is None,
+    label="absent sequence stays None",
+  )
+  let empty = @websys.MutationObserverInit::{
+    ..@websys.MutationObserverInit::default(),
+    attributeFilter: Some([]),
+  }
+  let roundtrip = @websys.MutationObserverInit::from_js(empty.to_js())
+  assert_eq(
+    roundtrip.attributeFilter.unwrap().length(),
+    0,
+    label="empty sequence stays Some",
+  )
 }
 
 ///|

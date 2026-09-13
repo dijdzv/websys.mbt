@@ -102,7 +102,9 @@ pub extern "js" fn NamedFlow::get_overset(self : NamedFlow) -> Bool =
   #| (self) => self.overset
 
 ///|
-pub extern "js" fn NamedFlow::get_regions(self : NamedFlow) -> Array[Element] =
+pub extern "js" fn NamedFlow::get_regions(
+  self : NamedFlow,
+) -> FixedArray[Element] =
   #| (self) => self.getRegions()
 
 ///|
@@ -112,12 +114,12 @@ pub extern "js" fn NamedFlow::get_first_empty_region_index(
   #| (self) => self.firstEmptyRegionIndex
 
 ///|
-pub extern "js" fn NamedFlow::get_content(self : NamedFlow) -> Array[Node] =
+pub extern "js" fn NamedFlow::get_content(self : NamedFlow) -> FixedArray[Node] =
   #| (self) => self.getContent()
 
 ///|
 pub extern "js" fn NamedFlow::get_regions_by_content(
   self : NamedFlow,
   node : Node,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self, node) => self.getRegionsByContent(node)

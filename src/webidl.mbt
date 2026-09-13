@@ -628,7 +628,7 @@ pub(all) struct QuotaExceededErrorOptions {
 ///|
 /// Create a new QuotaExceededErrorOptions with default values
 pub fn QuotaExceededErrorOptions::default() -> QuotaExceededErrorOptions {
-  QuotaExceededErrorOptions::{ quota: None, requested: None }
+  QuotaExceededErrorOptions::{ quota: None, requested: None, }
 }
 
 ///|
@@ -714,7 +714,7 @@ pub extern "js" fn QuotaExceededError::to_dom_exception(
 pub(all) enum QuotaExceededErrorConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn QuotaExceededError::new() -> Result[

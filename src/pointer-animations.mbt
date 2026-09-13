@@ -8,7 +8,7 @@ pub(all) enum PointerAxis {
   Inline
   X
   Y
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub(all) struct PointerTimelineOptions {
 ///|
 /// Create a new PointerTimelineOptions with default values
 pub fn PointerTimelineOptions::default() -> PointerTimelineOptions {
-  PointerTimelineOptions::{ source: Nullable::Undefined, axis: None }
+  PointerTimelineOptions::{ source: Nullable::Undefined, axis: None, }
 }
 
 ///|

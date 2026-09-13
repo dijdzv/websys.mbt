@@ -6,7 +6,7 @@
 pub(all) enum GyroscopeLocalCoordinateSystem {
   Device
   Screen
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub(all) struct GyroscopeSensorOptions {
 ///|
 /// Create a new GyroscopeSensorOptions with default values
 pub fn GyroscopeSensorOptions::default() -> GyroscopeSensorOptions {
-  GyroscopeSensorOptions::{ referenceFrame: None }
+  GyroscopeSensorOptions::{ referenceFrame: None, }
 }
 
 ///|
@@ -114,7 +114,7 @@ pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
 pub(all) enum GyroscopeConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Gyroscope::new() -> Result[

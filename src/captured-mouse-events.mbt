@@ -11,7 +11,7 @@ pub(all) struct CapturedMouseEventInit {
 ///|
 /// Create a new CapturedMouseEventInit with default values
 pub fn CapturedMouseEventInit::default() -> CapturedMouseEventInit {
-  CapturedMouseEventInit::{ surfaceX: None, surfaceY: None }
+  CapturedMouseEventInit::{ surfaceX: None, surfaceY: None, }
 }
 
 ///|

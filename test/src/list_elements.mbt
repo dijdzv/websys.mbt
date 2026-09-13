@@ -2,7 +2,7 @@
 fn test_olist_element() -> Unit {
   let doc = get_document()
   let ol = @websys.HTMLOListElement::from_js_value(
-    doc.create_element("ol").to_js_value(),
+    create_element(doc, "ol").to_js_value(),
   )
   // reversed
   assert_false(ol.get_reversed(), label="reversed default")
@@ -25,7 +25,7 @@ fn test_olist_element() -> Unit {
 fn test_li_element() -> Unit {
   let doc = get_document()
   let li = @websys.HTMLLIElement::from_js_value(
-    doc.create_element("li").to_js_value(),
+    create_element(doc, "li").to_js_value(),
   )
   li.set_value(3)
   assert_eq(li.get_value(), 3, label="value")
@@ -38,7 +38,7 @@ fn test_li_element() -> Unit {
 fn test_quote_element() -> Unit {
   let doc = get_document()
   let q = @websys.HTMLQuoteElement::from_js_value(
-    doc.create_element("blockquote").to_js_value(),
+    create_element(doc, "blockquote").to_js_value(),
   )
   // cite is a URL-reflected attribute: getter returns resolved absolute URL
   q.set_cite("https://example.com/source")
@@ -50,7 +50,7 @@ fn test_quote_element() -> Unit {
 fn test_hr_element() -> Unit {
   let doc = get_document()
   let hr = @websys.HTMLHRElement::from_js_value(
-    doc.create_element("hr").to_js_value(),
+    create_element(doc, "hr").to_js_value(),
   )
   hr.set_align("center")
   assert_eq(hr.get_align(), "center", label="align")
@@ -70,7 +70,7 @@ fn test_hr_element() -> Unit {
 fn test_pre_element() -> Unit {
   let doc = get_document()
   let pre = @websys.HTMLPreElement::from_js_value(
-    doc.create_element("pre").to_js_value(),
+    create_element(doc, "pre").to_js_value(),
   )
   // width — Rust test: pre.set_width(150); assert_eq!(pre.width(), 150)
   pre.set_width(150)

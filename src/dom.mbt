@@ -6,7 +6,7 @@
 pub(all) enum ShadowRootMode {
   Open
   Closed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn ShadowRootMode::from_string(s : String) -> ShadowRootMode? {
 pub(all) enum SlotAssignmentMode {
   Manual
   Named
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -71,7 +71,7 @@ pub type MutationCallback
 ///|
 /// Create MutationCallback from a MoonBit function
 pub extern "js" fn MutationCallback::from_fn(
-  handler : (Array[MutationRecord], MutationObserver) -> Unit,
+  handler : (FixedArray[MutationRecord], MutationObserver) -> Unit,
 ) -> MutationCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -106,7 +106,7 @@ pub(all) struct EventInit {
 ///|
 /// Create a new EventInit with default values
 pub fn EventInit::default() -> EventInit {
-  EventInit::{ bubbles: None, cancelable: None, composed: None }
+  EventInit::{ bubbles: None, cancelable: None, composed: None, }
 }
 
 ///|
@@ -196,7 +196,7 @@ pub(all) struct EventListenerOptions {
 ///|
 /// Create a new EventListenerOptions with default values
 pub fn EventListenerOptions::default() -> EventListenerOptions {
-  EventListenerOptions::{ capture: None }
+  EventListenerOptions::{ capture: None, }
 }
 
 ///|
@@ -294,7 +294,7 @@ pub(all) struct MutationObserverInit {
   subtree : Bool?
   attributeOldValue : Bool?
   characterDataOldValue : Bool?
-  attributeFilter : Array[String]?
+  attributeFilter : FixedArray[String]?
 }
 
 ///|
@@ -322,7 +322,7 @@ extern "js" fn MutationObserverInit::to_js_ffi(
   #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
   #|   attributeOldValue: (self.attributeOldValue === -1 ? undefined : self.attributeOldValue),
   #|   characterDataOldValue: (self.characterDataOldValue === -1 ? undefined : self.characterDataOldValue),
-  #|   attributeFilter: ((() => { const v = self.attributeFilter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   attributeFilter: self.attributeFilter
   #| })
 
 ///|
@@ -342,7 +342,7 @@ extern "js" fn MutationObserverInit::from_js_ffi(
   #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
   #|   attributeOldValue: (v.attributeOldValue === undefined ? -1 : v.attributeOldValue),
   #|   characterDataOldValue: (v.characterDataOldValue === undefined ? -1 : v.characterDataOldValue),
-  #|   attributeFilter: (v.attributeFilter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributeFilter })
+  #|   attributeFilter: v.attributeFilter
   #| })
 
 ///|
@@ -360,7 +360,7 @@ pub(all) struct GetRootNodeOptions {
 ///|
 /// Create a new GetRootNodeOptions with default values
 pub fn GetRootNodeOptions::default() -> GetRootNodeOptions {
-  GetRootNodeOptions::{ composed: None }
+  GetRootNodeOptions::{ composed: None, }
 }
 
 ///|
@@ -449,7 +449,7 @@ pub(all) struct ImportNodeOptions {
 ///|
 /// Create a new ImportNodeOptions with default values
 pub fn ImportNodeOptions::default() -> ImportNodeOptions {
-  ImportNodeOptions::{ customElementRegistry: None, selfOnly: None }
+  ImportNodeOptions::{ customElementRegistry: None, selfOnly: None, }
 }
 
 ///|
@@ -622,16 +622,8 @@ pub extern "js" fn JsValue::to_event(self : JsValue) -> Event =
   #| (self) => self
 
 ///|
-pub extern "js" fn Event::as_security_policy_violation_event(
-  self : Event,
-) -> SecurityPolicyViolationEvent? =
-  #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_idb_version_change_event(
-  self : Event,
-) -> IDBVersionChangeEvent? =
-  #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn Event::as_autofill_event(self : Event) -> AutofillEvent? =
+  #| (self) => (self instanceof AutofillEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_background_fetch_event(
@@ -682,6 +674,12 @@ pub extern "js" fn Event::as_extendable_cookie_change_event(
   self : Event,
 ) -> ExtendableCookieChangeEvent? =
   #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_security_policy_violation_event(
+  self : Event,
+) -> SecurityPolicyViolationEvent? =
+  #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_animation_event(self : Event) -> AnimationEvent? =
@@ -852,6 +850,12 @@ pub extern "js" fn Event::as_storage_event(self : Event) -> StorageEvent? =
   #| (self) => (self instanceof StorageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Event::as_idb_version_change_event(
+  self : Event,
+) -> IDBVersionChangeEvent? =
+  #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Event::as_before_install_prompt_event(
   self : Event,
 ) -> BeforeInstallPromptEvent? =
@@ -904,18 +908,6 @@ pub extern "js" fn Event::as_device_motion_event(
   #| (self) => (self instanceof DeviceMotionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_can_make_payment_event(
-  self : Event,
-) -> CanMakePaymentEvent? =
-  #| (self) => (self instanceof CanMakePaymentEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_payment_request_event(
-  self : Event,
-) -> PaymentRequestEvent? =
-  #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Event::as_payment_method_change_event(
   self : Event,
 ) -> PaymentMethodChangeEvent? =
@@ -940,8 +932,16 @@ pub extern "js" fn Event::as_picture_in_picture_event(
   #| (self) => (self instanceof PictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Event::as_mouse_event(self : Event) -> MouseEvent? =
+  #| (self) => (self instanceof MouseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn Event::as_pointer_event(self : Event) -> PointerEvent? =
   #| (self) => (self instanceof PointerEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_wheel_event(self : Event) -> WheelEvent? =
+  #| (self) => (self instanceof WheelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_portal_activate_event(
@@ -1036,14 +1036,6 @@ pub extern "js" fn Event::as_focus_event(self : Event) -> FocusEvent? =
   #| (self) => (self instanceof FocusEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn Event::as_mouse_event(self : Event) -> MouseEvent? =
-  #| (self) => (self instanceof MouseEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Event::as_wheel_event(self : Event) -> WheelEvent? =
-  #| (self) => (self instanceof WheelEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Event::as_input_event(self : Event) -> InputEvent? =
   #| (self) => (self instanceof InputEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
@@ -1066,6 +1058,18 @@ pub extern "js" fn Event::as_animation_playback_event(
   self : Event,
 ) -> AnimationPlaybackEvent? =
   #| (self) => (self instanceof AnimationPlaybackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_can_make_payment_event(
+  self : Event,
+) -> CanMakePaymentEvent? =
+  #| (self) => (self instanceof CanMakePaymentEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Event::as_payment_request_event(
+  self : Event,
+) -> PaymentRequestEvent? =
+  #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Event::as_value_event(self : Event) -> ValueEvent? =
@@ -1269,7 +1273,9 @@ pub extern "js" fn Event::get_current_target(self : Event) -> EventTarget? =
   #| (self) => (() => { const v = self.currentTarget; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Event::composed_path(self : Event) -> Array[EventTarget] =
+pub extern "js" fn Event::composed_path(
+  self : Event,
+) -> FixedArray[EventTarget] =
   #| (self) => self.composedPath()
 
 // Event.NONE
@@ -1466,258 +1472,6 @@ pub extern "js" fn JsValue::as_event_target(self : JsValue) -> EventTarget? =
 /// Cast JsValue to EventTarget (unchecked)
 pub extern "js" fn JsValue::to_event_target(self : JsValue) -> EventTarget =
   #| (self) => self
-
-///|
-pub extern "js" fn EventTarget::as_file_reader(
-  self : EventTarget,
-) -> FileReader? =
-  #| (self) => (self instanceof FileReader) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_idb_request(
-  self : EventTarget,
-) -> IDBRequest? =
-  #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_idb_open_db_request(
-  self : EventTarget,
-) -> IDBOpenDBRequest? =
-  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_idb_database(
-  self : EventTarget,
-) -> IDBDatabase? =
-  #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_idb_transaction(
-  self : EventTarget,
-) -> IDBTransaction? =
-  #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_element(
-  self : EventTarget,
-) -> SVGElement? =
-  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_graphics_element(
-  self : EventTarget,
-) -> SVGGraphicsElement? =
-  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_geometry_element(
-  self : EventTarget,
-) -> SVGGeometryElement? =
-  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgsvg_element(
-  self : EventTarget,
-) -> SVGSVGElement? =
-  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgg_element(
-  self : EventTarget,
-) -> SVGGElement? =
-  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_defs_element(
-  self : EventTarget,
-) -> SVGDefsElement? =
-  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_desc_element(
-  self : EventTarget,
-) -> SVGDescElement? =
-  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_metadata_element(
-  self : EventTarget,
-) -> SVGMetadataElement? =
-  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_title_element(
-  self : EventTarget,
-) -> SVGTitleElement? =
-  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_symbol_element(
-  self : EventTarget,
-) -> SVGSymbolElement? =
-  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_use_element(
-  self : EventTarget,
-) -> SVGUseElement? =
-  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_use_element_shadow_root(
-  self : EventTarget,
-) -> SVGUseElementShadowRoot? =
-  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_shadow_animation(
-  self : EventTarget,
-) -> ShadowAnimation? =
-  #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_switch_element(
-  self : EventTarget,
-) -> SVGSwitchElement? =
-  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_style_element(
-  self : EventTarget,
-) -> SVGStyleElement? =
-  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_rect_element(
-  self : EventTarget,
-) -> SVGRectElement? =
-  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_circle_element(
-  self : EventTarget,
-) -> SVGCircleElement? =
-  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_ellipse_element(
-  self : EventTarget,
-) -> SVGEllipseElement? =
-  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_line_element(
-  self : EventTarget,
-) -> SVGLineElement? =
-  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_polyline_element(
-  self : EventTarget,
-) -> SVGPolylineElement? =
-  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_polygon_element(
-  self : EventTarget,
-) -> SVGPolygonElement? =
-  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_text_content_element(
-  self : EventTarget,
-) -> SVGTextContentElement? =
-  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_text_positioning_element(
-  self : EventTarget,
-) -> SVGTextPositioningElement? =
-  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_text_element(
-  self : EventTarget,
-) -> SVGTextElement? =
-  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svgt_span_element(
-  self : EventTarget,
-) -> SVGTSpanElement? =
-  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_text_path_element(
-  self : EventTarget,
-) -> SVGTextPathElement? =
-  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_image_element(
-  self : EventTarget,
-) -> SVGImageElement? =
-  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_foreign_object_element(
-  self : EventTarget,
-) -> SVGForeignObjectElement? =
-  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_marker_element(
-  self : EventTarget,
-) -> SVGMarkerElement? =
-  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_gradient_element(
-  self : EventTarget,
-) -> SVGGradientElement? =
-  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_linear_gradient_element(
-  self : EventTarget,
-) -> SVGLinearGradientElement? =
-  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_radial_gradient_element(
-  self : EventTarget,
-) -> SVGRadialGradientElement? =
-  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_stop_element(
-  self : EventTarget,
-) -> SVGStopElement? =
-  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_pattern_element(
-  self : EventTarget,
-) -> SVGPatternElement? =
-  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_script_element(
-  self : EventTarget,
-) -> SVGScriptElement? =
-  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svga_element(
-  self : EventTarget,
-) -> SVGAElement? =
-  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_svg_view_element(
-  self : EventTarget,
-) -> SVGViewElement? =
-  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_accelerometer(
@@ -1942,6 +1696,12 @@ pub extern "js" fn EventTarget::as_html_fenced_frame_element(
   #| (self) => (self instanceof HTMLFencedFrameElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn EventTarget::as_file_reader(
+  self : EventTarget,
+) -> FileReader? =
+  #| (self) => (self instanceof FileReader) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn EventTarget::as_svg_filter_element(
   self : EventTarget,
 ) -> SVGFilterElement? =
@@ -2106,12 +1866,6 @@ pub extern "js" fn EventTarget::as_svgfe_turbulence_element(
 ///|
 pub extern "js" fn EventTarget::as_sensor(self : EventTarget) -> Sensor? =
   #| (self) => (self instanceof Sensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn EventTarget::as_geolocation_sensor(
-  self : EventTarget,
-) -> GeolocationSensor? =
-  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_gyroscope(self : EventTarget) -> Gyroscope? =
@@ -2664,6 +2418,30 @@ pub extern "js" fn EventTarget::as_idle_detector(
   #| (self) => (self instanceof IdleDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn EventTarget::as_idb_request(
+  self : EventTarget,
+) -> IDBRequest? =
+  #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_idb_open_db_request(
+  self : EventTarget,
+) -> IDBOpenDBRequest? =
+  #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_idb_database(
+  self : EventTarget,
+) -> IDBDatabase? =
+  #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_idb_transaction(
+  self : EventTarget,
+) -> IDBTransaction? =
+  #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn EventTarget::as_profiler(self : EventTarget) -> Profiler? =
   #| (self) => (self instanceof Profiler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
@@ -3004,6 +2782,228 @@ pub extern "js" fn EventTarget::as_svg_path_element(
   self : EventTarget,
 ) -> SVGPathElement? =
   #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_element(
+  self : EventTarget,
+) -> SVGElement? =
+  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_graphics_element(
+  self : EventTarget,
+) -> SVGGraphicsElement? =
+  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_geometry_element(
+  self : EventTarget,
+) -> SVGGeometryElement? =
+  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgsvg_element(
+  self : EventTarget,
+) -> SVGSVGElement? =
+  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgg_element(
+  self : EventTarget,
+) -> SVGGElement? =
+  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_defs_element(
+  self : EventTarget,
+) -> SVGDefsElement? =
+  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_desc_element(
+  self : EventTarget,
+) -> SVGDescElement? =
+  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_metadata_element(
+  self : EventTarget,
+) -> SVGMetadataElement? =
+  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_title_element(
+  self : EventTarget,
+) -> SVGTitleElement? =
+  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_symbol_element(
+  self : EventTarget,
+) -> SVGSymbolElement? =
+  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_use_element(
+  self : EventTarget,
+) -> SVGUseElement? =
+  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_use_element_shadow_root(
+  self : EventTarget,
+) -> SVGUseElementShadowRoot? =
+  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_shadow_animation(
+  self : EventTarget,
+) -> ShadowAnimation? =
+  #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_switch_element(
+  self : EventTarget,
+) -> SVGSwitchElement? =
+  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_style_element(
+  self : EventTarget,
+) -> SVGStyleElement? =
+  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_rect_element(
+  self : EventTarget,
+) -> SVGRectElement? =
+  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_circle_element(
+  self : EventTarget,
+) -> SVGCircleElement? =
+  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_ellipse_element(
+  self : EventTarget,
+) -> SVGEllipseElement? =
+  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_line_element(
+  self : EventTarget,
+) -> SVGLineElement? =
+  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_polyline_element(
+  self : EventTarget,
+) -> SVGPolylineElement? =
+  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_polygon_element(
+  self : EventTarget,
+) -> SVGPolygonElement? =
+  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_text_content_element(
+  self : EventTarget,
+) -> SVGTextContentElement? =
+  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_text_positioning_element(
+  self : EventTarget,
+) -> SVGTextPositioningElement? =
+  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_text_element(
+  self : EventTarget,
+) -> SVGTextElement? =
+  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svgt_span_element(
+  self : EventTarget,
+) -> SVGTSpanElement? =
+  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_text_path_element(
+  self : EventTarget,
+) -> SVGTextPathElement? =
+  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_image_element(
+  self : EventTarget,
+) -> SVGImageElement? =
+  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_foreign_object_element(
+  self : EventTarget,
+) -> SVGForeignObjectElement? =
+  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_marker_element(
+  self : EventTarget,
+) -> SVGMarkerElement? =
+  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_gradient_element(
+  self : EventTarget,
+) -> SVGGradientElement? =
+  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_linear_gradient_element(
+  self : EventTarget,
+) -> SVGLinearGradientElement? =
+  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_radial_gradient_element(
+  self : EventTarget,
+) -> SVGRadialGradientElement? =
+  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_stop_element(
+  self : EventTarget,
+) -> SVGStopElement? =
+  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_pattern_element(
+  self : EventTarget,
+) -> SVGPatternElement? =
+  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_script_element(
+  self : EventTarget,
+) -> SVGScriptElement? =
+  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svga_element(
+  self : EventTarget,
+) -> SVGAElement? =
+  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn EventTarget::as_svg_view_element(
+  self : EventTarget,
+) -> SVGViewElement? =
+  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn EventTarget::as_virtual_keyboard(
@@ -3480,7 +3480,7 @@ pub extern "js" fn EventTarget::as_xml_http_request(
 pub(all) enum EventTargetDispatchEventError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn EventTarget::new() -> EventTarget =
@@ -3668,11 +3668,11 @@ pub extern "js" fn AbortSignal::abort_with_reason(
 
 ///|
 pub extern "js" fn AbortSignal::timeout(milliseconds : Int64) -> AbortSignal =
-  #| (milliseconds) => AbortSignal.timeout((milliseconds.hi * 4294967296 + milliseconds.lo))
+  #| (milliseconds) => AbortSignal.timeout(Number(milliseconds))
 
 ///|
 pub extern "js" fn AbortSignal::any(
-  signals : Array[AbortSignal],
+  signals : FixedArray[AbortSignal],
 ) -> AbortSignal =
   #| (signals) => AbortSignal.any(signals)
 
@@ -3889,7 +3889,7 @@ pub extern "js" fn JsValue::to_mutation_observer(
 pub(all) enum MutationObserverObserveError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MutationObserver::new(
@@ -3930,7 +3930,7 @@ pub extern "js" fn MutationObserver::disconnect(
 ///|
 pub extern "js" fn MutationObserver::take_records(
   self : MutationObserver,
-) -> Array[MutationRecord] =
+) -> FixedArray[MutationRecord] =
   #| (self) => self.takeRecords()
 
 ///|
@@ -4050,190 +4050,6 @@ pub extern "js" fn JsValue::to_node(self : JsValue) -> Node =
 ///|
 pub extern "js" fn Node::to_event_target(self : Node) -> EventTarget =
   #| (self) => self
-
-///|
-pub extern "js" fn Node::as_svg_element(self : Node) -> SVGElement? =
-  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_graphics_element(
-  self : Node,
-) -> SVGGraphicsElement? =
-  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_geometry_element(
-  self : Node,
-) -> SVGGeometryElement? =
-  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgsvg_element(self : Node) -> SVGSVGElement? =
-  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgg_element(self : Node) -> SVGGElement? =
-  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_defs_element(self : Node) -> SVGDefsElement? =
-  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_desc_element(self : Node) -> SVGDescElement? =
-  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_metadata_element(
-  self : Node,
-) -> SVGMetadataElement? =
-  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_title_element(self : Node) -> SVGTitleElement? =
-  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_symbol_element(
-  self : Node,
-) -> SVGSymbolElement? =
-  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_use_element(self : Node) -> SVGUseElement? =
-  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_use_element_shadow_root(
-  self : Node,
-) -> SVGUseElementShadowRoot? =
-  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_switch_element(
-  self : Node,
-) -> SVGSwitchElement? =
-  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_style_element(self : Node) -> SVGStyleElement? =
-  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_rect_element(self : Node) -> SVGRectElement? =
-  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_circle_element(
-  self : Node,
-) -> SVGCircleElement? =
-  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_ellipse_element(
-  self : Node,
-) -> SVGEllipseElement? =
-  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_line_element(self : Node) -> SVGLineElement? =
-  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_polyline_element(
-  self : Node,
-) -> SVGPolylineElement? =
-  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_polygon_element(
-  self : Node,
-) -> SVGPolygonElement? =
-  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_text_content_element(
-  self : Node,
-) -> SVGTextContentElement? =
-  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_text_positioning_element(
-  self : Node,
-) -> SVGTextPositioningElement? =
-  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_text_element(self : Node) -> SVGTextElement? =
-  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svgt_span_element(self : Node) -> SVGTSpanElement? =
-  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_text_path_element(
-  self : Node,
-) -> SVGTextPathElement? =
-  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_image_element(self : Node) -> SVGImageElement? =
-  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_foreign_object_element(
-  self : Node,
-) -> SVGForeignObjectElement? =
-  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_marker_element(
-  self : Node,
-) -> SVGMarkerElement? =
-  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_gradient_element(
-  self : Node,
-) -> SVGGradientElement? =
-  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_linear_gradient_element(
-  self : Node,
-) -> SVGLinearGradientElement? =
-  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_radial_gradient_element(
-  self : Node,
-) -> SVGRadialGradientElement? =
-  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_stop_element(self : Node) -> SVGStopElement? =
-  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_pattern_element(
-  self : Node,
-) -> SVGPatternElement? =
-  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_script_element(
-  self : Node,
-) -> SVGScriptElement? =
-  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svga_element(self : Node) -> SVGAElement? =
-  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Node::as_svg_view_element(self : Node) -> SVGViewElement? =
-  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Node::as_svg_clip_path_element(
@@ -4916,19 +4732,203 @@ pub extern "js" fn Node::as_svg_path_element(self : Node) -> SVGPathElement? =
   #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Node::as_svg_element(self : Node) -> SVGElement? =
+  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_graphics_element(
+  self : Node,
+) -> SVGGraphicsElement? =
+  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_geometry_element(
+  self : Node,
+) -> SVGGeometryElement? =
+  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgsvg_element(self : Node) -> SVGSVGElement? =
+  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgg_element(self : Node) -> SVGGElement? =
+  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_defs_element(self : Node) -> SVGDefsElement? =
+  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_desc_element(self : Node) -> SVGDescElement? =
+  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_metadata_element(
+  self : Node,
+) -> SVGMetadataElement? =
+  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_title_element(self : Node) -> SVGTitleElement? =
+  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_symbol_element(
+  self : Node,
+) -> SVGSymbolElement? =
+  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_use_element(self : Node) -> SVGUseElement? =
+  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_use_element_shadow_root(
+  self : Node,
+) -> SVGUseElementShadowRoot? =
+  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_switch_element(
+  self : Node,
+) -> SVGSwitchElement? =
+  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_style_element(self : Node) -> SVGStyleElement? =
+  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_rect_element(self : Node) -> SVGRectElement? =
+  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_circle_element(
+  self : Node,
+) -> SVGCircleElement? =
+  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_ellipse_element(
+  self : Node,
+) -> SVGEllipseElement? =
+  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_line_element(self : Node) -> SVGLineElement? =
+  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_polyline_element(
+  self : Node,
+) -> SVGPolylineElement? =
+  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_polygon_element(
+  self : Node,
+) -> SVGPolygonElement? =
+  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_text_content_element(
+  self : Node,
+) -> SVGTextContentElement? =
+  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_text_positioning_element(
+  self : Node,
+) -> SVGTextPositioningElement? =
+  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_text_element(self : Node) -> SVGTextElement? =
+  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svgt_span_element(self : Node) -> SVGTSpanElement? =
+  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_text_path_element(
+  self : Node,
+) -> SVGTextPathElement? =
+  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_image_element(self : Node) -> SVGImageElement? =
+  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_foreign_object_element(
+  self : Node,
+) -> SVGForeignObjectElement? =
+  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_marker_element(
+  self : Node,
+) -> SVGMarkerElement? =
+  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_gradient_element(
+  self : Node,
+) -> SVGGradientElement? =
+  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_linear_gradient_element(
+  self : Node,
+) -> SVGLinearGradientElement? =
+  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_radial_gradient_element(
+  self : Node,
+) -> SVGRadialGradientElement? =
+  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_stop_element(self : Node) -> SVGStopElement? =
+  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_pattern_element(
+  self : Node,
+) -> SVGPatternElement? =
+  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_script_element(
+  self : Node,
+) -> SVGScriptElement? =
+  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svga_element(self : Node) -> SVGAElement? =
+  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Node::as_svg_view_element(self : Node) -> SVGViewElement? =
+  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Error type for throwing methods
 pub(all) enum NodeInsertBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NodeAppendChildError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -4936,7 +4936,7 @@ pub(all) enum NodeReplaceChildError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -4944,7 +4944,7 @@ pub(all) enum NodeRemoveChildError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // Node.ELEMENT_NODE
 
@@ -5250,25 +5250,34 @@ pub extern "js" fn Document::as_xml_document(self : Document) -> XMLDocument? =
 
 ///|
 /// Error type for throwing methods
-pub(all) enum DocumentCreateElementNSError {
-  NamespaceError(JsError)
+pub(all) enum DocumentCreateElementError {
+  NotSupportedError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum DocumentCreateElementNSError {
+  NamespaceError(JsError)
+  NotSupportedError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateProcessingInstructionError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentCreateAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5276,21 +5285,21 @@ pub(all) enum DocumentCreateAttributeNSError {
   NamespaceError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentParseHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetDomainError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5298,7 +5307,7 @@ pub(all) enum DocumentWriteError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5306,14 +5315,14 @@ pub(all) enum DocumentWritelnError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentExitPictureInPictureError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5322,21 +5331,21 @@ pub(all) enum DocumentRequestStorageAccessForError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasUnpartitionedCookieAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentHasStorageAccessError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5344,7 +5353,7 @@ pub(all) enum DocumentRequestStorageAccessError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5353,7 +5362,7 @@ pub(all) enum DocumentHasPrivateTokenError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5362,35 +5371,35 @@ pub(all) enum DocumentHasRedemptionRecordError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5399,21 +5408,21 @@ pub(all) enum DocumentMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Document::new() -> Document =
@@ -5487,16 +5496,16 @@ pub extern "js" fn Document::get_elements_by_class_name(
 pub extern "js" fn Document::create_element(
   self : Document,
   local_name : String,
-) -> Element =
-  #| (self, local_name) => self.createElement(local_name)
+) -> Result[Element, DocumentCreateElementError] =
+  #| (self, local_name) => (() => { try { return { $tag: 1, _0: self.createElement(local_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_element_with_options(
   self : Document,
   local_name : String,
   options : StringOrElementCreationOptions,
-) -> Element =
-  #| (self, local_name, options) => self.createElement(local_name, options)
+) -> Result[Element, DocumentCreateElementError] =
+  #| (self, local_name, options) => (() => { try { return { $tag: 1, _0: self.createElement(local_name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_element_ns(
@@ -5504,7 +5513,7 @@ pub extern "js" fn Document::create_element_ns(
   namespace_ : String?,
   qualified_name : String,
 ) -> Result[Element, DocumentCreateElementNSError] =
-  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_element_ns_with_options(
@@ -5513,7 +5522,7 @@ pub extern "js" fn Document::create_element_ns_with_options(
   qualified_name : String,
   options : StringOrElementCreationOptions,
 ) -> Result[Element, DocumentCreateElementNSError] =
-  #| (self, namespace_, qualified_name, options) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, namespace_, qualified_name, options) => (() => { try { return { $tag: 1, _0: self.createElementNS(namespace_, qualified_name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Document::create_document_fragment(
@@ -5626,12 +5635,6 @@ pub extern "js" fn Document::create_tree_walker_with_filter(
   #| (self, root, what_to_show, filter) => self.createTreeWalker(root, what_to_show, (filter.$tag === 1 ? filter._0 : null))
 
 ///|
-pub extern "js" fn Document::get_root_element(
-  self : Document,
-) -> SVGSVGElement? =
-  #| (self) => (() => { const v = self.rootElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
-
-///|
 pub extern "js" fn Document::get_named_flows(self : Document) -> NamedFlowMap =
   #| (self) => self.namedFlows
 
@@ -5667,7 +5670,7 @@ pub extern "js" fn Document::elements_from_point(
   self : Document,
   x : Double,
   y : Double,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self, x, y) => self.elementsFromPoint(x, y)
 
 ///|
@@ -6203,6 +6206,7 @@ pub extern "js" fn Document::clear_onprerenderingchange(
   #| (self) => { self.onprerenderingchange = null }
 
 ///|
+/// @alert deprecated "requestStorageAccessFor is deprecated"
 pub extern "js" fn Document::request_storage_access_for(
   self : Document,
   requested_origin : String,
@@ -6238,6 +6242,12 @@ pub extern "js" fn Document::request_storage_access(
   #| (self) => self.requestStorageAccess().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
+pub extern "js" fn Document::get_root_element(
+  self : Document,
+) -> SVGSVGElement? =
+  #| (self) => (() => { const v = self.rootElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
 pub extern "js" fn Document::has_private_token(
   self : Document,
   issuer : String,
@@ -6260,21 +6270,23 @@ pub extern "js" fn Document::get_fonts(self : Document) -> FontFaceSet =
   #| (self) => self.fonts
 
 ///|
-pub extern "js" fn Document::get_box_quads(self : Document) -> Array[DOMQuad] =
+pub extern "js" fn Document::get_box_quads(
+  self : Document,
+) -> FixedArray[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
 extern "js" fn Document::get_box_quads_with_options_ffi(
   self : Document,
   options : JsValue,
-) -> Array[DOMQuad] =
+) -> FixedArray[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
 pub fn Document::get_box_quads_with_options(
   self : Document,
   options : BoxQuadOptions,
-) -> Array[DOMQuad] {
+) -> FixedArray[DOMQuad] {
   Document::get_box_quads_with_options_ffi(self, options.to_js())
 }
 
@@ -6408,13 +6420,13 @@ pub extern "js" fn Document::get_style_sheets(
 ///|
 pub extern "js" fn Document::get_adopted_style_sheets(
   self : Document,
-) -> Array[CSSStyleSheet] =
+) -> FixedArray[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn Document::set_adopted_style_sheets(
   self : Document,
-  value : Array[CSSStyleSheet],
+  value : FixedArray[CSSStyleSheet],
 ) -> Result[Unit, DocumentSetAdoptedStyleSheetsError] =
   #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
@@ -6449,7 +6461,7 @@ pub extern "js" fn Document::get_pointer_lock_element(
 ///|
 pub extern "js" fn Document::get_animations(
   self : Document,
-) -> Array[Animation] =
+) -> FixedArray[Animation] =
   #| (self) => self.getAnimations()
 
 ///|
@@ -7726,6 +7738,30 @@ pub extern "js" fn Document::clear_onbeforexrselect(self : Document) -> Unit =
   #| (self) => { self.onbeforexrselect = null }
 
 ///|
+pub extern "js" fn Document::aria_notify(
+  self : Document,
+  announcement : String,
+) -> Unit =
+  #| (self, announcement) => self.ariaNotify(announcement)
+
+///|
+extern "js" fn Document::aria_notify_with_options_ffi(
+  self : Document,
+  announcement : String,
+  options : JsValue,
+) -> Unit =
+  #| (self, announcement, options) => self.ariaNotify(announcement, options)
+
+///|
+pub fn Document::aria_notify_with_options(
+  self : Document,
+  announcement : String,
+  options : AriaNotificationOptions,
+) -> Unit {
+  Document::aria_notify_with_options_ffi(self, announcement, options.to_js())
+}
+
+///|
 pub extern "js" fn Document::convert_quad_from_node_with_text(
   self : Document,
   quad : DOMQuadInit,
@@ -7914,6 +7950,14 @@ pub extern "js" fn JsValue::to_dom_implementation(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum DOMImplementationCreateDocumentError {
+  NamespaceError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn DOMImplementation::create_document_type(
   self : DOMImplementation,
   name : String,
@@ -7927,8 +7971,8 @@ pub extern "js" fn DOMImplementation::create_document(
   self : DOMImplementation,
   namespace_ : String?,
   qualified_name : String,
-) -> XMLDocument =
-  #| (self, namespace_, qualified_name) => self.createDocument(namespace_, qualified_name)
+) -> Result[XMLDocument, DOMImplementationCreateDocumentError] =
+  #| (self, namespace_, qualified_name) => (() => { try { return { $tag: 1, _0: self.createDocument(namespace_, qualified_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMImplementation::create_document_with_doctype(
@@ -7936,8 +7980,8 @@ pub extern "js" fn DOMImplementation::create_document_with_doctype(
   namespace_ : String?,
   qualified_name : String,
   doctype : DocumentType?,
-) -> XMLDocument =
-  #| (self, namespace_, qualified_name, doctype) => self.createDocument(namespace_, qualified_name, (doctype.$tag === 1 ? doctype._0 : null))
+) -> Result[XMLDocument, DOMImplementationCreateDocumentError] =
+  #| (self, namespace_, qualified_name, doctype) => (() => { try { return { $tag: 1, _0: self.createDocument(namespace_, qualified_name, (doctype.$tag === 1 ? doctype._0 : null)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NamespaceError') return { $tag: 0, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn DOMImplementation::create_html_document(
@@ -8004,21 +8048,21 @@ pub extern "js" fn DocumentType::to_event_target(
 pub(all) enum DocumentTypeBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentTypeReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DocumentType::get_name(self : DocumentType) -> String =
@@ -8106,37 +8150,37 @@ pub extern "js" fn DocumentFragment::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn DocumentFragment::as_svg_use_element_shadow_root(
-  self : DocumentFragment,
-) -> SVGUseElementShadowRoot? =
-  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn DocumentFragment::as_shadow_root(
   self : DocumentFragment,
 ) -> ShadowRoot? =
   #| (self) => (self instanceof ShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn DocumentFragment::as_svg_use_element_shadow_root(
+  self : DocumentFragment,
+) -> SVGUseElementShadowRoot? =
+  #| (self) => (self instanceof SVGUseElementShadowRoot) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -8145,21 +8189,21 @@ pub(all) enum DocumentFragmentMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DocumentFragmentQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DocumentFragment::new() -> DocumentFragment =
@@ -8294,7 +8338,7 @@ pub extern "js" fn ShadowRoot::as_svg_use_element_shadow_root(
 pub(all) enum ShadowRootSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -8302,14 +8346,14 @@ pub(all) enum ShadowRootSetInnerHTMLError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ShadowRootSetAdoptedStyleSheetsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ShadowRoot::get_mode(self : ShadowRoot) -> ShadowRootMode =
@@ -8396,13 +8440,13 @@ pub extern "js" fn ShadowRoot::get_style_sheets(
 ///|
 pub extern "js" fn ShadowRoot::get_adopted_style_sheets(
   self : ShadowRoot,
-) -> Array[CSSStyleSheet] =
+) -> FixedArray[CSSStyleSheet] =
   #| (self) => self.adoptedStyleSheets
 
 ///|
 pub extern "js" fn ShadowRoot::set_adopted_style_sheets(
   self : ShadowRoot,
-  value : Array[CSSStyleSheet],
+  value : FixedArray[CSSStyleSheet],
 ) -> Result[Unit, ShadowRootSetAdoptedStyleSheetsError] =
   #| (self, value) => (() => { try { self.adoptedStyleSheets = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
@@ -8439,7 +8483,7 @@ pub extern "js" fn ShadowRoot::get_pointer_lock_element(
 ///|
 pub extern "js" fn ShadowRoot::get_animations(
   self : ShadowRoot,
-) -> Array[Animation] =
+) -> FixedArray[Animation] =
   #| (self) => self.getAnimations()
 
 ///|
@@ -8477,208 +8521,6 @@ pub extern "js" fn Element::to_node(self : Element) -> Node =
 ///|
 pub extern "js" fn Element::to_event_target(self : Element) -> EventTarget =
   #| (self) => self
-
-///|
-pub extern "js" fn Element::as_svg_element(self : Element) -> SVGElement? =
-  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_graphics_element(
-  self : Element,
-) -> SVGGraphicsElement? =
-  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_geometry_element(
-  self : Element,
-) -> SVGGeometryElement? =
-  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgsvg_element(self : Element) -> SVGSVGElement? =
-  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgg_element(self : Element) -> SVGGElement? =
-  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_defs_element(
-  self : Element,
-) -> SVGDefsElement? =
-  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_desc_element(
-  self : Element,
-) -> SVGDescElement? =
-  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_metadata_element(
-  self : Element,
-) -> SVGMetadataElement? =
-  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_title_element(
-  self : Element,
-) -> SVGTitleElement? =
-  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_symbol_element(
-  self : Element,
-) -> SVGSymbolElement? =
-  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_use_element(
-  self : Element,
-) -> SVGUseElement? =
-  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_switch_element(
-  self : Element,
-) -> SVGSwitchElement? =
-  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_style_element(
-  self : Element,
-) -> SVGStyleElement? =
-  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_rect_element(
-  self : Element,
-) -> SVGRectElement? =
-  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_circle_element(
-  self : Element,
-) -> SVGCircleElement? =
-  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_ellipse_element(
-  self : Element,
-) -> SVGEllipseElement? =
-  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_line_element(
-  self : Element,
-) -> SVGLineElement? =
-  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_polyline_element(
-  self : Element,
-) -> SVGPolylineElement? =
-  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_polygon_element(
-  self : Element,
-) -> SVGPolygonElement? =
-  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_text_content_element(
-  self : Element,
-) -> SVGTextContentElement? =
-  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_text_positioning_element(
-  self : Element,
-) -> SVGTextPositioningElement? =
-  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_text_element(
-  self : Element,
-) -> SVGTextElement? =
-  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svgt_span_element(
-  self : Element,
-) -> SVGTSpanElement? =
-  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_text_path_element(
-  self : Element,
-) -> SVGTextPathElement? =
-  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_image_element(
-  self : Element,
-) -> SVGImageElement? =
-  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_foreign_object_element(
-  self : Element,
-) -> SVGForeignObjectElement? =
-  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_marker_element(
-  self : Element,
-) -> SVGMarkerElement? =
-  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_gradient_element(
-  self : Element,
-) -> SVGGradientElement? =
-  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_linear_gradient_element(
-  self : Element,
-) -> SVGLinearGradientElement? =
-  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_radial_gradient_element(
-  self : Element,
-) -> SVGRadialGradientElement? =
-  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_stop_element(
-  self : Element,
-) -> SVGStopElement? =
-  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_pattern_element(
-  self : Element,
-) -> SVGPatternElement? =
-  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_script_element(
-  self : Element,
-) -> SVGScriptElement? =
-  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svga_element(self : Element) -> SVGAElement? =
-  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Element::as_svg_view_element(
-  self : Element,
-) -> SVGViewElement? =
-  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Element::as_svg_clip_path_element(
@@ -9357,47 +9199,258 @@ pub extern "js" fn Element::as_svg_path_element(
   #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Element::as_svg_element(self : Element) -> SVGElement? =
+  #| (self) => (self instanceof SVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_graphics_element(
+  self : Element,
+) -> SVGGraphicsElement? =
+  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_geometry_element(
+  self : Element,
+) -> SVGGeometryElement? =
+  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgsvg_element(self : Element) -> SVGSVGElement? =
+  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgg_element(self : Element) -> SVGGElement? =
+  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_defs_element(
+  self : Element,
+) -> SVGDefsElement? =
+  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_desc_element(
+  self : Element,
+) -> SVGDescElement? =
+  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_metadata_element(
+  self : Element,
+) -> SVGMetadataElement? =
+  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_title_element(
+  self : Element,
+) -> SVGTitleElement? =
+  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_symbol_element(
+  self : Element,
+) -> SVGSymbolElement? =
+  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_use_element(
+  self : Element,
+) -> SVGUseElement? =
+  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_switch_element(
+  self : Element,
+) -> SVGSwitchElement? =
+  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_style_element(
+  self : Element,
+) -> SVGStyleElement? =
+  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_rect_element(
+  self : Element,
+) -> SVGRectElement? =
+  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_circle_element(
+  self : Element,
+) -> SVGCircleElement? =
+  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_ellipse_element(
+  self : Element,
+) -> SVGEllipseElement? =
+  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_line_element(
+  self : Element,
+) -> SVGLineElement? =
+  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_polyline_element(
+  self : Element,
+) -> SVGPolylineElement? =
+  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_polygon_element(
+  self : Element,
+) -> SVGPolygonElement? =
+  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_text_content_element(
+  self : Element,
+) -> SVGTextContentElement? =
+  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_text_positioning_element(
+  self : Element,
+) -> SVGTextPositioningElement? =
+  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_text_element(
+  self : Element,
+) -> SVGTextElement? =
+  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svgt_span_element(
+  self : Element,
+) -> SVGTSpanElement? =
+  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_text_path_element(
+  self : Element,
+) -> SVGTextPathElement? =
+  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_image_element(
+  self : Element,
+) -> SVGImageElement? =
+  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_foreign_object_element(
+  self : Element,
+) -> SVGForeignObjectElement? =
+  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_marker_element(
+  self : Element,
+) -> SVGMarkerElement? =
+  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_gradient_element(
+  self : Element,
+) -> SVGGradientElement? =
+  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_linear_gradient_element(
+  self : Element,
+) -> SVGLinearGradientElement? =
+  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_radial_gradient_element(
+  self : Element,
+) -> SVGRadialGradientElement? =
+  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_stop_element(
+  self : Element,
+) -> SVGStopElement? =
+  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_pattern_element(
+  self : Element,
+) -> SVGPatternElement? =
+  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_script_element(
+  self : Element,
+) -> SVGScriptElement? =
+  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svga_element(self : Element) -> SVGAElement? =
+  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn Element::as_svg_view_element(
+  self : Element,
+) -> SVGViewElement? =
+  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Error type for throwing methods
 pub(all) enum ElementSetAttributeError {
   TypeError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementSetAttributeNSError {
+  TypeError(JsError)
+  NamespaceError(JsError)
+  InvalidCharacterError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementToggleAttributeError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementRemoveAttributeNodeError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAttachShadowError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementClosestError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementMatchesError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -9405,28 +9458,29 @@ pub(all) enum ElementInsertAdjacentElementError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInsertAdjacentTextError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementRequestFullscreenError {
   TypeError(JsError)
+  NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementSetHTMLUnsafeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -9435,7 +9489,7 @@ pub(all) enum ElementSetInnerHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -9444,7 +9498,7 @@ pub(all) enum ElementSetOuterHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -9453,42 +9507,42 @@ pub(all) enum ElementInsertAdjacentHTMLError {
   SyntaxError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementSetPointerCaptureError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReleasePointerCaptureError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementPrependError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAppendError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceChildrenError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -9497,42 +9551,49 @@ pub(all) enum ElementMoveBeforeError {
   NotFoundError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementQuerySelectorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementQuerySelectorAllError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum ElementGetAnimationsError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Element::get_namespace_uri(self : Element) -> String? =
@@ -9592,7 +9653,7 @@ pub extern "js" fn Element::get_attributes(self : Element) -> NamedNodeMap =
 ///|
 pub extern "js" fn Element::get_attribute_names(
   self : Element,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.getAttributeNames()
 
 ///|
@@ -9624,8 +9685,8 @@ pub extern "js" fn Element::set_attribute_ns(
   namespace_ : String?,
   qualified_name : String,
   value : TrustedTypeOrString,
-) -> Unit =
-  #| (self, namespace_, qualified_name, value) => self.setAttributeNS(namespace_, qualified_name, value)
+) -> Result[Unit, ElementSetAttributeNSError] =
+  #| (self, namespace_, qualified_name, value) => (() => { try { self.setAttributeNS(namespace_, qualified_name, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NamespaceError') return { $tag: 1, _0: e }; if (n === 'InvalidCharacterError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Element::remove_attribute(
@@ -9799,21 +9860,21 @@ pub extern "js" fn Element::get_spatial_navigation_container(
   #| (self) => self.getSpatialNavigationContainer()
 
 ///|
-pub extern "js" fn Element::focusable_areas(self : Element) -> Array[Node] =
+pub extern "js" fn Element::focusable_areas(self : Element) -> FixedArray[Node] =
   #| (self) => self.focusableAreas()
 
 ///|
 extern "js" fn Element::focusable_areas_with_option_ffi(
   self : Element,
   option : JsValue,
-) -> Array[Node] =
+) -> FixedArray[Node] =
   #| (self, option) => self.focusableAreas(option)
 
 ///|
 pub fn Element::focusable_areas_with_option(
   self : Element,
   option : FocusableAreasOption,
-) -> Array[Node] {
+) -> FixedArray[Node] {
   Element::focusable_areas_with_option_ffi(self, option.to_js())
 }
 
@@ -10065,14 +10126,14 @@ pub extern "js" fn Element::set_element_timing(
 pub extern "js" fn Element::request_fullscreen(
   self : Element,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self) => self.requestFullscreen().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self) => self.requestFullscreen().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Element::request_fullscreen_with_options_ffi(
   self : Element,
   options : JsValue,
 ) -> Promise[Result[Unit, ElementRequestFullscreenError]] =
-  #| (self, options) => self.requestFullscreen(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+  #| (self, options) => self.requestFullscreen(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Element::request_fullscreen_with_options(
@@ -10213,25 +10274,27 @@ pub extern "js" fn Element::get_region_overset(self : Element) -> String =
 ///|
 pub extern "js" fn Element::get_region_flow_ranges(
   self : Element,
-) -> Array[Range] =
+) -> FixedArray[Range] =
   #| (self) => self.getRegionFlowRanges()
 
 ///|
-pub extern "js" fn Element::get_box_quads(self : Element) -> Array[DOMQuad] =
+pub extern "js" fn Element::get_box_quads(
+  self : Element,
+) -> FixedArray[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
 extern "js" fn Element::get_box_quads_with_options_ffi(
   self : Element,
   options : JsValue,
-) -> Array[DOMQuad] =
+) -> FixedArray[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
 pub fn Element::get_box_quads_with_options(
   self : Element,
   options : BoxQuadOptions,
-) -> Array[DOMQuad] {
+) -> FixedArray[DOMQuad] {
   Element::get_box_quads_with_options_ffi(self, options.to_js())
 }
 
@@ -10587,13 +10650,13 @@ pub extern "js" fn Element::set_aria_col_span(
 ///|
 pub extern "js" fn Element::get_aria_controls_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaControlsElements
 
 ///|
 pub extern "js" fn Element::set_aria_controls_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaControlsElements = value }
 
@@ -10611,13 +10674,13 @@ pub extern "js" fn Element::set_aria_current(
 ///|
 pub extern "js" fn Element::get_aria_described_by_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaDescribedByElements
 
 ///|
 pub extern "js" fn Element::set_aria_described_by_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDescribedByElements = value }
 
@@ -10635,13 +10698,13 @@ pub extern "js" fn Element::set_aria_description(
 ///|
 pub extern "js" fn Element::get_aria_details_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaDetailsElements
 
 ///|
 pub extern "js" fn Element::set_aria_details_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDetailsElements = value }
 
@@ -10659,13 +10722,13 @@ pub extern "js" fn Element::set_aria_disabled(
 ///|
 pub extern "js" fn Element::get_aria_error_message_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaErrorMessageElements
 
 ///|
 pub extern "js" fn Element::set_aria_error_message_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaErrorMessageElements = value }
 
@@ -10683,13 +10746,13 @@ pub extern "js" fn Element::set_aria_expanded(
 ///|
 pub extern "js" fn Element::get_aria_flow_to_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaFlowToElements
 
 ///|
 pub extern "js" fn Element::set_aria_flow_to_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaFlowToElements = value }
 
@@ -10751,13 +10814,13 @@ pub extern "js" fn Element::set_aria_label(
 ///|
 pub extern "js" fn Element::get_aria_labelled_by_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaLabelledByElements
 
 ///|
 pub extern "js" fn Element::set_aria_labelled_by_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaLabelledByElements = value }
 
@@ -10832,13 +10895,13 @@ pub extern "js" fn Element::set_aria_orientation(
 ///|
 pub extern "js" fn Element::get_aria_owns_elements(
   self : Element,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaOwnsElements
 
 ///|
 pub extern "js" fn Element::set_aria_owns_elements(
   self : Element,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaOwnsElements = value }
 
@@ -11043,6 +11106,30 @@ pub extern "js" fn Element::set_aria_value_text(
   #| (self, value) => { self.ariaValueText = value }
 
 ///|
+pub extern "js" fn Element::aria_notify(
+  self : Element,
+  announcement : String,
+) -> Unit =
+  #| (self, announcement) => self.ariaNotify(announcement)
+
+///|
+extern "js" fn Element::aria_notify_with_options_ffi(
+  self : Element,
+  announcement : String,
+  options : JsValue,
+) -> Unit =
+  #| (self, announcement, options) => self.ariaNotify(announcement, options)
+
+///|
+pub fn Element::aria_notify_with_options(
+  self : Element,
+  announcement : String,
+  options : AriaNotificationOptions,
+) -> Unit {
+  Element::aria_notify_with_options_ffi(self, announcement, options.to_js())
+}
+
+///|
 pub extern "js" fn Element::animate(
   self : Element,
   keyframes : JsValue?,
@@ -11058,21 +11145,23 @@ pub extern "js" fn Element::animate_with_options(
   #| (self, keyframes, options) => self.animate((keyframes.$tag === 1 ? keyframes._0 : null), options)
 
 ///|
-pub extern "js" fn Element::get_animations(self : Element) -> Array[Animation] =
-  #| (self) => self.getAnimations()
+pub extern "js" fn Element::get_animations(
+  self : Element,
+) -> Result[FixedArray[Animation], ElementGetAnimationsError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getAnimations() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn Element::get_animations_with_options_ffi(
   self : Element,
   options : JsValue,
-) -> Array[Animation] =
-  #| (self, options) => self.getAnimations(options)
+) -> Result[FixedArray[Animation], ElementGetAnimationsError] =
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.getAnimations(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn Element::get_animations_with_options(
   self : Element,
   options : GetAnimationsOptions,
-) -> Array[Animation] {
+) -> Result[FixedArray[Animation], ElementGetAnimationsError] {
   Element::get_animations_with_options_ffi(self, options.to_js())
 }
 
@@ -11219,28 +11308,28 @@ pub extern "js" fn JsValue::to_named_node_map(self : JsValue) -> NamedNodeMap =
 pub(all) enum NamedNodeMapSetNamedItemError {
   InUseAttributeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapSetNamedItemNSError {
   InUseAttributeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapRemoveNamedItemError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NamedNodeMapRemoveNamedItemNSError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NamedNodeMap::get_length(self : NamedNodeMap) -> Int =
@@ -11442,49 +11531,49 @@ pub extern "js" fn CharacterData::as_comment(self : CharacterData) -> Comment? =
 pub(all) enum CharacterDataSubstringDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataInsertDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataDeleteDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataBeforeError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataAfterError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CharacterDataReplaceWithError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CharacterData::get_data(self : CharacterData) -> String =
@@ -11628,7 +11717,7 @@ pub(all) enum TextSplitTextError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Text::new() -> Text =
@@ -11650,21 +11739,21 @@ pub extern "js" fn Text::get_whole_text(self : Text) -> String =
   #| (self) => self.wholeText
 
 ///|
-pub extern "js" fn Text::get_box_quads(self : Text) -> Array[DOMQuad] =
+pub extern "js" fn Text::get_box_quads(self : Text) -> FixedArray[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
 extern "js" fn Text::get_box_quads_with_options_ffi(
   self : Text,
   options : JsValue,
-) -> Array[DOMQuad] =
+) -> FixedArray[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
 pub fn Text::get_box_quads_with_options(
   self : Text,
   options : BoxQuadOptions,
-) -> Array[DOMQuad] {
+) -> FixedArray[DOMQuad] {
   Text::get_box_quads_with_options_ffi(self, options.to_js())
 }
 
@@ -12163,7 +12252,7 @@ pub extern "js" fn StaticRange::to_abstract_range(
 pub(all) enum StaticRangeConstructorError {
   InvalidNodeTypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn StaticRange::new_ffi(
@@ -12216,21 +12305,21 @@ pub(all) enum RangeSetEndError {
   IndexSizeError(JsError)
   InvalidNodeTypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RangeCompareBoundaryPointsError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RangeCreateContextualFragmentError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Range::new() -> Range =
@@ -12571,7 +12660,7 @@ pub(all) enum DOMTokenListAddError {
   SyntaxError(JsError)
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DOMTokenList::get_length(self : DOMTokenList) -> Int =
@@ -12707,14 +12796,14 @@ pub(all) enum XPathResultIterateNextError {
   TYPE_ERR(JsError)
   INVALID_STATE_ERR(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XPathResultSnapshotItemError {
   TYPE_ERR(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // XPathResult.ANY_TYPE
 
@@ -12858,7 +12947,7 @@ pub(all) enum XPathExpressionEvaluateError {
   WRONG_DOCUMENT_ERR(JsError)
   INVALID_EXPRESSION_ERR(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XPathExpression::evaluate(
@@ -12988,10 +13077,12 @@ pub extern "js" fn JsValue::to_xslt_processor(self : JsValue) -> XSLTProcessor =
   #| (self) => self
 
 ///|
+/// @alert deprecated "constructor is deprecated"
 pub extern "js" fn XSLTProcessor::new() -> XSLTProcessor =
   #| () => new XSLTProcessor()
 
 ///|
+/// @alert deprecated "importStylesheet is deprecated"
 pub extern "js" fn XSLTProcessor::import_stylesheet(
   self : XSLTProcessor,
   style : Node,
@@ -12999,6 +13090,7 @@ pub extern "js" fn XSLTProcessor::import_stylesheet(
   #| (self, style) => self.importStylesheet(style)
 
 ///|
+/// @alert deprecated "transformToFragment is deprecated"
 pub extern "js" fn XSLTProcessor::transform_to_fragment(
   self : XSLTProcessor,
   source : Node,
@@ -13007,6 +13099,7 @@ pub extern "js" fn XSLTProcessor::transform_to_fragment(
   #| (self, source, output) => self.transformToFragment(source, output)
 
 ///|
+/// @alert deprecated "transformToDocument is deprecated"
 pub extern "js" fn XSLTProcessor::transform_to_document(
   self : XSLTProcessor,
   source : Node,
@@ -13014,6 +13107,7 @@ pub extern "js" fn XSLTProcessor::transform_to_document(
   #| (self, source) => self.transformToDocument(source)
 
 ///|
+/// @alert deprecated "setParameter is deprecated"
 pub extern "js" fn XSLTProcessor::set_parameter(
   self : XSLTProcessor,
   namespace_uri : String,
@@ -13023,6 +13117,7 @@ pub extern "js" fn XSLTProcessor::set_parameter(
   #| (self, namespace_uri, local_name, value) => self.setParameter(namespace_uri, local_name, value)
 
 ///|
+/// @alert deprecated "getParameter is deprecated"
 pub extern "js" fn XSLTProcessor::get_parameter(
   self : XSLTProcessor,
   namespace_uri : String,
@@ -13031,6 +13126,7 @@ pub extern "js" fn XSLTProcessor::get_parameter(
   #| (self, namespace_uri, local_name) => self.getParameter(namespace_uri, local_name)
 
 ///|
+/// @alert deprecated "removeParameter is deprecated"
 pub extern "js" fn XSLTProcessor::remove_parameter(
   self : XSLTProcessor,
   namespace_uri : String,
@@ -13039,11 +13135,13 @@ pub extern "js" fn XSLTProcessor::remove_parameter(
   #| (self, namespace_uri, local_name) => self.removeParameter(namespace_uri, local_name)
 
 ///|
+/// @alert deprecated "clearParameters is deprecated"
 pub extern "js" fn XSLTProcessor::clear_parameters(
   self : XSLTProcessor,
 ) -> Unit =
   #| (self) => self.clearParameters()
 
 ///|
+/// @alert deprecated "reset is deprecated"
 pub extern "js" fn XSLTProcessor::reset(self : XSLTProcessor) -> Unit =
   #| (self) => self.reset()

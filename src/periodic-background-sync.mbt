@@ -10,7 +10,7 @@ pub(all) struct BackgroundSyncOptions {
 ///|
 /// Create a new BackgroundSyncOptions with default values
 pub fn BackgroundSyncOptions::default() -> BackgroundSyncOptions {
-  BackgroundSyncOptions::{ minInterval: None }
+  BackgroundSyncOptions::{ minInterval: None, }
 }
 
 ///|
@@ -50,7 +50,7 @@ pub(all) struct PeriodicSyncEventInit {
 ///|
 /// Create a new PeriodicSyncEventInit with default values
 pub fn PeriodicSyncEventInit::default() -> PeriodicSyncEventInit {
-  PeriodicSyncEventInit::{ tag: "" }
+  PeriodicSyncEventInit::{ tag: "", }
 }
 
 ///|
@@ -126,7 +126,7 @@ pub(all) enum PeriodicSyncManagerRegisterError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PeriodicSyncManager::register(
@@ -155,7 +155,7 @@ pub fn PeriodicSyncManager::register_with_options(
 ///|
 pub extern "js" fn PeriodicSyncManager::get_tags(
   self : PeriodicSyncManager,
-) -> Promise[Array[String]] =
+) -> Promise[FixedArray[String]] =
   #| (self) => self.getTags()
 
 ///|

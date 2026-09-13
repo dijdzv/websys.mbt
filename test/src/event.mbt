@@ -16,7 +16,7 @@ pub fn test_event_target() -> Unit {
   let target = @websys.EventTarget::new()
 
   // Track whether the listener was called using a mutable ref
-  let call_count : Ref[Int] = Ref::new(0)
+  let call_count : Ref[Int] = Ref(0)
 
   // Create EventListener from MoonBit function
   let listener = @websys.EventListener::from_fn(fn(_event) {
@@ -75,9 +75,9 @@ pub fn test_event_dispatch() -> Unit {
 
   // Event on a DOM element
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   let target = el.to_event_target()
-  let received_type : Ref[String] = Ref::new("")
+  let received_type : Ref[String] = Ref("")
   let listener = @websys.EventListener::from_fn(fn(e) {
     received_type.val = e.get_type()
   })

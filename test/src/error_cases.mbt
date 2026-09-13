@@ -5,7 +5,7 @@
 /// Test querySelector with invalid selector returns Err(SyntaxError).
 pub fn test_error_invalid_selector() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
 
   // Invalid CSS selector should return Err
   match div.query_selector(">>>invalid") {
@@ -27,14 +27,14 @@ pub fn test_error_null_returns() -> Unit {
   )
 
   // querySelector for non-matching selector
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   assert_true(
     div.query_selector(".no-such-class").unwrap() is None,
     label="querySelector returns None",
   )
 
   // parentNode of detached element
-  let span = doc.create_element("span")
+  let span = create_element(doc, "span")
   assert_true(
     span.to_node().get_parent_node() is None,
     label="parentNode of detached is None",
@@ -54,7 +54,7 @@ pub fn test_boundary_values() -> Unit {
   let doc = get_document()
 
   // Empty string element ID
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   div.set_id("")
   assert_eq(div.get_id(), "", label="empty id")
 
@@ -93,8 +93,8 @@ pub fn test_error_invalid_css() -> Unit {
 /// Test DOMException from invalid operations.
 pub fn test_error_dom_exception() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
-  let span = doc.create_element("span")
+  let div = create_element(doc, "div")
+  let span = create_element(doc, "span")
 
   // removeChild on non-child should return Err
   match div.to_node().remove_child(span.to_node()) {
@@ -103,7 +103,7 @@ pub fn test_error_dom_exception() -> Unit {
   }
 
   // insertBefore with invalid reference should return Err
-  let child = doc.create_element("p")
+  let child = create_element(doc, "p")
   match div.to_node().insert_before(child.to_node(), Some(span.to_node())) {
     Err(_) => ()
     Ok(_) => abort("FAIL: expected error for insertBefore invalid ref")

@@ -6,7 +6,7 @@
 fn test_br_element() -> Unit {
   let doc = get_document()
   let br = @websys.HTMLBRElement::from_js_value(
-    doc.create_element("br").to_js_value(),
+    create_element(doc, "br").to_js_value(),
   )
   // clear (deprecated)
   assert_eq(br.get_clear(), "", label="clear default")

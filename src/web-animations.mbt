@@ -8,7 +8,7 @@ pub(all) enum AnimationPlayState {
   Running
   Paused
   Finished
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub(all) enum AnimationReplaceState {
   Active
   Removed
   Persisted
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub(all) enum FillMode {
   Backwards
   Both
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -104,7 +104,7 @@ pub(all) enum PlaybackDirection {
   Reverse
   Alternate
   AlternateReverse
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub(all) enum CompositeOperation {
   Replace
   Add
   Accumulate
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -165,7 +165,7 @@ pub(all) enum CompositeOperationOrAuto {
   Add
   Accumulate
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -203,7 +203,7 @@ pub(all) struct DocumentTimelineOptions {
 ///|
 /// Create a new DocumentTimelineOptions with default values
 pub fn DocumentTimelineOptions::default() -> DocumentTimelineOptions {
-  DocumentTimelineOptions::{ originTime: None }
+  DocumentTimelineOptions::{ originTime: None, }
 }
 
 ///|
@@ -303,7 +303,7 @@ pub(all) struct BasePropertyIndexedKeyframe {
 ///|
 /// Create a new BasePropertyIndexedKeyframe with default values
 pub fn BasePropertyIndexedKeyframe::default() -> BasePropertyIndexedKeyframe {
-  BasePropertyIndexedKeyframe::{ offset: None, easing: None, composite: None }
+  BasePropertyIndexedKeyframe::{ offset: None, easing: None, composite: None, }
 }
 
 ///|
@@ -353,7 +353,7 @@ pub(all) struct BaseKeyframe {
 ///|
 /// Create a new BaseKeyframe with default values
 pub fn BaseKeyframe::default() -> BaseKeyframe {
-  BaseKeyframe::{ offset: Nullable::Undefined, easing: None, composite: None }
+  BaseKeyframe::{ offset: Nullable::Undefined, easing: None, composite: None, }
 }
 
 ///|
@@ -394,7 +394,7 @@ pub(all) struct GetAnimationsOptions {
 ///|
 /// Create a new GetAnimationsOptions with default values
 pub fn GetAnimationsOptions::default() -> GetAnimationsOptions {
-  GetAnimationsOptions::{ subtree: None, pseudoElement: Nullable::Undefined }
+  GetAnimationsOptions::{ subtree: None, pseudoElement: Nullable::Undefined, }
 }
 
 ///|
@@ -608,12 +608,6 @@ pub extern "js" fn Animation::to_event_target(self : Animation) -> EventTarget =
   #| (self) => self
 
 ///|
-pub extern "js" fn Animation::as_shadow_animation(
-  self : Animation,
-) -> ShadowAnimation? =
-  #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn Animation::as_worklet_animation(
   self : Animation,
 ) -> WorkletAnimation? =
@@ -632,18 +626,24 @@ pub extern "js" fn Animation::as_css_transition(
   #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn Animation::as_shadow_animation(
+  self : Animation,
+) -> ShadowAnimation? =
+  #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 /// Error type for throwing methods
 pub(all) enum AnimationFinishError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AnimationPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Animation::new() -> Animation =
@@ -887,7 +887,7 @@ pub extern "js" fn AnimationEffect::as_keyframe_effect(
 pub(all) enum AnimationEffectUpdateTimingError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AnimationEffect::get_timing(
@@ -1012,14 +1012,14 @@ pub extern "js" fn KeyframeEffect::to_animation_effect(
 pub(all) enum KeyframeEffectSetPseudoElementError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum KeyframeEffectSetKeyframesError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn KeyframeEffect::new(
@@ -1084,7 +1084,7 @@ pub extern "js" fn KeyframeEffect::set_composite(
 ///|
 pub extern "js" fn KeyframeEffect::get_keyframes(
   self : KeyframeEffect,
-) -> Array[JsValue] =
+) -> FixedArray[JsValue] =
   #| (self) => self.getKeyframes()
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum AudioContextState {
   Running
   Closed
   Interrupted
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub fn AudioContextState::from_string(s : String) -> AudioContextState? {
 pub(all) enum AudioContextRenderSizeCategory {
   Default
   Hardware
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -69,7 +69,7 @@ pub(all) enum AudioContextLatencyCategory {
   Balanced
   Interactive
   Playback
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -100,7 +100,7 @@ pub fn AudioContextLatencyCategory::from_string(
 /// AudioSinkType enum
 pub(all) enum AudioSinkType {
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -125,7 +125,7 @@ pub(all) enum ChannelCountMode {
   Max
   ClampedMax
   Explicit
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -153,7 +153,7 @@ pub fn ChannelCountMode::from_string(s : String) -> ChannelCountMode? {
 pub(all) enum ChannelInterpretation {
   Speakers
   Discrete
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -179,7 +179,7 @@ pub fn ChannelInterpretation::from_string(s : String) -> ChannelInterpretation? 
 pub(all) enum AutomationRate {
   ARate
   KRate
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -211,7 +211,7 @@ pub(all) enum BiquadFilterType {
   Peaking
   Notch
   Allpass
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -252,7 +252,7 @@ pub(all) enum OscillatorType {
   Sawtooth
   Triangle
   Custom
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -284,7 +284,7 @@ pub fn OscillatorType::from_string(s : String) -> OscillatorType? {
 pub(all) enum PanningModelType {
   Equalpower
   HRTF
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -311,7 +311,7 @@ pub(all) enum DistanceModelType {
   Linear
   Inverse
   Exponential
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -340,7 +340,7 @@ pub(all) enum OverSampleType {
   None
   N2x
   N4x
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -403,7 +403,11 @@ pub type AudioWorkletProcessCallback
 ///|
 /// Create AudioWorkletProcessCallback from a MoonBit function
 pub extern "js" fn AudioWorkletProcessCallback::from_fn(
-  handler : (Array[Array[Float32Array]], Array[Array[Float32Array]], JsValue) -> Bool,
+  handler : (
+    FixedArray[FixedArray[Float32Array]],
+    FixedArray[FixedArray[Float32Array]],
+    JsValue,
+  ) -> Bool,
 ) -> AudioWorkletProcessCallback =
   #| (handler) => (a0, a1, a2) => handler(a0, a1, a2)
 
@@ -509,7 +513,7 @@ pub(all) struct AudioTimestamp {
 ///|
 /// Create a new AudioTimestamp with default values
 pub fn AudioTimestamp::default() -> AudioTimestamp {
-  AudioTimestamp::{ contextTime: None, performanceTime: None }
+  AudioTimestamp::{ contextTime: None, performanceTime: None, }
 }
 
 ///|
@@ -653,7 +657,7 @@ pub(all) struct AudioBufferOptions {
 ///|
 /// Create a new AudioBufferOptions with default values
 pub fn AudioBufferOptions::default() -> AudioBufferOptions {
-  AudioBufferOptions::{ numberOfChannels: None, length: 0, sampleRate: 0 }
+  AudioBufferOptions::{ numberOfChannels: None, length: 0, sampleRate: 0, }
 }
 
 ///|
@@ -878,7 +882,7 @@ pub fn AudioProcessingEventInit::new(
   inputBuffer~ : AudioBuffer,
   outputBuffer~ : AudioBuffer,
 ) -> AudioProcessingEventInit {
-  AudioProcessingEventInit::{ playbackTime: 0, inputBuffer, outputBuffer }
+  AudioProcessingEventInit::{ playbackTime: 0, inputBuffer, outputBuffer, }
 }
 
 ///|
@@ -1106,7 +1110,7 @@ pub(all) struct ConstantSourceOptions {
 ///|
 /// Create a new ConstantSourceOptions with default values
 pub fn ConstantSourceOptions::default() -> ConstantSourceOptions {
-  ConstantSourceOptions::{ offset: None }
+  ConstantSourceOptions::{ offset: None, }
 }
 
 ///|
@@ -1377,8 +1381,8 @@ pub(all) struct IIRFilterOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
-  feedforward : Array[Double]
-  feedback : Array[Double]
+  feedforward : FixedArray[Double]
+  feedback : FixedArray[Double]
 }
 
 ///|
@@ -1742,7 +1746,7 @@ pub(all) struct PeriodicWaveConstraints {
 ///|
 /// Create a new PeriodicWaveConstraints with default values
 pub fn PeriodicWaveConstraints::default() -> PeriodicWaveConstraints {
-  PeriodicWaveConstraints::{ disableNormalization: None }
+  PeriodicWaveConstraints::{ disableNormalization: None, }
 }
 
 ///|
@@ -1781,14 +1785,14 @@ pub fn PeriodicWaveConstraints::from_js(
 /// PeriodicWaveOptions dictionary
 pub(all) struct PeriodicWaveOptions {
   disableNormalization : Bool?
-  real : Array[Double]?
-  imag : Array[Double]?
+  real : FixedArray[Double]?
+  imag : FixedArray[Double]?
 }
 
 ///|
 /// Create a new PeriodicWaveOptions with default values
 pub fn PeriodicWaveOptions::default() -> PeriodicWaveOptions {
-  PeriodicWaveOptions::{ disableNormalization: None, real: None, imag: None }
+  PeriodicWaveOptions::{ disableNormalization: None, real: None, imag: None, }
 }
 
 ///|
@@ -1797,8 +1801,8 @@ extern "js" fn PeriodicWaveOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   disableNormalization: (self.disableNormalization === -1 ? undefined : self.disableNormalization),
-  #|   real: ((() => { const v = self.real; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   imag: ((() => { const v = self.imag; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   real: self.real,
+  #|   imag: self.imag
   #| })
 
 ///|
@@ -1813,8 +1817,8 @@ extern "js" fn PeriodicWaveOptions::from_js_ffi(
 ) -> PeriodicWaveOptions =
   #| (v) => ({
   #|   disableNormalization: (v.disableNormalization === undefined ? -1 : v.disableNormalization),
-  #|   real: (v.real === undefined ? { $tag: 0 } : { $tag: 1, _0: v.real }),
-  #|   imag: (v.imag === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imag })
+  #|   real: v.real,
+  #|   imag: v.imag
   #| })
 
 ///|
@@ -1883,7 +1887,7 @@ pub(all) struct WaveShaperOptions {
   channelCount : Int?
   channelCountMode : ChannelCountMode?
   channelInterpretation : ChannelInterpretation?
-  curve : Array[Double]?
+  curve : FixedArray[Double]?
   oversample : OverSampleType?
 }
 
@@ -1907,7 +1911,7 @@ extern "js" fn WaveShaperOptions::to_js_ffi(
   #|   channelCount: self.channelCount,
   #|   channelCountMode: ((() => { const v = self.channelCountMode; if (v === undefined) return undefined; return ['max', 'clamped-max', 'explicit'][v]; })()),
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
-  #|   curve: ((() => { const v = self.curve; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   curve: self.curve,
   #|   oversample: ((() => { const v = self.oversample; if (v === undefined) return undefined; return ['none', '2x', '4x'][v]; })())
   #| })
 
@@ -1925,7 +1929,7 @@ extern "js" fn WaveShaperOptions::from_js_ffi(
   #|   channelCount: v.channelCount,
   #|   channelCountMode: (v.channelCountMode === undefined ? undefined : ['max', 'clamped-max', 'explicit'].indexOf(v.channelCountMode)),
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
-  #|   curve: (v.curve === undefined ? { $tag: 0 } : { $tag: 1, _0: v.curve }),
+  #|   curve: v.curve,
   #|   oversample: (v.oversample === undefined ? undefined : ['none', '2x', '4x'].indexOf(v.oversample))
   #| })
 
@@ -1943,7 +1947,7 @@ pub(all) struct AudioWorkletNodeOptions {
   channelInterpretation : ChannelInterpretation?
   numberOfInputs : Int?
   numberOfOutputs : Int?
-  outputChannelCount : Array[Int]?
+  outputChannelCount : FixedArray[Int]?
   parameterData : JsValue?
   processorOptions : JsValue?
 }
@@ -1973,7 +1977,7 @@ extern "js" fn AudioWorkletNodeOptions::to_js_ffi(
   #|   channelInterpretation: ((() => { const v = self.channelInterpretation; if (v === undefined) return undefined; return ['speakers', 'discrete'][v]; })()),
   #|   numberOfInputs: self.numberOfInputs,
   #|   numberOfOutputs: self.numberOfOutputs,
-  #|   outputChannelCount: ((() => { const v = self.outputChannelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   outputChannelCount: self.outputChannelCount,
   #|   parameterData: ((() => { const v = self.parameterData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   processorOptions: ((() => { const v = self.processorOptions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -1996,7 +2000,7 @@ extern "js" fn AudioWorkletNodeOptions::from_js_ffi(
   #|   channelInterpretation: (v.channelInterpretation === undefined ? undefined : ['speakers', 'discrete'].indexOf(v.channelInterpretation)),
   #|   numberOfInputs: v.numberOfInputs,
   #|   numberOfOutputs: v.numberOfOutputs,
-  #|   outputChannelCount: (v.outputChannelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputChannelCount }),
+  #|   outputChannelCount: v.outputChannelCount,
   #|   parameterData: (v.parameterData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.parameterData }),
   #|   processorOptions: (v.processorOptions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.processorOptions })
   #| })
@@ -2129,7 +2133,7 @@ pub(all) enum BaseAudioContextCreateBufferError {
   RangeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2137,7 +2141,7 @@ pub(all) enum BaseAudioContextCreateIIRFilterError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn BaseAudioContext::get_destination(
@@ -2287,8 +2291,8 @@ pub extern "js" fn BaseAudioContext::create_gain(
 ///|
 pub extern "js" fn BaseAudioContext::create_iir_filter(
   self : BaseAudioContext,
-  feedforward : Array[Double],
-  feedback : Array[Double],
+  feedforward : FixedArray[Double],
+  feedback : FixedArray[Double],
 ) -> Result[IIRFilterNode, BaseAudioContextCreateIIRFilterError] =
   #| (self, feedforward, feedback) => (() => { try { return { $tag: 1, _0: self.createIIRFilter(feedforward, feedback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
@@ -2307,16 +2311,16 @@ pub extern "js" fn BaseAudioContext::create_panner(
 ///|
 pub extern "js" fn BaseAudioContext::create_periodic_wave(
   self : BaseAudioContext,
-  real : Array[Double],
-  imag : Array[Double],
+  real : FixedArray[Double],
+  imag : FixedArray[Double],
 ) -> PeriodicWave =
   #| (self, real, imag) => self.createPeriodicWave(real, imag)
 
 ///|
 extern "js" fn BaseAudioContext::create_periodic_wave_with_constraints_ffi(
   self : BaseAudioContext,
-  real : Array[Double],
-  imag : Array[Double],
+  real : FixedArray[Double],
+  imag : FixedArray[Double],
   constraints : JsValue,
 ) -> PeriodicWave =
   #| (self, real, imag, constraints) => self.createPeriodicWave(real, imag, constraints)
@@ -2324,8 +2328,8 @@ extern "js" fn BaseAudioContext::create_periodic_wave_with_constraints_ffi(
 ///|
 pub fn BaseAudioContext::create_periodic_wave_with_constraints(
   self : BaseAudioContext,
-  real : Array[Double],
-  imag : Array[Double],
+  real : FixedArray[Double],
+  imag : FixedArray[Double],
   constraints : PeriodicWaveConstraints,
 ) -> PeriodicWave {
   BaseAudioContext::create_periodic_wave_with_constraints_ffi(
@@ -2427,7 +2431,7 @@ pub extern "js" fn AudioContext::to_event_target(
 pub(all) enum AudioContextConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2436,7 +2440,7 @@ pub(all) enum AudioContextSetSinkIdError {
   NotAllowedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioContext::new() -> Result[
@@ -2651,14 +2655,14 @@ pub extern "js" fn OfflineAudioContext::to_event_target(
 pub(all) enum OfflineAudioContextResumeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OfflineAudioContextSuspendError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn OfflineAudioContext::new_ffi(
@@ -2818,14 +2822,14 @@ pub(all) enum AudioBufferConstructorError {
   RangeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioBufferCopyFromChannelError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn AudioBuffer::new_ffi(
@@ -3070,7 +3074,7 @@ pub(all) enum AudioNodeConnectError {
   NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -3078,7 +3082,7 @@ pub(all) enum AudioNodeDisconnectError {
   IndexSizeError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioNode::connect(
@@ -3247,7 +3251,7 @@ pub(all) enum AudioParamSetValueCurveAtTimeError {
   RangeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioParam::get_value(self : AudioParam) -> Double =
@@ -3321,7 +3325,7 @@ pub extern "js" fn AudioParam::set_target_at_time(
 ///|
 pub extern "js" fn AudioParam::set_value_curve_at_time(
   self : AudioParam,
-  values : Array[Double],
+  values : FixedArray[Double],
   start_time : Double,
   duration : Double,
 ) -> Result[AudioParam, AudioParamSetValueCurveAtTimeError] =
@@ -3415,7 +3419,7 @@ pub(all) enum AudioScheduledSourceNodeStartError {
   RangeError(JsError)
   InvalidStateNode(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -3423,7 +3427,7 @@ pub(all) enum AudioScheduledSourceNodeStopError {
   RangeError(JsError)
   InvalidStateNode(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioScheduledSourceNode::set_onended(
@@ -3511,14 +3515,14 @@ pub extern "js" fn AnalyserNode::to_event_target(
 pub(all) enum AnalyserNodeSetFftSizeError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AnalyserNodeSetMaxDecibelsError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AnalyserNode::new(
@@ -3683,11 +3687,18 @@ pub extern "js" fn AudioBufferSourceNode::to_event_target(
 
 ///|
 /// Error type for throwing methods
+pub(all) enum AudioBufferSourceNodeSetBufferError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
 pub(all) enum AudioBufferSourceNodeStartError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::new(
@@ -3720,8 +3731,8 @@ pub extern "js" fn AudioBufferSourceNode::get_buffer(
 pub extern "js" fn AudioBufferSourceNode::set_buffer(
   self : AudioBufferSourceNode,
   value : AudioBuffer?,
-) -> Unit =
-  #| (self, value) => { self.buffer = (value.$tag === 1 ? value._0 : null) }
+) -> Result[Unit, AudioBufferSourceNodeSetBufferError] =
+  #| (self, value) => (() => { try { self.buffer = (value.$tag === 1 ? value._0 : null); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioBufferSourceNode::get_playback_rate(
@@ -4079,7 +4090,7 @@ pub extern "js" fn BiquadFilterNode::to_event_target(
 pub(all) enum BiquadFilterNodeGetFrequencyResponseError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn BiquadFilterNode::new(
@@ -4203,7 +4214,7 @@ pub extern "js" fn ChannelMergerNode::to_event_target(
 pub(all) enum ChannelMergerNodeConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ChannelMergerNode::new(
@@ -4427,7 +4438,7 @@ pub extern "js" fn ConvolverNode::to_event_target(
 pub(all) enum ConvolverNodeConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ConvolverNode::new(
@@ -4748,7 +4759,7 @@ pub extern "js" fn IIRFilterNode::to_event_target(
 pub(all) enum IIRFilterNodeGetFrequencyResponseError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn IIRFilterNode::new_ffi(
@@ -4980,7 +4991,7 @@ pub extern "js" fn MediaStreamAudioSourceNode::to_event_target(
 pub(all) enum MediaStreamAudioSourceNodeConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn MediaStreamAudioSourceNode::new_ffi(
@@ -5065,7 +5076,7 @@ pub(all) enum MediaStreamTrackAudioSourceNodeConstructorError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn MediaStreamTrackAudioSourceNode::new_ffi(
@@ -5147,7 +5158,7 @@ pub extern "js" fn OscillatorNode::to_event_target(
 pub(all) enum OscillatorNodeSetTypeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn OscillatorNode::new(
@@ -5246,35 +5257,35 @@ pub(all) enum PannerNodeConstructorError {
   RangeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRefDistanceError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetMaxDistanceError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetRolloffFactorError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PannerNodeSetConeOuterGainError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PannerNode::new(
@@ -5823,7 +5834,7 @@ pub(all) enum AudioWorkletGlobalScopeRegisterProcessorError {
   TypeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::register_processor(
@@ -5837,7 +5848,7 @@ pub extern "js" fn AudioWorkletGlobalScope::register_processor(
 pub extern "js" fn AudioWorkletGlobalScope::get_current_frame(
   self : AudioWorkletGlobalScope,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.currentFrame; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.currentFrame))
 
 ///|
 pub extern "js" fn AudioWorkletGlobalScope::get_current_time(
@@ -5965,7 +5976,7 @@ pub(all) enum AudioWorkletNodeConstructorError {
   IndexSizeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn AudioWorkletNode::new(

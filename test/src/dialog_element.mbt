@@ -2,7 +2,7 @@
 fn test_dialog_element() -> Unit {
   let doc = get_document()
   let dialog = @websys.HTMLDialogElement::from_js_value(
-    doc.create_element("dialog").to_js_value(),
+    create_element(doc, "dialog").to_js_value(),
   )
   // initially closed
   assert_false(dialog.get_open(), label="open default")

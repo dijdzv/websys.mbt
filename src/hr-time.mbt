@@ -48,7 +48,7 @@ pub extern "js" fn Performance::to_event_target(
 pub(all) enum PerformanceMeasureUserAgentSpecificMemoryError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -56,7 +56,7 @@ pub(all) enum PerformanceMarkError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -66,7 +66,7 @@ pub(all) enum PerformanceMeasureError {
   SyntaxError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Performance::now(self : Performance) -> DOMHighResTimeStamp =
@@ -92,7 +92,7 @@ pub extern "js" fn Performance::get_event_counts(
 pub extern "js" fn Performance::get_interaction_count(
   self : Performance,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.interactionCount; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.interactionCount))
 
 ///|
 pub extern "js" fn Performance::get_timing(
@@ -114,7 +114,7 @@ pub extern "js" fn Performance::measure_user_agent_specific_memory(
 ] =
   #| (self) => self.measureUserAgentSpecificMemory().then(v => ({
   #|   bytes: v.bytes,
-  #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
+  #|   breakdown: v.breakdown
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|

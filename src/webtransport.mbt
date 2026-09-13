@@ -7,7 +7,7 @@ pub(all) enum WebTransportReliabilityMode {
   Pending
   ReliableOnly
   SupportsUnreliable
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -41,7 +41,7 @@ pub(all) enum WebTransportCongestionControl {
   Default
   Throughput
   LowLatency
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -73,7 +73,7 @@ pub fn WebTransportCongestionControl::from_string(
 pub(all) enum WebTransportErrorSource {
   Stream
   Session
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -108,7 +108,7 @@ pub(all) struct WebTransportHash {
 ///|
 /// Create a new WebTransportHash
 pub fn WebTransportHash::new(value~ : BufferSource) -> WebTransportHash {
-  WebTransportHash::{ algorithm: "", value }
+  WebTransportHash::{ algorithm: "", value, }
 }
 
 ///|
@@ -144,11 +144,12 @@ pub fn WebTransportHash::from_js(value : JsValue) -> WebTransportHash {
 pub(all) struct WebTransportOptions {
   allowPooling : Bool?
   requireUnreliable : Bool?
-  serverCertificateHashes : Array[WebTransportHash]?
+  headers : HeadersInit?
+  serverCertificateHashes : FixedArray[WebTransportHash]?
   congestionControl : WebTransportCongestionControl?
   anticipatedConcurrentIncomingUnidirectionalStreams : Nullable[Int]
   anticipatedConcurrentIncomingBidirectionalStreams : Nullable[Int]
-  protocols : Array[String]?
+  protocols : FixedArray[String]?
   datagramsReadableType : ReadableStreamType?
 }
 
@@ -158,6 +159,7 @@ pub fn WebTransportOptions::default() -> WebTransportOptions {
   WebTransportOptions::{
     allowPooling: None,
     requireUnreliable: None,
+    headers: None,
     serverCertificateHashes: None,
     congestionControl: None,
     anticipatedConcurrentIncomingUnidirectionalStreams: Nullable::Undefined,
@@ -174,11 +176,12 @@ extern "js" fn WebTransportOptions::to_js_ffi(
   #| (self) => ({
   #|   allowPooling: (self.allowPooling === -1 ? undefined : self.allowPooling),
   #|   requireUnreliable: (self.requireUnreliable === -1 ? undefined : self.requireUnreliable),
-  #|   serverCertificateHashes: ((() => { const v = self.serverCertificateHashes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   serverCertificateHashes: self.serverCertificateHashes,
   #|   congestionControl: ((() => { const v = self.congestionControl; if (v === undefined) return undefined; return ['default', 'throughput', 'low-latency'][v]; })()),
   #|   anticipatedConcurrentIncomingUnidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   anticipatedConcurrentIncomingBidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingBidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   protocols: ((() => { const v = self.protocols; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   protocols: self.protocols,
   #|   datagramsReadableType: ((() => { const v = self.datagramsReadableType; if (v === undefined) return undefined; return ['bytes'][v]; })())
   #| })
 
@@ -195,11 +198,12 @@ extern "js" fn WebTransportOptions::from_js_ffi(
   #| (v) => ({
   #|   allowPooling: (v.allowPooling === undefined ? -1 : v.allowPooling),
   #|   requireUnreliable: (v.requireUnreliable === undefined ? -1 : v.requireUnreliable),
-  #|   serverCertificateHashes: (v.serverCertificateHashes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.serverCertificateHashes }),
+  #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers }),
+  #|   serverCertificateHashes: v.serverCertificateHashes,
   #|   congestionControl: (v.congestionControl === undefined ? undefined : ['default', 'throughput', 'low-latency'].indexOf(v.congestionControl)),
   #|   anticipatedConcurrentIncomingUnidirectionalStreams: (v.anticipatedConcurrentIncomingUnidirectionalStreams === undefined ? { $tag: 0 } : v.anticipatedConcurrentIncomingUnidirectionalStreams === null ? { $tag: 1 } : { $tag: 2, _0: v.anticipatedConcurrentIncomingUnidirectionalStreams }),
   #|   anticipatedConcurrentIncomingBidirectionalStreams: (v.anticipatedConcurrentIncomingBidirectionalStreams === undefined ? { $tag: 0 } : v.anticipatedConcurrentIncomingBidirectionalStreams === null ? { $tag: 1 } : { $tag: 2, _0: v.anticipatedConcurrentIncomingBidirectionalStreams }),
-  #|   protocols: (v.protocols === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocols }),
+  #|   protocols: v.protocols,
   #|   datagramsReadableType: (v.datagramsReadableType === undefined ? undefined : ['bytes'].indexOf(v.datagramsReadableType))
   #| })
 
@@ -219,7 +223,7 @@ pub(all) struct WebTransportCloseInfo {
 ///|
 /// Create a new WebTransportCloseInfo with default values
 pub fn WebTransportCloseInfo::default() -> WebTransportCloseInfo {
-  WebTransportCloseInfo::{ closeCode: None, reason: None }
+  WebTransportCloseInfo::{ closeCode: None, reason: None, }
 }
 
 ///|
@@ -262,7 +266,7 @@ pub(all) struct WebTransportSendOptions {
 ///|
 /// Create a new WebTransportSendOptions with default values
 pub fn WebTransportSendOptions::default() -> WebTransportSendOptions {
-  WebTransportSendOptions::{ sendGroup: Nullable::Undefined, sendOrder: None }
+  WebTransportSendOptions::{ sendGroup: Nullable::Undefined, sendOrder: None, }
 }
 
 ///|
@@ -575,7 +579,7 @@ pub(all) struct WebTransportReceiveStreamStats {
 ///|
 /// Create a new WebTransportReceiveStreamStats with default values
 pub fn WebTransportReceiveStreamStats::default() -> WebTransportReceiveStreamStats {
-  WebTransportReceiveStreamStats::{ bytesReceived: None, bytesRead: None }
+  WebTransportReceiveStreamStats::{ bytesReceived: None, bytesRead: None, }
 }
 
 ///|
@@ -707,6 +711,13 @@ pub extern "js" fn WebTransportDatagramsWritable::to_writable_stream(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum WebTransportDatagramsWritableSetSendGroupError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn WebTransportDatagramsWritable::get_send_group(
   self : WebTransportDatagramsWritable,
 ) -> WebTransportSendGroup? =
@@ -716,14 +727,14 @@ pub extern "js" fn WebTransportDatagramsWritable::get_send_group(
 pub extern "js" fn WebTransportDatagramsWritable::set_send_group(
   self : WebTransportDatagramsWritable,
   value : WebTransportSendGroup?,
-) -> Unit =
-  #| (self, value) => { self.sendGroup = (value.$tag === 1 ? value._0 : null) }
+) -> Result[Unit, WebTransportDatagramsWritableSetSendGroupError] =
+  #| (self, value) => (() => { try { self.sendGroup = (value.$tag === 1 ? value._0 : null); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::get_send_order(
   self : WebTransportDatagramsWritable,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.sendOrder; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.sendOrder))
 
 ///|
 pub extern "js" fn WebTransportDatagramsWritable::set_send_order(
@@ -771,23 +782,40 @@ pub extern "js" fn JsValue::to_web_transport_datagram_duplex_stream(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum WebTransportDatagramDuplexStreamCreateWritableError {
+  TypeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn WebTransportDatagramDuplexStream::create_writable(
   self : WebTransportDatagramDuplexStream,
-) -> WebTransportDatagramsWritable =
-  #| (self) => self.createWritable()
+) -> Result[
+  WebTransportDatagramsWritable,
+  WebTransportDatagramDuplexStreamCreateWritableError,
+] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.createWritable() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 extern "js" fn WebTransportDatagramDuplexStream::create_writable_with_options_ffi(
   self : WebTransportDatagramDuplexStream,
   options : JsValue,
-) -> WebTransportDatagramsWritable =
-  #| (self, options) => self.createWritable(options)
+) -> Result[
+  WebTransportDatagramsWritable,
+  WebTransportDatagramDuplexStreamCreateWritableError,
+] =
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.createWritable(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub fn WebTransportDatagramDuplexStream::create_writable_with_options(
   self : WebTransportDatagramDuplexStream,
   options : WebTransportSendOptions,
-) -> WebTransportDatagramsWritable {
+) -> Result[
+  WebTransportDatagramsWritable,
+  WebTransportDatagramDuplexStreamCreateWritableError,
+] {
   WebTransportDatagramDuplexStream::create_writable_with_options_ffi(
     self,
     options.to_js(),
@@ -833,12 +861,14 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_max_age(
   #| (self, value) => { self.outgoingMaxAge = value }
 
 ///|
+/// @alert deprecated "incomingHighWaterMark is deprecated"
 pub extern "js" fn WebTransportDatagramDuplexStream::get_incoming_high_water_mark(
   self : WebTransportDatagramDuplexStream,
 ) -> Double =
   #| (self) => self.incomingHighWaterMark
 
 ///|
+/// @alert deprecated "incomingHighWaterMark is deprecated"
 pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_high_water_mark(
   self : WebTransportDatagramDuplexStream,
   value : Double,
@@ -846,12 +876,14 @@ pub extern "js" fn WebTransportDatagramDuplexStream::set_incoming_high_water_mar
   #| (self, value) => { self.incomingHighWaterMark = value }
 
 ///|
+/// @alert deprecated "outgoingHighWaterMark is deprecated"
 pub extern "js" fn WebTransportDatagramDuplexStream::get_outgoing_high_water_mark(
   self : WebTransportDatagramDuplexStream,
 ) -> Double =
   #| (self) => self.outgoingHighWaterMark
 
 ///|
+/// @alert deprecated "outgoingHighWaterMark is deprecated"
 pub extern "js" fn WebTransportDatagramDuplexStream::set_outgoing_high_water_mark(
   self : WebTransportDatagramDuplexStream,
   value : Double,
@@ -895,28 +927,43 @@ pub(all) enum WebTransportConstructorError {
   SyntaxError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportExportKeyingMaterialError {
+  RangeError(JsError)
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebTransportCloseError {
   WebTransportError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebTransportCreateBidirectionalStreamError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebTransportCreateUnidirectionalStreamError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportCreateSendGroupError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WebTransport::new(
@@ -964,16 +1011,16 @@ pub extern "js" fn WebTransport::get_stats(
 pub extern "js" fn WebTransport::export_keying_material(
   self : WebTransport,
   label : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, label) => self.exportKeyingMaterial(label)
+) -> Promise[Result[Uint8Array, WebTransportExportKeyingMaterialError]] =
+  #| (self, label) => self.exportKeyingMaterial(label).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebTransport::export_keying_material_with_context(
   self : WebTransport,
   label : BufferSource,
   context : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, label, context) => self.exportKeyingMaterial(label, context)
+) -> Promise[Result[Uint8Array, WebTransportExportKeyingMaterialError]] =
+  #| (self, label, context) => self.exportKeyingMaterial(label, context).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebTransport::get_ready(
@@ -1018,6 +1065,12 @@ pub extern "js" fn WebTransport::set_anticipated_concurrent_incoming_bidirection
   value : Int?,
 ) -> Unit =
   #| (self, value) => { self.anticipatedConcurrentIncomingBidirectionalStreams = value }
+
+///|
+pub extern "js" fn WebTransport::get_response_headers(
+  self : WebTransport,
+) -> Headers? =
+  #| (self) => (() => { const v = self.responseHeaders; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 pub extern "js" fn WebTransport::get_protocol(self : WebTransport) -> String =
@@ -1146,8 +1199,8 @@ pub extern "js" fn WebTransport::get_incoming_unidirectional_streams(
 ///|
 pub extern "js" fn WebTransport::create_send_group(
   self : WebTransport,
-) -> WebTransportSendGroup =
-  #| (self) => self.createSendGroup()
+) -> Result[WebTransportSendGroup, WebTransportCreateSendGroupError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.createSendGroup() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebTransport::get_supports_reliable_only(
@@ -1160,16 +1213,16 @@ pub extern "js" fn WebTransport::export_keying_material_with_array_buffer_view(
   self : WebTransport,
   label : ArrayBufferView,
   context : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, label, context) => self.exportKeyingMaterial(label, context)
+) -> Promise[Result[Uint8Array, WebTransportExportKeyingMaterialError]] =
+  #| (self, label, context) => self.exportKeyingMaterial(label, context).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WebTransport::export_keying_material_with_array_buffer(
   self : WebTransport,
   label : ArrayBuffer,
   context : BufferSource,
-) -> Promise[ArrayBuffer] =
-  #| (self, label, context) => self.exportKeyingMaterial(label, context)
+) -> Promise[Result[Uint8Array, WebTransportExportKeyingMaterialError]] =
+  #| (self, label, context) => self.exportKeyingMaterial(label, context).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 /// WebTransportSendStream interface
@@ -1216,6 +1269,20 @@ pub extern "js" fn WebTransportSendStream::to_writable_stream(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum WebTransportSendStreamSetSendGroupError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WebTransportSendStreamGetWriterError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn WebTransportSendStream::get_send_group(
   self : WebTransportSendStream,
 ) -> WebTransportSendGroup? =
@@ -1225,14 +1292,14 @@ pub extern "js" fn WebTransportSendStream::get_send_group(
 pub extern "js" fn WebTransportSendStream::set_send_group(
   self : WebTransportSendStream,
   value : WebTransportSendGroup?,
-) -> Unit =
-  #| (self, value) => { self.sendGroup = (value.$tag === 1 ? value._0 : null) }
+) -> Result[Unit, WebTransportSendStreamSetSendGroupError] =
+  #| (self, value) => (() => { try { self.sendGroup = (value.$tag === 1 ? value._0 : null); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WebTransportSendStream::get_send_order(
   self : WebTransportSendStream,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.sendOrder; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.sendOrder))
 
 ///|
 pub extern "js" fn WebTransportSendStream::set_send_order(
@@ -1254,8 +1321,8 @@ pub extern "js" fn WebTransportSendStream::get_stats(
 ///|
 pub extern "js" fn WebTransportSendStream::get_writer(
   self : WebTransportSendStream,
-) -> WebTransportWriter =
-  #| (self) => self.getWriter()
+) -> Result[WebTransportWriter, WebTransportSendStreamGetWriterError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.getWriter() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// WebTransportSendGroup interface

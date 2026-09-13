@@ -6,7 +6,7 @@
 pub(all) enum BinaryType {
   Blob
   Arraybuffer
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub(all) struct CloseEventInit {
 ///|
 /// Create a new CloseEventInit with default values
 pub fn CloseEventInit::default() -> CloseEventInit {
-  CloseEventInit::{ wasClean: None, code: None, reason: None }
+  CloseEventInit::{ wasClean: None, code: None, reason: None, }
 }
 
 ///|
@@ -106,7 +106,7 @@ pub extern "js" fn WebSocket::to_event_target(self : WebSocket) -> EventTarget =
 pub(all) enum WebSocketConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -114,14 +114,14 @@ pub(all) enum WebSocketCloseError {
   SyntaxError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebSocketSendError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WebSocket::new(
@@ -166,7 +166,7 @@ pub extern "js" fn WebSocket::get_ready_state(self : WebSocket) -> Int =
 
 ///|
 pub extern "js" fn WebSocket::get_buffered_amount(self : WebSocket) -> Int64 =
-  #| (self) => (() => { const n = self.bufferedAmount; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.bufferedAmount))
 
 ///|
 pub extern "js" fn WebSocket::set_onopen(

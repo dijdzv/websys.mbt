@@ -10,7 +10,7 @@ pub(all) struct VideoEncoderEncodeOptionsForVp9 {
 ///|
 /// Create a new VideoEncoderEncodeOptionsForVp9 with default values
 pub fn VideoEncoderEncodeOptionsForVp9::default() -> VideoEncoderEncodeOptionsForVp9 {
-  VideoEncoderEncodeOptionsForVp9::{ quantizer: Nullable::Undefined }
+  VideoEncoderEncodeOptionsForVp9::{ quantizer: Nullable::Undefined, }
 }
 
 ///|

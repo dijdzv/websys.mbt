@@ -69,23 +69,22 @@ pub extern "js" fn JsError::name(self : JsError) -> String =
   #| (self) => (self && self.name) || ''
 
 ///|
-impl Show for JsError with output(self, logger) {
+pub impl Show for JsError with fn output(self, logger) {
   logger.write_string(self.message())
+}
+
+///|
+pub impl Debug for JsError with fn to_repr(self) {
+  @debug.Repr::Repr(self.message())
 }
 
 // External types (referenced but not defined in WebIDL specs)
 
 ///|
-pub type ArrayBuffer
-
-///|
 pub type Uint8Array
 
 ///|
-pub type Int32Array
-
-///|
-pub type Uint32Array
+pub type ArrayBuffer
 
 ///|
 pub type Float32Array
@@ -100,7 +99,13 @@ pub type Uint8ClampedArray
 pub type Float16Array
 
 ///|
+pub type Uint32Array
+
+///|
 pub type DataView
+
+///|
+pub type Int32Array
 
 ///|
 pub type Int8Array
@@ -123,772 +128,6 @@ pub type SharedArrayBuffer
 // Inline Union types
 
 ///|
-/// StringOrArrayBuffer typedef
-pub type StringOrArrayBuffer
-
-///|
-pub extern "js" fn StringOrArrayBuffer::to_js_value(
-  self : StringOrArrayBuffer,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrArrayBuffer from String
-pub extern "js" fn StringOrArrayBuffer::from_string(
-  v : String,
-) -> StringOrArrayBuffer =
-  #| (v) => v
-
-///|
-/// Create StringOrArrayBuffer from ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::from_array_buffer(
-  v : ArrayBuffer,
-) -> StringOrArrayBuffer =
-  #| (v) => v
-
-///|
-/// Check if this StringOrArrayBuffer is String
-pub extern "js" fn StringOrArrayBuffer::is_string(
-  self : StringOrArrayBuffer,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrArrayBuffer is ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::is_array_buffer(
-  self : StringOrArrayBuffer,
-) -> Bool =
-  #| (self) => self instanceof ArrayBuffer
-
-///|
-/// Try to get StringOrArrayBuffer as String
-pub extern "js" fn StringOrArrayBuffer::as_string(
-  self : StringOrArrayBuffer,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? self : undefined
-
-///|
-/// Try to get StringOrArrayBuffer as ArrayBuffer
-pub extern "js" fn StringOrArrayBuffer::as_array_buffer(
-  self : StringOrArrayBuffer,
-) -> ArrayBuffer? =
-  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[StringOrArrayBuffer] to String?
-pub fn StringOrArrayBuffer::bind_as_string(
-  value : StringOrArrayBuffer?,
-) -> String? {
-  match value {
-    Some(v) => v.as_string()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[StringOrArrayBuffer] to ArrayBuffer?
-pub fn StringOrArrayBuffer::bind_as_array_buffer(
-  value : StringOrArrayBuffer?,
-) -> ArrayBuffer? {
-  match value {
-    Some(v) => v.as_array_buffer()
-    None => None
-  }
-}
-
-///|
-/// BlobOrMediaSource typedef
-pub type BlobOrMediaSource
-
-///|
-pub extern "js" fn BlobOrMediaSource::to_js_value(
-  self : BlobOrMediaSource,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create BlobOrMediaSource from Blob
-pub extern "js" fn BlobOrMediaSource::from_blob(v : Blob) -> BlobOrMediaSource =
-  #| (v) => v
-
-///|
-/// Create BlobOrMediaSource from MediaSource
-pub extern "js" fn BlobOrMediaSource::from_media_source(
-  v : MediaSource,
-) -> BlobOrMediaSource =
-  #| (v) => v
-
-///|
-/// Check if this BlobOrMediaSource is Blob
-pub extern "js" fn BlobOrMediaSource::is_blob(self : BlobOrMediaSource) -> Bool =
-  #| (self) => self instanceof Blob
-
-///|
-/// Check if this BlobOrMediaSource is MediaSource
-pub extern "js" fn BlobOrMediaSource::is_media_source(
-  self : BlobOrMediaSource,
-) -> Bool =
-  #| (self) => self instanceof MediaSource
-
-///|
-/// Try to get BlobOrMediaSource as Blob
-pub extern "js" fn BlobOrMediaSource::as_blob(
-  self : BlobOrMediaSource,
-) -> Blob? =
-  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get BlobOrMediaSource as MediaSource
-pub extern "js" fn BlobOrMediaSource::as_media_source(
-  self : BlobOrMediaSource,
-) -> MediaSource? =
-  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[BlobOrMediaSource] to Blob?
-pub fn BlobOrMediaSource::bind_as_blob(value : BlobOrMediaSource?) -> Blob? {
-  match value {
-    Some(v) => v.as_blob()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[BlobOrMediaSource] to MediaSource?
-pub fn BlobOrMediaSource::bind_as_media_source(
-  value : BlobOrMediaSource?,
-) -> MediaSource? {
-  match value {
-    Some(v) => v.as_media_source()
-    None => None
-  }
-}
-
-///|
-/// IDBObjectStoreOrIDBIndexOrIDBCursor typedef
-pub type IDBObjectStoreOrIDBIndexOrIDBCursor
-
-///|
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::to_js_value(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_object_store(
-  v : IDBObjectStore,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_index(
-  v : IDBIndex,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_cursor(
-  v : IDBCursor,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
-  #| (v) => v
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_object_store(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBObjectStore
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_index(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBIndex
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_cursor(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> Bool =
-  #| (self) => self instanceof IDBCursor
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_object_store(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBObjectStore? =
-  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_index(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBIndex? =
-  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBCursor
-pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_cursor(
-  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
-) -> IDBCursor? =
-  #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBObjectStore?
-pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_object_store(
-  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
-) -> IDBObjectStore? {
-  match value {
-    Some(v) => v.as_idb_object_store()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBIndex?
-pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_index(
-  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
-) -> IDBIndex? {
-  match value {
-    Some(v) => v.as_idb_index()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBCursor?
-pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_cursor(
-  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
-) -> IDBCursor? {
-  match value {
-    Some(v) => v.as_idb_cursor()
-    None => None
-  }
-}
-
-///|
-/// StringOrArrayOfString typedef
-pub type StringOrArrayOfString
-
-///|
-pub extern "js" fn StringOrArrayOfString::to_js_value(
-  self : StringOrArrayOfString,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrArrayOfString from String
-pub extern "js" fn StringOrArrayOfString::from_string(
-  v : String,
-) -> StringOrArrayOfString =
-  #| (v) => v
-
-///|
-/// Create StringOrArrayOfString from Array[String]
-pub extern "js" fn StringOrArrayOfString::from_array_of_string(
-  v : Array[String],
-) -> StringOrArrayOfString =
-  #| (v) => v
-
-///|
-/// Check if this StringOrArrayOfString is String
-pub extern "js" fn StringOrArrayOfString::is_string(
-  self : StringOrArrayOfString,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrArrayOfString is Array[String]
-pub extern "js" fn StringOrArrayOfString::is_array_of_string(
-  self : StringOrArrayOfString,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get StringOrArrayOfString as String
-pub extern "js" fn StringOrArrayOfString::as_string(
-  self : StringOrArrayOfString,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? self : undefined
-
-///|
-/// Try to get StringOrArrayOfString as Array[String]
-pub extern "js" fn StringOrArrayOfString::as_array_of_string(
-  self : StringOrArrayOfString,
-) -> Array[String]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[StringOrArrayOfString] to String?
-pub fn StringOrArrayOfString::bind_as_string(
-  value : StringOrArrayOfString?,
-) -> String? {
-  match value {
-    Some(v) => v.as_string()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[StringOrArrayOfString] to Array[String]?
-pub fn StringOrArrayOfString::bind_as_array_of_string(
-  value : StringOrArrayOfString?,
-) -> Array[String]? {
-  match value {
-    Some(v) => v.as_array_of_string()
-    None => None
-  }
-}
-
-///|
-/// IDBObjectStoreOrIDBIndex typedef
-pub type IDBObjectStoreOrIDBIndex
-
-///|
-pub extern "js" fn IDBObjectStoreOrIDBIndex::to_js_value(
-  self : IDBObjectStoreOrIDBIndex,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create IDBObjectStoreOrIDBIndex from IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::from_idb_object_store(
-  v : IDBObjectStore,
-) -> IDBObjectStoreOrIDBIndex =
-  #| (v) => v
-
-///|
-/// Create IDBObjectStoreOrIDBIndex from IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::from_idb_index(
-  v : IDBIndex,
-) -> IDBObjectStoreOrIDBIndex =
-  #| (v) => v
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndex is IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::is_idb_object_store(
-  self : IDBObjectStoreOrIDBIndex,
-) -> Bool =
-  #| (self) => self instanceof IDBObjectStore
-
-///|
-/// Check if this IDBObjectStoreOrIDBIndex is IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::is_idb_index(
-  self : IDBObjectStoreOrIDBIndex,
-) -> Bool =
-  #| (self) => self instanceof IDBIndex
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndex as IDBObjectStore
-pub extern "js" fn IDBObjectStoreOrIDBIndex::as_idb_object_store(
-  self : IDBObjectStoreOrIDBIndex,
-) -> IDBObjectStore? =
-  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get IDBObjectStoreOrIDBIndex as IDBIndex
-pub extern "js" fn IDBObjectStoreOrIDBIndex::as_idb_index(
-  self : IDBObjectStoreOrIDBIndex,
-) -> IDBIndex? =
-  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[IDBObjectStoreOrIDBIndex] to IDBObjectStore?
-pub fn IDBObjectStoreOrIDBIndex::bind_as_idb_object_store(
-  value : IDBObjectStoreOrIDBIndex?,
-) -> IDBObjectStore? {
-  match value {
-    Some(v) => v.as_idb_object_store()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[IDBObjectStoreOrIDBIndex] to IDBIndex?
-pub fn IDBObjectStoreOrIDBIndex::bind_as_idb_index(
-  value : IDBObjectStoreOrIDBIndex?,
-) -> IDBIndex? {
-  match value {
-    Some(v) => v.as_idb_index()
-    None => None
-  }
-}
-
-///|
-/// StringOrTrustedScriptURL typedef
-pub type StringOrTrustedScriptURL
-
-///|
-pub extern "js" fn StringOrTrustedScriptURL::to_js_value(
-  self : StringOrTrustedScriptURL,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create StringOrTrustedScriptURL from String
-pub extern "js" fn StringOrTrustedScriptURL::from_string(
-  v : String,
-) -> StringOrTrustedScriptURL =
-  #| (v) => v
-
-///|
-/// Create StringOrTrustedScriptURL from TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::from_trusted_script_url(
-  v : TrustedScriptURL,
-) -> StringOrTrustedScriptURL =
-  #| (v) => v
-
-///|
-/// Check if this StringOrTrustedScriptURL is String
-pub extern "js" fn StringOrTrustedScriptURL::is_string(
-  self : StringOrTrustedScriptURL,
-) -> Bool =
-  #| (self) => typeof self === 'string'
-
-///|
-/// Check if this StringOrTrustedScriptURL is TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::is_trusted_script_url(
-  self : StringOrTrustedScriptURL,
-) -> Bool =
-  #| (self) => self instanceof TrustedScriptURL
-
-///|
-/// Try to get StringOrTrustedScriptURL as String
-pub extern "js" fn StringOrTrustedScriptURL::as_string(
-  self : StringOrTrustedScriptURL,
-) -> String? =
-  #| (self) => (typeof self === 'string') ? self : undefined
-
-///|
-/// Try to get StringOrTrustedScriptURL as TrustedScriptURL
-pub extern "js" fn StringOrTrustedScriptURL::as_trusted_script_url(
-  self : StringOrTrustedScriptURL,
-) -> TrustedScriptURL? =
-  #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[StringOrTrustedScriptURL] to String?
-pub fn StringOrTrustedScriptURL::bind_as_string(
-  value : StringOrTrustedScriptURL?,
-) -> String? {
-  match value {
-    Some(v) => v.as_string()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[StringOrTrustedScriptURL] to TrustedScriptURL?
-pub fn StringOrTrustedScriptURL::bind_as_trusted_script_url(
-  value : StringOrTrustedScriptURL?,
-) -> TrustedScriptURL? {
-  match value {
-    Some(v) => v.as_trusted_script_url()
-    None => None
-  }
-}
-
-///|
-/// ElementOrCSSPseudoElement typedef
-pub type ElementOrCSSPseudoElement
-
-///|
-pub extern "js" fn ElementOrCSSPseudoElement::to_js_value(
-  self : ElementOrCSSPseudoElement,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create ElementOrCSSPseudoElement from Element
-pub extern "js" fn ElementOrCSSPseudoElement::from_element(
-  v : Element,
-) -> ElementOrCSSPseudoElement =
-  #| (v) => v
-
-///|
-/// Create ElementOrCSSPseudoElement from CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::from_css_pseudo_element(
-  v : CSSPseudoElement,
-) -> ElementOrCSSPseudoElement =
-  #| (v) => v
-
-///|
-/// Check if this ElementOrCSSPseudoElement is Element
-pub extern "js" fn ElementOrCSSPseudoElement::is_element(
-  self : ElementOrCSSPseudoElement,
-) -> Bool =
-  #| (self) => self instanceof Element
-
-///|
-/// Check if this ElementOrCSSPseudoElement is CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::is_css_pseudo_element(
-  self : ElementOrCSSPseudoElement,
-) -> Bool =
-  #| (self) => self instanceof CSSPseudoElement
-
-///|
-/// Try to get ElementOrCSSPseudoElement as Element
-pub extern "js" fn ElementOrCSSPseudoElement::as_element(
-  self : ElementOrCSSPseudoElement,
-) -> Element? =
-  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get ElementOrCSSPseudoElement as CSSPseudoElement
-pub extern "js" fn ElementOrCSSPseudoElement::as_css_pseudo_element(
-  self : ElementOrCSSPseudoElement,
-) -> CSSPseudoElement? =
-  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[ElementOrCSSPseudoElement] to Element?
-pub fn ElementOrCSSPseudoElement::bind_as_element(
-  value : ElementOrCSSPseudoElement?,
-) -> Element? {
-  match value {
-    Some(v) => v.as_element()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[ElementOrCSSPseudoElement] to CSSPseudoElement?
-pub fn ElementOrCSSPseudoElement::bind_as_css_pseudo_element(
-  value : ElementOrCSSPseudoElement?,
-) -> CSSPseudoElement? {
-  match value {
-    Some(v) => v.as_css_pseudo_element()
-    None => None
-  }
-}
-
-///|
-/// Int32ArrayOrArrayOfGLint typedef
-pub type Int32ArrayOrArrayOfGLint
-
-///|
-pub extern "js" fn Int32ArrayOrArrayOfGLint::to_js_value(
-  self : Int32ArrayOrArrayOfGLint,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create Int32ArrayOrArrayOfGLint from Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLint::from_int32_array(
-  v : Int32Array,
-) -> Int32ArrayOrArrayOfGLint =
-  #| (v) => v
-
-///|
-/// Create Int32ArrayOrArrayOfGLint from Array[GLint]
-pub extern "js" fn Int32ArrayOrArrayOfGLint::from_array_of_g_lint(
-  v : Array[GLint],
-) -> Int32ArrayOrArrayOfGLint =
-  #| (v) => v
-
-///|
-/// Check if this Int32ArrayOrArrayOfGLint is Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLint::is_int32_array(
-  self : Int32ArrayOrArrayOfGLint,
-) -> Bool =
-  #| (self) => self instanceof Int32Array
-
-///|
-/// Check if this Int32ArrayOrArrayOfGLint is Array[GLint]
-pub extern "js" fn Int32ArrayOrArrayOfGLint::is_array_of_g_lint(
-  self : Int32ArrayOrArrayOfGLint,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get Int32ArrayOrArrayOfGLint as Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLint::as_int32_array(
-  self : Int32ArrayOrArrayOfGLint,
-) -> Int32Array? =
-  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get Int32ArrayOrArrayOfGLint as Array[GLint]
-pub extern "js" fn Int32ArrayOrArrayOfGLint::as_array_of_g_lint(
-  self : Int32ArrayOrArrayOfGLint,
-) -> Array[GLint]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[Int32ArrayOrArrayOfGLint] to Int32Array?
-pub fn Int32ArrayOrArrayOfGLint::bind_as_int32_array(
-  value : Int32ArrayOrArrayOfGLint?,
-) -> Int32Array? {
-  match value {
-    Some(v) => v.as_int32_array()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[Int32ArrayOrArrayOfGLint] to Array[GLint]?
-pub fn Int32ArrayOrArrayOfGLint::bind_as_array_of_g_lint(
-  value : Int32ArrayOrArrayOfGLint?,
-) -> Array[GLint]? {
-  match value {
-    Some(v) => v.as_array_of_g_lint()
-    None => None
-  }
-}
-
-///|
-/// Int32ArrayOrArrayOfGLsizei typedef
-pub type Int32ArrayOrArrayOfGLsizei
-
-///|
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::to_js_value(
-  self : Int32ArrayOrArrayOfGLsizei,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create Int32ArrayOrArrayOfGLsizei from Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::from_int32_array(
-  v : Int32Array,
-) -> Int32ArrayOrArrayOfGLsizei =
-  #| (v) => v
-
-///|
-/// Create Int32ArrayOrArrayOfGLsizei from Array[GLsizei]
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::from_array_of_g_lsizei(
-  v : Array[GLsizei],
-) -> Int32ArrayOrArrayOfGLsizei =
-  #| (v) => v
-
-///|
-/// Check if this Int32ArrayOrArrayOfGLsizei is Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::is_int32_array(
-  self : Int32ArrayOrArrayOfGLsizei,
-) -> Bool =
-  #| (self) => self instanceof Int32Array
-
-///|
-/// Check if this Int32ArrayOrArrayOfGLsizei is Array[GLsizei]
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::is_array_of_g_lsizei(
-  self : Int32ArrayOrArrayOfGLsizei,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get Int32ArrayOrArrayOfGLsizei as Int32Array
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::as_int32_array(
-  self : Int32ArrayOrArrayOfGLsizei,
-) -> Int32Array? =
-  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get Int32ArrayOrArrayOfGLsizei as Array[GLsizei]
-pub extern "js" fn Int32ArrayOrArrayOfGLsizei::as_array_of_g_lsizei(
-  self : Int32ArrayOrArrayOfGLsizei,
-) -> Array[GLsizei]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[Int32ArrayOrArrayOfGLsizei] to Int32Array?
-pub fn Int32ArrayOrArrayOfGLsizei::bind_as_int32_array(
-  value : Int32ArrayOrArrayOfGLsizei?,
-) -> Int32Array? {
-  match value {
-    Some(v) => v.as_int32_array()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[Int32ArrayOrArrayOfGLsizei] to Array[GLsizei]?
-pub fn Int32ArrayOrArrayOfGLsizei::bind_as_array_of_g_lsizei(
-  value : Int32ArrayOrArrayOfGLsizei?,
-) -> Array[GLsizei]? {
-  match value {
-    Some(v) => v.as_array_of_g_lsizei()
-    None => None
-  }
-}
-
-///|
-/// Uint32ArrayOrArrayOfGLuint typedef
-pub type Uint32ArrayOrArrayOfGLuint
-
-///|
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::to_js_value(
-  self : Uint32ArrayOrArrayOfGLuint,
-) -> JsValue =
-  #| (self) => self
-
-///|
-/// Create Uint32ArrayOrArrayOfGLuint from Uint32Array
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::from_uint32_array(
-  v : Uint32Array,
-) -> Uint32ArrayOrArrayOfGLuint =
-  #| (v) => v
-
-///|
-/// Create Uint32ArrayOrArrayOfGLuint from Array[GLuint]
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::from_array_of_g_luint(
-  v : Array[GLuint],
-) -> Uint32ArrayOrArrayOfGLuint =
-  #| (v) => v
-
-///|
-/// Check if this Uint32ArrayOrArrayOfGLuint is Uint32Array
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::is_uint32_array(
-  self : Uint32ArrayOrArrayOfGLuint,
-) -> Bool =
-  #| (self) => self instanceof Uint32Array
-
-///|
-/// Check if this Uint32ArrayOrArrayOfGLuint is Array[GLuint]
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::is_array_of_g_luint(
-  self : Uint32ArrayOrArrayOfGLuint,
-) -> Bool =
-  #| (self) => Array.isArray(self)
-
-///|
-/// Try to get Uint32ArrayOrArrayOfGLuint as Uint32Array
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::as_uint32_array(
-  self : Uint32ArrayOrArrayOfGLuint,
-) -> Uint32Array? =
-  #| (self) => (self instanceof Uint32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Try to get Uint32ArrayOrArrayOfGLuint as Array[GLuint]
-pub extern "js" fn Uint32ArrayOrArrayOfGLuint::as_array_of_g_luint(
-  self : Uint32ArrayOrArrayOfGLuint,
-) -> Array[GLuint]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-/// Flatten Option[Uint32ArrayOrArrayOfGLuint] to Uint32Array?
-pub fn Uint32ArrayOrArrayOfGLuint::bind_as_uint32_array(
-  value : Uint32ArrayOrArrayOfGLuint?,
-) -> Uint32Array? {
-  match value {
-    Some(v) => v.as_uint32_array()
-    None => None
-  }
-}
-
-///|
-/// Flatten Option[Uint32ArrayOrArrayOfGLuint] to Array[GLuint]?
-pub fn Uint32ArrayOrArrayOfGLuint::bind_as_array_of_g_luint(
-  value : Uint32ArrayOrArrayOfGLuint?,
-) -> Array[GLuint]? {
-  match value {
-    Some(v) => v.as_array_of_g_luint()
-    None => None
-  }
-}
-
-///|
 /// RequestInfoOrArrayOfRequestInfo typedef
 pub type RequestInfoOrArrayOfRequestInfo
 
@@ -906,9 +145,9 @@ pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_request_info(
   #| (v) => v
 
 ///|
-/// Create RequestInfoOrArrayOfRequestInfo from Array[RequestInfo]
+/// Create RequestInfoOrArrayOfRequestInfo from FixedArray[RequestInfo]
 pub extern "js" fn RequestInfoOrArrayOfRequestInfo::from_array_of_request_info(
-  v : Array[RequestInfo],
+  v : FixedArray[RequestInfo],
 ) -> RequestInfoOrArrayOfRequestInfo =
   #| (v) => v
 
@@ -920,7 +159,7 @@ pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_request_info(
   #| (self) => self instanceof Request || typeof self === 'string'
 
 ///|
-/// Check if this RequestInfoOrArrayOfRequestInfo is Array[RequestInfo]
+/// Check if this RequestInfoOrArrayOfRequestInfo is FixedArray[RequestInfo]
 pub extern "js" fn RequestInfoOrArrayOfRequestInfo::is_array_of_request_info(
   self : RequestInfoOrArrayOfRequestInfo,
 ) -> Bool =
@@ -934,11 +173,11 @@ pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_request_info(
   #| (self) => (self instanceof Request || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get RequestInfoOrArrayOfRequestInfo as Array[RequestInfo]
+/// Try to get RequestInfoOrArrayOfRequestInfo as FixedArray[RequestInfo]
 pub extern "js" fn RequestInfoOrArrayOfRequestInfo::as_array_of_request_info(
   self : RequestInfoOrArrayOfRequestInfo,
-) -> Array[RequestInfo]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[RequestInfo]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[RequestInfoOrArrayOfRequestInfo] to RequestInfo?
@@ -952,10 +191,10 @@ pub fn RequestInfoOrArrayOfRequestInfo::bind_as_request_info(
 }
 
 ///|
-/// Flatten Option[RequestInfoOrArrayOfRequestInfo] to Array[RequestInfo]?
+/// Flatten Option[RequestInfoOrArrayOfRequestInfo] to FixedArray[RequestInfo]?
 pub fn RequestInfoOrArrayOfRequestInfo::bind_as_array_of_request_info(
   value : RequestInfoOrArrayOfRequestInfo?,
-) -> Array[RequestInfo]? {
+) -> FixedArray[RequestInfo]? {
   match value {
     Some(v) => v.as_array_of_request_info()
     None => None
@@ -980,9 +219,9 @@ pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_animation_effec
   #| (v) => v
 
 ///|
-/// Create AnimationEffectOrArrayOfAnimationEffect from Array[AnimationEffect]
+/// Create AnimationEffectOrArrayOfAnimationEffect from FixedArray[AnimationEffect]
 pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::from_array_of_animation_effect(
-  v : Array[AnimationEffect],
+  v : FixedArray[AnimationEffect],
 ) -> AnimationEffectOrArrayOfAnimationEffect =
   #| (v) => v
 
@@ -994,7 +233,7 @@ pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_animation_effect(
   #| (self) => self instanceof AnimationEffect
 
 ///|
-/// Check if this AnimationEffectOrArrayOfAnimationEffect is Array[AnimationEffect]
+/// Check if this AnimationEffectOrArrayOfAnimationEffect is FixedArray[AnimationEffect]
 pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::is_array_of_animation_effect(
   self : AnimationEffectOrArrayOfAnimationEffect,
 ) -> Bool =
@@ -1008,11 +247,11 @@ pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_animation_effect(
   #| (self) => (self instanceof AnimationEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get AnimationEffectOrArrayOfAnimationEffect as Array[AnimationEffect]
+/// Try to get AnimationEffectOrArrayOfAnimationEffect as FixedArray[AnimationEffect]
 pub extern "js" fn AnimationEffectOrArrayOfAnimationEffect::as_array_of_animation_effect(
   self : AnimationEffectOrArrayOfAnimationEffect,
-) -> Array[AnimationEffect]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[AnimationEffect]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[AnimationEffectOrArrayOfAnimationEffect] to AnimationEffect?
@@ -1026,10 +265,10 @@ pub fn AnimationEffectOrArrayOfAnimationEffect::bind_as_animation_effect(
 }
 
 ///|
-/// Flatten Option[AnimationEffectOrArrayOfAnimationEffect] to Array[AnimationEffect]?
+/// Flatten Option[AnimationEffectOrArrayOfAnimationEffect] to FixedArray[AnimationEffect]?
 pub fn AnimationEffectOrArrayOfAnimationEffect::bind_as_array_of_animation_effect(
   value : AnimationEffectOrArrayOfAnimationEffect?,
-) -> Array[AnimationEffect]? {
+) -> FixedArray[AnimationEffect]? {
   match value {
     Some(v) => v.as_array_of_animation_effect()
     None => None
@@ -1126,9 +365,9 @@ pub extern "js" fn IntOrArrayOfInt::from_int(v : Int) -> IntOrArrayOfInt =
   #| (v) => v
 
 ///|
-/// Create IntOrArrayOfInt from Array[Int]
+/// Create IntOrArrayOfInt from FixedArray[Int]
 pub extern "js" fn IntOrArrayOfInt::from_array_of_int(
-  v : Array[Int],
+  v : FixedArray[Int],
 ) -> IntOrArrayOfInt =
   #| (v) => v
 
@@ -1138,7 +377,7 @@ pub extern "js" fn IntOrArrayOfInt::is_int(self : IntOrArrayOfInt) -> Bool =
   #| (self) => typeof self === 'number'
 
 ///|
-/// Check if this IntOrArrayOfInt is Array[Int]
+/// Check if this IntOrArrayOfInt is FixedArray[Int]
 pub extern "js" fn IntOrArrayOfInt::is_array_of_int(
   self : IntOrArrayOfInt,
 ) -> Bool =
@@ -1150,11 +389,11 @@ pub extern "js" fn IntOrArrayOfInt::as_int(self : IntOrArrayOfInt) -> Int? =
   #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
-/// Try to get IntOrArrayOfInt as Array[Int]
+/// Try to get IntOrArrayOfInt as FixedArray[Int]
 pub extern "js" fn IntOrArrayOfInt::as_array_of_int(
   self : IntOrArrayOfInt,
-) -> Array[Int]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[Int]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[IntOrArrayOfInt] to Int?
@@ -1166,12 +405,86 @@ pub fn IntOrArrayOfInt::bind_as_int(value : IntOrArrayOfInt?) -> Int? {
 }
 
 ///|
-/// Flatten Option[IntOrArrayOfInt] to Array[Int]?
+/// Flatten Option[IntOrArrayOfInt] to FixedArray[Int]?
 pub fn IntOrArrayOfInt::bind_as_array_of_int(
   value : IntOrArrayOfInt?,
-) -> Array[Int]? {
+) -> FixedArray[Int]? {
   match value {
     Some(v) => v.as_array_of_int()
+    None => None
+  }
+}
+
+///|
+/// ElementOrCSSPseudoElement typedef
+pub type ElementOrCSSPseudoElement
+
+///|
+pub extern "js" fn ElementOrCSSPseudoElement::to_js_value(
+  self : ElementOrCSSPseudoElement,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create ElementOrCSSPseudoElement from Element
+pub extern "js" fn ElementOrCSSPseudoElement::from_element(
+  v : Element,
+) -> ElementOrCSSPseudoElement =
+  #| (v) => v
+
+///|
+/// Create ElementOrCSSPseudoElement from CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::from_css_pseudo_element(
+  v : CSSPseudoElement,
+) -> ElementOrCSSPseudoElement =
+  #| (v) => v
+
+///|
+/// Check if this ElementOrCSSPseudoElement is Element
+pub extern "js" fn ElementOrCSSPseudoElement::is_element(
+  self : ElementOrCSSPseudoElement,
+) -> Bool =
+  #| (self) => self instanceof Element
+
+///|
+/// Check if this ElementOrCSSPseudoElement is CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::is_css_pseudo_element(
+  self : ElementOrCSSPseudoElement,
+) -> Bool =
+  #| (self) => self instanceof CSSPseudoElement
+
+///|
+/// Try to get ElementOrCSSPseudoElement as Element
+pub extern "js" fn ElementOrCSSPseudoElement::as_element(
+  self : ElementOrCSSPseudoElement,
+) -> Element? =
+  #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get ElementOrCSSPseudoElement as CSSPseudoElement
+pub extern "js" fn ElementOrCSSPseudoElement::as_css_pseudo_element(
+  self : ElementOrCSSPseudoElement,
+) -> CSSPseudoElement? =
+  #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[ElementOrCSSPseudoElement] to Element?
+pub fn ElementOrCSSPseudoElement::bind_as_element(
+  value : ElementOrCSSPseudoElement?,
+) -> Element? {
+  match value {
+    Some(v) => v.as_element()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[ElementOrCSSPseudoElement] to CSSPseudoElement?
+pub fn ElementOrCSSPseudoElement::bind_as_css_pseudo_element(
+  value : ElementOrCSSPseudoElement?,
+) -> CSSPseudoElement? {
+  match value {
+    Some(v) => v.as_css_pseudo_element()
     None => None
   }
 }
@@ -2161,6 +1474,148 @@ pub fn MediaKeyStatusOrVoid::bind_as_media_key_status(
 }
 
 ///|
+/// StringOrArrayBuffer typedef
+pub type StringOrArrayBuffer
+
+///|
+pub extern "js" fn StringOrArrayBuffer::to_js_value(
+  self : StringOrArrayBuffer,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrArrayBuffer from String
+pub extern "js" fn StringOrArrayBuffer::from_string(
+  v : String,
+) -> StringOrArrayBuffer =
+  #| (v) => v
+
+///|
+/// Create StringOrArrayBuffer from ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::from_array_buffer(
+  v : ArrayBuffer,
+) -> StringOrArrayBuffer =
+  #| (v) => v
+
+///|
+/// Check if this StringOrArrayBuffer is String
+pub extern "js" fn StringOrArrayBuffer::is_string(
+  self : StringOrArrayBuffer,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrArrayBuffer is ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::is_array_buffer(
+  self : StringOrArrayBuffer,
+) -> Bool =
+  #| (self) => self instanceof ArrayBuffer
+
+///|
+/// Try to get StringOrArrayBuffer as String
+pub extern "js" fn StringOrArrayBuffer::as_string(
+  self : StringOrArrayBuffer,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? self : undefined
+
+///|
+/// Try to get StringOrArrayBuffer as ArrayBuffer
+pub extern "js" fn StringOrArrayBuffer::as_array_buffer(
+  self : StringOrArrayBuffer,
+) -> ArrayBuffer? =
+  #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[StringOrArrayBuffer] to String?
+pub fn StringOrArrayBuffer::bind_as_string(
+  value : StringOrArrayBuffer?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[StringOrArrayBuffer] to ArrayBuffer?
+pub fn StringOrArrayBuffer::bind_as_array_buffer(
+  value : StringOrArrayBuffer?,
+) -> ArrayBuffer? {
+  match value {
+    Some(v) => v.as_array_buffer()
+    None => None
+  }
+}
+
+///|
+/// BlobOrMediaSource typedef
+pub type BlobOrMediaSource
+
+///|
+pub extern "js" fn BlobOrMediaSource::to_js_value(
+  self : BlobOrMediaSource,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create BlobOrMediaSource from Blob
+pub extern "js" fn BlobOrMediaSource::from_blob(v : Blob) -> BlobOrMediaSource =
+  #| (v) => v
+
+///|
+/// Create BlobOrMediaSource from MediaSource
+pub extern "js" fn BlobOrMediaSource::from_media_source(
+  v : MediaSource,
+) -> BlobOrMediaSource =
+  #| (v) => v
+
+///|
+/// Check if this BlobOrMediaSource is Blob
+pub extern "js" fn BlobOrMediaSource::is_blob(self : BlobOrMediaSource) -> Bool =
+  #| (self) => self instanceof Blob
+
+///|
+/// Check if this BlobOrMediaSource is MediaSource
+pub extern "js" fn BlobOrMediaSource::is_media_source(
+  self : BlobOrMediaSource,
+) -> Bool =
+  #| (self) => self instanceof MediaSource
+
+///|
+/// Try to get BlobOrMediaSource as Blob
+pub extern "js" fn BlobOrMediaSource::as_blob(
+  self : BlobOrMediaSource,
+) -> Blob? =
+  #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get BlobOrMediaSource as MediaSource
+pub extern "js" fn BlobOrMediaSource::as_media_source(
+  self : BlobOrMediaSource,
+) -> MediaSource? =
+  #| (self) => (self instanceof MediaSource) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[BlobOrMediaSource] to Blob?
+pub fn BlobOrMediaSource::bind_as_blob(value : BlobOrMediaSource?) -> Blob? {
+  match value {
+    Some(v) => v.as_blob()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[BlobOrMediaSource] to MediaSource?
+pub fn BlobOrMediaSource::bind_as_media_source(
+  value : BlobOrMediaSource?,
+) -> MediaSource? {
+  match value {
+    Some(v) => v.as_media_source()
+    None => None
+  }
+}
+
+///|
 /// BufferSourceOrBlobOrString typedef
 pub type BufferSourceOrBlobOrString
 
@@ -2284,9 +1739,9 @@ pub extern "js" fn StringOrArrayOfDouble::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrArrayOfDouble from Array[Double]
+/// Create StringOrArrayOfDouble from FixedArray[Double]
 pub extern "js" fn StringOrArrayOfDouble::from_array_of_double(
-  v : Array[Double],
+  v : FixedArray[Double],
 ) -> StringOrArrayOfDouble =
   #| (v) => v
 
@@ -2298,7 +1753,7 @@ pub extern "js" fn StringOrArrayOfDouble::is_string(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this StringOrArrayOfDouble is Array[Double]
+/// Check if this StringOrArrayOfDouble is FixedArray[Double]
 pub extern "js" fn StringOrArrayOfDouble::is_array_of_double(
   self : StringOrArrayOfDouble,
 ) -> Bool =
@@ -2312,11 +1767,11 @@ pub extern "js" fn StringOrArrayOfDouble::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrArrayOfDouble as Array[Double]
+/// Try to get StringOrArrayOfDouble as FixedArray[Double]
 pub extern "js" fn StringOrArrayOfDouble::as_array_of_double(
   self : StringOrArrayOfDouble,
-) -> Array[Double]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[Double]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[StringOrArrayOfDouble] to String?
@@ -2330,10 +1785,10 @@ pub fn StringOrArrayOfDouble::bind_as_string(
 }
 
 ///|
-/// Flatten Option[StringOrArrayOfDouble] to Array[Double]?
+/// Flatten Option[StringOrArrayOfDouble] to FixedArray[Double]?
 pub fn StringOrArrayOfDouble::bind_as_array_of_double(
   value : StringOrArrayOfDouble?,
-) -> Array[Double]? {
+) -> FixedArray[Double]? {
   match value {
     Some(v) => v.as_array_of_double()
     None => None
@@ -3175,9 +2630,9 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_dom_p
   #| (v) => v
 
 ///|
-/// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from Array[DoubleOrDOMPointInit]
+/// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from FixedArray[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_array(
-  v : Array[DoubleOrDOMPointInit],
+  v : FixedArray[DoubleOrDOMPointInit],
 ) -> DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit =
   #| (v) => v
 
@@ -3196,7 +2651,7 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_dom_poi
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Check if this DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit is Array[DoubleOrDOMPointInit]
+/// Check if this DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit is FixedArray[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::is_array(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
 ) -> Bool =
@@ -3217,11 +2672,11 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_dom_poi
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as Array[DoubleOrDOMPointInit]
+/// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as FixedArray[DoubleOrDOMPointInit]
 pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_array(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
-) -> Array[DoubleOrDOMPointInit]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[DoubleOrDOMPointInit]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit] to Double?
@@ -3246,10 +2701,10 @@ pub fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::bind_as_dom_point_init
 }
 
 ///|
-/// Flatten Option[DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit] to Array[DoubleOrDOMPointInit]?
+/// Flatten Option[DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit] to FixedArray[DoubleOrDOMPointInit]?
 pub fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::bind_as_array(
   value : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit?,
-) -> Array[DoubleOrDOMPointInit]? {
+) -> FixedArray[DoubleOrDOMPointInit]? {
   match value {
     Some(v) => v.as_array()
     None => None
@@ -3889,6 +3344,260 @@ pub fn BoolOrConstrainDouble::bind_as_constrain_double(
 }
 
 ///|
+/// IDBObjectStoreOrIDBIndexOrIDBCursor typedef
+pub type IDBObjectStoreOrIDBIndexOrIDBCursor
+
+///|
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::to_js_value(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_object_store(
+  v : IDBObjectStore,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_index(
+  v : IDBIndex,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndexOrIDBCursor from IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::from_idb_cursor(
+  v : IDBCursor,
+) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+  #| (v) => v
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_object_store(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBObjectStore
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_index(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBIndex
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndexOrIDBCursor is IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::is_idb_cursor(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> Bool =
+  #| (self) => self instanceof IDBCursor
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_object_store(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBObjectStore? =
+  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_index(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBIndex? =
+  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndexOrIDBCursor as IDBCursor
+pub extern "js" fn IDBObjectStoreOrIDBIndexOrIDBCursor::as_idb_cursor(
+  self : IDBObjectStoreOrIDBIndexOrIDBCursor,
+) -> IDBCursor? =
+  #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBObjectStore?
+pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_object_store(
+  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
+) -> IDBObjectStore? {
+  match value {
+    Some(v) => v.as_idb_object_store()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBIndex?
+pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_index(
+  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
+) -> IDBIndex? {
+  match value {
+    Some(v) => v.as_idb_index()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[IDBObjectStoreOrIDBIndexOrIDBCursor] to IDBCursor?
+pub fn IDBObjectStoreOrIDBIndexOrIDBCursor::bind_as_idb_cursor(
+  value : IDBObjectStoreOrIDBIndexOrIDBCursor?,
+) -> IDBCursor? {
+  match value {
+    Some(v) => v.as_idb_cursor()
+    None => None
+  }
+}
+
+///|
+/// StringOrArrayOfString typedef
+pub type StringOrArrayOfString
+
+///|
+pub extern "js" fn StringOrArrayOfString::to_js_value(
+  self : StringOrArrayOfString,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrArrayOfString from String
+pub extern "js" fn StringOrArrayOfString::from_string(
+  v : String,
+) -> StringOrArrayOfString =
+  #| (v) => v
+
+///|
+/// Create StringOrArrayOfString from FixedArray[String]
+pub extern "js" fn StringOrArrayOfString::from_array_of_string(
+  v : FixedArray[String],
+) -> StringOrArrayOfString =
+  #| (v) => v
+
+///|
+/// Check if this StringOrArrayOfString is String
+pub extern "js" fn StringOrArrayOfString::is_string(
+  self : StringOrArrayOfString,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrArrayOfString is FixedArray[String]
+pub extern "js" fn StringOrArrayOfString::is_array_of_string(
+  self : StringOrArrayOfString,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get StringOrArrayOfString as String
+pub extern "js" fn StringOrArrayOfString::as_string(
+  self : StringOrArrayOfString,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? self : undefined
+
+///|
+/// Try to get StringOrArrayOfString as FixedArray[String]
+pub extern "js" fn StringOrArrayOfString::as_array_of_string(
+  self : StringOrArrayOfString,
+) -> FixedArray[String]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
+
+///|
+/// Flatten Option[StringOrArrayOfString] to String?
+pub fn StringOrArrayOfString::bind_as_string(
+  value : StringOrArrayOfString?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[StringOrArrayOfString] to FixedArray[String]?
+pub fn StringOrArrayOfString::bind_as_array_of_string(
+  value : StringOrArrayOfString?,
+) -> FixedArray[String]? {
+  match value {
+    Some(v) => v.as_array_of_string()
+    None => None
+  }
+}
+
+///|
+/// IDBObjectStoreOrIDBIndex typedef
+pub type IDBObjectStoreOrIDBIndex
+
+///|
+pub extern "js" fn IDBObjectStoreOrIDBIndex::to_js_value(
+  self : IDBObjectStoreOrIDBIndex,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create IDBObjectStoreOrIDBIndex from IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::from_idb_object_store(
+  v : IDBObjectStore,
+) -> IDBObjectStoreOrIDBIndex =
+  #| (v) => v
+
+///|
+/// Create IDBObjectStoreOrIDBIndex from IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::from_idb_index(
+  v : IDBIndex,
+) -> IDBObjectStoreOrIDBIndex =
+  #| (v) => v
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndex is IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::is_idb_object_store(
+  self : IDBObjectStoreOrIDBIndex,
+) -> Bool =
+  #| (self) => self instanceof IDBObjectStore
+
+///|
+/// Check if this IDBObjectStoreOrIDBIndex is IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::is_idb_index(
+  self : IDBObjectStoreOrIDBIndex,
+) -> Bool =
+  #| (self) => self instanceof IDBIndex
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndex as IDBObjectStore
+pub extern "js" fn IDBObjectStoreOrIDBIndex::as_idb_object_store(
+  self : IDBObjectStoreOrIDBIndex,
+) -> IDBObjectStore? =
+  #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get IDBObjectStoreOrIDBIndex as IDBIndex
+pub extern "js" fn IDBObjectStoreOrIDBIndex::as_idb_index(
+  self : IDBObjectStoreOrIDBIndex,
+) -> IDBIndex? =
+  #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[IDBObjectStoreOrIDBIndex] to IDBObjectStore?
+pub fn IDBObjectStoreOrIDBIndex::bind_as_idb_object_store(
+  value : IDBObjectStoreOrIDBIndex?,
+) -> IDBObjectStore? {
+  match value {
+    Some(v) => v.as_idb_object_store()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[IDBObjectStoreOrIDBIndex] to IDBIndex?
+pub fn IDBObjectStoreOrIDBIndex::bind_as_idb_index(
+  value : IDBObjectStoreOrIDBIndex?,
+) -> IDBIndex? {
+  match value {
+    Some(v) => v.as_idb_index()
+    None => None
+  }
+}
+
+///|
 /// ElementOrDocument typedef
 pub type ElementOrDocument
 
@@ -3980,9 +3689,9 @@ pub extern "js" fn DoubleOrArrayOfDouble::from_double(
   #| (v) => v
 
 ///|
-/// Create DoubleOrArrayOfDouble from Array[Double]
+/// Create DoubleOrArrayOfDouble from FixedArray[Double]
 pub extern "js" fn DoubleOrArrayOfDouble::from_array_of_double(
-  v : Array[Double],
+  v : FixedArray[Double],
 ) -> DoubleOrArrayOfDouble =
   #| (v) => v
 
@@ -3994,7 +3703,7 @@ pub extern "js" fn DoubleOrArrayOfDouble::is_double(
   #| (self) => typeof self === 'number'
 
 ///|
-/// Check if this DoubleOrArrayOfDouble is Array[Double]
+/// Check if this DoubleOrArrayOfDouble is FixedArray[Double]
 pub extern "js" fn DoubleOrArrayOfDouble::is_array_of_double(
   self : DoubleOrArrayOfDouble,
 ) -> Bool =
@@ -4008,11 +3717,11 @@ pub extern "js" fn DoubleOrArrayOfDouble::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrArrayOfDouble as Array[Double]
+/// Try to get DoubleOrArrayOfDouble as FixedArray[Double]
 pub extern "js" fn DoubleOrArrayOfDouble::as_array_of_double(
   self : DoubleOrArrayOfDouble,
-) -> Array[Double]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[Double]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[DoubleOrArrayOfDouble] to Double?
@@ -4026,10 +3735,10 @@ pub fn DoubleOrArrayOfDouble::bind_as_double(
 }
 
 ///|
-/// Flatten Option[DoubleOrArrayOfDouble] to Array[Double]?
+/// Flatten Option[DoubleOrArrayOfDouble] to FixedArray[Double]?
 pub fn DoubleOrArrayOfDouble::bind_as_array_of_double(
   value : DoubleOrArrayOfDouble?,
-) -> Array[Double]? {
+) -> FixedArray[Double]? {
   match value {
     Some(v) => v.as_array_of_double()
     None => None
@@ -4586,9 +4295,9 @@ pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from Array[CSSNumericValueOrCSSKeywordValue]
+/// Create StringOrArrayOfCSSNumericValueOrCSSKeywordValue from FixedArray[CSSNumericValueOrCSSKeywordValue]
 pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::from_array(
-  v : Array[CSSNumericValueOrCSSKeywordValue],
+  v : FixedArray[CSSNumericValueOrCSSKeywordValue],
 ) -> StringOrArrayOfCSSNumericValueOrCSSKeywordValue =
   #| (v) => v
 
@@ -4600,7 +4309,7 @@ pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_string(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is Array[CSSNumericValueOrCSSKeywordValue]
+/// Check if this StringOrArrayOfCSSNumericValueOrCSSKeywordValue is FixedArray[CSSNumericValueOrCSSKeywordValue]
 pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::is_array(
   self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
 ) -> Bool =
@@ -4614,11 +4323,11 @@ pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as Array[CSSNumericValueOrCSSKeywordValue]
+/// Try to get StringOrArrayOfCSSNumericValueOrCSSKeywordValue as FixedArray[CSSNumericValueOrCSSKeywordValue]
 pub extern "js" fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::as_array(
   self : StringOrArrayOfCSSNumericValueOrCSSKeywordValue,
-) -> Array[CSSNumericValueOrCSSKeywordValue]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[CSSNumericValueOrCSSKeywordValue]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[StringOrArrayOfCSSNumericValueOrCSSKeywordValue] to String?
@@ -4632,10 +4341,10 @@ pub fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::bind_as_string(
 }
 
 ///|
-/// Flatten Option[StringOrArrayOfCSSNumericValueOrCSSKeywordValue] to Array[CSSNumericValueOrCSSKeywordValue]?
+/// Flatten Option[StringOrArrayOfCSSNumericValueOrCSSKeywordValue] to FixedArray[CSSNumericValueOrCSSKeywordValue]?
 pub fn StringOrArrayOfCSSNumericValueOrCSSKeywordValue::bind_as_array(
   value : StringOrArrayOfCSSNumericValueOrCSSKeywordValue?,
-) -> Array[CSSNumericValueOrCSSKeywordValue]? {
+) -> FixedArray[CSSNumericValueOrCSSKeywordValue]? {
   match value {
     Some(v) => v.as_array()
     None => None
@@ -4882,9 +4591,9 @@ pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_router_rule(
   #| (v) => v
 
 ///|
-/// Create RouterRuleOrArrayOfRouterRule from Array[RouterRule]
+/// Create RouterRuleOrArrayOfRouterRule from FixedArray[RouterRule]
 pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_array_of_router_rule(
-  v : Array[RouterRule],
+  v : FixedArray[RouterRule],
 ) -> RouterRuleOrArrayOfRouterRule =
   #| (v) => v
 
@@ -4896,7 +4605,7 @@ pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_router_rule(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Check if this RouterRuleOrArrayOfRouterRule is Array[RouterRule]
+/// Check if this RouterRuleOrArrayOfRouterRule is FixedArray[RouterRule]
 pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_array_of_router_rule(
   self : RouterRuleOrArrayOfRouterRule,
 ) -> Bool =
@@ -4910,11 +4619,11 @@ pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_router_rule(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get RouterRuleOrArrayOfRouterRule as Array[RouterRule]
+/// Try to get RouterRuleOrArrayOfRouterRule as FixedArray[RouterRule]
 pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_array_of_router_rule(
   self : RouterRuleOrArrayOfRouterRule,
-) -> Array[RouterRule]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[RouterRule]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[RouterRuleOrArrayOfRouterRule] to RouterRule?
@@ -4928,10 +4637,10 @@ pub fn RouterRuleOrArrayOfRouterRule::bind_as_router_rule(
 }
 
 ///|
-/// Flatten Option[RouterRuleOrArrayOfRouterRule] to Array[RouterRule]?
+/// Flatten Option[RouterRuleOrArrayOfRouterRule] to FixedArray[RouterRule]?
 pub fn RouterRuleOrArrayOfRouterRule::bind_as_array_of_router_rule(
   value : RouterRuleOrArrayOfRouterRule?,
-) -> Array[RouterRule]? {
+) -> FixedArray[RouterRule]? {
   match value {
     Some(v) => v.as_array_of_router_rule()
     None => None
@@ -5078,6 +4787,80 @@ pub extern "js" fn ResponseOrVoid::as_response(
 pub fn ResponseOrVoid::bind_as_response(value : ResponseOrVoid?) -> Response? {
   match value {
     Some(v) => v.as_response()
+    None => None
+  }
+}
+
+///|
+/// StringOrTrustedScriptURL typedef
+pub type StringOrTrustedScriptURL
+
+///|
+pub extern "js" fn StringOrTrustedScriptURL::to_js_value(
+  self : StringOrTrustedScriptURL,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create StringOrTrustedScriptURL from String
+pub extern "js" fn StringOrTrustedScriptURL::from_string(
+  v : String,
+) -> StringOrTrustedScriptURL =
+  #| (v) => v
+
+///|
+/// Create StringOrTrustedScriptURL from TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::from_trusted_script_url(
+  v : TrustedScriptURL,
+) -> StringOrTrustedScriptURL =
+  #| (v) => v
+
+///|
+/// Check if this StringOrTrustedScriptURL is String
+pub extern "js" fn StringOrTrustedScriptURL::is_string(
+  self : StringOrTrustedScriptURL,
+) -> Bool =
+  #| (self) => typeof self === 'string'
+
+///|
+/// Check if this StringOrTrustedScriptURL is TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::is_trusted_script_url(
+  self : StringOrTrustedScriptURL,
+) -> Bool =
+  #| (self) => self instanceof TrustedScriptURL
+
+///|
+/// Try to get StringOrTrustedScriptURL as String
+pub extern "js" fn StringOrTrustedScriptURL::as_string(
+  self : StringOrTrustedScriptURL,
+) -> String? =
+  #| (self) => (typeof self === 'string') ? self : undefined
+
+///|
+/// Try to get StringOrTrustedScriptURL as TrustedScriptURL
+pub extern "js" fn StringOrTrustedScriptURL::as_trusted_script_url(
+  self : StringOrTrustedScriptURL,
+) -> TrustedScriptURL? =
+  #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Flatten Option[StringOrTrustedScriptURL] to String?
+pub fn StringOrTrustedScriptURL::bind_as_string(
+  value : StringOrTrustedScriptURL?,
+) -> String? {
+  match value {
+    Some(v) => v.as_string()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[StringOrTrustedScriptURL] to TrustedScriptURL?
+pub fn StringOrTrustedScriptURL::bind_as_trusted_script_url(
+  value : StringOrTrustedScriptURL?,
+) -> TrustedScriptURL? {
+  match value {
+    Some(v) => v.as_trusted_script_url()
     None => None
   }
 }
@@ -5318,9 +5101,9 @@ pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bi
   #| (v) => v
 
 ///|
-/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from Array[GenerateBidOutput]
+/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from FixedArray[GenerateBidOutput]
 pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_array_of_generate_bid_output(
-  v : Array[GenerateBidOutput],
+  v : FixedArray[GenerateBidOutput],
 ) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
   #| (v) => v
 
@@ -5332,7 +5115,7 @@ pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_generate_bid_
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is Array[GenerateBidOutput]
+/// Check if this GenerateBidOutputOrArrayOfGenerateBidOutput is FixedArray[GenerateBidOutput]
 pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_array_of_generate_bid_output(
   self : GenerateBidOutputOrArrayOfGenerateBidOutput,
 ) -> Bool =
@@ -5346,11 +5129,11 @@ pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_generate_bid_
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as Array[GenerateBidOutput]
+/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as FixedArray[GenerateBidOutput]
 pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_array_of_generate_bid_output(
   self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> Array[GenerateBidOutput]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GenerateBidOutput]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[GenerateBidOutputOrArrayOfGenerateBidOutput] to GenerateBidOutput?
@@ -5364,10 +5147,10 @@ pub fn GenerateBidOutputOrArrayOfGenerateBidOutput::bind_as_generate_bid_output(
 }
 
 ///|
-/// Flatten Option[GenerateBidOutputOrArrayOfGenerateBidOutput] to Array[GenerateBidOutput]?
+/// Flatten Option[GenerateBidOutputOrArrayOfGenerateBidOutput] to FixedArray[GenerateBidOutput]?
 pub fn GenerateBidOutputOrArrayOfGenerateBidOutput::bind_as_array_of_generate_bid_output(
   value : GenerateBidOutputOrArrayOfGenerateBidOutput?,
-) -> Array[GenerateBidOutput]? {
+) -> FixedArray[GenerateBidOutput]? {
   match value {
     Some(v) => v.as_array_of_generate_bid_output()
     None => None
@@ -5455,9 +5238,9 @@ pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::to_js_value(
   #| (self) => self
 
 ///|
-/// Create ArrayOfArrayOfStringOrAnyOrString from Array[Array[String]]
+/// Create ArrayOfArrayOfStringOrAnyOrString from FixedArray[FixedArray[String]]
 pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_array_of_array_of_string(
-  v : Array[Array[String]],
+  v : FixedArray[FixedArray[String]],
 ) -> ArrayOfArrayOfStringOrAnyOrString =
   #| (v) => v
 
@@ -5469,7 +5252,7 @@ pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::from_string(
   #| (v) => v
 
 ///|
-/// Check if this ArrayOfArrayOfStringOrAnyOrString is Array[Array[String]]
+/// Check if this ArrayOfArrayOfStringOrAnyOrString is FixedArray[FixedArray[String]]
 pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_array_of_array_of_string(
   self : ArrayOfArrayOfStringOrAnyOrString,
 ) -> Bool =
@@ -5483,11 +5266,11 @@ pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::is_string(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get ArrayOfArrayOfStringOrAnyOrString as Array[Array[String]]
+/// Try to get ArrayOfArrayOfStringOrAnyOrString as FixedArray[FixedArray[String]]
 pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_array_of_array_of_string(
   self : ArrayOfArrayOfStringOrAnyOrString,
-) -> Array[Array[String]]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[FixedArray[String]]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get ArrayOfArrayOfStringOrAnyOrString as String
@@ -5497,10 +5280,10 @@ pub extern "js" fn ArrayOfArrayOfStringOrAnyOrString::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Flatten Option[ArrayOfArrayOfStringOrAnyOrString] to Array[Array[String]]?
+/// Flatten Option[ArrayOfArrayOfStringOrAnyOrString] to FixedArray[FixedArray[String]]?
 pub fn ArrayOfArrayOfStringOrAnyOrString::bind_as_array_of_array_of_string(
   value : ArrayOfArrayOfStringOrAnyOrString?,
-) -> Array[Array[String]]? {
+) -> FixedArray[FixedArray[String]]? {
   match value {
     Some(v) => v.as_array_of_array_of_string()
     None => None
@@ -6166,9 +5949,9 @@ pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_nullable_double(
   #| (v) => v
 
 ///|
-/// Create NullableDoubleOrArrayOfNullableDouble from Array[JsValue]
+/// Create NullableDoubleOrArrayOfNullableDouble from FixedArray[JsValue]
 pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::from_array_of_nullable_double(
-  v : Array[JsValue],
+  v : FixedArray[JsValue],
 ) -> NullableDoubleOrArrayOfNullableDouble =
   #| (v) => v
 
@@ -6180,7 +5963,7 @@ pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_nullable_double(
   #| (self) => self === null || (typeof self === 'number')
 
 ///|
-/// Check if this NullableDoubleOrArrayOfNullableDouble is Array[JsValue]
+/// Check if this NullableDoubleOrArrayOfNullableDouble is FixedArray[JsValue]
 pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::is_array_of_nullable_double(
   self : NullableDoubleOrArrayOfNullableDouble,
 ) -> Bool =
@@ -6194,11 +5977,11 @@ pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_nullable_double(
   #| (self) => (self === null || (typeof self === 'number')) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get NullableDoubleOrArrayOfNullableDouble as Array[JsValue]
+/// Try to get NullableDoubleOrArrayOfNullableDouble as FixedArray[JsValue]
 pub extern "js" fn NullableDoubleOrArrayOfNullableDouble::as_array_of_nullable_double(
   self : NullableDoubleOrArrayOfNullableDouble,
-) -> Array[JsValue]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[JsValue]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[NullableDoubleOrArrayOfNullableDouble] to Double??
@@ -6212,10 +5995,10 @@ pub fn NullableDoubleOrArrayOfNullableDouble::bind_as_nullable_double(
 }
 
 ///|
-/// Flatten Option[NullableDoubleOrArrayOfNullableDouble] to Array[JsValue]?
+/// Flatten Option[NullableDoubleOrArrayOfNullableDouble] to FixedArray[JsValue]?
 pub fn NullableDoubleOrArrayOfNullableDouble::bind_as_array_of_nullable_double(
   value : NullableDoubleOrArrayOfNullableDouble?,
-) -> Array[JsValue]? {
+) -> FixedArray[JsValue]? {
   match value {
     Some(v) => v.as_array_of_nullable_double()
     None => None
@@ -6240,9 +6023,9 @@ pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::fr
   #| (v) => v
 
 ///|
-/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from Array[CompositeOperationOrAuto]
+/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from FixedArray[CompositeOperationOrAuto]
 pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_array_of_composite_operation_or_auto(
-  v : Array[CompositeOperationOrAuto],
+  v : FixedArray[CompositeOperationOrAuto],
 ) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
   #| (v) => v
 
@@ -6254,7 +6037,7 @@ pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is Array[CompositeOperationOrAuto]
+/// Check if this CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto is FixedArray[CompositeOperationOrAuto]
 pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is_array_of_composite_operation_or_auto(
   self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
 ) -> Bool =
@@ -6268,11 +6051,11 @@ pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as
   #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as Array[CompositeOperationOrAuto]
+/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as FixedArray[CompositeOperationOrAuto]
 pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_array_of_composite_operation_or_auto(
   self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> Array[CompositeOperationOrAuto]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[CompositeOperationOrAuto]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto] to CompositeOperationOrAuto?
@@ -6286,10 +6069,10 @@ pub fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::bind_as_compos
 }
 
 ///|
-/// Flatten Option[CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto] to Array[CompositeOperationOrAuto]?
+/// Flatten Option[CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto] to FixedArray[CompositeOperationOrAuto]?
 pub fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::bind_as_array_of_composite_operation_or_auto(
   value : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto?,
-) -> Array[CompositeOperationOrAuto]? {
+) -> FixedArray[CompositeOperationOrAuto]? {
   match value {
     Some(v) => v.as_array_of_composite_operation_or_auto()
     None => None
@@ -6388,9 +6171,9 @@ pub extern "js" fn StringOrArrayOfUUID::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrArrayOfUUID from Array[UUID]
+/// Create StringOrArrayOfUUID from FixedArray[UUID]
 pub extern "js" fn StringOrArrayOfUUID::from_array_of_uuid(
-  v : Array[UUID],
+  v : FixedArray[UUID],
 ) -> StringOrArrayOfUUID =
   #| (v) => v
 
@@ -6402,7 +6185,7 @@ pub extern "js" fn StringOrArrayOfUUID::is_string(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this StringOrArrayOfUUID is Array[UUID]
+/// Check if this StringOrArrayOfUUID is FixedArray[UUID]
 pub extern "js" fn StringOrArrayOfUUID::is_array_of_uuid(
   self : StringOrArrayOfUUID,
 ) -> Bool =
@@ -6416,11 +6199,11 @@ pub extern "js" fn StringOrArrayOfUUID::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrArrayOfUUID as Array[UUID]
+/// Try to get StringOrArrayOfUUID as FixedArray[UUID]
 pub extern "js" fn StringOrArrayOfUUID::as_array_of_uuid(
   self : StringOrArrayOfUUID,
-) -> Array[UUID]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[UUID]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[StringOrArrayOfUUID] to String?
@@ -6434,10 +6217,10 @@ pub fn StringOrArrayOfUUID::bind_as_string(
 }
 
 ///|
-/// Flatten Option[StringOrArrayOfUUID] to Array[UUID]?
+/// Flatten Option[StringOrArrayOfUUID] to FixedArray[UUID]?
 pub fn StringOrArrayOfUUID::bind_as_array_of_uuid(
   value : StringOrArrayOfUUID?,
-) -> Array[UUID]? {
+) -> FixedArray[UUID]? {
   match value {
     Some(v) => v.as_array_of_uuid()
     None => None
@@ -7019,6 +6802,228 @@ pub fn ArrayBufferOrJsonWebKey::bind_as_json_web_key(
 }
 
 ///|
+/// Int32ArrayOrArrayOfGLint typedef
+pub type Int32ArrayOrArrayOfGLint
+
+///|
+pub extern "js" fn Int32ArrayOrArrayOfGLint::to_js_value(
+  self : Int32ArrayOrArrayOfGLint,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create Int32ArrayOrArrayOfGLint from Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLint::from_int32_array(
+  v : Int32Array,
+) -> Int32ArrayOrArrayOfGLint =
+  #| (v) => v
+
+///|
+/// Create Int32ArrayOrArrayOfGLint from FixedArray[GLint]
+pub extern "js" fn Int32ArrayOrArrayOfGLint::from_array_of_g_lint(
+  v : FixedArray[GLint],
+) -> Int32ArrayOrArrayOfGLint =
+  #| (v) => v
+
+///|
+/// Check if this Int32ArrayOrArrayOfGLint is Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLint::is_int32_array(
+  self : Int32ArrayOrArrayOfGLint,
+) -> Bool =
+  #| (self) => self instanceof Int32Array
+
+///|
+/// Check if this Int32ArrayOrArrayOfGLint is FixedArray[GLint]
+pub extern "js" fn Int32ArrayOrArrayOfGLint::is_array_of_g_lint(
+  self : Int32ArrayOrArrayOfGLint,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Int32ArrayOrArrayOfGLint as Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLint::as_int32_array(
+  self : Int32ArrayOrArrayOfGLint,
+) -> Int32Array? =
+  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Int32ArrayOrArrayOfGLint as FixedArray[GLint]
+pub extern "js" fn Int32ArrayOrArrayOfGLint::as_array_of_g_lint(
+  self : Int32ArrayOrArrayOfGLint,
+) -> FixedArray[GLint]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
+
+///|
+/// Flatten Option[Int32ArrayOrArrayOfGLint] to Int32Array?
+pub fn Int32ArrayOrArrayOfGLint::bind_as_int32_array(
+  value : Int32ArrayOrArrayOfGLint?,
+) -> Int32Array? {
+  match value {
+    Some(v) => v.as_int32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[Int32ArrayOrArrayOfGLint] to FixedArray[GLint]?
+pub fn Int32ArrayOrArrayOfGLint::bind_as_array_of_g_lint(
+  value : Int32ArrayOrArrayOfGLint?,
+) -> FixedArray[GLint]? {
+  match value {
+    Some(v) => v.as_array_of_g_lint()
+    None => None
+  }
+}
+
+///|
+/// Int32ArrayOrArrayOfGLsizei typedef
+pub type Int32ArrayOrArrayOfGLsizei
+
+///|
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::to_js_value(
+  self : Int32ArrayOrArrayOfGLsizei,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create Int32ArrayOrArrayOfGLsizei from Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::from_int32_array(
+  v : Int32Array,
+) -> Int32ArrayOrArrayOfGLsizei =
+  #| (v) => v
+
+///|
+/// Create Int32ArrayOrArrayOfGLsizei from FixedArray[GLsizei]
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::from_array_of_g_lsizei(
+  v : FixedArray[GLsizei],
+) -> Int32ArrayOrArrayOfGLsizei =
+  #| (v) => v
+
+///|
+/// Check if this Int32ArrayOrArrayOfGLsizei is Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::is_int32_array(
+  self : Int32ArrayOrArrayOfGLsizei,
+) -> Bool =
+  #| (self) => self instanceof Int32Array
+
+///|
+/// Check if this Int32ArrayOrArrayOfGLsizei is FixedArray[GLsizei]
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::is_array_of_g_lsizei(
+  self : Int32ArrayOrArrayOfGLsizei,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Int32ArrayOrArrayOfGLsizei as Int32Array
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::as_int32_array(
+  self : Int32ArrayOrArrayOfGLsizei,
+) -> Int32Array? =
+  #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Int32ArrayOrArrayOfGLsizei as FixedArray[GLsizei]
+pub extern "js" fn Int32ArrayOrArrayOfGLsizei::as_array_of_g_lsizei(
+  self : Int32ArrayOrArrayOfGLsizei,
+) -> FixedArray[GLsizei]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
+
+///|
+/// Flatten Option[Int32ArrayOrArrayOfGLsizei] to Int32Array?
+pub fn Int32ArrayOrArrayOfGLsizei::bind_as_int32_array(
+  value : Int32ArrayOrArrayOfGLsizei?,
+) -> Int32Array? {
+  match value {
+    Some(v) => v.as_int32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[Int32ArrayOrArrayOfGLsizei] to FixedArray[GLsizei]?
+pub fn Int32ArrayOrArrayOfGLsizei::bind_as_array_of_g_lsizei(
+  value : Int32ArrayOrArrayOfGLsizei?,
+) -> FixedArray[GLsizei]? {
+  match value {
+    Some(v) => v.as_array_of_g_lsizei()
+    None => None
+  }
+}
+
+///|
+/// Uint32ArrayOrArrayOfGLuint typedef
+pub type Uint32ArrayOrArrayOfGLuint
+
+///|
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::to_js_value(
+  self : Uint32ArrayOrArrayOfGLuint,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Create Uint32ArrayOrArrayOfGLuint from Uint32Array
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::from_uint32_array(
+  v : Uint32Array,
+) -> Uint32ArrayOrArrayOfGLuint =
+  #| (v) => v
+
+///|
+/// Create Uint32ArrayOrArrayOfGLuint from FixedArray[GLuint]
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::from_array_of_g_luint(
+  v : FixedArray[GLuint],
+) -> Uint32ArrayOrArrayOfGLuint =
+  #| (v) => v
+
+///|
+/// Check if this Uint32ArrayOrArrayOfGLuint is Uint32Array
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::is_uint32_array(
+  self : Uint32ArrayOrArrayOfGLuint,
+) -> Bool =
+  #| (self) => self instanceof Uint32Array
+
+///|
+/// Check if this Uint32ArrayOrArrayOfGLuint is FixedArray[GLuint]
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::is_array_of_g_luint(
+  self : Uint32ArrayOrArrayOfGLuint,
+) -> Bool =
+  #| (self) => Array.isArray(self)
+
+///|
+/// Try to get Uint32ArrayOrArrayOfGLuint as Uint32Array
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::as_uint32_array(
+  self : Uint32ArrayOrArrayOfGLuint,
+) -> Uint32Array? =
+  #| (self) => (self instanceof Uint32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Try to get Uint32ArrayOrArrayOfGLuint as FixedArray[GLuint]
+pub extern "js" fn Uint32ArrayOrArrayOfGLuint::as_array_of_g_luint(
+  self : Uint32ArrayOrArrayOfGLuint,
+) -> FixedArray[GLuint]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
+
+///|
+/// Flatten Option[Uint32ArrayOrArrayOfGLuint] to Uint32Array?
+pub fn Uint32ArrayOrArrayOfGLuint::bind_as_uint32_array(
+  value : Uint32ArrayOrArrayOfGLuint?,
+) -> Uint32Array? {
+  match value {
+    Some(v) => v.as_uint32_array()
+    None => None
+  }
+}
+
+///|
+/// Flatten Option[Uint32ArrayOrArrayOfGLuint] to FixedArray[GLuint]?
+pub fn Uint32ArrayOrArrayOfGLuint::bind_as_array_of_g_luint(
+  value : Uint32ArrayOrArrayOfGLuint?,
+) -> FixedArray[GLuint]? {
+  match value {
+    Some(v) => v.as_array_of_g_luint()
+    None => None
+  }
+}
+
+///|
 /// GPUTextureViewDimensionOrVoid typedef
 pub type GPUTextureViewDimensionOrVoid
 
@@ -7450,14 +7455,16 @@ pub extern "js" fn JsValue::is_null_or_undefined(self : JsValue) -> Bool =
 // TypedArray index access
 
 ///|
-pub extern "js" fn Uint8ClampedArray::op_get(
+#alias("_[_]")
+pub extern "js" fn Uint8ClampedArray::get(
   self : Uint8ClampedArray,
   index : Int,
 ) -> Int =
   #| (self, index) => self[index]
 
 ///|
-pub extern "js" fn Uint8ClampedArray::op_set(
+#alias("_[_]=_")
+pub extern "js" fn Uint8ClampedArray::set(
   self : Uint8ClampedArray,
   index : Int,
   value : Int,
@@ -7469,14 +7476,16 @@ pub extern "js" fn Uint8ClampedArray::length(self : Uint8ClampedArray) -> Int =
   #| (self) => self.length
 
 ///|
-pub extern "js" fn Float64Array::op_get(
+#alias("_[_]")
+pub extern "js" fn Float64Array::get(
   self : Float64Array,
   index : Int,
 ) -> Double =
   #| (self, index) => self[index]
 
 ///|
-pub extern "js" fn Float64Array::op_set(
+#alias("_[_]=_")
+pub extern "js" fn Float64Array::set(
   self : Float64Array,
   index : Int,
   value : Double,

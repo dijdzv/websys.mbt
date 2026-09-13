@@ -9,7 +9,7 @@
 ///   form.action = "/submit"
 pub fn test_form_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("form")
+  let el = create_element(doc, "form")
   let form = @websys.HTMLFormElement::from_js_value(el.to_js_value())
 
   // method — Web API: form.method (default is "get")
@@ -31,12 +31,12 @@ pub fn test_form_element() -> Unit {
   assert_eq(form.get_length(), 0, label="length empty")
 
   // Add an input to the form
-  let input_el = doc.create_element("input")
+  let input_el = create_element(doc, "input")
   let _ = el.to_node().append_child(input_el.to_node())
   assert_eq(form.get_length(), 1, label="length after add input")
 
   // Add another input
-  let input2_el = doc.create_element("input")
+  let input2_el = create_element(doc, "input")
   let _ = el.to_node().append_child(input2_el.to_node())
   assert_eq(form.get_length(), 2, label="length after add input 2")
   println("  form_element: ok")

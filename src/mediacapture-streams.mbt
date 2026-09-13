@@ -219,9 +219,9 @@ pub extern "js" fn ConstrainDOMString::from_string(
   #| (v) => v
 
 ///|
-/// Create ConstrainDOMString from Array[String]
+/// Create ConstrainDOMString from FixedArray[String]
 pub extern "js" fn ConstrainDOMString::from_array_of_string(
-  v : Array[String],
+  v : FixedArray[String],
 ) -> ConstrainDOMString =
   #| (v) => v
 
@@ -240,7 +240,7 @@ pub extern "js" fn ConstrainDOMString::is_string(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Check if this ConstrainDOMString is Array[String]
+/// Check if this ConstrainDOMString is FixedArray[String]
 pub extern "js" fn ConstrainDOMString::is_array_of_string(
   self : ConstrainDOMString,
 ) -> Bool =
@@ -261,11 +261,11 @@ pub extern "js" fn ConstrainDOMString::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get ConstrainDOMString as Array[String]
+/// Try to get ConstrainDOMString as FixedArray[String]
 pub extern "js" fn ConstrainDOMString::as_array_of_string(
   self : ConstrainDOMString,
-) -> Array[String]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[String]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get ConstrainDOMString as ConstrainDOMStringParameters
@@ -286,10 +286,10 @@ pub fn ConstrainDOMString::bind_as_string(
 }
 
 ///|
-/// Flatten Option[ConstrainDOMString] to Array[String]?
+/// Flatten Option[ConstrainDOMString] to FixedArray[String]?
 pub fn ConstrainDOMString::bind_as_array_of_string(
   value : ConstrainDOMString?,
-) -> Array[String]? {
+) -> FixedArray[String]? {
   match value {
     Some(v) => v.as_array_of_string()
     None => None
@@ -418,7 +418,7 @@ pub fn ConstrainBooleanOrDOMString::bind_as_constrain_boolean_or_dom_string_para
 pub(all) enum MediaStreamTrackState {
   Live
   Ended
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -446,7 +446,7 @@ pub(all) enum VideoFacingModeEnum {
   Environment
   Left
   Right
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -476,7 +476,7 @@ pub fn VideoFacingModeEnum::from_string(s : String) -> VideoFacingModeEnum? {
 pub(all) enum VideoResizeModeEnum {
   None
   CropAndScale
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -502,7 +502,7 @@ pub fn VideoResizeModeEnum::from_string(s : String) -> VideoResizeModeEnum? {
 pub(all) enum EchoCancellationModeEnum {
   All
   RemoteOnly
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -533,7 +533,7 @@ pub(all) enum MediaDeviceKind {
   Audioinput
   Audiooutput
   Videoinput
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -559,13 +559,13 @@ pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
 ///|
 /// MediaTrackConstraints dictionary
 pub(all) struct MediaTrackConstraints {
-  advanced : Array[MediaTrackConstraintSet]?
+  advanced : FixedArray[MediaTrackConstraintSet]?
 }
 
 ///|
 /// Create a new MediaTrackConstraints with default values
 pub fn MediaTrackConstraints::default() -> MediaTrackConstraints {
-  MediaTrackConstraints::{ advanced: None }
+  MediaTrackConstraints::{ advanced: None, }
 }
 
 ///|
@@ -573,7 +573,7 @@ extern "js" fn MediaTrackConstraints::to_js_ffi(
   self : MediaTrackConstraints,
 ) -> JsValue =
   #| (self) => ({
-  #|   advanced: ((() => { const v = self.advanced; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   advanced: self.advanced
   #| })
 
 ///|
@@ -587,7 +587,7 @@ extern "js" fn MediaTrackConstraints::from_js_ffi(
   value : JsValue,
 ) -> MediaTrackConstraints =
   #| (v) => ({
-  #|   advanced: (v.advanced === undefined ? { $tag: 0 } : { $tag: 1, _0: v.advanced })
+  #|   advanced: v.advanced
   #| })
 
 ///|
@@ -645,13 +645,13 @@ pub fn MediaStreamTrackEventInit::from_js(
 ///|
 /// DeviceChangeEventInit dictionary
 pub(all) struct DeviceChangeEventInit {
-  devices : Array[MediaDeviceInfo]?
+  devices : FixedArray[MediaDeviceInfo]?
 }
 
 ///|
 /// Create a new DeviceChangeEventInit with default values
 pub fn DeviceChangeEventInit::default() -> DeviceChangeEventInit {
-  DeviceChangeEventInit::{ devices: None }
+  DeviceChangeEventInit::{ devices: None, }
 }
 
 ///|
@@ -659,7 +659,7 @@ extern "js" fn DeviceChangeEventInit::to_js_ffi(
   self : DeviceChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   devices: ((() => { const v = self.devices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   devices: self.devices
   #| })
 
 ///|
@@ -673,7 +673,7 @@ extern "js" fn DeviceChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> DeviceChangeEventInit =
   #| (v) => ({
-  #|   devices: (v.devices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.devices })
+  #|   devices: v.devices
   #| })
 
 ///|
@@ -748,7 +748,7 @@ pub(all) struct DoubleRange {
 ///|
 /// Create a new DoubleRange with default values
 pub fn DoubleRange::default() -> DoubleRange {
-  DoubleRange::{ max: None, min: None }
+  DoubleRange::{ max: None, min: None, }
 }
 
 ///|
@@ -789,7 +789,7 @@ pub(all) struct ConstrainDoubleRange {
 ///|
 /// Create a new ConstrainDoubleRange with default values
 pub fn ConstrainDoubleRange::default() -> ConstrainDoubleRange {
-  ConstrainDoubleRange::{ max: None, min: None, exact: None, ideal: None }
+  ConstrainDoubleRange::{ max: None, min: None, exact: None, ideal: None, }
 }
 
 ///|
@@ -836,7 +836,7 @@ pub(all) struct ULongRange {
 ///|
 /// Create a new ULongRange with default values
 pub fn ULongRange::default() -> ULongRange {
-  ULongRange::{ max: None, min: None }
+  ULongRange::{ max: None, min: None, }
 }
 
 ///|
@@ -877,7 +877,7 @@ pub(all) struct ConstrainULongRange {
 ///|
 /// Create a new ConstrainULongRange with default values
 pub fn ConstrainULongRange::default() -> ConstrainULongRange {
-  ConstrainULongRange::{ max: None, min: None, exact: None, ideal: None }
+  ConstrainULongRange::{ max: None, min: None, exact: None, ideal: None, }
 }
 
 ///|
@@ -924,7 +924,7 @@ pub(all) struct ConstrainBooleanParameters {
 ///|
 /// Create a new ConstrainBooleanParameters with default values
 pub fn ConstrainBooleanParameters::default() -> ConstrainBooleanParameters {
-  ConstrainBooleanParameters::{ exact: None, ideal: None }
+  ConstrainBooleanParameters::{ exact: None, ideal: None, }
 }
 
 ///|
@@ -971,7 +971,7 @@ pub(all) struct ConstrainDOMStringParameters {
 ///|
 /// Create a new ConstrainDOMStringParameters with default values
 pub fn ConstrainDOMStringParameters::default() -> ConstrainDOMStringParameters {
-  ConstrainDOMStringParameters::{ exact: None, ideal: None }
+  ConstrainDOMStringParameters::{ exact: None, ideal: None, }
 }
 
 ///|
@@ -1018,7 +1018,7 @@ pub(all) struct ConstrainBooleanOrDOMStringParameters {
 ///|
 /// Create a new ConstrainBooleanOrDOMStringParameters with default values
 pub fn ConstrainBooleanOrDOMStringParameters::default() -> ConstrainBooleanOrDOMStringParameters {
-  ConstrainBooleanOrDOMStringParameters::{ exact: None, ideal: None }
+  ConstrainBooleanOrDOMStringParameters::{ exact: None, ideal: None, }
 }
 
 ///|
@@ -1064,7 +1064,7 @@ pub(all) struct CameraDevicePermissionDescriptor {
 ///|
 /// Create a new CameraDevicePermissionDescriptor with default values
 pub fn CameraDevicePermissionDescriptor::default() -> CameraDevicePermissionDescriptor {
-  CameraDevicePermissionDescriptor::{ panTiltZoom: None }
+  CameraDevicePermissionDescriptor::{ panTiltZoom: None, }
 }
 
 ///|
@@ -1145,7 +1145,7 @@ pub extern "js" fn MediaStream::new_with_media_stream(
 
 ///|
 pub extern "js" fn MediaStream::new_with_array(
-  tracks : Array[MediaStreamTrack],
+  tracks : FixedArray[MediaStreamTrack],
 ) -> MediaStream =
   #| (tracks) => new MediaStream(tracks)
 
@@ -1156,19 +1156,19 @@ pub extern "js" fn MediaStream::get_id(self : MediaStream) -> String =
 ///|
 pub extern "js" fn MediaStream::get_audio_tracks(
   self : MediaStream,
-) -> Array[MediaStreamTrack] =
+) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getAudioTracks()
 
 ///|
 pub extern "js" fn MediaStream::get_video_tracks(
   self : MediaStream,
-) -> Array[MediaStreamTrack] =
+) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getVideoTracks()
 
 ///|
 pub extern "js" fn MediaStream::get_tracks(
   self : MediaStream,
-) -> Array[MediaStreamTrack] =
+) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getTracks()
 
 ///|
@@ -1430,7 +1430,7 @@ pub extern "js" fn MediaStreamTrack::clear_oncapturehandlechange(
 ///|
 pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(
   self : MediaStreamTrack,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.getSupportedCaptureActions()
 
 ///|
@@ -1643,7 +1643,7 @@ pub(all) enum MediaDevicesSelectAudioOutputError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1657,7 +1657,7 @@ pub(all) enum MediaDevicesGetUserMediaError {
   InvalidStateError(JsError)
   OverconstrainedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1670,7 +1670,7 @@ pub(all) enum MediaDevicesGetDisplayMediaError {
   InvalidStateError(JsError)
   OverconstrainedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaDevices::set_ondevicechange(
@@ -1688,7 +1688,7 @@ pub extern "js" fn MediaDevices::clear_ondevicechange(
 ///|
 pub extern "js" fn MediaDevices::enumerate_devices(
   self : MediaDevices,
-) -> Promise[Array[MediaDeviceInfo]] =
+) -> Promise[FixedArray[MediaDeviceInfo]] =
   #| (self) => self.enumerateDevices()
 
 ///|
@@ -1736,7 +1736,7 @@ pub fn MediaDevices::set_capture_handle_config_with_config(
 ///|
 pub extern "js" fn MediaDevices::set_supported_capture_actions(
   self : MediaDevices,
-  actions : Array[String],
+  actions : FixedArray[String],
 ) -> Unit =
   #| (self, actions) => self.setSupportedCaptureActions(actions)
 
@@ -2011,11 +2011,11 @@ pub fn DeviceChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn DeviceChangeEvent::get_devices(
   self : DeviceChangeEvent,
-) -> Array[MediaDeviceInfo] =
+) -> FixedArray[MediaDeviceInfo] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn DeviceChangeEvent::get_user_inserted_devices(
   self : DeviceChangeEvent,
-) -> Array[MediaDeviceInfo] =
+) -> FixedArray[MediaDeviceInfo] =
   #| (self) => self.userInsertedDevices

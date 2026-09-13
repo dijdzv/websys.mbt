@@ -87,7 +87,7 @@ pub(all) struct MediaStreamTrackProcessorInit {
 pub fn MediaStreamTrackProcessorInit::new(
   track~ : MediaStreamTrackOrHandle,
 ) -> MediaStreamTrackProcessorInit {
-  MediaStreamTrackProcessorInit::{ track, maxBufferSize: None }
+  MediaStreamTrackProcessorInit::{ track, maxBufferSize: None, }
 }
 
 ///|

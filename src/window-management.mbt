@@ -40,7 +40,7 @@ pub extern "js" fn ScreenDetails::to_event_target(
 ///|
 pub extern "js" fn ScreenDetails::get_screens(
   self : ScreenDetails,
-) -> Array[ScreenDetailed] =
+) -> FixedArray[ScreenDetailed] =
   #| (self) => self.screens
 
 ///|

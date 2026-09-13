@@ -61,7 +61,7 @@ pub(all) enum KeyType {
   Public
   Private
   Secret
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -93,7 +93,7 @@ pub(all) struct Algorithm {
 ///|
 /// Create a new Algorithm with default values
 pub fn Algorithm::default() -> Algorithm {
-  Algorithm::{ name: "" }
+  Algorithm::{ name: "", }
 }
 
 ///|
@@ -129,7 +129,7 @@ pub(all) struct KeyAlgorithm {
 ///|
 /// Create a new KeyAlgorithm with default values
 pub fn KeyAlgorithm::default() -> KeyAlgorithm {
-  KeyAlgorithm::{ name: "" }
+  KeyAlgorithm::{ name: "", }
 }
 
 ///|
@@ -167,7 +167,7 @@ pub(all) struct RsaOtherPrimesInfo {
 ///|
 /// Create a new RsaOtherPrimesInfo with default values
 pub fn RsaOtherPrimesInfo::default() -> RsaOtherPrimesInfo {
-  RsaOtherPrimesInfo::{ r: None, d: None, t: None }
+  RsaOtherPrimesInfo::{ r: None, d: None, t: None, }
 }
 
 ///|
@@ -212,7 +212,7 @@ pub(all) struct CryptoKeyPair {
 ///|
 /// Create a new CryptoKeyPair with default values
 pub fn CryptoKeyPair::default() -> CryptoKeyPair {
-  CryptoKeyPair::{ publicKey: None, privateKey: None }
+  CryptoKeyPair::{ publicKey: None, privateKey: None, }
 }
 
 ///|
@@ -252,7 +252,7 @@ pub(all) struct RsaKeyGenParams {
 ///|
 /// Create a new RsaKeyGenParams
 pub fn RsaKeyGenParams::new(publicExponent~ : BigInteger) -> RsaKeyGenParams {
-  RsaKeyGenParams::{ name: "", modulusLength: 0, publicExponent }
+  RsaKeyGenParams::{ name: "", modulusLength: 0, publicExponent, }
 }
 
 ///|
@@ -298,7 +298,7 @@ pub fn RsaHashedKeyGenParams::new(
   publicExponent~ : BigInteger,
   hash~ : HashAlgorithmIdentifier,
 ) -> RsaHashedKeyGenParams {
-  RsaHashedKeyGenParams::{ name: "", modulusLength: 0, publicExponent, hash }
+  RsaHashedKeyGenParams::{ name: "", modulusLength: 0, publicExponent, hash, }
 }
 
 ///|
@@ -346,7 +346,7 @@ pub(all) struct RsaKeyAlgorithm {
 ///|
 /// Create a new RsaKeyAlgorithm
 pub fn RsaKeyAlgorithm::new(publicExponent~ : BigInteger) -> RsaKeyAlgorithm {
-  RsaKeyAlgorithm::{ name: "", modulusLength: 0, publicExponent }
+  RsaKeyAlgorithm::{ name: "", modulusLength: 0, publicExponent, }
 }
 
 ///|
@@ -392,7 +392,7 @@ pub fn RsaHashedKeyAlgorithm::new(
   publicExponent~ : BigInteger,
   hash~ : KeyAlgorithm,
 ) -> RsaHashedKeyAlgorithm {
-  RsaHashedKeyAlgorithm::{ name: "", modulusLength: 0, publicExponent, hash }
+  RsaHashedKeyAlgorithm::{ name: "", modulusLength: 0, publicExponent, hash, }
 }
 
 ///|
@@ -441,7 +441,7 @@ pub(all) struct RsaHashedImportParams {
 pub fn RsaHashedImportParams::new(
   hash~ : HashAlgorithmIdentifier,
 ) -> RsaHashedImportParams {
-  RsaHashedImportParams::{ name: "", hash }
+  RsaHashedImportParams::{ name: "", hash, }
 }
 
 ///|
@@ -484,7 +484,7 @@ pub(all) struct RsaPssParams {
 ///|
 /// Create a new RsaPssParams with default values
 pub fn RsaPssParams::default() -> RsaPssParams {
-  RsaPssParams::{ name: "", saltLength: 0 }
+  RsaPssParams::{ name: "", saltLength: 0, }
 }
 
 ///|
@@ -523,7 +523,7 @@ pub(all) struct RsaOaepParams {
 ///|
 /// Create a new RsaOaepParams with default values
 pub fn RsaOaepParams::default() -> RsaOaepParams {
-  RsaOaepParams::{ name: "", label: None }
+  RsaOaepParams::{ name: "", label: None, }
 }
 
 ///|
@@ -562,7 +562,7 @@ pub(all) struct EcdsaParams {
 ///|
 /// Create a new EcdsaParams
 pub fn EcdsaParams::new(hash~ : HashAlgorithmIdentifier) -> EcdsaParams {
-  EcdsaParams::{ name: "", hash }
+  EcdsaParams::{ name: "", hash, }
 }
 
 ///|
@@ -601,7 +601,7 @@ pub(all) struct EcKeyGenParams {
 ///|
 /// Create a new EcKeyGenParams
 pub fn EcKeyGenParams::new(namedCurve~ : NamedCurve) -> EcKeyGenParams {
-  EcKeyGenParams::{ name: "", namedCurve }
+  EcKeyGenParams::{ name: "", namedCurve, }
 }
 
 ///|
@@ -640,7 +640,7 @@ pub(all) struct EcKeyAlgorithm {
 ///|
 /// Create a new EcKeyAlgorithm
 pub fn EcKeyAlgorithm::new(namedCurve~ : NamedCurve) -> EcKeyAlgorithm {
-  EcKeyAlgorithm::{ name: "", namedCurve }
+  EcKeyAlgorithm::{ name: "", namedCurve, }
 }
 
 ///|
@@ -679,7 +679,7 @@ pub(all) struct EcKeyImportParams {
 ///|
 /// Create a new EcKeyImportParams
 pub fn EcKeyImportParams::new(namedCurve~ : NamedCurve) -> EcKeyImportParams {
-  EcKeyImportParams::{ name: "", namedCurve }
+  EcKeyImportParams::{ name: "", namedCurve, }
 }
 
 ///|
@@ -722,7 +722,7 @@ pub(all) struct EcdhKeyDeriveParams {
 ///|
 /// Create a new EcdhKeyDeriveParams
 pub fn EcdhKeyDeriveParams::new(public~ : CryptoKey) -> EcdhKeyDeriveParams {
-  EcdhKeyDeriveParams::{ name: "", public }
+  EcdhKeyDeriveParams::{ name: "", public, }
 }
 
 ///|
@@ -766,7 +766,7 @@ pub(all) struct AesCtrParams {
 ///|
 /// Create a new AesCtrParams
 pub fn AesCtrParams::new(counter~ : BufferSource) -> AesCtrParams {
-  AesCtrParams::{ name: "", counter, length: 0 }
+  AesCtrParams::{ name: "", counter, length: 0, }
 }
 
 ///|
@@ -807,7 +807,7 @@ pub(all) struct AesKeyAlgorithm {
 ///|
 /// Create a new AesKeyAlgorithm with default values
 pub fn AesKeyAlgorithm::default() -> AesKeyAlgorithm {
-  AesKeyAlgorithm::{ name: "", length: 0 }
+  AesKeyAlgorithm::{ name: "", length: 0, }
 }
 
 ///|
@@ -846,7 +846,7 @@ pub(all) struct AesKeyGenParams {
 ///|
 /// Create a new AesKeyGenParams with default values
 pub fn AesKeyGenParams::default() -> AesKeyGenParams {
-  AesKeyGenParams::{ name: "", length: 0 }
+  AesKeyGenParams::{ name: "", length: 0, }
 }
 
 ///|
@@ -885,7 +885,7 @@ pub(all) struct AesDerivedKeyParams {
 ///|
 /// Create a new AesDerivedKeyParams with default values
 pub fn AesDerivedKeyParams::default() -> AesDerivedKeyParams {
-  AesDerivedKeyParams::{ name: "", length: 0 }
+  AesDerivedKeyParams::{ name: "", length: 0, }
 }
 
 ///|
@@ -928,7 +928,7 @@ pub(all) struct AesCbcParams {
 ///|
 /// Create a new AesCbcParams
 pub fn AesCbcParams::new(iv~ : BufferSource) -> AesCbcParams {
-  AesCbcParams::{ name: "", iv }
+  AesCbcParams::{ name: "", iv, }
 }
 
 ///|
@@ -969,7 +969,7 @@ pub(all) struct AesGcmParams {
 ///|
 /// Create a new AesGcmParams
 pub fn AesGcmParams::new(iv~ : BufferSource) -> AesGcmParams {
-  AesGcmParams::{ name: "", iv, additionalData: None, tagLength: None }
+  AesGcmParams::{ name: "", iv, additionalData: None, tagLength: None, }
 }
 
 ///|
@@ -1015,7 +1015,7 @@ pub(all) struct HmacImportParams {
 pub fn HmacImportParams::new(
   hash~ : HashAlgorithmIdentifier,
 ) -> HmacImportParams {
-  HmacImportParams::{ name: "", hash, length: None }
+  HmacImportParams::{ name: "", hash, length: None, }
 }
 
 ///|
@@ -1059,7 +1059,7 @@ pub(all) struct HmacKeyAlgorithm {
 ///|
 /// Create a new HmacKeyAlgorithm
 pub fn HmacKeyAlgorithm::new(hash~ : KeyAlgorithm) -> HmacKeyAlgorithm {
-  HmacKeyAlgorithm::{ name: "", hash, length: 0 }
+  HmacKeyAlgorithm::{ name: "", hash, length: 0, }
 }
 
 ///|
@@ -1105,7 +1105,7 @@ pub(all) struct HmacKeyGenParams {
 pub fn HmacKeyGenParams::new(
   hash~ : HashAlgorithmIdentifier,
 ) -> HmacKeyGenParams {
-  HmacKeyGenParams::{ name: "", hash, length: None }
+  HmacKeyGenParams::{ name: "", hash, length: None, }
 }
 
 ///|
@@ -1154,7 +1154,7 @@ pub fn HkdfParams::new(
   salt~ : BufferSource,
   info~ : BufferSource,
 ) -> HkdfParams {
-  HkdfParams::{ name: "", hash, salt, info }
+  HkdfParams::{ name: "", hash, salt, info, }
 }
 
 ///|
@@ -1202,7 +1202,7 @@ pub fn Pbkdf2Params::new(
   salt~ : BufferSource,
   hash~ : HashAlgorithmIdentifier,
 ) -> Pbkdf2Params {
-  Pbkdf2Params::{ name: "", salt, iterations: 0, hash }
+  Pbkdf2Params::{ name: "", salt, iterations: 0, hash, }
 }
 
 ///|
@@ -1268,7 +1268,7 @@ pub extern "js" fn JsValue::to_crypto(self : JsValue) -> Crypto =
 pub(all) enum CryptoGetRandomValuesError {
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Crypto::get_subtle(self : Crypto) -> SubtleCrypto =
@@ -1456,7 +1456,7 @@ pub(all) enum SubtleCryptoEncryptError {
   OperationError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1464,28 +1464,28 @@ pub(all) enum SubtleCryptoDecryptError {
   OperationError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SubtleCryptoSignError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SubtleCryptoVerifyError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SubtleCryptoGenerateKeyError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1494,16 +1494,17 @@ pub(all) enum SubtleCryptoDeriveKeyError {
   NotSupported(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SubtleCryptoDeriveBitsError {
-  NotSupported(JsError)
+  TypeError(JsError)
   OperationError(JsError)
+  NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1511,7 +1512,7 @@ pub(all) enum SubtleCryptoImportKeyError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1520,7 +1521,7 @@ pub(all) enum SubtleCryptoExportKeyError {
   NotSupported(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1529,7 +1530,7 @@ pub(all) enum SubtleCryptoWrapKeyError {
   NotSupported(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1539,7 +1540,7 @@ pub(all) enum SubtleCryptoUnwrapKeyError {
   NotSupported(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SubtleCrypto::encrypt(
@@ -1591,7 +1592,7 @@ pub extern "js" fn SubtleCrypto::generate_key(
   self : SubtleCrypto,
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKeyOrCryptoKeyPair, SubtleCryptoGenerateKeyError]] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
@@ -1602,7 +1603,7 @@ pub extern "js" fn SubtleCrypto::derive_key(
   base_key : CryptoKey,
   derived_key_type : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoDeriveKeyError]] =
   #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'NotSupported') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
@@ -1612,7 +1613,7 @@ pub extern "js" fn SubtleCrypto::derive_bits(
   algorithm : AlgorithmIdentifier,
   base_key : CryptoKey,
 ) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
-  #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupported') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, algorithm, base_key) => self.deriveBits(algorithm, base_key).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn SubtleCrypto::derive_bits_with_length(
@@ -1621,7 +1622,7 @@ pub extern "js" fn SubtleCrypto::derive_bits_with_length(
   base_key : CryptoKey,
   length : Int?,
 ) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
-  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupported') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn SubtleCrypto::import_key(
@@ -1630,7 +1631,7 @@ pub extern "js" fn SubtleCrypto::import_key(
   key_data : BufferSourceOrJsonWebKey,
   algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoImportKeyError]] =
   #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
@@ -1661,7 +1662,7 @@ pub extern "js" fn SubtleCrypto::unwrap_key(
   unwrap_algorithm : AlgorithmIdentifier,
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
   #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupported') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
@@ -1672,7 +1673,7 @@ pub extern "js" fn SubtleCrypto::encapsulate_key(
   encapsulation_key : CryptoKey,
   shared_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[EncapsulatedKey] =
   #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages).then(v => ({
   #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
@@ -1698,7 +1699,7 @@ pub extern "js" fn SubtleCrypto::decapsulate_key(
   ciphertext : BufferSource,
   shared_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[CryptoKey] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages) => self.decapsulateKey(decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages)
 
@@ -1715,7 +1716,7 @@ pub extern "js" fn SubtleCrypto::decapsulate_bits(
 pub extern "js" fn SubtleCrypto::get_public_key(
   self : SubtleCrypto,
   key : CryptoKey,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[CryptoKey] =
   #| (self, key, key_usages) => self.getPublicKey(key, key_usages)
 
@@ -1792,7 +1793,7 @@ pub extern "js" fn SubtleCrypto::generate_key_with_string(
   self : SubtleCrypto,
   algorithm : String,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKeyOrCryptoKeyPair, SubtleCryptoGenerateKeyError]] =
   #| (self, algorithm, extractable, key_usages) => self.generateKey(algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
@@ -1803,7 +1804,7 @@ pub extern "js" fn SubtleCrypto::derive_key_with_string(
   base_key : CryptoKey,
   derived_key_type : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoDeriveKeyError]] =
   #| (self, algorithm, base_key, derived_key_type, extractable, key_usages) => self.deriveKey(algorithm, base_key, derived_key_type, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'NotSupported') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
@@ -1814,7 +1815,7 @@ pub extern "js" fn SubtleCrypto::derive_bits_with_string(
   base_key : CryptoKey,
   length : Int?,
 ) -> Promise[Result[ArrayBuffer, SubtleCryptoDeriveBitsError]] =
-  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupported') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, algorithm, base_key, length) => self.deriveBits(algorithm, base_key, length).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
 ///|
 pub extern "js" fn SubtleCrypto::import_key_with_string(
@@ -1823,7 +1824,7 @@ pub extern "js" fn SubtleCrypto::import_key_with_string(
   key_data : BufferSourceOrJsonWebKey,
   algorithm : String,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoImportKeyError]] =
   #| (self, format, key_data, algorithm, extractable, key_usages) => self.importKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], key_data, algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
@@ -1846,7 +1847,7 @@ pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer_view(
   unwrap_algorithm : AlgorithmIdentifier,
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
   #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupported') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
@@ -1859,7 +1860,7 @@ pub extern "js" fn SubtleCrypto::unwrap_key_with_array_buffer(
   unwrap_algorithm : AlgorithmIdentifier,
   unwrapped_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[Result[CryptoKey, SubtleCryptoUnwrapKeyError]] =
   #| (self, format, wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages) => self.unwrapKey(['raw-public', 'raw-private', 'raw-seed', 'raw-secret', 'raw', 'spki', 'pkcs8', 'jwk'][format], wrapped_key, unwrapping_key, unwrap_algorithm, unwrapped_key_algorithm, extractable, key_usages).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; if (n === 'NotSupported') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
@@ -1870,7 +1871,7 @@ pub extern "js" fn SubtleCrypto::encapsulate_key_with_string(
   encapsulation_key : CryptoKey,
   shared_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[EncapsulatedKey] =
   #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages)
 
@@ -1890,7 +1891,7 @@ pub extern "js" fn SubtleCrypto::decapsulate_key_with_string(
   ciphertext : BufferSource,
   shared_key_algorithm : AlgorithmIdentifier,
   extractable : Bool,
-  key_usages : Array[KeyUsage],
+  key_usages : FixedArray[KeyUsage],
 ) -> Promise[CryptoKey] =
   #| (self, decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages) => self.decapsulateKey(decapsulation_algorithm, decapsulation_key, ciphertext, shared_key_algorithm, extractable, key_usages)
 

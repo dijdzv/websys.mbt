@@ -5,7 +5,7 @@
 /// AttributionAggregationProtocol enum
 pub(all) enum AttributionAggregationProtocol {
   Dap15Histogram
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -79,8 +79,8 @@ pub fn AttributionAggregationService::from_js(
 pub(all) struct AttributionImpressionOptions {
   histogramIndex : Int
   matchValue : Int?
-  conversionSites : Array[String]?
-  conversionCallers : Array[String]?
+  conversionSites : FixedArray[String]?
+  conversionCallers : FixedArray[String]?
   lifetimeDays : Int?
   priority : Int?
 }
@@ -105,8 +105,8 @@ extern "js" fn AttributionImpressionOptions::to_js_ffi(
   #| (self) => ({
   #|   histogramIndex: self.histogramIndex,
   #|   matchValue: self.matchValue,
-  #|   conversionSites: ((() => { const v = self.conversionSites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   conversionCallers: ((() => { const v = self.conversionCallers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   conversionSites: self.conversionSites,
+  #|   conversionCallers: self.conversionCallers,
   #|   lifetimeDays: self.lifetimeDays,
   #|   priority: self.priority
   #| })
@@ -126,8 +126,8 @@ extern "js" fn AttributionImpressionOptions::from_js_ffi(
   #| (v) => ({
   #|   histogramIndex: v.histogramIndex,
   #|   matchValue: v.matchValue,
-  #|   conversionSites: (v.conversionSites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.conversionSites }),
-  #|   conversionCallers: (v.conversionCallers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.conversionCallers }),
+  #|   conversionSites: v.conversionSites,
+  #|   conversionCallers: v.conversionCallers,
   #|   lifetimeDays: v.lifetimeDays,
   #|   priority: v.priority
   #| })
@@ -147,7 +147,7 @@ pub(all) struct AttributionImpressionResult {}
 ///|
 /// Create a new AttributionImpressionResult with default values
 pub fn AttributionImpressionResult::default() -> AttributionImpressionResult {
-  AttributionImpressionResult::{  }
+  AttributionImpressionResult::{ }
 }
 
 ///|
@@ -187,10 +187,10 @@ pub(all) struct AttributionConversionOptions {
   epsilon : Double?
   histogramSize : Int
   lookbackDays : Int?
-  matchValues : Array[Int]?
-  impressionSites : Array[String]?
-  impressionCallers : Array[String]?
-  credit : Array[Double]?
+  matchValues : FixedArray[Int]?
+  impressionSites : FixedArray[String]?
+  impressionCallers : FixedArray[String]?
+  credit : FixedArray[Double]?
   value : Int?
   maxValue : Int?
 }
@@ -221,10 +221,10 @@ extern "js" fn AttributionConversionOptions::to_js_ffi(
   #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   histogramSize: self.histogramSize,
   #|   lookbackDays: self.lookbackDays,
-  #|   matchValues: ((() => { const v = self.matchValues; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   impressionSites: ((() => { const v = self.impressionSites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   impressionCallers: ((() => { const v = self.impressionCallers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   credit: ((() => { const v = self.credit; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   matchValues: self.matchValues,
+  #|   impressionSites: self.impressionSites,
+  #|   impressionCallers: self.impressionCallers,
+  #|   credit: self.credit,
   #|   value: self.value,
   #|   maxValue: self.maxValue
   #| })
@@ -246,10 +246,10 @@ extern "js" fn AttributionConversionOptions::from_js_ffi(
   #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon }),
   #|   histogramSize: v.histogramSize,
   #|   lookbackDays: v.lookbackDays,
-  #|   matchValues: (v.matchValues === undefined ? { $tag: 0 } : { $tag: 1, _0: v.matchValues }),
-  #|   impressionSites: (v.impressionSites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.impressionSites }),
-  #|   impressionCallers: (v.impressionCallers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.impressionCallers }),
-  #|   credit: (v.credit === undefined ? { $tag: 0 } : { $tag: 1, _0: v.credit }),
+  #|   matchValues: v.matchValues,
+  #|   impressionSites: v.impressionSites,
+  #|   impressionCallers: v.impressionCallers,
+  #|   credit: v.credit,
   #|   value: v.value,
   #|   maxValue: v.maxValue
   #| })

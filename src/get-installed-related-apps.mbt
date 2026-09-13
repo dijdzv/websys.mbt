@@ -13,7 +13,7 @@ pub(all) struct RelatedApplication {
 ///|
 /// Create a new RelatedApplication with default values
 pub fn RelatedApplication::default() -> RelatedApplication {
-  RelatedApplication::{ platform: "", url: None, id: None, version: None }
+  RelatedApplication::{ platform: "", url: None, id: None, version: None, }
 }
 
 ///|

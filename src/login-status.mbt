@@ -6,7 +6,7 @@
 pub(all) enum LoginStatus {
   LoggedIn
   LoggedOut
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -68,7 +68,7 @@ pub extern "js" fn JsValue::to_navigator_login(
 pub(all) enum NavigatorLoginSetStatusError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NavigatorLogin::set_status(

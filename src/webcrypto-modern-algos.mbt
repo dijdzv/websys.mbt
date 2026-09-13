@@ -12,7 +12,7 @@ pub(all) enum KeyFormat {
   Spki
   Pkcs8
   Jwk
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -60,7 +60,7 @@ pub(all) enum KeyUsage {
   EncapsulateBits
   DecapsulateKey
   DecapsulateBits
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -111,7 +111,7 @@ pub(all) struct EncapsulatedKey {
 ///|
 /// Create a new EncapsulatedKey with default values
 pub fn EncapsulatedKey::default() -> EncapsulatedKey {
-  EncapsulatedKey::{ sharedKey: None, ciphertext: None }
+  EncapsulatedKey::{ sharedKey: None, ciphertext: None, }
 }
 
 ///|
@@ -150,7 +150,7 @@ pub(all) struct EncapsulatedBits {
 ///|
 /// Create a new EncapsulatedBits with default values
 pub fn EncapsulatedBits::default() -> EncapsulatedBits {
-  EncapsulatedBits::{ sharedKey: None, ciphertext: None }
+  EncapsulatedBits::{ sharedKey: None, ciphertext: None, }
 }
 
 ///|
@@ -188,7 +188,7 @@ pub(all) struct JsonWebKey {
   priv_ : String?
   kty : String?
   use_ : String?
-  key_ops : Array[String]?
+  key_ops : FixedArray[String]?
   alg : String?
   ext : Bool?
   crv : String?
@@ -202,7 +202,7 @@ pub(all) struct JsonWebKey {
   dp : String?
   dq : String?
   qi : String?
-  oth : Array[RsaOtherPrimesInfo]?
+  oth : FixedArray[RsaOtherPrimesInfo]?
   k : String?
 }
 
@@ -240,7 +240,7 @@ extern "js" fn JsonWebKey::to_js_ffi(self : JsonWebKey) -> JsValue =
   #|   priv: self.priv_,
   #|   kty: self.kty,
   #|   use: self.use_,
-  #|   key_ops: ((() => { const v = self.key_ops; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   key_ops: self.key_ops,
   #|   alg: self.alg,
   #|   ext: (self.ext === -1 ? undefined : self.ext),
   #|   crv: self.crv,
@@ -254,7 +254,7 @@ extern "js" fn JsonWebKey::to_js_ffi(self : JsonWebKey) -> JsValue =
   #|   dp: self.dp,
   #|   dq: self.dq,
   #|   qi: self.qi,
-  #|   oth: ((() => { const v = self.oth; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   oth: self.oth,
   #|   k: self.k
   #| })
 
@@ -271,7 +271,7 @@ extern "js" fn JsonWebKey::from_js_ffi(value : JsValue) -> JsonWebKey =
   #|   priv_: v.priv,
   #|   kty: v.kty,
   #|   use_: v.use,
-  #|   key_ops: (v.key_ops === undefined ? { $tag: 0 } : { $tag: 1, _0: v.key_ops }),
+  #|   key_ops: v.key_ops,
   #|   alg: v.alg,
   #|   ext: (v.ext === undefined ? -1 : v.ext),
   #|   crv: v.crv,
@@ -285,7 +285,7 @@ extern "js" fn JsonWebKey::from_js_ffi(value : JsValue) -> JsonWebKey =
   #|   dp: v.dp,
   #|   dq: v.dq,
   #|   qi: v.qi,
-  #|   oth: (v.oth === undefined ? { $tag: 0 } : { $tag: 1, _0: v.oth }),
+  #|   oth: v.oth,
   #|   k: v.k
   #| })
 
@@ -304,7 +304,7 @@ pub(all) struct ContextParams {
 ///|
 /// Create a new ContextParams with default values
 pub fn ContextParams::default() -> ContextParams {
-  ContextParams::{ context: None }
+  ContextParams::{ context: None, }
 }
 
 ///|
@@ -342,7 +342,7 @@ pub(all) struct AeadParams {
 ///|
 /// Create a new AeadParams
 pub fn AeadParams::new(iv~ : BufferSource) -> AeadParams {
-  AeadParams::{ iv, additionalData: None, tagLength: None }
+  AeadParams::{ iv, additionalData: None, tagLength: None, }
 }
 
 ///|
@@ -376,7 +376,7 @@ pub fn AeadParams::from_js(value : JsValue) -> AeadParams {
 ///|
 /// CShakeParams dictionary
 pub(all) struct CShakeParams {
-  length : Int
+  outputLength : Int
   functionName : BufferSource?
   customization : BufferSource?
 }
@@ -384,13 +384,13 @@ pub(all) struct CShakeParams {
 ///|
 /// Create a new CShakeParams with default values
 pub fn CShakeParams::default() -> CShakeParams {
-  CShakeParams::{ length: 0, functionName: None, customization: None }
+  CShakeParams::{ outputLength: 0, functionName: None, customization: None, }
 }
 
 ///|
 extern "js" fn CShakeParams::to_js_ffi(self : CShakeParams) -> JsValue =
   #| (self) => ({
-  #|   length: self.length,
+  #|   outputLength: self.outputLength,
   #|   functionName: ((() => { const v = self.functionName; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
   #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
@@ -404,7 +404,7 @@ pub fn CShakeParams::to_js(self : CShakeParams) -> JsValue {
 ///|
 extern "js" fn CShakeParams::from_js_ffi(value : JsValue) -> CShakeParams =
   #| (v) => ({
-  #|   length: v.length,
+  #|   outputLength: v.outputLength,
   #|   functionName: (v.functionName === undefined ? { $tag: 0 } : { $tag: 1, _0: v.functionName }),
   #|   customization: (v.customization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customization })
   #| })
@@ -424,7 +424,7 @@ pub(all) struct KmacKeyGenParams {
 ///|
 /// Create a new KmacKeyGenParams with default values
 pub fn KmacKeyGenParams::default() -> KmacKeyGenParams {
-  KmacKeyGenParams::{ length: None }
+  KmacKeyGenParams::{ length: None, }
 }
 
 ///|
@@ -462,7 +462,7 @@ pub(all) struct KmacImportParams {
 ///|
 /// Create a new KmacImportParams with default values
 pub fn KmacImportParams::default() -> KmacImportParams {
-  KmacImportParams::{ length: None }
+  KmacImportParams::{ length: None, }
 }
 
 ///|
@@ -500,7 +500,7 @@ pub(all) struct KmacKeyAlgorithm {
 ///|
 /// Create a new KmacKeyAlgorithm with default values
 pub fn KmacKeyAlgorithm::default() -> KmacKeyAlgorithm {
-  KmacKeyAlgorithm::{ length: 0 }
+  KmacKeyAlgorithm::{ length: 0, }
 }
 
 ///|
@@ -532,20 +532,20 @@ pub fn KmacKeyAlgorithm::from_js(value : JsValue) -> KmacKeyAlgorithm {
 ///|
 /// KmacParams dictionary
 pub(all) struct KmacParams {
-  length : Int
+  outputLength : Int
   customization : BufferSource?
 }
 
 ///|
 /// Create a new KmacParams with default values
 pub fn KmacParams::default() -> KmacParams {
-  KmacParams::{ length: 0, customization: None }
+  KmacParams::{ outputLength: 0, customization: None, }
 }
 
 ///|
 extern "js" fn KmacParams::to_js_ffi(self : KmacParams) -> JsValue =
   #| (self) => ({
-  #|   length: self.length,
+  #|   outputLength: self.outputLength,
   #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
   #| })
 
@@ -558,7 +558,7 @@ pub fn KmacParams::to_js(self : KmacParams) -> JsValue {
 ///|
 extern "js" fn KmacParams::from_js_ffi(value : JsValue) -> KmacParams =
   #| (v) => ({
-  #|   length: v.length,
+  #|   outputLength: v.outputLength,
   #|   customization: (v.customization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customization })
   #| })
 

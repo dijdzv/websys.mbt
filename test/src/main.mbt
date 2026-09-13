@@ -1,10 +1,12 @@
 ///|
-fn[T : Eq + Show] assert_eq(
+fn[T : Eq + Debug] assert_eq(
   actual : T,
   expected : T,
   label? : String = "",
 ) -> Unit {
   if actual != expected {
+    let actual = @debug.to_string(actual)
+    let expected = @debug.to_string(expected)
     let msg = if label != "" {
       "FAIL [\{label}]: expected \{expected}, got \{actual}"
     } else {
@@ -17,7 +19,7 @@ fn[T : Eq + Show] assert_eq(
 
 ///|
 fn assert_true(value : Bool, label? : String = "") -> Unit {
-  if not(value) {
+  if !value {
     let msg = if label != "" {
       "FAIL [\{label}]: expected true, got false"
     } else {
@@ -315,16 +317,22 @@ async fn main {
     // --- Result Err branch tests ---
     ("result_url_type_error", test_result_url_type_error),
     ("result_create_element_ns_error", test_result_create_element_ns_error),
-    ("result_append_child_hierarchy_error", test_result_append_child_hierarchy_error),
+    (
+      "result_append_child_hierarchy_error", test_result_append_child_hierarchy_error,
+    ),
     ("result_insert_rule_syntax_error", test_result_insert_rule_syntax_error),
-    ("result_insert_adjacent_html_error", test_result_insert_adjacent_html_error),
+    (
+      "result_insert_adjacent_html_error", test_result_insert_adjacent_html_error,
+    ),
     ("result_set_attribute_error", test_result_set_attribute_error),
     ("result_error_message", test_result_error_message),
     // --- Event handler tests ---
     ("event_handler_onclick", test_event_handler_onclick),
     ("event_handler_onkeydown", test_event_handler_onkeydown),
     ("event_handler_onfocus_onblur", test_event_handler_onfocus_onblur),
-    ("event_handler_typed_event_properties", test_event_handler_typed_event_properties),
+    (
+      "event_handler_typed_event_properties", test_event_handler_typed_event_properties,
+    ),
     // --- Type narrowing tests ---
     ("node_narrowing", test_node_narrowing),
     ("element_narrowing", test_element_narrowing),
@@ -333,8 +341,12 @@ async fn main {
     ("union_type_narrowing", test_union_type_narrowing),
     // --- Dictionary round-trip tests ---
     ("dict_event_init_roundtrip", test_dict_event_init_roundtrip),
-    ("dict_mutation_observer_init_roundtrip", test_dict_mutation_observer_init_roundtrip),
-    ("dict_keyboard_event_init_roundtrip", test_dict_keyboard_event_init_roundtrip),
+    (
+      "dict_mutation_observer_init_roundtrip", test_dict_mutation_observer_init_roundtrip,
+    ),
+    (
+      "dict_keyboard_event_init_roundtrip", test_dict_keyboard_event_init_roundtrip,
+    ),
     // --- WebAudio tests ---
     ("audio_context", test_audio_context),
     ("oscillator_node", test_oscillator_node),
@@ -371,9 +383,7 @@ async fn main {
   for i = 0; i < async_tests.length(); i = i + 1 {
     let (name, f) = async_tests[i]
     total = total + 1
-    let ok = run_async_test(name, f).wait() catch {
-      _ => false
-    }
+    let ok = run_async_test(name, f).wait() catch { _ => false }
     if ok {
       passed = passed + 1
     } else {

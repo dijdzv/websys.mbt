@@ -21,7 +21,7 @@ pub(all) struct IdleRequestOptions {
 ///|
 /// Create a new IdleRequestOptions with default values
 pub fn IdleRequestOptions::default() -> IdleRequestOptions {
-  IdleRequestOptions::{ timeout: None }
+  IdleRequestOptions::{ timeout: None, }
 }
 
 ///|

@@ -1,0 +1,11 @@
+.git/
+.tools/
+.work/
+.mooncakes/
+_build/
+node_modules/
+test/
+generator/
+scripts/
+.devenv/
+.direnv/

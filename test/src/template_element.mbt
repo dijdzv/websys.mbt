@@ -2,7 +2,7 @@
 fn test_template_element() -> Unit {
   let doc = get_document()
   let template = @websys.HTMLTemplateElement::from_js_value(
-    doc.create_element("template").to_js_value(),
+    create_element(doc, "template").to_js_value(),
   )
   // content returns a DocumentFragment
   let content = template.get_content()

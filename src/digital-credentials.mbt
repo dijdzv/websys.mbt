@@ -4,13 +4,13 @@
 ///|
 /// DigitalCredentialRequestOptions dictionary
 pub(all) struct DigitalCredentialRequestOptions {
-  requests : Array[DigitalCredentialGetRequest]
+  requests : FixedArray[DigitalCredentialGetRequest]
 }
 
 ///|
 /// Create a new DigitalCredentialRequestOptions with default values
 pub fn DigitalCredentialRequestOptions::default() -> DigitalCredentialRequestOptions {
-  DigitalCredentialRequestOptions::{ requests: [] }
+  DigitalCredentialRequestOptions::{ requests: [], }
 }
 
 ///|
@@ -57,7 +57,7 @@ pub(all) struct DigitalCredentialGetRequest {
 pub fn DigitalCredentialGetRequest::new(
   data~ : JsValue,
 ) -> DigitalCredentialGetRequest {
-  DigitalCredentialGetRequest::{ protocol: "", data }
+  DigitalCredentialGetRequest::{ protocol: "", data, }
 }
 
 ///|
@@ -97,13 +97,13 @@ pub fn DigitalCredentialGetRequest::from_js(
 ///|
 /// DigitalCredentialCreationOptions dictionary
 pub(all) struct DigitalCredentialCreationOptions {
-  requests : Array[DigitalCredentialCreateRequest]?
+  requests : FixedArray[DigitalCredentialCreateRequest]?
 }
 
 ///|
 /// Create a new DigitalCredentialCreationOptions with default values
 pub fn DigitalCredentialCreationOptions::default() -> DigitalCredentialCreationOptions {
-  DigitalCredentialCreationOptions::{ requests: None }
+  DigitalCredentialCreationOptions::{ requests: None, }
 }
 
 ///|
@@ -111,7 +111,7 @@ extern "js" fn DigitalCredentialCreationOptions::to_js_ffi(
   self : DigitalCredentialCreationOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   requests: ((() => { const v = self.requests; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   requests: self.requests
   #| })
 
 ///|
@@ -127,7 +127,7 @@ extern "js" fn DigitalCredentialCreationOptions::from_js_ffi(
   value : JsValue,
 ) -> DigitalCredentialCreationOptions =
   #| (v) => ({
-  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #|   requests: v.requests
   #| })
 
 ///|
@@ -150,7 +150,7 @@ pub(all) struct DigitalCredentialCreateRequest {
 pub fn DigitalCredentialCreateRequest::new(
   data~ : JsValue,
 ) -> DigitalCredentialCreateRequest {
-  DigitalCredentialCreateRequest::{ protocol: "", data }
+  DigitalCredentialCreateRequest::{ protocol: "", data, }
 }
 
 ///|

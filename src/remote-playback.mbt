@@ -7,7 +7,7 @@ pub(all) enum RemotePlaybackState {
   Connecting
   Connected
   Disconnected
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -89,7 +89,7 @@ pub(all) enum RemotePlaybackWatchAvailabilityError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -97,7 +97,7 @@ pub(all) enum RemotePlaybackCancelWatchAvailabilityError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -109,7 +109,7 @@ pub(all) enum RemotePlaybackPromptError {
   NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RemotePlayback::watch_availability(

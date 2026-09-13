@@ -63,7 +63,7 @@ pub type ClipboardItemData = Promise[StringOrBlob]
 
 ///|
 /// ClipboardItems typedef
-pub type ClipboardItems = Array[ClipboardItem]
+pub type ClipboardItems = FixedArray[ClipboardItem]
 
 ///|
 /// PresentationStyle enum
@@ -71,7 +71,7 @@ pub(all) enum PresentationStyle {
   Unspecified
   Inline
   Attachment
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -103,7 +103,7 @@ pub(all) struct ClipboardEventInit {
 ///|
 /// Create a new ClipboardEventInit with default values
 pub fn ClipboardEventInit::default() -> ClipboardEventInit {
-  ClipboardEventInit::{ clipboardData: Nullable::Undefined }
+  ClipboardEventInit::{ clipboardData: Nullable::Undefined, }
 }
 
 ///|
@@ -137,14 +137,14 @@ pub fn ClipboardEventInit::from_js(value : JsValue) -> ClipboardEventInit {
 ///|
 /// ClipboardChangeEventInit dictionary
 pub(all) struct ClipboardChangeEventInit {
-  types : Array[String]?
+  types : FixedArray[String]?
   changeId : JsValue?
 }
 
 ///|
 /// Create a new ClipboardChangeEventInit with default values
 pub fn ClipboardChangeEventInit::default() -> ClipboardChangeEventInit {
-  ClipboardChangeEventInit::{ types: None, changeId: None }
+  ClipboardChangeEventInit::{ types: None, changeId: None, }
 }
 
 ///|
@@ -152,7 +152,7 @@ extern "js" fn ClipboardChangeEventInit::to_js_ffi(
   self : ClipboardChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   types: self.types,
   #|   changeId: ((() => { const v = self.changeId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -169,7 +169,7 @@ extern "js" fn ClipboardChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> ClipboardChangeEventInit =
   #| (v) => ({
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types }),
+  #|   types: v.types,
   #|   changeId: (v.changeId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changeId })
   #| })
 
@@ -190,7 +190,7 @@ pub(all) struct ClipboardItemOptions {
 ///|
 /// Create a new ClipboardItemOptions with default values
 pub fn ClipboardItemOptions::default() -> ClipboardItemOptions {
-  ClipboardItemOptions::{ presentationStyle: None }
+  ClipboardItemOptions::{ presentationStyle: None, }
 }
 
 ///|
@@ -224,13 +224,13 @@ pub fn ClipboardItemOptions::from_js(value : JsValue) -> ClipboardItemOptions {
 ///|
 /// ClipboardUnsanitizedFormats dictionary
 pub(all) struct ClipboardUnsanitizedFormats {
-  unsanitized : Array[String]?
+  unsanitized : FixedArray[String]?
 }
 
 ///|
 /// Create a new ClipboardUnsanitizedFormats with default values
 pub fn ClipboardUnsanitizedFormats::default() -> ClipboardUnsanitizedFormats {
-  ClipboardUnsanitizedFormats::{ unsanitized: None }
+  ClipboardUnsanitizedFormats::{ unsanitized: None, }
 }
 
 ///|
@@ -238,7 +238,7 @@ extern "js" fn ClipboardUnsanitizedFormats::to_js_ffi(
   self : ClipboardUnsanitizedFormats,
 ) -> JsValue =
   #| (self) => ({
-  #|   unsanitized: ((() => { const v = self.unsanitized; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   unsanitized: self.unsanitized
   #| })
 
 ///|
@@ -254,7 +254,7 @@ extern "js" fn ClipboardUnsanitizedFormats::from_js_ffi(
   value : JsValue,
 ) -> ClipboardUnsanitizedFormats =
   #| (v) => ({
-  #|   unsanitized: (v.unsanitized === undefined ? { $tag: 0 } : { $tag: 1, _0: v.unsanitized })
+  #|   unsanitized: v.unsanitized
   #| })
 
 ///|
@@ -274,7 +274,7 @@ pub(all) struct ClipboardPermissionDescriptor {
 ///|
 /// Create a new ClipboardPermissionDescriptor with default values
 pub fn ClipboardPermissionDescriptor::default() -> ClipboardPermissionDescriptor {
-  ClipboardPermissionDescriptor::{ allowWithoutGesture: None }
+  ClipboardPermissionDescriptor::{ allowWithoutGesture: None, }
 }
 
 ///|
@@ -445,7 +445,7 @@ pub fn ClipboardChangeEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn ClipboardChangeEvent::get_types(
   self : ClipboardChangeEvent,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.types
 
 ///|
@@ -490,7 +490,7 @@ pub(all) enum ClipboardItemGetTypeError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ClipboardItem::new(items : JsValue) -> ClipboardItem =
@@ -520,7 +520,7 @@ pub extern "js" fn ClipboardItem::get_presentation_style(
 ///|
 pub extern "js" fn ClipboardItem::get_types(
   self : ClipboardItem,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.types
 
 ///|
@@ -571,7 +571,7 @@ pub extern "js" fn Clipboard::to_event_target(self : Clipboard) -> EventTarget =
 pub(all) enum ClipboardReadError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -579,21 +579,21 @@ pub(all) enum ClipboardReadTextError {
   NotFoundError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ClipboardWriteError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ClipboardWriteTextError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Clipboard::read(

@@ -11,7 +11,7 @@ pub(all) struct FlacEncoderConfig {
 ///|
 /// Create a new FlacEncoderConfig with default values
 pub fn FlacEncoderConfig::default() -> FlacEncoderConfig {
-  FlacEncoderConfig::{ blockSize: None, compressLevel: None }
+  FlacEncoderConfig::{ blockSize: None, compressLevel: None, }
 }
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum FontFaceLoadStatus {
   Loading
   Loaded
   Error
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub fn FontFaceLoadStatus::from_string(s : String) -> FontFaceLoadStatus? {
 pub(all) enum FontFaceSetLoadStatus {
   Loading
   Loaded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -140,13 +140,13 @@ pub fn FontFaceDescriptors::from_js(value : JsValue) -> FontFaceDescriptors {
 ///|
 /// FontFaceSetLoadEventInit dictionary
 pub(all) struct FontFaceSetLoadEventInit {
-  fontfaces : Array[FontFace]?
+  fontfaces : FixedArray[FontFace]?
 }
 
 ///|
 /// Create a new FontFaceSetLoadEventInit with default values
 pub fn FontFaceSetLoadEventInit::default() -> FontFaceSetLoadEventInit {
-  FontFaceSetLoadEventInit::{ fontfaces: None }
+  FontFaceSetLoadEventInit::{ fontfaces: None, }
 }
 
 ///|
@@ -154,7 +154,7 @@ extern "js" fn FontFaceSetLoadEventInit::to_js_ffi(
   self : FontFaceSetLoadEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   fontfaces: ((() => { const v = self.fontfaces; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   fontfaces: self.fontfaces
   #| })
 
 ///|
@@ -170,7 +170,7 @@ extern "js" fn FontFaceSetLoadEventInit::from_js_ffi(
   value : JsValue,
 ) -> FontFaceSetLoadEventInit =
   #| (v) => ({
-  #|   fontfaces: (v.fontfaces === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fontfaces })
+  #|   fontfaces: v.fontfaces
   #| })
 
 ///|
@@ -214,14 +214,14 @@ pub extern "js" fn JsValue::to_font_face(self : JsValue) -> FontFace =
 pub(all) enum FontFaceConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum FontFaceLoadError {
   NetworkError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn FontFace::new(
@@ -767,7 +767,7 @@ pub fn FontFaceSetLoadEvent::new_with_event_init_dict(
 ///|
 pub extern "js" fn FontFaceSetLoadEvent::get_fontfaces(
   self : FontFaceSetLoadEvent,
-) -> Array[FontFace] =
+) -> FixedArray[FontFace] =
   #| (self) => self.fontfaces
 
 ///|
@@ -809,7 +809,7 @@ pub extern "js" fn FontFaceSet::to_event_target(
 pub(all) enum FontFaceSetAddError {
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn FontFaceSet::has(
@@ -875,7 +875,7 @@ pub extern "js" fn FontFaceSet::clear_onloadingerror(
 pub extern "js" fn FontFaceSet::load(
   self : FontFaceSet,
   font : String,
-) -> Promise[Array[FontFace]] =
+) -> Promise[FixedArray[FontFace]] =
   #| (self, font) => self.load(font)
 
 ///|
@@ -883,7 +883,7 @@ pub extern "js" fn FontFaceSet::load_with_text(
   self : FontFaceSet,
   font : String,
   text : String,
-) -> Promise[Array[FontFace]] =
+) -> Promise[FixedArray[FontFace]] =
   #| (self, font, text) => self.load(font, text)
 
 ///|

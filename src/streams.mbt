@@ -153,7 +153,7 @@ pub fn ReadableStreamController::bind_as_readable_byte_stream_controller(
 /// ReadableStreamReaderMode enum
 pub(all) enum ReadableStreamReaderMode {
   Byob
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -180,7 +180,7 @@ pub fn ReadableStreamReaderMode::from_string(
 /// ReadableStreamType enum
 pub(all) enum ReadableStreamType {
   Bytes
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -333,7 +333,7 @@ pub(all) struct ReadableStreamGetReaderOptions {
 ///|
 /// Create a new ReadableStreamGetReaderOptions with default values
 pub fn ReadableStreamGetReaderOptions::default() -> ReadableStreamGetReaderOptions {
-  ReadableStreamGetReaderOptions::{ mode: None }
+  ReadableStreamGetReaderOptions::{ mode: None, }
 }
 
 ///|
@@ -377,7 +377,7 @@ pub(all) struct ReadableStreamIteratorOptions {
 ///|
 /// Create a new ReadableStreamIteratorOptions with default values
 pub fn ReadableStreamIteratorOptions::default() -> ReadableStreamIteratorOptions {
-  ReadableStreamIteratorOptions::{ preventCancel: None }
+  ReadableStreamIteratorOptions::{ preventCancel: None, }
 }
 
 ///|
@@ -425,7 +425,7 @@ pub fn ReadableWritablePair::new(
   readable~ : ReadableStream,
   writable~ : WritableStream,
 ) -> ReadableWritablePair {
-  ReadableWritablePair::{ readable, writable }
+  ReadableWritablePair::{ readable, writable, }
 }
 
 ///|
@@ -578,7 +578,7 @@ pub(all) struct ReadableStreamReadResult {
 ///|
 /// Create a new ReadableStreamReadResult with default values
 pub fn ReadableStreamReadResult::default() -> ReadableStreamReadResult {
-  ReadableStreamReadResult::{ value: None, done: None }
+  ReadableStreamReadResult::{ value: None, done: None, }
 }
 
 ///|
@@ -624,7 +624,7 @@ pub(all) struct ReadableStreamBYOBReaderReadOptions {
 ///|
 /// Create a new ReadableStreamBYOBReaderReadOptions with default values
 pub fn ReadableStreamBYOBReaderReadOptions::default() -> ReadableStreamBYOBReaderReadOptions {
-  ReadableStreamBYOBReaderReadOptions::{ min: None }
+  ReadableStreamBYOBReaderReadOptions::{ min: None, }
 }
 
 ///|
@@ -781,7 +781,7 @@ pub(all) struct QueuingStrategy {
 ///|
 /// Create a new QueuingStrategy with default values
 pub fn QueuingStrategy::default() -> QueuingStrategy {
-  QueuingStrategy::{ highWaterMark: None, size: None }
+  QueuingStrategy::{ highWaterMark: None, size: None, }
 }
 
 ///|
@@ -819,7 +819,7 @@ pub(all) struct QueuingStrategyInit {
 ///|
 /// Create a new QueuingStrategyInit with default values
 pub fn QueuingStrategyInit::default() -> QueuingStrategyInit {
-  QueuingStrategyInit::{ highWaterMark: 0 }
+  QueuingStrategyInit::{ highWaterMark: 0, }
 }
 
 ///|
@@ -897,21 +897,21 @@ pub extern "js" fn ReadableStream::as_web_transport_receive_stream(
 pub(all) enum ReadableStreamConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamFromError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamCancelError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -919,28 +919,28 @@ pub(all) enum ReadableStreamGetReaderError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamPipeThroughError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamPipeToError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamTeeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableStream::new() -> Result[
@@ -1071,7 +1071,7 @@ pub fn ReadableStream::pipe_to_with_options(
 ///|
 pub extern "js" fn ReadableStream::tee(
   self : ReadableStream,
-) -> Result[Array[ReadableStream], ReadableStreamTeeError] =
+) -> Result[FixedArray[ReadableStream], ReadableStreamTeeError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.tee() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
@@ -1129,28 +1129,28 @@ pub extern "js" fn JsValue::to_readable_stream_default_reader(
 pub(all) enum ReadableStreamDefaultReaderConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamDefaultReaderReadError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamDefaultReaderReleaseLockError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamDefaultReaderCancelError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableStreamDefaultReader::new(
@@ -1240,7 +1240,7 @@ pub extern "js" fn JsValue::to_readable_stream_byob_reader(
 pub(all) enum ReadableStreamBYOBReaderConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1248,21 +1248,21 @@ pub(all) enum ReadableStreamBYOBReaderReadError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamBYOBReaderReleaseLockError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamBYOBReaderCancelError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBReader::new(
@@ -1504,21 +1504,21 @@ pub extern "js" fn JsValue::to_readable_stream_default_controller(
 pub(all) enum ReadableStreamDefaultControllerCloseError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamDefaultControllerEnqueueError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableStreamDefaultControllerErrorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableStreamDefaultController::get_desired_size(
@@ -1601,21 +1601,21 @@ pub extern "js" fn JsValue::to_readable_byte_stream_controller(
 pub(all) enum ReadableByteStreamControllerCloseError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableByteStreamControllerEnqueueError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ReadableByteStreamControllerErrorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableByteStreamController::get_byob_request(
@@ -1789,7 +1789,7 @@ pub extern "js" fn JsValue::to_readable_stream_byob_request(
 pub(all) enum ReadableStreamBYOBRequestRespondError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1797,7 +1797,7 @@ pub(all) enum ReadableStreamBYOBRequestRespondWithNewViewError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::get_view(
@@ -1810,7 +1810,7 @@ pub extern "js" fn ReadableStreamBYOBRequest::respond(
   self : ReadableStreamBYOBRequest,
   bytes_written : Int64,
 ) -> Result[Unit, ReadableStreamBYOBRequestRespondError] =
-  #| (self, bytes_written) => (() => { try { self.respond((bytes_written.hi * 4294967296 + bytes_written.lo)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, bytes_written) => (() => { try { self.respond(Number(bytes_written)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn ReadableStreamBYOBRequest::respond_with_new_view(
@@ -1969,21 +1969,21 @@ pub extern "js" fn WritableStream::as_web_transport_send_stream(
 pub(all) enum WritableStreamAbortError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WritableStreamCloseError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WritableStreamGetWriterError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WritableStream::new() -> WritableStream =
@@ -2082,28 +2082,28 @@ pub extern "js" fn WritableStreamDefaultWriter::as_web_transport_writer(
 pub(all) enum WritableStreamDefaultWriterConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WritableStreamDefaultWriterAbortError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WritableStreamDefaultWriterCloseError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WritableStreamDefaultWriterWriteError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WritableStreamDefaultWriter::new(
@@ -2213,7 +2213,7 @@ pub extern "js" fn JsValue::to_writable_stream_default_controller(
 pub(all) enum WritableStreamDefaultControllerErrorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WritableStreamDefaultController::get_signal(
@@ -2352,7 +2352,7 @@ pub extern "js" fn JsValue::to_transform_stream_default_controller(
 pub(all) enum TransformStreamDefaultControllerEnqueueError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TransformStreamDefaultController::get_desired_size(

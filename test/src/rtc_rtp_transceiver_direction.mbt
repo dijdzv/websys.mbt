@@ -10,7 +10,7 @@ extern "js" fn js_is_unified_avail() -> Bool =
 
 ///|
 fn test_rtc_rtp_transceiver_direction() -> Unit {
-  if not(js_is_unified_avail()) {
+  if !js_is_unified_avail() {
     return
   }
   let pc1 = @websys.RTCPeerConnection::new()
@@ -19,10 +19,12 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
     streams: None,
     sendEncodings: None,
   }
-  let tr1 = pc1.add_transceiver_with_init(
-    @websys.MediaStreamTrackOrString::from_string("audio"),
-    init,
-  ).unwrap()
+  let tr1 = pc1
+    .add_transceiver_with_init(
+      @websys.MediaStreamTrackOrString::from_string("audio"),
+      init,
+    )
+    .unwrap()
   let dir = tr1.get_direction()
   assert_eq(
     dir,
@@ -41,7 +43,7 @@ fn test_rtc_rtp_transceiver_direction() -> Unit {
 
 ///|
 async fn test_rtc_sdp_exchange() -> Unit {
-  if not(js_is_unified_avail()) {
+  if !js_is_unified_avail() {
     return
   }
   let pc1 = @websys.RTCPeerConnection::new()
@@ -50,10 +52,12 @@ async fn test_rtc_sdp_exchange() -> Unit {
     streams: None,
     sendEncodings: None,
   }
-  let tr1 = pc1.add_transceiver_with_init(
-    @websys.MediaStreamTrackOrString::from_string("audio"),
-    init,
-  ).unwrap()
+  let tr1 = pc1
+    .add_transceiver_with_init(
+      @websys.MediaStreamTrackOrString::from_string("audio"),
+      init,
+    )
+    .unwrap()
 
   // Before SDP exchange
   assert_eq(

@@ -12,13 +12,13 @@ check:
 fmt:
     moon fmt
 
-# Regenerate bindings from WebIDL specs (npm version)
+# Regenerate bindings using the bundled generator
 generate:
-    rm -f ./src/*.mbt && webidl-bindgen.mbt -o ./src/ && moon fmt
+    mise run generate
 
-# Regenerate bindings from local webidl-bindgen.mbt build
+# Compatibility alias for the bundled generator
 generate-local:
-    rm -f ./src/*.mbt && bun ../webidl-bindgen.mbt/_build/js/release/build/webidl-bindgen.js -o ./src/ && moon fmt
+    mise run generate
 
 # Install test dependencies (first time setup)
 setup-test:
@@ -30,11 +30,11 @@ build-test:
 
 # Run tests (build + execute)
 test: build-test
-    cd test && bun run run.mjs
+    node test/run.mjs
 
 # Run tests without rebuilding
 test-run:
-    cd test && bun run run.mjs
+    node test/run.mjs
 
 # Install npm dependencies
 install:

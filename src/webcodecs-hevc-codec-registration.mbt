@@ -6,7 +6,7 @@
 pub(all) enum HevcBitstreamFormat {
   Annexb
   Hevc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -36,7 +36,7 @@ pub(all) struct HevcEncoderConfig {
 ///|
 /// Create a new HevcEncoderConfig with default values
 pub fn HevcEncoderConfig::default() -> HevcEncoderConfig {
-  HevcEncoderConfig::{ format: None }
+  HevcEncoderConfig::{ format: None, }
 }
 
 ///|
@@ -76,7 +76,7 @@ pub(all) struct VideoEncoderEncodeOptionsForHevc {
 ///|
 /// Create a new VideoEncoderEncodeOptionsForHevc with default values
 pub fn VideoEncoderEncodeOptionsForHevc::default() -> VideoEncoderEncodeOptionsForHevc {
-  VideoEncoderEncodeOptionsForHevc::{ quantizer: Nullable::Undefined }
+  VideoEncoderEncodeOptionsForHevc::{ quantizer: Nullable::Undefined, }
 }
 
 ///|

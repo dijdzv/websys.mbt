@@ -5,7 +5,7 @@
 fn test_iframe_element() -> Unit {
   let doc = get_document()
   let iframe = @websys.HTMLIFrameElement::from_js_value(
-    doc.create_element("iframe").to_js_value(),
+    create_element(doc, "iframe").to_js_value(),
   )
   // src (URL-reflected attribute)
   iframe.set_src("https://example.com/embed")

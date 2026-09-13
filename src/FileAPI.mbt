@@ -86,7 +86,7 @@ pub fn BlobPart::bind_as_string(value : BlobPart?) -> String? {
 pub(all) enum EndingType {
   Transparent
   Native
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -117,7 +117,7 @@ pub(all) struct BlobPropertyBag {
 ///|
 /// Create a new BlobPropertyBag with default values
 pub fn BlobPropertyBag::default() -> BlobPropertyBag {
-  BlobPropertyBag::{ type_: None, endings: None }
+  BlobPropertyBag::{ type_: None, endings: None, }
 }
 
 ///|
@@ -157,7 +157,7 @@ pub(all) struct FilePropertyBag {
 ///|
 /// Create a new FilePropertyBag with default values
 pub fn FilePropertyBag::default() -> FilePropertyBag {
-  FilePropertyBag::{ type_: None, endings: None, lastModified: None }
+  FilePropertyBag::{ type_: None, endings: None, lastModified: None, }
 }
 
 ///|
@@ -226,14 +226,14 @@ pub extern "js" fn Blob::new() -> Blob =
 
 ///|
 extern "js" fn Blob::new_with_options_ffi(
-  blob_parts : Array[BlobPart],
+  blob_parts : FixedArray[BlobPart],
   options : JsValue,
 ) -> Blob =
   #| (blob_parts, options) => new Blob(blob_parts, options)
 
 ///|
 pub fn Blob::new_with_options(
-  blob_parts : Array[BlobPart],
+  blob_parts : FixedArray[BlobPart],
   options : BlobPropertyBag,
 ) -> Blob {
   Blob::new_with_options_ffi(blob_parts, options.to_js())
@@ -241,7 +241,7 @@ pub fn Blob::new_with_options(
 
 ///|
 pub extern "js" fn Blob::get_size(self : Blob) -> Int64 =
-  #| (self) => (() => { const n = self.size; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.size))
 
 ///|
 pub extern "js" fn Blob::get_type(self : Blob) -> String =
@@ -258,7 +258,7 @@ pub extern "js" fn Blob::slice_with_content_type(
   end : Int64,
   content_type : String,
 ) -> Blob =
-  #| (self, start, end, content_type) => self.slice((start.hi * 4294967296 + start.lo), (end.hi * 4294967296 + end.lo), content_type)
+  #| (self, start, end, content_type) => self.slice(Number(BigInt.asIntN(64, start)), Number(BigInt.asIntN(64, end)), content_type)
 
 ///|
 pub extern "js" fn Blob::stream(self : Blob) -> ReadableStream =
@@ -310,14 +310,14 @@ pub extern "js" fn File::to_blob(self : File) -> Blob =
 
 ///|
 pub extern "js" fn File::new(
-  file_bits : Array[BlobPart],
+  file_bits : FixedArray[BlobPart],
   file_name : String,
 ) -> File =
   #| (file_bits, file_name) => new File(file_bits, file_name)
 
 ///|
 extern "js" fn File::new_with_options_ffi(
-  file_bits : Array[BlobPart],
+  file_bits : FixedArray[BlobPart],
   file_name : String,
   options : JsValue,
 ) -> File =
@@ -325,7 +325,7 @@ extern "js" fn File::new_with_options_ffi(
 
 ///|
 pub fn File::new_with_options(
-  file_bits : Array[BlobPart],
+  file_bits : FixedArray[BlobPart],
   file_name : String,
   options : FilePropertyBag,
 ) -> File {
@@ -338,7 +338,7 @@ pub extern "js" fn File::get_name(self : File) -> String =
 
 ///|
 pub extern "js" fn File::get_last_modified(self : File) -> Int64 =
-  #| (self) => (() => { const n = self.lastModified; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.lastModified))
 
 ///|
 pub extern "js" fn File::get_webkit_relative_path(self : File) -> String =
@@ -603,7 +603,7 @@ pub(all) enum FileReaderSyncReadAsArrayBufferError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -613,7 +613,7 @@ pub(all) enum FileReaderSyncReadAsBinaryStringError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -623,7 +623,7 @@ pub(all) enum FileReaderSyncReadAsTextError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -633,7 +633,7 @@ pub(all) enum FileReaderSyncReadAsDataURLError {
   SecurityError(JsError)
   NotReadableError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn FileReaderSync::new() -> FileReaderSync =

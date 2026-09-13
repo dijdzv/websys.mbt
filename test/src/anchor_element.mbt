@@ -10,7 +10,7 @@
 ///   a.hostname // "example.com"
 pub fn test_anchor_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("a")
+  let el = create_element(doc, "a")
   let a = @websys.HTMLAnchorElement::from_js_value(el.to_js_value())
 
   // href — Web API: a.href

@@ -4,7 +4,7 @@
 ///|
 fn test_css_style() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let html = @websys.HTMLElement::from_js_value(div.to_js_value())
   let style = html.get_style().to_css_style_declaration()
   // Initially no styles
@@ -31,7 +31,7 @@ fn test_css_style() -> Unit {
 ///|
 fn test_css_style_text() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let html = @websys.HTMLElement::from_js_value(div.to_js_value())
   let style = html.get_style().to_css_style_declaration()
   // Test that HTMLElement.get_style() returns a usable style object

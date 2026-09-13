@@ -10,7 +10,7 @@ pub(all) struct Ed448Params {
 ///|
 /// Create a new Ed448Params with default values
 pub fn Ed448Params::default() -> Ed448Params {
-  Ed448Params::{ context: None }
+  Ed448Params::{ context: None, }
 }
 
 ///|

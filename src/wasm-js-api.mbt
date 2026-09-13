@@ -13,7 +13,7 @@ pub(all) enum ImportExportKind {
   Memory
   Global
   Tag
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -45,7 +45,7 @@ pub fn ImportExportKind::from_string(s : String) -> ImportExportKind? {
 pub(all) enum AddressType {
   I32
   I64
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -71,7 +71,7 @@ pub fn AddressType::from_string(s : String) -> AddressType? {
 pub(all) enum TableKind {
   Externref
   Anyfunc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -102,7 +102,7 @@ pub(all) enum ValueType {
   V128
   Externref
   Anyfunc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -146,7 +146,7 @@ pub fn WebAssemblyInstantiatedSource::new(
   module_~ : Module,
   instance~ : Instance,
 ) -> WebAssemblyInstantiatedSource {
-  WebAssemblyInstantiatedSource::{ module_, instance }
+  WebAssemblyInstantiatedSource::{ module_, instance, }
 }
 
 ///|
@@ -187,7 +187,7 @@ pub fn WebAssemblyInstantiatedSource::from_js(
 /// WebAssemblyCompileOptions dictionary
 pub(all) struct WebAssemblyCompileOptions {
   importedStringConstants : Nullable[String]
-  builtins : Array[String]?
+  builtins : FixedArray[String]?
 }
 
 ///|
@@ -205,7 +205,7 @@ extern "js" fn WebAssemblyCompileOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   importedStringConstants: ((() => { const v = self.importedStringConstants; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   builtins: ((() => { const v = self.builtins; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   builtins: self.builtins
   #| })
 
 ///|
@@ -222,7 +222,7 @@ extern "js" fn WebAssemblyCompileOptions::from_js_ffi(
 ) -> WebAssemblyCompileOptions =
   #| (v) => ({
   #|   importedStringConstants: (v.importedStringConstants === undefined ? { $tag: 0 } : v.importedStringConstants === null ? { $tag: 1 } : { $tag: 2, _0: v.importedStringConstants }),
-  #|   builtins: (v.builtins === undefined ? { $tag: 0 } : { $tag: 1, _0: v.builtins })
+  #|   builtins: v.builtins
   #| })
 
 ///|
@@ -245,7 +245,7 @@ pub(all) struct ModuleExportDescriptor {
 pub fn ModuleExportDescriptor::new(
   kind~ : ImportExportKind,
 ) -> ModuleExportDescriptor {
-  ModuleExportDescriptor::{ name: "", kind }
+  ModuleExportDescriptor::{ name: "", kind, }
 }
 
 ///|
@@ -293,7 +293,7 @@ pub(all) struct ModuleImportDescriptor {
 pub fn ModuleImportDescriptor::new(
   kind~ : ImportExportKind,
 ) -> ModuleImportDescriptor {
-  ModuleImportDescriptor::{ module_: "", name: "", kind }
+  ModuleImportDescriptor::{ module_: "", name: "", kind, }
 }
 
 ///|
@@ -341,7 +341,7 @@ pub(all) struct MemoryDescriptor {
 ///|
 /// Create a new MemoryDescriptor
 pub fn MemoryDescriptor::new(initial~ : AddressValue) -> MemoryDescriptor {
-  MemoryDescriptor::{ initial, maximum: None, address: None }
+  MemoryDescriptor::{ initial, maximum: None, address: None, }
 }
 
 ///|
@@ -389,7 +389,7 @@ pub fn TableDescriptor::new(
   element~ : TableKind,
   initial~ : AddressValue,
 ) -> TableDescriptor {
-  TableDescriptor::{ element, initial, maximum: None, address: None }
+  TableDescriptor::{ element, initial, maximum: None, address: None, }
 }
 
 ///|
@@ -432,7 +432,7 @@ pub(all) struct GlobalDescriptor {
 ///|
 /// Create a new GlobalDescriptor
 pub fn GlobalDescriptor::new(value~ : ValueType) -> GlobalDescriptor {
-  GlobalDescriptor::{ value, mutable: None }
+  GlobalDescriptor::{ value, mutable: None, }
 }
 
 ///|
@@ -466,13 +466,13 @@ pub fn GlobalDescriptor::from_js(value : JsValue) -> GlobalDescriptor {
 ///|
 /// TagType dictionary
 pub(all) struct TagType {
-  parameters : Array[ValueType]
+  parameters : FixedArray[ValueType]
 }
 
 ///|
 /// Create a new TagType with default values
 pub fn TagType::default() -> TagType {
-  TagType::{ parameters: [] }
+  TagType::{ parameters: [], }
 }
 
 ///|
@@ -508,7 +508,7 @@ pub(all) struct ExceptionOptions {
 ///|
 /// Create a new ExceptionOptions with default values
 pub fn ExceptionOptions::default() -> ExceptionOptions {
-  ExceptionOptions::{ traceStack: None }
+  ExceptionOptions::{ traceStack: None, }
 }
 
 ///|
@@ -587,20 +587,20 @@ pub fn Module::new_with_options(
 ///|
 pub extern "js" fn Module::exports(
   module_object : Module,
-) -> Array[ModuleExportDescriptor] =
+) -> FixedArray[ModuleExportDescriptor] =
   #| (module_object) => Module.exports(module_object)
 
 ///|
 pub extern "js" fn Module::imports(
   module_object : Module,
-) -> Array[ModuleImportDescriptor] =
+) -> FixedArray[ModuleImportDescriptor] =
   #| (module_object) => Module.imports(module_object)
 
 ///|
 pub extern "js" fn Module::custom_sections(
   module_object : Module,
   section_name : String,
-) -> Array[ArrayBuffer] =
+) -> FixedArray[ArrayBuffer] =
   #| (module_object, section_name) => Module.customSections(module_object, section_name)
 
 ///|
@@ -932,14 +932,14 @@ pub extern "js" fn JsValue::to_exception(self : JsValue) -> Exception =
 ///|
 pub extern "js" fn Exception::new(
   exception_tag : Tag,
-  payload : Array[JsValue],
+  payload : FixedArray[JsValue],
 ) -> Exception =
   #| (exception_tag, payload) => new Exception(exception_tag, payload)
 
 ///|
 extern "js" fn Exception::new_with_options_ffi(
   exception_tag : Tag,
-  payload : Array[JsValue],
+  payload : FixedArray[JsValue],
   options : JsValue,
 ) -> Exception =
   #| (exception_tag, payload, options) => new Exception(exception_tag, payload, options)
@@ -947,15 +947,19 @@ extern "js" fn Exception::new_with_options_ffi(
 ///|
 pub fn Exception::new_with_options(
   exception_tag : Tag,
-  payload : Array[JsValue],
+  payload : FixedArray[JsValue],
   options : ExceptionOptions,
 ) -> Exception {
   Exception::new_with_options_ffi(exception_tag, payload, options.to_js())
 }
 
 ///|
-pub extern "js" fn Exception::get_arg(self : Exception, index : Int) -> JsValue =
-  #| (self, index) => self.getArg(index)
+pub extern "js" fn Exception::get_arg(
+  self : Exception,
+  exception_tag : Tag,
+  index : Int,
+) -> JsValue =
+  #| (self, exception_tag, index) => self.getArg(exception_tag, index)
 
 ///|
 pub extern "js" fn Exception::is_(

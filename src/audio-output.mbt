@@ -10,7 +10,7 @@ pub(all) struct AudioOutputOptions {
 ///|
 /// Create a new AudioOutputOptions with default values
 pub fn AudioOutputOptions::default() -> AudioOutputOptions {
-  AudioOutputOptions::{ deviceId: None }
+  AudioOutputOptions::{ deviceId: None, }
 }
 
 ///|

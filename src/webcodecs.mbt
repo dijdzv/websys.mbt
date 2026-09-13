@@ -81,7 +81,7 @@ pub(all) enum HardwareAcceleration {
   NoPreference
   PreferHardware
   PreferSoftware
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -109,7 +109,7 @@ pub fn HardwareAcceleration::from_string(s : String) -> HardwareAcceleration? {
 pub(all) enum AlphaOption {
   Keep
   Discard
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub fn AlphaOption::from_string(s : String) -> AlphaOption? {
 pub(all) enum LatencyMode {
   Quality
   Realtime
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -162,7 +162,7 @@ pub(all) enum VideoEncoderBitrateMode {
   Constant
   Variable
   Quantizer
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -195,7 +195,7 @@ pub(all) enum CodecState {
   Unconfigured
   Configured
   Closed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -223,7 +223,7 @@ pub fn CodecState::from_string(s : String) -> CodecState? {
 pub(all) enum EncodedAudioChunkType {
   Key
   Delta
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -249,7 +249,7 @@ pub fn EncodedAudioChunkType::from_string(s : String) -> EncodedAudioChunkType? 
 pub(all) enum EncodedVideoChunkType {
   Key
   Delta
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -281,7 +281,7 @@ pub(all) enum AudioSampleFormat {
   S16Planar
   S32Planar
   F32Planar
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -340,7 +340,7 @@ pub(all) enum VideoPixelFormat {
   RGBX
   BGRA
   BGRX
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -411,7 +411,7 @@ pub(all) enum VideoColorPrimaries {
   Smpte170m
   Bt2020
   Smpte432
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -447,7 +447,7 @@ pub(all) enum VideoTransferCharacteristics {
   Linear
   Pq
   Hlg
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -488,7 +488,7 @@ pub(all) enum VideoMatrixCoefficients {
   Bt470bg
   Smpte170m
   Bt2020Ncl
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -587,7 +587,7 @@ pub fn AudioDecoderInit::new(
   output~ : AudioDataOutputCallback,
   error~ : WebCodecsErrorCallback,
 ) -> AudioDecoderInit {
-  AudioDecoderInit::{ output, error }
+  AudioDecoderInit::{ output, error, }
 }
 
 ///|
@@ -631,7 +631,7 @@ pub fn VideoDecoderInit::new(
   output~ : VideoFrameOutputCallback,
   error~ : WebCodecsErrorCallback,
 ) -> VideoDecoderInit {
-  VideoDecoderInit::{ output, error }
+  VideoDecoderInit::{ output, error, }
 }
 
 ///|
@@ -675,7 +675,7 @@ pub fn AudioEncoderInit::new(
   output~ : EncodedAudioChunkOutputCallback,
   error~ : WebCodecsErrorCallback,
 ) -> AudioEncoderInit {
-  AudioEncoderInit::{ output, error }
+  AudioEncoderInit::{ output, error, }
 }
 
 ///|
@@ -715,7 +715,7 @@ pub(all) struct EncodedAudioChunkMetadata {
 ///|
 /// Create a new EncodedAudioChunkMetadata with default values
 pub fn EncodedAudioChunkMetadata::default() -> EncodedAudioChunkMetadata {
-  EncodedAudioChunkMetadata::{ decoderConfig: None }
+  EncodedAudioChunkMetadata::{ decoderConfig: None, }
 }
 
 ///|
@@ -763,7 +763,7 @@ pub fn VideoEncoderInit::new(
   output~ : EncodedVideoChunkOutputCallback,
   error~ : WebCodecsErrorCallback,
 ) -> VideoEncoderInit {
-  VideoEncoderInit::{ output, error }
+  VideoEncoderInit::{ output, error, }
 }
 
 ///|
@@ -857,7 +857,7 @@ pub(all) struct SvcOutputMetadata {
 ///|
 /// Create a new SvcOutputMetadata with default values
 pub fn SvcOutputMetadata::default() -> SvcOutputMetadata {
-  SvcOutputMetadata::{ temporalLayerId: None }
+  SvcOutputMetadata::{ temporalLayerId: None, }
 }
 
 ///|
@@ -898,7 +898,7 @@ pub(all) struct AudioDecoderSupport {
 ///|
 /// Create a new AudioDecoderSupport with default values
 pub fn AudioDecoderSupport::default() -> AudioDecoderSupport {
-  AudioDecoderSupport::{ supported: None, config: None }
+  AudioDecoderSupport::{ supported: None, config: None, }
 }
 
 ///|
@@ -941,7 +941,7 @@ pub(all) struct VideoDecoderSupport {
 ///|
 /// Create a new VideoDecoderSupport with default values
 pub fn VideoDecoderSupport::default() -> VideoDecoderSupport {
-  VideoDecoderSupport::{ supported: None, config: None }
+  VideoDecoderSupport::{ supported: None, config: None, }
 }
 
 ///|
@@ -984,7 +984,7 @@ pub(all) struct AudioEncoderSupport {
 ///|
 /// Create a new AudioEncoderSupport with default values
 pub fn AudioEncoderSupport::default() -> AudioEncoderSupport {
-  AudioEncoderSupport::{ supported: None, config: None }
+  AudioEncoderSupport::{ supported: None, config: None, }
 }
 
 ///|
@@ -1027,7 +1027,7 @@ pub(all) struct VideoEncoderSupport {
 ///|
 /// Create a new VideoEncoderSupport with default values
 pub fn VideoEncoderSupport::default() -> VideoEncoderSupport {
-  VideoEncoderSupport::{ supported: None, config: None }
+  VideoEncoderSupport::{ supported: None, config: None, }
 }
 
 ///|
@@ -1203,7 +1203,7 @@ pub(all) struct EncodedAudioChunkInit {
   timestamp : Int64
   duration : Int64?
   data : AllowSharedBufferSource
-  transfer : Array[ArrayBuffer]?
+  transfer : FixedArray[ArrayBuffer]?
 }
 
 ///|
@@ -1230,7 +1230,7 @@ extern "js" fn EncodedAudioChunkInit::to_js_ffi(
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
   #|   data: self.data.to_js_value(),
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: self.transfer
   #| })
 
 ///|
@@ -1248,7 +1248,7 @@ extern "js" fn EncodedAudioChunkInit::from_js_ffi(
   #|   timestamp: v.timestamp,
   #|   duration: v.duration,
   #|   data: v.data,
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #|   transfer: v.transfer
   #| })
 
 ///|
@@ -1264,7 +1264,7 @@ pub(all) struct EncodedVideoChunkInit {
   timestamp : Int64
   duration : Int64?
   data : AllowSharedBufferSource
-  transfer : Array[ArrayBuffer]?
+  transfer : FixedArray[ArrayBuffer]?
 }
 
 ///|
@@ -1291,7 +1291,7 @@ extern "js" fn EncodedVideoChunkInit::to_js_ffi(
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
   #|   data: self.data.to_js_value(),
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: self.transfer
   #| })
 
 ///|
@@ -1309,7 +1309,7 @@ extern "js" fn EncodedVideoChunkInit::from_js_ffi(
   #|   timestamp: v.timestamp,
   #|   duration: v.duration,
   #|   data: v.data,
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #|   transfer: v.transfer
   #| })
 
 ///|
@@ -1327,7 +1327,7 @@ pub(all) struct AudioDataInit {
   numberOfChannels : Int
   timestamp : Int64
   data : BufferSource
-  transfer : Array[ArrayBuffer]?
+  transfer : FixedArray[ArrayBuffer]?
 }
 
 ///|
@@ -1356,7 +1356,7 @@ extern "js" fn AudioDataInit::to_js_ffi(self : AudioDataInit) -> JsValue =
   #|   numberOfChannels: self.numberOfChannels,
   #|   timestamp: self.timestamp,
   #|   data: self.data.to_js_value(),
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: self.transfer
   #| })
 
 ///|
@@ -1374,7 +1374,7 @@ extern "js" fn AudioDataInit::from_js_ffi(value : JsValue) -> AudioDataInit =
   #|   numberOfChannels: v.numberOfChannels,
   #|   timestamp: v.timestamp,
   #|   data: v.data,
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #|   transfer: v.transfer
   #| })
 
 ///|
@@ -1517,14 +1517,14 @@ pub(all) struct VideoFrameBufferInit {
   codedHeight : Int
   timestamp : Int64
   duration : Int64?
-  layout : Array[PlaneLayout]?
+  layout : FixedArray[PlaneLayout]?
   visibleRect : DOMRectInit?
   rotation : Double?
   flip : Bool?
   displayWidth : Int?
   displayHeight : Int?
   colorSpace : VideoColorSpaceInit?
-  transfer : Array[ArrayBuffer]?
+  transfer : FixedArray[ArrayBuffer]?
   metadata : VideoFrameMetadata?
 }
 
@@ -1561,14 +1561,14 @@ extern "js" fn VideoFrameBufferInit::to_js_ffi(
   #|   codedHeight: self.codedHeight,
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
-  #|   layout: ((() => { const v = self.layout; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   layout: self.layout,
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip),
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   transfer: self.transfer,
   #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1588,14 +1588,14 @@ extern "js" fn VideoFrameBufferInit::from_js_ffi(
   #|   codedHeight: v.codedHeight,
   #|   timestamp: v.timestamp,
   #|   duration: v.duration,
-  #|   layout: (v.layout === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layout }),
+  #|   layout: v.layout,
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip),
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
   #|   colorSpace: (v.colorSpace === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorSpace }),
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer }),
+  #|   transfer: v.transfer,
   #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
   #| })
 
@@ -1612,7 +1612,7 @@ pub(all) struct VideoFrameMetadata {}
 ///|
 /// Create a new VideoFrameMetadata with default values
 pub fn VideoFrameMetadata::default() -> VideoFrameMetadata {
-  VideoFrameMetadata::{  }
+  VideoFrameMetadata::{ }
 }
 
 ///|
@@ -1645,7 +1645,7 @@ pub fn VideoFrameMetadata::from_js(value : JsValue) -> VideoFrameMetadata {
 /// VideoFrameCopyToOptions dictionary
 pub(all) struct VideoFrameCopyToOptions {
   rect : DOMRectInit?
-  layout : Array[PlaneLayout]?
+  layout : FixedArray[PlaneLayout]?
   format : VideoPixelFormat?
   colorSpace : PredefinedColorSpace?
 }
@@ -1667,7 +1667,7 @@ extern "js" fn VideoFrameCopyToOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   rect: ((() => { const v = self.rect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   layout: ((() => { const v = self.layout; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   layout: self.layout,
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'][v]; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })())
   #| })
@@ -1686,7 +1686,7 @@ extern "js" fn VideoFrameCopyToOptions::from_js_ffi(
 ) -> VideoFrameCopyToOptions =
   #| (v) => ({
   #|   rect: (v.rect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rect }),
-  #|   layout: (v.layout === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layout }),
+  #|   layout: v.layout,
   #|   format: (v.format === undefined ? undefined : ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'].indexOf(v.format)),
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace))
   #| })
@@ -1709,7 +1709,7 @@ pub(all) struct PlaneLayout {
 ///|
 /// Create a new PlaneLayout with default values
 pub fn PlaneLayout::default() -> PlaneLayout {
-  PlaneLayout::{ offset: 0, stride: 0 }
+  PlaneLayout::{ offset: 0, stride: 0, }
 }
 
 ///|
@@ -1801,7 +1801,7 @@ pub(all) struct ImageDecoderInit {
   desiredWidth : Int?
   desiredHeight : Int?
   preferAnimation : Bool?
-  transfer : Array[ArrayBuffer]?
+  transfer : FixedArray[ArrayBuffer]?
 }
 
 ///|
@@ -1827,7 +1827,7 @@ extern "js" fn ImageDecoderInit::to_js_ffi(self : ImageDecoderInit) -> JsValue =
   #|   desiredWidth: self.desiredWidth,
   #|   desiredHeight: self.desiredHeight,
   #|   preferAnimation: (self.preferAnimation === -1 ? undefined : self.preferAnimation),
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: self.transfer
   #| })
 
 ///|
@@ -1847,7 +1847,7 @@ extern "js" fn ImageDecoderInit::from_js_ffi(
   #|   desiredWidth: v.desiredWidth,
   #|   desiredHeight: v.desiredHeight,
   #|   preferAnimation: (v.preferAnimation === undefined ? -1 : v.preferAnimation),
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #|   transfer: v.transfer
   #| })
 
 ///|
@@ -1866,7 +1866,7 @@ pub(all) struct ImageDecodeOptions {
 ///|
 /// Create a new ImageDecodeOptions with default values
 pub fn ImageDecodeOptions::default() -> ImageDecodeOptions {
-  ImageDecodeOptions::{ frameIndex: None, completeFramesOnly: None }
+  ImageDecodeOptions::{ frameIndex: None, completeFramesOnly: None, }
 }
 
 ///|
@@ -1909,7 +1909,7 @@ pub(all) struct ImageDecodeResult {
 ///|
 /// Create a new ImageDecodeResult
 pub fn ImageDecodeResult::new(image~ : VideoFrame) -> ImageDecodeResult {
-  ImageDecodeResult::{ image, complete: false }
+  ImageDecodeResult::{ image, complete: false, }
 }
 
 ///|
@@ -1985,7 +1985,7 @@ pub(all) enum AudioDecoderConfigureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1993,21 +1993,21 @@ pub(all) enum AudioDecoderDecodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioDecoderFlushError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioDecoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn AudioDecoder::new_ffi(init_ : JsValue) -> AudioDecoder =
@@ -2134,7 +2134,7 @@ pub(all) enum VideoDecoderConfigureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2142,21 +2142,21 @@ pub(all) enum VideoDecoderDecodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum VideoDecoderFlushError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum VideoDecoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn VideoDecoder::new_ffi(init_ : JsValue) -> VideoDecoder =
@@ -2283,7 +2283,7 @@ pub(all) enum AudioEncoderConfigureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2291,21 +2291,21 @@ pub(all) enum AudioEncoderEncodeError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioEncoderFlushError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioEncoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn AudioEncoder::new_ffi(init_ : JsValue) -> AudioEncoder =
@@ -2432,7 +2432,7 @@ pub(all) enum VideoEncoderConfigureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2440,28 +2440,28 @@ pub(all) enum VideoEncoderEncodeError {
   DataError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderFlushError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderResetError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum VideoEncoderIsConfigSupportedError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn VideoEncoder::new_ffi(init_ : JsValue) -> VideoEncoder =
@@ -2623,13 +2623,13 @@ pub extern "js" fn EncodedAudioChunk::get_type(
 pub extern "js" fn EncodedAudioChunk::get_timestamp(
   self : EncodedAudioChunk,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.timestamp; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.timestamp))
 
 ///|
 pub extern "js" fn EncodedAudioChunk::get_duration(
   self : EncodedAudioChunk,
 ) -> Int64? =
-  #| (self) => (() => { const v = self.duration; if (v == null) return undefined; const n = v; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => (() => { const v = self.duration; return v == null ? undefined : BigInt.asUintN(64, BigInt(v)); })()
 
 ///|
 pub extern "js" fn EncodedAudioChunk::get_byte_length(
@@ -2724,13 +2724,13 @@ pub extern "js" fn EncodedVideoChunk::get_type(
 pub extern "js" fn EncodedVideoChunk::get_timestamp(
   self : EncodedVideoChunk,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.timestamp; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.timestamp))
 
 ///|
 pub extern "js" fn EncodedVideoChunk::get_duration(
   self : EncodedVideoChunk,
 ) -> Int64? =
-  #| (self) => (() => { const v = self.duration; if (v == null) return undefined; const n = v; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => (() => { const v = self.duration; return v == null ? undefined : BigInt.asUintN(64, BigInt(v)); })()
 
 ///|
 pub extern "js" fn EncodedVideoChunk::get_byte_length(
@@ -2799,22 +2799,23 @@ pub extern "js" fn JsValue::to_audio_data(self : JsValue) -> AudioData =
 pub(all) enum AudioDataConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioDataCopyToError {
   RangeError(JsError)
   InvalidStateError(JsError)
+  NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum AudioDataCloneError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn AudioData::new_ffi(
@@ -2849,11 +2850,11 @@ pub extern "js" fn AudioData::get_number_of_channels(self : AudioData) -> Int =
 
 ///|
 pub extern "js" fn AudioData::get_duration(self : AudioData) -> Int64 =
-  #| (self) => (() => { const n = self.duration; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.duration))
 
 ///|
 pub extern "js" fn AudioData::get_timestamp(self : AudioData) -> Int64 =
-  #| (self) => (() => { const n = self.timestamp; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.timestamp))
 
 ///|
 extern "js" fn AudioData::allocation_size_ffi(
@@ -2876,7 +2877,7 @@ extern "js" fn AudioData::copy_to_ffi(
   destination : AllowSharedBufferSource,
   options : JsValue,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub fn AudioData::copy_to(
@@ -2903,7 +2904,7 @@ pub extern "js" fn AudioData::copy_to_with_array_buffer(
   destination : ArrayBuffer,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioData::copy_to_with_shared_array_buffer(
@@ -2911,7 +2912,7 @@ pub extern "js" fn AudioData::copy_to_with_shared_array_buffer(
   destination : SharedArrayBuffer,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn AudioData::copy_to_with_array_buffer_view(
@@ -2919,7 +2920,7 @@ pub extern "js" fn AudioData::copy_to_with_array_buffer_view(
   destination : ArrayBufferView,
   options : AudioDataCopyToOptions,
 ) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// VideoFrame interface
@@ -2954,7 +2955,7 @@ pub extern "js" fn JsValue::to_video_frame(self : JsValue) -> VideoFrame =
 pub(all) enum VideoFrameCloneError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn VideoFrame::new_with_canvas_image_source(
@@ -3036,11 +3037,11 @@ pub extern "js" fn VideoFrame::get_display_height(self : VideoFrame) -> Int =
 
 ///|
 pub extern "js" fn VideoFrame::get_duration(self : VideoFrame) -> Int64? =
-  #| (self) => (() => { const v = self.duration; if (v == null) return undefined; const n = v; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => (() => { const v = self.duration; return v == null ? undefined : BigInt.asUintN(64, BigInt(v)); })()
 
 ///|
 pub extern "js" fn VideoFrame::get_timestamp(self : VideoFrame) -> Int64 =
-  #| (self) => (() => { const n = self.timestamp; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.timestamp))
 
 ///|
 pub extern "js" fn VideoFrame::get_color_space(
@@ -3077,7 +3078,7 @@ pub fn VideoFrame::allocation_size_with_options(
 pub extern "js" fn VideoFrame::copy_to(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination) => self.copyTo(destination)
 
 ///|
@@ -3085,7 +3086,7 @@ extern "js" fn VideoFrame::copy_to_with_options_ffi(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
   options : JsValue,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
@@ -3093,7 +3094,7 @@ pub fn VideoFrame::copy_to_with_options(
   self : VideoFrame,
   destination : AllowSharedBufferSource,
   options : VideoFrameCopyToOptions,
-) -> Promise[Array[PlaneLayout]] {
+) -> Promise[FixedArray[PlaneLayout]] {
   VideoFrame::copy_to_with_options_ffi(self, destination, options.to_js())
 }
 
@@ -3175,7 +3176,7 @@ pub extern "js" fn VideoFrame::copy_to_with_array_buffer(
   self : VideoFrame,
   destination : ArrayBuffer,
   options : VideoFrameCopyToOptions,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
@@ -3183,7 +3184,7 @@ pub extern "js" fn VideoFrame::copy_to_with_shared_array_buffer(
   self : VideoFrame,
   destination : SharedArrayBuffer,
   options : VideoFrameCopyToOptions,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
@@ -3191,7 +3192,7 @@ pub extern "js" fn VideoFrame::copy_to_with_array_buffer_view(
   self : VideoFrame,
   destination : ArrayBufferView,
   options : VideoFrameCopyToOptions,
-) -> Promise[Array[PlaneLayout]] =
+) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
@@ -3314,7 +3315,7 @@ pub extern "js" fn JsValue::to_image_decoder(self : JsValue) -> ImageDecoder =
 pub(all) enum ImageDecoderDecodeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn ImageDecoder::new_ffi(init_ : JsValue) -> ImageDecoder =

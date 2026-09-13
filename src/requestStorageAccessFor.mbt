@@ -10,7 +10,7 @@ pub(all) struct TopLevelStorageAccessPermissionDescriptor {
 ///|
 /// Create a new TopLevelStorageAccessPermissionDescriptor with default values
 pub fn TopLevelStorageAccessPermissionDescriptor::default() -> TopLevelStorageAccessPermissionDescriptor {
-  TopLevelStorageAccessPermissionDescriptor::{ requestedOrigin: None }
+  TopLevelStorageAccessPermissionDescriptor::{ requestedOrigin: None, }
 }
 
 ///|

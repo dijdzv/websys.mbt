@@ -7,7 +7,7 @@ pub(all) enum ResizeObserverBoxOptions {
   BorderBox
   ContentBox
   DevicePixelContentBox
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub type ResizeObserverCallback
 ///|
 /// Create ResizeObserverCallback from a MoonBit function
 pub extern "js" fn ResizeObserverCallback::from_fn(
-  handler : (Array[ResizeObserverEntry], ResizeObserver) -> Unit,
+  handler : (FixedArray[ResizeObserverEntry], ResizeObserver) -> Unit,
 ) -> ResizeObserverCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -56,7 +56,7 @@ pub(all) struct ResizeObserverOptions {
 ///|
 /// Create a new ResizeObserverOptions with default values
 pub fn ResizeObserverOptions::default() -> ResizeObserverOptions {
-  ResizeObserverOptions::{ box: None }
+  ResizeObserverOptions::{ box: None, }
 }
 
 ///|
@@ -217,19 +217,19 @@ pub extern "js" fn ResizeObserverEntry::get_content_rect(
 ///|
 pub extern "js" fn ResizeObserverEntry::get_border_box_size(
   self : ResizeObserverEntry,
-) -> Array[ResizeObserverSize] =
+) -> FixedArray[ResizeObserverSize] =
   #| (self) => self.borderBoxSize
 
 ///|
 pub extern "js" fn ResizeObserverEntry::get_content_box_size(
   self : ResizeObserverEntry,
-) -> Array[ResizeObserverSize] =
+) -> FixedArray[ResizeObserverSize] =
   #| (self) => self.contentBoxSize
 
 ///|
 pub extern "js" fn ResizeObserverEntry::get_device_pixel_content_box_size(
   self : ResizeObserverEntry,
-) -> Array[ResizeObserverSize] =
+) -> FixedArray[ResizeObserverSize] =
   #| (self) => self.devicePixelContentBoxSize
 
 ///|

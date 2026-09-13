@@ -12,7 +12,7 @@
 ///   el.matches(".bar") // false
 pub fn test_element_matches() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   el.set_class_name("foo bar")
   assert_true(el.matches(".foo").unwrap(), label="matches .foo")
   assert_true(el.matches(".bar").unwrap(), label="matches .bar")
@@ -32,7 +32,7 @@ pub fn test_element_matches() -> Unit {
 ///   el.classList.length // 3
 pub fn test_element_class_name() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
 
   // className — Web API: el.className
   assert_eq(el.get_class_name(), "", label="className default")
@@ -56,8 +56,8 @@ pub fn test_element_class_name() -> Unit {
 ///   parent.querySelector("#target") // span element
 pub fn test_element_query_selector() -> Unit {
   let doc = get_document()
-  let parent = doc.create_element("div")
-  let child = doc.create_element("span")
+  let parent = create_element(doc, "div")
+  let child = create_element(doc, "span")
   child.set_id("target")
   child.set_class_name("highlight")
   let parent_node = parent.to_node()
@@ -101,7 +101,7 @@ pub fn test_element_query_selector() -> Unit {
 ///   parent.children.length // 1
 pub fn test_element_children() -> Unit {
   let doc = get_document()
-  let parent = doc.create_element("ul")
+  let parent = create_element(doc, "ul")
   let parent_node = parent.to_node()
   assert_eq(
     parent.get_child_element_count(),
@@ -110,9 +110,9 @@ pub fn test_element_children() -> Unit {
   )
 
   // Add children
-  let li1 = doc.create_element("li")
-  let li2 = doc.create_element("li")
-  let li3 = doc.create_element("li")
+  let li1 = create_element(doc, "li")
+  let li2 = create_element(doc, "li")
+  let li3 = create_element(doc, "li")
   let _ = parent_node.append_child(li1.to_node())
   let _ = parent_node.append_child(li2.to_node())
   let _ = parent_node.append_child(li3.to_node())
@@ -146,7 +146,7 @@ pub fn test_element_children() -> Unit {
 /// Rust web-sys ref: crates/web-sys/tests/wasm/element.rs
 pub fn test_element_properties() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
 
   // namespace_uri — HTML namespace for createElement'd elements
   assert_true(el.get_namespace_uri() is Some(_), label="namespace_uri is Some")
@@ -172,9 +172,11 @@ pub fn test_element_properties() -> Unit {
   )
 
   // inner_html / set_inner_html — uses TrustedHTMLOrString union type
-  el.set_inner_html(
+  el
+  .set_inner_html(
     @websys.TrustedHTMLOrString::from_string("<strong>Test</strong>"),
-  ).unwrap()
+  )
+  .unwrap()
   match el.get_inner_html().as_string() {
     Some(html) => assert_eq(html, "<strong>Test</strong>", label="inner_html")
     None => abort("FAIL: get_inner_html returned non-string")
@@ -188,10 +190,12 @@ pub fn test_element_properties() -> Unit {
   }
 
   // insert_adjacent_html — append HTML content
-  el.insert_adjacent_html(
+  el
+  .insert_adjacent_html(
     "beforeend",
     @websys.TrustedHTMLOrString::from_string("<em>appended</em>"),
-  ).unwrap()
+  )
+  .unwrap()
   match el.get_inner_html().as_string() {
     Some(html) =>
       assert_true(

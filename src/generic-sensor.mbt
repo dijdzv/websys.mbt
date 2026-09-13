@@ -10,7 +10,7 @@ pub(all) struct SensorOptions {
 ///|
 /// Create a new SensorOptions with default values
 pub fn SensorOptions::default() -> SensorOptions {
-  SensorOptions::{ frequency: None }
+  SensorOptions::{ frequency: None, }
 }
 
 ///|
@@ -128,12 +128,6 @@ pub extern "js" fn Sensor::as_ambient_light_sensor(
   self : Sensor,
 ) -> AmbientLightSensor? =
   #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn Sensor::as_geolocation_sensor(
-  self : Sensor,
-) -> GeolocationSensor? =
-  #| (self) => (self instanceof GeolocationSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn Sensor::as_gyroscope(self : Sensor) -> Gyroscope? =

@@ -5,13 +5,13 @@
 /// MemoryMeasurement dictionary
 pub(all) struct MemoryMeasurement {
   bytes : Int64?
-  breakdown : Array[MemoryBreakdownEntry]?
+  breakdown : FixedArray[MemoryBreakdownEntry]?
 }
 
 ///|
 /// Create a new MemoryMeasurement with default values
 pub fn MemoryMeasurement::default() -> MemoryMeasurement {
-  MemoryMeasurement::{ bytes: None, breakdown: None }
+  MemoryMeasurement::{ bytes: None, breakdown: None, }
 }
 
 ///|
@@ -20,7 +20,7 @@ extern "js" fn MemoryMeasurement::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   bytes: self.bytes,
-  #|   breakdown: ((() => { const v = self.breakdown; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   breakdown: self.breakdown
   #| })
 
 ///|
@@ -35,7 +35,7 @@ extern "js" fn MemoryMeasurement::from_js_ffi(
 ) -> MemoryMeasurement =
   #| (v) => ({
   #|   bytes: v.bytes,
-  #|   breakdown: (v.breakdown === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakdown })
+  #|   breakdown: v.breakdown
   #| })
 
 ///|
@@ -48,14 +48,14 @@ pub fn MemoryMeasurement::from_js(value : JsValue) -> MemoryMeasurement {
 /// MemoryBreakdownEntry dictionary
 pub(all) struct MemoryBreakdownEntry {
   bytes : Int64?
-  attribution : Array[MemoryAttribution]?
-  types : Array[String]?
+  attribution : FixedArray[MemoryAttribution]?
+  types : FixedArray[String]?
 }
 
 ///|
 /// Create a new MemoryBreakdownEntry with default values
 pub fn MemoryBreakdownEntry::default() -> MemoryBreakdownEntry {
-  MemoryBreakdownEntry::{ bytes: None, attribution: None, types: None }
+  MemoryBreakdownEntry::{ bytes: None, attribution: None, types: None, }
 }
 
 ///|
@@ -64,8 +64,8 @@ extern "js" fn MemoryBreakdownEntry::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   bytes: self.bytes,
-  #|   attribution: ((() => { const v = self.attribution; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   attribution: self.attribution,
+  #|   types: self.types
   #| })
 
 ///|
@@ -80,8 +80,8 @@ extern "js" fn MemoryBreakdownEntry::from_js_ffi(
 ) -> MemoryBreakdownEntry =
   #| (v) => ({
   #|   bytes: v.bytes,
-  #|   attribution: (v.attribution === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attribution }),
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types })
+  #|   attribution: v.attribution,
+  #|   types: v.types
   #| })
 
 ///|
@@ -101,7 +101,7 @@ pub(all) struct MemoryAttribution {
 ///|
 /// Create a new MemoryAttribution with default values
 pub fn MemoryAttribution::default() -> MemoryAttribution {
-  MemoryAttribution::{ url: None, container: None, scope: None }
+  MemoryAttribution::{ url: None, container: None, scope: None, }
 }
 
 ///|
@@ -146,7 +146,7 @@ pub(all) struct MemoryAttributionContainer {
 ///|
 /// Create a new MemoryAttributionContainer with default values
 pub fn MemoryAttributionContainer::default() -> MemoryAttributionContainer {
-  MemoryAttributionContainer::{ id: None, src: None }
+  MemoryAttributionContainer::{ id: None, src: None, }
 }
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum AvcBitstreamFormat {
   Annexb
   Avc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -134,7 +134,7 @@ pub(all) struct AvcEncoderConfig {
 ///|
 /// Create a new AvcEncoderConfig with default values
 pub fn AvcEncoderConfig::default() -> AvcEncoderConfig {
-  AvcEncoderConfig::{ format: None }
+  AvcEncoderConfig::{ format: None, }
 }
 
 ///|
@@ -172,7 +172,7 @@ pub(all) struct VideoEncoderEncodeOptionsForAvc {
 ///|
 /// Create a new VideoEncoderEncodeOptionsForAvc with default values
 pub fn VideoEncoderEncodeOptionsForAvc::default() -> VideoEncoderEncodeOptionsForAvc {
-  VideoEncoderEncodeOptionsForAvc::{ quantizer: Nullable::Undefined }
+  VideoEncoderEncodeOptionsForAvc::{ quantizer: Nullable::Undefined, }
 }
 
 ///|

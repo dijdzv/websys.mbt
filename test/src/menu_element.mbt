@@ -6,7 +6,7 @@
 fn test_menu_element() -> Unit {
   let doc = get_document()
   let menu = @websys.HTMLMenuElement::from_js_value(
-    doc.create_element("menu").to_js_value(),
+    create_element(doc, "menu").to_js_value(),
   )
   menu.set_compact(true)
   assert_true(menu.get_compact(), label="compact set true")

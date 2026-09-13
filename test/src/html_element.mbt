@@ -8,7 +8,7 @@
 /// Uses unchecked cast since createElement always returns an HTMLElement subclass.
 fn create_html_element(tag : String) -> @websys.HTMLElement {
   let doc = get_document()
-  let el = doc.create_element(tag)
+  let el = create_element(doc, tag)
   @websys.HTMLElement::from_js_value(el.to_js_value())
 }
 

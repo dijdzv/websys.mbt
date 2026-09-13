@@ -10,7 +10,7 @@ pub(all) enum ScriptInvokerType {
   UserCallback
   ResolvePromise
   RejectPromise
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -47,7 +47,7 @@ pub(all) enum ScriptWindowAttribution {
   Ancestor
   SamePage
   Other
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -173,7 +173,7 @@ pub extern "js" fn PerformanceLongAnimationFrameTiming::get_first_ui_event_times
 ///|
 pub extern "js" fn PerformanceLongAnimationFrameTiming::get_scripts(
   self : PerformanceLongAnimationFrameTiming,
-) -> Array[PerformanceScriptTiming] =
+) -> FixedArray[PerformanceScriptTiming] =
   #| (self) => self.scripts
 
 ///|
@@ -296,7 +296,7 @@ pub extern "js" fn PerformanceScriptTiming::get_source_function_name(
 pub extern "js" fn PerformanceScriptTiming::get_source_char_position(
   self : PerformanceScriptTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.sourceCharPosition; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.sourceCharPosition))
 
 ///|
 pub extern "js" fn PerformanceScriptTiming::get_pause_duration(

@@ -5,7 +5,7 @@
 ///|
 fn test_named_node_map() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   el.set_id("test-id")
   el.set_class_name("foo bar")
   // Get attributes via NamedNodeMap
@@ -34,7 +34,7 @@ fn test_named_node_map() -> Unit {
 ///|
 fn test_attr_mutation() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("span")
+  let el = create_element(doc, "span")
   el.set_id("attr-test")
   let attrs = el.get_attributes()
   // Get and mutate via Attr.set_value

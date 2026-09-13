@@ -236,6 +236,13 @@ pub extern "js" fn PreferenceObject::to_event_target(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum PreferenceObjectRequestOverrideError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn PreferenceObject::get_override(
   self : PreferenceObject,
 ) -> String? =
@@ -250,7 +257,7 @@ pub extern "js" fn PreferenceObject::get_value(
 ///|
 pub extern "js" fn PreferenceObject::get_valid_values(
   self : PreferenceObject,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.validValues
 
 ///|
@@ -263,8 +270,8 @@ pub extern "js" fn PreferenceObject::clear_override(
 pub extern "js" fn PreferenceObject::request_override(
   self : PreferenceObject,
   value : String?,
-) -> Promise[Unit] =
-  #| (self, value) => self.requestOverride(value)
+) -> Promise[Result[Unit, PreferenceObjectRequestOverrideError]] =
+  #| (self, value) => self.requestOverride(value).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn PreferenceObject::set_onchange(

@@ -2,7 +2,7 @@
 fn test_slot_element() -> Unit {
   let doc = get_document()
   let slot = @websys.HTMLSlotElement::from_js_value(
-    doc.create_element("slot").to_js_value(),
+    create_element(doc, "slot").to_js_value(),
   )
   // name
   assert_eq(slot.get_name(), "", label="default name")

@@ -1,7 +1,7 @@
 ///|
 fn test_range() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let text = @websys.Text::new_with_data("Hello World")
   div.to_node().append_child(text.to_node()) |> ignore
   doc.get_body().unwrap().to_node().append_child(div.to_node()) |> ignore

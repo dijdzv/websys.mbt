@@ -223,7 +223,7 @@ pub fn SanitizerAttribute::bind_as_sanitizer_attribute_namespace(
 /// SanitizerPresets enum
 pub(all) enum SanitizerPresets {
   Default
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -251,7 +251,7 @@ pub(all) struct SetHTMLOptions {
 ///|
 /// Create a new SetHTMLOptions with default values
 pub fn SetHTMLOptions::default() -> SetHTMLOptions {
-  SetHTMLOptions::{ sanitizer: None }
+  SetHTMLOptions::{ sanitizer: None, }
 }
 
 ///|
@@ -287,7 +287,7 @@ pub(all) struct SetHTMLUnsafeOptions {
 ///|
 /// Create a new SetHTMLUnsafeOptions with default values
 pub fn SetHTMLUnsafeOptions::default() -> SetHTMLUnsafeOptions {
-  SetHTMLUnsafeOptions::{ sanitizer: None }
+  SetHTMLUnsafeOptions::{ sanitizer: None, }
 }
 
 ///|
@@ -328,7 +328,7 @@ pub(all) struct SanitizerElementNamespace {
 ///|
 /// Create a new SanitizerElementNamespace with default values
 pub fn SanitizerElementNamespace::default() -> SanitizerElementNamespace {
-  SanitizerElementNamespace::{ name: "", namespace_: Nullable::Undefined }
+  SanitizerElementNamespace::{ name: "", namespace_: Nullable::Undefined, }
 }
 
 ///|
@@ -370,8 +370,8 @@ pub fn SanitizerElementNamespace::from_js(
 pub(all) struct SanitizerElementNamespaceWithAttributes {
   name : String
   namespace_ : Nullable[String]
-  attributes : Array[SanitizerAttribute]?
-  removeAttributes : Array[SanitizerAttribute]?
+  attributes : FixedArray[SanitizerAttribute]?
+  removeAttributes : FixedArray[SanitizerAttribute]?
 }
 
 ///|
@@ -392,8 +392,8 @@ extern "js" fn SanitizerElementNamespaceWithAttributes::to_js_ffi(
   #| (self) => ({
   #|   name: self.name,
   #|   namespace: ((() => { const v = self.namespace_; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   attributes: ((() => { const v = self.attributes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   removeAttributes: ((() => { const v = self.removeAttributes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   attributes: self.attributes,
+  #|   removeAttributes: self.removeAttributes
   #| })
 
 ///|
@@ -411,8 +411,8 @@ extern "js" fn SanitizerElementNamespaceWithAttributes::from_js_ffi(
   #| (v) => ({
   #|   name: v.name,
   #|   namespace_: (v.namespace === undefined ? { $tag: 0 } : v.namespace === null ? { $tag: 1 } : { $tag: 2, _0: v.namespace }),
-  #|   attributes: (v.attributes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributes }),
-  #|   removeAttributes: (v.removeAttributes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.removeAttributes })
+  #|   attributes: v.attributes,
+  #|   removeAttributes: v.removeAttributes
   #| })
 
 ///|
@@ -433,7 +433,7 @@ pub(all) struct SanitizerAttributeNamespace {
 ///|
 /// Create a new SanitizerAttributeNamespace with default values
 pub fn SanitizerAttributeNamespace::default() -> SanitizerAttributeNamespace {
-  SanitizerAttributeNamespace::{ name: "", namespace_: Nullable::Undefined }
+  SanitizerAttributeNamespace::{ name: "", namespace_: Nullable::Undefined, }
 }
 
 ///|
@@ -473,11 +473,11 @@ pub fn SanitizerAttributeNamespace::from_js(
 ///|
 /// SanitizerConfig dictionary
 pub(all) struct SanitizerConfig {
-  elements : Array[SanitizerElementWithAttributes]?
-  removeElements : Array[SanitizerElement]?
-  replaceWithChildrenElements : Array[SanitizerElement]?
-  attributes : Array[SanitizerAttribute]?
-  removeAttributes : Array[SanitizerAttribute]?
+  elements : FixedArray[SanitizerElementWithAttributes]?
+  removeElements : FixedArray[SanitizerElement]?
+  replaceWithChildrenElements : FixedArray[SanitizerElement]?
+  attributes : FixedArray[SanitizerAttribute]?
+  removeAttributes : FixedArray[SanitizerAttribute]?
   comments : Bool?
   dataAttributes : Bool?
 }
@@ -499,11 +499,11 @@ pub fn SanitizerConfig::default() -> SanitizerConfig {
 ///|
 extern "js" fn SanitizerConfig::to_js_ffi(self : SanitizerConfig) -> JsValue =
   #| (self) => ({
-  #|   elements: ((() => { const v = self.elements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   removeElements: ((() => { const v = self.removeElements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   replaceWithChildrenElements: ((() => { const v = self.replaceWithChildrenElements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   attributes: ((() => { const v = self.attributes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   removeAttributes: ((() => { const v = self.removeAttributes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   elements: self.elements,
+  #|   removeElements: self.removeElements,
+  #|   replaceWithChildrenElements: self.replaceWithChildrenElements,
+  #|   attributes: self.attributes,
+  #|   removeAttributes: self.removeAttributes,
   #|   comments: (self.comments === -1 ? undefined : self.comments),
   #|   dataAttributes: (self.dataAttributes === -1 ? undefined : self.dataAttributes)
   #| })
@@ -517,11 +517,11 @@ pub fn SanitizerConfig::to_js(self : SanitizerConfig) -> JsValue {
 ///|
 extern "js" fn SanitizerConfig::from_js_ffi(value : JsValue) -> SanitizerConfig =
   #| (v) => ({
-  #|   elements: (v.elements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elements }),
-  #|   removeElements: (v.removeElements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.removeElements }),
-  #|   replaceWithChildrenElements: (v.replaceWithChildrenElements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.replaceWithChildrenElements }),
-  #|   attributes: (v.attributes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributes }),
-  #|   removeAttributes: (v.removeAttributes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.removeAttributes }),
+  #|   elements: v.elements,
+  #|   removeElements: v.removeElements,
+  #|   replaceWithChildrenElements: v.replaceWithChildrenElements,
+  #|   attributes: v.attributes,
+  #|   removeAttributes: v.removeAttributes,
   #|   comments: (v.comments === undefined ? -1 : v.comments),
   #|   dataAttributes: (v.dataAttributes === undefined ? -1 : v.dataAttributes)
   #| })
@@ -565,7 +565,7 @@ pub extern "js" fn JsValue::to_sanitizer(self : JsValue) -> Sanitizer =
 pub(all) enum SanitizerConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Sanitizer::new() -> Result[

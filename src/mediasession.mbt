@@ -7,7 +7,7 @@ pub(all) enum MediaSessionPlaybackState {
   None
   Paused
   Playing
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -54,7 +54,7 @@ pub(all) enum MediaSessionAction {
   Nextslide
   Enterpictureinpicture
   Voiceactivity
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -111,7 +111,7 @@ pub(all) enum MediaSessionEnterPictureInPictureReason {
   Other
   Useraction
   Contentoccluded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -157,8 +157,8 @@ pub(all) struct MediaMetadataInit {
   title : String?
   artist : String?
   album : String?
-  artwork : Array[MediaImage]?
-  chapterInfo : Array[ChapterInformationInit]?
+  artwork : FixedArray[MediaImage]?
+  chapterInfo : FixedArray[ChapterInformationInit]?
 }
 
 ///|
@@ -181,8 +181,8 @@ extern "js" fn MediaMetadataInit::to_js_ffi(
   #|   title: self.title,
   #|   artist: self.artist,
   #|   album: self.album,
-  #|   artwork: ((() => { const v = self.artwork; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   chapterInfo: ((() => { const v = self.chapterInfo; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   artwork: self.artwork,
+  #|   chapterInfo: self.chapterInfo
   #| })
 
 ///|
@@ -199,8 +199,8 @@ extern "js" fn MediaMetadataInit::from_js_ffi(
   #|   title: v.title,
   #|   artist: v.artist,
   #|   album: v.album,
-  #|   artwork: (v.artwork === undefined ? { $tag: 0 } : { $tag: 1, _0: v.artwork }),
-  #|   chapterInfo: (v.chapterInfo === undefined ? { $tag: 0 } : { $tag: 1, _0: v.chapterInfo })
+  #|   artwork: v.artwork,
+  #|   chapterInfo: v.chapterInfo
   #| })
 
 ///|
@@ -214,13 +214,13 @@ pub fn MediaMetadataInit::from_js(value : JsValue) -> MediaMetadataInit {
 pub(all) struct ChapterInformationInit {
   title : String?
   startTime : Double?
-  artwork : Array[MediaImage]?
+  artwork : FixedArray[MediaImage]?
 }
 
 ///|
 /// Create a new ChapterInformationInit with default values
 pub fn ChapterInformationInit::default() -> ChapterInformationInit {
-  ChapterInformationInit::{ title: None, startTime: None, artwork: None }
+  ChapterInformationInit::{ title: None, startTime: None, artwork: None, }
 }
 
 ///|
@@ -230,7 +230,7 @@ extern "js" fn ChapterInformationInit::to_js_ffi(
   #| (self) => ({
   #|   title: self.title,
   #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   artwork: ((() => { const v = self.artwork; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   artwork: self.artwork
   #| })
 
 ///|
@@ -246,7 +246,7 @@ extern "js" fn ChapterInformationInit::from_js_ffi(
   #| (v) => ({
   #|   title: v.title,
   #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime }),
-  #|   artwork: (v.artwork === undefined ? { $tag: 0 } : { $tag: 1, _0: v.artwork })
+  #|   artwork: v.artwork
   #| })
 
 ///|
@@ -268,7 +268,7 @@ pub(all) struct MediaImage {
 ///|
 /// Create a new MediaImage with default values
 pub fn MediaImage::default() -> MediaImage {
-  MediaImage::{ src: "", sizes: None, type_: None }
+  MediaImage::{ src: "", sizes: None, type_: None, }
 }
 
 ///|
@@ -310,7 +310,7 @@ pub(all) struct MediaPositionState {
 ///|
 /// Create a new MediaPositionState with default values
 pub fn MediaPositionState::default() -> MediaPositionState {
-  MediaPositionState::{ duration: None, playbackRate: None, position: None }
+  MediaPositionState::{ duration: None, playbackRate: None, position: None, }
 }
 
 ///|
@@ -448,7 +448,7 @@ pub extern "js" fn JsValue::to_media_session(self : JsValue) -> MediaSession =
 pub(all) enum MediaSessionSetPositionStateError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaSession::get_metadata(
@@ -607,20 +607,20 @@ pub extern "js" fn MediaMetadata::set_album(
 ///|
 pub extern "js" fn MediaMetadata::get_artwork(
   self : MediaMetadata,
-) -> Array[JsValue] =
+) -> FixedArray[JsValue] =
   #| (self) => self.artwork
 
 ///|
 pub extern "js" fn MediaMetadata::set_artwork(
   self : MediaMetadata,
-  value : Array[JsValue],
+  value : FixedArray[JsValue],
 ) -> Unit =
   #| (self, value) => { self.artwork = value }
 
 ///|
 pub extern "js" fn MediaMetadata::get_chapter_info(
   self : MediaMetadata,
-) -> Array[ChapterInformation] =
+) -> FixedArray[ChapterInformation] =
   #| (self) => self.chapterInfo
 
 ///|
@@ -676,5 +676,5 @@ pub extern "js" fn ChapterInformation::get_start_time(
 ///|
 pub extern "js" fn ChapterInformation::get_artwork(
   self : ChapterInformation,
-) -> Array[MediaImage] =
+) -> FixedArray[MediaImage] =
   #| (self) => self.artwork

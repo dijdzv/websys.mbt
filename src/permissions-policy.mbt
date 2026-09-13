@@ -127,18 +127,18 @@ pub extern "js" fn PermissionsPolicy::allows_feature_with_origin(
 ///|
 pub extern "js" fn PermissionsPolicy::features(
   self : PermissionsPolicy,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.features()
 
 ///|
 pub extern "js" fn PermissionsPolicy::allowed_features(
   self : PermissionsPolicy,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.allowedFeatures()
 
 ///|
 pub extern "js" fn PermissionsPolicy::get_allowlist_for_feature(
   self : PermissionsPolicy,
   feature : String,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self, feature) => self.getAllowlistForFeature(feature)

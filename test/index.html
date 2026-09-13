@@ -7,8 +7,9 @@
 // and the coroutine scheduler runs the async tests in the background.
 // Test completion is signaled by the MoonBit code setting window.__testsDone.
 try {
-  await import("./_build/js/release/build/websys-test.js");
+  await import("./_build/js/release/build/dijdzv/websys-test/websys-test.js");
 } catch (e) {
+  console.error(e);
   // If import itself fails (compilation error etc.), signal failure
   if (!window.__testsDone) {
     window.__testsDone = true;

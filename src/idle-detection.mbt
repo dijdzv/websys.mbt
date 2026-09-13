@@ -6,7 +6,7 @@
 pub(all) enum UserIdleState {
   Active
   Idle
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
 pub(all) enum ScreenIdleState {
   Locked
   Unlocked
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -63,7 +63,7 @@ pub(all) struct IdleOptions {
 ///|
 /// Create a new IdleOptions with default values
 pub fn IdleOptions::default() -> IdleOptions {
-  IdleOptions::{ threshold: None, signal: None }
+  IdleOptions::{ threshold: None, signal: None, }
 }
 
 ///|
@@ -133,7 +133,7 @@ pub extern "js" fn IdleDetector::to_event_target(
 pub(all) enum IdleDetectorStartError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn IdleDetector::new() -> IdleDetector =

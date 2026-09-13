@@ -305,9 +305,9 @@ pub extern "js" fn Float32List::from_float32_array(
   #| (v) => v
 
 ///|
-/// Create Float32List from Array[GLfloat]
+/// Create Float32List from FixedArray[GLfloat]
 pub extern "js" fn Float32List::from_array_of_g_lfloat(
-  v : Array[GLfloat],
+  v : FixedArray[GLfloat],
 ) -> Float32List =
   #| (v) => v
 
@@ -317,7 +317,7 @@ pub extern "js" fn Float32List::is_float32_array(self : Float32List) -> Bool =
   #| (self) => self instanceof Float32Array
 
 ///|
-/// Check if this Float32List is Array[GLfloat]
+/// Check if this Float32List is FixedArray[GLfloat]
 pub extern "js" fn Float32List::is_array_of_g_lfloat(
   self : Float32List,
 ) -> Bool =
@@ -331,11 +331,11 @@ pub extern "js" fn Float32List::as_float32_array(
   #| (self) => (self instanceof Float32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get Float32List as Array[GLfloat]
+/// Try to get Float32List as FixedArray[GLfloat]
 pub extern "js" fn Float32List::as_array_of_g_lfloat(
   self : Float32List,
-) -> Array[GLfloat]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GLfloat]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[Float32List] to Float32Array?
@@ -349,10 +349,10 @@ pub fn Float32List::bind_as_float32_array(
 }
 
 ///|
-/// Flatten Option[Float32List] to Array[GLfloat]?
+/// Flatten Option[Float32List] to FixedArray[GLfloat]?
 pub fn Float32List::bind_as_array_of_g_lfloat(
   value : Float32List?,
-) -> Array[GLfloat]? {
+) -> FixedArray[GLfloat]? {
   match value {
     Some(v) => v.as_array_of_g_lfloat()
     None => None
@@ -373,9 +373,9 @@ pub extern "js" fn Int32List::from_int32_array(v : Int32Array) -> Int32List =
   #| (v) => v
 
 ///|
-/// Create Int32List from Array[GLint]
+/// Create Int32List from FixedArray[GLint]
 pub extern "js" fn Int32List::from_array_of_g_lint(
-  v : Array[GLint],
+  v : FixedArray[GLint],
 ) -> Int32List =
   #| (v) => v
 
@@ -385,7 +385,7 @@ pub extern "js" fn Int32List::is_int32_array(self : Int32List) -> Bool =
   #| (self) => self instanceof Int32Array
 
 ///|
-/// Check if this Int32List is Array[GLint]
+/// Check if this Int32List is FixedArray[GLint]
 pub extern "js" fn Int32List::is_array_of_g_lint(self : Int32List) -> Bool =
   #| (self) => Array.isArray(self)
 
@@ -395,11 +395,11 @@ pub extern "js" fn Int32List::as_int32_array(self : Int32List) -> Int32Array? =
   #| (self) => (self instanceof Int32Array) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get Int32List as Array[GLint]
+/// Try to get Int32List as FixedArray[GLint]
 pub extern "js" fn Int32List::as_array_of_g_lint(
   self : Int32List,
-) -> Array[GLint]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GLint]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Flatten Option[Int32List] to Int32Array?
@@ -411,8 +411,10 @@ pub fn Int32List::bind_as_int32_array(value : Int32List?) -> Int32Array? {
 }
 
 ///|
-/// Flatten Option[Int32List] to Array[GLint]?
-pub fn Int32List::bind_as_array_of_g_lint(value : Int32List?) -> Array[GLint]? {
+/// Flatten Option[Int32List] to FixedArray[GLint]?
+pub fn Int32List::bind_as_array_of_g_lint(
+  value : Int32List?,
+) -> FixedArray[GLint]? {
   match value {
     Some(v) => v.as_array_of_g_lint()
     None => None
@@ -425,7 +427,7 @@ pub(all) enum WebGLPowerPreference {
   Default
   LowPower
   HighPerformance
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -537,7 +539,7 @@ pub(all) struct WebGLContextEventInit {
 ///|
 /// Create a new WebGLContextEventInit with default values
 pub fn WebGLContextEventInit::default() -> WebGLContextEventInit {
-  WebGLContextEventInit::{ statusMessage: None }
+  WebGLContextEventInit::{ statusMessage: None, }
 }
 
 ///|
@@ -1100,14 +1102,14 @@ pub extern "js" fn JsValue::to_web_gl_rendering_context(
 pub(all) enum WebGLRenderingContextCompileShaderError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WebGLRenderingContextShaderSourceError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1115,7 +1117,7 @@ pub(all) enum WebGLRenderingContextMakeXRCompatibleError {
   AbortError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // WebGLRenderingContext.DEPTH_BUFFER_BIT
 
@@ -2667,7 +2669,7 @@ pub extern "js" fn WebGLRenderingContext::is_context_lost(
 ///|
 pub extern "js" fn WebGLRenderingContext::get_supported_extensions(
   self : WebGLRenderingContext,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.getSupportedExtensions()
 
 ///|
@@ -3098,7 +3100,7 @@ pub extern "js" fn WebGLRenderingContext::get_active_uniform(
 pub extern "js" fn WebGLRenderingContext::get_attached_shaders(
   self : WebGLRenderingContext,
   program : WebGLProgram,
-) -> Array[WebGLShader] =
+) -> FixedArray[WebGLShader] =
   #| (self, program) => self.getAttachedShaders(program)
 
 ///|
@@ -3839,7 +3841,7 @@ pub extern "js" fn WebGLRenderingContext::vertex_attrib1fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::vertex_attrib1fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   index : GLuint,
-  values : Array[GLfloat],
+  values : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, index, values) => self.vertexAttrib1fv(index, values)
 
@@ -3855,7 +3857,7 @@ pub extern "js" fn WebGLRenderingContext::vertex_attrib2fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::vertex_attrib2fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   index : GLuint,
-  values : Array[GLfloat],
+  values : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, index, values) => self.vertexAttrib2fv(index, values)
 
@@ -3871,7 +3873,7 @@ pub extern "js" fn WebGLRenderingContext::vertex_attrib3fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::vertex_attrib3fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   index : GLuint,
-  values : Array[GLfloat],
+  values : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, index, values) => self.vertexAttrib3fv(index, values)
 
@@ -3887,7 +3889,7 @@ pub extern "js" fn WebGLRenderingContext::vertex_attrib4fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::vertex_attrib4fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   index : GLuint,
-  values : Array[GLfloat],
+  values : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, index, values) => self.vertexAttrib4fv(index, values)
 
@@ -4456,7 +4458,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::uniform1fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLfloat],
+  v : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, v) => self.uniform1fv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4472,7 +4474,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::uniform2fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLfloat],
+  v : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, v) => self.uniform2fv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4488,7 +4490,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::uniform3fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLfloat],
+  v : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, v) => self.uniform3fv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4504,7 +4506,7 @@ pub extern "js" fn WebGLRenderingContext::uniform4fv_with_float32_array(
 pub extern "js" fn WebGLRenderingContext::uniform4fv_with_array_of_g_lfloat(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLfloat],
+  v : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, v) => self.uniform4fv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4520,7 +4522,7 @@ pub extern "js" fn WebGLRenderingContext::uniform1iv_with_int32_array(
 pub extern "js" fn WebGLRenderingContext::uniform1iv_with_array_of_g_lint(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLint],
+  v : FixedArray[GLint],
 ) -> Unit =
   #| (self, location, v) => self.uniform1iv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4536,7 +4538,7 @@ pub extern "js" fn WebGLRenderingContext::uniform2iv_with_int32_array(
 pub extern "js" fn WebGLRenderingContext::uniform2iv_with_array_of_g_lint(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLint],
+  v : FixedArray[GLint],
 ) -> Unit =
   #| (self, location, v) => self.uniform2iv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4552,7 +4554,7 @@ pub extern "js" fn WebGLRenderingContext::uniform3iv_with_int32_array(
 pub extern "js" fn WebGLRenderingContext::uniform3iv_with_array_of_g_lint(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLint],
+  v : FixedArray[GLint],
 ) -> Unit =
   #| (self, location, v) => self.uniform3iv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4568,7 +4570,7 @@ pub extern "js" fn WebGLRenderingContext::uniform4iv_with_int32_array(
 pub extern "js" fn WebGLRenderingContext::uniform4iv_with_array_of_g_lint(
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
-  v : Array[GLint],
+  v : FixedArray[GLint],
 ) -> Unit =
   #| (self, location, v) => self.uniform4iv((location.$tag === 1 ? location._0 : null), v)
 
@@ -4586,7 +4588,7 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix2fv_with_array_of_g_lflo
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
   transpose : GLboolean,
-  value : Array[GLfloat],
+  value : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, transpose, value) => self.uniformMatrix2fv((location.$tag === 1 ? location._0 : null), transpose, value)
 
@@ -4604,7 +4606,7 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix3fv_with_array_of_g_lflo
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
   transpose : GLboolean,
-  value : Array[GLfloat],
+  value : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, transpose, value) => self.uniformMatrix3fv((location.$tag === 1 ? location._0 : null), transpose, value)
 
@@ -4622,7 +4624,7 @@ pub extern "js" fn WebGLRenderingContext::uniform_matrix4fv_with_array_of_g_lflo
   self : WebGLRenderingContext,
   location : WebGLUniformLocation?,
   transpose : GLboolean,
-  value : Array[GLfloat],
+  value : FixedArray[GLfloat],
 ) -> Unit =
   #| (self, location, transpose, value) => self.uniformMatrix4fv((location.$tag === 1 ? location._0 : null), transpose, value)
 

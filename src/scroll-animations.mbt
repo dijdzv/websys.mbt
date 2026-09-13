@@ -8,7 +8,7 @@ pub(all) enum ScrollAxis {
   Inline
   X
   Y
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub(all) struct ScrollTimelineOptions {
 ///|
 /// Create a new ScrollTimelineOptions with default values
 pub fn ScrollTimelineOptions::default() -> ScrollTimelineOptions {
-  ScrollTimelineOptions::{ source: Nullable::Undefined, axis: None }
+  ScrollTimelineOptions::{ source: Nullable::Undefined, axis: None, }
 }
 
 ///|
@@ -87,7 +87,7 @@ pub(all) struct ViewTimelineOptions {
 ///|
 /// Create a new ViewTimelineOptions with default values
 pub fn ViewTimelineOptions::default() -> ViewTimelineOptions {
-  ViewTimelineOptions::{ subject: None, axis: None, inset: None }
+  ViewTimelineOptions::{ subject: None, axis: None, inset: None, }
 }
 
 ///|

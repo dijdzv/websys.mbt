@@ -10,7 +10,7 @@ pub(all) struct InkPresenterParam {
 ///|
 /// Create a new InkPresenterParam with default values
 pub fn InkPresenterParam::default() -> InkPresenterParam {
-  InkPresenterParam::{ presentationArea: Nullable::Undefined }
+  InkPresenterParam::{ presentationArea: Nullable::Undefined, }
 }
 
 ///|
@@ -51,7 +51,7 @@ pub(all) struct InkTrailStyle {
 ///|
 /// Create a new InkTrailStyle with default values
 pub fn InkTrailStyle::default() -> InkTrailStyle {
-  InkTrailStyle::{ color: "", diameter: 0 }
+  InkTrailStyle::{ color: "", diameter: 0, }
 }
 
 ///|
@@ -113,7 +113,7 @@ pub extern "js" fn JsValue::to_ink(self : JsValue) -> Ink =
 pub(all) enum InkRequestPresenterError {
   Error(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Ink::request_presenter(
@@ -179,7 +179,7 @@ pub extern "js" fn JsValue::to_delegated_ink_trail_presenter(
 pub(all) enum DelegatedInkTrailPresenterUpdateInkTrailStartPointError {
   Error(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DelegatedInkTrailPresenter::get_presentation_area(

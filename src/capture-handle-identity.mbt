@@ -6,7 +6,7 @@
 pub(all) struct CaptureHandleConfig {
   exposeOrigin : Bool?
   handle : String?
-  permittedOrigins : Array[String]?
+  permittedOrigins : FixedArray[String]?
 }
 
 ///|
@@ -26,7 +26,7 @@ extern "js" fn CaptureHandleConfig::to_js_ffi(
   #| (self) => ({
   #|   exposeOrigin: (self.exposeOrigin === -1 ? undefined : self.exposeOrigin),
   #|   handle: self.handle,
-  #|   permittedOrigins: ((() => { const v = self.permittedOrigins; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   permittedOrigins: self.permittedOrigins
   #| })
 
 ///|
@@ -42,7 +42,7 @@ extern "js" fn CaptureHandleConfig::from_js_ffi(
   #| (v) => ({
   #|   exposeOrigin: (v.exposeOrigin === undefined ? -1 : v.exposeOrigin),
   #|   handle: v.handle,
-  #|   permittedOrigins: (v.permittedOrigins === undefined ? { $tag: 0 } : { $tag: 1, _0: v.permittedOrigins })
+  #|   permittedOrigins: v.permittedOrigins
   #| })
 
 ///|
@@ -61,7 +61,7 @@ pub(all) struct CaptureHandle {
 ///|
 /// Create a new CaptureHandle with default values
 pub fn CaptureHandle::default() -> CaptureHandle {
-  CaptureHandle::{ origin: None, handle: None }
+  CaptureHandle::{ origin: None, handle: None, }
 }
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum RTCPriorityType {
   Low
   Medium
   High
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value

@@ -5,7 +5,7 @@
 /// PerformanceObserverInit dictionary
 pub(all) struct PerformanceObserverInit {
   durationThreshold : DOMHighResTimeStamp?
-  entryTypes : Array[String]?
+  entryTypes : FixedArray[String]?
   type_ : String?
   buffered : Bool?
 }
@@ -27,7 +27,7 @@ extern "js" fn PerformanceObserverInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   durationThreshold: ((() => { const v = self.durationThreshold; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   entryTypes: ((() => { const v = self.entryTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   entryTypes: self.entryTypes,
   #|   type: self.type_,
   #|   buffered: (self.buffered === -1 ? undefined : self.buffered)
   #| })
@@ -46,7 +46,7 @@ extern "js" fn PerformanceObserverInit::from_js_ffi(
 ) -> PerformanceObserverInit =
   #| (v) => ({
   #|   durationThreshold: (v.durationThreshold === undefined ? { $tag: 0 } : { $tag: 1, _0: v.durationThreshold }),
-  #|   entryTypes: (v.entryTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.entryTypes }),
+  #|   entryTypes: v.entryTypes,
   #|   type_: v.type,
   #|   buffered: (v.buffered === undefined ? -1 : v.buffered)
   #| })
@@ -137,7 +137,7 @@ pub extern "js" fn PerformanceEventTiming::get_target_selector(
 pub extern "js" fn PerformanceEventTiming::get_interaction_id(
   self : PerformanceEventTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.interactionId; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.interactionId))
 
 ///|
 pub extern "js" fn PerformanceEventTiming::to_json(

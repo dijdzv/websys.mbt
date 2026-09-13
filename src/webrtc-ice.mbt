@@ -12,7 +12,7 @@ pub(all) struct RTCIceParameters {
 ///|
 /// Create a new RTCIceParameters with default values
 pub fn RTCIceParameters::default() -> RTCIceParameters {
-  RTCIceParameters::{ iceLite: None, usernameFragment: None, password: None }
+  RTCIceParameters::{ iceLite: None, usernameFragment: None, password: None, }
 }
 
 ///|
@@ -49,13 +49,13 @@ pub fn RTCIceParameters::from_js(value : JsValue) -> RTCIceParameters {
 /// RTCIceGatherOptions dictionary
 pub(all) struct RTCIceGatherOptions {
   gatherPolicy : RTCIceTransportPolicy?
-  iceServers : Array[RTCIceServer]?
+  iceServers : FixedArray[RTCIceServer]?
 }
 
 ///|
 /// Create a new RTCIceGatherOptions with default values
 pub fn RTCIceGatherOptions::default() -> RTCIceGatherOptions {
-  RTCIceGatherOptions::{ gatherPolicy: None, iceServers: None }
+  RTCIceGatherOptions::{ gatherPolicy: None, iceServers: None, }
 }
 
 ///|
@@ -64,7 +64,7 @@ extern "js" fn RTCIceGatherOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   gatherPolicy: ((() => { const v = self.gatherPolicy; if (v === undefined) return undefined; return ['relay', 'all'][v]; })()),
-  #|   iceServers: ((() => { const v = self.iceServers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   iceServers: self.iceServers
   #| })
 
 ///|
@@ -79,7 +79,7 @@ extern "js" fn RTCIceGatherOptions::from_js_ffi(
 ) -> RTCIceGatherOptions =
   #| (v) => ({
   #|   gatherPolicy: (v.gatherPolicy === undefined ? undefined : ['relay', 'all'].indexOf(v.gatherPolicy)),
-  #|   iceServers: (v.iceServers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iceServers })
+  #|   iceServers: v.iceServers
   #| })
 
 ///|

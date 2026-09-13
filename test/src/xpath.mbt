@@ -9,9 +9,9 @@ fn test_xpath_result() -> Unit {
   let body = @websys.HTMLElement::from_js_value(
     doc.get_body().unwrap().to_js_value(),
   )
-  let p1 = doc.create_element("p")
+  let p1 = create_element(doc, "p")
   p1.set_id("xpath-a")
-  let p2 = doc.create_element("p")
+  let p2 = create_element(doc, "p")
   p2.set_id("xpath-b")
   body.to_node().append_child(p1.to_node()) |> ignore
   body.to_node().append_child(p2.to_node()) |> ignore

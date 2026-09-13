@@ -13,7 +13,7 @@ pub(all) struct DOMPointInit {
 ///|
 /// Create a new DOMPointInit with default values
 pub fn DOMPointInit::default() -> DOMPointInit {
-  DOMPointInit::{ x: None, y: None, z: None, w: None }
+  DOMPointInit::{ x: None, y: None, z: None, w: None, }
 }
 
 ///|
@@ -58,7 +58,7 @@ pub(all) struct DOMRectInit {
 ///|
 /// Create a new DOMRectInit with default values
 pub fn DOMRectInit::default() -> DOMRectInit {
-  DOMRectInit::{ x: None, y: None, width: None, height: None }
+  DOMRectInit::{ x: None, y: None, width: None, height: None, }
 }
 
 ///|
@@ -103,7 +103,7 @@ pub(all) struct DOMQuadInit {
 ///|
 /// Create a new DOMQuadInit with default values
 pub fn DOMQuadInit::default() -> DOMQuadInit {
-  DOMQuadInit::{ p1: None, p2: None, p3: None, p4: None }
+  DOMQuadInit::{ p1: None, p2: None, p3: None, p4: None, }
 }
 
 ///|
@@ -957,28 +957,28 @@ pub(all) enum DOMMatrixReadOnlyConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromFloat32ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixReadOnlyFromFloat64ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DOMMatrixReadOnly::new() -> Result[
@@ -1409,28 +1409,28 @@ pub(all) enum DOMMatrixConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromMatrixError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromFloat32ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DOMMatrixFromFloat64ArrayError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DOMMatrix::new() -> Result[

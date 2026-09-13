@@ -2,7 +2,7 @@
 fn test_canvas_element() -> Unit {
   let doc = get_document()
   let canvas = @websys.HTMLCanvasElement::from_js_value(
-    doc.create_element("canvas").to_js_value(),
+    create_element(doc, "canvas").to_js_value(),
   )
   // default size is 300x150
   assert_eq(canvas.get_width(), 300, label="default width")

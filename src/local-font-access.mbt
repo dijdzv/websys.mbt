@@ -4,19 +4,19 @@
 ///|
 /// QueryOptions dictionary
 pub(all) struct QueryOptions {
-  postscriptNames : Array[String]?
+  postscriptNames : FixedArray[String]?
 }
 
 ///|
 /// Create a new QueryOptions with default values
 pub fn QueryOptions::default() -> QueryOptions {
-  QueryOptions::{ postscriptNames: None }
+  QueryOptions::{ postscriptNames: None, }
 }
 
 ///|
 extern "js" fn QueryOptions::to_js_ffi(self : QueryOptions) -> JsValue =
   #| (self) => ({
-  #|   postscriptNames: ((() => { const v = self.postscriptNames; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   postscriptNames: self.postscriptNames
   #| })
 
 ///|
@@ -28,7 +28,7 @@ pub fn QueryOptions::to_js(self : QueryOptions) -> JsValue {
 ///|
 extern "js" fn QueryOptions::from_js_ffi(value : JsValue) -> QueryOptions =
   #| (v) => ({
-  #|   postscriptNames: (v.postscriptNames === undefined ? { $tag: 0 } : { $tag: 1, _0: v.postscriptNames })
+  #|   postscriptNames: v.postscriptNames
   #| })
 
 ///|

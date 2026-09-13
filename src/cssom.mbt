@@ -4,7 +4,7 @@
 ///|
 /// CSSStyleSheetInit dictionary
 pub(all) struct CSSStyleSheetInit {
-  baseURL : String?
+  baseURL : Nullable[String]
   media : MediaListOrString?
   disabled : Bool?
 }
@@ -12,7 +12,11 @@ pub(all) struct CSSStyleSheetInit {
 ///|
 /// Create a new CSSStyleSheetInit with default values
 pub fn CSSStyleSheetInit::default() -> CSSStyleSheetInit {
-  CSSStyleSheetInit::{ baseURL: None, media: None, disabled: None }
+  CSSStyleSheetInit::{
+    baseURL: Nullable::Undefined,
+    media: None,
+    disabled: None,
+  }
 }
 
 ///|
@@ -20,7 +24,7 @@ extern "js" fn CSSStyleSheetInit::to_js_ffi(
   self : CSSStyleSheetInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   baseURL: self.baseURL,
+  #|   baseURL: ((() => { const v = self.baseURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   media: ((() => { const v = self.media; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   disabled: (self.disabled === -1 ? undefined : self.disabled)
   #| })
@@ -36,7 +40,7 @@ extern "js" fn CSSStyleSheetInit::from_js_ffi(
   value : JsValue,
 ) -> CSSStyleSheetInit =
   #| (v) => ({
-  #|   baseURL: v.baseURL,
+  #|   baseURL: (v.baseURL === undefined ? { $tag: 0 } : v.baseURL === null ? { $tag: 1 } : { $tag: 2, _0: v.baseURL }),
   #|   media: (v.media === undefined ? { $tag: 0 } : { $tag: 1, _0: v.media }),
   #|   disabled: (v.disabled === undefined ? -1 : v.disabled)
   #| })
@@ -80,7 +84,7 @@ pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
 pub(all) enum MediaListDeleteMediumError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
@@ -239,28 +243,28 @@ pub(all) enum CSSStyleSheetInsertRuleError {
   InvalidStateError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetDeleteRuleError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetReplaceError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetReplaceSyncError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
@@ -592,6 +596,34 @@ pub extern "js" fn CSSRule::as_css_function_declarations(
   self : CSSRule,
 ) -> CSSFunctionDeclarations? =
   #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_mixin_rule(self : CSSRule) -> CSSMixinRule? =
+  #| (self) => (self instanceof CSSMixinRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_apply_block_rule(
+  self : CSSRule,
+) -> CSSApplyBlockRule? =
+  #| (self) => (self instanceof CSSApplyBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_apply_statement_rule(
+  self : CSSRule,
+) -> CSSApplyStatementRule? =
+  #| (self) => (self instanceof CSSApplyStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_contents_block_rule(
+  self : CSSRule,
+) -> CSSContentsBlockRule? =
+  #| (self) => (self instanceof CSSContentsBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSRule::as_css_contents_statement_rule(
+  self : CSSRule,
+) -> CSSContentsStatementRule? =
+  #| (self) => (self instanceof CSSContentsStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn CSSRule::as_css_nested_declarations(
@@ -965,6 +997,24 @@ pub extern "js" fn CSSGroupingRule::as_css_function_rule(
   #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn CSSGroupingRule::as_css_mixin_rule(
+  self : CSSGroupingRule,
+) -> CSSMixinRule? =
+  #| (self) => (self instanceof CSSMixinRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_apply_block_rule(
+  self : CSSGroupingRule,
+) -> CSSApplyBlockRule? =
+  #| (self) => (self instanceof CSSApplyBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn CSSGroupingRule::as_css_contents_block_rule(
+  self : CSSGroupingRule,
+) -> CSSContentsBlockRule? =
+  #| (self) => (self instanceof CSSContentsBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
   self : CSSGroupingRule,
 ) -> CSSStartingStyleRule? =
@@ -988,7 +1038,7 @@ pub(all) enum CSSGroupingRuleInsertRuleError {
   IndexSizeError(JsError)
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -996,7 +1046,7 @@ pub(all) enum CSSGroupingRuleDeleteRuleError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CSSGroupingRule::get_css_rules(
@@ -1417,14 +1467,14 @@ pub extern "js" fn CSSStyleDeclaration::as_css_style_properties(
 pub(all) enum CSSStyleDeclarationSetPropertyError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleDeclarationRemovePropertyError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CSSStyleDeclaration::get_css_text(

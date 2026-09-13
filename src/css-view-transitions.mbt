@@ -9,13 +9,13 @@ pub type ViewTransitionUpdateCallback
 /// StartViewTransitionOptions dictionary
 pub(all) struct StartViewTransitionOptions {
   update : Nullable[ViewTransitionUpdateCallback]
-  types : Array[String]?
+  types : FixedArray[String]?
 }
 
 ///|
 /// Create a new StartViewTransitionOptions with default values
 pub fn StartViewTransitionOptions::default() -> StartViewTransitionOptions {
-  StartViewTransitionOptions::{ update: Nullable::Undefined, types: None }
+  StartViewTransitionOptions::{ update: Nullable::Undefined, types: None, }
 }
 
 ///|
@@ -24,7 +24,7 @@ extern "js" fn StartViewTransitionOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   update: ((() => { const v = self.update; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   types: ((() => { const v = self.types; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   types: self.types
   #| })
 
 ///|
@@ -41,7 +41,7 @@ extern "js" fn StartViewTransitionOptions::from_js_ffi(
 ) -> StartViewTransitionOptions =
   #| (v) => ({
   #|   update: (v.update === undefined ? { $tag: 0 } : v.update === null ? { $tag: 1 } : { $tag: 2, _0: v.update }),
-  #|   types: (v.types === undefined ? { $tag: 0 } : { $tag: 1, _0: v.types })
+  #|   types: v.types
   #| })
 
 ///|
@@ -117,13 +117,6 @@ pub extern "js" fn ViewTransition::get_types(
   self : ViewTransition,
 ) -> ViewTransitionTypeSet =
   #| (self) => self.types
-
-///|
-pub extern "js" fn ViewTransition::set_types(
-  self : ViewTransition,
-  value : ViewTransitionTypeSet,
-) -> Unit =
-  #| (self, value) => { self.types = value }
 
 ///|
 pub extern "js" fn ViewTransition::get_transition_root(
@@ -256,5 +249,5 @@ pub extern "js" fn CSSViewTransitionRule::get_navigation(
 ///|
 pub extern "js" fn CSSViewTransitionRule::get_types(
   self : CSSViewTransitionRule,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.types

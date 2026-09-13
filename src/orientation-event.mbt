@@ -270,7 +270,7 @@ pub extern "js" fn DeviceOrientationEvent::to_event(
 pub(all) enum DeviceOrientationEventRequestPermissionError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DeviceOrientationEvent::new(
@@ -495,7 +495,7 @@ pub extern "js" fn DeviceMotionEvent::to_event(
 pub(all) enum DeviceMotionEventRequestPermissionError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DeviceMotionEvent::new(type_ : String) -> DeviceMotionEvent =

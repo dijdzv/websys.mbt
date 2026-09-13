@@ -108,13 +108,13 @@ pub fn NDEFMessageSource::bind_as_ndef_message_init(
 ///|
 /// NDEFMessageInit dictionary
 pub(all) struct NDEFMessageInit {
-  records : Array[NDEFRecordInit]
+  records : FixedArray[NDEFRecordInit]
 }
 
 ///|
 /// Create a new NDEFMessageInit with default values
 pub fn NDEFMessageInit::default() -> NDEFMessageInit {
-  NDEFMessageInit::{ records: [] }
+  NDEFMessageInit::{ records: [], }
 }
 
 ///|
@@ -211,7 +211,7 @@ pub(all) struct NDEFReadingEventInit {
 pub fn NDEFReadingEventInit::new(
   message~ : NDEFMessageInit,
 ) -> NDEFReadingEventInit {
-  NDEFReadingEventInit::{ serialNumber: Nullable::Undefined, message }
+  NDEFReadingEventInit::{ serialNumber: Nullable::Undefined, message, }
 }
 
 ///|
@@ -254,7 +254,7 @@ pub(all) struct NDEFWriteOptions {
 ///|
 /// Create a new NDEFWriteOptions with default values
 pub fn NDEFWriteOptions::default() -> NDEFWriteOptions {
-  NDEFWriteOptions::{ overwrite: None, signal: Nullable::Undefined }
+  NDEFWriteOptions::{ overwrite: None, signal: Nullable::Undefined, }
 }
 
 ///|
@@ -294,7 +294,7 @@ pub(all) struct NDEFMakeReadOnlyOptions {
 ///|
 /// Create a new NDEFMakeReadOnlyOptions with default values
 pub fn NDEFMakeReadOnlyOptions::default() -> NDEFMakeReadOnlyOptions {
-  NDEFMakeReadOnlyOptions::{ signal: Nullable::Undefined }
+  NDEFMakeReadOnlyOptions::{ signal: Nullable::Undefined, }
 }
 
 ///|
@@ -338,7 +338,7 @@ pub(all) struct NDEFScanOptions {
 ///|
 /// Create a new NDEFScanOptions with default values
 pub fn NDEFScanOptions::default() -> NDEFScanOptions {
-  NDEFScanOptions::{ signal: None }
+  NDEFScanOptions::{ signal: None, }
 }
 
 ///|
@@ -405,7 +405,7 @@ pub fn NDEFMessage::new(message_init : NDEFMessageInit) -> NDEFMessage {
 ///|
 pub extern "js" fn NDEFMessage::get_records(
   self : NDEFMessage,
-) -> Array[NDEFRecord] =
+) -> FixedArray[NDEFRecord] =
   #| (self) => self.records
 
 ///|
@@ -441,7 +441,7 @@ pub extern "js" fn JsValue::to_ndef_record(self : JsValue) -> NDEFRecord =
 pub(all) enum NDEFRecordToRecordsError {
   NotSupported(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn NDEFRecord::new_ffi(record_init : JsValue) -> NDEFRecord =
@@ -479,7 +479,7 @@ pub extern "js" fn NDEFRecord::get_lang(self : NDEFRecord) -> String? =
 ///|
 pub extern "js" fn NDEFRecord::to_records(
   self : NDEFRecord,
-) -> Result[Array[NDEFRecord], NDEFRecordToRecordsError] =
+) -> Result[FixedArray[NDEFRecord], NDEFRecordToRecordsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.toRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupported') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
@@ -524,7 +524,7 @@ pub(all) enum NDEFReaderScanError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -535,7 +535,7 @@ pub(all) enum NDEFReaderWriteError {
   NotReadableError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NDEFReader::new() -> NDEFReader =

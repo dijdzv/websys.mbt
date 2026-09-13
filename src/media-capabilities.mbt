@@ -7,7 +7,7 @@ pub(all) enum MediaDecodingType {
   File
   MediaSource
   Webrtc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn MediaDecodingType::from_string(s : String) -> MediaDecodingType? {
 pub(all) enum MediaEncodingType {
   Record
   Webrtc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub(all) enum HdrMetadataType {
   SmpteSt2086
   SmpteSt209410
   SmpteSt209440
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -91,7 +91,7 @@ pub(all) enum ColorGamut {
   Srgb
   P3
   Rec2020
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -120,7 +120,7 @@ pub(all) enum TransferFunction {
   Srgb
   Pq
   Hlg
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -153,7 +153,7 @@ pub(all) struct MediaConfiguration {
 ///|
 /// Create a new MediaConfiguration with default values
 pub fn MediaConfiguration::default() -> MediaConfiguration {
-  MediaConfiguration::{ video: None, audio: None }
+  MediaConfiguration::{ video: None, audio: None, }
 }
 
 ///|
@@ -259,7 +259,7 @@ pub(all) struct MediaEncodingConfiguration {
 pub fn MediaEncodingConfiguration::new(
   type_~ : MediaEncodingType,
 ) -> MediaEncodingConfiguration {
-  MediaEncodingConfiguration::{ video: None, audio: None, type_ }
+  MediaEncodingConfiguration::{ video: None, audio: None, type_, }
 }
 
 ///|
@@ -445,7 +445,7 @@ pub(all) struct MediaCapabilitiesKeySystemConfiguration {
   initDataType : String?
   distinctiveIdentifier : MediaKeysRequirement?
   persistentState : MediaKeysRequirement?
-  sessionTypes : Array[String]?
+  sessionTypes : FixedArray[String]?
   audio : KeySystemTrackConfiguration?
   video : KeySystemTrackConfiguration?
 }
@@ -473,7 +473,7 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
   #|   initDataType: self.initDataType,
   #|   distinctiveIdentifier: ((() => { const v = self.distinctiveIdentifier; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
   #|   persistentState: ((() => { const v = self.persistentState; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
-  #|   sessionTypes: ((() => { const v = self.sessionTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sessionTypes: self.sessionTypes,
   #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -495,7 +495,7 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
   #|   initDataType: v.initDataType,
   #|   distinctiveIdentifier: (v.distinctiveIdentifier === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.distinctiveIdentifier)),
   #|   persistentState: (v.persistentState === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.persistentState)),
-  #|   sessionTypes: (v.sessionTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sessionTypes }),
+  #|   sessionTypes: v.sessionTypes,
   #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
   #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video })
   #| })
@@ -777,14 +777,14 @@ pub(all) enum MediaCapabilitiesDecodingInfoError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaCapabilitiesEncodingInfoError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn MediaCapabilities::decoding_info_ffi(

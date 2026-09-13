@@ -12,7 +12,7 @@ pub(all) struct FunctionParameter {
 ///|
 /// Create a new FunctionParameter with default values
 pub fn FunctionParameter::default() -> FunctionParameter {
-  FunctionParameter::{ name: "", type_: "", defaultValue: Nullable::Undefined }
+  FunctionParameter::{ name: "", type_: "", defaultValue: Nullable::Undefined, }
 }
 
 ///|
@@ -104,7 +104,7 @@ pub extern "js" fn CSSFunctionRule::get_name(self : CSSFunctionRule) -> String =
 ///|
 pub extern "js" fn CSSFunctionRule::get_parameters(
   self : CSSFunctionRule,
-) -> Array[FunctionParameter] =
+) -> FixedArray[FunctionParameter] =
   #| (self) => self.getParameters()
 
 ///|
@@ -219,3 +219,269 @@ pub extern "js" fn CSSFunctionDeclarations::get_style(
   self : CSSFunctionDeclarations,
 ) -> CSSFunctionDescriptors =
   #| (self) => self.style
+
+///|
+/// CSSMixinRule interface
+pub type CSSMixinRule
+
+///|
+pub extern "js" fn CSSMixinRule::to_js_value(self : CSSMixinRule) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSMixinRule (unchecked)
+pub extern "js" fn CSSMixinRule::from_js_value(v : JsValue) -> CSSMixinRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSMixinRule (checked with instanceof)
+pub extern "js" fn CSSMixinRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSMixinRule? =
+  #| (v) => (v instanceof CSSMixinRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSMixinRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_mixin_rule(self : JsValue) -> CSSMixinRule? =
+  #| (self) => (self instanceof CSSMixinRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSMixinRule (unchecked)
+pub extern "js" fn JsValue::to_css_mixin_rule(self : JsValue) -> CSSMixinRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMixinRule::to_css_grouping_rule(
+  self : CSSMixinRule,
+) -> CSSGroupingRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMixinRule::to_css_rule(self : CSSMixinRule) -> CSSRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSMixinRule::get_name(self : CSSMixinRule) -> String =
+  #| (self) => self.name
+
+///|
+pub extern "js" fn CSSMixinRule::get_parameters(
+  self : CSSMixinRule,
+) -> FixedArray[FunctionParameter] =
+  #| (self) => self.getParameters()
+
+///|
+pub extern "js" fn CSSMixinRule::get_contents(self : CSSMixinRule) -> Bool =
+  #| (self) => self.contents
+
+///|
+/// CSSApplyBlockRule interface
+pub type CSSApplyBlockRule
+
+///|
+pub extern "js" fn CSSApplyBlockRule::to_js_value(
+  self : CSSApplyBlockRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSApplyBlockRule (unchecked)
+pub extern "js" fn CSSApplyBlockRule::from_js_value(
+  v : JsValue,
+) -> CSSApplyBlockRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSApplyBlockRule (checked with instanceof)
+pub extern "js" fn CSSApplyBlockRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSApplyBlockRule? =
+  #| (v) => (v instanceof CSSApplyBlockRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSApplyBlockRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_apply_block_rule(
+  self : JsValue,
+) -> CSSApplyBlockRule? =
+  #| (self) => (self instanceof CSSApplyBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSApplyBlockRule (unchecked)
+pub extern "js" fn JsValue::to_css_apply_block_rule(
+  self : JsValue,
+) -> CSSApplyBlockRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSApplyBlockRule::to_css_grouping_rule(
+  self : CSSApplyBlockRule,
+) -> CSSGroupingRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSApplyBlockRule::to_css_rule(
+  self : CSSApplyBlockRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSApplyBlockRule::get_name(
+  self : CSSApplyBlockRule,
+) -> String =
+  #| (self) => self.name
+
+///|
+pub extern "js" fn CSSApplyBlockRule::get_arguments(
+  self : CSSApplyBlockRule,
+) -> FixedArray[String] =
+  #| (self) => self.getArguments()
+
+///|
+/// CSSApplyStatementRule interface
+pub type CSSApplyStatementRule
+
+///|
+pub extern "js" fn CSSApplyStatementRule::to_js_value(
+  self : CSSApplyStatementRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSApplyStatementRule (unchecked)
+pub extern "js" fn CSSApplyStatementRule::from_js_value(
+  v : JsValue,
+) -> CSSApplyStatementRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSApplyStatementRule (checked with instanceof)
+pub extern "js" fn CSSApplyStatementRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSApplyStatementRule? =
+  #| (v) => (v instanceof CSSApplyStatementRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSApplyStatementRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_apply_statement_rule(
+  self : JsValue,
+) -> CSSApplyStatementRule? =
+  #| (self) => (self instanceof CSSApplyStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSApplyStatementRule (unchecked)
+pub extern "js" fn JsValue::to_css_apply_statement_rule(
+  self : JsValue,
+) -> CSSApplyStatementRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSApplyStatementRule::to_css_rule(
+  self : CSSApplyStatementRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSApplyStatementRule::get_name(
+  self : CSSApplyStatementRule,
+) -> String =
+  #| (self) => self.name
+
+///|
+pub extern "js" fn CSSApplyStatementRule::get_arguments(
+  self : CSSApplyStatementRule,
+) -> FixedArray[String] =
+  #| (self) => self.getArguments()
+
+///|
+/// CSSContentsBlockRule interface
+pub type CSSContentsBlockRule
+
+///|
+pub extern "js" fn CSSContentsBlockRule::to_js_value(
+  self : CSSContentsBlockRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSContentsBlockRule (unchecked)
+pub extern "js" fn CSSContentsBlockRule::from_js_value(
+  v : JsValue,
+) -> CSSContentsBlockRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSContentsBlockRule (checked with instanceof)
+pub extern "js" fn CSSContentsBlockRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSContentsBlockRule? =
+  #| (v) => (v instanceof CSSContentsBlockRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSContentsBlockRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_contents_block_rule(
+  self : JsValue,
+) -> CSSContentsBlockRule? =
+  #| (self) => (self instanceof CSSContentsBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSContentsBlockRule (unchecked)
+pub extern "js" fn JsValue::to_css_contents_block_rule(
+  self : JsValue,
+) -> CSSContentsBlockRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSContentsBlockRule::to_css_grouping_rule(
+  self : CSSContentsBlockRule,
+) -> CSSGroupingRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSContentsBlockRule::to_css_rule(
+  self : CSSContentsBlockRule,
+) -> CSSRule =
+  #| (self) => self
+
+///|
+/// CSSContentsStatementRule interface
+pub type CSSContentsStatementRule
+
+///|
+pub extern "js" fn CSSContentsStatementRule::to_js_value(
+  self : CSSContentsStatementRule,
+) -> JsValue =
+  #| (self) => self
+
+///|
+/// Cast JsValue to CSSContentsStatementRule (unchecked)
+pub extern "js" fn CSSContentsStatementRule::from_js_value(
+  v : JsValue,
+) -> CSSContentsStatementRule =
+  #| (v) => v
+
+///|
+/// Safely cast JsValue to CSSContentsStatementRule (checked with instanceof)
+pub extern "js" fn CSSContentsStatementRule::from_js_value_opt(
+  v : JsValue,
+) -> CSSContentsStatementRule? =
+  #| (v) => (v instanceof CSSContentsStatementRule) ? { $tag: 1, _0: v } : { $tag: 0 }
+
+///|
+/// Safely cast JsValue to CSSContentsStatementRule (checked with instanceof)
+pub extern "js" fn JsValue::as_css_contents_statement_rule(
+  self : JsValue,
+) -> CSSContentsStatementRule? =
+  #| (self) => (self instanceof CSSContentsStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+/// Cast JsValue to CSSContentsStatementRule (unchecked)
+pub extern "js" fn JsValue::to_css_contents_statement_rule(
+  self : JsValue,
+) -> CSSContentsStatementRule =
+  #| (self) => self
+
+///|
+pub extern "js" fn CSSContentsStatementRule::to_css_rule(
+  self : CSSContentsStatementRule,
+) -> CSSRule =
+  #| (self) => self

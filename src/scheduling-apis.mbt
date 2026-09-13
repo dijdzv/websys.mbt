@@ -7,7 +7,7 @@ pub(all) enum TaskPriority {
   UserBlocking
   UserVisible
   Background
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -45,7 +45,7 @@ pub(all) struct SchedulerPostTaskOptions {
 ///|
 /// Create a new SchedulerPostTaskOptions with default values
 pub fn SchedulerPostTaskOptions::default() -> SchedulerPostTaskOptions {
-  SchedulerPostTaskOptions::{ signal: None, priority: None, delay: None }
+  SchedulerPostTaskOptions::{ signal: None, priority: None, delay: None, }
 }
 
 ///|
@@ -139,7 +139,7 @@ pub(all) struct TaskControllerInit {
 ///|
 /// Create a new TaskControllerInit with default values
 pub fn TaskControllerInit::default() -> TaskControllerInit {
-  TaskControllerInit::{ priority: None }
+  TaskControllerInit::{ priority: None, }
 }
 
 ///|
@@ -179,7 +179,7 @@ pub(all) struct TaskSignalAnyInit {
 ///|
 /// Create a new TaskSignalAnyInit with default values
 pub fn TaskSignalAnyInit::default() -> TaskSignalAnyInit {
-  TaskSignalAnyInit::{ priority: None }
+  TaskSignalAnyInit::{ priority: None, }
 }
 
 ///|
@@ -381,7 +381,7 @@ pub extern "js" fn TaskController::to_abort_controller(
 pub(all) enum TaskControllerSetPriorityError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TaskController::new() -> TaskController =
@@ -448,19 +448,21 @@ pub extern "js" fn TaskSignal::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn TaskSignal::any(signals : Array[AbortSignal]) -> TaskSignal =
+pub extern "js" fn TaskSignal::any(
+  signals : FixedArray[AbortSignal],
+) -> TaskSignal =
   #| (signals) => TaskSignal.any(signals)
 
 ///|
 extern "js" fn TaskSignal::any_with_init_ffi(
-  signals : Array[AbortSignal],
+  signals : FixedArray[AbortSignal],
   init_ : JsValue,
 ) -> TaskSignal =
   #| (signals, init_) => TaskSignal.any(signals, init_)
 
 ///|
 pub fn TaskSignal::any_with_init(
-  signals : Array[AbortSignal],
+  signals : FixedArray[AbortSignal],
   init_ : TaskSignalAnyInit,
 ) -> TaskSignal {
   TaskSignal::any_with_init_ffi(signals, init_.to_js())

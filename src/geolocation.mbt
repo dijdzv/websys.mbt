@@ -34,7 +34,11 @@ pub(all) struct PositionOptions {
 ///|
 /// Create a new PositionOptions with default values
 pub fn PositionOptions::default() -> PositionOptions {
-  PositionOptions::{ enableHighAccuracy: None, timeout: None, maximumAge: None }
+  PositionOptions::{
+    enableHighAccuracy: None,
+    timeout: None,
+    maximumAge: None,
+  }
 }
 
 ///|

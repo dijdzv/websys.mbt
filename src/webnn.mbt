@@ -7,7 +7,7 @@ pub type MLNamedTensors = JsValue
 
 ///|
 /// MLDataTypeList typedef
-pub type MLDataTypeList = Array[MLOperandDataType]
+pub type MLDataTypeList = FixedArray[MLOperandDataType]
 
 ///|
 /// MLNumber typedef
@@ -51,7 +51,7 @@ pub(all) enum MLPowerPreference {
   Default
   HighPerformance
   LowPower
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -79,7 +79,7 @@ pub fn MLPowerPreference::from_string(s : String) -> MLPowerPreference? {
 pub(all) enum MLInputOperandLayout {
   Nchw
   Nhwc
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -111,7 +111,7 @@ pub(all) enum MLOperandDataType {
   Uint64
   Int8
   Uint8
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -151,7 +151,7 @@ pub(all) enum MLConv2dFilterOperandLayout {
   Hwio
   Ohwi
   Ihwo
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -186,7 +186,7 @@ pub(all) enum MLConvTranspose2dFilterOperandLayout {
   Iohw
   Hwoi
   Ohwi
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -218,7 +218,7 @@ pub fn MLConvTranspose2dFilterOperandLayout::from_string(
 pub(all) enum MLGruWeightLayout {
   Zrn
   Rzn
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -245,7 +245,7 @@ pub(all) enum MLRecurrentNetworkActivation {
   Relu
   Sigmoid
   Tanh
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -278,7 +278,7 @@ pub(all) enum MLRecurrentNetworkDirection {
   Forward
   Backward
   Both
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -310,7 +310,7 @@ pub fn MLRecurrentNetworkDirection::from_string(
 pub(all) enum MLLstmWeightLayout {
   Iofg
   Ifgo
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -337,7 +337,7 @@ pub(all) enum MLPaddingMode {
   Constant
   Edge
   Reflection
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -365,7 +365,7 @@ pub fn MLPaddingMode::from_string(s : String) -> MLPaddingMode? {
 pub(all) enum MLRoundingType {
   Floor
   Ceil
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -391,7 +391,7 @@ pub fn MLRoundingType::from_string(s : String) -> MLRoundingType? {
 pub(all) enum MLInterpolationMode {
   NearestNeighbor
   Linear
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -422,7 +422,7 @@ pub(all) struct MLContextOptions {
 ///|
 /// Create a new MLContextOptions with default values
 pub fn MLContextOptions::default() -> MLContextOptions {
-  MLContextOptions::{ powerPreference: None, accelerated: None }
+  MLContextOptions::{ powerPreference: None, accelerated: None, }
 }
 
 ///|
@@ -462,7 +462,7 @@ pub(all) struct MLContextLostInfo {
 ///|
 /// Create a new MLContextLostInfo with default values
 pub fn MLContextLostInfo::default() -> MLContextLostInfo {
-  MLContextLostInfo::{ message: None }
+  MLContextLostInfo::{ message: None, }
 }
 
 ///|
@@ -941,7 +941,7 @@ pub(all) struct MLRankRange {
 ///|
 /// Create a new MLRankRange with default values
 pub fn MLRankRange::default() -> MLRankRange {
-  MLRankRange::{ min: None, max: None }
+  MLRankRange::{ min: None, max: None, }
 }
 
 ///|
@@ -980,7 +980,7 @@ pub(all) struct MLTensorLimits {
 ///|
 /// Create a new MLTensorLimits with default values
 pub fn MLTensorLimits::default() -> MLTensorLimits {
-  MLTensorLimits::{ dataTypes: None, rankRange: None }
+  MLTensorLimits::{ dataTypes: None, rankRange: None, }
 }
 
 ///|
@@ -1020,7 +1020,7 @@ pub(all) struct MLBinarySupportLimits {
 ///|
 /// Create a new MLBinarySupportLimits with default values
 pub fn MLBinarySupportLimits::default() -> MLBinarySupportLimits {
-  MLBinarySupportLimits::{ a: None, b: None, output: None }
+  MLBinarySupportLimits::{ a: None, b: None, output: None, }
 }
 
 ///|
@@ -1065,7 +1065,7 @@ pub(all) struct MLSingleInputSupportLimits {
 ///|
 /// Create a new MLSingleInputSupportLimits with default values
 pub fn MLSingleInputSupportLimits::default() -> MLSingleInputSupportLimits {
-  MLSingleInputSupportLimits::{ input: None, output: None }
+  MLSingleInputSupportLimits::{ input: None, output: None, }
 }
 
 ///|
@@ -1106,7 +1106,7 @@ pub fn MLSingleInputSupportLimits::from_js(
 /// MLOperandDescriptor dictionary
 pub(all) struct MLOperandDescriptor {
   dataType : MLOperandDataType
-  shape : Array[Int]
+  shape : FixedArray[Int]
 }
 
 ///|
@@ -1114,7 +1114,7 @@ pub(all) struct MLOperandDescriptor {
 pub fn MLOperandDescriptor::new(
   dataType~ : MLOperandDataType,
 ) -> MLOperandDescriptor {
-  MLOperandDescriptor::{ dataType, shape: [] }
+  MLOperandDescriptor::{ dataType, shape: [], }
 }
 
 ///|
@@ -1156,7 +1156,7 @@ pub(all) struct MLOperatorOptions {
 ///|
 /// Create a new MLOperatorOptions with default values
 pub fn MLOperatorOptions::default() -> MLOperatorOptions {
-  MLOperatorOptions::{ label: None }
+  MLOperatorOptions::{ label: None, }
 }
 
 ///|
@@ -1191,7 +1191,7 @@ pub fn MLOperatorOptions::from_js(value : JsValue) -> MLOperatorOptions {
 /// MLTensorDescriptor dictionary
 pub(all) struct MLTensorDescriptor {
   dataType : MLOperandDataType
-  shape : Array[Int]
+  shape : FixedArray[Int]
   readable : Bool?
   writable : Bool?
 }
@@ -1201,7 +1201,7 @@ pub(all) struct MLTensorDescriptor {
 pub fn MLTensorDescriptor::new(
   dataType~ : MLOperandDataType,
 ) -> MLTensorDescriptor {
-  MLTensorDescriptor::{ dataType, shape: [], readable: None, writable: None }
+  MLTensorDescriptor::{ dataType, shape: [], readable: None, writable: None, }
 }
 
 ///|
@@ -1427,7 +1427,7 @@ pub(all) struct MLClampOptions {
 ///|
 /// Create a new MLClampOptions with default values
 pub fn MLClampOptions::default() -> MLClampOptions {
-  MLClampOptions::{ label: None, minValue: None, maxValue: None }
+  MLClampOptions::{ label: None, minValue: None, maxValue: None, }
 }
 
 ///|
@@ -1468,7 +1468,7 @@ pub(all) struct MLConcatSupportLimits {
 ///|
 /// Create a new MLConcatSupportLimits with default values
 pub fn MLConcatSupportLimits::default() -> MLConcatSupportLimits {
-  MLConcatSupportLimits::{ inputs: None, output: None }
+  MLConcatSupportLimits::{ inputs: None, output: None, }
 }
 
 ///|
@@ -1505,9 +1505,9 @@ pub fn MLConcatSupportLimits::from_js(value : JsValue) -> MLConcatSupportLimits 
 /// MLConv2dOptions dictionary
 pub(all) struct MLConv2dOptions {
   label : String?
-  padding : Array[Int]?
-  strides : Array[Int]?
-  dilations : Array[Int]?
+  padding : FixedArray[Int]?
+  strides : FixedArray[Int]?
+  dilations : FixedArray[Int]?
   groups : Int?
   inputLayout : MLInputOperandLayout?
   filterLayout : MLConv2dFilterOperandLayout?
@@ -1533,9 +1533,9 @@ pub fn MLConv2dOptions::default() -> MLConv2dOptions {
 extern "js" fn MLConv2dOptions::to_js_ffi(self : MLConv2dOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   padding: ((() => { const v = self.padding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   strides: ((() => { const v = self.strides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   dilations: ((() => { const v = self.dilations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   padding: self.padding,
+  #|   strides: self.strides,
+  #|   dilations: self.dilations,
   #|   groups: self.groups,
   #|   inputLayout: ((() => { const v = self.inputLayout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
   #|   filterLayout: ((() => { const v = self.filterLayout; if (v === undefined) return undefined; return ['oihw', 'hwio', 'ohwi', 'ihwo'][v]; })()),
@@ -1552,9 +1552,9 @@ pub fn MLConv2dOptions::to_js(self : MLConv2dOptions) -> JsValue {
 extern "js" fn MLConv2dOptions::from_js_ffi(value : JsValue) -> MLConv2dOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   padding: (v.padding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.padding }),
-  #|   strides: (v.strides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strides }),
-  #|   dilations: (v.dilations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dilations }),
+  #|   padding: v.padding,
+  #|   strides: v.strides,
+  #|   dilations: v.dilations,
   #|   groups: v.groups,
   #|   inputLayout: (v.inputLayout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.inputLayout)),
   #|   filterLayout: (v.filterLayout === undefined ? undefined : ['oihw', 'hwio', 'ohwi', 'ihwo'].indexOf(v.filterLayout)),
@@ -1579,7 +1579,12 @@ pub(all) struct MLConv2dSupportLimits {
 ///|
 /// Create a new MLConv2dSupportLimits with default values
 pub fn MLConv2dSupportLimits::default() -> MLConv2dSupportLimits {
-  MLConv2dSupportLimits::{ input: None, filter: None, bias: None, output: None }
+  MLConv2dSupportLimits::{
+    input: None,
+    filter: None,
+    bias: None,
+    output: None,
+  }
 }
 
 ///|
@@ -1620,11 +1625,11 @@ pub fn MLConv2dSupportLimits::from_js(value : JsValue) -> MLConv2dSupportLimits 
 /// MLConvTranspose2dOptions dictionary
 pub(all) struct MLConvTranspose2dOptions {
   label : String?
-  padding : Array[Int]?
-  strides : Array[Int]?
-  dilations : Array[Int]?
-  outputPadding : Array[Int]?
-  outputSizes : Array[Int]?
+  padding : FixedArray[Int]?
+  strides : FixedArray[Int]?
+  dilations : FixedArray[Int]?
+  outputPadding : FixedArray[Int]?
+  outputSizes : FixedArray[Int]?
   groups : Int?
   inputLayout : MLInputOperandLayout?
   filterLayout : MLConvTranspose2dFilterOperandLayout?
@@ -1654,11 +1659,11 @@ extern "js" fn MLConvTranspose2dOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   padding: ((() => { const v = self.padding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   strides: ((() => { const v = self.strides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   dilations: ((() => { const v = self.dilations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   outputPadding: ((() => { const v = self.outputPadding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   outputSizes: ((() => { const v = self.outputSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   padding: self.padding,
+  #|   strides: self.strides,
+  #|   dilations: self.dilations,
+  #|   outputPadding: self.outputPadding,
+  #|   outputSizes: self.outputSizes,
   #|   groups: self.groups,
   #|   inputLayout: ((() => { const v = self.inputLayout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
   #|   filterLayout: ((() => { const v = self.filterLayout; if (v === undefined) return undefined; return ['iohw', 'hwoi', 'ohwi'][v]; })()),
@@ -1679,11 +1684,11 @@ extern "js" fn MLConvTranspose2dOptions::from_js_ffi(
 ) -> MLConvTranspose2dOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   padding: (v.padding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.padding }),
-  #|   strides: (v.strides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strides }),
-  #|   dilations: (v.dilations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dilations }),
-  #|   outputPadding: (v.outputPadding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputPadding }),
-  #|   outputSizes: (v.outputSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputSizes }),
+  #|   padding: v.padding,
+  #|   strides: v.strides,
+  #|   dilations: v.dilations,
+  #|   outputPadding: v.outputPadding,
+  #|   outputSizes: v.outputSizes,
   #|   groups: v.groups,
   #|   inputLayout: (v.inputLayout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.inputLayout)),
   #|   filterLayout: (v.filterLayout === undefined ? undefined : ['iohw', 'hwoi', 'ohwi'].indexOf(v.filterLayout)),
@@ -1709,7 +1714,7 @@ pub(all) struct MLCumulativeSumOptions {
 ///|
 /// Create a new MLCumulativeSumOptions with default values
 pub fn MLCumulativeSumOptions::default() -> MLCumulativeSumOptions {
-  MLCumulativeSumOptions::{ label: None, exclusive: None, reversed: None }
+  MLCumulativeSumOptions::{ label: None, exclusive: None, reversed: None, }
 }
 
 ///|
@@ -1756,7 +1761,7 @@ pub(all) struct MLLogicalNotSupportLimits {
 ///|
 /// Create a new MLLogicalNotSupportLimits with default values
 pub fn MLLogicalNotSupportLimits::default() -> MLLogicalNotSupportLimits {
-  MLLogicalNotSupportLimits::{ a: None, output: None }
+  MLLogicalNotSupportLimits::{ a: None, output: None, }
 }
 
 ///|
@@ -1861,7 +1866,7 @@ pub(all) struct MLEluOptions {
 ///|
 /// Create a new MLEluOptions with default values
 pub fn MLEluOptions::default() -> MLEluOptions {
-  MLEluOptions::{ label: None, alpha: None }
+  MLEluOptions::{ label: None, alpha: None, }
 }
 
 ///|
@@ -1900,7 +1905,7 @@ pub(all) struct MLGatherOptions {
 ///|
 /// Create a new MLGatherOptions with default values
 pub fn MLGatherOptions::default() -> MLGatherOptions {
-  MLGatherOptions::{ label: None, axis: None }
+  MLGatherOptions::{ label: None, axis: None, }
 }
 
 ///|
@@ -1940,7 +1945,7 @@ pub(all) struct MLGatherSupportLimits {
 ///|
 /// Create a new MLGatherSupportLimits with default values
 pub fn MLGatherSupportLimits::default() -> MLGatherSupportLimits {
-  MLGatherSupportLimits::{ input: None, indices: None, output: None }
+  MLGatherSupportLimits::{ input: None, indices: None, output: None, }
 }
 
 ///|
@@ -2045,7 +2050,7 @@ pub(all) struct MLGemmSupportLimits {
 ///|
 /// Create a new MLGemmSupportLimits with default values
 pub fn MLGemmSupportLimits::default() -> MLGemmSupportLimits {
-  MLGemmSupportLimits::{ a: None, b: None, c: None, output: None }
+  MLGemmSupportLimits::{ a: None, b: None, c: None, output: None, }
 }
 
 ///|
@@ -2093,7 +2098,7 @@ pub(all) struct MLGruOptions {
   returnSequence : Bool?
   direction : MLRecurrentNetworkDirection?
   layout : MLGruWeightLayout?
-  activations : Array[MLRecurrentNetworkActivation]?
+  activations : FixedArray[MLRecurrentNetworkActivation]?
 }
 
 ///|
@@ -2123,7 +2128,7 @@ extern "js" fn MLGruOptions::to_js_ffi(self : MLGruOptions) -> JsValue =
   #|   returnSequence: (self.returnSequence === -1 ? undefined : self.returnSequence),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['forward', 'backward', 'both'][v]; })()),
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['zrn', 'rzn'][v]; })()),
-  #|   activations: ((() => { const v = self.activations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   activations: self.activations
   #| })
 
 ///|
@@ -2143,7 +2148,7 @@ extern "js" fn MLGruOptions::from_js_ffi(value : JsValue) -> MLGruOptions =
   #|   returnSequence: (v.returnSequence === undefined ? -1 : v.returnSequence),
   #|   direction: (v.direction === undefined ? undefined : ['forward', 'backward', 'both'].indexOf(v.direction)),
   #|   layout: (v.layout === undefined ? undefined : ['zrn', 'rzn'].indexOf(v.layout)),
-  #|   activations: (v.activations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activations })
+  #|   activations: v.activations
   #| })
 
 ///|
@@ -2230,7 +2235,7 @@ pub(all) struct MLGruCellOptions {
   recurrentBias : MLOperand?
   resetAfter : Bool?
   layout : MLGruWeightLayout?
-  activations : Array[MLRecurrentNetworkActivation]?
+  activations : FixedArray[MLRecurrentNetworkActivation]?
 }
 
 ///|
@@ -2254,7 +2259,7 @@ extern "js" fn MLGruCellOptions::to_js_ffi(self : MLGruCellOptions) -> JsValue =
   #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   resetAfter: (self.resetAfter === -1 ? undefined : self.resetAfter),
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['zrn', 'rzn'][v]; })()),
-  #|   activations: ((() => { const v = self.activations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   activations: self.activations
   #| })
 
 ///|
@@ -2273,7 +2278,7 @@ extern "js" fn MLGruCellOptions::from_js_ffi(
   #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
   #|   resetAfter: (v.resetAfter === undefined ? -1 : v.resetAfter),
   #|   layout: (v.layout === undefined ? undefined : ['zrn', 'rzn'].indexOf(v.layout)),
-  #|   activations: (v.activations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activations })
+  #|   activations: v.activations
   #| })
 
 ///|
@@ -2361,7 +2366,7 @@ pub(all) struct MLHardSigmoidOptions {
 ///|
 /// Create a new MLHardSigmoidOptions with default values
 pub fn MLHardSigmoidOptions::default() -> MLHardSigmoidOptions {
-  MLHardSigmoidOptions::{ label: None, alpha: None, beta: None }
+  MLHardSigmoidOptions::{ label: None, alpha: None, beta: None, }
 }
 
 ///|
@@ -2522,7 +2527,7 @@ pub(all) struct MLLayerNormalizationOptions {
   label : String?
   scale : MLOperand?
   bias : MLOperand?
-  axes : Array[Int]?
+  axes : FixedArray[Int]?
   epsilon : Double?
 }
 
@@ -2546,7 +2551,7 @@ extern "js" fn MLLayerNormalizationOptions::to_js_ffi(
   #|   label: self.label,
   #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   axes: ((() => { const v = self.axes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   axes: self.axes,
   #|   epsilon: ((() => { const v = self.epsilon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -2566,7 +2571,7 @@ extern "js" fn MLLayerNormalizationOptions::from_js_ffi(
   #|   label: v.label,
   #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
   #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   axes: (v.axes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.axes }),
+  #|   axes: v.axes,
   #|   epsilon: (v.epsilon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.epsilon })
   #| })
 
@@ -2588,7 +2593,7 @@ pub(all) struct MLLeakyReluOptions {
 ///|
 /// Create a new MLLeakyReluOptions with default values
 pub fn MLLeakyReluOptions::default() -> MLLeakyReluOptions {
-  MLLeakyReluOptions::{ label: None, alpha: None }
+  MLLeakyReluOptions::{ label: None, alpha: None, }
 }
 
 ///|
@@ -2632,7 +2637,7 @@ pub(all) struct MLLinearOptions {
 ///|
 /// Create a new MLLinearOptions with default values
 pub fn MLLinearOptions::default() -> MLLinearOptions {
-  MLLinearOptions::{ label: None, alpha: None, beta: None }
+  MLLinearOptions::{ label: None, alpha: None, beta: None, }
 }
 
 ///|
@@ -2675,7 +2680,7 @@ pub(all) struct MLLstmOptions {
   returnSequence : Bool?
   direction : MLRecurrentNetworkDirection?
   layout : MLLstmWeightLayout?
-  activations : Array[MLRecurrentNetworkActivation]?
+  activations : FixedArray[MLRecurrentNetworkActivation]?
 }
 
 ///|
@@ -2707,7 +2712,7 @@ extern "js" fn MLLstmOptions::to_js_ffi(self : MLLstmOptions) -> JsValue =
   #|   returnSequence: (self.returnSequence === -1 ? undefined : self.returnSequence),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['forward', 'backward', 'both'][v]; })()),
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['iofg', 'ifgo'][v]; })()),
-  #|   activations: ((() => { const v = self.activations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   activations: self.activations
   #| })
 
 ///|
@@ -2728,7 +2733,7 @@ extern "js" fn MLLstmOptions::from_js_ffi(value : JsValue) -> MLLstmOptions =
   #|   returnSequence: (v.returnSequence === undefined ? -1 : v.returnSequence),
   #|   direction: (v.direction === undefined ? undefined : ['forward', 'backward', 'both'].indexOf(v.direction)),
   #|   layout: (v.layout === undefined ? undefined : ['iofg', 'ifgo'].indexOf(v.layout)),
-  #|   activations: (v.activations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activations })
+  #|   activations: v.activations
   #| })
 
 ///|
@@ -2827,7 +2832,7 @@ pub(all) struct MLLstmCellOptions {
   recurrentBias : MLOperand?
   peepholeWeight : MLOperand?
   layout : MLLstmWeightLayout?
-  activations : Array[MLRecurrentNetworkActivation]?
+  activations : FixedArray[MLRecurrentNetworkActivation]?
 }
 
 ///|
@@ -2853,7 +2858,7 @@ extern "js" fn MLLstmCellOptions::to_js_ffi(
   #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   peepholeWeight: ((() => { const v = self.peepholeWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['iofg', 'ifgo'][v]; })()),
-  #|   activations: ((() => { const v = self.activations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   activations: self.activations
   #| })
 
 ///|
@@ -2872,7 +2877,7 @@ extern "js" fn MLLstmCellOptions::from_js_ffi(
   #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
   #|   peepholeWeight: (v.peepholeWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.peepholeWeight }),
   #|   layout: (v.layout === undefined ? undefined : ['iofg', 'ifgo'].indexOf(v.layout)),
-  #|   activations: (v.activations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activations })
+  #|   activations: v.activations
   #| })
 
 ///|
@@ -2974,7 +2979,7 @@ pub(all) struct MLPadOptions {
 ///|
 /// Create a new MLPadOptions with default values
 pub fn MLPadOptions::default() -> MLPadOptions {
-  MLPadOptions::{ label: None, mode: None, value: None }
+  MLPadOptions::{ label: None, mode: None, value: None, }
 }
 
 ///|
@@ -3009,13 +3014,13 @@ pub fn MLPadOptions::from_js(value : JsValue) -> MLPadOptions {
 /// MLPool2dOptions dictionary
 pub(all) struct MLPool2dOptions {
   label : String?
-  windowDimensions : Array[Int]?
-  padding : Array[Int]?
-  strides : Array[Int]?
-  dilations : Array[Int]?
+  windowDimensions : FixedArray[Int]?
+  padding : FixedArray[Int]?
+  strides : FixedArray[Int]?
+  dilations : FixedArray[Int]?
   layout : MLInputOperandLayout?
   outputShapeRounding : MLRoundingType?
-  outputSizes : Array[Int]?
+  outputSizes : FixedArray[Int]?
 }
 
 ///|
@@ -3037,13 +3042,13 @@ pub fn MLPool2dOptions::default() -> MLPool2dOptions {
 extern "js" fn MLPool2dOptions::to_js_ffi(self : MLPool2dOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   windowDimensions: ((() => { const v = self.windowDimensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   padding: ((() => { const v = self.padding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   strides: ((() => { const v = self.strides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   dilations: ((() => { const v = self.dilations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   windowDimensions: self.windowDimensions,
+  #|   padding: self.padding,
+  #|   strides: self.strides,
+  #|   dilations: self.dilations,
   #|   layout: ((() => { const v = self.layout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
   #|   outputShapeRounding: ((() => { const v = self.outputShapeRounding; if (v === undefined) return undefined; return ['floor', 'ceil'][v]; })()),
-  #|   outputSizes: ((() => { const v = self.outputSizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   outputSizes: self.outputSizes
   #| })
 
 ///|
@@ -3056,13 +3061,13 @@ pub fn MLPool2dOptions::to_js(self : MLPool2dOptions) -> JsValue {
 extern "js" fn MLPool2dOptions::from_js_ffi(value : JsValue) -> MLPool2dOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   windowDimensions: (v.windowDimensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.windowDimensions }),
-  #|   padding: (v.padding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.padding }),
-  #|   strides: (v.strides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strides }),
-  #|   dilations: (v.dilations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dilations }),
+  #|   windowDimensions: v.windowDimensions,
+  #|   padding: v.padding,
+  #|   strides: v.strides,
+  #|   dilations: v.dilations,
   #|   layout: (v.layout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.layout)),
   #|   outputShapeRounding: (v.outputShapeRounding === undefined ? undefined : ['floor', 'ceil'].indexOf(v.outputShapeRounding)),
-  #|   outputSizes: (v.outputSizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputSizes })
+  #|   outputSizes: v.outputSizes
   #| })
 
 ///|
@@ -3082,7 +3087,7 @@ pub(all) struct MLPreluSupportLimits {
 ///|
 /// Create a new MLPreluSupportLimits with default values
 pub fn MLPreluSupportLimits::default() -> MLPreluSupportLimits {
-  MLPreluSupportLimits::{ input: None, slope: None, output: None }
+  MLPreluSupportLimits::{ input: None, slope: None, output: None, }
 }
 
 ///|
@@ -3121,21 +3126,21 @@ pub fn MLPreluSupportLimits::from_js(value : JsValue) -> MLPreluSupportLimits {
 /// MLReduceOptions dictionary
 pub(all) struct MLReduceOptions {
   label : String?
-  axes : Array[Int]?
+  axes : FixedArray[Int]?
   keepDimensions : Bool?
 }
 
 ///|
 /// Create a new MLReduceOptions with default values
 pub fn MLReduceOptions::default() -> MLReduceOptions {
-  MLReduceOptions::{ label: None, axes: None, keepDimensions: None }
+  MLReduceOptions::{ label: None, axes: None, keepDimensions: None, }
 }
 
 ///|
 extern "js" fn MLReduceOptions::to_js_ffi(self : MLReduceOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   axes: ((() => { const v = self.axes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   axes: self.axes,
   #|   keepDimensions: (self.keepDimensions === -1 ? undefined : self.keepDimensions)
   #| })
 
@@ -3149,7 +3154,7 @@ pub fn MLReduceOptions::to_js(self : MLReduceOptions) -> JsValue {
 extern "js" fn MLReduceOptions::from_js_ffi(value : JsValue) -> MLReduceOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   axes: (v.axes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.axes }),
+  #|   axes: v.axes,
   #|   keepDimensions: (v.keepDimensions === undefined ? -1 : v.keepDimensions)
   #| })
 
@@ -3164,9 +3169,9 @@ pub fn MLReduceOptions::from_js(value : JsValue) -> MLReduceOptions {
 pub(all) struct MLResample2dOptions {
   label : String?
   mode : MLInterpolationMode?
-  scales : Array[Double]?
-  sizes : Array[Int]?
-  axes : Array[Int]?
+  scales : FixedArray[Double]?
+  sizes : FixedArray[Int]?
+  axes : FixedArray[Int]?
 }
 
 ///|
@@ -3188,9 +3193,9 @@ extern "js" fn MLResample2dOptions::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['nearest-neighbor', 'linear'][v]; })()),
-  #|   scales: ((() => { const v = self.scales; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sizes: ((() => { const v = self.sizes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   axes: ((() => { const v = self.axes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   scales: self.scales,
+  #|   sizes: self.sizes,
+  #|   axes: self.axes
   #| })
 
 ///|
@@ -3206,9 +3211,9 @@ extern "js" fn MLResample2dOptions::from_js_ffi(
   #| (v) => ({
   #|   label: v.label,
   #|   mode: (v.mode === undefined ? undefined : ['nearest-neighbor', 'linear'].indexOf(v.mode)),
-  #|   scales: (v.scales === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scales }),
-  #|   sizes: (v.sizes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sizes }),
-  #|   axes: (v.axes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.axes })
+  #|   scales: v.scales,
+  #|   sizes: v.sizes,
+  #|   axes: v.axes
   #| })
 
 ///|
@@ -3221,20 +3226,20 @@ pub fn MLResample2dOptions::from_js(value : JsValue) -> MLResample2dOptions {
 /// MLReverseOptions dictionary
 pub(all) struct MLReverseOptions {
   label : String?
-  axes : Array[Int]?
+  axes : FixedArray[Int]?
 }
 
 ///|
 /// Create a new MLReverseOptions with default values
 pub fn MLReverseOptions::default() -> MLReverseOptions {
-  MLReverseOptions::{ label: None, axes: None }
+  MLReverseOptions::{ label: None, axes: None, }
 }
 
 ///|
 extern "js" fn MLReverseOptions::to_js_ffi(self : MLReverseOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   axes: ((() => { const v = self.axes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   axes: self.axes
   #| })
 
 ///|
@@ -3249,7 +3254,7 @@ extern "js" fn MLReverseOptions::from_js_ffi(
 ) -> MLReverseOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   axes: (v.axes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.axes })
+  #|   axes: v.axes
   #| })
 
 ///|
@@ -3268,7 +3273,7 @@ pub(all) struct MLScatterOptions {
 ///|
 /// Create a new MLScatterOptions with default values
 pub fn MLScatterOptions::default() -> MLScatterOptions {
-  MLScatterOptions::{ label: None, axis: None }
+  MLScatterOptions::{ label: None, axis: None, }
 }
 
 ///|
@@ -3359,20 +3364,20 @@ pub fn MLScatterSupportLimits::from_js(
 /// MLSliceOptions dictionary
 pub(all) struct MLSliceOptions {
   label : String?
-  strides : Array[Int]?
+  strides : FixedArray[Int]?
 }
 
 ///|
 /// Create a new MLSliceOptions with default values
 pub fn MLSliceOptions::default() -> MLSliceOptions {
-  MLSliceOptions::{ label: None, strides: None }
+  MLSliceOptions::{ label: None, strides: None, }
 }
 
 ///|
 extern "js" fn MLSliceOptions::to_js_ffi(self : MLSliceOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   strides: ((() => { const v = self.strides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   strides: self.strides
   #| })
 
 ///|
@@ -3385,7 +3390,7 @@ pub fn MLSliceOptions::to_js(self : MLSliceOptions) -> JsValue {
 extern "js" fn MLSliceOptions::from_js_ffi(value : JsValue) -> MLSliceOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   strides: (v.strides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strides })
+  #|   strides: v.strides
   #| })
 
 ///|
@@ -3404,7 +3409,7 @@ pub(all) struct MLSplitOptions {
 ///|
 /// Create a new MLSplitOptions with default values
 pub fn MLSplitOptions::default() -> MLSplitOptions {
-  MLSplitOptions::{ label: None, axis: None }
+  MLSplitOptions::{ label: None, axis: None, }
 }
 
 ///|
@@ -3443,7 +3448,7 @@ pub(all) struct MLSplitSupportLimits {
 ///|
 /// Create a new MLSplitSupportLimits with default values
 pub fn MLSplitSupportLimits::default() -> MLSplitSupportLimits {
-  MLSplitSupportLimits::{ input: None, outputs: None }
+  MLSplitSupportLimits::{ input: None, outputs: None, }
 }
 
 ///|
@@ -3480,13 +3485,13 @@ pub fn MLSplitSupportLimits::from_js(value : JsValue) -> MLSplitSupportLimits {
 /// MLTransposeOptions dictionary
 pub(all) struct MLTransposeOptions {
   label : String?
-  permutation : Array[Int]?
+  permutation : FixedArray[Int]?
 }
 
 ///|
 /// Create a new MLTransposeOptions with default values
 pub fn MLTransposeOptions::default() -> MLTransposeOptions {
-  MLTransposeOptions::{ label: None, permutation: None }
+  MLTransposeOptions::{ label: None, permutation: None, }
 }
 
 ///|
@@ -3495,7 +3500,7 @@ extern "js" fn MLTransposeOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   permutation: ((() => { const v = self.permutation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   permutation: self.permutation
   #| })
 
 ///|
@@ -3510,7 +3515,7 @@ extern "js" fn MLTransposeOptions::from_js_ffi(
 ) -> MLTransposeOptions =
   #| (v) => ({
   #|   label: v.label,
-  #|   permutation: (v.permutation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.permutation })
+  #|   permutation: v.permutation
   #| })
 
 ///|
@@ -3530,7 +3535,7 @@ pub(all) struct MLTriangularOptions {
 ///|
 /// Create a new MLTriangularOptions with default values
 pub fn MLTriangularOptions::default() -> MLTriangularOptions {
-  MLTriangularOptions::{ label: None, upper: None, diagonal: None }
+  MLTriangularOptions::{ label: None, upper: None, diagonal: None, }
 }
 
 ///|
@@ -3924,7 +3929,7 @@ pub extern "js" fn MLOperand::get_data_type(
   #| (self) => ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'].indexOf(self.dataType)
 
 ///|
-pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> Array[Int] =
+pub extern "js" fn MLOperand::get_shape(self : MLOperand) -> FixedArray[Int] =
   #| (self) => self.shape
 
 ///|
@@ -3962,7 +3967,7 @@ pub extern "js" fn MLTensor::get_data_type(
   #| (self) => ['float32', 'float16', 'int32', 'uint32', 'int64', 'uint64', 'int8', 'uint8'].indexOf(self.dataType)
 
 ///|
-pub extern "js" fn MLTensor::get_shape(self : MLTensor) -> Array[Int] =
+pub extern "js" fn MLTensor::get_shape(self : MLTensor) -> FixedArray[Int] =
   #| (self) => self.shape
 
 ///|
@@ -4225,7 +4230,7 @@ pub fn MLGraphBuilder::clamp_with_options(
 ///|
 pub extern "js" fn MLGraphBuilder::concat(
   self : MLGraphBuilder,
-  inputs : Array[MLOperand],
+  inputs : FixedArray[MLOperand],
   axis : Int,
 ) -> MLOperand =
   #| (self, inputs, axis) => self.concat(inputs, axis)
@@ -4233,7 +4238,7 @@ pub extern "js" fn MLGraphBuilder::concat(
 ///|
 extern "js" fn MLGraphBuilder::concat_with_options_ffi(
   self : MLGraphBuilder,
-  inputs : Array[MLOperand],
+  inputs : FixedArray[MLOperand],
   axis : Int,
   options : JsValue,
 ) -> MLOperand =
@@ -4242,7 +4247,7 @@ extern "js" fn MLGraphBuilder::concat_with_options_ffi(
 ///|
 pub fn MLGraphBuilder::concat_with_options(
   self : MLGraphBuilder,
-  inputs : Array[MLOperand],
+  inputs : FixedArray[MLOperand],
   axis : Int,
   options : MLOperatorOptions,
 ) -> MLOperand {
@@ -5304,7 +5309,7 @@ pub fn MLGraphBuilder::elu_with_options(
 pub extern "js" fn MLGraphBuilder::expand(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
 ) -> MLOperand =
   #| (self, input, new_shape) => self.expand(input, new_shape)
 
@@ -5312,7 +5317,7 @@ pub extern "js" fn MLGraphBuilder::expand(
 extern "js" fn MLGraphBuilder::expand_with_options_ffi(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
   options : JsValue,
 ) -> MLOperand =
   #| (self, input, new_shape, options) => self.expand(input, new_shape, options)
@@ -5321,7 +5326,7 @@ extern "js" fn MLGraphBuilder::expand_with_options_ffi(
 pub fn MLGraphBuilder::expand_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
   options : MLOperatorOptions,
 ) -> MLOperand {
   MLGraphBuilder::expand_with_options_ffi(
@@ -5482,7 +5487,7 @@ pub extern "js" fn MLGraphBuilder::gru(
   recurrent_weight : MLOperand,
   steps : Int,
   hidden_size : Int,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size) => self.gru(input, weight, recurrent_weight, steps, hidden_size)
 
 ///|
@@ -5494,7 +5499,7 @@ extern "js" fn MLGraphBuilder::gru_with_options_ffi(
   steps : Int,
   hidden_size : Int,
   options : JsValue,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size, options) => self.gru(input, weight, recurrent_weight, steps, hidden_size, options)
 
 ///|
@@ -5506,7 +5511,7 @@ pub fn MLGraphBuilder::gru_with_options(
   steps : Int,
   hidden_size : Int,
   options : MLGruOptions,
-) -> Array[MLOperand] {
+) -> FixedArray[MLOperand] {
   MLGraphBuilder::gru_with_options_ffi(
     self,
     input,
@@ -5722,7 +5727,7 @@ pub extern "js" fn MLGraphBuilder::lstm(
   recurrent_weight : MLOperand,
   steps : Int,
   hidden_size : Int,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size) => self.lstm(input, weight, recurrent_weight, steps, hidden_size)
 
 ///|
@@ -5734,7 +5739,7 @@ extern "js" fn MLGraphBuilder::lstm_with_options_ffi(
   steps : Int,
   hidden_size : Int,
   options : JsValue,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, steps, hidden_size, options) => self.lstm(input, weight, recurrent_weight, steps, hidden_size, options)
 
 ///|
@@ -5746,7 +5751,7 @@ pub fn MLGraphBuilder::lstm_with_options(
   steps : Int,
   hidden_size : Int,
   options : MLLstmOptions,
-) -> Array[MLOperand] {
+) -> FixedArray[MLOperand] {
   MLGraphBuilder::lstm_with_options_ffi(
     self,
     input,
@@ -5767,7 +5772,7 @@ pub extern "js" fn MLGraphBuilder::lstm_cell(
   hidden_state : MLOperand,
   cell_state : MLOperand,
   hidden_size : Int,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, hidden_state, cell_state, hidden_size) => self.lstmCell(input, weight, recurrent_weight, hidden_state, cell_state, hidden_size)
 
 ///|
@@ -5780,7 +5785,7 @@ extern "js" fn MLGraphBuilder::lstm_cell_with_options_ffi(
   cell_state : MLOperand,
   hidden_size : Int,
   options : JsValue,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, weight, recurrent_weight, hidden_state, cell_state, hidden_size, options) => self.lstmCell(input, weight, recurrent_weight, hidden_state, cell_state, hidden_size, options)
 
 ///|
@@ -5793,7 +5798,7 @@ pub fn MLGraphBuilder::lstm_cell_with_options(
   cell_state : MLOperand,
   hidden_size : Int,
   options : MLLstmCellOptions,
-) -> Array[MLOperand] {
+) -> FixedArray[MLOperand] {
   MLGraphBuilder::lstm_cell_with_options_ffi(
     self,
     input,
@@ -5837,8 +5842,8 @@ pub fn MLGraphBuilder::matmul_with_options(
 pub extern "js" fn MLGraphBuilder::pad(
   self : MLGraphBuilder,
   input : MLOperand,
-  beginning_padding : Array[Int],
-  ending_padding : Array[Int],
+  beginning_padding : FixedArray[Int],
+  ending_padding : FixedArray[Int],
 ) -> MLOperand =
   #| (self, input, beginning_padding, ending_padding) => self.pad(input, beginning_padding, ending_padding)
 
@@ -5846,8 +5851,8 @@ pub extern "js" fn MLGraphBuilder::pad(
 extern "js" fn MLGraphBuilder::pad_with_options_ffi(
   self : MLGraphBuilder,
   input : MLOperand,
-  beginning_padding : Array[Int],
-  ending_padding : Array[Int],
+  beginning_padding : FixedArray[Int],
+  ending_padding : FixedArray[Int],
   options : JsValue,
 ) -> MLOperand =
   #| (self, input, beginning_padding, ending_padding, options) => self.pad(input, beginning_padding, ending_padding, options)
@@ -5856,8 +5861,8 @@ extern "js" fn MLGraphBuilder::pad_with_options_ffi(
 pub fn MLGraphBuilder::pad_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  beginning_padding : Array[Int],
-  ending_padding : Array[Int],
+  beginning_padding : FixedArray[Int],
+  ending_padding : FixedArray[Int],
   options : MLPadOptions,
 ) -> MLOperand {
   MLGraphBuilder::pad_with_options_ffi(
@@ -6268,7 +6273,7 @@ pub fn MLGraphBuilder::resample2d_with_options(
 pub extern "js" fn MLGraphBuilder::reshape(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
 ) -> MLOperand =
   #| (self, input, new_shape) => self.reshape(input, new_shape)
 
@@ -6276,7 +6281,7 @@ pub extern "js" fn MLGraphBuilder::reshape(
 extern "js" fn MLGraphBuilder::reshape_with_options_ffi(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
   options : JsValue,
 ) -> MLOperand =
   #| (self, input, new_shape, options) => self.reshape(input, new_shape, options)
@@ -6285,7 +6290,7 @@ extern "js" fn MLGraphBuilder::reshape_with_options_ffi(
 pub fn MLGraphBuilder::reshape_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  new_shape : Array[Int],
+  new_shape : FixedArray[Int],
   options : MLOperatorOptions,
 ) -> MLOperand {
   MLGraphBuilder::reshape_with_options_ffi(
@@ -6420,8 +6425,8 @@ pub fn MLGraphBuilder::sigmoid_with_options(
 pub extern "js" fn MLGraphBuilder::slice(
   self : MLGraphBuilder,
   input : MLOperand,
-  starts : Array[Int],
-  sizes : Array[Int],
+  starts : FixedArray[Int],
+  sizes : FixedArray[Int],
 ) -> MLOperand =
   #| (self, input, starts, sizes) => self.slice(input, starts, sizes)
 
@@ -6429,8 +6434,8 @@ pub extern "js" fn MLGraphBuilder::slice(
 extern "js" fn MLGraphBuilder::slice_with_options_ffi(
   self : MLGraphBuilder,
   input : MLOperand,
-  starts : Array[Int],
-  sizes : Array[Int],
+  starts : FixedArray[Int],
+  sizes : FixedArray[Int],
   options : JsValue,
 ) -> MLOperand =
   #| (self, input, starts, sizes, options) => self.slice(input, starts, sizes, options)
@@ -6439,8 +6444,8 @@ extern "js" fn MLGraphBuilder::slice_with_options_ffi(
 pub fn MLGraphBuilder::slice_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  starts : Array[Int],
-  sizes : Array[Int],
+  starts : FixedArray[Int],
+  sizes : FixedArray[Int],
   options : MLSliceOptions,
 ) -> MLOperand {
   MLGraphBuilder::slice_with_options_ffi(
@@ -6532,7 +6537,7 @@ pub extern "js" fn MLGraphBuilder::split(
   self : MLGraphBuilder,
   input : MLOperand,
   splits : IntOrArrayOfInt,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, splits) => self.split(input, splits)
 
 ///|
@@ -6541,7 +6546,7 @@ extern "js" fn MLGraphBuilder::split_with_options_ffi(
   input : MLOperand,
   splits : IntOrArrayOfInt,
   options : JsValue,
-) -> Array[MLOperand] =
+) -> FixedArray[MLOperand] =
   #| (self, input, splits, options) => self.split(input, splits, options)
 
 ///|
@@ -6550,7 +6555,7 @@ pub fn MLGraphBuilder::split_with_options(
   input : MLOperand,
   splits : IntOrArrayOfInt,
   options : MLSplitOptions,
-) -> Array[MLOperand] {
+) -> FixedArray[MLOperand] {
   MLGraphBuilder::split_with_options_ffi(self, input, splits, options.to_js())
 }
 
@@ -6582,7 +6587,7 @@ pub fn MLGraphBuilder::tanh_with_options(
 pub extern "js" fn MLGraphBuilder::tile(
   self : MLGraphBuilder,
   input : MLOperand,
-  repetitions : Array[Int],
+  repetitions : FixedArray[Int],
 ) -> MLOperand =
   #| (self, input, repetitions) => self.tile(input, repetitions)
 
@@ -6590,7 +6595,7 @@ pub extern "js" fn MLGraphBuilder::tile(
 extern "js" fn MLGraphBuilder::tile_with_options_ffi(
   self : MLGraphBuilder,
   input : MLOperand,
-  repetitions : Array[Int],
+  repetitions : FixedArray[Int],
   options : JsValue,
 ) -> MLOperand =
   #| (self, input, repetitions, options) => self.tile(input, repetitions, options)
@@ -6599,7 +6604,7 @@ extern "js" fn MLGraphBuilder::tile_with_options_ffi(
 pub fn MLGraphBuilder::tile_with_options(
   self : MLGraphBuilder,
   input : MLOperand,
-  repetitions : Array[Int],
+  repetitions : FixedArray[Int],
   options : MLOperatorOptions,
 ) -> MLOperand {
   MLGraphBuilder::tile_with_options_ffi(

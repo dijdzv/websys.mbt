@@ -8,16 +8,16 @@ pub type ProfilerResource = String
 ///|
 /// ProfilerTrace dictionary
 pub(all) struct ProfilerTrace {
-  resources : Array[ProfilerResource]
-  frames : Array[ProfilerFrame]
-  stacks : Array[ProfilerStack]
-  samples : Array[ProfilerSample]
+  resources : FixedArray[ProfilerResource]
+  frames : FixedArray[ProfilerFrame]
+  stacks : FixedArray[ProfilerStack]
+  samples : FixedArray[ProfilerSample]
 }
 
 ///|
 /// Create a new ProfilerTrace with default values
 pub fn ProfilerTrace::default() -> ProfilerTrace {
-  ProfilerTrace::{ resources: [], frames: [], stacks: [], samples: [] }
+  ProfilerTrace::{ resources: [], frames: [], stacks: [], samples: [], }
 }
 
 ///|
@@ -60,7 +60,7 @@ pub(all) struct ProfilerSample {
 ///|
 /// Create a new ProfilerSample
 pub fn ProfilerSample::new(timestamp~ : DOMHighResTimeStamp) -> ProfilerSample {
-  ProfilerSample::{ timestamp, stackId: None }
+  ProfilerSample::{ timestamp, stackId: None, }
 }
 
 ///|
@@ -99,7 +99,7 @@ pub(all) struct ProfilerStack {
 ///|
 /// Create a new ProfilerStack with default values
 pub fn ProfilerStack::default() -> ProfilerStack {
-  ProfilerStack::{ parentId: None, frameId: 0 }
+  ProfilerStack::{ parentId: None, frameId: 0, }
 }
 
 ///|
@@ -140,7 +140,7 @@ pub(all) struct ProfilerFrame {
 ///|
 /// Create a new ProfilerFrame with default values
 pub fn ProfilerFrame::default() -> ProfilerFrame {
-  ProfilerFrame::{ name: "", resourceId: None, line: None, column: None }
+  ProfilerFrame::{ name: "", resourceId: None, line: None, column: None, }
 }
 
 ///|
@@ -185,7 +185,7 @@ pub(all) struct ProfilerInitOptions {
 pub fn ProfilerInitOptions::new(
   sampleInterval~ : DOMHighResTimeStamp,
 ) -> ProfilerInitOptions {
-  ProfilerInitOptions::{ sampleInterval, maxBufferSize: 0 }
+  ProfilerInitOptions::{ sampleInterval, maxBufferSize: 0, }
 }
 
 ///|
@@ -256,7 +256,7 @@ pub(all) enum ProfilerConstructorError {
   RangeError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Profiler::get_sample_interval(

@@ -11,7 +11,7 @@ pub(all) struct SyncEventInit {
 ///|
 /// Create a new SyncEventInit with default values
 pub fn SyncEventInit::default() -> SyncEventInit {
-  SyncEventInit::{ tag: "", lastChance: None }
+  SyncEventInit::{ tag: "", lastChance: None, }
 }
 
 ///|
@@ -74,7 +74,7 @@ pub(all) enum SyncManagerRegisterError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SyncManager::register(
@@ -86,7 +86,7 @@ pub extern "js" fn SyncManager::register(
 ///|
 pub extern "js" fn SyncManager::get_tags(
   self : SyncManager,
-) -> Promise[Array[String]] =
+) -> Promise[FixedArray[String]] =
   #| (self) => self.getTags()
 
 ///|

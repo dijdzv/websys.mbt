@@ -8,7 +8,7 @@ pub(all) enum RTCDegradationPreference {
   MaintainResolution
   Balanced
   MaintainFramerateAndResolution
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -44,7 +44,7 @@ pub fn RTCDegradationPreference::from_string(
 pub(all) struct RTCRtpSendParameters {
   degradationPreference : RTCDegradationPreference?
   transactionId : String
-  encodings : Array[RTCRtpEncodingParameters]
+  encodings : FixedArray[RTCRtpEncodingParameters]
 }
 
 ///|

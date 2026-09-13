@@ -7,7 +7,7 @@
 fn test_output_element() -> Unit {
   let doc = get_document()
   let output = @websys.HTMLOutputElement::from_js_value(
-    doc.create_element("output").to_js_value(),
+    create_element(doc, "output").to_js_value(),
   )
   // name
   output.set_name("result")

@@ -6,7 +6,7 @@
 pub(all) enum ChildDisplayType {
   Block
   Normal
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn ChildDisplayType::from_string(s : String) -> ChildDisplayType? {
 pub(all) enum LayoutSizingMode {
   BlockLike
   Manual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -60,7 +60,7 @@ pub(all) enum BlockFragmentationType {
   Page
   Column
   Region
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -97,7 +97,7 @@ pub(all) enum BreakType {
   Column
   Page
   Region
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -134,7 +134,7 @@ pub(all) struct LayoutOptions {
 ///|
 /// Create a new LayoutOptions with default values
 pub fn LayoutOptions::default() -> LayoutOptions {
-  LayoutOptions::{ childDisplay: None, sizing: None }
+  LayoutOptions::{ childDisplay: None, sizing: None, }
 }
 
 ///|
@@ -244,14 +244,14 @@ pub fn LayoutConstraintsOptions::from_js(
 ///|
 /// BreakTokenOptions dictionary
 pub(all) struct BreakTokenOptions {
-  childBreakTokens : Array[ChildBreakToken]?
+  childBreakTokens : FixedArray[ChildBreakToken]?
   data : JsValue?
 }
 
 ///|
 /// Create a new BreakTokenOptions with default values
 pub fn BreakTokenOptions::default() -> BreakTokenOptions {
-  BreakTokenOptions::{ childBreakTokens: None, data: None }
+  BreakTokenOptions::{ childBreakTokens: None, data: None, }
 }
 
 ///|
@@ -259,7 +259,7 @@ extern "js" fn BreakTokenOptions::to_js_ffi(
   self : BreakTokenOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   childBreakTokens: ((() => { const v = self.childBreakTokens; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   childBreakTokens: self.childBreakTokens,
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -274,7 +274,7 @@ extern "js" fn BreakTokenOptions::from_js_ffi(
   value : JsValue,
 ) -> BreakTokenOptions =
   #| (v) => ({
-  #|   childBreakTokens: (v.childBreakTokens === undefined ? { $tag: 0 } : { $tag: 1, _0: v.childBreakTokens }),
+  #|   childBreakTokens: v.childBreakTokens,
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
   #| })
 
@@ -290,7 +290,7 @@ pub(all) struct FragmentResultOptions {
   inlineSize : Double?
   blockSize : Double?
   autoBlockSize : Double?
-  childFragments : Array[LayoutFragment]?
+  childFragments : FixedArray[LayoutFragment]?
   data : JsValue?
   breakToken : BreakTokenOptions?
 }
@@ -316,7 +316,7 @@ extern "js" fn FragmentResultOptions::to_js_ffi(
   #|   inlineSize: ((() => { const v = self.inlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   blockSize: ((() => { const v = self.blockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   autoBlockSize: ((() => { const v = self.autoBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   childFragments: ((() => { const v = self.childFragments; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   childFragments: self.childFragments,
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   breakToken: ((() => { const v = self.breakToken; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -335,7 +335,7 @@ extern "js" fn FragmentResultOptions::from_js_ffi(
   #|   inlineSize: (v.inlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineSize }),
   #|   blockSize: (v.blockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blockSize }),
   #|   autoBlockSize: (v.autoBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoBlockSize }),
-  #|   childFragments: (v.childFragments === undefined ? { $tag: 0 } : { $tag: 1, _0: v.childFragments }),
+  #|   childFragments: v.childFragments,
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
   #|   breakToken: (v.breakToken === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakToken })
   #| })
@@ -356,7 +356,7 @@ pub(all) struct IntrinsicSizesResultOptions {
 ///|
 /// Create a new IntrinsicSizesResultOptions with default values
 pub fn IntrinsicSizesResultOptions::default() -> IntrinsicSizesResultOptions {
-  IntrinsicSizesResultOptions::{ maxContentSize: None, minContentSize: None }
+  IntrinsicSizesResultOptions::{ maxContentSize: None, minContentSize: None, }
 }
 
 ///|
@@ -807,7 +807,7 @@ pub extern "js" fn JsValue::to_break_token(self : JsValue) -> BreakToken =
 ///|
 pub extern "js" fn BreakToken::get_child_break_tokens(
   self : BreakToken,
-) -> Array[ChildBreakToken] =
+) -> FixedArray[ChildBreakToken] =
   #| (self) => self.childBreakTokens
 
 ///|

@@ -34,7 +34,7 @@ pub extern "js" fn XRMesh::get_mesh_space(self : XRMesh) -> XRSpace =
   #| (self) => self.meshSpace
 
 ///|
-pub extern "js" fn XRMesh::get_vertices(self : XRMesh) -> Array[Float32Array] =
+pub extern "js" fn XRMesh::get_vertices(self : XRMesh) -> Float32Array =
   #| (self) => self.vertices
 
 ///|

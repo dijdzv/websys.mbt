@@ -24,17 +24,38 @@ moon add dijdzv/websys
 
 ## Generation
 
-This package is auto-generated from WebIDL specifications using [webidl-bindgen.mbt](https://www.npmjs.com/package/webidl-bindgen.mbt):
+This package is generated from WebIDL specifications by the local MoonBit
+generator in [`generator/`](generator/). The generator is not published to npm.
 
 ```bash
-# Install dependencies (first time only)
+# Prepare the pinned compiler (Windows x64)
+mise trust
+mise run setup
+
+# Install generation dependencies
 bun install
 
 # Regenerate bindings
-just generate
+mise run generate
 ```
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
+
+Development uses MoonBit `0.10.12+1634b282e` and `moonbitlang/async` `0.21.3`.
+Bindings currently support JavaScript; WasmGC support is not implemented yet.
+Change the generator rather than editing generated `src/*.mbt` files.
+Generation reads MDN metadata over the network for typed errors and event types.
+
+Run `mise run check` for warning-free compiler checks and `mise run test` for
+generator tests plus headless browser integration. Install the browser once with
+`cd test && bun install && bunx playwright install chromium`. An existing
+Chromium can be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
+Playwright runs on Node; Bun remains the generator host and dependency installer.
+
+This update uses `FixedArray` for generated WebIDL sequences and `Debug` for
+generated debugging representations. Callers using explicit `Array` types or
+`Show` constraints may need to adapt. WebIDL `long long` conversions account for
+the compiler's BigInt representation; browser APIs still receive JavaScript numbers.
 
 ## Known Limitations
 

@@ -6,7 +6,7 @@
 pub(all) enum RenderBlockingStatusType {
   Blocking
   NonBlocking
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -211,19 +211,19 @@ pub extern "js" fn PerformanceResourceTiming::get_worker_final_router_source(
 pub extern "js" fn PerformanceResourceTiming::get_transfer_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.transferSize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.transferSize))
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_encoded_body_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.encodedBodySize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.encodedBodySize))
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_decoded_body_size(
   self : PerformanceResourceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.decodedBodySize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.decodedBodySize))
 
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_response_status(
@@ -258,5 +258,5 @@ pub extern "js" fn PerformanceResourceTiming::to_json(
 ///|
 pub extern "js" fn PerformanceResourceTiming::get_server_timing(
   self : PerformanceResourceTiming,
-) -> Array[PerformanceServerTiming] =
+) -> FixedArray[PerformanceServerTiming] =
   #| (self) => self.serverTiming

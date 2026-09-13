@@ -6,7 +6,7 @@
 pub(all) enum IterationCompositeOperation {
   Replace
   Accumulate
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub(all) enum AnimationTriggerBehavior {
   Repeat
   Alternate
   State
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -416,7 +416,7 @@ pub(all) struct TimelineRangeOffset {
 ///|
 /// Create a new TimelineRangeOffset with default values
 pub fn TimelineRangeOffset::default() -> TimelineRangeOffset {
-  TimelineRangeOffset::{ rangeName: Nullable::Undefined, offset: None }
+  TimelineRangeOffset::{ rangeName: Nullable::Undefined, offset: None, }
 }
 
 ///|
@@ -711,13 +711,13 @@ pub extern "js" fn GroupEffect::as_sequence_effect(
 
 ///|
 pub extern "js" fn GroupEffect::new(
-  children : Array[AnimationEffect],
+  children : FixedArray[AnimationEffect],
 ) -> GroupEffect =
   #| (children) => new GroupEffect(children)
 
 ///|
 pub extern "js" fn GroupEffect::new_with_timing(
-  children : Array[AnimationEffect],
+  children : FixedArray[AnimationEffect],
   timing : DoubleOrEffectTiming,
 ) -> GroupEffect =
   #| (children, timing) => new GroupEffect(children, timing)
@@ -861,13 +861,13 @@ pub extern "js" fn SequenceEffect::to_group_effect(
 
 ///|
 pub extern "js" fn SequenceEffect::new(
-  children : Array[AnimationEffect],
+  children : FixedArray[AnimationEffect],
 ) -> SequenceEffect =
   #| (children) => new SequenceEffect(children)
 
 ///|
 pub extern "js" fn SequenceEffect::new_with_timing(
-  children : Array[AnimationEffect],
+  children : FixedArray[AnimationEffect],
   timing : DoubleOrEffectTiming,
 ) -> SequenceEffect =
   #| (children, timing) => new SequenceEffect(children, timing)

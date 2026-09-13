@@ -20,7 +20,7 @@ just check
 # コードフォーマット
 just fmt
 
-# バインディング再生成（npm版）
+# バインディング再生成（同梱生成器）
 just generate
 
 # バインディング再生成（ローカルビルド版）
@@ -37,8 +37,8 @@ just install
 `@webref/idl`（WebIDL仕様） → `webidl-bindgen.mbt`（コード生成ツール） → `src/*.mbt`（生成コード）
 
 - `src/`配下の全`.mbt`ファイルは**自動生成**されたもの。手動編集は再生成で失われる
-- 仕様ごとに1ファイル生成（`--per-spec`オプション）
-- コード生成ツールは`node_modules/`内の`webidl-bindgen.mbt` npm パッケージ
+- 仕様ごとに1ファイル生成
+- コード生成ツールは `generator/src/` に同梱。npm版生成器は使用・公開しない
 
 ### 生成コードのパターン
 
@@ -65,7 +65,7 @@ pub extern "js" fn HTMLElement::get_title(self : HTMLElement) -> String
 ## 重要な注意事項
 
 - `src/`配下のファイルを手動で編集しない。変更が必要な場合は`webidl-bindgen.mbt`ツール側を修正する
-- `moon.mod.json`のバージョンはリリース時に手動で更新する
+- `moon.mod`のバージョンはリリース時に更新する
 - `moon check`による型チェックで生成コードの正しさを検証する
 - `test/`配下に統合テストあり（別モジュール、Playwright + Chromium で実行）
 

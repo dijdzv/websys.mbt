@@ -4,9 +4,9 @@ fn test_document_fragment() -> Unit {
   assert_eq(frag.get_child_element_count(), 0, label="initially empty")
   // Add child elements using the document
   let doc = get_document()
-  let div1 = doc.create_element("div")
+  let div1 = create_element(doc, "div")
   div1.set_id("frag-child-1")
-  let div2 = doc.create_element("div")
+  let div2 = create_element(doc, "div")
   div2.set_id("frag-child-2")
   let frag_node = frag.to_node()
   frag_node.append_child(div1.to_node()) |> ignore
@@ -33,15 +33,15 @@ fn test_document_fragment_transfer() -> Unit {
   // Test that appending a fragment to DOM transfers all children
   let doc = get_document()
   let frag = @websys.DocumentFragment::new()
-  let span1 = doc.create_element("span")
+  let span1 = create_element(doc, "span")
   @websys.HTMLElement::from_js_value(span1.to_js_value()).set_inner_text("A")
-  let span2 = doc.create_element("span")
+  let span2 = create_element(doc, "span")
   @websys.HTMLElement::from_js_value(span2.to_js_value()).set_inner_text("B")
   let frag_node = frag.to_node()
   frag_node.append_child(span1.to_node()) |> ignore
   frag_node.append_child(span2.to_node()) |> ignore
   // Create a container and append the fragment
-  let container = doc.create_element("div")
+  let container = create_element(doc, "div")
   container.to_node().append_child(frag_node) |> ignore
   // Fragment should be empty after transfer
   assert_eq(

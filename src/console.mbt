@@ -332,7 +332,7 @@ pub extern "js" fn console_table() -> Unit =
 ///|
 pub extern "js" fn console_table_with_properties(
   tabular_data : JsValue,
-  properties : Array[String],
+  properties : FixedArray[String],
 ) -> Unit =
   #| (tabular_data, properties) => console.table(tabular_data, properties)
 

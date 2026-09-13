@@ -6,7 +6,7 @@
 pub(all) enum MIDIPortType {
   Input
   Output
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn MIDIPortType::from_string(s : String) -> MIDIPortType? {
 pub(all) enum MIDIPortDeviceState {
   Disconnected
   Connected
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -59,7 +59,7 @@ pub(all) enum MIDIPortConnectionState {
   Open
   Closed
   Pending
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -95,7 +95,7 @@ pub(all) struct MidiPermissionDescriptor {
 ///|
 /// Create a new MidiPermissionDescriptor with default values
 pub fn MidiPermissionDescriptor::default() -> MidiPermissionDescriptor {
-  MidiPermissionDescriptor::{ sysex: None }
+  MidiPermissionDescriptor::{ sysex: None, }
 }
 
 ///|
@@ -140,7 +140,7 @@ pub(all) struct MIDIOptions {
 ///|
 /// Create a new MIDIOptions with default values
 pub fn MIDIOptions::default() -> MIDIOptions {
-  MIDIOptions::{ sysex: None, software: None }
+  MIDIOptions::{ sysex: None, software: None, }
 }
 
 ///|
@@ -178,7 +178,7 @@ pub(all) struct MIDIMessageEventInit {
 ///|
 /// Create a new MIDIMessageEventInit with default values
 pub fn MIDIMessageEventInit::default() -> MIDIMessageEventInit {
-  MIDIMessageEventInit::{ data: None }
+  MIDIMessageEventInit::{ data: None, }
 }
 
 ///|
@@ -218,7 +218,7 @@ pub(all) struct MIDIConnectionEventInit {
 ///|
 /// Create a new MIDIConnectionEventInit with default values
 pub fn MIDIConnectionEventInit::default() -> MIDIConnectionEventInit {
-  MIDIConnectionEventInit::{ port: None }
+  MIDIConnectionEventInit::{ port: None, }
 }
 
 ///|
@@ -442,7 +442,7 @@ pub extern "js" fn MIDIPort::as_midi_output(self : MIDIPort) -> MIDIOutput? =
 pub(all) enum MIDIPortOpenError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MIDIPort::get_id(self : MIDIPort) -> String =
@@ -587,19 +587,19 @@ pub(all) enum MIDIOutputSendError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MIDIOutput::send(
   self : MIDIOutput,
-  data : Array[Int],
+  data : FixedArray[Int],
 ) -> Result[Unit, MIDIOutputSendError] =
   #| (self, data) => (() => { try { self.send(data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn MIDIOutput::send_with_timestamp(
   self : MIDIOutput,
-  data : Array[Int],
+  data : FixedArray[Int],
   timestamp : DOMHighResTimeStamp,
 ) -> Result[Unit, MIDIOutputSendError] =
   #| (self, data, timestamp) => (() => { try { self.send(data, timestamp); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()

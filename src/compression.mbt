@@ -7,7 +7,7 @@ pub(all) enum CompressionFormat {
   Deflate
   DeflateRaw
   Gzip
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -73,7 +73,7 @@ pub extern "js" fn JsValue::to_compression_stream(
 pub(all) enum CompressionStreamConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CompressionStream::new(
@@ -136,7 +136,7 @@ pub extern "js" fn JsValue::to_decompression_stream(
 pub(all) enum DecompressionStreamConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DecompressionStream::new(

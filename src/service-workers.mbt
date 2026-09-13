@@ -82,7 +82,7 @@ pub(all) enum ServiceWorkerState {
   Activating
   Activated
   Redundant
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -117,7 +117,7 @@ pub(all) enum ServiceWorkerUpdateViaCache {
   Imports
   All
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -151,7 +151,7 @@ pub(all) enum FrameType {
   TopLevel
   Nested
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -183,7 +183,7 @@ pub(all) enum ClientType {
   Worker
   Sharedworker
   All
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -213,7 +213,7 @@ pub fn ClientType::from_string(s : String) -> ClientType? {
 pub(all) enum RunningStatus {
   Running
   NotRunning
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -241,7 +241,7 @@ pub(all) enum RouterSourceEnum {
   FetchEvent
   Network
   RaceNetworkAndFetchHandler
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -279,7 +279,7 @@ pub(all) struct RegistrationOptions {
 ///|
 /// Create a new RegistrationOptions with default values
 pub fn RegistrationOptions::default() -> RegistrationOptions {
-  RegistrationOptions::{ scope: None, type_: None, updateViaCache: None }
+  RegistrationOptions::{ scope: None, type_: None, updateViaCache: None, }
 }
 
 ///|
@@ -324,7 +324,7 @@ pub(all) struct NavigationPreloadState {
 ///|
 /// Create a new NavigationPreloadState with default values
 pub fn NavigationPreloadState::default() -> NavigationPreloadState {
-  NavigationPreloadState::{ enabled: None, headerValue: None }
+  NavigationPreloadState::{ enabled: None, headerValue: None, }
 }
 
 ///|
@@ -369,7 +369,7 @@ pub(all) struct ClientQueryOptions {
 ///|
 /// Create a new ClientQueryOptions with default values
 pub fn ClientQueryOptions::default() -> ClientQueryOptions {
-  ClientQueryOptions::{ includeUncontrolled: None, type_: None }
+  ClientQueryOptions::{ includeUncontrolled: None, type_: None, }
 }
 
 ///|
@@ -409,7 +409,7 @@ pub(all) struct ExtendableEventInit {}
 ///|
 /// Create a new ExtendableEventInit with default values
 pub fn ExtendableEventInit::default() -> ExtendableEventInit {
-  ExtendableEventInit::{  }
+  ExtendableEventInit::{ }
 }
 
 ///|
@@ -451,7 +451,7 @@ pub fn RouterRule::new(
   condition~ : RouterCondition,
   source~ : RouterSource,
 ) -> RouterRule {
-  RouterRule::{ condition, source }
+  RouterRule::{ condition, source, }
 }
 
 ///|
@@ -488,7 +488,7 @@ pub(all) struct RouterCondition {
   requestMode : RequestMode?
   requestDestination : RequestDestination?
   runningStatus : RunningStatus?
-  or : Array[RouterCondition]?
+  or : FixedArray[RouterCondition]?
   not : RouterCondition?
 }
 
@@ -514,7 +514,7 @@ extern "js" fn RouterCondition::to_js_ffi(self : RouterCondition) -> JsValue =
   #|   requestMode: ((() => { const v = self.requestMode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
   #|   requestDestination: ((() => { const v = self.requestDestination; if (v === undefined) return undefined; return ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][v]; })()),
   #|   runningStatus: ((() => { const v = self.runningStatus; if (v === undefined) return undefined; return ['running', 'not-running'][v]; })()),
-  #|   or: ((() => { const v = self.or; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   or: self.or,
   #|   not: ((() => { const v = self.not; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -532,7 +532,7 @@ extern "js" fn RouterCondition::from_js_ffi(value : JsValue) -> RouterCondition 
   #|   requestMode: (v.requestMode === undefined ? undefined : ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(v.requestMode)),
   #|   requestDestination: (v.requestDestination === undefined ? undefined : ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'].indexOf(v.requestDestination)),
   #|   runningStatus: (v.runningStatus === undefined ? undefined : ['running', 'not-running'].indexOf(v.runningStatus)),
-  #|   or: (v.or === undefined ? { $tag: 0 } : { $tag: 1, _0: v.or }),
+  #|   or: v.or,
   #|   not: (v.not === undefined ? { $tag: 0 } : { $tag: 1, _0: v.not })
   #| })
 
@@ -551,7 +551,7 @@ pub(all) struct RouterSourceDict {
 ///|
 /// Create a new RouterSourceDict with default values
 pub fn RouterSourceDict::default() -> RouterSourceDict {
-  RouterSourceDict::{ cacheName: None }
+  RouterSourceDict::{ cacheName: None, }
 }
 
 ///|
@@ -645,7 +645,7 @@ pub(all) struct ExtendableMessageEventInit {
   origin : String?
   lastEventId : String?
   source : ClientOrServiceWorkerOrMessagePort?
-  ports : Array[MessagePort]?
+  ports : FixedArray[MessagePort]?
 }
 
 ///|
@@ -669,7 +669,7 @@ extern "js" fn ExtendableMessageEventInit::to_js_ffi(
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
   #|   source: ((() => { const v = self.source; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ports: ((() => { const v = self.ports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   ports: self.ports
   #| })
 
 ///|
@@ -689,7 +689,7 @@ extern "js" fn ExtendableMessageEventInit::from_js_ffi(
   #|   origin: v.origin,
   #|   lastEventId: v.lastEventId,
   #|   source: (v.source === undefined ? { $tag: 0 } : { $tag: 1, _0: v.source }),
-  #|   ports: (v.ports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ports })
+  #|   ports: v.ports
   #| })
 
 ///|
@@ -847,7 +847,7 @@ pub extern "js" fn ServiceWorker::to_event_target(
 pub(all) enum ServiceWorkerPostMessageError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ServiceWorker::get_script_url(
@@ -889,7 +889,7 @@ pub fn ServiceWorker::post_message_with_options(
 pub extern "js" fn ServiceWorker::post_message_with_message_and_transfer(
   self : ServiceWorker,
   message : JsValue,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Result[Unit, ServiceWorkerPostMessageError] =
   #| (self, message, transfer) => (() => { try { self.postMessage(message, transfer); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
@@ -967,7 +967,7 @@ pub(all) enum ServiceWorkerRegistrationShowNotificationError {
   TypeError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_installing(
@@ -1085,21 +1085,21 @@ pub fn ServiceWorkerRegistration::show_notification_with_options(
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_notifications(
   self : ServiceWorkerRegistration,
-) -> Promise[Array[Notification]] =
+) -> Promise[FixedArray[Notification]] =
   #| (self) => self.getNotifications()
 
 ///|
 extern "js" fn ServiceWorkerRegistration::get_notifications_with_filter_ffi(
   self : ServiceWorkerRegistration,
   filter : JsValue,
-) -> Promise[Array[Notification]] =
+) -> Promise[FixedArray[Notification]] =
   #| (self, filter) => self.getNotifications(filter)
 
 ///|
 pub fn ServiceWorkerRegistration::get_notifications_with_filter(
   self : ServiceWorkerRegistration,
   filter : GetNotificationOptions,
-) -> Promise[Array[Notification]] {
+) -> Promise[FixedArray[Notification]] {
   ServiceWorkerRegistration::get_notifications_with_filter_ffi(
     self,
     filter.to_js(),
@@ -1107,16 +1107,16 @@ pub fn ServiceWorkerRegistration::get_notifications_with_filter(
 }
 
 ///|
-pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
-  self : ServiceWorkerRegistration,
-) -> PaymentManager =
-  #| (self) => self.paymentManager
-
-///|
 pub extern "js" fn ServiceWorkerRegistration::get_periodic_sync(
   self : ServiceWorkerRegistration,
 ) -> PeriodicSyncManager =
   #| (self) => self.periodicSync
+
+///|
+pub extern "js" fn ServiceWorkerRegistration::get_payment_manager(
+  self : ServiceWorkerRegistration,
+) -> PaymentManager =
+  #| (self) => self.paymentManager
 
 ///|
 pub extern "js" fn ServiceWorkerRegistration::get_push_manager(
@@ -1174,7 +1174,7 @@ pub(all) enum ServiceWorkerContainerRegisterError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_controller(
@@ -1238,7 +1238,7 @@ pub extern "js" fn ServiceWorkerContainer::get_registration_with_client_url(
 ///|
 pub extern "js" fn ServiceWorkerContainer::get_registrations(
   self : ServiceWorkerContainer,
-) -> Promise[Array[ServiceWorkerRegistration]] =
+) -> Promise[FixedArray[ServiceWorkerRegistration]] =
   #| (self) => self.getRegistrations()
 
 ///|
@@ -1329,28 +1329,28 @@ pub extern "js" fn JsValue::to_navigation_preload_manager(
 pub(all) enum NavigationPreloadManagerEnableError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerDisableError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerSetHeaderValueError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationPreloadManagerGetStateError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NavigationPreloadManager::enable(
@@ -1645,32 +1645,6 @@ pub extern "js" fn ServiceWorkerGlobalScope::clear_onnotificationclose(
   #| (self) => { self.onnotificationclose = null }
 
 ///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_oncanmakepayment(
-  self : ServiceWorkerGlobalScope,
-  handler : (CanMakePaymentEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.oncanmakepayment = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_oncanmakepayment(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.oncanmakepayment = null }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::set_onpaymentrequest(
-  self : ServiceWorkerGlobalScope,
-  handler : (PaymentRequestEvent) -> Unit,
-) -> Unit =
-  #| (self, handler) => { self.onpaymentrequest = (e) => handler(e) }
-
-///|
-pub extern "js" fn ServiceWorkerGlobalScope::clear_onpaymentrequest(
-  self : ServiceWorkerGlobalScope,
-) -> Unit =
-  #| (self) => { self.onpaymentrequest = null }
-
-///|
 pub extern "js" fn ServiceWorkerGlobalScope::set_onperiodicsync(
   self : ServiceWorkerGlobalScope,
   handler : (PeriodicSyncEvent) -> Unit,
@@ -1708,6 +1682,32 @@ pub extern "js" fn ServiceWorkerGlobalScope::clear_onpushsubscriptionchange(
   self : ServiceWorkerGlobalScope,
 ) -> Unit =
   #| (self) => { self.onpushsubscriptionchange = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_oncanmakepayment(
+  self : ServiceWorkerGlobalScope,
+  handler : (CanMakePaymentEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.oncanmakepayment = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_oncanmakepayment(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.oncanmakepayment = null }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::set_onpaymentrequest(
+  self : ServiceWorkerGlobalScope,
+  handler : (PaymentRequestEvent) -> Unit,
+) -> Unit =
+  #| (self, handler) => { self.onpaymentrequest = (e) => handler(e) }
+
+///|
+pub extern "js" fn ServiceWorkerGlobalScope::clear_onpaymentrequest(
+  self : ServiceWorkerGlobalScope,
+) -> Unit =
+  #| (self) => { self.onpaymentrequest = null }
 
 ///|
 /// Client interface
@@ -1785,7 +1785,7 @@ pub fn Client::post_message_with_options(
 pub extern "js" fn Client::post_message_with_message_and_transfer(
   self : Client,
   message : JsValue,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
@@ -1834,7 +1834,7 @@ pub extern "js" fn WindowClient::to_client(self : WindowClient) -> Client =
 pub(all) enum WindowClientFocusError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WindowClient::get_visibility_state(
@@ -1849,7 +1849,7 @@ pub extern "js" fn WindowClient::get_focused(self : WindowClient) -> Bool =
 ///|
 pub extern "js" fn WindowClient::get_ancestor_origins(
   self : WindowClient,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.ancestorOrigins
 
 ///|
@@ -1898,7 +1898,7 @@ pub extern "js" fn JsValue::to_clients(self : JsValue) -> Clients =
 pub(all) enum ClientsOpenWindowError {
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Clients::get(
@@ -1908,21 +1908,23 @@ pub extern "js" fn Clients::get(
   #| (self, id) => self.get(id)
 
 ///|
-pub extern "js" fn Clients::match_all(self : Clients) -> Promise[Array[Client]] =
+pub extern "js" fn Clients::match_all(
+  self : Clients,
+) -> Promise[FixedArray[Client]] =
   #| (self) => self.matchAll()
 
 ///|
 extern "js" fn Clients::match_all_with_options_ffi(
   self : Clients,
   options : JsValue,
-) -> Promise[Array[Client]] =
+) -> Promise[FixedArray[Client]] =
   #| (self, options) => self.matchAll(options)
 
 ///|
 pub fn Clients::match_all_with_options(
   self : Clients,
   options : ClientQueryOptions,
-) -> Promise[Array[Client]] {
+) -> Promise[FixedArray[Client]] {
   Clients::match_all_with_options_ffi(self, options.to_js())
 }
 
@@ -2016,18 +2018,6 @@ pub extern "js" fn ExtendableEvent::as_notification_event(
   #| (self) => (self instanceof NotificationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn ExtendableEvent::as_can_make_payment_event(
-  self : ExtendableEvent,
-) -> CanMakePaymentEvent? =
-  #| (self) => (self instanceof CanMakePaymentEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn ExtendableEvent::as_payment_request_event(
-  self : ExtendableEvent,
-) -> PaymentRequestEvent? =
-  #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn ExtendableEvent::as_periodic_sync_event(
   self : ExtendableEvent,
 ) -> PeriodicSyncEvent? =
@@ -2062,6 +2052,18 @@ pub extern "js" fn ExtendableEvent::as_extendable_message_event(
   self : ExtendableEvent,
 ) -> ExtendableMessageEvent? =
   #| (self) => (self instanceof ExtendableMessageEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_can_make_payment_event(
+  self : ExtendableEvent,
+) -> CanMakePaymentEvent? =
+  #| (self) => (self instanceof CanMakePaymentEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn ExtendableEvent::as_payment_request_event(
+  self : ExtendableEvent,
+) -> PaymentRequestEvent? =
+  #| (self) => (self instanceof PaymentRequestEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn ExtendableEvent::new(type_ : String) -> ExtendableEvent =
@@ -2134,7 +2136,7 @@ pub extern "js" fn InstallEvent::to_event(self : InstallEvent) -> Event =
 pub(all) enum InstallEventAddRoutesError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn InstallEvent::new(type_ : String) -> InstallEvent =
@@ -2206,7 +2208,7 @@ pub(all) enum FetchEventRespondWithError {
   NetworkError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn FetchEvent::new_ffi(
@@ -2361,7 +2363,7 @@ pub extern "js" fn ExtendableMessageEvent::get_source(
 ///|
 pub extern "js" fn ExtendableMessageEvent::get_ports(
   self : ExtendableMessageEvent,
-) -> Array[MessagePort] =
+) -> FixedArray[MessagePort] =
   #| (self) => self.ports
 
 ///|
@@ -2397,21 +2399,21 @@ pub extern "js" fn JsValue::to_cache(self : JsValue) -> Cache =
 pub(all) enum CacheAddError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CacheAddAllError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CachePutError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Cache::match_(
@@ -2438,7 +2440,9 @@ pub fn Cache::match__with_options(
 }
 
 ///|
-pub extern "js" fn Cache::match_all(self : Cache) -> Promise[Array[Response]] =
+pub extern "js" fn Cache::match_all(
+  self : Cache,
+) -> Promise[FixedArray[Response]] =
   #| (self) => self.matchAll()
 
 ///|
@@ -2446,7 +2450,7 @@ extern "js" fn Cache::match_all_with_options_ffi(
   self : Cache,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[Array[Response]] =
+) -> Promise[FixedArray[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2454,7 +2458,7 @@ pub fn Cache::match_all_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Array[Response]] {
+) -> Promise[FixedArray[Response]] {
   Cache::match_all_with_options_ffi(self, request, options.to_js())
 }
 
@@ -2468,7 +2472,7 @@ pub extern "js" fn Cache::add(
 ///|
 pub extern "js" fn Cache::add_all(
   self : Cache,
-  requests : Array[RequestInfo],
+  requests : FixedArray[RequestInfo],
 ) -> Promise[Result[Unit, CacheAddAllError]] =
   #| (self, requests) => self.addAll(requests).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
@@ -2505,7 +2509,7 @@ pub fn Cache::delete_with_options(
 }
 
 ///|
-pub extern "js" fn Cache::keys(self : Cache) -> Promise[Array[Request]] =
+pub extern "js" fn Cache::keys(self : Cache) -> Promise[FixedArray[Request]] =
   #| (self) => self.keys()
 
 ///|
@@ -2513,7 +2517,7 @@ extern "js" fn Cache::keys_with_options_ffi(
   self : Cache,
   request : RequestInfo,
   options : JsValue,
-) -> Promise[Array[Request]] =
+) -> Promise[FixedArray[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -2521,7 +2525,7 @@ pub fn Cache::keys_with_options(
   self : Cache,
   request : RequestInfo,
   options : CacheQueryOptions,
-) -> Promise[Array[Request]] {
+) -> Promise[FixedArray[Request]] {
   Cache::keys_with_options_ffi(self, request, options.to_js())
 }
 
@@ -2546,7 +2550,7 @@ pub extern "js" fn Cache::match_all_with_request(
   self : Cache,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[Array[Response]] =
+) -> Promise[FixedArray[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2554,7 +2558,7 @@ pub extern "js" fn Cache::match_all_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[Array[Response]] =
+) -> Promise[FixedArray[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
@@ -2608,7 +2612,7 @@ pub extern "js" fn Cache::keys_with_request(
   self : Cache,
   request : Request,
   options : CacheQueryOptions,
-) -> Promise[Array[Request]] =
+) -> Promise[FixedArray[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -2616,7 +2620,7 @@ pub extern "js" fn Cache::keys_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[Array[Request]] =
+) -> Promise[FixedArray[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
@@ -2697,7 +2701,7 @@ pub extern "js" fn CacheStorage::delete(
 ///|
 pub extern "js" fn CacheStorage::keys(
   self : CacheStorage,
-) -> Promise[Array[String]] =
+) -> Promise[FixedArray[String]] =
   #| (self) => self.keys()
 
 ///|

@@ -5,9 +5,9 @@
 /// set_onclick / clear_onclick with PointerEvent dispatch.
 pub fn test_event_handler_onclick() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let el = @websys.HTMLElement::from_js_value(div.to_js_value())
-  let call_count : Ref[Int] = Ref::new(0)
+  let call_count : Ref[Int] = Ref(0)
   el.set_onclick(fn(_event : @websys.PointerEvent) {
     call_count.val = call_count.val + 1
   })
@@ -27,9 +27,9 @@ pub fn test_event_handler_onclick() -> Unit {
 /// set_onkeydown with KeyboardEvent dispatch.
 pub fn test_event_handler_onkeydown() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let el = @websys.HTMLElement::from_js_value(div.to_js_value())
-  let called : Ref[Bool] = Ref::new(false)
+  let called : Ref[Bool] = Ref(false)
   el.set_onkeydown(fn(_event : @websys.KeyboardEvent) { called.val = true })
   let event = @websys.KeyboardEvent::new("keydown")
   let _ = el.to_event_target().dispatch_event(event.to_event())
@@ -41,10 +41,10 @@ pub fn test_event_handler_onkeydown() -> Unit {
 /// set_onfocus / set_onblur with FocusEvent dispatch.
 pub fn test_event_handler_onfocus_onblur() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let el = @websys.HTMLElement::from_js_value(div.to_js_value())
-  let focus_called : Ref[Bool] = Ref::new(false)
-  let blur_called : Ref[Bool] = Ref::new(false)
+  let focus_called : Ref[Bool] = Ref(false)
+  let blur_called : Ref[Bool] = Ref(false)
   el.set_onfocus(fn(_event : @websys.FocusEvent) { focus_called.val = true })
   el.set_onblur(fn(_event : @websys.FocusEvent) { blur_called.val = true })
   let focus_event = @websys.FocusEvent::new("focus")
@@ -60,11 +60,11 @@ pub fn test_event_handler_onfocus_onblur() -> Unit {
 /// Typed event properties via KeyboardEventInit.
 pub fn test_event_handler_typed_event_properties() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let el = @websys.HTMLElement::from_js_value(div.to_js_value())
-  let received_key : Ref[String] = Ref::new("")
-  let received_code : Ref[String] = Ref::new("")
-  let received_ctrl : Ref[Bool] = Ref::new(false)
+  let received_key : Ref[String] = Ref("")
+  let received_code : Ref[String] = Ref("")
+  let received_ctrl : Ref[Bool] = Ref(false)
   el.set_onkeydown(fn(event : @websys.KeyboardEvent) {
     received_key.val = event.get_key()
     received_code.val = event.get_code()

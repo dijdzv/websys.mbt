@@ -6,7 +6,7 @@
 fn test_param_element() -> Unit {
   let doc = get_document()
   let param = @websys.HTMLParamElement::from_js_value(
-    doc.create_element("param").to_js_value(),
+    create_element(doc, "param").to_js_value(),
   )
   param.set_name("color")
   assert_eq(param.get_name(), "color", label="name")

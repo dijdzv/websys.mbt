@@ -11,7 +11,7 @@ pub(all) struct PerformanceMarkOptions {
 ///|
 /// Create a new PerformanceMarkOptions with default values
 pub fn PerformanceMarkOptions::default() -> PerformanceMarkOptions {
-  PerformanceMarkOptions::{ detail: None, startTime: None }
+  PerformanceMarkOptions::{ detail: None, startTime: None, }
 }
 
 ///|
@@ -154,7 +154,7 @@ pub(all) enum PerformanceMarkConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PerformanceMark::new(

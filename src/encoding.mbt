@@ -11,7 +11,7 @@ pub(all) struct TextDecoderOptions {
 ///|
 /// Create a new TextDecoderOptions with default values
 pub fn TextDecoderOptions::default() -> TextDecoderOptions {
-  TextDecoderOptions::{ fatal: None, ignoreBOM: None }
+  TextDecoderOptions::{ fatal: None, ignoreBOM: None, }
 }
 
 ///|
@@ -53,7 +53,7 @@ pub(all) struct TextDecodeOptions {
 ///|
 /// Create a new TextDecodeOptions with default values
 pub fn TextDecodeOptions::default() -> TextDecodeOptions {
-  TextDecodeOptions::{ stream: None }
+  TextDecodeOptions::{ stream: None, }
 }
 
 ///|
@@ -94,7 +94,7 @@ pub(all) struct TextEncoderEncodeIntoResult {
 ///|
 /// Create a new TextEncoderEncodeIntoResult with default values
 pub fn TextEncoderEncodeIntoResult::default() -> TextEncoderEncodeIntoResult {
-  TextEncoderEncodeIntoResult::{ read: None, written: None }
+  TextEncoderEncodeIntoResult::{ read: None, written: None, }
 }
 
 ///|
@@ -164,14 +164,14 @@ pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
 pub(all) enum TextDecoderConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TextDecoderDecodeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TextDecoder::new() -> Result[
@@ -352,7 +352,7 @@ pub extern "js" fn JsValue::to_text_decoder_stream(
 pub(all) enum TextDecoderStreamConstructorError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TextDecoderStream::new() -> Result[

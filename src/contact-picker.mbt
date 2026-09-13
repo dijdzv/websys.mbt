@@ -9,7 +9,7 @@ pub(all) enum ContactProperty {
   Icon
   Name
   Tel
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -39,27 +39,33 @@ pub fn ContactProperty::from_string(s : String) -> ContactProperty? {
 ///|
 /// ContactInfo dictionary
 pub(all) struct ContactInfo {
-  address : Array[ContactAddress]?
-  email : Array[String]?
-  icon : Array[Blob]?
-  name : Array[String]?
-  tel : Array[String]?
+  address : FixedArray[ContactAddress]?
+  email : FixedArray[String]?
+  icon : FixedArray[Blob]?
+  name : FixedArray[String]?
+  tel : FixedArray[String]?
 }
 
 ///|
 /// Create a new ContactInfo with default values
 pub fn ContactInfo::default() -> ContactInfo {
-  ContactInfo::{ address: None, email: None, icon: None, name: None, tel: None }
+  ContactInfo::{
+    address: None,
+    email: None,
+    icon: None,
+    name: None,
+    tel: None,
+  }
 }
 
 ///|
 extern "js" fn ContactInfo::to_js_ffi(self : ContactInfo) -> JsValue =
   #| (self) => ({
-  #|   address: ((() => { const v = self.address; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   email: ((() => { const v = self.email; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   icon: ((() => { const v = self.icon; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   name: ((() => { const v = self.name; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tel: ((() => { const v = self.tel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   address: self.address,
+  #|   email: self.email,
+  #|   icon: self.icon,
+  #|   name: self.name,
+  #|   tel: self.tel
   #| })
 
 ///|
@@ -71,11 +77,11 @@ pub fn ContactInfo::to_js(self : ContactInfo) -> JsValue {
 ///|
 extern "js" fn ContactInfo::from_js_ffi(value : JsValue) -> ContactInfo =
   #| (v) => ({
-  #|   address: (v.address === undefined ? { $tag: 0 } : { $tag: 1, _0: v.address }),
-  #|   email: (v.email === undefined ? { $tag: 0 } : { $tag: 1, _0: v.email }),
-  #|   icon: (v.icon === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icon }),
-  #|   name: (v.name === undefined ? { $tag: 0 } : { $tag: 1, _0: v.name }),
-  #|   tel: (v.tel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tel })
+  #|   address: v.address,
+  #|   email: v.email,
+  #|   icon: v.icon,
+  #|   name: v.name,
+  #|   tel: v.tel
   #| })
 
 ///|
@@ -93,7 +99,7 @@ pub(all) struct ContactsSelectOptions {
 ///|
 /// Create a new ContactsSelectOptions with default values
 pub fn ContactsSelectOptions::default() -> ContactsSelectOptions {
-  ContactsSelectOptions::{ multiple: None }
+  ContactsSelectOptions::{ multiple: None, }
 }
 
 ///|
@@ -213,7 +219,7 @@ pub extern "js" fn ContactAddress::get_sorting_code(
 ///|
 pub extern "js" fn ContactAddress::get_address_line(
   self : ContactAddress,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.addressLine
 
 ///|
@@ -261,34 +267,34 @@ pub(all) enum ContactsManagerSelectError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ContactsManager::get_properties(
   self : ContactsManager,
-) -> Promise[Array[ContactProperty]] =
+) -> Promise[FixedArray[ContactProperty]] =
   #| (self) => self.getProperties()
 
 ///|
 pub extern "js" fn ContactsManager::select(
   self : ContactsManager,
-  properties : Array[ContactProperty],
-) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
+  properties : FixedArray[ContactProperty],
+) -> Promise[Result[FixedArray[ContactInfo], ContactsManagerSelectError]] =
   #| (self, properties) => self.select(properties).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn ContactsManager::select_with_options_ffi(
   self : ContactsManager,
-  properties : Array[ContactProperty],
+  properties : FixedArray[ContactProperty],
   options : JsValue,
-) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] =
+) -> Promise[Result[FixedArray[ContactInfo], ContactsManagerSelectError]] =
   #| (self, properties, options) => self.select(properties, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn ContactsManager::select_with_options(
   self : ContactsManager,
-  properties : Array[ContactProperty],
+  properties : FixedArray[ContactProperty],
   options : ContactsSelectOptions,
-) -> Promise[Result[Array[ContactInfo], ContactsManagerSelectError]] {
+) -> Promise[Result[FixedArray[ContactInfo], ContactsManagerSelectError]] {
   ContactsManager::select_with_options_ffi(self, properties, options.to_js())
 }

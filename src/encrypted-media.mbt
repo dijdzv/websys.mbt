@@ -7,7 +7,7 @@ pub(all) enum MediaKeysRequirement {
   Required
   Optional
   NotAllowed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn MediaKeysRequirement::from_string(s : String) -> MediaKeysRequirement? {
 pub(all) enum MediaKeySessionType {
   Temporary
   PersistentLicense
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -64,7 +64,7 @@ pub(all) enum MediaKeySessionClosedReason {
   ReleaseAcknowledged
   HardwareContextReset
   ResourceEvicted
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) enum MediaKeyStatus {
   UsableInFuture
   StatusPending
   InternalError
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -150,7 +150,7 @@ pub(all) enum MediaKeyMessageType {
   LicenseRenewal
   LicenseRelease
   IndividualizationRequest
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -180,12 +180,12 @@ pub fn MediaKeyMessageType::from_string(s : String) -> MediaKeyMessageType? {
 /// MediaKeySystemConfiguration dictionary
 pub(all) struct MediaKeySystemConfiguration {
   label : String?
-  initDataTypes : Array[String]?
-  audioCapabilities : Array[MediaKeySystemMediaCapability]?
-  videoCapabilities : Array[MediaKeySystemMediaCapability]?
+  initDataTypes : FixedArray[String]?
+  audioCapabilities : FixedArray[MediaKeySystemMediaCapability]?
+  videoCapabilities : FixedArray[MediaKeySystemMediaCapability]?
   distinctiveIdentifier : MediaKeysRequirement?
   persistentState : MediaKeysRequirement?
-  sessionTypes : Array[String]?
+  sessionTypes : FixedArray[String]?
 }
 
 ///|
@@ -208,12 +208,12 @@ extern "js" fn MediaKeySystemConfiguration::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   initDataTypes: ((() => { const v = self.initDataTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audioCapabilities: ((() => { const v = self.audioCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   videoCapabilities: ((() => { const v = self.videoCapabilities; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   initDataTypes: self.initDataTypes,
+  #|   audioCapabilities: self.audioCapabilities,
+  #|   videoCapabilities: self.videoCapabilities,
   #|   distinctiveIdentifier: ((() => { const v = self.distinctiveIdentifier; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
   #|   persistentState: ((() => { const v = self.persistentState; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
-  #|   sessionTypes: ((() => { const v = self.sessionTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   sessionTypes: self.sessionTypes
   #| })
 
 ///|
@@ -230,12 +230,12 @@ extern "js" fn MediaKeySystemConfiguration::from_js_ffi(
 ) -> MediaKeySystemConfiguration =
   #| (v) => ({
   #|   label: v.label,
-  #|   initDataTypes: (v.initDataTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initDataTypes }),
-  #|   audioCapabilities: (v.audioCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioCapabilities }),
-  #|   videoCapabilities: (v.videoCapabilities === undefined ? { $tag: 0 } : { $tag: 1, _0: v.videoCapabilities }),
+  #|   initDataTypes: v.initDataTypes,
+  #|   audioCapabilities: v.audioCapabilities,
+  #|   videoCapabilities: v.videoCapabilities,
   #|   distinctiveIdentifier: (v.distinctiveIdentifier === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.distinctiveIdentifier)),
   #|   persistentState: (v.persistentState === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.persistentState)),
-  #|   sessionTypes: (v.sessionTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sessionTypes })
+  #|   sessionTypes: v.sessionTypes
   #| })
 
 ///|
@@ -309,7 +309,7 @@ pub(all) struct MediaKeysPolicy {
 ///|
 /// Create a new MediaKeysPolicy with default values
 pub fn MediaKeysPolicy::default() -> MediaKeysPolicy {
-  MediaKeysPolicy::{ minHdcpVersion: None }
+  MediaKeysPolicy::{ minHdcpVersion: None, }
 }
 
 ///|
@@ -349,7 +349,7 @@ pub fn MediaKeyMessageEventInit::new(
   messageType~ : MediaKeyMessageType,
   message~ : ArrayBuffer,
 ) -> MediaKeyMessageEventInit {
-  MediaKeyMessageEventInit::{ messageType, message }
+  MediaKeyMessageEventInit::{ messageType, message, }
 }
 
 ///|
@@ -396,7 +396,10 @@ pub(all) struct MediaEncryptedEventInit {
 ///|
 /// Create a new MediaEncryptedEventInit with default values
 pub fn MediaEncryptedEventInit::default() -> MediaEncryptedEventInit {
-  MediaEncryptedEventInit::{ initDataType: None, initData: Nullable::Undefined }
+  MediaEncryptedEventInit::{
+    initDataType: None,
+    initData: Nullable::Undefined,
+  }
 }
 
 ///|
@@ -523,7 +526,7 @@ pub(all) enum MediaKeysGetStatusForPolicyError {
   TypeError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaKeys::create_session(
@@ -632,7 +635,7 @@ pub(all) enum MediaKeySessionGenerateRequestError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaKeySession::get_session_id(

@@ -9,7 +9,7 @@ pub(all) enum SecurePaymentConfirmationAvailability {
   UnavailableFeatureNotEnabled
   UnavailableNoPermissionPolicy
   UnavailableNoUserVerifyingPlatformAuthenticator
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -55,15 +55,15 @@ pub fn SecurePaymentConfirmationAvailability::from_string(
 pub(all) struct SecurePaymentConfirmationRequest {
   challenge : BufferSource
   rpId : String
-  credentialIds : Array[BufferSource]
+  credentialIds : FixedArray[BufferSource]
   instrument : PaymentCredentialInstrument
   timeout : Int?
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : Array[PaymentEntityLogo]?
+  paymentEntitiesLogos : FixedArray[PaymentEntityLogo]?
   extensions : AuthenticationExtensionsClientInputs?
-  browserBoundPubKeyCredParams : Array[PublicKeyCredentialParameters]?
-  locale : Array[String]?
+  browserBoundPubKeyCredParams : FixedArray[PublicKeyCredentialParameters]?
+  locale : FixedArray[String]?
   showOptOut : Bool?
 }
 
@@ -101,10 +101,10 @@ extern "js" fn SecurePaymentConfirmationRequest::to_js_ffi(
   #|   timeout: self.timeout,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
   #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   browserBoundPubKeyCredParams: ((() => { const v = self.browserBoundPubKeyCredParams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   locale: ((() => { const v = self.locale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   browserBoundPubKeyCredParams: self.browserBoundPubKeyCredParams,
+  #|   locale: self.locale,
   #|   showOptOut: (self.showOptOut === -1 ? undefined : self.showOptOut)
   #| })
 
@@ -128,10 +128,10 @@ extern "js" fn SecurePaymentConfirmationRequest::from_js_ffi(
   #|   timeout: v.timeout,
   #|   payeeName: v.payeeName,
   #|   payeeOrigin: v.payeeOrigin,
-  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   paymentEntitiesLogos: v.paymentEntitiesLogos,
   #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions }),
-  #|   browserBoundPubKeyCredParams: (v.browserBoundPubKeyCredParams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.browserBoundPubKeyCredParams }),
-  #|   locale: (v.locale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.locale }),
+  #|   browserBoundPubKeyCredParams: v.browserBoundPubKeyCredParams,
+  #|   locale: v.locale,
   #|   showOptOut: (v.showOptOut === undefined ? -1 : v.showOptOut)
   #| })
 
@@ -147,12 +147,12 @@ pub fn SecurePaymentConfirmationRequest::from_js(
 /// AuthenticationExtensionsPaymentInputs dictionary
 pub(all) struct AuthenticationExtensionsPaymentInputs {
   isPayment : Bool?
-  browserBoundPubKeyCredParams : Array[PublicKeyCredentialParameters]?
+  browserBoundPubKeyCredParams : FixedArray[PublicKeyCredentialParameters]?
   rpId : String?
   topOrigin : String?
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : Array[PaymentEntityLogo]?
+  paymentEntitiesLogos : FixedArray[PaymentEntityLogo]?
   total : PaymentCurrencyAmount?
   instrument : PaymentCredentialInstrument?
 }
@@ -179,12 +179,12 @@ extern "js" fn AuthenticationExtensionsPaymentInputs::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   isPayment: (self.isPayment === -1 ? undefined : self.isPayment),
-  #|   browserBoundPubKeyCredParams: ((() => { const v = self.browserBoundPubKeyCredParams; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   browserBoundPubKeyCredParams: self.browserBoundPubKeyCredParams,
   #|   rpId: self.rpId,
   #|   topOrigin: self.topOrigin,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
   #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   instrument: ((() => { const v = self.instrument; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -203,12 +203,12 @@ extern "js" fn AuthenticationExtensionsPaymentInputs::from_js_ffi(
 ) -> AuthenticationExtensionsPaymentInputs =
   #| (v) => ({
   #|   isPayment: (v.isPayment === undefined ? -1 : v.isPayment),
-  #|   browserBoundPubKeyCredParams: (v.browserBoundPubKeyCredParams === undefined ? { $tag: 0 } : { $tag: 1, _0: v.browserBoundPubKeyCredParams }),
+  #|   browserBoundPubKeyCredParams: v.browserBoundPubKeyCredParams,
   #|   rpId: v.rpId,
   #|   topOrigin: v.topOrigin,
   #|   payeeName: v.payeeName,
   #|   payeeOrigin: v.payeeOrigin,
-  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   paymentEntitiesLogos: v.paymentEntitiesLogos,
   #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
   #|   instrument: (v.instrument === undefined ? { $tag: 0 } : { $tag: 1, _0: v.instrument })
   #| })
@@ -230,7 +230,7 @@ pub(all) struct AuthenticationExtensionsPaymentOutputs {
 ///|
 /// Create a new AuthenticationExtensionsPaymentOutputs with default values
 pub fn AuthenticationExtensionsPaymentOutputs::default() -> AuthenticationExtensionsPaymentOutputs {
-  AuthenticationExtensionsPaymentOutputs::{ browserBoundSignature: None }
+  AuthenticationExtensionsPaymentOutputs::{ browserBoundSignature: None, }
 }
 
 ///|
@@ -360,7 +360,7 @@ pub(all) struct CollectedClientAdditionalPaymentData {
   topOrigin : String
   payeeName : String?
   payeeOrigin : String?
-  paymentEntitiesLogos : Array[PaymentEntityLogo]?
+  paymentEntitiesLogos : FixedArray[PaymentEntityLogo]?
   total : PaymentCurrencyAmount
   instrument : PaymentCredentialInstrument
   browserBoundPublicKey : String?
@@ -393,7 +393,7 @@ extern "js" fn CollectedClientAdditionalPaymentData::to_js_ffi(
   #|   topOrigin: self.topOrigin,
   #|   payeeName: self.payeeName,
   #|   payeeOrigin: self.payeeOrigin,
-  #|   paymentEntitiesLogos: ((() => { const v = self.paymentEntitiesLogos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   paymentEntitiesLogos: self.paymentEntitiesLogos,
   #|   total: self.total,
   #|   instrument: self.instrument,
   #|   browserBoundPublicKey: self.browserBoundPublicKey
@@ -416,7 +416,7 @@ extern "js" fn CollectedClientAdditionalPaymentData::from_js_ffi(
   #|   topOrigin: v.topOrigin,
   #|   payeeName: v.payeeName,
   #|   payeeOrigin: v.payeeOrigin,
-  #|   paymentEntitiesLogos: (v.paymentEntitiesLogos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentEntitiesLogos }),
+  #|   paymentEntitiesLogos: v.paymentEntitiesLogos,
   #|   total: v.total,
   #|   instrument: v.instrument,
   #|   browserBoundPublicKey: v.browserBoundPublicKey
@@ -544,7 +544,7 @@ pub(all) struct PaymentEntityLogo {
 ///|
 /// Create a new PaymentEntityLogo with default values
 pub fn PaymentEntityLogo::default() -> PaymentEntityLogo {
-  PaymentEntityLogo::{ url: "", label: "" }
+  PaymentEntityLogo::{ url: "", label: "", }
 }
 
 ///|

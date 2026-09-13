@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "moon build --target js",
-    "test": "bun run build && bun run run.mjs",
+    "test": "mise run test",
     "install:browser": "bunx playwright install chromium"
   },
   "devDependencies": {

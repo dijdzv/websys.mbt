@@ -7,7 +7,7 @@ pub(all) enum NavigationTimingType {
   Navigate
   Reload
   BackForward
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn NavigationTimingType::from_string(s : String) -> NavigationTimingType? {
 pub(all) enum PerformanceTimingConfidenceValue {
   High
   Low
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -298,127 +298,127 @@ pub extern "js" fn JsValue::to_performance_timing(
 pub extern "js" fn PerformanceTiming::get_navigation_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.navigationStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.navigationStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_unload_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.unloadEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.unloadEventStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_unload_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.unloadEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.unloadEventEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_redirect_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.redirectStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.redirectStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_redirect_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.redirectEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.redirectEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_fetch_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.fetchStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.fetchStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_domain_lookup_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domainLookupStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domainLookupStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_domain_lookup_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domainLookupEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domainLookupEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_connect_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.connectStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.connectStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_connect_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.connectEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.connectEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_secure_connection_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.secureConnectionStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.secureConnectionStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_request_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.requestStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.requestStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_response_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.responseStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.responseStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_response_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.responseEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.responseEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_loading(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domLoading; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domLoading))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_interactive(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domInteractive; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domInteractive))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_content_loaded_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domContentLoadedEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domContentLoadedEventStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_content_loaded_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domContentLoadedEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domContentLoadedEventEnd))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_dom_complete(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.domComplete; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.domComplete))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_load_event_start(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.loadEventStart; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.loadEventStart))
 
 ///|
 pub extern "js" fn PerformanceTiming::get_load_event_end(
   self : PerformanceTiming,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.loadEventEnd; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.loadEventEnd))
 
 ///|
 /// @alert deprecated "toJSON is deprecated"

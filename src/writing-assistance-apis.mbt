@@ -8,7 +8,7 @@ pub(all) enum SummarizerType {
   Teaser
   KeyPoints
   Headline
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -38,7 +38,7 @@ pub fn SummarizerType::from_string(s : String) -> SummarizerType? {
 pub(all) enum SummarizerFormat {
   PlainText
   Markdown
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -65,7 +65,7 @@ pub(all) enum SummarizerLength {
   Short
   Medium
   Long
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -94,7 +94,7 @@ pub(all) enum WriterTone {
   Formal
   Neutral
   Casual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -122,7 +122,7 @@ pub fn WriterTone::from_string(s : String) -> WriterTone? {
 pub(all) enum WriterFormat {
   PlainText
   Markdown
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -149,7 +149,7 @@ pub(all) enum WriterLength {
   Short
   Medium
   Long
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -178,7 +178,7 @@ pub(all) enum RewriterTone {
   AsIs
   MoreFormal
   MoreCasual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -207,7 +207,7 @@ pub(all) enum RewriterFormat {
   AsIs
   PlainText
   Markdown
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -236,7 +236,7 @@ pub(all) enum RewriterLength {
   AsIs
   Shorter
   Longer
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -266,7 +266,7 @@ pub(all) enum Availability {
   Downloadable
   Downloading
   Available
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -308,8 +308,8 @@ pub(all) struct SummarizerCreateCoreOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
 }
 
@@ -334,8 +334,8 @@ extern "js" fn SummarizerCreateCoreOptions::to_js_ffi(
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -355,8 +355,8 @@ extern "js" fn SummarizerCreateCoreOptions::from_js_ffi(
   #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage
   #| })
 
@@ -374,8 +374,8 @@ pub(all) struct SummarizerCreateOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -406,8 +406,8 @@ extern "js" fn SummarizerCreateOptions::to_js_ffi(
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -430,8 +430,8 @@ extern "js" fn SummarizerCreateOptions::from_js_ffi(
   #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
@@ -456,7 +456,7 @@ pub(all) struct SummarizerSummarizeOptions {
 ///|
 /// Create a new SummarizerSummarizeOptions with default values
 pub fn SummarizerSummarizeOptions::default() -> SummarizerSummarizeOptions {
-  SummarizerSummarizeOptions::{ signal: None, context: None }
+  SummarizerSummarizeOptions::{ signal: None, context: None, }
 }
 
 ///|
@@ -499,8 +499,8 @@ pub(all) struct WriterCreateCoreOptions {
   tone : WriterTone?
   format : WriterFormat?
   length : WriterLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
 }
 
@@ -525,8 +525,8 @@ extern "js" fn WriterCreateCoreOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -546,8 +546,8 @@ extern "js" fn WriterCreateCoreOptions::from_js_ffi(
   #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage
   #| })
 
@@ -565,8 +565,8 @@ pub(all) struct WriterCreateOptions {
   tone : WriterTone?
   format : WriterFormat?
   length : WriterLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -597,8 +597,8 @@ extern "js" fn WriterCreateOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -619,8 +619,8 @@ extern "js" fn WriterCreateOptions::from_js_ffi(
   #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
@@ -643,7 +643,7 @@ pub(all) struct WriterWriteOptions {
 ///|
 /// Create a new WriterWriteOptions with default values
 pub fn WriterWriteOptions::default() -> WriterWriteOptions {
-  WriterWriteOptions::{ context: None, signal: None }
+  WriterWriteOptions::{ context: None, signal: None, }
 }
 
 ///|
@@ -682,8 +682,8 @@ pub(all) struct RewriterCreateCoreOptions {
   tone : RewriterTone?
   format : RewriterFormat?
   length : RewriterLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
 }
 
@@ -708,8 +708,8 @@ extern "js" fn RewriterCreateCoreOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['as-is', 'shorter', 'longer'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage
   #| })
 
@@ -729,8 +729,8 @@ extern "js" fn RewriterCreateCoreOptions::from_js_ffi(
   #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['as-is', 'shorter', 'longer'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage
   #| })
 
@@ -748,8 +748,8 @@ pub(all) struct RewriterCreateOptions {
   tone : RewriterTone?
   format : RewriterFormat?
   length : RewriterLength?
-  expectedInputLanguages : Array[String]?
-  expectedContextLanguages : Array[String]?
+  expectedInputLanguages : FixedArray[String]?
+  expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
   signal : AbortSignal?
   monitor : CreateMonitorCallback?
@@ -780,8 +780,8 @@ extern "js" fn RewriterCreateOptions::to_js_ffi(
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['as-is', 'shorter', 'longer'][v]; })()),
-  #|   expectedInputLanguages: ((() => { const v = self.expectedInputLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expectedContextLanguages: ((() => { const v = self.expectedContextLanguages; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   expectedInputLanguages: self.expectedInputLanguages,
+  #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -802,8 +802,8 @@ extern "js" fn RewriterCreateOptions::from_js_ffi(
   #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['as-is', 'shorter', 'longer'].indexOf(v.length)),
-  #|   expectedInputLanguages: (v.expectedInputLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedInputLanguages }),
-  #|   expectedContextLanguages: (v.expectedContextLanguages === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expectedContextLanguages }),
+  #|   expectedInputLanguages: v.expectedInputLanguages,
+  #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor }),
@@ -826,7 +826,7 @@ pub(all) struct RewriterRewriteOptions {
 ///|
 /// Create a new RewriterRewriteOptions with default values
 pub fn RewriterRewriteOptions::default() -> RewriterRewriteOptions {
-  RewriterRewriteOptions::{ context: None, signal: None }
+  RewriterRewriteOptions::{ context: None, signal: None, }
 }
 
 ///|
@@ -896,16 +896,15 @@ pub(all) enum SummarizerCreateError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SummarizerAvailabilityError {
   UnknownError(JsError)
-  NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -918,7 +917,7 @@ pub(all) enum SummarizerSummarizeError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -931,7 +930,7 @@ pub(all) enum SummarizerSummarizeStreamingError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -941,7 +940,7 @@ pub(all) enum SummarizerMeasureInputUsageError {
   NotReadableError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Summarizer::create() -> Promise[
@@ -966,13 +965,13 @@ pub fn Summarizer::create_with_options(
 pub extern "js" fn Summarizer::availability() -> Promise[
   Result[Availability, SummarizerAvailabilityError],
 ] =
-  #| () => Summarizer.availability().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| () => Summarizer.availability().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Summarizer::availability_with_options_ffi(
   options : JsValue,
 ) -> Promise[Result[Availability, SummarizerAvailabilityError]] =
-  #| (options) => Summarizer.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (options) => Summarizer.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Summarizer::availability_with_options(
@@ -1052,13 +1051,13 @@ pub extern "js" fn Summarizer::get_length(
 ///|
 pub extern "js" fn Summarizer::get_expected_input_languages(
   self : Summarizer,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Summarizer::get_expected_context_languages(
   self : Summarizer,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
 ///|
@@ -1228,13 +1227,13 @@ pub extern "js" fn Writer::get_length(self : Writer) -> WriterLength =
 ///|
 pub extern "js" fn Writer::get_expected_input_languages(
   self : Writer,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Writer::get_expected_context_languages(
   self : Writer,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
 ///|
@@ -1402,13 +1401,13 @@ pub extern "js" fn Rewriter::get_length(self : Rewriter) -> RewriterLength =
 ///|
 pub extern "js" fn Rewriter::get_expected_input_languages(
   self : Rewriter,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
 ///|
 pub extern "js" fn Rewriter::get_expected_context_languages(
   self : Rewriter,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
 ///|

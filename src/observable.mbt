@@ -246,7 +246,7 @@ pub(all) struct SubscriptionObserver {
 ///|
 /// Create a new SubscriptionObserver with default values
 pub fn SubscriptionObserver::default() -> SubscriptionObserver {
-  SubscriptionObserver::{ next: None, error: None, complete: None }
+  SubscriptionObserver::{ next: None, error: None, complete: None, }
 }
 
 ///|
@@ -348,7 +348,7 @@ pub(all) struct SubscribeOptions {
 ///|
 /// Create a new SubscribeOptions with default values
 pub fn SubscribeOptions::default() -> SubscribeOptions {
-  SubscribeOptions::{ signal: None }
+  SubscribeOptions::{ signal: None, }
 }
 
 ///|
@@ -387,7 +387,7 @@ pub(all) struct ObservableEventListenerOptions {
 ///|
 /// Create a new ObservableEventListenerOptions with default values
 pub fn ObservableEventListenerOptions::default() -> ObservableEventListenerOptions {
-  ObservableEventListenerOptions::{ capture: None, passive: None }
+  ObservableEventListenerOptions::{ capture: None, passive: None, }
 }
 
 ///|
@@ -565,14 +565,14 @@ pub extern "js" fn Observable::take(
   self : Observable,
   amount : Int64,
 ) -> Observable =
-  #| (self, amount) => self.take((amount.hi * 4294967296 + amount.lo))
+  #| (self, amount) => self.take(Number(amount))
 
 ///|
 pub extern "js" fn Observable::drop(
   self : Observable,
   amount : Int64,
 ) -> Observable =
-  #| (self, amount) => self.drop((amount.hi * 4294967296 + amount.lo))
+  #| (self, amount) => self.drop(Number(amount))
 
 ///|
 pub extern "js" fn Observable::flat_map(
@@ -616,21 +616,21 @@ pub extern "js" fn Observable::finally_(
 ///|
 pub extern "js" fn Observable::to_array(
   self : Observable,
-) -> Promise[Array[JsValue]] =
+) -> Promise[FixedArray[JsValue]] =
   #| (self) => self.toArray()
 
 ///|
 extern "js" fn Observable::to_array_with_options_ffi(
   self : Observable,
   options : JsValue,
-) -> Promise[Array[JsValue]] =
+) -> Promise[FixedArray[JsValue]] =
   #| (self, options) => self.toArray(options)
 
 ///|
 pub fn Observable::to_array_with_options(
   self : Observable,
   options : SubscribeOptions,
-) -> Promise[Array[JsValue]] {
+) -> Promise[FixedArray[JsValue]] {
   Observable::to_array_with_options_ffi(self, options.to_js())
 }
 

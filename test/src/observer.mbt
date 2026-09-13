@@ -5,7 +5,7 @@
 /// Test MutationObserver — constructor with callback, observe, disconnect, takeRecords.
 pub fn test_mutation_observer() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
 
   // Create callback
   let cb = @websys.MutationCallback::from_fn(fn(_records, _observer) {  })
@@ -35,7 +35,7 @@ pub fn test_mutation_observer() -> Unit {
 /// Test MutationObserver actually detects mutations.
 pub fn test_mutation_observer_records() -> Unit {
   let doc = get_document()
-  let container = doc.create_element("div")
+  let container = create_element(doc, "div")
 
   // Track mutations via takeRecords (synchronous)
   let cb = @websys.MutationCallback::from_fn(fn(_records, _observer) {  })
@@ -47,7 +47,7 @@ pub fn test_mutation_observer_records() -> Unit {
   observer.observe_with_options(container.to_node(), opts).unwrap()
 
   // Mutate: add a child
-  let child = doc.create_element("span")
+  let child = create_element(doc, "span")
   let _ = container.to_node().append_child(child.to_node())
 
   // takeRecords should capture the childList mutation
@@ -56,7 +56,11 @@ pub fn test_mutation_observer_records() -> Unit {
   let rec = records[0]
   assert_eq(rec.get_type(), "childList", label="record type")
   assert_eq(rec.get_added_nodes().get_length(), 1, label="added nodes count")
-  assert_eq(rec.get_removed_nodes().get_length(), 0, label="removed nodes count")
+  assert_eq(
+    rec.get_removed_nodes().get_length(),
+    0,
+    label="removed nodes count",
+  )
   assert_true(
     rec.get_target().is_same_node(Some(container.to_node())),
     label="target is container",
@@ -99,7 +103,7 @@ pub fn test_mutation_observer_records() -> Unit {
 /// Test IntersectionObserver — constructor, properties, observe/disconnect.
 pub fn test_intersection_observer() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
 
   // Create callback
   let cb = @websys.IntersectionObserverCallback::from_fn(fn(
@@ -138,7 +142,7 @@ pub fn test_intersection_observer() -> Unit {
 /// Test ResizeObserver — constructor, observe/disconnect.
 pub fn test_resize_observer() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
 
   // Create callback
   let cb = @websys.ResizeObserverCallback::from_fn(fn(_entries, _observer) {  })
@@ -153,7 +157,7 @@ pub fn test_resize_observer() -> Unit {
   let opts = @websys.ResizeObserverOptions::{
     box: Some(@websys.ResizeObserverBoxOptions::ContentBox),
   }
-  let div2 = doc.create_element("div")
+  let div2 = create_element(doc, "div")
   observer.observe_with_options(div2, opts)
 
   // unobserve / disconnect — should not throw

@@ -119,7 +119,7 @@ pub(all) enum ScrollBehavior {
   Auto
   Instant
   Smooth
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -149,7 +149,7 @@ pub(all) enum ScrollLogicalPosition {
   Center
   End
   Nearest
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -179,7 +179,7 @@ pub fn ScrollLogicalPosition::from_string(s : String) -> ScrollLogicalPosition? 
 pub(all) enum ScrollIntoViewContainer {
   All
   Nearest
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -211,7 +211,7 @@ pub(all) enum CSSBoxType {
   Border
   Padding
   Content
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -245,7 +245,7 @@ pub(all) struct ScrollOptions {
 ///|
 /// Create a new ScrollOptions with default values
 pub fn ScrollOptions::default() -> ScrollOptions {
-  ScrollOptions::{ behavior: None }
+  ScrollOptions::{ behavior: None, }
 }
 
 ///|
@@ -283,7 +283,7 @@ pub(all) struct ScrollToOptions {
 ///|
 /// Create a new ScrollToOptions with default values
 pub fn ScrollToOptions::default() -> ScrollToOptions {
-  ScrollToOptions::{ behavior: None, left: None, top: None }
+  ScrollToOptions::{ behavior: None, left: None, top: None, }
 }
 
 ///|
@@ -324,7 +324,7 @@ pub(all) struct MediaQueryListEventInit {
 ///|
 /// Create a new MediaQueryListEventInit with default values
 pub fn MediaQueryListEventInit::default() -> MediaQueryListEventInit {
-  MediaQueryListEventInit::{ media: None, matches: None }
+  MediaQueryListEventInit::{ media: None, matches: None, }
 }
 
 ///|
@@ -364,13 +364,13 @@ pub fn MediaQueryListEventInit::from_js(
 ///|
 /// CaretPositionFromPointOptions dictionary
 pub(all) struct CaretPositionFromPointOptions {
-  shadowRoots : Array[ShadowRoot]?
+  shadowRoots : FixedArray[ShadowRoot]?
 }
 
 ///|
 /// Create a new CaretPositionFromPointOptions with default values
 pub fn CaretPositionFromPointOptions::default() -> CaretPositionFromPointOptions {
-  CaretPositionFromPointOptions::{ shadowRoots: None }
+  CaretPositionFromPointOptions::{ shadowRoots: None, }
 }
 
 ///|
@@ -378,7 +378,7 @@ extern "js" fn CaretPositionFromPointOptions::to_js_ffi(
   self : CaretPositionFromPointOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: self.shadowRoots
   #| })
 
 ///|
@@ -394,7 +394,7 @@ extern "js" fn CaretPositionFromPointOptions::from_js_ffi(
   value : JsValue,
 ) -> CaretPositionFromPointOptions =
   #| (v) => ({
-  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #|   shadowRoots: v.shadowRoots
   #| })
 
 ///|
@@ -529,7 +529,7 @@ pub(all) struct BoxQuadOptions {
 ///|
 /// Create a new BoxQuadOptions with default values
 pub fn BoxQuadOptions::default() -> BoxQuadOptions {
-  BoxQuadOptions::{ box: None, relativeTo: None }
+  BoxQuadOptions::{ box: None, relativeTo: None, }
 }
 
 ///|
@@ -568,7 +568,7 @@ pub(all) struct ConvertCoordinateOptions {
 ///|
 /// Create a new ConvertCoordinateOptions with default values
 pub fn ConvertCoordinateOptions::default() -> ConvertCoordinateOptions {
-  ConvertCoordinateOptions::{ fromBox: None, toBox: None }
+  ConvertCoordinateOptions::{ fromBox: None, toBox: None, }
 }
 
 ///|

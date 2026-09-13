@@ -60,7 +60,7 @@ pub fn test_xhr_response_type() -> Unit {
 /// Test XMLHttpRequest event handler set/clear pattern.
 pub fn test_xhr_event_handlers() -> Unit {
   let xhr = @websys.XMLHttpRequest::new()
-  let called : Ref[Bool] = Ref::new(false)
+  let called : Ref[Bool] = Ref(false)
   // Set onreadystatechange
   xhr.set_onreadystatechange(fn(_event : @websys.Event) { called.val = true })
   // Opening triggers readystatechange
@@ -73,7 +73,7 @@ pub fn test_xhr_event_handlers() -> Unit {
   assert_false(called.val, label="onreadystatechange not called after clear")
   // XMLHttpRequestEventTarget event handlers
   let target = xhr.to_xml_http_request_event_target()
-  let load_called : Ref[Bool] = Ref::new(false)
+  let load_called : Ref[Bool] = Ref(false)
   target.set_onload(fn(_event : @websys.ProgressEvent) {
     load_called.val = true
   })

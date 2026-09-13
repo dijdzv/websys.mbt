@@ -105,7 +105,7 @@ pub(all) struct HMACGetSecretInput {
 ///|
 /// Create a new HMACGetSecretInput
 pub fn HMACGetSecretInput::new(salt1~ : ArrayBuffer) -> HMACGetSecretInput {
-  HMACGetSecretInput::{ salt1, salt2: None }
+  HMACGetSecretInput::{ salt1, salt2: None, }
 }
 
 ///|
@@ -222,7 +222,7 @@ pub(all) struct HMACGetSecretOutput {
 ///|
 /// Create a new HMACGetSecretOutput
 pub fn HMACGetSecretOutput::new(output1~ : ArrayBuffer) -> HMACGetSecretOutput {
-  HMACGetSecretOutput::{ output1, output2: None }
+  HMACGetSecretOutput::{ output1, output2: None, }
 }
 
 ///|

@@ -22,7 +22,7 @@ pub type COSEAlgorithmIdentifier = Int
 pub(all) enum AuthenticatorAttachment {
   Platform
   CrossPlatform
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -53,7 +53,7 @@ pub(all) enum ResidentKeyRequirement {
   Discouraged
   Preferred
   Required
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -87,7 +87,7 @@ pub(all) enum AttestationConveyancePreference {
   Indirect
   Direct
   Enterprise
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -121,7 +121,7 @@ pub fn AttestationConveyancePreference::from_string(
 pub(all) enum TokenBindingStatus {
   Present
   Supported
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -146,7 +146,7 @@ pub fn TokenBindingStatus::from_string(s : String) -> TokenBindingStatus? {
 /// PublicKeyCredentialType enum
 pub(all) enum PublicKeyCredentialType {
   PublicKey
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -178,7 +178,7 @@ pub(all) enum AuthenticatorTransport {
   SmartCard
   Hybrid
   Internal
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -217,7 +217,7 @@ pub(all) enum UserVerificationRequirement {
   Required
   Preferred
   Discouraged
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -256,7 +256,7 @@ pub(all) enum ClientCapability {
   SignalAllAcceptedCredentials
   SignalCurrentUserDetails
   SignalUnknownCredential
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -304,7 +304,7 @@ pub(all) enum PublicKeyCredentialHint {
   SecurityKey
   ClientDevice
   Hybrid
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -336,7 +336,7 @@ pub fn PublicKeyCredentialHint::from_string(
 pub(all) enum LargeBlobSupport {
   Required
   Preferred
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -432,7 +432,7 @@ pub fn RegistrationResponseJSON::from_js(
 pub(all) struct AuthenticatorAttestationResponseJSON {
   clientDataJSON : Base64URLString
   authenticatorData : Base64URLString
-  transports : Array[String]
+  transports : FixedArray[String]
   publicKey : Base64URLString?
   publicKeyAlgorithm : COSEAlgorithmIdentifier
   attestationObject : Base64URLString
@@ -698,13 +698,13 @@ pub(all) struct PublicKeyCredentialCreationOptionsJSON {
   rp : PublicKeyCredentialRpEntity
   user : PublicKeyCredentialUserEntityJSON
   challenge : Base64URLString
-  pubKeyCredParams : Array[PublicKeyCredentialParameters]
+  pubKeyCredParams : FixedArray[PublicKeyCredentialParameters]
   timeout : Int?
-  excludeCredentials : Array[PublicKeyCredentialDescriptorJSON]?
+  excludeCredentials : FixedArray[PublicKeyCredentialDescriptorJSON]?
   authenticatorSelection : AuthenticatorSelectionCriteria?
-  hints : Array[String]?
+  hints : FixedArray[String]?
   attestation : String?
-  attestationFormats : Array[String]?
+  attestationFormats : FixedArray[String]?
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
@@ -740,11 +740,11 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
   #|   challenge: self.challenge,
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
-  #|   excludeCredentials: ((() => { const v = self.excludeCredentials; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   excludeCredentials: self.excludeCredentials,
   #|   authenticatorSelection: ((() => { const v = self.authenticatorSelection; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hints: ((() => { const v = self.hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hints: self.hints,
   #|   attestation: self.attestation,
-  #|   attestationFormats: ((() => { const v = self.attestationFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   attestationFormats: self.attestationFormats,
   #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -766,11 +766,11 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
   #|   challenge: v.challenge,
   #|   pubKeyCredParams: v.pubKeyCredParams,
   #|   timeout: v.timeout,
-  #|   excludeCredentials: (v.excludeCredentials === undefined ? { $tag: 0 } : { $tag: 1, _0: v.excludeCredentials }),
+  #|   excludeCredentials: v.excludeCredentials,
   #|   authenticatorSelection: (v.authenticatorSelection === undefined ? { $tag: 0 } : { $tag: 1, _0: v.authenticatorSelection }),
-  #|   hints: (v.hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hints }),
+  #|   hints: v.hints,
   #|   attestation: v.attestation,
-  #|   attestationFormats: (v.attestationFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attestationFormats }),
+  #|   attestationFormats: v.attestationFormats,
   #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
   #| })
 
@@ -795,7 +795,7 @@ pub(all) struct PublicKeyCredentialUserEntityJSON {
 pub fn PublicKeyCredentialUserEntityJSON::new(
   id~ : Base64URLString,
 ) -> PublicKeyCredentialUserEntityJSON {
-  PublicKeyCredentialUserEntityJSON::{ id, name: "", displayName: "" }
+  PublicKeyCredentialUserEntityJSON::{ id, name: "", displayName: "", }
 }
 
 ///|
@@ -839,7 +839,7 @@ pub fn PublicKeyCredentialUserEntityJSON::from_js(
 pub(all) struct PublicKeyCredentialDescriptorJSON {
   type_ : String
   id : Base64URLString
-  transports : Array[String]?
+  transports : FixedArray[String]?
 }
 
 ///|
@@ -847,7 +847,7 @@ pub(all) struct PublicKeyCredentialDescriptorJSON {
 pub fn PublicKeyCredentialDescriptorJSON::new(
   id~ : Base64URLString,
 ) -> PublicKeyCredentialDescriptorJSON {
-  PublicKeyCredentialDescriptorJSON::{ type_: "", id, transports: None }
+  PublicKeyCredentialDescriptorJSON::{ type_: "", id, transports: None, }
 }
 
 ///|
@@ -857,7 +857,7 @@ extern "js" fn PublicKeyCredentialDescriptorJSON::to_js_ffi(
   #| (self) => ({
   #|   type: self.type_,
   #|   id: self.id,
-  #|   transports: ((() => { const v = self.transports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transports: self.transports
   #| })
 
 ///|
@@ -875,7 +875,7 @@ extern "js" fn PublicKeyCredentialDescriptorJSON::from_js_ffi(
   #| (v) => ({
   #|   type_: v.type,
   #|   id: v.id,
-  #|   transports: (v.transports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transports })
+  #|   transports: v.transports
   #| })
 
 ///|
@@ -954,9 +954,9 @@ pub(all) struct PublicKeyCredentialRequestOptionsJSON {
   challenge : Base64URLString
   timeout : Int?
   rpId : String?
-  allowCredentials : Array[PublicKeyCredentialDescriptorJSON]?
+  allowCredentials : FixedArray[PublicKeyCredentialDescriptorJSON]?
   userVerification : String?
-  hints : Array[String]?
+  hints : FixedArray[String]?
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
@@ -984,9 +984,9 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(
   #|   challenge: self.challenge,
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
-  #|   allowCredentials: ((() => { const v = self.allowCredentials; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   allowCredentials: self.allowCredentials,
   #|   userVerification: self.userVerification,
-  #|   hints: ((() => { const v = self.hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hints: self.hints,
   #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1006,9 +1006,9 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
   #|   rpId: v.rpId,
-  #|   allowCredentials: (v.allowCredentials === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allowCredentials }),
+  #|   allowCredentials: v.allowCredentials,
   #|   userVerification: v.userVerification,
-  #|   hints: (v.hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hints }),
+  #|   hints: v.hints,
   #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
   #| })
 
@@ -1032,7 +1032,7 @@ pub(all) struct UnknownCredentialOptions {
 pub fn UnknownCredentialOptions::new(
   credentialId~ : Base64URLString,
 ) -> UnknownCredentialOptions {
-  UnknownCredentialOptions::{ rpId: "", credentialId }
+  UnknownCredentialOptions::{ rpId: "", credentialId, }
 }
 
 ///|
@@ -1074,7 +1074,7 @@ pub fn UnknownCredentialOptions::from_js(
 pub(all) struct AllAcceptedCredentialsOptions {
   rpId : String
   userId : Base64URLString
-  allAcceptedCredentialIds : Array[Base64URLString]
+  allAcceptedCredentialIds : FixedArray[Base64URLString]
 }
 
 ///|
@@ -1139,7 +1139,7 @@ pub(all) struct CurrentUserDetailsOptions {
 pub fn CurrentUserDetailsOptions::new(
   userId~ : Base64URLString,
 ) -> CurrentUserDetailsOptions {
-  CurrentUserDetailsOptions::{ rpId: "", userId, name: "", displayName: "" }
+  CurrentUserDetailsOptions::{ rpId: "", userId, name: "", displayName: "", }
 }
 
 ///|
@@ -1192,7 +1192,7 @@ pub(all) struct PublicKeyCredentialParameters {
 pub fn PublicKeyCredentialParameters::new(
   alg~ : COSEAlgorithmIdentifier,
 ) -> PublicKeyCredentialParameters {
-  PublicKeyCredentialParameters::{ type_: "", alg }
+  PublicKeyCredentialParameters::{ type_: "", alg, }
 }
 
 ///|
@@ -1235,13 +1235,13 @@ pub(all) struct PublicKeyCredentialCreationOptions {
   rp : PublicKeyCredentialRpEntity
   user : PublicKeyCredentialUserEntity
   challenge : BufferSource
-  pubKeyCredParams : Array[PublicKeyCredentialParameters]
+  pubKeyCredParams : FixedArray[PublicKeyCredentialParameters]
   timeout : Int?
-  excludeCredentials : Array[PublicKeyCredentialDescriptor]?
+  excludeCredentials : FixedArray[PublicKeyCredentialDescriptor]?
   authenticatorSelection : AuthenticatorSelectionCriteria?
-  hints : Array[String]?
+  hints : FixedArray[String]?
   attestation : String?
-  attestationFormats : Array[String]?
+  attestationFormats : FixedArray[String]?
   extensions : AuthenticationExtensionsClientInputs?
 }
 
@@ -1277,11 +1277,11 @@ extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
   #|   challenge: self.challenge.to_js_value(),
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
-  #|   excludeCredentials: ((() => { const v = self.excludeCredentials; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   excludeCredentials: self.excludeCredentials,
   #|   authenticatorSelection: ((() => { const v = self.authenticatorSelection; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hints: ((() => { const v = self.hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hints: self.hints,
   #|   attestation: self.attestation,
-  #|   attestationFormats: ((() => { const v = self.attestationFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   attestationFormats: self.attestationFormats,
   #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1303,11 +1303,11 @@ extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(
   #|   challenge: v.challenge,
   #|   pubKeyCredParams: v.pubKeyCredParams,
   #|   timeout: v.timeout,
-  #|   excludeCredentials: (v.excludeCredentials === undefined ? { $tag: 0 } : { $tag: 1, _0: v.excludeCredentials }),
+  #|   excludeCredentials: v.excludeCredentials,
   #|   authenticatorSelection: (v.authenticatorSelection === undefined ? { $tag: 0 } : { $tag: 1, _0: v.authenticatorSelection }),
-  #|   hints: (v.hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hints }),
+  #|   hints: v.hints,
   #|   attestation: v.attestation,
-  #|   attestationFormats: (v.attestationFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attestationFormats }),
+  #|   attestationFormats: v.attestationFormats,
   #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
   #| })
 
@@ -1328,7 +1328,7 @@ pub(all) struct PublicKeyCredentialEntity {
 ///|
 /// Create a new PublicKeyCredentialEntity with default values
 pub fn PublicKeyCredentialEntity::default() -> PublicKeyCredentialEntity {
-  PublicKeyCredentialEntity::{ name: "" }
+  PublicKeyCredentialEntity::{ name: "", }
 }
 
 ///|
@@ -1373,7 +1373,7 @@ pub(all) struct PublicKeyCredentialRpEntity {
 ///|
 /// Create a new PublicKeyCredentialRpEntity with default values
 pub fn PublicKeyCredentialRpEntity::default() -> PublicKeyCredentialRpEntity {
-  PublicKeyCredentialRpEntity::{ name: "", id: None }
+  PublicKeyCredentialRpEntity::{ name: "", id: None, }
 }
 
 ///|
@@ -1423,7 +1423,7 @@ pub(all) struct PublicKeyCredentialUserEntity {
 pub fn PublicKeyCredentialUserEntity::new(
   id~ : BufferSource,
 ) -> PublicKeyCredentialUserEntity {
-  PublicKeyCredentialUserEntity::{ name: "", id, displayName: "" }
+  PublicKeyCredentialUserEntity::{ name: "", id, displayName: "", }
 }
 
 ///|
@@ -1526,9 +1526,9 @@ pub(all) struct PublicKeyCredentialRequestOptions {
   challenge : BufferSource
   timeout : Int?
   rpId : String?
-  allowCredentials : Array[PublicKeyCredentialDescriptor]?
+  allowCredentials : FixedArray[PublicKeyCredentialDescriptor]?
   userVerification : String?
-  hints : Array[String]?
+  hints : FixedArray[String]?
   extensions : AuthenticationExtensionsClientInputs?
 }
 
@@ -1556,9 +1556,9 @@ extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
   #|   challenge: self.challenge.to_js_value(),
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
-  #|   allowCredentials: ((() => { const v = self.allowCredentials; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   allowCredentials: self.allowCredentials,
   #|   userVerification: self.userVerification,
-  #|   hints: ((() => { const v = self.hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   hints: self.hints,
   #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1578,9 +1578,9 @@ extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
   #|   rpId: v.rpId,
-  #|   allowCredentials: (v.allowCredentials === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allowCredentials }),
+  #|   allowCredentials: v.allowCredentials,
   #|   userVerification: v.userVerification,
-  #|   hints: (v.hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hints }),
+  #|   hints: v.hints,
   #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
   #| })
 
@@ -1660,7 +1660,7 @@ pub(all) struct TokenBinding {
 ///|
 /// Create a new TokenBinding with default values
 pub fn TokenBinding::default() -> TokenBinding {
-  TokenBinding::{ status: "", id: None }
+  TokenBinding::{ status: "", id: None, }
 }
 
 ///|
@@ -1694,7 +1694,7 @@ pub fn TokenBinding::from_js(value : JsValue) -> TokenBinding {
 pub(all) struct PublicKeyCredentialDescriptor {
   type_ : String
   id : BufferSource
-  transports : Array[String]?
+  transports : FixedArray[String]?
 }
 
 ///|
@@ -1702,7 +1702,7 @@ pub(all) struct PublicKeyCredentialDescriptor {
 pub fn PublicKeyCredentialDescriptor::new(
   id~ : BufferSource,
 ) -> PublicKeyCredentialDescriptor {
-  PublicKeyCredentialDescriptor::{ type_: "", id, transports: None }
+  PublicKeyCredentialDescriptor::{ type_: "", id, transports: None, }
 }
 
 ///|
@@ -1712,7 +1712,7 @@ extern "js" fn PublicKeyCredentialDescriptor::to_js_ffi(
   #| (self) => ({
   #|   type: self.type_,
   #|   id: self.id.to_js_value(),
-  #|   transports: ((() => { const v = self.transports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transports: self.transports
   #| })
 
 ///|
@@ -1730,7 +1730,7 @@ extern "js" fn PublicKeyCredentialDescriptor::from_js_ffi(
   #| (v) => ({
   #|   type_: v.type,
   #|   id: v.id,
-  #|   transports: (v.transports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transports })
+  #|   transports: v.transports
   #| })
 
 ///|
@@ -1750,7 +1750,7 @@ pub(all) struct CredentialPropertiesOutput {
 ///|
 /// Create a new CredentialPropertiesOutput with default values
 pub fn CredentialPropertiesOutput::default() -> CredentialPropertiesOutput {
-  CredentialPropertiesOutput::{ rk: None }
+  CredentialPropertiesOutput::{ rk: None, }
 }
 
 ///|
@@ -1797,7 +1797,7 @@ pub(all) struct AuthenticationExtensionsPRFValues {
 pub fn AuthenticationExtensionsPRFValues::new(
   first~ : BufferSource,
 ) -> AuthenticationExtensionsPRFValues {
-  AuthenticationExtensionsPRFValues::{ first, second: None }
+  AuthenticationExtensionsPRFValues::{ first, second: None, }
 }
 
 ///|
@@ -1846,7 +1846,7 @@ pub(all) struct AuthenticationExtensionsPRFValuesJSON {
 pub fn AuthenticationExtensionsPRFValuesJSON::new(
   first~ : Base64URLString,
 ) -> AuthenticationExtensionsPRFValuesJSON {
-  AuthenticationExtensionsPRFValuesJSON::{ first, second: None }
+  AuthenticationExtensionsPRFValuesJSON::{ first, second: None, }
 }
 
 ///|
@@ -1893,7 +1893,7 @@ pub(all) struct AuthenticationExtensionsPRFInputs {
 ///|
 /// Create a new AuthenticationExtensionsPRFInputs with default values
 pub fn AuthenticationExtensionsPRFInputs::default() -> AuthenticationExtensionsPRFInputs {
-  AuthenticationExtensionsPRFInputs::{ eval: None, evalByCredential: None }
+  AuthenticationExtensionsPRFInputs::{ eval: None, evalByCredential: None, }
 }
 
 ///|
@@ -1940,7 +1940,7 @@ pub(all) struct AuthenticationExtensionsPRFInputsJSON {
 ///|
 /// Create a new AuthenticationExtensionsPRFInputsJSON with default values
 pub fn AuthenticationExtensionsPRFInputsJSON::default() -> AuthenticationExtensionsPRFInputsJSON {
-  AuthenticationExtensionsPRFInputsJSON::{ eval: None, evalByCredential: None }
+  AuthenticationExtensionsPRFInputsJSON::{ eval: None, evalByCredential: None, }
 }
 
 ///|
@@ -1987,7 +1987,7 @@ pub(all) struct AuthenticationExtensionsPRFOutputs {
 ///|
 /// Create a new AuthenticationExtensionsPRFOutputs with default values
 pub fn AuthenticationExtensionsPRFOutputs::default() -> AuthenticationExtensionsPRFOutputs {
-  AuthenticationExtensionsPRFOutputs::{ enabled: None, results: None }
+  AuthenticationExtensionsPRFOutputs::{ enabled: None, results: None, }
 }
 
 ///|
@@ -2034,7 +2034,7 @@ pub(all) struct AuthenticationExtensionsPRFOutputsJSON {
 ///|
 /// Create a new AuthenticationExtensionsPRFOutputsJSON with default values
 pub fn AuthenticationExtensionsPRFOutputsJSON::default() -> AuthenticationExtensionsPRFOutputsJSON {
-  AuthenticationExtensionsPRFOutputsJSON::{ enabled: None, results: None }
+  AuthenticationExtensionsPRFOutputsJSON::{ enabled: None, results: None, }
 }
 
 ///|
@@ -2336,35 +2336,35 @@ pub extern "js" fn PublicKeyCredential::to_credential(
 pub(all) enum PublicKeyCredentialGetClientExtensionResultsError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsConditionalMediationAvailableError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialToJSONError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialGetClientCapabilitiesError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2372,7 +2372,7 @@ pub(all) enum PublicKeyCredentialParseCreationOptionsFromJSONError {
   EncodingError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2380,7 +2380,7 @@ pub(all) enum PublicKeyCredentialParseRequestOptionsFromJSONError {
   EncodingError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2388,7 +2388,7 @@ pub(all) enum PublicKeyCredentialSignalUnknownCredentialError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2396,7 +2396,7 @@ pub(all) enum PublicKeyCredentialSignalAllAcceptedCredentialsError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2404,7 +2404,7 @@ pub(all) enum PublicKeyCredentialSignalCurrentUserDetailsError {
   TypeError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PublicKeyCredential::get_raw_id(
@@ -2649,7 +2649,7 @@ pub extern "js" fn AuthenticatorAttestationResponse::get_attestation_object(
 ///|
 pub extern "js" fn AuthenticatorAttestationResponse::get_transports(
   self : AuthenticatorAttestationResponse,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.getTransports()
 
 ///|

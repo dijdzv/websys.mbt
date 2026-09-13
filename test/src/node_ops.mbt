@@ -1,10 +1,10 @@
 ///|
 fn test_node_clone() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   div.set_id("original")
   div.set_class_name("test-class")
-  let span = doc.create_element("span")
+  let span = create_element(doc, "span")
   @websys.HTMLElement::from_js_value(span.to_js_value()).set_inner_text("child")
   div.to_node().append_child(span.to_node()) |> ignore
   // shallow clone
@@ -28,9 +28,9 @@ fn test_node_clone() -> Unit {
 ///|
 fn test_node_compare() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
-  let child1 = doc.create_element("span")
-  let child2 = doc.create_element("em")
+  let div = create_element(doc, "div")
+  let child1 = create_element(doc, "span")
+  let child2 = create_element(doc, "em")
   div.to_node().append_child(child1.to_node()) |> ignore
   div.to_node().append_child(child2.to_node()) |> ignore
   // compareDocumentPosition
@@ -55,9 +55,9 @@ fn test_node_compare() -> Unit {
 ///|
 fn test_node_replace() -> Unit {
   let doc = get_document()
-  let parent = doc.create_element("div")
-  let old_child = doc.create_element("span")
-  let new_child = doc.create_element("em")
+  let parent = create_element(doc, "div")
+  let old_child = create_element(doc, "span")
+  let new_child = create_element(doc, "em")
   parent.to_node().append_child(old_child.to_node()) |> ignore
   assert_eq(parent.get_child_element_count(), 1, label="before replace")
   parent.to_node().replace_child(new_child.to_node(), old_child.to_node())

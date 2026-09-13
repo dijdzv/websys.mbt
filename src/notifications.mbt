@@ -7,7 +7,7 @@ pub(all) enum NotificationPermission {
   Default
   Denied
   Granted
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub(all) enum NotificationDirection {
   Auto
   Ltr
   Rtl
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -91,7 +91,7 @@ pub(all) struct NotificationOptions {
   silent : Nullable[Bool]
   requireInteraction : Bool?
   data : JsValue?
-  actions : Array[NotificationAction]?
+  actions : FixedArray[NotificationAction]?
 }
 
 ///|
@@ -135,7 +135,7 @@ extern "js" fn NotificationOptions::to_js_ffi(
   #|   silent: ((() => { const v = self.silent; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   requireInteraction: (self.requireInteraction === -1 ? undefined : self.requireInteraction),
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   actions: ((() => { const v = self.actions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   actions: self.actions
   #| })
 
 ///|
@@ -163,7 +163,7 @@ extern "js" fn NotificationOptions::from_js_ffi(
   #|   silent: (v.silent === undefined ? { $tag: 0 } : v.silent === null ? { $tag: 1 } : { $tag: 2, _0: v.silent }),
   #|   requireInteraction: (v.requireInteraction === undefined ? -1 : v.requireInteraction),
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
-  #|   actions: (v.actions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.actions })
+  #|   actions: v.actions
   #| })
 
 ///|
@@ -184,7 +184,7 @@ pub(all) struct NotificationAction {
 ///|
 /// Create a new NotificationAction with default values
 pub fn NotificationAction::default() -> NotificationAction {
-  NotificationAction::{ action: "", title: "", navigate: None, icon: None }
+  NotificationAction::{ action: "", title: "", navigate: None, icon: None, }
 }
 
 ///|
@@ -230,7 +230,7 @@ pub(all) struct GetNotificationOptions {
 ///|
 /// Create a new GetNotificationOptions with default values
 pub fn GetNotificationOptions::default() -> GetNotificationOptions {
-  GetNotificationOptions::{ tag: None }
+  GetNotificationOptions::{ tag: None, }
 }
 
 ///|
@@ -275,7 +275,7 @@ pub(all) struct NotificationEventInit {
 pub fn NotificationEventInit::new(
   notification~ : Notification,
 ) -> NotificationEventInit {
-  NotificationEventInit::{ notification, action: None }
+  NotificationEventInit::{ notification, action: None, }
 }
 
 ///|
@@ -350,7 +350,7 @@ pub(all) enum NotificationConstructorError {
   TypeError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Notification::new(
@@ -478,7 +478,9 @@ pub extern "js" fn Notification::get_badge(self : Notification) -> String =
   #| (self) => self.badge
 
 ///|
-pub extern "js" fn Notification::get_vibrate(self : Notification) -> Array[Int] =
+pub extern "js" fn Notification::get_vibrate(
+  self : Notification,
+) -> FixedArray[Int] =
   #| (self) => self.vibrate
 
 ///|
@@ -508,7 +510,7 @@ pub extern "js" fn Notification::get_data(self : Notification) -> JsValue =
 ///|
 pub extern "js" fn Notification::get_actions(
   self : Notification,
-) -> Array[NotificationAction] =
+) -> FixedArray[NotificationAction] =
   #| (self) => self.actions
 
 ///|

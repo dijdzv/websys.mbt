@@ -54,7 +54,7 @@ pub extern "js" fn LayoutShift::get_last_input_time(
 ///|
 pub extern "js" fn LayoutShift::get_sources(
   self : LayoutShift,
-) -> Array[LayoutShiftAttribution] =
+) -> FixedArray[LayoutShiftAttribution] =
   #| (self) => self.sources
 
 ///|

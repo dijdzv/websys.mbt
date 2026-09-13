@@ -7,7 +7,7 @@ pub(all) enum CaptureStartFocusBehavior {
   FocusCapturingApplication
   FocusCapturedSurface
   NoFocusChange
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub fn CaptureStartFocusBehavior::from_string(
 pub(all) enum SelfCapturePreferenceEnum {
   Include
   Exclude
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -72,7 +72,7 @@ pub fn SelfCapturePreferenceEnum::from_string(
 pub(all) enum SystemAudioPreferenceEnum {
   Include
   Exclude
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -103,7 +103,7 @@ pub(all) enum WindowAudioPreferenceEnum {
   System
   Window
   Exclude
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -135,7 +135,7 @@ pub fn WindowAudioPreferenceEnum::from_string(
 pub(all) enum SurfaceSwitchingPreferenceEnum {
   Include
   Exclude
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -165,7 +165,7 @@ pub fn SurfaceSwitchingPreferenceEnum::from_string(
 pub(all) enum MonitorTypeSurfacesEnum {
   Include
   Exclude
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -196,7 +196,7 @@ pub(all) enum DisplayCaptureSurfaceType {
   Monitor
   Window
   Browser
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -229,7 +229,7 @@ pub(all) enum CursorCaptureConstraint {
   Never
   Always
   Motion
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -379,7 +379,7 @@ pub extern "js" fn CaptureController::to_event_target(
 pub(all) enum CaptureControllerSetFocusBehaviorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -387,7 +387,7 @@ pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -395,7 +395,7 @@ pub(all) enum CaptureControllerIncreaseZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -403,7 +403,7 @@ pub(all) enum CaptureControllerDecreaseZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -411,7 +411,7 @@ pub(all) enum CaptureControllerResetZoomLevelError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -420,7 +420,7 @@ pub(all) enum CaptureControllerForwardWheelError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CaptureController::new() -> CaptureController =
@@ -449,7 +449,7 @@ pub extern "js" fn CaptureController::clear_oncapturedmousechange(
 ///|
 pub extern "js" fn CaptureController::get_supported_zoom_levels(
   self : CaptureController,
-) -> Result[Array[Int], CaptureControllerGetSupportedZoomLevelsError] =
+) -> Result[FixedArray[Int], CaptureControllerGetSupportedZoomLevelsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getSupportedZoomLevels() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|

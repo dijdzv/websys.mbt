@@ -6,7 +6,7 @@
 pub(all) enum LockMode {
   Shared
   Exclusive
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -50,7 +50,7 @@ pub(all) struct LockOptions {
 ///|
 /// Create a new LockOptions with default values
 pub fn LockOptions::default() -> LockOptions {
-  LockOptions::{ mode: None, ifAvailable: None, steal: None, signal: None }
+  LockOptions::{ mode: None, ifAvailable: None, steal: None, signal: None, }
 }
 
 ///|
@@ -86,14 +86,14 @@ pub fn LockOptions::from_js(value : JsValue) -> LockOptions {
 ///|
 /// LockManagerSnapshot dictionary
 pub(all) struct LockManagerSnapshot {
-  held : Array[LockInfo]?
-  pending : Array[LockInfo]?
+  held : FixedArray[LockInfo]?
+  pending : FixedArray[LockInfo]?
 }
 
 ///|
 /// Create a new LockManagerSnapshot with default values
 pub fn LockManagerSnapshot::default() -> LockManagerSnapshot {
-  LockManagerSnapshot::{ held: None, pending: None }
+  LockManagerSnapshot::{ held: None, pending: None, }
 }
 
 ///|
@@ -101,8 +101,8 @@ extern "js" fn LockManagerSnapshot::to_js_ffi(
   self : LockManagerSnapshot,
 ) -> JsValue =
   #| (self) => ({
-  #|   held: ((() => { const v = self.held; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pending: ((() => { const v = self.pending; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   held: self.held,
+  #|   pending: self.pending
   #| })
 
 ///|
@@ -116,8 +116,8 @@ extern "js" fn LockManagerSnapshot::from_js_ffi(
   value : JsValue,
 ) -> LockManagerSnapshot =
   #| (v) => ({
-  #|   held: (v.held === undefined ? { $tag: 0 } : { $tag: 1, _0: v.held }),
-  #|   pending: (v.pending === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pending })
+  #|   held: v.held,
+  #|   pending: v.pending
   #| })
 
 ///|
@@ -137,7 +137,7 @@ pub(all) struct LockInfo {
 ///|
 /// Create a new LockInfo with default values
 pub fn LockInfo::default() -> LockInfo {
-  LockInfo::{ name: None, mode: None, clientId: None }
+  LockInfo::{ name: None, mode: None, clientId: None, }
 }
 
 ///|
@@ -204,7 +204,7 @@ pub(all) enum LockManagerRequestError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -212,7 +212,7 @@ pub(all) enum LockManagerQueryError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn LockManager::request(
@@ -251,8 +251,8 @@ pub extern "js" fn LockManager::query(
   self : LockManager,
 ) -> Promise[Result[LockManagerSnapshot, LockManagerQueryError]] =
   #| (self) => self.query().then(v => ({
-  #|   held: (v.held === undefined ? { $tag: 0 } : { $tag: 1, _0: v.held }),
-  #|   pending: (v.pending === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pending })
+  #|   held: v.held,
+  #|   pending: v.pending
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|

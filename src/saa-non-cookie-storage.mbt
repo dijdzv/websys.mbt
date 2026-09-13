@@ -6,7 +6,7 @@
 pub(all) enum SameSiteCookiesType {
   All
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -126,7 +126,7 @@ pub(all) struct SharedWorkerOptions {
 ///|
 /// Create a new SharedWorkerOptions with default values
 pub fn SharedWorkerOptions::default() -> SharedWorkerOptions {
-  SharedWorkerOptions::{ sameSiteCookies: None }
+  SharedWorkerOptions::{ sameSiteCookies: None, }
 }
 
 ///|
@@ -200,42 +200,42 @@ pub extern "js" fn JsValue::to_storage_access_handle(
 pub(all) enum StorageAccessHandleGetDirectoryError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleEstimateError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleCreateObjectURLError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleRevokeObjectURLError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleBroadcastChannelError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum StorageAccessHandleSharedWorkerError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn StorageAccessHandle::get_session_storage(

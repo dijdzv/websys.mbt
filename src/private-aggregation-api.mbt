@@ -14,7 +14,7 @@ pub(all) struct PAHistogramContribution {
 pub fn PAHistogramContribution::new(
   bucket~ : JsValue,
 ) -> PAHistogramContribution {
-  PAHistogramContribution::{ bucket, value: 0, filteringId: None }
+  PAHistogramContribution::{ bucket, value: 0, filteringId: None, }
 }
 
 ///|

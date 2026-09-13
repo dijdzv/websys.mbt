@@ -82,7 +82,7 @@ pub type RunFunctionForSharedStorageSelectURLOperation
 ///|
 /// Create RunFunctionForSharedStorageSelectURLOperation from a MoonBit function
 pub extern "js" fn RunFunctionForSharedStorageSelectURLOperation::from_fn(
-  handler : (Array[String], JsValue) -> Promise[Int],
+  handler : (FixedArray[String], JsValue) -> Promise[Int],
 ) -> RunFunctionForSharedStorageSelectURLOperation =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -96,7 +96,7 @@ pub(all) struct SharedStorageUrlWithMetadata {
 ///|
 /// Create a new SharedStorageUrlWithMetadata with default values
 pub fn SharedStorageUrlWithMetadata::default() -> SharedStorageUrlWithMetadata {
-  SharedStorageUrlWithMetadata::{ url: "", reportingMetadata: None }
+  SharedStorageUrlWithMetadata::{ url: "", reportingMetadata: None, }
 }
 
 ///|
@@ -142,7 +142,7 @@ pub(all) struct SharedStorageModifierMethodOptions {
 ///|
 /// Create a new SharedStorageModifierMethodOptions with default values
 pub fn SharedStorageModifierMethodOptions::default() -> SharedStorageModifierMethodOptions {
-  SharedStorageModifierMethodOptions::{ withLock: None }
+  SharedStorageModifierMethodOptions::{ withLock: None, }
 }
 
 ///|
@@ -187,7 +187,7 @@ pub(all) struct SharedStorageSetMethodOptions {
 ///|
 /// Create a new SharedStorageSetMethodOptions with default values
 pub fn SharedStorageSetMethodOptions::default() -> SharedStorageSetMethodOptions {
-  SharedStorageSetMethodOptions::{ withLock: None, ignoreIfPresent: None }
+  SharedStorageSetMethodOptions::{ withLock: None, ignoreIfPresent: None, }
 }
 
 ///|
@@ -353,7 +353,7 @@ pub(all) struct SharedStorageWorkletOptions {
 ///|
 /// Create a new SharedStorageWorkletOptions with default values
 pub fn SharedStorageWorkletOptions::default() -> SharedStorageWorkletOptions {
-  SharedStorageWorkletOptions::{ dataOrigin: None }
+  SharedStorageWorkletOptions::{ dataOrigin: None, }
 }
 
 ///|
@@ -436,7 +436,7 @@ pub extern "js" fn SharedStorageWorklet::to_worklet(
 pub extern "js" fn SharedStorageWorklet::select_url(
   self : SharedStorageWorklet,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
 ) -> Promise[SharedStorageResponse] =
   #| (self, name, urls) => self.selectURL(name, urls)
 
@@ -444,7 +444,7 @@ pub extern "js" fn SharedStorageWorklet::select_url(
 extern "js" fn SharedStorageWorklet::select_url_with_options_ffi(
   self : SharedStorageWorklet,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
   options : JsValue,
 ) -> Promise[SharedStorageResponse] =
   #| (self, name, urls, options) => self.selectURL(name, urls, options)
@@ -453,7 +453,7 @@ extern "js" fn SharedStorageWorklet::select_url_with_options_ffi(
 pub fn SharedStorageWorklet::select_url_with_options(
   self : SharedStorageWorklet,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
   options : SharedStorageRunOperationMethodOptions,
 ) -> Promise[SharedStorageResponse] {
   SharedStorageWorklet::select_url_with_options_ffi(
@@ -537,7 +537,7 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::to_worklet_global_scope(
 pub(all) enum SharedStorageWorkletGlobalScopeRegisterError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// @alert deprecated "register is deprecated"
@@ -563,7 +563,7 @@ pub extern "js" fn SharedStorageWorkletGlobalScope::get_private_aggregation(
 ///|
 pub extern "js" fn SharedStorageWorkletGlobalScope::interest_groups(
   self : SharedStorageWorkletGlobalScope,
-) -> Promise[Array[StorageInterestGroup]] =
+) -> Promise[FixedArray[StorageInterestGroup]] =
   #| (self) => self.interestGroups()
 
 ///|
@@ -931,28 +931,28 @@ pub extern "js" fn JsValue::to_shared_storage(self : JsValue) -> SharedStorage =
 pub(all) enum SharedStorageSetError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SharedStorageAppendError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SharedStorageDeleteError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SharedStorageClearError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SharedStorage::get(
@@ -1067,14 +1067,14 @@ pub fn SharedStorage::clear_with_options(
 ///|
 pub extern "js" fn SharedStorage::batch_update(
   self : SharedStorage,
-  methods : Array[SharedStorageModifierMethod],
+  methods : FixedArray[SharedStorageModifierMethod],
 ) -> Promise[JsValue] =
   #| (self, methods) => self.batchUpdate(methods)
 
 ///|
 extern "js" fn SharedStorage::batch_update_with_options_ffi(
   self : SharedStorage,
-  methods : Array[SharedStorageModifierMethod],
+  methods : FixedArray[SharedStorageModifierMethod],
   options : JsValue,
 ) -> Promise[JsValue] =
   #| (self, methods, options) => self.batchUpdate(methods, options)
@@ -1082,7 +1082,7 @@ extern "js" fn SharedStorage::batch_update_with_options_ffi(
 ///|
 pub fn SharedStorage::batch_update_with_options(
   self : SharedStorage,
-  methods : Array[SharedStorageModifierMethod],
+  methods : FixedArray[SharedStorageModifierMethod],
   options : SharedStorageModifierMethodOptions,
 ) -> Promise[JsValue] {
   SharedStorage::batch_update_with_options_ffi(self, methods, options.to_js())
@@ -1092,7 +1092,7 @@ pub fn SharedStorage::batch_update_with_options(
 pub extern "js" fn SharedStorage::select_url(
   self : SharedStorage,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
 ) -> Promise[SharedStorageResponse] =
   #| (self, name, urls) => self.selectURL(name, urls)
 
@@ -1100,7 +1100,7 @@ pub extern "js" fn SharedStorage::select_url(
 extern "js" fn SharedStorage::select_url_with_options_ffi(
   self : SharedStorage,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
   options : JsValue,
 ) -> Promise[SharedStorageResponse] =
   #| (self, name, urls, options) => self.selectURL(name, urls, options)
@@ -1109,7 +1109,7 @@ extern "js" fn SharedStorage::select_url_with_options_ffi(
 pub fn SharedStorage::select_url_with_options(
   self : SharedStorage,
   name : String,
-  urls : Array[SharedStorageUrlWithMetadata],
+  urls : FixedArray[SharedStorageUrlWithMetadata],
   options : SharedStorageRunOperationMethodOptions,
 ) -> Promise[SharedStorageResponse] {
   SharedStorage::select_url_with_options_ffi(self, name, urls, options.to_js())

@@ -1,7 +1,7 @@
 ///|
 fn test_dom_token_list_iteration() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   div.set_class_name("a b c d")
   let classes = div.get_class_list()
   // length

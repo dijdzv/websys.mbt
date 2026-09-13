@@ -7,7 +7,7 @@ pub(all) enum USBTransferStatus {
   Ok
   Stall
   Babble
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -36,7 +36,7 @@ pub(all) enum USBRequestType {
   Standard
   Class
   Vendor
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -66,7 +66,7 @@ pub(all) enum USBRecipient {
   Interface
   Endpoint
   Other
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -96,7 +96,7 @@ pub fn USBRecipient::from_string(s : String) -> USBRecipient? {
 pub(all) enum USBDirection {
   In
   Out
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -123,7 +123,7 @@ pub(all) enum USBEndpointType {
   Bulk
   Interrupt
   Isochronous
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -207,14 +207,14 @@ pub fn USBDeviceFilter::from_js(value : JsValue) -> USBDeviceFilter {
 ///|
 /// USBDeviceRequestOptions dictionary
 pub(all) struct USBDeviceRequestOptions {
-  filters : Array[USBDeviceFilter]
-  exclusionFilters : Array[USBDeviceFilter]?
+  filters : FixedArray[USBDeviceFilter]
+  exclusionFilters : FixedArray[USBDeviceFilter]?
 }
 
 ///|
 /// Create a new USBDeviceRequestOptions with default values
 pub fn USBDeviceRequestOptions::default() -> USBDeviceRequestOptions {
-  USBDeviceRequestOptions::{ filters: [], exclusionFilters: None }
+  USBDeviceRequestOptions::{ filters: [], exclusionFilters: None, }
 }
 
 ///|
@@ -223,7 +223,7 @@ extern "js" fn USBDeviceRequestOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
-  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   exclusionFilters: self.exclusionFilters
   #| })
 
 ///|
@@ -240,7 +240,7 @@ extern "js" fn USBDeviceRequestOptions::from_js_ffi(
 ) -> USBDeviceRequestOptions =
   #| (v) => ({
   #|   filters: v.filters,
-  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters })
+  #|   exclusionFilters: v.exclusionFilters
   #| })
 
 ///|
@@ -371,7 +371,7 @@ pub(all) struct USBBlocklistEntry {
 ///|
 /// Create a new USBBlocklistEntry with default values
 pub fn USBBlocklistEntry::default() -> USBBlocklistEntry {
-  USBBlocklistEntry::{ idVendor: 0, idProduct: 0, bcdDevice: 0 }
+  USBBlocklistEntry::{ idVendor: 0, idProduct: 0, bcdDevice: 0, }
 }
 
 ///|
@@ -409,14 +409,14 @@ pub fn USBBlocklistEntry::from_js(value : JsValue) -> USBBlocklistEntry {
 ///|
 /// USBPermissionDescriptor dictionary
 pub(all) struct USBPermissionDescriptor {
-  filters : Array[USBDeviceFilter]?
-  exclusionFilters : Array[USBDeviceFilter]?
+  filters : FixedArray[USBDeviceFilter]?
+  exclusionFilters : FixedArray[USBDeviceFilter]?
 }
 
 ///|
 /// Create a new USBPermissionDescriptor with default values
 pub fn USBPermissionDescriptor::default() -> USBPermissionDescriptor {
-  USBPermissionDescriptor::{ filters: None, exclusionFilters: None }
+  USBPermissionDescriptor::{ filters: None, exclusionFilters: None, }
 }
 
 ///|
@@ -424,8 +424,8 @@ extern "js" fn USBPermissionDescriptor::to_js_ffi(
   self : USBPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exclusionFilters: ((() => { const v = self.exclusionFilters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   filters: self.filters,
+  #|   exclusionFilters: self.exclusionFilters
   #| })
 
 ///|
@@ -441,8 +441,8 @@ extern "js" fn USBPermissionDescriptor::from_js_ffi(
   value : JsValue,
 ) -> USBPermissionDescriptor =
   #| (v) => ({
-  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
-  #|   exclusionFilters: (v.exclusionFilters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exclusionFilters })
+  #|   filters: v.filters,
+  #|   exclusionFilters: v.exclusionFilters
   #| })
 
 ///|
@@ -464,7 +464,7 @@ pub(all) struct AllowedUSBDevice {
 ///|
 /// Create a new AllowedUSBDevice with default values
 pub fn AllowedUSBDevice::default() -> AllowedUSBDevice {
-  AllowedUSBDevice::{ vendorId: 0, productId: 0, serialNumber: None }
+  AllowedUSBDevice::{ vendorId: 0, productId: 0, serialNumber: None, }
 }
 
 ///|
@@ -500,13 +500,13 @@ pub fn AllowedUSBDevice::from_js(value : JsValue) -> AllowedUSBDevice {
 ///|
 /// USBPermissionStorage dictionary
 pub(all) struct USBPermissionStorage {
-  allowedDevices : Array[AllowedUSBDevice]?
+  allowedDevices : FixedArray[AllowedUSBDevice]?
 }
 
 ///|
 /// Create a new USBPermissionStorage with default values
 pub fn USBPermissionStorage::default() -> USBPermissionStorage {
-  USBPermissionStorage::{ allowedDevices: None }
+  USBPermissionStorage::{ allowedDevices: None, }
 }
 
 ///|
@@ -514,7 +514,7 @@ extern "js" fn USBPermissionStorage::to_js_ffi(
   self : USBPermissionStorage,
 ) -> JsValue =
   #| (self) => ({
-  #|   allowedDevices: ((() => { const v = self.allowedDevices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   allowedDevices: self.allowedDevices
   #| })
 
 ///|
@@ -528,7 +528,7 @@ extern "js" fn USBPermissionStorage::from_js_ffi(
   value : JsValue,
 ) -> USBPermissionStorage =
   #| (v) => ({
-  #|   allowedDevices: (v.allowedDevices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.allowedDevices })
+  #|   allowedDevices: v.allowedDevices
   #| })
 
 ///|
@@ -592,7 +592,9 @@ pub extern "js" fn USB::clear_ondisconnect(self : USB) -> Unit =
   #| (self) => { self.ondisconnect = null }
 
 ///|
-pub extern "js" fn USB::get_devices(self : USB) -> Promise[Array[USBDevice]] =
+pub extern "js" fn USB::get_devices(
+  self : USB,
+) -> Promise[FixedArray[USBDevice]] =
   #| (self) => self.getDevices()
 
 ///|
@@ -904,13 +906,13 @@ pub extern "js" fn JsValue::to_usb_isochronous_in_transfer_result(
 
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::new(
-  packets : Array[USBIsochronousInTransferPacket],
+  packets : FixedArray[USBIsochronousInTransferPacket],
 ) -> USBIsochronousInTransferResult =
   #| (packets) => new USBIsochronousInTransferResult(packets)
 
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::new_with_data(
-  packets : Array[USBIsochronousInTransferPacket],
+  packets : FixedArray[USBIsochronousInTransferPacket],
   data : DataView?,
 ) -> USBIsochronousInTransferResult =
   #| (packets, data) => new USBIsochronousInTransferResult(packets, (data.$tag === 1 ? data._0 : null))
@@ -924,7 +926,7 @@ pub extern "js" fn USBIsochronousInTransferResult::get_data(
 ///|
 pub extern "js" fn USBIsochronousInTransferResult::get_packets(
   self : USBIsochronousInTransferResult,
-) -> Array[USBIsochronousInTransferPacket] =
+) -> FixedArray[USBIsochronousInTransferPacket] =
   #| (self) => self.packets
 
 ///|
@@ -1030,14 +1032,14 @@ pub extern "js" fn JsValue::to_usb_isochronous_out_transfer_result(
 
 ///|
 pub extern "js" fn USBIsochronousOutTransferResult::new(
-  packets : Array[USBIsochronousOutTransferPacket],
+  packets : FixedArray[USBIsochronousOutTransferPacket],
 ) -> USBIsochronousOutTransferResult =
   #| (packets) => new USBIsochronousOutTransferResult(packets)
 
 ///|
 pub extern "js" fn USBIsochronousOutTransferResult::get_packets(
   self : USBIsochronousOutTransferResult,
-) -> Array[USBIsochronousOutTransferPacket] =
+) -> FixedArray[USBIsochronousOutTransferPacket] =
   #| (self) => self.packets
 
 ///|
@@ -1137,7 +1139,7 @@ pub extern "js" fn USBDevice::get_configuration(
 ///|
 pub extern "js" fn USBDevice::get_configurations(
   self : USBDevice,
-) -> Array[USBConfiguration] =
+) -> FixedArray[USBConfiguration] =
   #| (self) => self.configurations
 
 ///|
@@ -1262,7 +1264,7 @@ pub extern "js" fn USBDevice::transfer_out(
 pub extern "js" fn USBDevice::isochronous_transfer_in(
   self : USBDevice,
   endpoint_number : Int,
-  packet_lengths : Array[Int],
+  packet_lengths : FixedArray[Int],
 ) -> Promise[USBIsochronousInTransferResult] =
   #| (self, endpoint_number, packet_lengths) => self.isochronousTransferIn(endpoint_number, packet_lengths)
 
@@ -1271,7 +1273,7 @@ pub extern "js" fn USBDevice::isochronous_transfer_out(
   self : USBDevice,
   endpoint_number : Int,
   data : BufferSource,
-  packet_lengths : Array[Int],
+  packet_lengths : FixedArray[Int],
 ) -> Promise[USBIsochronousOutTransferResult] =
   #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
 
@@ -1316,7 +1318,7 @@ pub extern "js" fn USBDevice::isochronous_transfer_out_with_array_buffer_view(
   self : USBDevice,
   endpoint_number : Int,
   data : ArrayBufferView,
-  packet_lengths : Array[Int],
+  packet_lengths : FixedArray[Int],
 ) -> Promise[USBIsochronousOutTransferResult] =
   #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
 
@@ -1325,7 +1327,7 @@ pub extern "js" fn USBDevice::isochronous_transfer_out_with_array_buffer(
   self : USBDevice,
   endpoint_number : Int,
   data : ArrayBuffer,
-  packet_lengths : Array[Int],
+  packet_lengths : FixedArray[Int],
 ) -> Promise[USBIsochronousOutTransferResult] =
   #| (self, endpoint_number, data, packet_lengths) => self.isochronousTransferOut(endpoint_number, data, packet_lengths)
 
@@ -1389,7 +1391,7 @@ pub extern "js" fn USBConfiguration::get_configuration_name(
 ///|
 pub extern "js" fn USBConfiguration::get_interfaces(
   self : USBConfiguration,
-) -> Array[USBInterface] =
+) -> FixedArray[USBInterface] =
   #| (self) => self.interfaces
 
 ///|
@@ -1444,7 +1446,7 @@ pub extern "js" fn USBInterface::get_alternate(
 ///|
 pub extern "js" fn USBInterface::get_alternates(
   self : USBInterface,
-) -> Array[USBAlternateInterface] =
+) -> FixedArray[USBAlternateInterface] =
   #| (self) => self.alternates
 
 ///|
@@ -1529,7 +1531,7 @@ pub extern "js" fn USBAlternateInterface::get_interface_name(
 ///|
 pub extern "js" fn USBAlternateInterface::get_endpoints(
   self : USBAlternateInterface,
-) -> Array[USBEndpoint] =
+) -> FixedArray[USBEndpoint] =
   #| (self) => self.endpoints
 
 ///|
@@ -1639,12 +1641,12 @@ pub extern "js" fn USBPermissionResult::to_event_target(
 ///|
 pub extern "js" fn USBPermissionResult::get_devices(
   self : USBPermissionResult,
-) -> Array[USBDevice] =
+) -> FixedArray[USBDevice] =
   #| (self) => self.devices
 
 ///|
 pub extern "js" fn USBPermissionResult::set_devices(
   self : USBPermissionResult,
-  value : Array[USBDevice],
+  value : FixedArray[USBDevice],
 ) -> Unit =
   #| (self, value) => { self.devices = value }

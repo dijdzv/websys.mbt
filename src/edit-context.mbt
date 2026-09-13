@@ -9,7 +9,7 @@ pub(all) enum UnderlineStyle {
   Dotted
   Dashed
   Wavy
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) enum UnderlineThickness {
   None
   Thin
   Thick
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -76,7 +76,7 @@ pub(all) struct EditContextInit {
 ///|
 /// Create a new EditContextInit with default values
 pub fn EditContextInit::default() -> EditContextInit {
-  EditContextInit::{ text: None, selectionStart: None, selectionEnd: None }
+  EditContextInit::{ text: None, selectionStart: None, selectionEnd: None, }
 }
 
 ///|
@@ -226,13 +226,13 @@ pub fn TextFormatInit::from_js(value : JsValue) -> TextFormatInit {
 ///|
 /// TextFormatUpdateEventInit dictionary
 pub(all) struct TextFormatUpdateEventInit {
-  textFormats : Array[TextFormat]?
+  textFormats : FixedArray[TextFormat]?
 }
 
 ///|
 /// Create a new TextFormatUpdateEventInit with default values
 pub fn TextFormatUpdateEventInit::default() -> TextFormatUpdateEventInit {
-  TextFormatUpdateEventInit::{ textFormats: None }
+  TextFormatUpdateEventInit::{ textFormats: None, }
 }
 
 ///|
@@ -240,7 +240,7 @@ extern "js" fn TextFormatUpdateEventInit::to_js_ffi(
   self : TextFormatUpdateEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   textFormats: ((() => { const v = self.textFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   textFormats: self.textFormats
   #| })
 
 ///|
@@ -256,7 +256,7 @@ extern "js" fn TextFormatUpdateEventInit::from_js_ffi(
   value : JsValue,
 ) -> TextFormatUpdateEventInit =
   #| (v) => ({
-  #|   textFormats: (v.textFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.textFormats })
+  #|   textFormats: v.textFormats
   #| })
 
 ///|
@@ -277,7 +277,7 @@ pub(all) struct CharacterBoundsUpdateEventInit {
 ///|
 /// Create a new CharacterBoundsUpdateEventInit with default values
 pub fn CharacterBoundsUpdateEventInit::default() -> CharacterBoundsUpdateEventInit {
-  CharacterBoundsUpdateEventInit::{ rangeStart: None, rangeEnd: None }
+  CharacterBoundsUpdateEventInit::{ rangeStart: None, rangeEnd: None, }
 }
 
 ///|
@@ -353,35 +353,35 @@ pub extern "js" fn EditContext::to_event_target(
 pub(all) enum EditContextUpdateTextError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateSelectionError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateControlBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateSelectionBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum EditContextUpdateCharacterBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn EditContext::new() -> EditContext =
@@ -433,14 +433,14 @@ pub extern "js" fn EditContext::update_selection_bounds(
 pub extern "js" fn EditContext::update_character_bounds(
   self : EditContext,
   range_start : Int,
-  character_bounds : Array[DOMRect],
+  character_bounds : FixedArray[DOMRect],
 ) -> Result[Unit, EditContextUpdateCharacterBoundsError] =
   #| (self, range_start, character_bounds) => (() => { try { self.updateCharacterBounds(range_start, character_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn EditContext::attached_elements(
   self : EditContext,
-) -> Array[HTMLElement] =
+) -> FixedArray[HTMLElement] =
   #| (self) => self.attachedElements()
 
 ///|
@@ -464,7 +464,7 @@ pub extern "js" fn EditContext::get_character_bounds_range_start(
 ///|
 pub extern "js" fn EditContext::character_bounds(
   self : EditContext,
-) -> Array[DOMRect] =
+) -> FixedArray[DOMRect] =
   #| (self) => self.characterBounds()
 
 ///|
@@ -750,7 +750,7 @@ pub fn TextFormatUpdateEvent::new_with_options(
 ///|
 pub extern "js" fn TextFormatUpdateEvent::get_text_formats(
   self : TextFormatUpdateEvent,
-) -> Array[TextFormat] =
+) -> FixedArray[TextFormat] =
   #| (self) => self.getTextFormats()
 
 ///|

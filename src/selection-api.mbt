@@ -4,13 +4,13 @@
 ///|
 /// GetComposedRangesOptions dictionary
 pub(all) struct GetComposedRangesOptions {
-  shadowRoots : Array[ShadowRoot]?
+  shadowRoots : FixedArray[ShadowRoot]?
 }
 
 ///|
 /// Create a new GetComposedRangesOptions with default values
 pub fn GetComposedRangesOptions::default() -> GetComposedRangesOptions {
-  GetComposedRangesOptions::{ shadowRoots: None }
+  GetComposedRangesOptions::{ shadowRoots: None, }
 }
 
 ///|
@@ -18,7 +18,7 @@ extern "js" fn GetComposedRangesOptions::to_js_ffi(
   self : GetComposedRangesOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: self.shadowRoots
   #| })
 
 ///|
@@ -34,7 +34,7 @@ extern "js" fn GetComposedRangesOptions::from_js_ffi(
   value : JsValue,
 ) -> GetComposedRangesOptions =
   #| (v) => ({
-  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #|   shadowRoots: v.shadowRoots
   #| })
 
 ///|
@@ -78,7 +78,7 @@ pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
 pub(all) enum SelectionSetBaseAndExtentError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =
@@ -144,21 +144,21 @@ pub extern "js" fn Selection::empty(self : Selection) -> Unit =
 ///|
 pub extern "js" fn Selection::get_composed_ranges(
   self : Selection,
-) -> Array[StaticRange] =
+) -> FixedArray[StaticRange] =
   #| (self) => self.getComposedRanges()
 
 ///|
 extern "js" fn Selection::get_composed_ranges_with_options_ffi(
   self : Selection,
   options : JsValue,
-) -> Array[StaticRange] =
+) -> FixedArray[StaticRange] =
   #| (self, options) => self.getComposedRanges(options)
 
 ///|
 pub fn Selection::get_composed_ranges_with_options(
   self : Selection,
   options : GetComposedRangesOptions,
-) -> Array[StaticRange] {
+) -> FixedArray[StaticRange] {
   Selection::get_composed_ranges_with_options_ffi(self, options.to_js())
 }
 
@@ -198,11 +198,11 @@ pub extern "js" fn Selection::collapse_to_end(self : Selection) -> Unit =
   #| (self) => self.collapseToEnd()
 
 ///|
-pub extern "js" fn Selection::extend(self : Selection, node : Node) -> Unit =
+pub extern "js" fn Selection::extend_(self : Selection, node : Node) -> Unit =
   #| (self, node) => self.extend(node)
 
 ///|
-pub extern "js" fn Selection::extend_with_offset(
+pub extern "js" fn Selection::extend__with_offset(
   self : Selection,
   node : Node,
   offset : Int,

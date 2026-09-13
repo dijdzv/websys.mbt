@@ -10,7 +10,7 @@ pub(all) struct IsInputPendingOptions {
 ///|
 /// Create a new IsInputPendingOptions with default values
 pub fn IsInputPendingOptions::default() -> IsInputPendingOptions {
-  IsInputPendingOptions::{ includeContinuous: None }
+  IsInputPendingOptions::{ includeContinuous: None, }
 }
 
 ///|

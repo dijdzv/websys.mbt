@@ -46,7 +46,9 @@ pub fn test_rtc_data_channel_with_init() -> Unit {
     maxRetransmits: Some(3),
     protocol: Some("test-protocol"),
   }
-  let dc = pc.create_data_channel_with_data_channel_dict("ordered-ch", init).unwrap()
+  let dc = pc
+    .create_data_channel_with_data_channel_dict("ordered-ch", init)
+    .unwrap()
 
   assert_eq(dc.get_label(), "ordered-ch", label="label with init")
   assert_eq(dc.get_protocol(), "test-protocol", label="protocol with init")

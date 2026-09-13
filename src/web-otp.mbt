@@ -5,7 +5,7 @@
 /// OTPCredentialTransportType enum
 pub(all) enum OTPCredentialTransportType {
   Sms
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -31,13 +31,13 @@ pub fn OTPCredentialTransportType::from_string(
 ///|
 /// OTPCredentialRequestOptions dictionary
 pub(all) struct OTPCredentialRequestOptions {
-  transport : Array[OTPCredentialTransportType]?
+  transport : FixedArray[OTPCredentialTransportType]?
 }
 
 ///|
 /// Create a new OTPCredentialRequestOptions with default values
 pub fn OTPCredentialRequestOptions::default() -> OTPCredentialRequestOptions {
-  OTPCredentialRequestOptions::{ transport: None }
+  OTPCredentialRequestOptions::{ transport: None, }
 }
 
 ///|
@@ -45,7 +45,7 @@ extern "js" fn OTPCredentialRequestOptions::to_js_ffi(
   self : OTPCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transport: ((() => { const v = self.transport; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transport: self.transport
   #| })
 
 ///|
@@ -61,7 +61,7 @@ extern "js" fn OTPCredentialRequestOptions::from_js_ffi(
   value : JsValue,
 ) -> OTPCredentialRequestOptions =
   #| (v) => ({
-  #|   transport: (v.transport === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transport })
+  #|   transport: v.transport
   #| })
 
 ///|

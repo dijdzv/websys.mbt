@@ -6,7 +6,7 @@
 pub(all) enum AppBannerPromptOutcome {
   Accepted
   Dismissed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub(all) struct PromptResponseObject {
 ///|
 /// Create a new PromptResponseObject with default values
 pub fn PromptResponseObject::default() -> PromptResponseObject {
-  PromptResponseObject::{ userChoice: None }
+  PromptResponseObject::{ userChoice: None, }
 }
 
 ///|

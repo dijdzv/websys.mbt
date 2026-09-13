@@ -254,7 +254,7 @@ pub(all) struct URLPatternOptions {
 ///|
 /// Create a new URLPatternOptions with default values
 pub fn URLPatternOptions::default() -> URLPatternOptions {
-  URLPatternOptions::{ ignoreCase: None }
+  URLPatternOptions::{ ignoreCase: None, }
 }
 
 ///|
@@ -288,7 +288,7 @@ pub fn URLPatternOptions::from_js(value : JsValue) -> URLPatternOptions {
 ///|
 /// URLPatternResult dictionary
 pub(all) struct URLPatternResult {
-  inputs : Array[URLPatternInput]?
+  inputs : FixedArray[URLPatternInput]?
   protocol : URLPatternComponentResult?
   username : URLPatternComponentResult?
   password : URLPatternComponentResult?
@@ -318,7 +318,7 @@ pub fn URLPatternResult::default() -> URLPatternResult {
 ///|
 extern "js" fn URLPatternResult::to_js_ffi(self : URLPatternResult) -> JsValue =
   #| (self) => ({
-  #|   inputs: ((() => { const v = self.inputs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   inputs: self.inputs,
   #|   protocol: ((() => { const v = self.protocol; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   username: ((() => { const v = self.username; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -340,7 +340,7 @@ extern "js" fn URLPatternResult::from_js_ffi(
   value : JsValue,
 ) -> URLPatternResult =
   #| (v) => ({
-  #|   inputs: (v.inputs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputs }),
+  #|   inputs: v.inputs,
   #|   protocol: (v.protocol === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocol }),
   #|   username: (v.username === undefined ? { $tag: 0 } : { $tag: 1, _0: v.username }),
   #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
@@ -367,7 +367,7 @@ pub(all) struct URLPatternComponentResult {
 ///|
 /// Create a new URLPatternComponentResult with default values
 pub fn URLPatternComponentResult::default() -> URLPatternComponentResult {
-  URLPatternComponentResult::{ input: None, groups: None }
+  URLPatternComponentResult::{ input: None, groups: None, }
 }
 
 ///|
@@ -437,21 +437,21 @@ pub extern "js" fn JsValue::to_url_pattern(self : JsValue) -> URLPattern =
 pub(all) enum URLPatternConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum URLPatternTestError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum URLPatternExecError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn URLPattern::new() -> Result[

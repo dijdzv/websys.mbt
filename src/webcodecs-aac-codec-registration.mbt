@@ -6,7 +6,7 @@
 pub(all) enum AacBitstreamFormat {
   Aac
   Adts
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -106,7 +106,7 @@ pub(all) struct AacEncoderConfig {
 ///|
 /// Create a new AacEncoderConfig with default values
 pub fn AacEncoderConfig::default() -> AacEncoderConfig {
-  AacEncoderConfig::{ format: None }
+  AacEncoderConfig::{ format: None, }
 }
 
 ///|

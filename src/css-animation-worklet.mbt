@@ -239,7 +239,7 @@ pub extern "js" fn JsValue::to_worklet_group_effect(
 ///|
 pub extern "js" fn WorkletGroupEffect::get_children(
   self : WorkletGroupEffect,
-) -> Array[WorkletAnimationEffect] =
+) -> FixedArray[WorkletAnimationEffect] =
   #| (self) => self.getChildren()
 
 ///|
@@ -276,42 +276,42 @@ pub extern "js" fn css_get_paint_worklet() -> Worklet =
 /// CSS namespace
 pub extern "js" fn css_parse_stylesheet(
   css : CSSStringSource,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css) => CSS.parseStylesheet(css)
 
 ///|
 extern "js" fn css_parse_stylesheet_with_options_ffi(
   css : CSSStringSource,
   options : JsValue,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css, options) => CSS.parseStylesheet(css, options)
 
 ///|
 pub fn css_parse_stylesheet_with_options(
   css : CSSStringSource,
   options : CSSParserOptions,
-) -> Promise[Array[CSSParserRule]] {
+) -> Promise[FixedArray[CSSParserRule]] {
   css_parse_stylesheet_with_options_ffi(css, options.to_js())
 }
 
 ///|
 pub extern "js" fn css_parse_rule_list(
   css : CSSStringSource,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css) => CSS.parseRuleList(css)
 
 ///|
 extern "js" fn css_parse_rule_list_with_options_ffi(
   css : CSSStringSource,
   options : JsValue,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css, options) => CSS.parseRuleList(css, options)
 
 ///|
 pub fn css_parse_rule_list_with_options(
   css : CSSStringSource,
   options : CSSParserOptions,
-) -> Promise[Array[CSSParserRule]] {
+) -> Promise[FixedArray[CSSParserRule]] {
   css_parse_rule_list_with_options_ffi(css, options.to_js())
 }
 
@@ -339,21 +339,21 @@ pub fn css_parse_rule_with_options(
 ///|
 pub extern "js" fn css_parse_declaration_list(
   css : CSSStringSource,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css) => CSS.parseDeclarationList(css)
 
 ///|
 extern "js" fn css_parse_declaration_list_with_options_ffi(
   css : CSSStringSource,
   options : JsValue,
-) -> Promise[Array[CSSParserRule]] =
+) -> Promise[FixedArray[CSSParserRule]] =
   #| (css, options) => CSS.parseDeclarationList(css, options)
 
 ///|
 pub fn css_parse_declaration_list_with_options(
   css : CSSStringSource,
   options : CSSParserOptions,
-) -> Promise[Array[CSSParserRule]] {
+) -> Promise[FixedArray[CSSParserRule]] {
   css_parse_declaration_list_with_options_ffi(css, options.to_js())
 }
 
@@ -381,13 +381,13 @@ pub extern "js" fn css_parse_value(css : String) -> CSSToken =
   #| (css) => CSS.parseValue(css)
 
 ///|
-pub extern "js" fn css_parse_value_list(css : String) -> Array[CSSToken] =
+pub extern "js" fn css_parse_value_list(css : String) -> FixedArray[CSSToken] =
   #| (css) => CSS.parseValueList(css)
 
 ///|
 pub extern "js" fn css_parse_comma_value_list(
   css : String,
-) -> Array[Array[CSSToken]] =
+) -> FixedArray[FixedArray[CSSToken]] =
   #| (css) => CSS.parseCommaValueList(css)
 
 ///|

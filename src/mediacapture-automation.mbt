@@ -6,7 +6,7 @@
 pub(all) enum MockCapturePromptResult {
   Granted
   Denied
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -92,7 +92,11 @@ pub(all) struct MockCaptureDeviceConfiguration {
 ///|
 /// Create a new MockCaptureDeviceConfiguration with default values
 pub fn MockCaptureDeviceConfiguration::default() -> MockCaptureDeviceConfiguration {
-  MockCaptureDeviceConfiguration::{ label: None, deviceId: None, groupId: None }
+  MockCaptureDeviceConfiguration::{
+    label: None,
+    deviceId: None,
+    groupId: None,
+  }
 }
 
 ///|

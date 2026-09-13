@@ -6,7 +6,7 @@
 fn test_map_element() -> Unit {
   let doc = get_document()
   let map = @websys.HTMLMapElement::from_js_value(
-    doc.create_element("map").to_js_value(),
+    create_element(doc, "map").to_js_value(),
   )
   // name
   assert_eq(map.get_name(), "", label="name default")
@@ -16,7 +16,7 @@ fn test_map_element() -> Unit {
   let areas = map.get_areas()
   assert_eq(areas.get_length(), 0, label="areas initially empty")
   // Add an area element to the map
-  let area = doc.create_element("area")
+  let area = create_element(doc, "area")
   map.to_node().append_child(area.to_node()) |> ignore
   assert_eq(map.get_areas().get_length(), 1, label="areas after adding")
   println("  map_element: ok")
@@ -26,7 +26,7 @@ fn test_map_element() -> Unit {
 fn test_area_element() -> Unit {
   let doc = get_document()
   let area = @websys.HTMLAreaElement::from_js_value(
-    doc.create_element("area").to_js_value(),
+    create_element(doc, "area").to_js_value(),
   )
   // alt
   assert_eq(area.get_alt(), "", label="alt default")

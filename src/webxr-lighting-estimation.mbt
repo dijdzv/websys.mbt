@@ -6,7 +6,7 @@
 pub(all) enum XRReflectionFormat {
   Srgba8
   Rgba16f
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -36,7 +36,7 @@ pub(all) struct XRLightProbeInit {
 ///|
 /// Create a new XRLightProbeInit with default values
 pub fn XRLightProbeInit::default() -> XRLightProbeInit {
-  XRLightProbeInit::{ reflectionFormat: None }
+  XRLightProbeInit::{ reflectionFormat: None, }
 }
 
 ///|

@@ -6,7 +6,7 @@
 pub(all) enum TouchType {
   Direct
   Stylus
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -124,23 +124,23 @@ pub fn TouchInit::from_js(value : JsValue) -> TouchInit {
 ///|
 /// TouchEventInit dictionary
 pub(all) struct TouchEventInit {
-  touches : Array[Touch]?
-  targetTouches : Array[Touch]?
-  changedTouches : Array[Touch]?
+  touches : FixedArray[Touch]?
+  targetTouches : FixedArray[Touch]?
+  changedTouches : FixedArray[Touch]?
 }
 
 ///|
 /// Create a new TouchEventInit with default values
 pub fn TouchEventInit::default() -> TouchEventInit {
-  TouchEventInit::{ touches: None, targetTouches: None, changedTouches: None }
+  TouchEventInit::{ touches: None, targetTouches: None, changedTouches: None, }
 }
 
 ///|
 extern "js" fn TouchEventInit::to_js_ffi(self : TouchEventInit) -> JsValue =
   #| (self) => ({
-  #|   touches: ((() => { const v = self.touches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   targetTouches: ((() => { const v = self.targetTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   changedTouches: ((() => { const v = self.changedTouches; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   touches: self.touches,
+  #|   targetTouches: self.targetTouches,
+  #|   changedTouches: self.changedTouches
   #| })
 
 ///|
@@ -152,9 +152,9 @@ pub fn TouchEventInit::to_js(self : TouchEventInit) -> JsValue {
 ///|
 extern "js" fn TouchEventInit::from_js_ffi(value : JsValue) -> TouchEventInit =
   #| (v) => ({
-  #|   touches: (v.touches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.touches }),
-  #|   targetTouches: (v.targetTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.targetTouches }),
-  #|   changedTouches: (v.changedTouches === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changedTouches })
+  #|   touches: v.touches,
+  #|   targetTouches: v.targetTouches,
+  #|   changedTouches: v.changedTouches
   #| })
 
 ///|

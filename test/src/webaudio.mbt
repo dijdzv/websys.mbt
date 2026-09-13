@@ -9,7 +9,8 @@ pub fn test_audio_context() -> Unit {
   // State should be "suspended" (autoplay policy)
   let state = base.get_state()
   assert_true(
-    state == @websys.AudioContextState::Suspended || state == @websys.AudioContextState::Running,
+    state == @websys.AudioContextState::Suspended ||
+    state == @websys.AudioContextState::Running,
     label="AudioContext state is valid",
   )
   // Destination exists

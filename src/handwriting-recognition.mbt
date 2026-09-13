@@ -6,7 +6,7 @@
 pub(all) enum HandwritingRecognitionType {
   Text
   PerCharacter
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -37,7 +37,7 @@ pub(all) enum HandwritingInputType {
   Mouse
   Stylus
   Touch
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -63,13 +63,13 @@ pub fn HandwritingInputType::from_string(s : String) -> HandwritingInputType? {
 ///|
 /// HandwritingModelConstraint dictionary
 pub(all) struct HandwritingModelConstraint {
-  languages : Array[String]
+  languages : FixedArray[String]
 }
 
 ///|
 /// Create a new HandwritingModelConstraint with default values
 pub fn HandwritingModelConstraint::default() -> HandwritingModelConstraint {
-  HandwritingModelConstraint::{ languages: [] }
+  HandwritingModelConstraint::{ languages: [], }
 }
 
 ///|
@@ -161,8 +161,8 @@ pub fn HandwritingRecognizerQueryResult::from_js(
 ///|
 /// HandwritingHintsQueryResult dictionary
 pub(all) struct HandwritingHintsQueryResult {
-  recognitionType : Array[HandwritingRecognitionType]?
-  inputType : Array[HandwritingInputType]?
+  recognitionType : FixedArray[HandwritingRecognitionType]?
+  inputType : FixedArray[HandwritingInputType]?
   textContext : Bool?
   alternatives : Bool?
 }
@@ -183,8 +183,8 @@ extern "js" fn HandwritingHintsQueryResult::to_js_ffi(
   self : HandwritingHintsQueryResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   recognitionType: ((() => { const v = self.recognitionType; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   inputType: ((() => { const v = self.inputType; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   recognitionType: self.recognitionType,
+  #|   inputType: self.inputType,
   #|   textContext: (self.textContext === -1 ? undefined : self.textContext),
   #|   alternatives: (self.alternatives === -1 ? undefined : self.alternatives)
   #| })
@@ -202,8 +202,8 @@ extern "js" fn HandwritingHintsQueryResult::from_js_ffi(
   value : JsValue,
 ) -> HandwritingHintsQueryResult =
   #| (v) => ({
-  #|   recognitionType: (v.recognitionType === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recognitionType }),
-  #|   inputType: (v.inputType === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputType }),
+  #|   recognitionType: v.recognitionType,
+  #|   inputType: v.inputType,
   #|   textContext: (v.textContext === undefined ? -1 : v.textContext),
   #|   alternatives: (v.alternatives === undefined ? -1 : v.alternatives)
   #| })
@@ -279,7 +279,7 @@ pub(all) struct HandwritingPoint {
 ///|
 /// Create a new HandwritingPoint with default values
 pub fn HandwritingPoint::default() -> HandwritingPoint {
-  HandwritingPoint::{ x: 0, y: 0, t: None }
+  HandwritingPoint::{ x: 0, y: 0, t: None, }
 }
 
 ///|
@@ -316,13 +316,13 @@ pub fn HandwritingPoint::from_js(value : JsValue) -> HandwritingPoint {
 /// HandwritingPrediction dictionary
 pub(all) struct HandwritingPrediction {
   text : String
-  segmentationResult : Array[HandwritingSegment]?
+  segmentationResult : FixedArray[HandwritingSegment]?
 }
 
 ///|
 /// Create a new HandwritingPrediction with default values
 pub fn HandwritingPrediction::default() -> HandwritingPrediction {
-  HandwritingPrediction::{ text: "", segmentationResult: None }
+  HandwritingPrediction::{ text: "", segmentationResult: None, }
 }
 
 ///|
@@ -331,7 +331,7 @@ extern "js" fn HandwritingPrediction::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   text: self.text,
-  #|   segmentationResult: ((() => { const v = self.segmentationResult; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   segmentationResult: self.segmentationResult
   #| })
 
 ///|
@@ -346,7 +346,7 @@ extern "js" fn HandwritingPrediction::from_js_ffi(
 ) -> HandwritingPrediction =
   #| (v) => ({
   #|   text: v.text,
-  #|   segmentationResult: (v.segmentationResult === undefined ? { $tag: 0 } : { $tag: 1, _0: v.segmentationResult })
+  #|   segmentationResult: v.segmentationResult
   #| })
 
 ///|
@@ -361,7 +361,7 @@ pub(all) struct HandwritingSegment {
   grapheme : String
   beginIndex : Int
   endIndex : Int
-  drawingSegments : Array[HandwritingDrawingSegment]
+  drawingSegments : FixedArray[HandwritingDrawingSegment]
 }
 
 ///|
@@ -587,13 +587,13 @@ pub extern "js" fn HandwritingDrawing::clear(self : HandwritingDrawing) -> Unit 
 ///|
 pub extern "js" fn HandwritingDrawing::get_strokes(
   self : HandwritingDrawing,
-) -> Array[HandwritingStroke] =
+) -> FixedArray[HandwritingStroke] =
   #| (self) => self.getStrokes()
 
 ///|
 pub extern "js" fn HandwritingDrawing::get_prediction(
   self : HandwritingDrawing,
-) -> Promise[Array[HandwritingPrediction]] =
+) -> Promise[FixedArray[HandwritingPrediction]] =
   #| (self) => self.getPrediction()
 
 ///|
@@ -656,7 +656,7 @@ pub fn HandwritingStroke::add_point(
 ///|
 pub extern "js" fn HandwritingStroke::get_points(
   self : HandwritingStroke,
-) -> Array[HandwritingPoint] =
+) -> FixedArray[HandwritingPoint] =
   #| (self) => self.getPoints()
 
 ///|

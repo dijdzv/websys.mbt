@@ -10,7 +10,7 @@
 ///   btn.type // "submit"
 pub fn test_button_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("button")
+  let el = create_element(doc, "button")
   let btn = @websys.HTMLButtonElement::from_js_value(el.to_js_value())
 
   // autofocus — via HTMLElement (Rust uses Deref, MoonBit needs upcast)

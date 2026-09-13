@@ -10,7 +10,7 @@ pub(all) struct ContentVisibilityAutoStateChangeEventInit {
 ///|
 /// Create a new ContentVisibilityAutoStateChangeEventInit with default values
 pub fn ContentVisibilityAutoStateChangeEventInit::default() -> ContentVisibilityAutoStateChangeEventInit {
-  ContentVisibilityAutoStateChangeEventInit::{ skipped: None }
+  ContentVisibilityAutoStateChangeEventInit::{ skipped: None, }
 }
 
 ///|

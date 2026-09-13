@@ -9,7 +9,7 @@ pub(all) enum XRLayerLayout {
   Stereo
   StereoLeftRight
   StereoTopBottom
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) enum XRLayerQuality {
   Default
   TextOptimized
   GraphicsOptimized
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub fn XRLayerQuality::from_string(s : String) -> XRLayerQuality? {
 pub(all) enum XRTextureType {
   Texture
   TextureArray
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -590,7 +590,7 @@ pub(all) struct XRMediaLayerInit {
 ///|
 /// Create a new XRMediaLayerInit
 pub fn XRMediaLayerInit::new(space~ : XRSpace) -> XRMediaLayerInit {
-  XRMediaLayerInit::{ space, layout: None, invertStereo: None }
+  XRMediaLayerInit::{ space, layout: None, invertStereo: None, }
 }
 
 ///|
@@ -1777,21 +1777,21 @@ pub extern "js" fn JsValue::to_xr_web_gl_binding(
 pub(all) enum XRWebGLBindingConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLBindingGetSubImageError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLBindingGetViewSubImageError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1799,7 +1799,7 @@ pub(all) enum XRWebGLBindingGetDepthInformationError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRWebGLBinding::new(
@@ -2034,7 +2034,7 @@ pub extern "js" fn JsValue::to_xr_media_binding(
 pub(all) enum XRMediaBindingConstructorError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRMediaBinding::new(

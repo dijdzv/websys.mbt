@@ -8,7 +8,7 @@ pub(all) enum IdentityCredentialRequestOptionsContext {
   Signup
   Use
   Continue
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub fn IdentityCredentialRequestOptionsContext::from_string(
 pub(all) enum IdentityCredentialRequestOptionsMode {
   Active
   Passive
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -130,7 +130,7 @@ pub(all) struct DisconnectedAccount {
 ///|
 /// Create a new DisconnectedAccount with default values
 pub fn DisconnectedAccount::default() -> DisconnectedAccount {
-  DisconnectedAccount::{ account_id: "" }
+  DisconnectedAccount::{ account_id: "", }
 }
 
 ///|
@@ -171,7 +171,7 @@ pub(all) struct IdentityCredentialErrorInit {
 ///|
 /// Create a new IdentityCredentialErrorInit with default values
 pub fn IdentityCredentialErrorInit::default() -> IdentityCredentialErrorInit {
-  IdentityCredentialErrorInit::{ error: None, url: None }
+  IdentityCredentialErrorInit::{ error: None, url: None, }
 }
 
 ///|
@@ -211,7 +211,7 @@ pub fn IdentityCredentialErrorInit::from_js(
 ///|
 /// IdentityCredentialRequestOptions dictionary
 pub(all) struct IdentityCredentialRequestOptions {
-  providers : Array[IdentityProviderRequestOptions]
+  providers : FixedArray[IdentityProviderRequestOptions]
   context : IdentityCredentialRequestOptionsContext?
   mode : IdentityCredentialRequestOptionsMode?
 }
@@ -219,7 +219,11 @@ pub(all) struct IdentityCredentialRequestOptions {
 ///|
 /// Create a new IdentityCredentialRequestOptions with default values
 pub fn IdentityCredentialRequestOptions::default() -> IdentityCredentialRequestOptions {
-  IdentityCredentialRequestOptions::{ providers: [], context: None, mode: None }
+  IdentityCredentialRequestOptions::{
+    providers: [],
+    context: None,
+    mode: None,
+  }
 }
 
 ///|
@@ -268,7 +272,7 @@ pub(all) struct IdentityProviderConfig {
 ///|
 /// Create a new IdentityProviderConfig with default values
 pub fn IdentityProviderConfig::default() -> IdentityProviderConfig {
-  IdentityProviderConfig::{ configURL: "", clientId: "" }
+  IdentityProviderConfig::{ configURL: "", clientId: "", }
 }
 
 ///|
@@ -310,7 +314,7 @@ pub(all) struct IdentityProviderRequestOptions {
   clientId : String
   loginHint : String?
   domainHint : String?
-  fields : Array[String]?
+  fields : FixedArray[String]?
   params : JsValue?
 }
 
@@ -336,7 +340,7 @@ extern "js" fn IdentityProviderRequestOptions::to_js_ffi(
   #|   clientId: self.clientId,
   #|   loginHint: self.loginHint,
   #|   domainHint: self.domainHint,
-  #|   fields: ((() => { const v = self.fields; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   fields: self.fields,
   #|   params: ((() => { const v = self.params; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -357,7 +361,7 @@ extern "js" fn IdentityProviderRequestOptions::from_js_ffi(
   #|   clientId: v.clientId,
   #|   loginHint: v.loginHint,
   #|   domainHint: v.domainHint,
-  #|   fields: (v.fields === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fields }),
+  #|   fields: v.fields,
   #|   params: (v.params === undefined ? { $tag: 0 } : { $tag: 1, _0: v.params })
   #| })
 
@@ -372,7 +376,7 @@ pub fn IdentityProviderRequestOptions::from_js(
 ///|
 /// IdentityProviderWellKnown dictionary
 pub(all) struct IdentityProviderWellKnown {
-  provider_urls : Array[String]?
+  provider_urls : FixedArray[String]?
   accounts_endpoint : String?
   login_url : String?
 }
@@ -392,7 +396,7 @@ extern "js" fn IdentityProviderWellKnown::to_js_ffi(
   self : IdentityProviderWellKnown,
 ) -> JsValue =
   #| (self) => ({
-  #|   provider_urls: ((() => { const v = self.provider_urls; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   provider_urls: self.provider_urls,
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   login_url: self.login_url
   #| })
@@ -410,7 +414,7 @@ extern "js" fn IdentityProviderWellKnown::from_js_ffi(
   value : JsValue,
 ) -> IdentityProviderWellKnown =
   #| (v) => ({
-  #|   provider_urls: (v.provider_urls === undefined ? { $tag: 0 } : { $tag: 1, _0: v.provider_urls }),
+  #|   provider_urls: v.provider_urls,
   #|   accounts_endpoint: v.accounts_endpoint,
   #|   login_url: v.login_url
   #| })
@@ -433,7 +437,7 @@ pub(all) struct IdentityProviderIcon {
 ///|
 /// Create a new IdentityProviderIcon with default values
 pub fn IdentityProviderIcon::default() -> IdentityProviderIcon {
-  IdentityProviderIcon::{ url: "", size: None }
+  IdentityProviderIcon::{ url: "", size: None, }
 }
 
 ///|
@@ -471,7 +475,7 @@ pub fn IdentityProviderIcon::from_js(value : JsValue) -> IdentityProviderIcon {
 pub(all) struct IdentityProviderBranding {
   background_color : String?
   color : String?
-  icons : Array[IdentityProviderIcon]?
+  icons : FixedArray[IdentityProviderIcon]?
   name : String?
 }
 
@@ -493,7 +497,7 @@ extern "js" fn IdentityProviderBranding::to_js_ffi(
   #| (self) => ({
   #|   background_color: self.background_color,
   #|   color: self.color,
-  #|   icons: ((() => { const v = self.icons; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   icons: self.icons,
   #|   name: self.name
   #| })
 
@@ -512,7 +516,7 @@ extern "js" fn IdentityProviderBranding::from_js_ffi(
   #| (v) => ({
   #|   background_color: v.background_color,
   #|   color: v.color,
-  #|   icons: (v.icons === undefined ? { $tag: 0 } : { $tag: 1, _0: v.icons }),
+  #|   icons: v.icons,
   #|   name: v.name
   #| })
 
@@ -608,10 +612,10 @@ pub(all) struct IdentityProviderAccount {
   username : String?
   given_name : String?
   picture : String?
-  approved_clients : Array[String]?
-  login_hints : Array[String]?
-  domain_hints : Array[String]?
-  label_hints : Array[String]?
+  approved_clients : FixedArray[String]?
+  login_hints : FixedArray[String]?
+  domain_hints : FixedArray[String]?
+  label_hints : FixedArray[String]?
 }
 
 ///|
@@ -644,10 +648,10 @@ extern "js" fn IdentityProviderAccount::to_js_ffi(
   #|   username: self.username,
   #|   given_name: self.given_name,
   #|   picture: self.picture,
-  #|   approved_clients: ((() => { const v = self.approved_clients; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   login_hints: ((() => { const v = self.login_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   domain_hints: ((() => { const v = self.domain_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   label_hints: ((() => { const v = self.label_hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   approved_clients: self.approved_clients,
+  #|   login_hints: self.login_hints,
+  #|   domain_hints: self.domain_hints,
+  #|   label_hints: self.label_hints
   #| })
 
 ///|
@@ -670,10 +674,10 @@ extern "js" fn IdentityProviderAccount::from_js_ffi(
   #|   username: v.username,
   #|   given_name: v.given_name,
   #|   picture: v.picture,
-  #|   approved_clients: (v.approved_clients === undefined ? { $tag: 0 } : { $tag: 1, _0: v.approved_clients }),
-  #|   login_hints: (v.login_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.login_hints }),
-  #|   domain_hints: (v.domain_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.domain_hints }),
-  #|   label_hints: (v.label_hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.label_hints })
+  #|   approved_clients: v.approved_clients,
+  #|   login_hints: v.login_hints,
+  #|   domain_hints: v.domain_hints,
+  #|   label_hints: v.label_hints
   #| })
 
 ///|
@@ -687,13 +691,13 @@ pub fn IdentityProviderAccount::from_js(
 ///|
 /// IdentityProviderAccountList dictionary
 pub(all) struct IdentityProviderAccountList {
-  accounts : Array[IdentityProviderAccount]?
+  accounts : FixedArray[IdentityProviderAccount]?
 }
 
 ///|
 /// Create a new IdentityProviderAccountList with default values
 pub fn IdentityProviderAccountList::default() -> IdentityProviderAccountList {
-  IdentityProviderAccountList::{ accounts: None }
+  IdentityProviderAccountList::{ accounts: None, }
 }
 
 ///|
@@ -701,7 +705,7 @@ extern "js" fn IdentityProviderAccountList::to_js_ffi(
   self : IdentityProviderAccountList,
 ) -> JsValue =
   #| (self) => ({
-  #|   accounts: ((() => { const v = self.accounts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   accounts: self.accounts
   #| })
 
 ///|
@@ -717,7 +721,7 @@ extern "js" fn IdentityProviderAccountList::from_js_ffi(
   value : JsValue,
 ) -> IdentityProviderAccountList =
   #| (v) => ({
-  #|   accounts: (v.accounts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.accounts })
+  #|   accounts: v.accounts
   #| })
 
 ///|
@@ -739,7 +743,7 @@ pub(all) struct IdentityAssertionResponse {
 ///|
 /// Create a new IdentityAssertionResponse with default values
 pub fn IdentityAssertionResponse::default() -> IdentityAssertionResponse {
-  IdentityAssertionResponse::{ token: None, continue_on: None, error: None }
+  IdentityAssertionResponse::{ token: None, continue_on: None, error: None, }
 }
 
 ///|
@@ -844,7 +848,7 @@ pub(all) struct IdentityUserInfo {
 ///|
 /// Create a new IdentityUserInfo with default values
 pub fn IdentityUserInfo::default() -> IdentityUserInfo {
-  IdentityUserInfo::{ email: None, name: None, givenName: None, picture: None }
+  IdentityUserInfo::{ email: None, name: None, givenName: None, picture: None, }
 }
 
 ///|
@@ -888,7 +892,7 @@ pub(all) struct IdentityResolveOptions {
 ///|
 /// Create a new IdentityResolveOptions with default values
 pub fn IdentityResolveOptions::default() -> IdentityResolveOptions {
-  IdentityResolveOptions::{ accountId: None }
+  IdentityResolveOptions::{ accountId: None, }
 }
 
 ///|
@@ -972,7 +976,7 @@ pub(all) enum IdentityCredentialDisconnectError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn IdentityCredential::disconnect_ffi(
@@ -1125,7 +1129,7 @@ pub(all) enum IdentityProviderGetUserInfoError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn IdentityProvider::close() -> Unit =
@@ -1153,12 +1157,16 @@ pub fn IdentityProvider::resolve_with_options(
 ///|
 extern "js" fn IdentityProvider::get_user_info_ffi(
   config : JsValue,
-) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] =
+) -> Promise[
+  Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError],
+] =
   #| (config) => IdentityProvider.getUserInfo(config).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn IdentityProvider::get_user_info(
   config : IdentityProviderConfig,
-) -> Promise[Result[Array[IdentityUserInfo], IdentityProviderGetUserInfoError]] {
+) -> Promise[
+  Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError],
+] {
   IdentityProvider::get_user_info_ffi(config.to_js())
 }

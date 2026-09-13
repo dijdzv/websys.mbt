@@ -81,7 +81,7 @@ pub(all) enum XRSessionMode {
   Inline
   ImmersiveVr
   ImmersiveAr
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) enum XRVisibilityState {
   Visible
   VisibleBlurred
   Hidden
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -141,7 +141,7 @@ pub(all) enum XRReferenceSpaceType {
   LocalFloor
   BoundedFloor
   Unbounded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -174,7 +174,7 @@ pub(all) enum XREye {
   None
   Left
   Right
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -203,7 +203,7 @@ pub(all) enum XRHandedness {
   None
   Left
   Right
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -233,7 +233,7 @@ pub(all) enum XRTargetRayMode {
   TrackedPointer
   Screen
   TransientPointer
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -277,7 +277,7 @@ pub(all) struct XRRenderStateInit {
   passthroughFullyObscured : Bool?
   inlineVerticalFieldOfView : Double?
   baseLayer : Nullable[XRWebGLLayer]
-  layers : Array[XRLayer]?
+  layers : FixedArray[XRLayer]?
 }
 
 ///|
@@ -303,7 +303,7 @@ extern "js" fn XRRenderStateInit::to_js_ffi(
   #|   passthroughFullyObscured: (self.passthroughFullyObscured === -1 ? undefined : self.passthroughFullyObscured),
   #|   inlineVerticalFieldOfView: ((() => { const v = self.inlineVerticalFieldOfView; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   baseLayer: ((() => { const v = self.baseLayer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   layers: ((() => { const v = self.layers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   layers: self.layers
   #| })
 
 ///|
@@ -322,7 +322,7 @@ extern "js" fn XRRenderStateInit::from_js_ffi(
   #|   passthroughFullyObscured: (v.passthroughFullyObscured === undefined ? -1 : v.passthroughFullyObscured),
   #|   inlineVerticalFieldOfView: (v.inlineVerticalFieldOfView === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineVerticalFieldOfView }),
   #|   baseLayer: (v.baseLayer === undefined ? { $tag: 0 } : v.baseLayer === null ? { $tag: 1 } : { $tag: 2, _0: v.baseLayer }),
-  #|   layers: (v.layers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layers })
+  #|   layers: v.layers
   #| })
 
 ///|
@@ -444,7 +444,7 @@ pub fn XRInputSourceEventInit::new(
   frame~ : XRFrame,
   inputSource~ : XRInputSource,
 ) -> XRInputSourceEventInit {
-  XRInputSourceEventInit::{ frame, inputSource }
+  XRInputSourceEventInit::{ frame, inputSource, }
 }
 
 ///|
@@ -483,8 +483,8 @@ pub fn XRInputSourceEventInit::from_js(
 /// XRInputSourcesChangeEventInit dictionary
 pub(all) struct XRInputSourcesChangeEventInit {
   session : XRSession
-  added : Array[XRInputSource]
-  removed : Array[XRInputSource]
+  added : FixedArray[XRInputSource]
+  removed : FixedArray[XRInputSource]
 }
 
 ///|
@@ -492,7 +492,7 @@ pub(all) struct XRInputSourcesChangeEventInit {
 pub fn XRInputSourcesChangeEventInit::new(
   session~ : XRSession,
 ) -> XRInputSourcesChangeEventInit {
-  XRInputSourcesChangeEventInit::{ session, added: [], removed: [] }
+  XRInputSourcesChangeEventInit::{ session, added: [], removed: [], }
 }
 
 ///|
@@ -543,7 +543,7 @@ pub(all) struct XRReferenceSpaceEventInit {
 pub fn XRReferenceSpaceEventInit::new(
   referenceSpace~ : XRReferenceSpace,
 ) -> XRReferenceSpaceEventInit {
-  XRReferenceSpaceEventInit::{ referenceSpace, transform: Nullable::Undefined }
+  XRReferenceSpaceEventInit::{ referenceSpace, transform: Nullable::Undefined, }
 }
 
 ///|
@@ -598,7 +598,13 @@ pub fn XRVisibilityMaskChangeEventInit::new(
   vertices~ : Float32Array,
   indices~ : Uint32Array,
 ) -> XRVisibilityMaskChangeEventInit {
-  XRVisibilityMaskChangeEventInit::{ session, eye, index: 0, vertices, indices }
+  XRVisibilityMaskChangeEventInit::{
+    session,
+    eye,
+    index: 0,
+    vertices,
+    indices,
+  }
 }
 
 ///|
@@ -650,7 +656,7 @@ pub(all) struct XRSessionSupportedPermissionDescriptor {
 ///|
 /// Create a new XRSessionSupportedPermissionDescriptor with default values
 pub fn XRSessionSupportedPermissionDescriptor::default() -> XRSessionSupportedPermissionDescriptor {
-  XRSessionSupportedPermissionDescriptor::{ mode: None }
+  XRSessionSupportedPermissionDescriptor::{ mode: None, }
 }
 
 ///|
@@ -689,8 +695,8 @@ pub fn XRSessionSupportedPermissionDescriptor::from_js(
 /// XRPermissionDescriptor dictionary
 pub(all) struct XRPermissionDescriptor {
   mode : XRSessionMode?
-  requiredFeatures : Array[String]?
-  optionalFeatures : Array[String]?
+  requiredFeatures : FixedArray[String]?
+  optionalFeatures : FixedArray[String]?
 }
 
 ///|
@@ -709,8 +715,8 @@ extern "js" fn XRPermissionDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['inline', 'immersive-vr', 'immersive-ar'][v]; })()),
-  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   requiredFeatures: self.requiredFeatures,
+  #|   optionalFeatures: self.optionalFeatures
   #| })
 
 ///|
@@ -725,8 +731,8 @@ extern "js" fn XRPermissionDescriptor::from_js_ffi(
 ) -> XRPermissionDescriptor =
   #| (v) => ({
   #|   mode: (v.mode === undefined ? undefined : ['inline', 'immersive-vr', 'immersive-ar'].indexOf(v.mode)),
-  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
-  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures })
+  #|   requiredFeatures: v.requiredFeatures,
+  #|   optionalFeatures: v.optionalFeatures
   #| })
 
 ///|
@@ -774,7 +780,7 @@ pub extern "js" fn XRSystem::to_event_target(self : XRSystem) -> EventTarget =
 pub(all) enum XRSystemIsSessionSupportedError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -783,7 +789,7 @@ pub(all) enum XRSystemRequestSessionError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRSystem::is_session_supported(
@@ -866,14 +872,14 @@ pub(all) enum XRSessionUpdateRenderStateError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRSessionRequestReferenceSpaceError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -882,7 +888,7 @@ pub(all) enum XRSessionRequestHitTestSourceError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -891,7 +897,7 @@ pub(all) enum XRSessionRequestHitTestSourceForTransientInputError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -899,7 +905,7 @@ pub(all) enum XRSessionRequestLightProbeError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRSession::get_visibility_state(
@@ -938,7 +944,7 @@ pub extern "js" fn XRSession::get_tracked_sources(
 ///|
 pub extern "js" fn XRSession::get_enabled_features(
   self : XRSession,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.enabledFeatures
 
 ///|
@@ -1117,7 +1123,7 @@ pub extern "js" fn XRSession::clear_onframeratechange(self : XRSession) -> Unit 
 ///|
 pub extern "js" fn XRSession::get_persistent_anchors(
   self : XRSession,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.persistentAnchors
 
 ///|
@@ -1321,7 +1327,7 @@ pub extern "js" fn XRRenderState::get_base_layer(
 ///|
 pub extern "js" fn XRRenderState::get_layers(
   self : XRRenderState,
-) -> Array[XRLayer] =
+) -> FixedArray[XRLayer] =
   #| (self) => self.layers
 
 ///|
@@ -1357,7 +1363,7 @@ pub extern "js" fn JsValue::to_xr_frame(self : JsValue) -> XRFrame =
 pub(all) enum XRFrameGetViewerPoseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1365,21 +1371,21 @@ pub(all) enum XRFrameGetDepthInformationError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRFrameFillJointRadiiError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRFrameFillPosesError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRFrame::get_session(self : XRFrame) -> XRSession =
@@ -1444,7 +1450,7 @@ pub extern "js" fn XRFrame::get_joint_pose(
 ///|
 pub extern "js" fn XRFrame::fill_joint_radii(
   self : XRFrame,
-  joint_spaces : Array[XRJointSpace],
+  joint_spaces : FixedArray[XRJointSpace],
   radii : Float32Array,
 ) -> Result[Bool, XRFrameFillJointRadiiError] =
   #| (self, joint_spaces, radii) => (() => { try { return { $tag: 1, _0: self.fillJointRadii(joint_spaces, radii) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
@@ -1452,7 +1458,7 @@ pub extern "js" fn XRFrame::fill_joint_radii(
 ///|
 pub extern "js" fn XRFrame::fill_poses(
   self : XRFrame,
-  spaces : Array[XRSpace],
+  spaces : FixedArray[XRSpace],
   base_space : XRSpace,
   transforms : Float32Array,
 ) -> Result[Bool, XRFrameFillPosesError] =
@@ -1462,14 +1468,14 @@ pub extern "js" fn XRFrame::fill_poses(
 pub extern "js" fn XRFrame::get_hit_test_results(
   self : XRFrame,
   hit_test_source : XRHitTestSource,
-) -> Array[XRHitTestResult] =
+) -> FixedArray[XRHitTestResult] =
   #| (self, hit_test_source) => self.getHitTestResults(hit_test_source)
 
 ///|
 pub extern "js" fn XRFrame::get_hit_test_results_for_transient_input(
   self : XRFrame,
   hit_test_source : XRTransientInputHitTestSource,
-) -> Array[XRTransientInputHitTestResult] =
+) -> FixedArray[XRTransientInputHitTestResult] =
   #| (self, hit_test_source) => self.getHitTestResultsForTransientInput(hit_test_source)
 
 ///|
@@ -1670,7 +1676,7 @@ pub extern "js" fn XRBoundedReferenceSpace::to_event_target(
 ///|
 pub extern "js" fn XRBoundedReferenceSpace::get_bounds_geometry(
   self : XRBoundedReferenceSpace,
-) -> Array[DOMPointReadOnly] =
+) -> FixedArray[DOMPointReadOnly] =
   #| (self) => self.boundsGeometry
 
 ///|
@@ -1825,7 +1831,7 @@ pub extern "js" fn JsValue::to_xr_rigid_transform(
 pub(all) enum XRRigidTransformConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRRigidTransform::new() -> Result[
@@ -1969,7 +1975,7 @@ pub extern "js" fn XRViewerPose::to_xr_pose(self : XRViewerPose) -> XRPose =
 ///|
 pub extern "js" fn XRViewerPose::get_views(
   self : XRViewerPose,
-) -> Array[XRView] =
+) -> FixedArray[XRView] =
   #| (self) => self.views
 
 ///|
@@ -2031,7 +2037,7 @@ pub extern "js" fn XRInputSource::get_grip_space(
 ///|
 pub extern "js" fn XRInputSource::get_profiles(
   self : XRInputSource,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.profiles
 
 ///|
@@ -2239,14 +2245,14 @@ pub(all) enum XRWebGLLayerConstructorError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum XRWebGLLayerGetViewportError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRWebGLLayer::new(
@@ -2542,13 +2548,13 @@ pub extern "js" fn XRInputSourcesChangeEvent::get_session(
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_added(
   self : XRInputSourcesChangeEvent,
-) -> Array[XRInputSource] =
+) -> FixedArray[XRInputSource] =
   #| (self) => self.added
 
 ///|
 pub extern "js" fn XRInputSourcesChangeEvent::get_removed(
   self : XRInputSourcesChangeEvent,
-) -> Array[XRInputSource] =
+) -> FixedArray[XRInputSource] =
   #| (self) => self.removed
 
 ///|
@@ -2764,12 +2770,12 @@ pub extern "js" fn XRPermissionStatus::to_event_target(
 ///|
 pub extern "js" fn XRPermissionStatus::get_granted(
   self : XRPermissionStatus,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.granted
 
 ///|
 pub extern "js" fn XRPermissionStatus::set_granted(
   self : XRPermissionStatus,
-  value : Array[String],
+  value : FixedArray[String],
 ) -> Unit =
   #| (self, value) => { self.granted = value }

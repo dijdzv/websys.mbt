@@ -522,9 +522,9 @@ pub extern "js" fn GPUColor::to_js_value(self : GPUColor) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create GPUColor from Array[Double]
+/// Create GPUColor from FixedArray[Double]
 pub extern "js" fn GPUColor::from_array_of_double(
-  v : Array[Double],
+  v : FixedArray[Double],
 ) -> GPUColor =
   #| (v) => v
 
@@ -534,7 +534,7 @@ pub extern "js" fn GPUColor::from_gpu_color_dict(v : GPUColorDict) -> GPUColor =
   #| (v) => v
 
 ///|
-/// Check if this GPUColor is Array[Double]
+/// Check if this GPUColor is FixedArray[Double]
 pub extern "js" fn GPUColor::is_array_of_double(self : GPUColor) -> Bool =
   #| (self) => Array.isArray(self)
 
@@ -544,11 +544,11 @@ pub extern "js" fn GPUColor::is_gpu_color_dict(self : GPUColor) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get GPUColor as Array[Double]
+/// Try to get GPUColor as FixedArray[Double]
 pub extern "js" fn GPUColor::as_array_of_double(
   self : GPUColor,
-) -> Array[Double]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[Double]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get GPUColor as GPUColorDict
@@ -558,8 +558,10 @@ pub extern "js" fn GPUColor::as_gpu_color_dict(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Flatten Option[GPUColor] to Array[Double]?
-pub fn GPUColor::bind_as_array_of_double(value : GPUColor?) -> Array[Double]? {
+/// Flatten Option[GPUColor] to FixedArray[Double]?
+pub fn GPUColor::bind_as_array_of_double(
+  value : GPUColor?,
+) -> FixedArray[Double]? {
   match value {
     Some(v) => v.as_array_of_double()
     None => None
@@ -584,9 +586,9 @@ pub extern "js" fn GPUOrigin2D::to_js_value(self : GPUOrigin2D) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create GPUOrigin2D from Array[GPUIntegerCoordinate]
+/// Create GPUOrigin2D from FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin2D::from_array_of_gpu_integer_coordinate(
-  v : Array[GPUIntegerCoordinate],
+  v : FixedArray[GPUIntegerCoordinate],
 ) -> GPUOrigin2D =
   #| (v) => v
 
@@ -598,7 +600,7 @@ pub extern "js" fn GPUOrigin2D::from_gpu_origin_2d_dict(
   #| (v) => v
 
 ///|
-/// Check if this GPUOrigin2D is Array[GPUIntegerCoordinate]
+/// Check if this GPUOrigin2D is FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin2D::is_array_of_gpu_integer_coordinate(
   self : GPUOrigin2D,
 ) -> Bool =
@@ -612,11 +614,11 @@ pub extern "js" fn GPUOrigin2D::is_gpu_origin_2d_dict(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get GPUOrigin2D as Array[GPUIntegerCoordinate]
+/// Try to get GPUOrigin2D as FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin2D::as_array_of_gpu_integer_coordinate(
   self : GPUOrigin2D,
-) -> Array[GPUIntegerCoordinate]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get GPUOrigin2D as GPUOrigin2DDict
@@ -626,10 +628,10 @@ pub extern "js" fn GPUOrigin2D::as_gpu_origin_2d_dict(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Flatten Option[GPUOrigin2D] to Array[GPUIntegerCoordinate]?
+/// Flatten Option[GPUOrigin2D] to FixedArray[GPUIntegerCoordinate]?
 pub fn GPUOrigin2D::bind_as_array_of_gpu_integer_coordinate(
   value : GPUOrigin2D?,
-) -> Array[GPUIntegerCoordinate]? {
+) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
@@ -656,9 +658,9 @@ pub extern "js" fn GPUOrigin3D::to_js_value(self : GPUOrigin3D) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create GPUOrigin3D from Array[GPUIntegerCoordinate]
+/// Create GPUOrigin3D from FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin3D::from_array_of_gpu_integer_coordinate(
-  v : Array[GPUIntegerCoordinate],
+  v : FixedArray[GPUIntegerCoordinate],
 ) -> GPUOrigin3D =
   #| (v) => v
 
@@ -670,7 +672,7 @@ pub extern "js" fn GPUOrigin3D::from_gpu_origin_3d_dict(
   #| (v) => v
 
 ///|
-/// Check if this GPUOrigin3D is Array[GPUIntegerCoordinate]
+/// Check if this GPUOrigin3D is FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin3D::is_array_of_gpu_integer_coordinate(
   self : GPUOrigin3D,
 ) -> Bool =
@@ -684,11 +686,11 @@ pub extern "js" fn GPUOrigin3D::is_gpu_origin_3d_dict(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get GPUOrigin3D as Array[GPUIntegerCoordinate]
+/// Try to get GPUOrigin3D as FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUOrigin3D::as_array_of_gpu_integer_coordinate(
   self : GPUOrigin3D,
-) -> Array[GPUIntegerCoordinate]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get GPUOrigin3D as GPUOrigin3DDict
@@ -698,10 +700,10 @@ pub extern "js" fn GPUOrigin3D::as_gpu_origin_3d_dict(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Flatten Option[GPUOrigin3D] to Array[GPUIntegerCoordinate]?
+/// Flatten Option[GPUOrigin3D] to FixedArray[GPUIntegerCoordinate]?
 pub fn GPUOrigin3D::bind_as_array_of_gpu_integer_coordinate(
   value : GPUOrigin3D?,
-) -> Array[GPUIntegerCoordinate]? {
+) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
@@ -728,9 +730,9 @@ pub extern "js" fn GPUExtent3D::to_js_value(self : GPUExtent3D) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create GPUExtent3D from Array[GPUIntegerCoordinate]
+/// Create GPUExtent3D from FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUExtent3D::from_array_of_gpu_integer_coordinate(
-  v : Array[GPUIntegerCoordinate],
+  v : FixedArray[GPUIntegerCoordinate],
 ) -> GPUExtent3D =
   #| (v) => v
 
@@ -742,7 +744,7 @@ pub extern "js" fn GPUExtent3D::from_gpu_extent_3d_dict(
   #| (v) => v
 
 ///|
-/// Check if this GPUExtent3D is Array[GPUIntegerCoordinate]
+/// Check if this GPUExtent3D is FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUExtent3D::is_array_of_gpu_integer_coordinate(
   self : GPUExtent3D,
 ) -> Bool =
@@ -756,11 +758,11 @@ pub extern "js" fn GPUExtent3D::is_gpu_extent_3d_dict(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get GPUExtent3D as Array[GPUIntegerCoordinate]
+/// Try to get GPUExtent3D as FixedArray[GPUIntegerCoordinate]
 pub extern "js" fn GPUExtent3D::as_array_of_gpu_integer_coordinate(
   self : GPUExtent3D,
-) -> Array[GPUIntegerCoordinate]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[GPUIntegerCoordinate]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get GPUExtent3D as GPUExtent3DDict
@@ -770,10 +772,10 @@ pub extern "js" fn GPUExtent3D::as_gpu_extent_3d_dict(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Flatten Option[GPUExtent3D] to Array[GPUIntegerCoordinate]?
+/// Flatten Option[GPUExtent3D] to FixedArray[GPUIntegerCoordinate]?
 pub fn GPUExtent3D::bind_as_array_of_gpu_integer_coordinate(
   value : GPUExtent3D?,
-) -> Array[GPUIntegerCoordinate]? {
+) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
@@ -796,7 +798,7 @@ pub fn GPUExtent3D::bind_as_gpu_extent_3d_dict(
 pub(all) enum GPUPowerPreference {
   LowPower
   HighPerformance
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -842,7 +844,7 @@ pub(all) enum GPUFeatureName {
   TextureFormatsTier2
   PrimitiveIndex
   TextureComponentSwizzle
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -913,7 +915,7 @@ pub(all) enum GPUBufferMapState {
   Unmapped
   Pending
   Mapped
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -942,7 +944,7 @@ pub(all) enum GPUTextureDimension {
   N1d
   N2d
   N3d
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -974,7 +976,7 @@ pub(all) enum GPUTextureViewDimension {
   Cube
   CubeArray
   N3d
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1013,7 +1015,7 @@ pub(all) enum GPUTextureAspect {
   All
   StencilOnly
   DepthOnly
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1140,7 +1142,7 @@ pub(all) enum GPUTextureFormat {
   Astc12x10UnormSrgb
   Astc12x12Unorm
   Astc12x12UnormSrgb
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1365,7 +1367,7 @@ pub(all) enum GPUAddressMode {
   ClampToEdge
   Repeat
   MirrorRepeat
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1393,7 +1395,7 @@ pub fn GPUAddressMode::from_string(s : String) -> GPUAddressMode? {
 pub(all) enum GPUFilterMode {
   Nearest
   Linear
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1419,7 +1421,7 @@ pub fn GPUFilterMode::from_string(s : String) -> GPUFilterMode? {
 pub(all) enum GPUMipmapFilterMode {
   Nearest
   Linear
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1451,7 +1453,7 @@ pub(all) enum GPUCompareFunction {
   NotEqual
   GreaterEqual
   Always
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1490,7 +1492,7 @@ pub(all) enum GPUBufferBindingType {
   Uniform
   Storage
   ReadOnlyStorage
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1519,7 +1521,7 @@ pub(all) enum GPUSamplerBindingType {
   Filtering
   NonFiltering
   Comparison
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1550,7 +1552,7 @@ pub(all) enum GPUTextureSampleType {
   Depth
   Sint
   Uint
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1583,7 +1585,7 @@ pub(all) enum GPUStorageTextureAccess {
   WriteOnly
   ReadOnly
   ReadWrite
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1616,7 +1618,7 @@ pub(all) enum GPUCompilationMessageType {
   Error
   Warning
   Info
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1648,7 +1650,7 @@ pub fn GPUCompilationMessageType::from_string(
 pub(all) enum GPUPipelineErrorReason {
   Validation
   Internal
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1677,7 +1679,7 @@ pub fn GPUPipelineErrorReason::from_string(
 /// GPUAutoLayoutMode enum
 pub(all) enum GPUAutoLayoutMode {
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1704,7 +1706,7 @@ pub(all) enum GPUPrimitiveTopology {
   LineStrip
   TriangleList
   TriangleStrip
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1736,7 +1738,7 @@ pub fn GPUPrimitiveTopology::from_string(s : String) -> GPUPrimitiveTopology? {
 pub(all) enum GPUFrontFace {
   Ccw
   Cw
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1763,7 +1765,7 @@ pub(all) enum GPUCullMode {
   None
   Front
   Back
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1806,7 +1808,7 @@ pub(all) enum GPUBlendFactor {
   OneMinusSrc1
   Src1Alpha
   OneMinusSrc1Alpha
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1865,7 +1867,7 @@ pub(all) enum GPUBlendOperation {
   ReverseSubtract
   Min
   Max
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1903,7 +1905,7 @@ pub(all) enum GPUStencilOperation {
   DecrementClamp
   IncrementWrap
   DecrementWrap
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1941,7 +1943,7 @@ pub fn GPUStencilOperation::from_string(s : String) -> GPUStencilOperation? {
 pub(all) enum GPUIndexFormat {
   Uint16
   Uint32
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2006,7 +2008,7 @@ pub(all) enum GPUVertexFormat {
   Sint32x4
   Unorm1010102
   Unorm8x4Bgra
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2110,7 +2112,7 @@ pub fn GPUVertexFormat::from_string(s : String) -> GPUVertexFormat? {
 pub(all) enum GPUVertexStepMode {
   Vertex
   Instance
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2136,7 +2138,7 @@ pub fn GPUVertexStepMode::from_string(s : String) -> GPUVertexStepMode? {
 pub(all) enum GPULoadOp {
   Load
   Clear
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2162,7 +2164,7 @@ pub fn GPULoadOp::from_string(s : String) -> GPULoadOp? {
 pub(all) enum GPUStoreOp {
   Store
   Discard
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2188,7 +2190,7 @@ pub fn GPUStoreOp::from_string(s : String) -> GPUStoreOp? {
 pub(all) enum GPUQueryType {
   Occlusion
   Timestamp
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2214,7 +2216,7 @@ pub fn GPUQueryType::from_string(s : String) -> GPUQueryType? {
 pub(all) enum GPUCanvasAlphaMode {
   Opaque
   Premultiplied
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2240,7 +2242,7 @@ pub fn GPUCanvasAlphaMode::from_string(s : String) -> GPUCanvasAlphaMode? {
 pub(all) enum GPUCanvasToneMappingMode {
   Standard
   Extended
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2270,7 +2272,7 @@ pub fn GPUCanvasToneMappingMode::from_string(
 pub(all) enum GPUDeviceLostReason {
   Unknown
   Destroyed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2297,7 +2299,7 @@ pub(all) enum GPUErrorFilter {
   Validation
   OutOfMemory
   Internal
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2329,7 +2331,7 @@ pub(all) struct GPUObjectDescriptorBase {
 ///|
 /// Create a new GPUObjectDescriptorBase with default values
 pub fn GPUObjectDescriptorBase::default() -> GPUObjectDescriptorBase {
-  GPUObjectDescriptorBase::{ label: None }
+  GPUObjectDescriptorBase::{ label: None, }
 }
 
 ///|
@@ -2426,7 +2428,7 @@ pub fn GPURequestAdapterOptions::from_js(
 /// GPUDeviceDescriptor dictionary
 pub(all) struct GPUDeviceDescriptor {
   label : String?
-  requiredFeatures : Array[GPUFeatureName]?
+  requiredFeatures : FixedArray[GPUFeatureName]?
   requiredLimits : JsValue?
   defaultQueue : GPUQueueDescriptor?
 }
@@ -2448,7 +2450,7 @@ extern "js" fn GPUDeviceDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   requiredFeatures: self.requiredFeatures,
   #|   requiredLimits: ((() => { const v = self.requiredLimits; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   defaultQueue: ((() => { const v = self.defaultQueue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -2465,7 +2467,7 @@ extern "js" fn GPUDeviceDescriptor::from_js_ffi(
 ) -> GPUDeviceDescriptor =
   #| (v) => ({
   #|   label: v.label,
-  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
+  #|   requiredFeatures: v.requiredFeatures,
   #|   requiredLimits: (v.requiredLimits === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredLimits }),
   #|   defaultQueue: (v.defaultQueue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.defaultQueue })
   #| })
@@ -2491,7 +2493,7 @@ pub fn GPUBufferDescriptor::new(
   size~ : GPUSize64,
   usage~ : GPUBufferUsageFlags,
 ) -> GPUBufferDescriptor {
-  GPUBufferDescriptor::{ label: None, size, usage, mappedAtCreation: None }
+  GPUBufferDescriptor::{ label: None, size, usage, mappedAtCreation: None, }
 }
 
 ///|
@@ -2538,7 +2540,7 @@ pub(all) struct GPUTextureDescriptor {
   dimension : GPUTextureDimension?
   format : GPUTextureFormat
   usage : GPUTextureUsageFlags
-  viewFormats : Array[GPUTextureFormat]?
+  viewFormats : FixedArray[GPUTextureFormat]?
   textureBindingViewDimension : GPUTextureViewDimension?
 }
 
@@ -2574,7 +2576,7 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '3d'][v]; })()),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   usage: self.usage,
-  #|   viewFormats: ((() => { const v = self.viewFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   viewFormats: self.viewFormats,
   #|   textureBindingViewDimension: ((() => { const v = self.textureBindingViewDimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })())
   #| })
 
@@ -2596,7 +2598,7 @@ extern "js" fn GPUTextureDescriptor::from_js_ffi(
   #|   dimension: (v.dimension === undefined ? undefined : ['1d', '2d', '3d'].indexOf(v.dimension)),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   usage: v.usage,
-  #|   viewFormats: (v.viewFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.viewFormats }),
+  #|   viewFormats: v.viewFormats,
   #|   textureBindingViewDimension: (v.textureBindingViewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.textureBindingViewDimension))
   #| })
 
@@ -2701,7 +2703,7 @@ pub(all) struct GPUExternalTextureDescriptor {
 pub fn GPUExternalTextureDescriptor::new(
   source~ : HTMLVideoElementOrVideoFrame,
 ) -> GPUExternalTextureDescriptor {
-  GPUExternalTextureDescriptor::{ label: None, source, colorSpace: None }
+  GPUExternalTextureDescriptor::{ label: None, source, colorSpace: None, }
 }
 
 ///|
@@ -2826,13 +2828,13 @@ pub fn GPUSamplerDescriptor::from_js(value : JsValue) -> GPUSamplerDescriptor {
 /// GPUBindGroupLayoutDescriptor dictionary
 pub(all) struct GPUBindGroupLayoutDescriptor {
   label : String?
-  entries : Array[GPUBindGroupLayoutEntry]
+  entries : FixedArray[GPUBindGroupLayoutEntry]
 }
 
 ///|
 /// Create a new GPUBindGroupLayoutDescriptor with default values
 pub fn GPUBindGroupLayoutDescriptor::default() -> GPUBindGroupLayoutDescriptor {
-  GPUBindGroupLayoutDescriptor::{ label: None, entries: [] }
+  GPUBindGroupLayoutDescriptor::{ label: None, entries: [], }
 }
 
 ///|
@@ -3003,7 +3005,7 @@ pub(all) struct GPUSamplerBindingLayout {
 ///|
 /// Create a new GPUSamplerBindingLayout with default values
 pub fn GPUSamplerBindingLayout::default() -> GPUSamplerBindingLayout {
-  GPUSamplerBindingLayout::{ type_: None }
+  GPUSamplerBindingLayout::{ type_: None, }
 }
 
 ///|
@@ -3105,7 +3107,7 @@ pub(all) struct GPUStorageTextureBindingLayout {
 pub fn GPUStorageTextureBindingLayout::new(
   format~ : GPUTextureFormat,
 ) -> GPUStorageTextureBindingLayout {
-  GPUStorageTextureBindingLayout::{ access: None, format, viewDimension: None }
+  GPUStorageTextureBindingLayout::{ access: None, format, viewDimension: None, }
 }
 
 ///|
@@ -3151,7 +3153,7 @@ pub(all) struct GPUExternalTextureBindingLayout {}
 ///|
 /// Create a new GPUExternalTextureBindingLayout with default values
 pub fn GPUExternalTextureBindingLayout::default() -> GPUExternalTextureBindingLayout {
-  GPUExternalTextureBindingLayout::{  }
+  GPUExternalTextureBindingLayout::{ }
 }
 
 ///|
@@ -3189,7 +3191,7 @@ pub fn GPUExternalTextureBindingLayout::from_js(
 pub(all) struct GPUBindGroupDescriptor {
   label : String?
   layout : GPUBindGroupLayout
-  entries : Array[GPUBindGroupEntry]
+  entries : FixedArray[GPUBindGroupEntry]
 }
 
 ///|
@@ -3197,7 +3199,7 @@ pub(all) struct GPUBindGroupDescriptor {
 pub fn GPUBindGroupDescriptor::new(
   layout~ : GPUBindGroupLayout,
 ) -> GPUBindGroupDescriptor {
-  GPUBindGroupDescriptor::{ label: None, layout, entries: [] }
+  GPUBindGroupDescriptor::{ label: None, layout, entries: [], }
 }
 
 ///|
@@ -3247,7 +3249,7 @@ pub fn GPUBindGroupEntry::new(
   binding~ : GPUIndex32,
   resource~ : GPUBindingResource,
 ) -> GPUBindGroupEntry {
-  GPUBindGroupEntry::{ binding, resource }
+  GPUBindGroupEntry::{ binding, resource, }
 }
 
 ///|
@@ -3291,7 +3293,7 @@ pub(all) struct GPUBufferBinding {
 ///|
 /// Create a new GPUBufferBinding
 pub fn GPUBufferBinding::new(buffer~ : GPUBuffer) -> GPUBufferBinding {
-  GPUBufferBinding::{ buffer, offset: None, size: None }
+  GPUBufferBinding::{ buffer, offset: None, size: None, }
 }
 
 ///|
@@ -3328,13 +3330,13 @@ pub fn GPUBufferBinding::from_js(value : JsValue) -> GPUBufferBinding {
 /// GPUPipelineLayoutDescriptor dictionary
 pub(all) struct GPUPipelineLayoutDescriptor {
   label : String?
-  bindGroupLayouts : Array[JsValue]
+  bindGroupLayouts : FixedArray[JsValue]
 }
 
 ///|
 /// Create a new GPUPipelineLayoutDescriptor with default values
 pub fn GPUPipelineLayoutDescriptor::default() -> GPUPipelineLayoutDescriptor {
-  GPUPipelineLayoutDescriptor::{ label: None, bindGroupLayouts: [] }
+  GPUPipelineLayoutDescriptor::{ label: None, bindGroupLayouts: [], }
 }
 
 ///|
@@ -3376,13 +3378,13 @@ pub fn GPUPipelineLayoutDescriptor::from_js(
 pub(all) struct GPUShaderModuleDescriptor {
   label : String?
   code : String
-  compilationHints : Array[GPUShaderModuleCompilationHint]?
+  compilationHints : FixedArray[GPUShaderModuleCompilationHint]?
 }
 
 ///|
 /// Create a new GPUShaderModuleDescriptor with default values
 pub fn GPUShaderModuleDescriptor::default() -> GPUShaderModuleDescriptor {
-  GPUShaderModuleDescriptor::{ label: None, code: "", compilationHints: None }
+  GPUShaderModuleDescriptor::{ label: None, code: "", compilationHints: None, }
 }
 
 ///|
@@ -3392,7 +3394,7 @@ extern "js" fn GPUShaderModuleDescriptor::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   code: self.code,
-  #|   compilationHints: ((() => { const v = self.compilationHints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   compilationHints: self.compilationHints
   #| })
 
 ///|
@@ -3410,7 +3412,7 @@ extern "js" fn GPUShaderModuleDescriptor::from_js_ffi(
   #| (v) => ({
   #|   label: v.label,
   #|   code: v.code,
-  #|   compilationHints: (v.compilationHints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.compilationHints })
+  #|   compilationHints: v.compilationHints
   #| })
 
 ///|
@@ -3431,7 +3433,7 @@ pub(all) struct GPUShaderModuleCompilationHint {
 ///|
 /// Create a new GPUShaderModuleCompilationHint with default values
 pub fn GPUShaderModuleCompilationHint::default() -> GPUShaderModuleCompilationHint {
-  GPUShaderModuleCompilationHint::{ entryPoint: "", layout: None }
+  GPUShaderModuleCompilationHint::{ entryPoint: "", layout: None, }
 }
 
 ///|
@@ -3522,7 +3524,7 @@ pub(all) struct GPUPipelineDescriptorBase {
 pub fn GPUPipelineDescriptorBase::new(
   layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode,
 ) -> GPUPipelineDescriptorBase {
-  GPUPipelineDescriptorBase::{ label: None, layout }
+  GPUPipelineDescriptorBase::{ label: None, layout, }
 }
 
 ///|
@@ -3572,7 +3574,7 @@ pub(all) struct GPUProgrammableStage {
 pub fn GPUProgrammableStage::new(
   module_~ : GPUShaderModule,
 ) -> GPUProgrammableStage {
-  GPUProgrammableStage::{ module_, entryPoint: None, constants: None }
+  GPUProgrammableStage::{ module_, entryPoint: None, constants: None, }
 }
 
 ///|
@@ -3621,7 +3623,7 @@ pub fn GPUComputePipelineDescriptor::new(
   layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode,
   compute~ : GPUProgrammableStage,
 ) -> GPUComputePipelineDescriptor {
-  GPUComputePipelineDescriptor::{ label: None, layout, compute }
+  GPUComputePipelineDescriptor::{ label: None, layout, compute, }
 }
 
 ///|
@@ -3802,7 +3804,11 @@ pub(all) struct GPUMultisampleState {
 ///|
 /// Create a new GPUMultisampleState with default values
 pub fn GPUMultisampleState::default() -> GPUMultisampleState {
-  GPUMultisampleState::{ count: None, mask: None, alphaToCoverageEnabled: None }
+  GPUMultisampleState::{
+    count: None,
+    mask: None,
+    alphaToCoverageEnabled: None,
+  }
 }
 
 ///|
@@ -3843,13 +3849,13 @@ pub(all) struct GPUFragmentState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  targets : Array[JsValue]
+  targets : FixedArray[JsValue]
 }
 
 ///|
 /// Create a new GPUFragmentState
 pub fn GPUFragmentState::new(module_~ : GPUShaderModule) -> GPUFragmentState {
-  GPUFragmentState::{ module_, entryPoint: None, constants: None, targets: [] }
+  GPUFragmentState::{ module_, entryPoint: None, constants: None, targets: [], }
 }
 
 ///|
@@ -3897,7 +3903,7 @@ pub(all) struct GPUColorTargetState {
 pub fn GPUColorTargetState::new(
   format~ : GPUTextureFormat,
 ) -> GPUColorTargetState {
-  GPUColorTargetState::{ format, blend: None, writeMask: None }
+  GPUColorTargetState::{ format, blend: None, writeMask: None, }
 }
 
 ///|
@@ -3945,7 +3951,7 @@ pub fn GPUBlendState::new(
   color~ : GPUBlendComponent,
   alpha~ : GPUBlendComponent,
 ) -> GPUBlendState {
-  GPUBlendState::{ color, alpha }
+  GPUBlendState::{ color, alpha, }
 }
 
 ///|
@@ -3985,7 +3991,7 @@ pub(all) struct GPUBlendComponent {
 ///|
 /// Create a new GPUBlendComponent with default values
 pub fn GPUBlendComponent::default() -> GPUBlendComponent {
-  GPUBlendComponent::{ operation: None, srcFactor: None, dstFactor: None }
+  GPUBlendComponent::{ operation: None, srcFactor: None, dstFactor: None, }
 }
 
 ///|
@@ -4160,13 +4166,13 @@ pub(all) struct GPUVertexState {
   module_ : GPUShaderModule
   entryPoint : String?
   constants : JsValue?
-  buffers : Array[JsValue]?
+  buffers : FixedArray[JsValue]?
 }
 
 ///|
 /// Create a new GPUVertexState
 pub fn GPUVertexState::new(module_~ : GPUShaderModule) -> GPUVertexState {
-  GPUVertexState::{ module_, entryPoint: None, constants: None, buffers: None }
+  GPUVertexState::{ module_, entryPoint: None, constants: None, buffers: None, }
 }
 
 ///|
@@ -4175,7 +4181,7 @@ extern "js" fn GPUVertexState::to_js_ffi(self : GPUVertexState) -> JsValue =
   #|   module: self.module_,
   #|   entryPoint: self.entryPoint,
   #|   constants: ((() => { const v = self.constants; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   buffers: ((() => { const v = self.buffers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   buffers: self.buffers
   #| })
 
 ///|
@@ -4190,7 +4196,7 @@ extern "js" fn GPUVertexState::from_js_ffi(value : JsValue) -> GPUVertexState =
   #|   module_: v.module,
   #|   entryPoint: v.entryPoint,
   #|   constants: (v.constants === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constants }),
-  #|   buffers: (v.buffers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.buffers })
+  #|   buffers: v.buffers
   #| })
 
 ///|
@@ -4204,7 +4210,7 @@ pub fn GPUVertexState::from_js(value : JsValue) -> GPUVertexState {
 pub(all) struct GPUVertexBufferLayout {
   arrayStride : GPUSize64
   stepMode : GPUVertexStepMode?
-  attributes : Array[GPUVertexAttribute]
+  attributes : FixedArray[GPUVertexAttribute]
 }
 
 ///|
@@ -4212,7 +4218,7 @@ pub(all) struct GPUVertexBufferLayout {
 pub fn GPUVertexBufferLayout::new(
   arrayStride~ : GPUSize64,
 ) -> GPUVertexBufferLayout {
-  GPUVertexBufferLayout::{ arrayStride, stepMode: None, attributes: [] }
+  GPUVertexBufferLayout::{ arrayStride, stepMode: None, attributes: [], }
 }
 
 ///|
@@ -4262,7 +4268,7 @@ pub fn GPUVertexAttribute::new(
   offset~ : GPUSize64,
   shaderLocation~ : GPUIndex32,
 ) -> GPUVertexAttribute {
-  GPUVertexAttribute::{ format, offset, shaderLocation }
+  GPUVertexAttribute::{ format, offset, shaderLocation, }
 }
 
 ///|
@@ -4550,7 +4556,7 @@ pub(all) struct GPUCopyExternalImageSourceInfo {
 pub fn GPUCopyExternalImageSourceInfo::new(
   source~ : GPUCopyExternalImageSource,
 ) -> GPUCopyExternalImageSourceInfo {
-  GPUCopyExternalImageSourceInfo::{ source, origin: None, flipY: None }
+  GPUCopyExternalImageSourceInfo::{ source, origin: None, flipY: None, }
 }
 
 ///|
@@ -4598,7 +4604,7 @@ pub(all) struct GPUCommandBufferDescriptor {
 ///|
 /// Create a new GPUCommandBufferDescriptor with default values
 pub fn GPUCommandBufferDescriptor::default() -> GPUCommandBufferDescriptor {
-  GPUCommandBufferDescriptor::{ label: None }
+  GPUCommandBufferDescriptor::{ label: None, }
 }
 
 ///|
@@ -4642,7 +4648,7 @@ pub(all) struct GPUCommandEncoderDescriptor {
 ///|
 /// Create a new GPUCommandEncoderDescriptor with default values
 pub fn GPUCommandEncoderDescriptor::default() -> GPUCommandEncoderDescriptor {
-  GPUCommandEncoderDescriptor::{ label: None }
+  GPUCommandEncoderDescriptor::{ label: None, }
 }
 
 ///|
@@ -4743,7 +4749,7 @@ pub(all) struct GPUComputePassDescriptor {
 ///|
 /// Create a new GPUComputePassDescriptor with default values
 pub fn GPUComputePassDescriptor::default() -> GPUComputePassDescriptor {
-  GPUComputePassDescriptor::{ label: None, timestampWrites: None }
+  GPUComputePassDescriptor::{ label: None, timestampWrites: None, }
 }
 
 ///|
@@ -4840,7 +4846,7 @@ pub fn GPURenderPassTimestampWrites::from_js(
 /// GPURenderPassDescriptor dictionary
 pub(all) struct GPURenderPassDescriptor {
   label : String?
-  colorAttachments : Array[JsValue]
+  colorAttachments : FixedArray[JsValue]
   depthStencilAttachment : GPURenderPassDepthStencilAttachment?
   occlusionQuerySet : GPUQuerySet?
   timestampWrites : GPURenderPassTimestampWrites?
@@ -5056,7 +5062,7 @@ pub fn GPURenderPassDepthStencilAttachment::from_js(
 /// GPURenderPassLayout dictionary
 pub(all) struct GPURenderPassLayout {
   label : String?
-  colorFormats : Array[JsValue]
+  colorFormats : FixedArray[JsValue]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
 }
@@ -5115,7 +5121,7 @@ pub(all) struct GPURenderBundleDescriptor {
 ///|
 /// Create a new GPURenderBundleDescriptor with default values
 pub fn GPURenderBundleDescriptor::default() -> GPURenderBundleDescriptor {
-  GPURenderBundleDescriptor::{ label: None }
+  GPURenderBundleDescriptor::{ label: None, }
 }
 
 ///|
@@ -5154,7 +5160,7 @@ pub fn GPURenderBundleDescriptor::from_js(
 /// GPURenderBundleEncoderDescriptor dictionary
 pub(all) struct GPURenderBundleEncoderDescriptor {
   label : String?
-  colorFormats : Array[JsValue]
+  colorFormats : FixedArray[JsValue]
   depthStencilFormat : GPUTextureFormat?
   sampleCount : GPUSize32?
   depthReadOnly : Bool?
@@ -5225,7 +5231,7 @@ pub(all) struct GPUQueueDescriptor {
 ///|
 /// Create a new GPUQueueDescriptor with default values
 pub fn GPUQueueDescriptor::default() -> GPUQueueDescriptor {
-  GPUQueueDescriptor::{ label: None }
+  GPUQueueDescriptor::{ label: None, }
 }
 
 ///|
@@ -5270,7 +5276,7 @@ pub fn GPUQuerySetDescriptor::new(
   type_~ : GPUQueryType,
   count~ : GPUSize32,
 ) -> GPUQuerySetDescriptor {
-  GPUQuerySetDescriptor::{ label: None, type_, count }
+  GPUQuerySetDescriptor::{ label: None, type_, count, }
 }
 
 ///|
@@ -5314,7 +5320,7 @@ pub(all) struct GPUCanvasToneMapping {
 ///|
 /// Create a new GPUCanvasToneMapping with default values
 pub fn GPUCanvasToneMapping::default() -> GPUCanvasToneMapping {
-  GPUCanvasToneMapping::{ mode: None }
+  GPUCanvasToneMapping::{ mode: None, }
 }
 
 ///|
@@ -5351,7 +5357,7 @@ pub(all) struct GPUCanvasConfiguration {
   device : GPUDevice
   format : GPUTextureFormat
   usage : GPUTextureUsageFlags?
-  viewFormats : Array[GPUTextureFormat]?
+  viewFormats : FixedArray[GPUTextureFormat]?
   colorSpace : PredefinedColorSpace?
   toneMapping : GPUCanvasToneMapping?
   alphaMode : GPUCanvasAlphaMode?
@@ -5382,7 +5388,7 @@ extern "js" fn GPUCanvasConfiguration::to_js_ffi(
   #|   device: self.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   usage: ((() => { const v = self.usage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   viewFormats: ((() => { const v = self.viewFormats; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   viewFormats: self.viewFormats,
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
   #|   toneMapping: ((() => { const v = self.toneMapping; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   alphaMode: ((() => { const v = self.alphaMode; if (v === undefined) return undefined; return ['opaque', 'premultiplied'][v]; })())
@@ -5402,7 +5408,7 @@ extern "js" fn GPUCanvasConfiguration::from_js_ffi(
   #|   device: v.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   usage: (v.usage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usage }),
-  #|   viewFormats: (v.viewFormats === undefined ? { $tag: 0 } : { $tag: 1, _0: v.viewFormats }),
+  #|   viewFormats: v.viewFormats,
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
   #|   toneMapping: (v.toneMapping === undefined ? { $tag: 0 } : { $tag: 1, _0: v.toneMapping }),
   #|   alphaMode: (v.alphaMode === undefined ? undefined : ['opaque', 'premultiplied'].indexOf(v.alphaMode))
@@ -5474,7 +5480,7 @@ pub(all) struct GPUColorDict {
 ///|
 /// Create a new GPUColorDict with default values
 pub fn GPUColorDict::default() -> GPUColorDict {
-  GPUColorDict::{ r: 0, g: 0, b: 0, a: 0 }
+  GPUColorDict::{ r: 0, g: 0, b: 0, a: 0, }
 }
 
 ///|
@@ -5517,7 +5523,7 @@ pub(all) struct GPUOrigin2DDict {
 ///|
 /// Create a new GPUOrigin2DDict with default values
 pub fn GPUOrigin2DDict::default() -> GPUOrigin2DDict {
-  GPUOrigin2DDict::{ x: None, y: None }
+  GPUOrigin2DDict::{ x: None, y: None, }
 }
 
 ///|
@@ -5557,7 +5563,7 @@ pub(all) struct GPUOrigin3DDict {
 ///|
 /// Create a new GPUOrigin3DDict with default values
 pub fn GPUOrigin3DDict::default() -> GPUOrigin3DDict {
-  GPUOrigin3DDict::{ x: None, y: None, z: None }
+  GPUOrigin3DDict::{ x: None, y: None, z: None, }
 }
 
 ///|
@@ -5599,7 +5605,7 @@ pub(all) struct GPUExtent3DDict {
 ///|
 /// Create a new GPUExtent3DDict
 pub fn GPUExtent3DDict::new(width~ : GPUIntegerCoordinate) -> GPUExtent3DDict {
-  GPUExtent3DDict::{ width, height: None, depthOrArrayLayers: None }
+  GPUExtent3DDict::{ width, height: None, depthOrArrayLayers: None, }
 }
 
 ///|
@@ -5780,13 +5786,13 @@ pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffers_per_shader_stage(
 pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffer_binding_size(
   self : GPUSupportedLimits,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.maxUniformBufferBindingSize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.maxUniformBufferBindingSize))
 
 ///|
 pub extern "js" fn GPUSupportedLimits::get_max_storage_buffer_binding_size(
   self : GPUSupportedLimits,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.maxStorageBufferBindingSize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.maxStorageBufferBindingSize))
 
 ///|
 pub extern "js" fn GPUSupportedLimits::get_min_uniform_buffer_offset_alignment(
@@ -5810,7 +5816,7 @@ pub extern "js" fn GPUSupportedLimits::get_max_vertex_buffers(
 pub extern "js" fn GPUSupportedLimits::get_max_buffer_size(
   self : GPUSupportedLimits,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.maxBufferSize; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.maxBufferSize))
 
 ///|
 pub extern "js" fn GPUSupportedLimits::get_max_vertex_attributes(
@@ -6135,7 +6141,7 @@ pub(all) enum GPUAdapterRequestDeviceError {
   TypeError(JsError)
   OperationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn GPUAdapter::get_features(
@@ -6211,14 +6217,14 @@ pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
 pub(all) enum GPUDeviceCreateBufferError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum GPUDeviceImportExternalTextureError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn GPUDevice::get_features(
@@ -7117,25 +7123,25 @@ pub extern "js" fn GPUCompilationMessage::get_type(
 pub extern "js" fn GPUCompilationMessage::get_line_num(
   self : GPUCompilationMessage,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.lineNum; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.lineNum))
 
 ///|
 pub extern "js" fn GPUCompilationMessage::get_line_pos(
   self : GPUCompilationMessage,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.linePos; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.linePos))
 
 ///|
 pub extern "js" fn GPUCompilationMessage::get_offset(
   self : GPUCompilationMessage,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.offset; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.offset))
 
 ///|
 pub extern "js" fn GPUCompilationMessage::get_length(
   self : GPUCompilationMessage,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.length; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.length))
 
 ///|
 /// GPUCompilationInfo interface
@@ -7178,7 +7184,7 @@ pub extern "js" fn JsValue::to_gpu_compilation_info(
 ///|
 pub extern "js" fn GPUCompilationInfo::get_messages(
   self : GPUCompilationInfo,
-) -> Array[GPUCompilationMessage] =
+) -> FixedArray[GPUCompilationMessage] =
   #| (self) => self.messages
 
 ///|
@@ -7690,7 +7696,7 @@ pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_i
   self : GPUCommandEncoder,
   source : GPUTexelCopyBufferInfo,
   destination : GPUTexelCopyTextureInfo,
-  copy_size : Array[GPUIntegerCoordinate],
+  copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
@@ -7708,7 +7714,7 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_i
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyBufferInfo,
-  copy_size : Array[GPUIntegerCoordinate],
+  copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
@@ -7726,7 +7732,7 @@ pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyTextureInfo,
-  copy_size : Array[GPUIntegerCoordinate],
+  copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
@@ -7860,7 +7866,7 @@ pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
   self : GPUComputePassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-  dynamic_offsets : Array[GPUBufferDynamicOffset],
+  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
 ) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
@@ -7965,7 +7971,7 @@ pub extern "js" fn GPURenderPassEncoder::end_occlusion_query(
 ///|
 pub extern "js" fn GPURenderPassEncoder::execute_bundles(
   self : GPURenderPassEncoder,
-  bundles : Array[GPURenderBundle],
+  bundles : FixedArray[GPURenderBundle],
 ) -> Unit =
   #| (self, bundles) => self.executeBundles(bundles)
 
@@ -8021,7 +8027,7 @@ pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
   self : GPURenderPassEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-  dynamic_offsets : Array[GPUBufferDynamicOffset],
+  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
 ) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
@@ -8133,7 +8139,7 @@ pub extern "js" fn GPURenderPassEncoder::draw_indexed_indirect(
 ///|
 pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_array_of_double(
   self : GPURenderPassEncoder,
-  color : Array[Double],
+  color : FixedArray[Double],
 ) -> Unit =
   #| (self, color) => self.setBlendConstant(color)
 
@@ -8298,7 +8304,7 @@ pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
   self : GPURenderBundleEncoder,
   index : GPUIndex32,
   bind_group : GPUBindGroup?,
-  dynamic_offsets : Array[GPUBufferDynamicOffset],
+  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
 ) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
@@ -8440,7 +8446,7 @@ pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
 pub(all) enum GPUQueueWriteBufferError {
   OperationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -8448,12 +8454,12 @@ pub(all) enum GPUQueueCopyExternalImageToTextureError {
   SecurityError(JsError)
   OperationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn GPUQueue::submit(
   self : GPUQueue,
-  command_buffers : Array[GPUCommandBuffer],
+  command_buffers : FixedArray[GPUCommandBuffer],
 ) -> Unit =
   #| (self, command_buffers) => self.submit(command_buffers)
 
@@ -8610,7 +8616,7 @@ pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_in
   self : GPUQueue,
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
-  copy_size : Array[GPUIntegerCoordinate],
+  copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
   #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
@@ -8714,10 +8720,17 @@ pub extern "js" fn JsValue::to_gpu_canvas_context(
 
 ///|
 /// Error type for throwing methods
+pub(all) enum GPUCanvasContextConfigureError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
 pub(all) enum GPUCanvasContextGetCurrentTextureError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn GPUCanvasContext::get_canvas(
@@ -8729,14 +8742,14 @@ pub extern "js" fn GPUCanvasContext::get_canvas(
 extern "js" fn GPUCanvasContext::configure_ffi(
   self : GPUCanvasContext,
   configuration : JsValue,
-) -> Unit =
-  #| (self, configuration) => self.configure(configuration)
+) -> Result[Unit, GPUCanvasContextConfigureError] =
+  #| (self, configuration) => (() => { try { self.configure(configuration); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub fn GPUCanvasContext::configure(
   self : GPUCanvasContext,
   configuration : GPUCanvasConfiguration,
-) -> Unit {
+) -> Result[Unit, GPUCanvasContextConfigureError] {
   GPUCanvasContext::configure_ffi(self, configuration.to_js())
 }
 

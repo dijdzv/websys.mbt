@@ -112,7 +112,7 @@ pub fn RotationMatrixType::bind_as_dom_matrix(
 pub(all) enum OrientationSensorLocalCoordinateSystem {
   Device
   Screen
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -146,7 +146,7 @@ pub(all) struct OrientationSensorOptions {
 ///|
 /// Create a new OrientationSensorOptions with default values
 pub fn OrientationSensorOptions::default() -> OrientationSensorOptions {
-  OrientationSensorOptions::{ referenceFrame: None }
+  OrientationSensorOptions::{ referenceFrame: None, }
 }
 
 ///|
@@ -246,7 +246,7 @@ pub extern "js" fn OrientationSensor::as_relative_orientation_sensor(
 ///|
 pub extern "js" fn OrientationSensor::get_quaternion(
   self : OrientationSensor,
-) -> Array[Double] =
+) -> FixedArray[Double] =
   #| (self) => self.quaternion
 
 ///|
@@ -411,7 +411,7 @@ pub extern "js" fn RelativeOrientationSensor::to_event_target(
 pub(all) enum RelativeOrientationSensorConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn RelativeOrientationSensor::new() -> Result[

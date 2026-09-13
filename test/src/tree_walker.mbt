@@ -2,13 +2,13 @@
 fn test_tree_walker() -> Unit {
   let doc = get_document()
   // Build a small tree: div > (p, span > em)
-  let div = doc.create_element("div")
-  let p = doc.create_element("p")
+  let div = create_element(doc, "div")
+  let p = create_element(doc, "p")
   @websys.HTMLElement::from_js_value(p.to_js_value()).set_inner_text(
     "paragraph",
   )
-  let span = doc.create_element("span")
-  let em = doc.create_element("em")
+  let span = create_element(doc, "span")
+  let em = create_element(doc, "em")
   @websys.HTMLElement::from_js_value(em.to_js_value()).set_inner_text(
     "emphasis",
   )

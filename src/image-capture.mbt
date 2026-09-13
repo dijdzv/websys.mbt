@@ -12,9 +12,9 @@ pub extern "js" fn ConstrainPoint2D::to_js_value(
   #| (self) => self
 
 ///|
-/// Create ConstrainPoint2D from Array[Point2D]
+/// Create ConstrainPoint2D from FixedArray[Point2D]
 pub extern "js" fn ConstrainPoint2D::from_array_of_point_2d(
-  v : Array[Point2D],
+  v : FixedArray[Point2D],
 ) -> ConstrainPoint2D =
   #| (v) => v
 
@@ -26,7 +26,7 @@ pub extern "js" fn ConstrainPoint2D::from_constrain_point_2d_parameters(
   #| (v) => v
 
 ///|
-/// Check if this ConstrainPoint2D is Array[Point2D]
+/// Check if this ConstrainPoint2D is FixedArray[Point2D]
 pub extern "js" fn ConstrainPoint2D::is_array_of_point_2d(
   self : ConstrainPoint2D,
 ) -> Bool =
@@ -40,11 +40,11 @@ pub extern "js" fn ConstrainPoint2D::is_constrain_point_2d_parameters(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get ConstrainPoint2D as Array[Point2D]
+/// Try to get ConstrainPoint2D as FixedArray[Point2D]
 pub extern "js" fn ConstrainPoint2D::as_array_of_point_2d(
   self : ConstrainPoint2D,
-) -> Array[Point2D]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[Point2D]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
 /// Try to get ConstrainPoint2D as ConstrainPoint2DParameters
@@ -54,10 +54,10 @@ pub extern "js" fn ConstrainPoint2D::as_constrain_point_2d_parameters(
   #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Flatten Option[ConstrainPoint2D] to Array[Point2D]?
+/// Flatten Option[ConstrainPoint2D] to FixedArray[Point2D]?
 pub fn ConstrainPoint2D::bind_as_array_of_point_2d(
   value : ConstrainPoint2D?,
-) -> Array[Point2D]? {
+) -> FixedArray[Point2D]? {
   match value {
     Some(v) => v.as_array_of_point_2d()
     None => None
@@ -81,7 +81,7 @@ pub(all) enum RedEyeReduction {
   Never
   Always
   Controllable
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) enum FillLightMode {
   Auto
   Off
   Flash
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -140,7 +140,7 @@ pub(all) enum MeteringMode {
   Manual
   SingleShot
   Continuous
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -171,7 +171,7 @@ pub(all) struct PhotoCapabilities {
   redEyeReduction : RedEyeReduction?
   imageHeight : MediaSettingsRange?
   imageWidth : MediaSettingsRange?
-  fillLightMode : Array[FillLightMode]?
+  fillLightMode : FixedArray[FillLightMode]?
 }
 
 ///|
@@ -193,7 +193,7 @@ extern "js" fn PhotoCapabilities::to_js_ffi(
   #|   redEyeReduction: ((() => { const v = self.redEyeReduction; if (v === undefined) return undefined; return ['never', 'always', 'controllable'][v]; })()),
   #|   imageHeight: ((() => { const v = self.imageHeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   imageWidth: ((() => { const v = self.imageWidth; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   fillLightMode: ((() => { const v = self.fillLightMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   fillLightMode: self.fillLightMode
   #| })
 
 ///|
@@ -210,7 +210,7 @@ extern "js" fn PhotoCapabilities::from_js_ffi(
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
   #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
   #|   imageWidth: (v.imageWidth === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageWidth }),
-  #|   fillLightMode: (v.fillLightMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fillLightMode })
+  #|   fillLightMode: v.fillLightMode
   #| })
 
 ///|
@@ -280,7 +280,7 @@ pub(all) struct MediaSettingsRange {
 ///|
 /// Create a new MediaSettingsRange with default values
 pub fn MediaSettingsRange::default() -> MediaSettingsRange {
-  MediaSettingsRange::{ max: None, min: None, step: None }
+  MediaSettingsRange::{ max: None, min: None, step: None, }
 }
 
 ///|
@@ -512,9 +512,9 @@ pub fn MediaTrackSupportedConstraints::from_js(
 ///|
 /// MediaTrackCapabilities dictionary
 pub(all) struct MediaTrackCapabilities {
-  whiteBalanceMode : Array[String]?
-  exposureMode : Array[String]?
-  focusMode : Array[String]?
+  whiteBalanceMode : FixedArray[String]?
+  exposureMode : FixedArray[String]?
+  focusMode : FixedArray[String]?
   exposureCompensation : MediaSettingsRange?
   exposureTime : MediaSettingsRange?
   colorTemperature : MediaSettingsRange?
@@ -527,26 +527,26 @@ pub(all) struct MediaTrackCapabilities {
   pan : MediaSettingsRange?
   tilt : MediaSettingsRange?
   zoom : MediaSettingsRange?
-  torch : Array[Bool]?
+  torch : FixedArray[Bool]?
   width : ULongRange?
   height : ULongRange?
   aspectRatio : DoubleRange?
   frameRate : DoubleRange?
-  facingMode : Array[String]?
-  resizeMode : Array[String]?
+  facingMode : FixedArray[String]?
+  resizeMode : FixedArray[String]?
   sampleRate : ULongRange?
   sampleSize : ULongRange?
-  echoCancellation : Array[BoolOrString]?
-  autoGainControl : Array[Bool]?
-  noiseSuppression : Array[Bool]?
+  echoCancellation : FixedArray[BoolOrString]?
+  autoGainControl : FixedArray[Bool]?
+  noiseSuppression : FixedArray[Bool]?
   latency : DoubleRange?
   channelCount : ULongRange?
   deviceId : String?
   groupId : String?
-  backgroundBlur : Array[Bool]?
+  backgroundBlur : FixedArray[Bool]?
   displaySurface : String?
   logicalSurface : Bool?
-  cursor : Array[String]?
+  cursor : FixedArray[String]?
 }
 
 ///|
@@ -596,9 +596,9 @@ extern "js" fn MediaTrackCapabilities::to_js_ffi(
   self : MediaTrackCapabilities,
 ) -> JsValue =
   #| (self) => ({
-  #|   whiteBalanceMode: ((() => { const v = self.whiteBalanceMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureMode: ((() => { const v = self.exposureMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   focusMode: ((() => { const v = self.focusMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   whiteBalanceMode: self.whiteBalanceMode,
+  #|   exposureMode: self.exposureMode,
+  #|   focusMode: self.focusMode,
   #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -611,26 +611,26 @@ extern "js" fn MediaTrackCapabilities::to_js_ffi(
   #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   torch: ((() => { const v = self.torch; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   torch: self.torch,
   #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   facingMode: ((() => { const v = self.facingMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   resizeMode: ((() => { const v = self.resizeMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   facingMode: self.facingMode,
+  #|   resizeMode: self.resizeMode,
   #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sampleSize: ((() => { const v = self.sampleSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   echoCancellation: ((() => { const v = self.echoCancellation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   autoGainControl: ((() => { const v = self.autoGainControl; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   noiseSuppression: ((() => { const v = self.noiseSuppression; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   echoCancellation: self.echoCancellation,
+  #|   autoGainControl: self.autoGainControl,
+  #|   noiseSuppression: self.noiseSuppression,
   #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   channelCount: ((() => { const v = self.channelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deviceId: self.deviceId,
   #|   groupId: self.groupId,
-  #|   backgroundBlur: ((() => { const v = self.backgroundBlur; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   backgroundBlur: self.backgroundBlur,
   #|   displaySurface: self.displaySurface,
   #|   logicalSurface: (self.logicalSurface === -1 ? undefined : self.logicalSurface),
-  #|   cursor: ((() => { const v = self.cursor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   cursor: self.cursor
   #| })
 
 ///|
@@ -644,9 +644,9 @@ extern "js" fn MediaTrackCapabilities::from_js_ffi(
   value : JsValue,
 ) -> MediaTrackCapabilities =
   #| (v) => ({
-  #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.whiteBalanceMode }),
-  #|   exposureMode: (v.exposureMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureMode }),
-  #|   focusMode: (v.focusMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusMode }),
+  #|   whiteBalanceMode: v.whiteBalanceMode,
+  #|   exposureMode: v.exposureMode,
+  #|   focusMode: v.focusMode,
   #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
   #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
   #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
@@ -659,26 +659,26 @@ extern "js" fn MediaTrackCapabilities::from_js_ffi(
   #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
   #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
   #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
-  #|   torch: (v.torch === undefined ? { $tag: 0 } : { $tag: 1, _0: v.torch }),
+  #|   torch: v.torch,
   #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
   #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
   #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
   #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
-  #|   facingMode: (v.facingMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.facingMode }),
-  #|   resizeMode: (v.resizeMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resizeMode }),
+  #|   facingMode: v.facingMode,
+  #|   resizeMode: v.resizeMode,
   #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
   #|   sampleSize: (v.sampleSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleSize }),
-  #|   echoCancellation: (v.echoCancellation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoCancellation }),
-  #|   autoGainControl: (v.autoGainControl === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoGainControl }),
-  #|   noiseSuppression: (v.noiseSuppression === undefined ? { $tag: 0 } : { $tag: 1, _0: v.noiseSuppression }),
+  #|   echoCancellation: v.echoCancellation,
+  #|   autoGainControl: v.autoGainControl,
+  #|   noiseSuppression: v.noiseSuppression,
   #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
   #|   channelCount: (v.channelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.channelCount }),
   #|   deviceId: v.deviceId,
   #|   groupId: v.groupId,
-  #|   backgroundBlur: (v.backgroundBlur === undefined ? { $tag: 0 } : { $tag: 1, _0: v.backgroundBlur }),
+  #|   backgroundBlur: v.backgroundBlur,
   #|   displaySurface: v.displaySurface,
   #|   logicalSurface: (v.logicalSurface === undefined ? -1 : v.logicalSurface),
-  #|   cursor: (v.cursor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cursor })
+  #|   cursor: v.cursor
   #| })
 
 ///|
@@ -889,7 +889,7 @@ pub(all) struct MediaTrackSettings {
   whiteBalanceMode : String?
   exposureMode : String?
   focusMode : String?
-  pointsOfInterest : Array[Point2D]?
+  pointsOfInterest : FixedArray[Point2D]?
   exposureCompensation : Double?
   exposureTime : Double?
   colorTemperature : Double?
@@ -981,7 +981,7 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
   #|   focusMode: self.focusMode,
-  #|   pointsOfInterest: ((() => { const v = self.pointsOfInterest; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   pointsOfInterest: self.pointsOfInterest,
   #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1033,7 +1033,7 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #|   whiteBalanceMode: v.whiteBalanceMode,
   #|   exposureMode: v.exposureMode,
   #|   focusMode: v.focusMode,
-  #|   pointsOfInterest: (v.pointsOfInterest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pointsOfInterest }),
+  #|   pointsOfInterest: v.pointsOfInterest,
   #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
   #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
   #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
@@ -1080,14 +1080,14 @@ pub fn MediaTrackSettings::from_js(value : JsValue) -> MediaTrackSettings {
 ///|
 /// ConstrainPoint2DParameters dictionary
 pub(all) struct ConstrainPoint2DParameters {
-  exact : Array[Point2D]?
-  ideal : Array[Point2D]?
+  exact : FixedArray[Point2D]?
+  ideal : FixedArray[Point2D]?
 }
 
 ///|
 /// Create a new ConstrainPoint2DParameters with default values
 pub fn ConstrainPoint2DParameters::default() -> ConstrainPoint2DParameters {
-  ConstrainPoint2DParameters::{ exact: None, ideal: None }
+  ConstrainPoint2DParameters::{ exact: None, ideal: None, }
 }
 
 ///|
@@ -1095,8 +1095,8 @@ extern "js" fn ConstrainPoint2DParameters::to_js_ffi(
   self : ConstrainPoint2DParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   exact: ((() => { const v = self.exact; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   exact: self.exact,
+  #|   ideal: self.ideal
   #| })
 
 ///|
@@ -1112,8 +1112,8 @@ extern "js" fn ConstrainPoint2DParameters::from_js_ffi(
   value : JsValue,
 ) -> ConstrainPoint2DParameters =
   #| (v) => ({
-  #|   exact: (v.exact === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exact }),
-  #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
+  #|   exact: v.exact,
+  #|   ideal: v.ideal
   #| })
 
 ///|
@@ -1134,7 +1134,7 @@ pub(all) struct Point2D {
 ///|
 /// Create a new Point2D with default values
 pub fn Point2D::default() -> Point2D {
-  Point2D::{ x: None, y: None }
+  Point2D::{ x: None, y: None, }
 }
 
 ///|
@@ -1198,7 +1198,7 @@ pub extern "js" fn JsValue::to_image_capture(self : JsValue) -> ImageCapture =
 pub(all) enum ImageCaptureConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1206,7 +1206,7 @@ pub(all) enum ImageCaptureTakePhotoError {
   UnknownError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1214,7 +1214,7 @@ pub(all) enum ImageCaptureGetPhotoCapabilitiesError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1222,7 +1222,7 @@ pub(all) enum ImageCaptureGetPhotoSettingsError {
   OperationError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1230,7 +1230,7 @@ pub(all) enum ImageCaptureGrabFrameError {
   UnknownError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ImageCapture::new(
@@ -1267,7 +1267,7 @@ pub extern "js" fn ImageCapture::get_photo_capabilities(
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
   #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
   #|   imageWidth: (v.imageWidth === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageWidth }),
-  #|   fillLightMode: (v.fillLightMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fillLightMode })
+  #|   fillLightMode: v.fillLightMode
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|

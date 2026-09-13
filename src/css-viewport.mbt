@@ -30,5 +30,7 @@ pub extern "js" fn JsValue::to_viewport(self : JsValue) -> Viewport =
   #| (self) => self
 
 ///|
-pub extern "js" fn Viewport::get_segments(self : Viewport) -> Array[DOMRect] =
+pub extern "js" fn Viewport::get_segments(
+  self : Viewport,
+) -> FixedArray[DOMRect] =
   #| (self) => self.segments

@@ -8,7 +8,7 @@ pub(all) enum CaptureAction {
   Previous
   First
   Last
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub(all) struct CaptureActionEventInit {
 ///|
 /// Create a new CaptureActionEventInit with default values
 pub fn CaptureActionEventInit::default() -> CaptureActionEventInit {
-  CaptureActionEventInit::{ action: None }
+  CaptureActionEventInit::{ action: None, }
 }
 
 ///|

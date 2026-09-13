@@ -42,6 +42,8 @@ pub fn test_blob() -> Unit {
   // slice — Web API: blob.slice(0, 5)
   let sliced = blob.slice_with_content_type(0L, 5L, "text/plain")
   assert_eq(sliced.get_size(), 5L, label="sliced blob size")
+  let suffix = blob.slice_with_content_type(-6L, 13L, "text/plain")
+  assert_eq(suffix.get_size(), 6L, label="negative Int64 offset")
   println("  blob: ok")
 }
 

@@ -166,7 +166,7 @@ pub(all) struct CSSParserOptions {
 ///|
 /// Create a new CSSParserOptions with default values
 pub fn CSSParserOptions::default() -> CSSParserOptions {
-  CSSParserOptions::{ atRules: None }
+  CSSParserOptions::{ atRules: None, }
 }
 
 ///|
@@ -292,15 +292,15 @@ pub extern "js" fn CSSParserAtRule::to_css_parser_rule(
 ///|
 pub extern "js" fn CSSParserAtRule::new(
   name : String,
-  prelude : Array[CSSToken],
+  prelude : FixedArray[CSSToken],
 ) -> CSSParserAtRule =
   #| (name, prelude) => new CSSParserAtRule(name, prelude)
 
 ///|
 pub extern "js" fn CSSParserAtRule::new_with_body(
   name : String,
-  prelude : Array[CSSToken],
-  body : Array[CSSParserRule],
+  prelude : FixedArray[CSSToken],
+  body : FixedArray[CSSParserRule],
 ) -> CSSParserAtRule =
   #| (name, prelude, body) => new CSSParserAtRule(name, prelude, body)
 
@@ -311,13 +311,13 @@ pub extern "js" fn CSSParserAtRule::get_name(self : CSSParserAtRule) -> String =
 ///|
 pub extern "js" fn CSSParserAtRule::get_prelude(
   self : CSSParserAtRule,
-) -> Array[CSSParserValue] =
+) -> FixedArray[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserAtRule::get_body(
   self : CSSParserAtRule,
-) -> Array[CSSParserRule] =
+) -> FixedArray[CSSParserRule] =
   #| (self) => self.body
 
 ///|
@@ -366,27 +366,27 @@ pub extern "js" fn CSSParserQualifiedRule::to_css_parser_rule(
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::new(
-  prelude : Array[CSSToken],
+  prelude : FixedArray[CSSToken],
 ) -> CSSParserQualifiedRule =
   #| (prelude) => new CSSParserQualifiedRule(prelude)
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::new_with_body(
-  prelude : Array[CSSToken],
-  body : Array[CSSParserRule],
+  prelude : FixedArray[CSSToken],
+  body : FixedArray[CSSParserRule],
 ) -> CSSParserQualifiedRule =
   #| (prelude, body) => new CSSParserQualifiedRule(prelude, body)
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_prelude(
   self : CSSParserQualifiedRule,
-) -> Array[CSSParserValue] =
+) -> FixedArray[CSSParserValue] =
   #| (self) => self.prelude
 
 ///|
 pub extern "js" fn CSSParserQualifiedRule::get_body(
   self : CSSParserQualifiedRule,
-) -> Array[CSSParserRule] =
+) -> FixedArray[CSSParserRule] =
   #| (self) => self.body
 
 ///|
@@ -442,7 +442,7 @@ pub extern "js" fn CSSParserDeclaration::new(
 ///|
 pub extern "js" fn CSSParserDeclaration::new_with_body(
   name : String,
-  body : Array[CSSParserRule],
+  body : FixedArray[CSSParserRule],
 ) -> CSSParserDeclaration =
   #| (name, body) => new CSSParserDeclaration(name, body)
 
@@ -455,7 +455,7 @@ pub extern "js" fn CSSParserDeclaration::get_name(
 ///|
 pub extern "js" fn CSSParserDeclaration::get_body(
   self : CSSParserDeclaration,
-) -> Array[CSSParserValue] =
+) -> FixedArray[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -551,7 +551,7 @@ pub extern "js" fn CSSParserBlock::to_css_parser_value(
 ///|
 pub extern "js" fn CSSParserBlock::new(
   name : String,
-  body : Array[CSSParserValue],
+  body : FixedArray[CSSParserValue],
 ) -> CSSParserBlock =
   #| (name, body) => new CSSParserBlock(name, body)
 
@@ -562,7 +562,7 @@ pub extern "js" fn CSSParserBlock::get_name(self : CSSParserBlock) -> String =
 ///|
 pub extern "js" fn CSSParserBlock::get_body(
   self : CSSParserBlock,
-) -> Array[CSSParserValue] =
+) -> FixedArray[CSSParserValue] =
   #| (self) => self.body
 
 ///|
@@ -612,7 +612,7 @@ pub extern "js" fn CSSParserFunction::to_css_parser_value(
 ///|
 pub extern "js" fn CSSParserFunction::new(
   name : String,
-  args : Array[Array[CSSParserValue]],
+  args : FixedArray[FixedArray[CSSParserValue]],
 ) -> CSSParserFunction =
   #| (name, args) => new CSSParserFunction(name, args)
 
@@ -625,5 +625,5 @@ pub extern "js" fn CSSParserFunction::get_name(
 ///|
 pub extern "js" fn CSSParserFunction::get_args(
   self : CSSParserFunction,
-) -> Array[Array[CSSParserValue]] =
+) -> FixedArray[FixedArray[CSSParserValue]] =
   #| (self) => self.args

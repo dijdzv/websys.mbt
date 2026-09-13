@@ -6,7 +6,7 @@
 pub(all) enum XRDepthType {
   Raw
   Smooth
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -32,7 +32,7 @@ pub fn XRDepthType::from_string(s : String) -> XRDepthType? {
 pub(all) enum XRDepthUsage {
   CpuOptimized
   GpuOptimized
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -59,7 +59,7 @@ pub(all) enum XRDepthDataFormat {
   LuminanceAlpha
   Float32
   UnsignedShort
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -85,9 +85,9 @@ pub fn XRDepthDataFormat::from_string(s : String) -> XRDepthDataFormat? {
 ///|
 /// XRDepthStateInit dictionary
 pub(all) struct XRDepthStateInit {
-  usagePreference : Array[XRDepthUsage]
-  dataFormatPreference : Array[XRDepthDataFormat]
-  depthTypeRequest : Array[XRDepthType]?
+  usagePreference : FixedArray[XRDepthUsage]
+  dataFormatPreference : FixedArray[XRDepthDataFormat]
+  depthTypeRequest : FixedArray[XRDepthType]?
   matchDepthView : Bool?
 }
 
@@ -107,7 +107,7 @@ extern "js" fn XRDepthStateInit::to_js_ffi(self : XRDepthStateInit) -> JsValue =
   #| (self) => ({
   #|   usagePreference: self.usagePreference,
   #|   dataFormatPreference: self.dataFormatPreference,
-  #|   depthTypeRequest: ((() => { const v = self.depthTypeRequest; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthTypeRequest: self.depthTypeRequest,
   #|   matchDepthView: (self.matchDepthView === -1 ? undefined : self.matchDepthView)
   #| })
 
@@ -124,7 +124,7 @@ extern "js" fn XRDepthStateInit::from_js_ffi(
   #| (v) => ({
   #|   usagePreference: v.usagePreference,
   #|   dataFormatPreference: v.dataFormatPreference,
-  #|   depthTypeRequest: (v.depthTypeRequest === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthTypeRequest }),
+  #|   depthTypeRequest: v.depthTypeRequest,
   #|   matchDepthView: (v.matchDepthView === undefined ? -1 : v.matchDepthView)
   #| })
 
@@ -139,8 +139,8 @@ pub fn XRDepthStateInit::from_js(value : JsValue) -> XRDepthStateInit {
 pub(all) struct XRSessionInit {
   depthSensing : XRDepthStateInit?
   domOverlay : Nullable[XRDOMOverlayInit]
-  requiredFeatures : Array[String]?
-  optionalFeatures : Array[String]?
+  requiredFeatures : FixedArray[String]?
+  optionalFeatures : FixedArray[String]?
 }
 
 ///|
@@ -159,8 +159,8 @@ extern "js" fn XRSessionInit::to_js_ffi(self : XRSessionInit) -> JsValue =
   #| (self) => ({
   #|   depthSensing: ((() => { const v = self.depthSensing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   requiredFeatures: ((() => { const v = self.requiredFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   optionalFeatures: ((() => { const v = self.optionalFeatures; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   requiredFeatures: self.requiredFeatures,
+  #|   optionalFeatures: self.optionalFeatures
   #| })
 
 ///|
@@ -174,8 +174,8 @@ extern "js" fn XRSessionInit::from_js_ffi(value : JsValue) -> XRSessionInit =
   #| (v) => ({
   #|   depthSensing: (v.depthSensing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSensing }),
   #|   domOverlay: (v.domOverlay === undefined ? { $tag: 0 } : v.domOverlay === null ? { $tag: 1 } : { $tag: 2, _0: v.domOverlay }),
-  #|   requiredFeatures: (v.requiredFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requiredFeatures }),
-  #|   optionalFeatures: (v.optionalFeatures === undefined ? { $tag: 0 } : { $tag: 1, _0: v.optionalFeatures })
+  #|   requiredFeatures: v.requiredFeatures,
+  #|   optionalFeatures: v.optionalFeatures
   #| })
 
 ///|
@@ -319,7 +319,7 @@ pub extern "js" fn XRCPUDepthInformation::to_xr_depth_information(
 pub(all) enum XRCPUDepthInformationGetDepthInMetersError {
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XRCPUDepthInformation::get_data(

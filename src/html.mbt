@@ -1167,7 +1167,7 @@ pub(all) enum DocumentReadyState {
   Loading
   Interactive
   Complete
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1195,7 +1195,7 @@ pub fn DocumentReadyState::from_string(s : String) -> DocumentReadyState? {
 pub(all) enum DocumentVisibilityState {
   Visible
   Hidden
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1226,7 +1226,7 @@ pub(all) enum CanPlayTypeResult {
   Empty
   Maybe
   Probably
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1255,7 +1255,7 @@ pub(all) enum TextTrackMode {
   Disabled
   Hidden
   Showing
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1286,7 +1286,7 @@ pub(all) enum TextTrackKind {
   Descriptions
   Chapters
   Metadata
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1320,7 +1320,7 @@ pub(all) enum SelectionMode {
   Start
   End
   Preserve
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1350,7 +1350,7 @@ pub fn SelectionMode::from_string(s : String) -> SelectionMode? {
 pub(all) enum CanvasColorType {
   Unorm8
   Float16
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1376,7 +1376,7 @@ pub fn CanvasColorType::from_string(s : String) -> CanvasColorType? {
 pub(all) enum CanvasFillRule {
   Nonzero
   Evenodd
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1403,7 +1403,7 @@ pub(all) enum ImageSmoothingQuality {
   Low
   Medium
   High
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1432,7 +1432,7 @@ pub(all) enum CanvasLineCap {
   Butt
   Round
   Square
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1461,7 +1461,7 @@ pub(all) enum CanvasLineJoin {
   Round
   Bevel
   Miter
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1492,7 +1492,7 @@ pub(all) enum CanvasTextAlign {
   Left
   Right
   Center
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1528,7 +1528,7 @@ pub(all) enum CanvasTextBaseline {
   Alphabetic
   Ideographic
   Bottom
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1563,7 +1563,7 @@ pub(all) enum CanvasDirection {
   Ltr
   Rtl
   Inherit
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1592,7 +1592,7 @@ pub(all) enum CanvasFontKerning {
   Auto
   Normal
   None
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1627,7 +1627,7 @@ pub(all) enum CanvasFontStretch {
   Expanded
   ExtraExpanded
   UltraExpanded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1672,7 +1672,7 @@ pub(all) enum CanvasFontVariantCaps {
   AllPetiteCaps
   Unicase
   TitlingCaps
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1710,7 +1710,7 @@ pub(all) enum CanvasTextRendering {
   OptimizeSpeed
   OptimizeLegibility
   GeometricPrecision
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1743,7 +1743,7 @@ pub(all) enum OffscreenRenderingContextId {
   Webgl
   Webgl2
   Webgpu
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1781,7 +1781,7 @@ pub(all) enum PredefinedColorSpace {
   SrgbLinear
   DisplayP3
   DisplayP3Linear
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1811,7 +1811,7 @@ pub fn PredefinedColorSpace::from_string(s : String) -> PredefinedColorSpace? {
 pub(all) enum ScrollRestoration {
   Auto
   Manual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1838,7 +1838,7 @@ pub(all) enum NavigationHistoryBehavior {
   Auto
   Push
   Replace
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1872,7 +1872,7 @@ pub(all) enum NavigationType {
   Replace
   Reload
   Traverse
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1902,7 +1902,7 @@ pub fn NavigationType::from_string(s : String) -> NavigationType? {
 pub(all) enum NavigationFocusReset {
   AfterTransition
   Manual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1928,7 +1928,7 @@ pub fn NavigationFocusReset::from_string(s : String) -> NavigationFocusReset? {
 pub(all) enum NavigationScrollBehavior {
   AfterTransition
   Manual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1961,7 +1961,7 @@ pub(all) enum DOMParserSupportedType {
   ApplicationXml
   ApplicationXhtmlXml
   ImageSvgXml
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -1997,7 +1997,7 @@ pub fn DOMParserSupportedType::from_string(
 pub(all) enum ImageDataPixelFormat {
   RgbaUnorm8
   RgbaFloat16
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2023,7 +2023,7 @@ pub fn ImageDataPixelFormat::from_string(s : String) -> ImageDataPixelFormat? {
 pub(all) enum ImageOrientation {
   FromImage
   FlipY
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2050,7 +2050,7 @@ pub(all) enum PremultiplyAlpha {
   None
   Premultiply
   Default
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2078,7 +2078,7 @@ pub fn PremultiplyAlpha::from_string(s : String) -> PremultiplyAlpha? {
 pub(all) enum ColorSpaceConversion {
   None
   Default
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2106,7 +2106,7 @@ pub(all) enum ResizeQuality {
   Low
   Medium
   High
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2136,7 +2136,7 @@ pub fn ResizeQuality::from_string(s : String) -> ResizeQuality? {
 pub(all) enum WorkerType {
   Classic
   Module
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -2251,7 +2251,7 @@ pub(all) struct ShowPopoverOptions {
 ///|
 /// Create a new ShowPopoverOptions with default values
 pub fn ShowPopoverOptions::default() -> ShowPopoverOptions {
-  ShowPopoverOptions::{ source: None }
+  ShowPopoverOptions::{ source: None, }
 }
 
 ///|
@@ -2292,7 +2292,7 @@ pub(all) struct TogglePopoverOptions {
 ///|
 /// Create a new TogglePopoverOptions with default values
 pub fn TogglePopoverOptions::default() -> TogglePopoverOptions {
-  TogglePopoverOptions::{ source: None, force: None }
+  TogglePopoverOptions::{ source: None, force: None, }
 }
 
 ///|
@@ -2334,7 +2334,7 @@ pub(all) struct TrackEventInit {
 ///|
 /// Create a new TrackEventInit with default values
 pub fn TrackEventInit::default() -> TrackEventInit {
-  TrackEventInit::{ track: None }
+  TrackEventInit::{ track: None, }
 }
 
 ///|
@@ -2370,7 +2370,7 @@ pub(all) struct SubmitEventInit {
 ///|
 /// Create a new SubmitEventInit with default values
 pub fn SubmitEventInit::default() -> SubmitEventInit {
-  SubmitEventInit::{ submitter: Nullable::Undefined }
+  SubmitEventInit::{ submitter: Nullable::Undefined, }
 }
 
 ///|
@@ -2446,7 +2446,7 @@ pub(all) struct AssignedNodesOptions {
 ///|
 /// Create a new AssignedNodesOptions with default values
 pub fn AssignedNodesOptions::default() -> AssignedNodesOptions {
-  AssignedNodesOptions::{ flatten: None }
+  AssignedNodesOptions::{ flatten: None, }
 }
 
 ///|
@@ -2548,7 +2548,7 @@ pub(all) struct ImageBitmapRenderingContextSettings {
 ///|
 /// Create a new ImageBitmapRenderingContextSettings with default values
 pub fn ImageBitmapRenderingContextSettings::default() -> ImageBitmapRenderingContextSettings {
-  ImageBitmapRenderingContextSettings::{ alpha: None }
+  ImageBitmapRenderingContextSettings::{ alpha: None, }
 }
 
 ///|
@@ -2593,7 +2593,7 @@ pub(all) struct ImageEncodeOptions {
 ///|
 /// Create a new ImageEncodeOptions with default values
 pub fn ImageEncodeOptions::default() -> ImageEncodeOptions {
-  ImageEncodeOptions::{ type_: None, quality: None }
+  ImageEncodeOptions::{ type_: None, quality: None, }
 }
 
 ///|
@@ -2635,7 +2635,7 @@ pub(all) struct ElementDefinitionOptions {
 ///|
 /// Create a new ElementDefinitionOptions with default values
 pub fn ElementDefinitionOptions::default() -> ElementDefinitionOptions {
-  ElementDefinitionOptions::{ extends: None }
+  ElementDefinitionOptions::{ extends: None, }
 }
 
 ///|
@@ -2804,7 +2804,7 @@ pub(all) struct CommandEventInit {
 ///|
 /// Create a new CommandEventInit with default values
 pub fn CommandEventInit::default() -> CommandEventInit {
-  CommandEventInit::{ source: Nullable::Undefined, command: None }
+  CommandEventInit::{ source: Nullable::Undefined, command: None, }
 }
 
 ///|
@@ -2845,7 +2845,7 @@ pub(all) struct FocusOptions {
 ///|
 /// Create a new FocusOptions with default values
 pub fn FocusOptions::default() -> FocusOptions {
-  FocusOptions::{ preventScroll: None, focusVisible: None }
+  FocusOptions::{ preventScroll: None, focusVisible: None, }
 }
 
 ///|
@@ -2883,7 +2883,7 @@ pub(all) struct CloseWatcherOptions {
 ///|
 /// Create a new CloseWatcherOptions with default values
 pub fn CloseWatcherOptions::default() -> CloseWatcherOptions {
-  CloseWatcherOptions::{ signal: None }
+  CloseWatcherOptions::{ signal: None, }
 }
 
 ///|
@@ -2923,7 +2923,7 @@ pub(all) struct DragEventInit {
 ///|
 /// Create a new DragEventInit with default values
 pub fn DragEventInit::default() -> DragEventInit {
-  DragEventInit::{ dataTransfer: Nullable::Undefined }
+  DragEventInit::{ dataTransfer: Nullable::Undefined, }
 }
 
 ///|
@@ -2953,14 +2953,14 @@ pub fn DragEventInit::from_js(value : JsValue) -> DragEventInit {
 ///|
 /// WindowPostMessageOptions dictionary
 pub(all) struct WindowPostMessageOptions {
-  transfer : Array[JsValue]?
+  transfer : FixedArray[JsValue]?
   targetOrigin : String?
 }
 
 ///|
 /// Create a new WindowPostMessageOptions with default values
 pub fn WindowPostMessageOptions::default() -> WindowPostMessageOptions {
-  WindowPostMessageOptions::{ transfer: None, targetOrigin: None }
+  WindowPostMessageOptions::{ transfer: None, targetOrigin: None, }
 }
 
 ///|
@@ -2968,7 +2968,7 @@ extern "js" fn WindowPostMessageOptions::to_js_ffi(
   self : WindowPostMessageOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   transfer: self.transfer,
   #|   targetOrigin: self.targetOrigin
   #| })
 
@@ -2985,7 +2985,7 @@ extern "js" fn WindowPostMessageOptions::from_js_ffi(
   value : JsValue,
 ) -> WindowPostMessageOptions =
   #| (v) => ({
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer }),
+  #|   transfer: v.transfer,
   #|   targetOrigin: v.targetOrigin
   #| })
 
@@ -3052,7 +3052,7 @@ pub(all) struct NavigationOptions {
 ///|
 /// Create a new NavigationOptions with default values
 pub fn NavigationOptions::default() -> NavigationOptions {
-  NavigationOptions::{ info: None }
+  NavigationOptions::{ info: None, }
 }
 
 ///|
@@ -3094,7 +3094,7 @@ pub(all) struct NavigationNavigateOptions {
 ///|
 /// Create a new NavigationNavigateOptions with default values
 pub fn NavigationNavigateOptions::default() -> NavigationNavigateOptions {
-  NavigationNavigateOptions::{ info: None, state: None, history: None }
+  NavigationNavigateOptions::{ info: None, state: None, history: None, }
 }
 
 ///|
@@ -3143,7 +3143,7 @@ pub(all) struct NavigationReloadOptions {
 ///|
 /// Create a new NavigationReloadOptions with default values
 pub fn NavigationReloadOptions::default() -> NavigationReloadOptions {
-  NavigationReloadOptions::{ info: None, state: None }
+  NavigationReloadOptions::{ info: None, state: None, }
 }
 
 ///|
@@ -3190,7 +3190,7 @@ pub(all) struct NavigationResult {
 ///|
 /// Create a new NavigationResult with default values
 pub fn NavigationResult::default() -> NavigationResult {
-  NavigationResult::{ committed: None, finished: None }
+  NavigationResult::{ committed: None, finished: None, }
 }
 
 ///|
@@ -3426,7 +3426,7 @@ pub(all) struct PopStateEventInit {
 ///|
 /// Create a new PopStateEventInit with default values
 pub fn PopStateEventInit::default() -> PopStateEventInit {
-  PopStateEventInit::{ state: None, hasUAVisualTransition: None }
+  PopStateEventInit::{ state: None, hasUAVisualTransition: None, }
 }
 
 ///|
@@ -3469,7 +3469,7 @@ pub(all) struct HashChangeEventInit {
 ///|
 /// Create a new HashChangeEventInit with default values
 pub fn HashChangeEventInit::default() -> HashChangeEventInit {
-  HashChangeEventInit::{ oldURL: None, newURL: None }
+  HashChangeEventInit::{ oldURL: None, newURL: None, }
 }
 
 ///|
@@ -3557,7 +3557,7 @@ pub(all) struct PageRevealEventInit {
 ///|
 /// Create a new PageRevealEventInit with default values
 pub fn PageRevealEventInit::default() -> PageRevealEventInit {
-  PageRevealEventInit::{ viewTransition: Nullable::Undefined }
+  PageRevealEventInit::{ viewTransition: Nullable::Undefined, }
 }
 
 ///|
@@ -3597,7 +3597,7 @@ pub(all) struct PageTransitionEventInit {
 ///|
 /// Create a new PageTransitionEventInit with default values
 pub fn PageTransitionEventInit::default() -> PageTransitionEventInit {
-  PageTransitionEventInit::{ persisted: None }
+  PageTransitionEventInit::{ persisted: None, }
 }
 
 ///|
@@ -3698,7 +3698,7 @@ pub(all) struct PromiseRejectionEventInit {
 pub fn PromiseRejectionEventInit::new(
   promise~ : JsValue,
 ) -> PromiseRejectionEventInit {
-  PromiseRejectionEventInit::{ promise, reason: None }
+  PromiseRejectionEventInit::{ promise, reason: None, }
 }
 
 ///|
@@ -3739,20 +3739,20 @@ pub fn PromiseRejectionEventInit::from_js(
 /// GetHTMLOptions dictionary
 pub(all) struct GetHTMLOptions {
   serializableShadowRoots : Bool?
-  shadowRoots : Array[ShadowRoot]?
+  shadowRoots : FixedArray[ShadowRoot]?
 }
 
 ///|
 /// Create a new GetHTMLOptions with default values
 pub fn GetHTMLOptions::default() -> GetHTMLOptions {
-  GetHTMLOptions::{ serializableShadowRoots: None, shadowRoots: None }
+  GetHTMLOptions::{ serializableShadowRoots: None, shadowRoots: None, }
 }
 
 ///|
 extern "js" fn GetHTMLOptions::to_js_ffi(self : GetHTMLOptions) -> JsValue =
   #| (self) => ({
   #|   serializableShadowRoots: (self.serializableShadowRoots === -1 ? undefined : self.serializableShadowRoots),
-  #|   shadowRoots: ((() => { const v = self.shadowRoots; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   shadowRoots: self.shadowRoots
   #| })
 
 ///|
@@ -3765,7 +3765,7 @@ pub fn GetHTMLOptions::to_js(self : GetHTMLOptions) -> JsValue {
 extern "js" fn GetHTMLOptions::from_js_ffi(value : JsValue) -> GetHTMLOptions =
   #| (v) => ({
   #|   serializableShadowRoots: (v.serializableShadowRoots === undefined ? -1 : v.serializableShadowRoots),
-  #|   shadowRoots: (v.shadowRoots === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shadowRoots })
+  #|   shadowRoots: v.shadowRoots
   #| })
 
 ///|
@@ -3784,7 +3784,7 @@ pub(all) struct ImageDataSettings {
 ///|
 /// Create a new ImageDataSettings with default values
 pub fn ImageDataSettings::default() -> ImageDataSettings {
-  ImageDataSettings::{ colorSpace: None, pixelFormat: None }
+  ImageDataSettings::{ colorSpace: None, pixelFormat: None, }
 }
 
 ///|
@@ -3886,7 +3886,7 @@ pub(all) struct MessageEventInit {
   origin : String?
   lastEventId : String?
   source : Nullable[MessageEventSource]
-  ports : Array[MessagePort]?
+  ports : FixedArray[MessagePort]?
 }
 
 ///|
@@ -3908,7 +3908,7 @@ extern "js" fn MessageEventInit::to_js_ffi(self : MessageEventInit) -> JsValue =
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
   #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
-  #|   ports: ((() => { const v = self.ports; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   ports: self.ports
   #| })
 
 ///|
@@ -3926,7 +3926,7 @@ extern "js" fn MessageEventInit::from_js_ffi(
   #|   origin: v.origin,
   #|   lastEventId: v.lastEventId,
   #|   source: (v.source === undefined ? { $tag: 0 } : v.source === null ? { $tag: 1 } : { $tag: 2, _0: v.source }),
-  #|   ports: (v.ports === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ports })
+  #|   ports: v.ports
   #| })
 
 ///|
@@ -3944,7 +3944,7 @@ pub(all) struct EventSourceInit {
 ///|
 /// Create a new EventSourceInit with default values
 pub fn EventSourceInit::default() -> EventSourceInit {
-  EventSourceInit::{ withCredentials: None }
+  EventSourceInit::{ withCredentials: None, }
 }
 
 ///|
@@ -3974,13 +3974,13 @@ pub fn EventSourceInit::from_js(value : JsValue) -> EventSourceInit {
 ///|
 /// StructuredSerializeOptions dictionary
 pub(all) struct StructuredSerializeOptions {
-  transfer : Array[JsValue]?
+  transfer : FixedArray[JsValue]?
 }
 
 ///|
 /// Create a new StructuredSerializeOptions with default values
 pub fn StructuredSerializeOptions::default() -> StructuredSerializeOptions {
-  StructuredSerializeOptions::{ transfer: None }
+  StructuredSerializeOptions::{ transfer: None, }
 }
 
 ///|
@@ -3988,7 +3988,7 @@ extern "js" fn StructuredSerializeOptions::to_js_ffi(
   self : StructuredSerializeOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   transfer: ((() => { const v = self.transfer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   transfer: self.transfer
   #| })
 
 ///|
@@ -4004,7 +4004,7 @@ extern "js" fn StructuredSerializeOptions::from_js_ffi(
   value : JsValue,
 ) -> StructuredSerializeOptions =
   #| (v) => ({
-  #|   transfer: (v.transfer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transfer })
+  #|   transfer: v.transfer
   #| })
 
 ///|
@@ -4026,7 +4026,7 @@ pub(all) struct WorkerOptions {
 ///|
 /// Create a new WorkerOptions with default values
 pub fn WorkerOptions::default() -> WorkerOptions {
-  WorkerOptions::{ name: None, type_: None, credentials: None }
+  WorkerOptions::{ name: None, type_: None, credentials: None, }
 }
 
 ///|
@@ -4066,7 +4066,7 @@ pub(all) struct WorkletOptions {
 ///|
 /// Create a new WorkletOptions with default values
 pub fn WorkletOptions::default() -> WorkletOptions {
-  WorkletOptions::{ credentials: None }
+  WorkletOptions::{ credentials: None, }
 }
 
 ///|
@@ -4216,6 +4216,7 @@ pub extern "js" fn HTMLAllCollection::get_named(
   #| (self, name) => self[name]
 
 ///|
+/// @alert deprecated "item is deprecated"
 pub extern "js" fn HTMLAllCollection::item(
   self : HTMLAllCollection,
 ) -> HTMLCollectionOrElement =
@@ -4384,7 +4385,7 @@ pub extern "js" fn HTMLOptionsCollection::to_html_collection(
 pub(all) enum HTMLOptionsCollectionAddError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLOptionsCollection::get_length(
@@ -5004,21 +5005,28 @@ pub extern "js" fn HTMLElement::as_html_portal_element(
 pub(all) enum HTMLElementAttachInternalsError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementShowPopoverError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLElementHidePopoverError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum HTMLElementTogglePopoverError {
+  InvalidStateError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLElement::new() -> HTMLElement =
@@ -5228,15 +5236,17 @@ pub extern "js" fn HTMLElement::hide_popover(
   #| (self) => (() => { try { self.hidePopover(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn HTMLElement::toggle_popover(self : HTMLElement) -> Bool =
-  #| (self) => self.togglePopover()
+pub extern "js" fn HTMLElement::toggle_popover(
+  self : HTMLElement,
+) -> Result[Bool, HTMLElementTogglePopoverError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.togglePopover() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLElement::toggle_popover_with_options(
   self : HTMLElement,
   options : TogglePopoverOptionsOrBool,
-) -> Bool =
-  #| (self, options) => self.togglePopover(options)
+) -> Result[Bool, HTMLElementTogglePopoverError] =
+  #| (self, options) => (() => { try { return { $tag: 1, _0: self.togglePopover(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLElement::get_popover(self : HTMLElement) -> String? =
@@ -10005,7 +10015,7 @@ pub extern "js" fn HTMLImageElement::to_event_target(
 pub(all) enum HTMLImageElementDecodeError {
   EncodingError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLImageElement::new() -> HTMLImageElement =
@@ -10400,7 +10410,7 @@ pub extern "js" fn HTMLIFrameElement::to_event_target(
 pub(all) enum HTMLIFrameElementSetSrcdocError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLIFrameElement::new() -> HTMLIFrameElement =
@@ -11251,7 +11261,7 @@ pub(all) enum HTMLVideoElementRequestPictureInPictureError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLVideoElement::new() -> HTMLVideoElement =
@@ -11690,7 +11700,7 @@ pub extern "js" fn HTMLMediaElement::as_html_audio_element(
 pub(all) enum HTMLMediaElementSetDefaultPlaybackRateError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -11698,7 +11708,7 @@ pub(all) enum HTMLMediaElementPlayError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -11707,7 +11717,7 @@ pub(all) enum HTMLMediaElementSetSinkIdError {
   NotFoundError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -11716,7 +11726,7 @@ pub(all) enum HTMLMediaElementSetMediaKeysError {
   NotSupportedError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLMediaElement::get_error(
@@ -12663,14 +12673,14 @@ pub extern "js" fn TextTrack::to_event_target(self : TextTrack) -> EventTarget =
 pub(all) enum TextTrackAddCueError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TextTrackRemoveCueError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TextTrack::get_kind(self : TextTrack) -> TextTrackKind =
@@ -12950,14 +12960,14 @@ pub extern "js" fn JsValue::to_time_ranges(self : JsValue) -> TimeRanges =
 pub(all) enum TimeRangesStartError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum TimeRangesEndError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn TimeRanges::get_length(self : TimeRanges) -> Int =
@@ -13494,14 +13504,14 @@ pub extern "js" fn HTMLTableElement::to_event_target(
 pub(all) enum HTMLTableElementInsertRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLTableElement::new() -> HTMLTableElement =
@@ -14055,14 +14065,14 @@ pub extern "js" fn HTMLTableSectionElement::to_event_target(
 pub(all) enum HTMLTableSectionElementInsertRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableSectionElementDeleteRowError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLTableSectionElement::new() -> HTMLTableSectionElement =
@@ -14221,14 +14231,14 @@ pub extern "js" fn HTMLTableRowElement::to_event_target(
 pub(all) enum HTMLTableRowElementInsertCellError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLTableRowElementDeleteCellError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLTableRowElement::new() -> HTMLTableRowElement =
@@ -14679,7 +14689,7 @@ pub(all) enum HTMLFormElementRequestSubmitError {
   TypeError(JsError)
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLFormElement::new() -> HTMLFormElement =
@@ -15029,14 +15039,14 @@ pub extern "js" fn HTMLInputElement::to_event_target(
 pub(all) enum HTMLInputElementStepDownError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLInputElementSetSelectionRangeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -15045,7 +15055,7 @@ pub(all) enum HTMLInputElementShowPickerError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLInputElement::new() -> HTMLInputElement =
@@ -15690,7 +15700,7 @@ pub extern "js" fn HTMLInputElement::set_webkitdirectory(
 ///|
 pub extern "js" fn HTMLInputElement::get_webkit_entries(
   self : HTMLInputElement,
-) -> Array[FileSystemEntry] =
+) -> FixedArray[FileSystemEntry] =
   #| (self) => self.webkitEntries
 
 ///|
@@ -16105,7 +16115,7 @@ pub extern "js" fn HTMLSelectElement::to_event_target(
 pub(all) enum HTMLSelectElementAddError {
   HierarchyRequestError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -16115,7 +16125,7 @@ pub(all) enum HTMLSelectElementShowPickerError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLSelectElement::new() -> HTMLSelectElement =
@@ -17142,8 +17152,18 @@ pub extern "js" fn HTMLOutputElement::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn HTMLOutputElement::new() -> HTMLOutputElement =
-  #| () => new HTMLOutputElement()
+/// Error type for throwing methods
+pub(all) enum HTMLOutputElementConstructorError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+pub extern "js" fn HTMLOutputElement::new() -> Result[
+  HTMLOutputElement,
+  HTMLOutputElementConstructorError,
+] =
+  #| () => (() => { try { return { $tag: 1, _0: new HTMLOutputElement() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn HTMLOutputElement::get_html_for(
@@ -18146,14 +18166,14 @@ pub extern "js" fn HTMLDialogElement::to_event_target(
 pub(all) enum HTMLDialogElementShowError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLDialogElementShowModalError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLDialogElement::new() -> HTMLDialogElement =
@@ -18299,14 +18319,14 @@ pub extern "js" fn HTMLScriptElement::to_event_target(
 pub(all) enum HTMLScriptElementSetSrcError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLScriptElementSetTextError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLScriptElement::new() -> HTMLScriptElement =
@@ -18702,13 +18722,6 @@ pub extern "js" fn HTMLSlotElement::to_event_target(
   #| (self) => self
 
 ///|
-/// Error type for throwing methods
-pub(all) enum HTMLSlotElementAssignError {
-  NotAllowedError(JsError)
-  OtherError(JsError)
-} derive(Show)
-
-///|
 pub extern "js" fn HTMLSlotElement::new() -> HTMLSlotElement =
   #| () => new HTMLSlotElement()
 
@@ -18726,42 +18739,42 @@ pub extern "js" fn HTMLSlotElement::set_name(
 ///|
 pub extern "js" fn HTMLSlotElement::assigned_nodes(
   self : HTMLSlotElement,
-) -> Array[Node] =
+) -> FixedArray[Node] =
   #| (self) => self.assignedNodes()
 
 ///|
 extern "js" fn HTMLSlotElement::assigned_nodes_with_options_ffi(
   self : HTMLSlotElement,
   options : JsValue,
-) -> Array[Node] =
+) -> FixedArray[Node] =
   #| (self, options) => self.assignedNodes(options)
 
 ///|
 pub fn HTMLSlotElement::assigned_nodes_with_options(
   self : HTMLSlotElement,
   options : AssignedNodesOptions,
-) -> Array[Node] {
+) -> FixedArray[Node] {
   HTMLSlotElement::assigned_nodes_with_options_ffi(self, options.to_js())
 }
 
 ///|
 pub extern "js" fn HTMLSlotElement::assigned_elements(
   self : HTMLSlotElement,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.assignedElements()
 
 ///|
 extern "js" fn HTMLSlotElement::assigned_elements_with_options_ffi(
   self : HTMLSlotElement,
   options : JsValue,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self, options) => self.assignedElements(options)
 
 ///|
 pub fn HTMLSlotElement::assigned_elements_with_options(
   self : HTMLSlotElement,
   options : AssignedNodesOptions,
-) -> Array[Element] {
+) -> FixedArray[Element] {
   HTMLSlotElement::assigned_elements_with_options_ffi(self, options.to_js())
 }
 
@@ -18769,8 +18782,8 @@ pub fn HTMLSlotElement::assigned_elements_with_options(
 pub extern "js" fn HTMLSlotElement::assign(
   self : HTMLSlotElement,
   nodes : ElementOrText,
-) -> Result[Unit, HTMLSlotElementAssignError] =
-  #| (self, nodes) => (() => { try { self.assign(nodes); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Unit =
+  #| (self, nodes) => self.assign(nodes)
 
 ///|
 /// HTMLCanvasElement interface
@@ -18837,28 +18850,28 @@ pub extern "js" fn HTMLCanvasElement::to_event_target(
 pub(all) enum HTMLCanvasElementGetContextError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementToDataURLError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementToBlobError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HTMLCanvasElementTransferControlToOffscreenError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -18866,7 +18879,7 @@ pub(all) enum HTMLCanvasElementCaptureStreamError {
   SecurityError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn HTMLCanvasElement::new() -> HTMLCanvasElement =
@@ -19005,7 +19018,7 @@ pub extern "js" fn JsValue::to_canvas_rendering_context_2d(
 pub(all) enum CanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -19013,7 +19026,7 @@ pub(all) enum CanvasRenderingContext2DGetImageDataError {
   SecurityError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -19021,7 +19034,7 @@ pub(all) enum CanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_canvas(
@@ -19733,14 +19746,14 @@ pub extern "js" fn CanvasRenderingContext2D::set_miter_limit(
 ///|
 pub extern "js" fn CanvasRenderingContext2D::set_line_dash(
   self : CanvasRenderingContext2D,
-  segments : Array[Double],
+  segments : FixedArray[Double],
 ) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
 ///|
 pub extern "js" fn CanvasRenderingContext2D::get_line_dash(
   self : CanvasRenderingContext2D,
-) -> Array[Double] =
+) -> FixedArray[Double] =
   #| (self) => self.getLineDash()
 
 ///|
@@ -20179,7 +20192,7 @@ pub(all) enum CanvasGradientAddColorStopError {
   SyntaxError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CanvasGradient::add_color_stop(
@@ -20627,14 +20640,14 @@ pub extern "js" fn OffscreenCanvas::to_event_target(
 pub(all) enum OffscreenCanvasGetContextError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum OffscreenCanvasTransferToImageBitmapError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -20644,18 +20657,18 @@ pub(all) enum OffscreenCanvasConvertToBlobError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn OffscreenCanvas::new(
   width : Int64,
   height : Int64,
 ) -> OffscreenCanvas =
-  #| (width, height) => new OffscreenCanvas((width.hi * 4294967296 + width.lo), (height.hi * 4294967296 + height.lo))
+  #| (width, height) => new OffscreenCanvas(Number(width), Number(height))
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_width(self : OffscreenCanvas) -> Int64 =
-  #| (self) => (() => { const n = self.width; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.width))
 
 ///|
 pub extern "js" fn OffscreenCanvas::set_width(
@@ -20666,7 +20679,7 @@ pub extern "js" fn OffscreenCanvas::set_width(
 
 ///|
 pub extern "js" fn OffscreenCanvas::get_height(self : OffscreenCanvas) -> Int64 =
-  #| (self) => (() => { const n = self.height; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.height))
 
 ///|
 pub extern "js" fn OffscreenCanvas::set_height(
@@ -20786,7 +20799,7 @@ pub extern "js" fn JsValue::to_offscreen_canvas_rendering_context_2d(
 pub(all) enum OffscreenCanvasRenderingContext2DCreateImageDataError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -20794,7 +20807,7 @@ pub(all) enum OffscreenCanvasRenderingContext2DGetImageDataError {
   SecurityError(JsError)
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -20802,7 +20815,7 @@ pub(all) enum OffscreenCanvasRenderingContext2DPutImageDataError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_canvas(
@@ -21499,14 +21512,14 @@ pub extern "js" fn OffscreenCanvasRenderingContext2D::set_miter_limit(
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::set_line_dash(
   self : OffscreenCanvasRenderingContext2D,
-  segments : Array[Double],
+  segments : FixedArray[Double],
 ) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
 ///|
 pub extern "js" fn OffscreenCanvasRenderingContext2D::get_line_dash(
   self : OffscreenCanvasRenderingContext2D,
-) -> Array[Double] =
+) -> FixedArray[Double] =
   #| (self) => self.getLineDash()
 
 ///|
@@ -21948,7 +21961,21 @@ pub(all) enum CustomElementRegistryDefineError {
   SyntaxError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CustomElementRegistryWhenDefinedError {
+  SyntaxError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum CustomElementRegistryInitializeError {
+  NotSupportedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CustomElementRegistry::new() -> CustomElementRegistry =
@@ -22004,8 +22031,10 @@ pub extern "js" fn CustomElementRegistry::get_name(
 pub extern "js" fn CustomElementRegistry::when_defined(
   self : CustomElementRegistry,
   name : String,
-) -> Promise[CustomElementConstructor] =
-  #| (self, name) => self.whenDefined(name)
+) -> Promise[
+  Result[CustomElementConstructor, CustomElementRegistryWhenDefinedError],
+] =
+  #| (self, name) => self.whenDefined(name).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 pub extern "js" fn CustomElementRegistry::upgrade(
@@ -22018,8 +22047,8 @@ pub extern "js" fn CustomElementRegistry::upgrade(
 pub extern "js" fn CustomElementRegistry::initialize(
   self : CustomElementRegistry,
   root : Node,
-) -> Unit =
-  #| (self, root) => self.initialize(root)
+) -> Result[Unit, CustomElementRegistryInitializeError] =
+  #| (self, root) => (() => { try { self.initialize(root); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// ElementInternals interface
@@ -22064,7 +22093,7 @@ pub extern "js" fn JsValue::to_element_internals(
 pub(all) enum ElementInternalsSetFormValueError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -22073,21 +22102,21 @@ pub(all) enum ElementInternalsSetValidityError {
   NotFoundError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsCheckValidityError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ElementInternalsReportValidityError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ElementInternals::get_shadow_root(
@@ -22347,13 +22376,13 @@ pub extern "js" fn ElementInternals::set_aria_col_span(
 ///|
 pub extern "js" fn ElementInternals::get_aria_controls_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaControlsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_controls_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaControlsElements = value }
 
@@ -22373,13 +22402,13 @@ pub extern "js" fn ElementInternals::set_aria_current(
 ///|
 pub extern "js" fn ElementInternals::get_aria_described_by_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaDescribedByElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_described_by_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDescribedByElements = value }
 
@@ -22399,13 +22428,13 @@ pub extern "js" fn ElementInternals::set_aria_description(
 ///|
 pub extern "js" fn ElementInternals::get_aria_details_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaDetailsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_details_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaDetailsElements = value }
 
@@ -22425,13 +22454,13 @@ pub extern "js" fn ElementInternals::set_aria_disabled(
 ///|
 pub extern "js" fn ElementInternals::get_aria_error_message_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaErrorMessageElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_error_message_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaErrorMessageElements = value }
 
@@ -22451,13 +22480,13 @@ pub extern "js" fn ElementInternals::set_aria_expanded(
 ///|
 pub extern "js" fn ElementInternals::get_aria_flow_to_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaFlowToElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_flow_to_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaFlowToElements = value }
 
@@ -22529,13 +22558,13 @@ pub extern "js" fn ElementInternals::set_aria_label(
 ///|
 pub extern "js" fn ElementInternals::get_aria_labelled_by_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaLabelledByElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_labelled_by_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaLabelledByElements = value }
 
@@ -22620,13 +22649,13 @@ pub extern "js" fn ElementInternals::set_aria_orientation(
 ///|
 pub extern "js" fn ElementInternals::get_aria_owns_elements(
   self : ElementInternals,
-) -> Array[Element] =
+) -> FixedArray[Element] =
   #| (self) => self.ariaOwnsElements
 
 ///|
 pub extern "js" fn ElementInternals::set_aria_owns_elements(
   self : ElementInternals,
-  value : Array[Element],
+  value : FixedArray[Element],
 ) -> Unit =
   #| (self, value) => { self.ariaOwnsElements = value }
 
@@ -23326,7 +23355,7 @@ pub extern "js" fn DataTransfer::set_drag_image(
 ///|
 pub extern "js" fn DataTransfer::get_types(
   self : DataTransfer,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.types
 
 ///|
@@ -23402,14 +23431,14 @@ pub extern "js" fn JsValue::to_data_transfer_item_list(
 pub(all) enum DataTransferItemListAddError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum DataTransferItemListRemoveError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DataTransferItemList::get_length(
@@ -23681,7 +23710,7 @@ pub extern "js" fn Window::to_event_target(self : Window) -> EventTarget =
 pub(all) enum WindowGetComputedStyleError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23690,7 +23719,7 @@ pub(all) enum WindowFetchLaterError {
   RangeError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23699,7 +23728,7 @@ pub(all) enum WindowShowOpenFilePickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23708,7 +23737,7 @@ pub(all) enum WindowShowSaveFilePickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23716,7 +23745,7 @@ pub(all) enum WindowShowDirectoryPickerError {
   AbortError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23724,14 +23753,14 @@ pub(all) enum WindowQueryLocalFontsError {
   SecurityError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowGetScreenDetailsError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23740,21 +23769,21 @@ pub(all) enum WindowFetchError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowBtoaError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23762,7 +23791,7 @@ pub(all) enum WindowSetTimeoutError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -23770,14 +23799,14 @@ pub(all) enum WindowSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WindowStructuredCloneError {
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Window::get_window(self : Window) -> Window =
@@ -24004,7 +24033,7 @@ pub extern "js" fn Window::post_message_with_message_and_target_origin_and_trans
   self : Window,
   message : JsValue,
   target_origin : String,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Unit =
   #| (self, message, target_origin, transfer) => self.postMessage(message, target_origin, transfer)
 
@@ -24030,6 +24059,12 @@ pub extern "js" fn Window::clear_onorientationchange(self : Window) -> Unit =
 ///|
 pub extern "js" fn Window::get_cookie_store(self : Window) -> CookieStore =
   #| (self) => self.cookieStore
+
+///|
+pub extern "js" fn Window::get_crash_report(
+  self : Window,
+) -> CrashReportContext =
+  #| (self) => self.crashReport
 
 ///|
 pub extern "js" fn Window::navigate(
@@ -24275,21 +24310,27 @@ pub fn Window::fetch_later_with_init(
 ///|
 pub extern "js" fn Window::show_open_file_picker(
   self : Window,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
+) -> Promise[
+  Result[FixedArray[FileSystemFileHandle], WindowShowOpenFilePickerError],
+] =
   #| (self) => self.showOpenFilePicker().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::show_open_file_picker_with_options_ffi(
   self : Window,
   options : JsValue,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] =
+) -> Promise[
+  Result[FixedArray[FileSystemFileHandle], WindowShowOpenFilePickerError],
+] =
   #| (self, options) => self.showOpenFilePicker(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'SecurityError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub fn Window::show_open_file_picker_with_options(
   self : Window,
   options : OpenFilePickerOptions,
-) -> Promise[Result[Array[FileSystemFileHandle], WindowShowOpenFilePickerError]] {
+) -> Promise[
+  Result[FixedArray[FileSystemFileHandle], WindowShowOpenFilePickerError],
+] {
   Window::show_open_file_picker_with_options_ffi(self, options.to_js())
 }
 
@@ -24352,21 +24393,21 @@ pub extern "js" fn Window::get_external(self : Window) -> External =
 ///|
 pub extern "js" fn Window::query_local_fonts(
   self : Window,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
+) -> Promise[Result[FixedArray[FontData], WindowQueryLocalFontsError]] =
   #| (self) => self.queryLocalFonts().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 extern "js" fn Window::query_local_fonts_with_options_ffi(
   self : Window,
   options : JsValue,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] =
+) -> Promise[Result[FixedArray[FontData], WindowQueryLocalFontsError]] =
   #| (self, options) => self.queryLocalFonts(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
 ///|
 pub fn Window::query_local_fonts_with_options(
   self : Window,
   options : QueryOptions,
-) -> Promise[Result[Array[FontData], WindowQueryLocalFontsError]] {
+) -> Promise[Result[FixedArray[FontData], WindowQueryLocalFontsError]] {
   Window::query_local_fonts_with_options_ffi(self, options.to_js())
 }
 
@@ -25881,10 +25922,6 @@ pub extern "js" fn Window::clear_onportalactivate(self : Window) -> Unit =
   #| (self) => { self.onportalactivate = null }
 
 ///|
-pub extern "js" fn Window::get_indexed_db(self : Window) -> IDBFactory =
-  #| (self) => self.indexedDB
-
-///|
 pub extern "js" fn Window::fetch(
   self : Window,
   input : RequestInfo,
@@ -26094,6 +26131,10 @@ pub fn Window::structured_clone_with_options(
 ) -> Result[JsValue, WindowStructuredCloneError] {
   Window::structured_clone_with_options_ffi(self, value, options.to_js())
 }
+
+///|
+pub extern "js" fn Window::get_indexed_db(self : Window) -> IDBFactory =
+  #| (self) => self.indexedDB
 
 ///|
 pub extern "js" fn Window::get_scheduler(self : Window) -> Scheduler =
@@ -26315,7 +26356,7 @@ pub(all) enum LocationAssignError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -26323,14 +26364,14 @@ pub(all) enum LocationReplaceError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum LocationReloadError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Location::get_href(self : Location) -> String =
@@ -26471,21 +26512,21 @@ pub extern "js" fn JsValue::to_history(self : JsValue) -> History =
 pub(all) enum HistoryGoError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HistoryBackError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum HistoryForwardError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -26493,7 +26534,7 @@ pub(all) enum HistoryPushStateError {
   SecurityError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -26501,7 +26542,7 @@ pub(all) enum HistoryReplaceStateError {
   SecurityError(JsError)
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn History::get_length(self : History) -> Int =
@@ -26621,7 +26662,7 @@ pub(all) enum NavigationUpdateCurrentEntryError {
   DataCloneError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -26631,40 +26672,40 @@ pub(all) enum NavigationNavigateError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationReloadError {
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationTraverseToError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationBackError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigationForwardError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Navigation::entries(
   self : Navigation,
-) -> Array[NavigationHistoryEntry] =
+) -> FixedArray[NavigationHistoryEntry] =
   #| (self) => self.entries()
 
 ///|
@@ -26933,7 +26974,7 @@ pub extern "js" fn NavigationHistoryEntry::get_id(
 pub extern "js" fn NavigationHistoryEntry::get_index(
   self : NavigationHistoryEntry,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.index; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.index))
 
 ///|
 pub extern "js" fn NavigationHistoryEntry::get_same_document(
@@ -27124,7 +27165,7 @@ pub(all) enum NavigateEventInterceptError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -27132,7 +27173,7 @@ pub(all) enum NavigateEventScrollError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 extern "js" fn NavigateEvent::new_ffi(
@@ -27283,7 +27324,7 @@ pub(all) enum NavigationPrecommitControllerRedirectError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -27291,7 +27332,7 @@ pub(all) enum NavigationPrecommitControllerAddHandlerError {
   SecurityError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn NavigationPrecommitController::redirect(
@@ -27388,7 +27429,7 @@ pub extern "js" fn NavigationDestination::get_id(
 pub extern "js" fn NavigationDestination::get_index(
   self : NavigationDestination,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.index; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.index))
 
 ///|
 pub extern "js" fn NavigationDestination::get_same_document(
@@ -27993,13 +28034,13 @@ pub extern "js" fn NotRestoredReasons::get_url(
 ///|
 pub extern "js" fn NotRestoredReasons::get_reasons(
   self : NotRestoredReasons,
-) -> Array[NotRestoredReasonDetails] =
+) -> FixedArray[NotRestoredReasonDetails] =
   #| (self) => self.reasons
 
 ///|
 pub extern "js" fn NotRestoredReasons::get_children(
   self : NotRestoredReasons,
-) -> Array[NotRestoredReasons] =
+) -> FixedArray[NotRestoredReasons] =
   #| (self) => self.children
 
 ///|
@@ -28183,7 +28224,7 @@ pub extern "js" fn JsValue::to_dom_parser(self : JsValue) -> DOMParser =
 pub(all) enum DOMParserParseFromStringError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DOMParser::new() -> DOMParser =
@@ -28234,7 +28275,7 @@ pub(all) enum XMLSerializerSerializeToStringError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn XMLSerializer::new() -> XMLSerializer =
@@ -28280,7 +28321,7 @@ pub extern "js" fn JsValue::to_navigator(self : JsValue) -> Navigator =
 pub(all) enum NavigatorGetAutoplayPolicyError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28288,7 +28329,7 @@ pub(all) enum NavigatorGetBatteryError {
   SecurityError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28297,28 +28338,28 @@ pub(all) enum NavigatorRequestMediaKeySystemAccessError {
   SecurityError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorDeprecatedReplaceInURNError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetGamepadsError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum NavigatorGetInstalledRelatedAppsError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28329,7 +28370,7 @@ pub(all) enum NavigatorShareError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28339,7 +28380,7 @@ pub(all) enum NavigatorRequestMIDIAccessError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28348,7 +28389,7 @@ pub(all) enum NavigatorSetAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28357,7 +28398,7 @@ pub(all) enum NavigatorClearAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28365,7 +28406,7 @@ pub(all) enum NavigatorRegisterProtocolHandlerError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -28373,7 +28414,7 @@ pub(all) enum NavigatorUnregisterProtocolHandlerError {
   SyntaxError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Navigator::get_attribution(self : Navigator) -> Attribution =
@@ -28451,7 +28492,7 @@ pub extern "js" fn Navigator::get_device_posture(
 pub extern "js" fn Navigator::request_media_key_system_access(
   self : Navigator,
   key_system : String,
-  supported_configurations : Array[MediaKeySystemConfiguration],
+  supported_configurations : FixedArray[MediaKeySystemConfiguration],
 ) -> Promise[
   Result[MediaKeySystemAccess, NavigatorRequestMediaKeySystemAccessError],
 ] =
@@ -28484,13 +28525,13 @@ pub extern "js" fn Navigator::deprecated_ur_nto_url_with_send_reports(
 pub extern "js" fn Navigator::ad_auction_components(
   self : Navigator,
   num_ad_components : Int,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self, num_ad_components) => self.adAuctionComponents(num_ad_components)
 
 ///|
 pub extern "js" fn Navigator::get_gamepads(
   self : Navigator,
-) -> Result[Array[JsValue], NavigatorGetGamepadsError] =
+) -> Result[FixedArray[JsValue], NavigatorGetGamepadsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getGamepads() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
@@ -28501,7 +28542,7 @@ pub extern "js" fn Navigator::get_geolocation(self : Navigator) -> Geolocation =
 pub extern "js" fn Navigator::get_installed_related_apps(
   self : Navigator,
 ) -> Promise[
-  Result[Array[RelatedApplication], NavigatorGetInstalledRelatedAppsError],
+  Result[FixedArray[RelatedApplication], NavigatorGetInstalledRelatedAppsError],
 ] =
   #| (self) => self.getInstalledRelatedApps().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
@@ -28662,7 +28703,7 @@ pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups(
 pub extern "js" fn Navigator::clear_origin_joined_ad_interest_groups_with_interest_groups_to_keep(
   self : Navigator,
   owner : String,
-  interest_groups_to_keep : Array[String],
+  interest_groups_to_keep : FixedArray[String],
 ) -> Promise[Unit] =
   #| (self, owner, interest_groups_to_keep) => self.clearOriginJoinedAdInterestGroups(owner, interest_groups_to_keep)
 
@@ -28700,7 +28741,7 @@ pub extern "js" fn Navigator::get_interest_group_ad_auction_data(
   #| (self) => self.getInterestGroupAdAuctionData().then(v => ({
   #|   requestId: v.requestId,
   #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
-  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #|   requests: v.requests
   #| }))
 
 ///|
@@ -28711,7 +28752,7 @@ extern "js" fn Navigator::get_interest_group_ad_auction_data_with_config_ffi(
   #| (self, config) => self.getInterestGroupAdAuctionData(config).then(v => ({
   #|   requestId: v.requestId,
   #|   request: (v.request === undefined ? { $tag: 0 } : { $tag: 1, _0: v.request }),
-  #|   requests: (v.requests === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requests })
+  #|   requests: v.requests
   #| }))
 
 ///|
@@ -28805,6 +28846,12 @@ pub extern "js" fn Navigator::get_hid(self : Navigator) -> HID =
   #| (self) => self.hid
 
 ///|
+pub extern "js" fn Navigator::get_model_context(
+  self : Navigator,
+) -> ModelContext =
+  #| (self) => self.modelContext
+
+///|
 pub extern "js" fn Navigator::request_midi_access(
   self : Navigator,
 ) -> Promise[Result[MIDIAccess, NavigatorRequestMIDIAccessError]] =
@@ -28850,7 +28897,7 @@ pub extern "js" fn Navigator::set_app_badge_with_contents(
   self : Navigator,
   contents : Int64,
 ) -> Promise[Result[Unit, NavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, contents) => self.setAppBadge(Number(contents)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn Navigator::clear_app_badge(
@@ -28917,7 +28964,9 @@ pub extern "js" fn Navigator::get_language(self : Navigator) -> String =
   #| (self) => self.language
 
 ///|
-pub extern "js" fn Navigator::get_languages(self : Navigator) -> Array[String] =
+pub extern "js" fn Navigator::get_languages(
+  self : Navigator,
+) -> FixedArray[String] =
   #| (self) => self.languages
 
 ///|
@@ -28964,7 +29013,7 @@ pub extern "js" fn Navigator::get_pdf_viewer_enabled(self : Navigator) -> Bool =
 pub extern "js" fn Navigator::get_hardware_concurrency(
   self : Navigator,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.hardwareConcurrency))
 
 ///|
 pub extern "js" fn Navigator::get_connection(
@@ -29046,7 +29095,7 @@ pub extern "js" fn Navigator::vibrate_with_int(
 ///|
 pub extern "js" fn Navigator::vibrate_with_array_of_int(
   self : Navigator,
-  pattern : Array[Int],
+  pattern : FixedArray[Int],
 ) -> Bool =
   #| (self, pattern) => self.vibrate(pattern)
 
@@ -29319,7 +29368,7 @@ pub(all) enum ImageDataConstructorError {
   IndexSizeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn ImageData::new(
@@ -29534,7 +29583,7 @@ pub extern "js" fn MessageEvent::get_source(
 ///|
 pub extern "js" fn MessageEvent::get_ports(
   self : MessageEvent,
-) -> Array[MessagePort] =
+) -> FixedArray[MessagePort] =
   #| (self) => self.ports
 
 ///|
@@ -29554,7 +29603,7 @@ pub extern "js" fn MessageEvent::init_message_event_with_ports(
   origin : String,
   last_event_id : String,
   source : MessageEventSource?,
-  ports : Array[MessagePort],
+  ports : FixedArray[MessagePort],
 ) -> Unit =
   #| (self, type_, bubbles, cancelable, data, origin, last_event_id, source, ports) => self.initMessageEvent(type_, bubbles, cancelable, data, origin, last_event_id, (source.$tag === 1 ? source._0 : null), ports)
 
@@ -29794,7 +29843,7 @@ pub fn MessagePort::post_message_with_options(
 pub extern "js" fn MessagePort::post_message_with_message_and_transfer(
   self : MessagePort,
   message : JsValue,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
@@ -29891,7 +29940,7 @@ pub(all) enum BroadcastChannelPostMessageError {
   DataCloneError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn BroadcastChannel::new(name : String) -> BroadcastChannel =
@@ -30015,7 +30064,7 @@ pub(all) enum WorkerGlobalScopeImportScriptsError {
   SyntaxError(JsError)
   NetworkError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -30024,21 +30073,21 @@ pub(all) enum WorkerGlobalScopeFetchError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeBtoaError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeAtobError {
   InvalidCharacterError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -30046,7 +30095,7 @@ pub(all) enum WorkerGlobalScopeSetTimeoutError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -30054,14 +30103,14 @@ pub(all) enum WorkerGlobalScopeSetIntervalError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum WorkerGlobalScopeStructuredCloneError {
   DataCloneError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WorkerGlobalScope::get_self(
@@ -30171,12 +30220,6 @@ pub extern "js" fn WorkerGlobalScope::get_fonts(
   self : WorkerGlobalScope,
 ) -> FontFaceSet =
   #| (self) => self.fonts
-
-///|
-pub extern "js" fn WorkerGlobalScope::get_indexed_db(
-  self : WorkerGlobalScope,
-) -> IDBFactory =
-  #| (self) => self.indexedDB
 
 ///|
 pub extern "js" fn WorkerGlobalScope::fetch(
@@ -30413,6 +30456,12 @@ pub fn WorkerGlobalScope::structured_clone_with_options(
 }
 
 ///|
+pub extern "js" fn WorkerGlobalScope::get_indexed_db(
+  self : WorkerGlobalScope,
+) -> IDBFactory =
+  #| (self) => self.indexedDB
+
+///|
 pub extern "js" fn WorkerGlobalScope::get_scheduler(
   self : WorkerGlobalScope,
 ) -> Scheduler =
@@ -30618,7 +30667,7 @@ pub fn DedicatedWorkerGlobalScope::post_message_with_options(
 pub extern "js" fn DedicatedWorkerGlobalScope::post_message_with_message_and_transfer(
   self : DedicatedWorkerGlobalScope,
   message : JsValue,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
@@ -30796,7 +30845,7 @@ pub(all) enum WorkerConstructorError {
   NetworkError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Worker::new(
@@ -30851,7 +30900,7 @@ pub fn Worker::post_message_with_options(
 pub extern "js" fn Worker::post_message_with_message_and_transfer(
   self : Worker,
   message : JsValue,
-  transfer : Array[JsValue],
+  transfer : FixedArray[JsValue],
 ) -> Unit =
   #| (self, message, transfer) => self.postMessage(message, transfer)
 
@@ -30932,7 +30981,7 @@ pub(all) enum SharedWorkerConstructorError {
   NetworkError(JsError)
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SharedWorker::new(
@@ -31007,7 +31056,7 @@ pub(all) enum WorkerNavigatorSetAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -31016,7 +31065,7 @@ pub(all) enum WorkerNavigatorClearAppBadgeError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WorkerNavigator::get_media_capabilities(
@@ -31061,7 +31110,7 @@ pub extern "js" fn WorkerNavigator::set_app_badge_with_contents(
   self : WorkerNavigator,
   contents : Int64,
 ) -> Promise[Result[Unit, WorkerNavigatorSetAppBadgeError]] =
-  #| (self, contents) => self.setAppBadge((contents.hi * 4294967296 + contents.lo)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+  #| (self, contents) => self.setAppBadge(Number(contents)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
 pub extern "js" fn WorkerNavigator::clear_app_badge(
@@ -31154,7 +31203,7 @@ pub extern "js" fn WorkerNavigator::get_language(
 ///|
 pub extern "js" fn WorkerNavigator::get_languages(
   self : WorkerNavigator,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.languages
 
 ///|
@@ -31165,7 +31214,7 @@ pub extern "js" fn WorkerNavigator::get_on_line(self : WorkerNavigator) -> Bool 
 pub extern "js" fn WorkerNavigator::get_hardware_concurrency(
   self : WorkerNavigator,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.hardwareConcurrency; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.hardwareConcurrency))
 
 ///|
 pub extern "js" fn WorkerNavigator::get_connection(
@@ -31395,7 +31444,7 @@ pub(all) enum WorkletAddModuleError {
   AbortError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Worklet::add_module(
@@ -31454,7 +31503,7 @@ pub extern "js" fn JsValue::to_storage(self : JsValue) -> Storage =
 pub(all) enum StorageSetItemError {
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Storage::get_length(self : Storage) -> Int =

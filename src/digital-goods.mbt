@@ -6,7 +6,7 @@
 pub(all) enum ItemType {
   Product
   Subscription
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub(all) struct ItemDetails {
   price : PaymentCurrencyAmount
   type_ : ItemType?
   description : String?
-  iconURLs : Array[String]?
+  iconURLs : FixedArray[String]?
   subscriptionPeriod : String?
   freeTrialPeriod : String?
   introductoryPrice : PaymentCurrencyAmount?
@@ -69,7 +69,7 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
   #|   price: self.price,
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['product', 'subscription'][v]; })()),
   #|   description: self.description,
-  #|   iconURLs: ((() => { const v = self.iconURLs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iconURLs: self.iconURLs,
   #|   subscriptionPeriod: self.subscriptionPeriod,
   #|   freeTrialPeriod: self.freeTrialPeriod,
   #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -91,7 +91,7 @@ extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
   #|   price: v.price,
   #|   type_: (v.type === undefined ? undefined : ['product', 'subscription'].indexOf(v.type)),
   #|   description: v.description,
-  #|   iconURLs: (v.iconURLs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iconURLs }),
+  #|   iconURLs: v.iconURLs,
   #|   subscriptionPeriod: v.subscriptionPeriod,
   #|   freeTrialPeriod: v.freeTrialPeriod,
   #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
@@ -115,7 +115,7 @@ pub(all) struct PurchaseDetails {
 ///|
 /// Create a new PurchaseDetails with default values
 pub fn PurchaseDetails::default() -> PurchaseDetails {
-  PurchaseDetails::{ itemId: "", purchaseToken: "" }
+  PurchaseDetails::{ itemId: "", purchaseToken: "", }
 }
 
 ///|
@@ -185,20 +185,20 @@ pub extern "js" fn JsValue::to_digital_goods_service(
 ///|
 pub extern "js" fn DigitalGoodsService::get_details(
   self : DigitalGoodsService,
-  item_ids : Array[String],
-) -> Promise[Array[ItemDetails]] =
+  item_ids : FixedArray[String],
+) -> Promise[FixedArray[ItemDetails]] =
   #| (self, item_ids) => self.getDetails(item_ids)
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchases(
   self : DigitalGoodsService,
-) -> Promise[Array[PurchaseDetails]] =
+) -> Promise[FixedArray[PurchaseDetails]] =
   #| (self) => self.listPurchases()
 
 ///|
 pub extern "js" fn DigitalGoodsService::list_purchase_history(
   self : DigitalGoodsService,
-) -> Promise[Array[PurchaseDetails]] =
+) -> Promise[FixedArray[PurchaseDetails]] =
   #| (self) => self.listPurchaseHistory()
 
 ///|

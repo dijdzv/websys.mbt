@@ -73,21 +73,21 @@ pub extern "js" fn CSSPseudoElement::pseudo(
 ///|
 pub extern "js" fn CSSPseudoElement::get_box_quads(
   self : CSSPseudoElement,
-) -> Array[DOMQuad] =
+) -> FixedArray[DOMQuad] =
   #| (self) => self.getBoxQuads()
 
 ///|
 extern "js" fn CSSPseudoElement::get_box_quads_with_options_ffi(
   self : CSSPseudoElement,
   options : JsValue,
-) -> Array[DOMQuad] =
+) -> FixedArray[DOMQuad] =
   #| (self, options) => self.getBoxQuads(options)
 
 ///|
 pub fn CSSPseudoElement::get_box_quads_with_options(
   self : CSSPseudoElement,
   options : BoxQuadOptions,
-) -> Array[DOMQuad] {
+) -> FixedArray[DOMQuad] {
   CSSPseudoElement::get_box_quads_with_options_ffi(self, options.to_js())
 }
 

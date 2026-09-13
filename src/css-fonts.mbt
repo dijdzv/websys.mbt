@@ -142,7 +142,7 @@ pub extern "js" fn JsValue::to_css_font_feature_values_map(
 pub extern "js" fn CSSFontFeatureValuesMap::get(
   self : CSSFontFeatureValuesMap,
   key : String,
-) -> Array[Int]? =
+) -> FixedArray[Int]? =
   #| (self, key) => self.get(key)
 
 ///|
@@ -156,7 +156,7 @@ pub extern "js" fn CSSFontFeatureValuesMap::has(
 pub extern "js" fn CSSFontFeatureValuesMap::set(
   self : CSSFontFeatureValuesMap,
   key : String,
-  value : Array[Int],
+  value : FixedArray[Int],
 ) -> Unit =
   #| (self, key, value) => { self.set(key, value) }
 

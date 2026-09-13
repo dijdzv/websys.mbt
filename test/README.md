@@ -22,9 +22,10 @@ just build-test
 
 ```
 test/
-├── moon.mod.json       # 独立モジュール（path dep で dijdzv/websys を参照）
+├── moon.mod            # テスト用モジュール
+├── moon.work           # 親ディレクトリの websys を参照
 ├── src/
-│   ├── moon.pkg.json   # is-main: true, JS ターゲット
+│   ├── moon.pkg        # is-main: true, JS ターゲット
 │   ├── main.mbt        # テストランナー + assert ヘルパー
 │   └── *.mbt           # テストファイル（85 ファイル、203 テスト関数）
 ├── index.html          # テスト実行用 HTML

@@ -2,7 +2,7 @@
 fn test_fieldset_element() -> Unit {
   let doc = get_document()
   let fieldset = @websys.HTMLFieldSetElement::from_js_value(
-    doc.create_element("fieldset").to_js_value(),
+    create_element(doc, "fieldset").to_js_value(),
   )
   // disabled
   assert_false(fieldset.get_disabled(), label="disabled default")

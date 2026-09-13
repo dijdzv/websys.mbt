@@ -6,7 +6,7 @@
 pub(all) enum MagnetometerLocalCoordinateSystem {
   Device
   Screen
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -40,7 +40,7 @@ pub(all) struct MagnetometerSensorOptions {
 ///|
 /// Create a new MagnetometerSensorOptions with default values
 pub fn MagnetometerSensorOptions::default() -> MagnetometerSensorOptions {
-  MagnetometerSensorOptions::{ referenceFrame: None }
+  MagnetometerSensorOptions::{ referenceFrame: None, }
 }
 
 ///|
@@ -120,7 +120,7 @@ pub extern "js" fn Magnetometer::to_event_target(
 pub(all) enum MagnetometerConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Magnetometer::new() -> Result[

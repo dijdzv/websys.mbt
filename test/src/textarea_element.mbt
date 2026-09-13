@@ -9,7 +9,7 @@
 ///   ta.rows = 10
 pub fn test_textarea_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("textarea")
+  let el = create_element(doc, "textarea")
   let ta = @websys.HTMLTextAreaElement::from_js_value(el.to_js_value())
 
   // value — Web API: textarea.value

@@ -6,7 +6,7 @@
 pub(all) enum BitrateMode {
   Constant
   Variable
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum RecordingState {
   Inactive
   Recording
   Paused
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -132,7 +132,7 @@ pub(all) struct BlobEventInit {
 ///|
 /// Create a new BlobEventInit
 pub fn BlobEventInit::new(data~ : Blob) -> BlobEventInit {
-  BlobEventInit::{ data, timecode: None }
+  BlobEventInit::{ data, timecode: None, }
 }
 
 ///|
@@ -202,7 +202,7 @@ pub extern "js" fn MediaRecorder::to_event_target(
 pub(all) enum MediaRecorderConstructorError {
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -211,35 +211,35 @@ pub(all) enum MediaRecorderStartError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderStopError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderResumeError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaRecorderRequestDataError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaRecorder::new(

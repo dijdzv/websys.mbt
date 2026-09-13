@@ -18,7 +18,7 @@ pub(all) enum RTCStatsType {
   LocalCandidate
   RemoteCandidate
   Certificate
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -70,7 +70,7 @@ pub(all) enum RTCQualityLimitationReason {
   Cpu
   Bandwidth
   Other
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -105,7 +105,7 @@ pub(all) enum RTCDtlsRole {
   Client
   Server
   Unknown
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -136,7 +136,7 @@ pub(all) enum RTCStatsIceCandidatePairState {
   InProgress
   Failed
   Succeeded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -179,7 +179,7 @@ pub(all) struct RTCRtpStreamStats {
 ///|
 /// Create a new RTCRtpStreamStats with default values
 pub fn RTCRtpStreamStats::default() -> RTCRtpStreamStats {
-  RTCRtpStreamStats::{ ssrc: 0, kind: "", transportId: None, codecId: None }
+  RTCRtpStreamStats::{ ssrc: 0, kind: "", transportId: None, codecId: None, }
 }
 
 ///|
@@ -1144,7 +1144,7 @@ pub(all) struct RTCMediaSourceStats {
 ///|
 /// Create a new RTCMediaSourceStats with default values
 pub fn RTCMediaSourceStats::default() -> RTCMediaSourceStats {
-  RTCMediaSourceStats::{ trackIdentifier: "", kind: "" }
+  RTCMediaSourceStats::{ trackIdentifier: "", kind: "", }
 }
 
 ///|
@@ -1377,7 +1377,10 @@ pub(all) struct RTCPeerConnectionStats {
 ///|
 /// Create a new RTCPeerConnectionStats with default values
 pub fn RTCPeerConnectionStats::default() -> RTCPeerConnectionStats {
-  RTCPeerConnectionStats::{ dataChannelsOpened: None, dataChannelsClosed: None }
+  RTCPeerConnectionStats::{
+    dataChannelsOpened: None,
+    dataChannelsClosed: None,
+  }
 }
 
 ///|

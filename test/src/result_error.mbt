@@ -22,7 +22,8 @@ pub fn test_result_create_element_ns_error() -> Unit {
   let doc = get_document()
   match doc.create_element_ns(None, "invalid char <>") {
     Err(InvalidCharacterError(_)) => ()
-    Ok(_) => abort("FAIL: expected InvalidCharacterError for invalid element name")
+    Ok(_) =>
+      abort("FAIL: expected InvalidCharacterError for invalid element name")
     Err(_) => abort("FAIL: expected InvalidCharacterError variant")
   }
   println("  result_create_element_ns_error: ok")
@@ -32,7 +33,7 @@ pub fn test_result_create_element_ns_error() -> Unit {
 /// Node::append_child with self → Err(HierarchyRequestError(_))
 pub fn test_result_append_child_hierarchy_error() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let node = div.to_node()
   match node.append_child(node) {
     Err(HierarchyRequestError(_)) => ()
@@ -58,7 +59,7 @@ pub fn test_result_insert_rule_syntax_error() -> Unit {
 /// Element::insert_adjacent_html with invalid position → Err(SyntaxError(_))
 pub fn test_result_insert_adjacent_html_error() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   match
     div.insert_adjacent_html(
       "invalid_position",
@@ -75,14 +76,15 @@ pub fn test_result_insert_adjacent_html_error() -> Unit {
 /// Element::set_attribute with invalid name → Err(InvalidCharacterError(_))
 pub fn test_result_set_attribute_error() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   match
     div.set_attribute(
       "invalid<name>",
       @websys.TrustedTypeOrString::from_string("value"),
     ) {
     Err(InvalidCharacterError(_)) => ()
-    Ok(_) => abort("FAIL: expected InvalidCharacterError for invalid attribute name")
+    Ok(_) =>
+      abort("FAIL: expected InvalidCharacterError for invalid attribute name")
     Err(_) => abort("FAIL: expected InvalidCharacterError variant")
   }
   println("  result_set_attribute_error: ok")

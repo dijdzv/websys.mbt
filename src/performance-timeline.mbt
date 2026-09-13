@@ -3,7 +3,7 @@
 
 ///|
 /// PerformanceEntryList typedef
-pub type PerformanceEntryList = Array[PerformanceEntry]
+pub type PerformanceEntryList = FixedArray[PerformanceEntry]
 
 ///|
 /// PerformanceObserverCallback callback interface
@@ -29,7 +29,7 @@ pub(all) struct PerformanceObserverCallbackOptions {
 ///|
 /// Create a new PerformanceObserverCallbackOptions with default values
 pub fn PerformanceObserverCallbackOptions::default() -> PerformanceObserverCallbackOptions {
-  PerformanceObserverCallbackOptions::{ droppedEntriesCount: None }
+  PerformanceObserverCallbackOptions::{ droppedEntriesCount: None, }
 }
 
 ///|
@@ -188,7 +188,7 @@ pub extern "js" fn PerformanceEntry::as_performance_measure(
 
 ///|
 pub extern "js" fn PerformanceEntry::get_id(self : PerformanceEntry) -> Int64 =
-  #| (self) => (() => { const n = self.id; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.id))
 
 ///|
 pub extern "js" fn PerformanceEntry::get_name(
@@ -218,7 +218,7 @@ pub extern "js" fn PerformanceEntry::get_duration(
 pub extern "js" fn PerformanceEntry::get_navigation_id(
   self : PerformanceEntry,
 ) -> Int64 =
-  #| (self) => (() => { const n = self.navigationId; return { hi: Math.floor(n / 4294967296), lo: n >>> 0 }; })()
+  #| (self) => BigInt.asUintN(64, BigInt(self.navigationId))
 
 ///|
 pub extern "js" fn PerformanceEntry::to_json(
@@ -306,7 +306,7 @@ pub extern "js" fn PerformanceObserver::take_records(
 ///|
 pub extern "js" fn PerformanceObserver::get_supported_entry_types(
   self : PerformanceObserver,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.supportedEntryTypes
 
 ///|

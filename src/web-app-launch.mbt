@@ -49,7 +49,7 @@ pub extern "js" fn LaunchParams::get_target_url(self : LaunchParams) -> String? 
 ///|
 pub extern "js" fn LaunchParams::get_files(
   self : LaunchParams,
-) -> Array[FileSystemHandle] =
+) -> FixedArray[FileSystemHandle] =
   #| (self) => self.files
 
 ///|

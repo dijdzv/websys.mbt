@@ -4,7 +4,7 @@
 ///|
 /// BluetoothLEScanOptions dictionary
 pub(all) struct BluetoothLEScanOptions {
-  filters : Array[BluetoothLEScanFilterInit]?
+  filters : FixedArray[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
 }
@@ -24,7 +24,7 @@ extern "js" fn BluetoothLEScanOptions::to_js_ffi(
   self : BluetoothLEScanOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   filters: self.filters,
   #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
@@ -40,7 +40,7 @@ extern "js" fn BluetoothLEScanOptions::from_js_ffi(
   value : JsValue,
 ) -> BluetoothLEScanOptions =
   #| (v) => ({
-  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   filters: v.filters,
   #|   keepRepeatedDevices: (v.keepRepeatedDevices === undefined ? -1 : v.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (v.acceptAllAdvertisements === undefined ? -1 : v.acceptAllAdvertisements)
   #| })
@@ -56,7 +56,7 @@ pub fn BluetoothLEScanOptions::from_js(
 ///|
 /// BluetoothLEScanPermissionDescriptor dictionary
 pub(all) struct BluetoothLEScanPermissionDescriptor {
-  filters : Array[BluetoothLEScanFilterInit]?
+  filters : FixedArray[BluetoothLEScanFilterInit]?
   keepRepeatedDevices : Bool?
   acceptAllAdvertisements : Bool?
 }
@@ -76,7 +76,7 @@ extern "js" fn BluetoothLEScanPermissionDescriptor::to_js_ffi(
   self : BluetoothLEScanPermissionDescriptor,
 ) -> JsValue =
   #| (self) => ({
-  #|   filters: ((() => { const v = self.filters; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   filters: self.filters,
   #|   keepRepeatedDevices: (self.keepRepeatedDevices === -1 ? undefined : self.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (self.acceptAllAdvertisements === -1 ? undefined : self.acceptAllAdvertisements)
   #| })
@@ -94,7 +94,7 @@ extern "js" fn BluetoothLEScanPermissionDescriptor::from_js_ffi(
   value : JsValue,
 ) -> BluetoothLEScanPermissionDescriptor =
   #| (v) => ({
-  #|   filters: (v.filters === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filters }),
+  #|   filters: v.filters,
   #|   keepRepeatedDevices: (v.keepRepeatedDevices === undefined ? -1 : v.keepRepeatedDevices),
   #|   acceptAllAdvertisements: (v.acceptAllAdvertisements === undefined ? -1 : v.acceptAllAdvertisements)
   #| })
@@ -368,7 +368,7 @@ pub extern "js" fn BluetoothLEScanFilter::get_name_prefix(
 ///|
 pub extern "js" fn BluetoothLEScanFilter::get_services(
   self : BluetoothLEScanFilter,
-) -> Array[UUID] =
+) -> FixedArray[UUID] =
   #| (self) => self.services
 
 ///|
@@ -424,7 +424,7 @@ pub extern "js" fn JsValue::to_bluetooth_le_scan(
 ///|
 pub extern "js" fn BluetoothLEScan::get_filters(
   self : BluetoothLEScan,
-) -> Array[BluetoothLEScanFilter] =
+) -> FixedArray[BluetoothLEScanFilter] =
   #| (self) => self.filters
 
 ///|
@@ -500,12 +500,12 @@ pub extern "js" fn BluetoothLEScanPermissionResult::to_event_target(
 ///|
 pub extern "js" fn BluetoothLEScanPermissionResult::get_scans(
   self : BluetoothLEScanPermissionResult,
-) -> Array[BluetoothLEScan] =
+) -> FixedArray[BluetoothLEScan] =
   #| (self) => self.scans
 
 ///|
 pub extern "js" fn BluetoothLEScanPermissionResult::set_scans(
   self : BluetoothLEScanPermissionResult,
-  value : Array[BluetoothLEScan],
+  value : FixedArray[BluetoothLEScan],
 ) -> Unit =
   #| (self, value) => { self.scans = value }

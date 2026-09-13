@@ -8,7 +8,7 @@ pub(all) enum PresentationConnectionState {
   Connected
   Closed
   Terminated
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -43,7 +43,7 @@ pub(all) enum PresentationConnectionCloseReason {
   Error
   Closed
   Wentaway
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -128,7 +128,7 @@ pub(all) struct PresentationConnectionCloseEventInit {
 pub fn PresentationConnectionCloseEventInit::new(
   reason~ : PresentationConnectionCloseReason,
 ) -> PresentationConnectionCloseEventInit {
-  PresentationConnectionCloseEventInit::{ reason, message: None }
+  PresentationConnectionCloseEventInit::{ reason, message: None, }
 }
 
 ///|
@@ -266,7 +266,7 @@ pub extern "js" fn PresentationRequest::new_with_string(
 
 ///|
 pub extern "js" fn PresentationRequest::new_with_array(
-  urls : Array[String],
+  urls : FixedArray[String],
 ) -> PresentationRequest =
   #| (urls) => new PresentationRequest(urls)
 
@@ -850,7 +850,7 @@ pub extern "js" fn PresentationConnectionList::to_event_target(
 ///|
 pub extern "js" fn PresentationConnectionList::get_connections(
   self : PresentationConnectionList,
-) -> Array[PresentationConnection] =
+) -> FixedArray[PresentationConnection] =
   #| (self) => self.connections
 
 ///|

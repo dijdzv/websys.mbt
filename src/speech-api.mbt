@@ -12,7 +12,7 @@ pub(all) enum SpeechRecognitionErrorCode {
   ServiceNotAllowed
   LanguageNotSupported
   PhrasesNotSupported
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -58,7 +58,7 @@ pub(all) enum AvailabilityStatus {
   Downloadable
   Downloading
   Available
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -98,7 +98,7 @@ pub(all) enum SpeechSynthesisErrorCode {
   TextTooLong
   InvalidArgument
   NotAllowed
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -148,14 +148,14 @@ pub fn SpeechSynthesisErrorCode::from_string(
 ///|
 /// SpeechRecognitionOptions dictionary
 pub(all) struct SpeechRecognitionOptions {
-  langs : Array[String]
+  langs : FixedArray[String]
   processLocally : Bool?
 }
 
 ///|
 /// Create a new SpeechRecognitionOptions with default values
 pub fn SpeechRecognitionOptions::default() -> SpeechRecognitionOptions {
-  SpeechRecognitionOptions::{ langs: [], processLocally: None }
+  SpeechRecognitionOptions::{ langs: [], processLocally: None, }
 }
 
 ///|
@@ -204,7 +204,7 @@ pub(all) struct SpeechRecognitionErrorEventInit {
 pub fn SpeechRecognitionErrorEventInit::new(
   error~ : SpeechRecognitionErrorCode,
 ) -> SpeechRecognitionErrorEventInit {
-  SpeechRecognitionErrorEventInit::{ error, message: None }
+  SpeechRecognitionErrorEventInit::{ error, message: None, }
 }
 
 ///|
@@ -253,7 +253,7 @@ pub(all) struct SpeechRecognitionEventInit {
 pub fn SpeechRecognitionEventInit::new(
   results~ : SpeechRecognitionResultList,
 ) -> SpeechRecognitionEventInit {
-  SpeechRecognitionEventInit::{ resultIndex: None, results }
+  SpeechRecognitionEventInit::{ resultIndex: None, results, }
 }
 
 ///|
@@ -472,7 +472,7 @@ pub extern "js" fn SpeechRecognition::to_event_target(
 pub(all) enum SpeechRecognitionStartError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -480,7 +480,7 @@ pub(all) enum SpeechRecognitionAvailableError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -488,7 +488,7 @@ pub(all) enum SpeechRecognitionInstallError {
   SyntaxError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SpeechRecognition::new() -> SpeechRecognition =
@@ -575,13 +575,13 @@ pub extern "js" fn SpeechRecognition::set_process_locally(
 ///|
 pub extern "js" fn SpeechRecognition::get_phrases(
   self : SpeechRecognition,
-) -> Array[SpeechRecognitionPhrase] =
+) -> FixedArray[SpeechRecognitionPhrase] =
   #| (self) => self.phrases
 
 ///|
 pub extern "js" fn SpeechRecognition::set_phrases(
   self : SpeechRecognition,
-  value : Array[SpeechRecognitionPhrase],
+  value : FixedArray[SpeechRecognitionPhrase],
 ) -> Unit =
   #| (self, value) => { self.phrases = value }
 
@@ -1286,7 +1286,7 @@ pub extern "js" fn JsValue::to_speech_recognition_phrase(
 pub(all) enum SpeechRecognitionPhraseConstructorError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SpeechRecognitionPhrase::new(
@@ -1406,7 +1406,7 @@ pub extern "js" fn SpeechSynthesis::resume_(self : SpeechSynthesis) -> Unit =
 ///|
 pub extern "js" fn SpeechSynthesis::get_voices(
   self : SpeechSynthesis,
-) -> Array[SpeechSynthesisVoice] =
+) -> FixedArray[SpeechSynthesisVoice] =
   #| (self) => self.getVoices()
 
 ///|

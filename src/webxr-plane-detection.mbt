@@ -6,7 +6,7 @@
 pub(all) enum XRPlaneOrientation {
   Horizontal
   Vertical
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub extern "js" fn XRPlane::get_plane_space(self : XRPlane) -> XRSpace =
 ///|
 pub extern "js" fn XRPlane::get_polygon(
   self : XRPlane,
-) -> Array[DOMPointReadOnly] =
+) -> FixedArray[DOMPointReadOnly] =
   #| (self) => self.polygon
 
 ///|

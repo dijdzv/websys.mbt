@@ -10,7 +10,7 @@
 ///   select.multiple = true
 pub fn test_select_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("select")
+  let el = create_element(doc, "select")
   let select = @websys.HTMLSelectElement::from_js_value(el.to_js_value())
 
   // autofocus — via HTMLElement (Rust uses Deref, MoonBit needs upcast)
@@ -71,7 +71,7 @@ pub fn test_select_element() -> Unit {
 ///   select.checkValidity() // true
 pub fn test_select_validation() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("select")
+  let el = create_element(doc, "select")
   let select = @websys.HTMLSelectElement::from_js_value(el.to_js_value())
 
   // selected_options — Web API: select.selectedOptions
@@ -112,7 +112,7 @@ pub fn test_select_validation() -> Unit {
 ///   opt.text = "Red Color"
 pub fn test_option_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("option")
+  let el = create_element(doc, "option")
   let opt = @websys.HTMLOptionElement::from_js_value(el.to_js_value())
 
   // value — Web API: option.value
@@ -159,18 +159,18 @@ pub fn test_option_element() -> Unit {
 ///   select.length // 1
 pub fn test_select_with_options() -> Unit {
   let doc = get_document()
-  let select_el = doc.create_element("select")
+  let select_el = create_element(doc, "select")
   let select = @websys.HTMLSelectElement::from_js_value(select_el.to_js_value())
 
   // Initially empty
   assert_eq(select.get_length(), 0, label="length empty")
 
   // Add options via appendChild
-  let opt1_el = doc.create_element("option")
+  let opt1_el = create_element(doc, "option")
   let opt1 = @websys.HTMLOptionElement::from_js_value(opt1_el.to_js_value())
   opt1.set_value("apple")
   opt1.set_text("Apple")
-  let opt2_el = doc.create_element("option")
+  let opt2_el = create_element(doc, "option")
   let opt2 = @websys.HTMLOptionElement::from_js_value(opt2_el.to_js_value())
   opt2.set_value("banana")
   opt2.set_text("Banana")

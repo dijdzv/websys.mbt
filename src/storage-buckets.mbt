@@ -12,7 +12,7 @@ pub(all) struct StorageBucketOptions {
 ///|
 /// Create a new StorageBucketOptions with default values
 pub fn StorageBucketOptions::default() -> StorageBucketOptions {
-  StorageBucketOptions::{ persisted: None, quota: None, expires: None }
+  StorageBucketOptions::{ persisted: None, quota: None, expires: None, }
 }
 
 ///|
@@ -112,7 +112,7 @@ pub fn StorageBucketManager::open_with_options(
 ///|
 pub extern "js" fn StorageBucketManager::keys(
   self : StorageBucketManager,
-) -> Promise[Array[String]] =
+) -> Promise[FixedArray[String]] =
   #| (self) => self.keys()
 
 ///|

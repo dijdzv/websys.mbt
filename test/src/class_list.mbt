@@ -12,7 +12,7 @@
 ///   el.classList.length // 1
 pub fn test_class_list() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   let cl = el.get_class_list()
 
   // Initially empty
@@ -41,7 +41,7 @@ pub fn test_class_list() -> Unit {
 /// Test DOMTokenList toggle and replace.
 pub fn test_class_list_toggle() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   let cl = el.get_class_list()
 
   // toggle — adds if absent, removes if present
@@ -77,7 +77,7 @@ pub fn test_class_list_toggle() -> Unit {
 /// Test DOMTokenList value property.
 pub fn test_class_list_value() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
   let cl = el.get_class_list()
 
   // set value directly — space-separated class string

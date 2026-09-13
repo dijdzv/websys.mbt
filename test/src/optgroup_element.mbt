@@ -6,7 +6,7 @@
 fn test_optgroup_element() -> Unit {
   let doc = get_document()
   let optgroup = @websys.HTMLOptGroupElement::from_js_value(
-    doc.create_element("optgroup").to_js_value(),
+    create_element(doc, "optgroup").to_js_value(),
   )
   // disabled
   assert_false(optgroup.get_disabled(), label="disabled default")

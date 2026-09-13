@@ -7,7 +7,7 @@ pub(all) enum FullscreenNavigationUI {
   Auto
   Show
   Hide
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -44,7 +44,7 @@ pub(all) struct FullscreenOptions {
 ///|
 /// Create a new FullscreenOptions with default values
 pub fn FullscreenOptions::default() -> FullscreenOptions {
-  FullscreenOptions::{ navigationUI: None, screen: None }
+  FullscreenOptions::{ navigationUI: None, screen: None, }
 }
 
 ///|

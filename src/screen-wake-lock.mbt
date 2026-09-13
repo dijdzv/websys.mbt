@@ -5,7 +5,7 @@
 /// WakeLockType enum
 pub(all) enum WakeLockType {
   Screen
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -57,7 +57,7 @@ pub extern "js" fn JsValue::to_wake_lock(self : JsValue) -> WakeLock =
 pub(all) enum WakeLockRequestError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn WakeLock::request(

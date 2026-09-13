@@ -10,7 +10,7 @@
 ///   img.width = 200
 pub fn test_image_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("img")
+  let el = create_element(doc, "img")
   let img = @websys.HTMLImageElement::from_js_value(el.to_js_value())
 
   // alt — Web API: img.alt

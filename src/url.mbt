@@ -34,7 +34,7 @@ pub extern "js" fn JsValue::to_url(self : JsValue) -> URL =
 pub(all) enum URLConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn URL::new(url : String) -> Result[URL, URLConstructorError] =
@@ -252,7 +252,7 @@ pub extern "js" fn URLSearchParams::get(
 pub extern "js" fn URLSearchParams::get_all(
   self : URLSearchParams,
   name : String,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self, name) => self.getAll(name)
 
 ///|

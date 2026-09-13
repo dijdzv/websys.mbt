@@ -30,7 +30,7 @@ pub type FileSystemEntriesCallback
 ///|
 /// Create FileSystemEntriesCallback from a MoonBit function
 pub extern "js" fn FileSystemEntriesCallback::from_fn(
-  handler : (Array[FileSystemEntry]) -> Unit,
+  handler : (FixedArray[FileSystemEntry]) -> Unit,
 ) -> FileSystemEntriesCallback =
   #| (handler) => (a0) => handler(a0)
 
@@ -55,7 +55,7 @@ pub(all) struct FileSystemFlags {
 ///|
 /// Create a new FileSystemFlags with default values
 pub fn FileSystemFlags::default() -> FileSystemFlags {
-  FileSystemFlags::{ create: None, exclusive: None }
+  FileSystemFlags::{ create: None, exclusive: None, }
 }
 
 ///|
@@ -223,7 +223,7 @@ pub(all) enum FileSystemDirectoryEntryGetFileError {
   SecurityError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -232,7 +232,7 @@ pub(all) enum FileSystemDirectoryEntryGetDirectoryError {
   SecurityError(JsError)
   TypeMismatchError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn FileSystemDirectoryEntry::create_reader(

@@ -98,210 +98,6 @@ pub extern "js" fn SVGElement::to_event_target(
   #| (self) => self
 
 ///|
-pub extern "js" fn SVGElement::as_svg_graphics_element(
-  self : SVGElement,
-) -> SVGGraphicsElement? =
-  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_geometry_element(
-  self : SVGElement,
-) -> SVGGeometryElement? =
-  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgsvg_element(
-  self : SVGElement,
-) -> SVGSVGElement? =
-  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgg_element(
-  self : SVGElement,
-) -> SVGGElement? =
-  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_defs_element(
-  self : SVGElement,
-) -> SVGDefsElement? =
-  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_desc_element(
-  self : SVGElement,
-) -> SVGDescElement? =
-  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_metadata_element(
-  self : SVGElement,
-) -> SVGMetadataElement? =
-  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_title_element(
-  self : SVGElement,
-) -> SVGTitleElement? =
-  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_symbol_element(
-  self : SVGElement,
-) -> SVGSymbolElement? =
-  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_use_element(
-  self : SVGElement,
-) -> SVGUseElement? =
-  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_switch_element(
-  self : SVGElement,
-) -> SVGSwitchElement? =
-  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_style_element(
-  self : SVGElement,
-) -> SVGStyleElement? =
-  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_rect_element(
-  self : SVGElement,
-) -> SVGRectElement? =
-  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_circle_element(
-  self : SVGElement,
-) -> SVGCircleElement? =
-  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_ellipse_element(
-  self : SVGElement,
-) -> SVGEllipseElement? =
-  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_line_element(
-  self : SVGElement,
-) -> SVGLineElement? =
-  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_polyline_element(
-  self : SVGElement,
-) -> SVGPolylineElement? =
-  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_polygon_element(
-  self : SVGElement,
-) -> SVGPolygonElement? =
-  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_text_content_element(
-  self : SVGElement,
-) -> SVGTextContentElement? =
-  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_text_positioning_element(
-  self : SVGElement,
-) -> SVGTextPositioningElement? =
-  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_text_element(
-  self : SVGElement,
-) -> SVGTextElement? =
-  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svgt_span_element(
-  self : SVGElement,
-) -> SVGTSpanElement? =
-  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_text_path_element(
-  self : SVGElement,
-) -> SVGTextPathElement? =
-  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_image_element(
-  self : SVGElement,
-) -> SVGImageElement? =
-  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_foreign_object_element(
-  self : SVGElement,
-) -> SVGForeignObjectElement? =
-  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_marker_element(
-  self : SVGElement,
-) -> SVGMarkerElement? =
-  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_gradient_element(
-  self : SVGElement,
-) -> SVGGradientElement? =
-  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_linear_gradient_element(
-  self : SVGElement,
-) -> SVGLinearGradientElement? =
-  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_radial_gradient_element(
-  self : SVGElement,
-) -> SVGRadialGradientElement? =
-  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_stop_element(
-  self : SVGElement,
-) -> SVGStopElement? =
-  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_pattern_element(
-  self : SVGElement,
-) -> SVGPatternElement? =
-  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_script_element(
-  self : SVGElement,
-) -> SVGScriptElement? =
-  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svga_element(
-  self : SVGElement,
-) -> SVGAElement? =
-  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGElement::as_svg_view_element(
-  self : SVGElement,
-) -> SVGViewElement? =
-  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn SVGElement::as_svg_clip_path_element(
   self : SVGElement,
 ) -> SVGClipPathElement? =
@@ -518,6 +314,210 @@ pub extern "js" fn SVGElement::as_svg_path_element(
   #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
+pub extern "js" fn SVGElement::as_svg_graphics_element(
+  self : SVGElement,
+) -> SVGGraphicsElement? =
+  #| (self) => (self instanceof SVGGraphicsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_geometry_element(
+  self : SVGElement,
+) -> SVGGeometryElement? =
+  #| (self) => (self instanceof SVGGeometryElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgsvg_element(
+  self : SVGElement,
+) -> SVGSVGElement? =
+  #| (self) => (self instanceof SVGSVGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgg_element(
+  self : SVGElement,
+) -> SVGGElement? =
+  #| (self) => (self instanceof SVGGElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_defs_element(
+  self : SVGElement,
+) -> SVGDefsElement? =
+  #| (self) => (self instanceof SVGDefsElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_desc_element(
+  self : SVGElement,
+) -> SVGDescElement? =
+  #| (self) => (self instanceof SVGDescElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_metadata_element(
+  self : SVGElement,
+) -> SVGMetadataElement? =
+  #| (self) => (self instanceof SVGMetadataElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_title_element(
+  self : SVGElement,
+) -> SVGTitleElement? =
+  #| (self) => (self instanceof SVGTitleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_symbol_element(
+  self : SVGElement,
+) -> SVGSymbolElement? =
+  #| (self) => (self instanceof SVGSymbolElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_use_element(
+  self : SVGElement,
+) -> SVGUseElement? =
+  #| (self) => (self instanceof SVGUseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_switch_element(
+  self : SVGElement,
+) -> SVGSwitchElement? =
+  #| (self) => (self instanceof SVGSwitchElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_style_element(
+  self : SVGElement,
+) -> SVGStyleElement? =
+  #| (self) => (self instanceof SVGStyleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_rect_element(
+  self : SVGElement,
+) -> SVGRectElement? =
+  #| (self) => (self instanceof SVGRectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_circle_element(
+  self : SVGElement,
+) -> SVGCircleElement? =
+  #| (self) => (self instanceof SVGCircleElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_ellipse_element(
+  self : SVGElement,
+) -> SVGEllipseElement? =
+  #| (self) => (self instanceof SVGEllipseElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_line_element(
+  self : SVGElement,
+) -> SVGLineElement? =
+  #| (self) => (self instanceof SVGLineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_polyline_element(
+  self : SVGElement,
+) -> SVGPolylineElement? =
+  #| (self) => (self instanceof SVGPolylineElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_polygon_element(
+  self : SVGElement,
+) -> SVGPolygonElement? =
+  #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_text_content_element(
+  self : SVGElement,
+) -> SVGTextContentElement? =
+  #| (self) => (self instanceof SVGTextContentElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_text_positioning_element(
+  self : SVGElement,
+) -> SVGTextPositioningElement? =
+  #| (self) => (self instanceof SVGTextPositioningElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_text_element(
+  self : SVGElement,
+) -> SVGTextElement? =
+  #| (self) => (self instanceof SVGTextElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svgt_span_element(
+  self : SVGElement,
+) -> SVGTSpanElement? =
+  #| (self) => (self instanceof SVGTSpanElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_text_path_element(
+  self : SVGElement,
+) -> SVGTextPathElement? =
+  #| (self) => (self instanceof SVGTextPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_image_element(
+  self : SVGElement,
+) -> SVGImageElement? =
+  #| (self) => (self instanceof SVGImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_foreign_object_element(
+  self : SVGElement,
+) -> SVGForeignObjectElement? =
+  #| (self) => (self instanceof SVGForeignObjectElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_marker_element(
+  self : SVGElement,
+) -> SVGMarkerElement? =
+  #| (self) => (self instanceof SVGMarkerElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_gradient_element(
+  self : SVGElement,
+) -> SVGGradientElement? =
+  #| (self) => (self instanceof SVGGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_linear_gradient_element(
+  self : SVGElement,
+) -> SVGLinearGradientElement? =
+  #| (self) => (self instanceof SVGLinearGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_radial_gradient_element(
+  self : SVGElement,
+) -> SVGRadialGradientElement? =
+  #| (self) => (self instanceof SVGRadialGradientElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_stop_element(
+  self : SVGElement,
+) -> SVGStopElement? =
+  #| (self) => (self instanceof SVGStopElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_pattern_element(
+  self : SVGElement,
+) -> SVGPatternElement? =
+  #| (self) => (self instanceof SVGPatternElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_script_element(
+  self : SVGElement,
+) -> SVGScriptElement? =
+  #| (self) => (self instanceof SVGScriptElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svga_element(
+  self : SVGElement,
+) -> SVGAElement? =
+  #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
+pub extern "js" fn SVGElement::as_svg_view_element(
+  self : SVGElement,
+) -> SVGViewElement? =
+  #| (self) => (self instanceof SVGViewElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SVGElement::get_class_name(
   self : SVGElement,
 ) -> SVGAnimatedString =
@@ -534,6 +534,18 @@ pub extern "js" fn SVGElement::get_viewport_element(
   self : SVGElement,
 ) -> SVGElement? =
   #| (self) => (() => { const v = self.viewportElement; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
+
+///|
+pub extern "js" fn SVGElement::get_attribute_style_map(
+  self : SVGElement,
+) -> StylePropertyMap =
+  #| (self) => self.attributeStyleMap
+
+///|
+pub extern "js" fn SVGElement::get_style(
+  self : SVGElement,
+) -> CSSStyleProperties =
+  #| (self) => self.style
 
 ///|
 pub extern "js" fn SVGElement::set_onanimationstart(
@@ -1803,18 +1815,6 @@ pub extern "js" fn SVGElement::blur(self : SVGElement) -> Unit =
   #| (self) => self.blur()
 
 ///|
-pub extern "js" fn SVGElement::get_attribute_style_map(
-  self : SVGElement,
-) -> StylePropertyMap =
-  #| (self) => self.attributeStyleMap
-
-///|
-pub extern "js" fn SVGElement::get_style(
-  self : SVGElement,
-) -> CSSStyleProperties =
-  #| (self) => self.style
-
-///|
 /// SVGGraphicsElement interface
 pub type SVGGraphicsElement
 
@@ -1875,6 +1875,12 @@ pub extern "js" fn SVGGraphicsElement::to_event_target(
   self : SVGGraphicsElement,
 ) -> EventTarget =
   #| (self) => self
+
+///|
+pub extern "js" fn SVGGraphicsElement::as_svg_path_element(
+  self : SVGGraphicsElement,
+) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn SVGGraphicsElement::as_svg_geometry_element(
@@ -2003,12 +2009,6 @@ pub extern "js" fn SVGGraphicsElement::as_svga_element(
   #| (self) => (self instanceof SVGAElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub extern "js" fn SVGGraphicsElement::as_svg_path_element(
-  self : SVGGraphicsElement,
-) -> SVGPathElement? =
-  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
 pub extern "js" fn SVGGraphicsElement::get_transform(
   self : SVGGraphicsElement,
 ) -> SVGAnimatedTransformList =
@@ -2128,6 +2128,12 @@ pub extern "js" fn SVGGeometryElement::to_event_target(
   #| (self) => self
 
 ///|
+pub extern "js" fn SVGGeometryElement::as_svg_path_element(
+  self : SVGGeometryElement,
+) -> SVGPathElement? =
+  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
+
+///|
 pub extern "js" fn SVGGeometryElement::as_svg_rect_element(
   self : SVGGeometryElement,
 ) -> SVGRectElement? =
@@ -2162,12 +2168,6 @@ pub extern "js" fn SVGGeometryElement::as_svg_polygon_element(
   self : SVGGeometryElement,
 ) -> SVGPolygonElement? =
   #| (self) => (self instanceof SVGPolygonElement) ? { $tag: 1, _0: self } : { $tag: 0 }
-
-///|
-pub extern "js" fn SVGGeometryElement::as_svg_path_element(
-  self : SVGGeometryElement,
-) -> SVGPathElement? =
-  #| (self) => (self instanceof SVGPathElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 pub extern "js" fn SVGGeometryElement::get_path_length(
@@ -2303,7 +2303,7 @@ pub(all) enum SVGLengthNewValueSpecifiedUnitsError {
   NotSupportedError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // SVGLength.SVG_LENGTHTYPE_UNKNOWN
 
@@ -2448,7 +2448,7 @@ pub(all) enum SVGAngleNewValueSpecifiedUnitsError {
   NotSupportedError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // SVGAngle.SVG_ANGLETYPE_UNKNOWN
 
@@ -2563,28 +2563,28 @@ pub extern "js" fn JsValue::to_svg_number_list(self : JsValue) -> SVGNumberList 
 pub(all) enum SVGNumberListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2592,7 +2592,7 @@ pub(all) enum SVGNumberListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2600,14 +2600,14 @@ pub(all) enum SVGNumberListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGNumberListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGNumberList::get_length(self : SVGNumberList) -> Int =
@@ -2723,28 +2723,28 @@ pub extern "js" fn JsValue::to_svg_length_list(self : JsValue) -> SVGLengthList 
 pub(all) enum SVGLengthListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2752,7 +2752,7 @@ pub(all) enum SVGLengthListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2760,14 +2760,14 @@ pub(all) enum SVGLengthListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGLengthListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGLengthList::get_length(self : SVGLengthList) -> Int =
@@ -2883,28 +2883,28 @@ pub extern "js" fn JsValue::to_svg_string_list(self : JsValue) -> SVGStringList 
 pub(all) enum SVGStringListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2912,7 +2912,7 @@ pub(all) enum SVGStringListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -2920,14 +2920,14 @@ pub(all) enum SVGStringListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGStringListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGStringList::get_length(self : SVGStringList) -> Int =
@@ -3102,6 +3102,13 @@ pub extern "js" fn JsValue::to_svg_animated_enumeration(
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum SVGAnimatedEnumerationSetBaseValError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn SVGAnimatedEnumeration::get_base_val(
   self : SVGAnimatedEnumeration,
 ) -> Int =
@@ -3111,8 +3118,8 @@ pub extern "js" fn SVGAnimatedEnumeration::get_base_val(
 pub extern "js" fn SVGAnimatedEnumeration::set_base_val(
   self : SVGAnimatedEnumeration,
   value : Int,
-) -> Unit =
-  #| (self, value) => { self.baseVal = value }
+) -> Result[Unit, SVGAnimatedEnumerationSetBaseValError] =
+  #| (self, value) => (() => { try { self.baseVal = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn SVGAnimatedEnumeration::get_anim_val(
@@ -3377,7 +3384,7 @@ pub extern "js" fn JsValue::to_svg_animated_string(
 pub(all) enum SVGAnimatedStringSetBaseValError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGAnimatedString::get_base_val(
@@ -4943,42 +4950,42 @@ pub extern "js" fn JsValue::to_svg_transform(self : JsValue) -> SVGTransform =
 pub(all) enum SVGTransformSetMatrixError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetTranslateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetScaleError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetRotateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetSkewXError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformSetSkewYError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // SVGTransform.SVG_TRANSFORM_UNKNOWN
 
@@ -5130,28 +5137,28 @@ pub extern "js" fn JsValue::to_svg_transform_list(
 pub(all) enum SVGTransformListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListGetItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5159,7 +5166,7 @@ pub(all) enum SVGTransformListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5167,21 +5174,21 @@ pub(all) enum SVGTransformListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTransformListConsolidateError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGTransformList::get_length(self : SVGTransformList) -> Int =
@@ -5941,28 +5948,28 @@ pub extern "js" fn JsValue::to_svg_point_list(self : JsValue) -> SVGPointList =
 pub(all) enum SVGPointListClearError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInitializeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListGetItemError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListInsertItemBeforeError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5970,7 +5977,7 @@ pub(all) enum SVGPointListReplaceItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -5978,14 +5985,14 @@ pub(all) enum SVGPointListRemoveItemError {
   IndexSizeError(JsError)
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGPointListAppendItemError {
   NoModificationAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SVGPointList::get_length(self : SVGPointList) -> Int =
@@ -6331,35 +6338,35 @@ pub extern "js" fn SVGTextContentElement::as_svg_text_path_element(
 pub(all) enum SVGTextContentElementGetSubStringLengthError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetStartPositionOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetEndPositionOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetExtentOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SVGTextContentElementGetRotationOfCharError {
   IndexSizeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 // SVGTextContentElement.LENGTHADJUST_UNKNOWN
 

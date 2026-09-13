@@ -8,7 +8,7 @@ pub type IntersectionObserverCallback
 ///|
 /// Create IntersectionObserverCallback from a MoonBit function
 pub extern "js" fn IntersectionObserverCallback::from_fn(
-  handler : (Array[IntersectionObserverEntry], IntersectionObserver) -> Unit,
+  handler : (FixedArray[IntersectionObserverEntry], IntersectionObserver) -> Unit,
 ) -> IntersectionObserverCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -201,7 +201,7 @@ pub(all) enum IntersectionObserverConstructorError {
   RangeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn IntersectionObserver::new(
@@ -245,7 +245,7 @@ pub extern "js" fn IntersectionObserver::get_scroll_margin(
 ///|
 pub extern "js" fn IntersectionObserver::get_thresholds(
   self : IntersectionObserver,
-) -> Array[Double] =
+) -> FixedArray[Double] =
   #| (self) => self.thresholds
 
 ///|
@@ -283,7 +283,7 @@ pub extern "js" fn IntersectionObserver::disconnect(
 ///|
 pub extern "js" fn IntersectionObserver::take_records(
   self : IntersectionObserver,
-) -> Array[IntersectionObserverEntry] =
+) -> FixedArray[IntersectionObserverEntry] =
   #| (self) => self.takeRecords()
 
 ///|

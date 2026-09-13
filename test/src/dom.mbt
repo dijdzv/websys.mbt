@@ -22,7 +22,7 @@ pub fn test_dom_create_element() -> Unit {
   let doc = get_document()
 
   // createElement — Web API: document.createElement("div")
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   assert_eq(div.get_tag_name(), "DIV", label="tagName")
 
   // id property — Web API: el.id = "test"; el.id
@@ -36,9 +36,9 @@ pub fn test_dom_create_element() -> Unit {
   assert_eq(div.get_class_name(), "foo bar", label="className after set")
 
   // Different element types
-  let span = doc.create_element("span")
+  let span = create_element(doc, "span")
   assert_eq(span.get_tag_name(), "SPAN", label="span tagName")
-  let p = doc.create_element("p")
+  let p = create_element(doc, "p")
   assert_eq(p.get_tag_name(), "P", label="p tagName")
   println("  dom_create_element: ok")
 }
@@ -50,7 +50,7 @@ pub fn test_dom_create_element() -> Unit {
 ///   el.getAttribute("data-value") // "42"
 pub fn test_dom_attributes() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("div")
+  let el = create_element(doc, "div")
 
   // getAttribute returns null for missing attributes — Web API: el.getAttribute("x")
   let missing = el.get_attribute("data-value")
@@ -93,9 +93,9 @@ pub fn test_dom_tree() -> Unit {
   let doc = get_document()
 
   // Build a small tree: <div><span></span><p></p></div>
-  let parent = doc.create_element("div")
-  let child1 = doc.create_element("span")
-  let child2 = doc.create_element("p")
+  let parent = create_element(doc, "div")
+  let child1 = create_element(doc, "span")
+  let child2 = create_element(doc, "p")
 
   // appendChild — Web API: parent.appendChild(child)
   // Need to cast Element → Node for appendChild

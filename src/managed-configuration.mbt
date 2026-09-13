@@ -48,7 +48,7 @@ pub extern "js" fn NavigatorManagedData::to_event_target(
 ///|
 pub extern "js" fn NavigatorManagedData::get_managed_configuration(
   self : NavigatorManagedData,
-  keys : Array[String],
+  keys : FixedArray[String],
 ) -> Promise[JsValue] =
   #| (self, keys) => self.getManagedConfiguration(keys)
 

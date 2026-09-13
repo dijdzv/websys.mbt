@@ -2,7 +2,7 @@
 fn test_body_element() -> Unit {
   let doc = get_document()
   let body = @websys.HTMLBodyElement::from_js_value(
-    doc.create_element("body").to_js_value(),
+    create_element(doc, "body").to_js_value(),
   )
   // deprecated string properties
   body.set_text("#000000")

@@ -2,7 +2,7 @@
 fn test_table_section() -> Unit {
   let doc = get_document()
   let section = @websys.HTMLTableSectionElement::from_js_value(
-    doc.create_element("tbody").to_js_value(),
+    create_element(doc, "tbody").to_js_value(),
   )
   // deprecated properties
   section.set_align("center")
@@ -27,7 +27,7 @@ fn test_table_section() -> Unit {
 fn test_table_row() -> Unit {
   let doc = get_document()
   let row = @websys.HTMLTableRowElement::from_js_value(
-    doc.create_element("tr").to_js_value(),
+    create_element(doc, "tr").to_js_value(),
   )
   // deprecated properties
   row.set_align("right")
@@ -50,7 +50,7 @@ fn test_table_row() -> Unit {
 fn test_table_cell() -> Unit {
   let doc = get_document()
   let cell = @websys.HTMLTableCellElement::from_js_value(
-    doc.create_element("td").to_js_value(),
+    create_element(doc, "td").to_js_value(),
   )
   // colSpan / rowSpan
   cell.set_col_span(2)
@@ -81,7 +81,7 @@ fn test_table_full() -> Unit {
   let doc = get_document()
   // Build a complete table structure
   let table = @websys.HTMLTableElement::from_js_value(
-    doc.create_element("table").to_js_value(),
+    create_element(doc, "table").to_js_value(),
   )
   // Create caption
   let caption = table.create_caption()

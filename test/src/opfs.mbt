@@ -50,8 +50,11 @@ async fn test_opfs_create_directory() -> Unit {
   let storage = win.get_navigator().get_storage()
   let root = storage.get_directory().wait().unwrap()
   // Create a directory — equivalent to Rust's root.get_directory_handle_with_options("test_dir", {create: true})
-  let opts = @websys.FileSystemGetDirectoryOptions::{ create: Some(true) }
-  let dir = root.get_directory_handle_with_options("test_dir", opts).wait().unwrap()
+  let opts = @websys.FileSystemGetDirectoryOptions::{ create: Some(true), }
+  let dir = root
+    .get_directory_handle_with_options("test_dir", opts)
+    .wait()
+    .unwrap()
   let _ = dir.to_js_value()
   // Clean up: remove the created directory
   root.remove_entry("test_dir").wait().unwrap()
@@ -69,7 +72,7 @@ async fn test_opfs_create_file() -> Unit {
   let root = win.get_navigator().get_storage().get_directory().wait().unwrap()
 
   // Create a file
-  let opts = @websys.FileSystemGetFileOptions::{ create: Some(true) }
+  let opts = @websys.FileSystemGetFileOptions::{ create: Some(true), }
   let file_handle = root
     .get_file_handle_with_options("test_file.txt", opts)
     .wait()
@@ -92,7 +95,7 @@ async fn test_opfs_write_to_file() -> Unit {
   let root = win.get_navigator().get_storage().get_directory().wait().unwrap()
 
   // Create a file
-  let opts = @websys.FileSystemGetFileOptions::{ create: Some(true) }
+  let opts = @websys.FileSystemGetFileOptions::{ create: Some(true), }
   let file_handle = root
     .get_file_handle_with_options("test_write.txt", opts)
     .wait()

@@ -7,7 +7,7 @@ pub(all) enum GamepadMappingType {
   Empty
   Standard
   XrStandard
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn GamepadMappingType::from_string(s : String) -> GamepadMappingType? {
 pub(all) enum GamepadHapticsResult {
   Complete
   Preempted
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -61,7 +61,7 @@ pub fn GamepadHapticsResult::from_string(s : String) -> GamepadHapticsResult? {
 pub(all) enum GamepadHapticEffectType {
   DualRumble
   TriggerRumble
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -205,19 +205,19 @@ pub fn GamepadEffectParameters::from_js(
 ///|
 /// GamepadEventInit dictionary
 pub(all) struct GamepadEventInit {
-  gamepad : Gamepad
+  gamepad : Nullable[Gamepad]
 }
 
 ///|
-/// Create a new GamepadEventInit
-pub fn GamepadEventInit::new(gamepad~ : Gamepad) -> GamepadEventInit {
-  GamepadEventInit::{ gamepad, }
+/// Create a new GamepadEventInit with default values
+pub fn GamepadEventInit::default() -> GamepadEventInit {
+  GamepadEventInit::{ gamepad: Nullable::Undefined, }
 }
 
 ///|
 extern "js" fn GamepadEventInit::to_js_ffi(self : GamepadEventInit) -> JsValue =
   #| (self) => ({
-  #|   gamepad: self.gamepad
+  #|   gamepad: ((() => { const v = self.gamepad; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
@@ -231,7 +231,7 @@ extern "js" fn GamepadEventInit::from_js_ffi(
   value : JsValue,
 ) -> GamepadEventInit =
   #| (v) => ({
-  #|   gamepad: v.gamepad
+  #|   gamepad: (v.gamepad === undefined ? { $tag: 0 } : v.gamepad === null ? { $tag: 1 } : { $tag: 2, _0: v.gamepad })
   #| })
 
 ///|
@@ -291,15 +291,19 @@ pub extern "js" fn Gamepad::get_mapping(self : Gamepad) -> GamepadMappingType =
   #| (self) => ['', 'standard', 'xr-standard'].indexOf(self.mapping)
 
 ///|
-pub extern "js" fn Gamepad::get_axes(self : Gamepad) -> Array[Double] =
+pub extern "js" fn Gamepad::get_axes(self : Gamepad) -> FixedArray[Double] =
   #| (self) => self.axes
 
 ///|
-pub extern "js" fn Gamepad::get_buttons(self : Gamepad) -> Array[GamepadButton] =
+pub extern "js" fn Gamepad::get_buttons(
+  self : Gamepad,
+) -> FixedArray[GamepadButton] =
   #| (self) => self.buttons
 
 ///|
-pub extern "js" fn Gamepad::get_touches(self : Gamepad) -> Array[GamepadTouch] =
+pub extern "js" fn Gamepad::get_touches(
+  self : Gamepad,
+) -> FixedArray[GamepadTouch] =
   #| (self) => self.touches
 
 ///|
@@ -315,7 +319,7 @@ pub extern "js" fn Gamepad::get_hand(self : Gamepad) -> GamepadHand =
 ///|
 pub extern "js" fn Gamepad::get_haptic_actuators(
   self : Gamepad,
-) -> Array[GamepadHapticActuator] =
+) -> FixedArray[GamepadHapticActuator] =
   #| (self) => self.hapticActuators
 
 ///|
@@ -405,7 +409,7 @@ pub extern "js" fn JsValue::to_gamepad_haptic_actuator(
 ///|
 pub extern "js" fn GamepadHapticActuator::get_effects(
   self : GamepadHapticActuator,
-) -> Array[GamepadHapticEffectType] =
+) -> FixedArray[GamepadHapticEffectType] =
   #| (self) => self.effects
 
 ///|
@@ -485,18 +489,22 @@ pub extern "js" fn GamepadEvent::to_event(self : GamepadEvent) -> Event =
   #| (self) => self
 
 ///|
-extern "js" fn GamepadEvent::new_ffi(
+pub extern "js" fn GamepadEvent::new(type_ : String) -> GamepadEvent =
+  #| (type_) => new GamepadEvent(type_)
+
+///|
+extern "js" fn GamepadEvent::new_with_event_init_dict_ffi(
   type_ : String,
   event_init_dict : JsValue,
 ) -> GamepadEvent =
   #| (type_, event_init_dict) => new GamepadEvent(type_, event_init_dict)
 
 ///|
-pub fn GamepadEvent::new(
+pub fn GamepadEvent::new_with_event_init_dict(
   type_ : String,
   event_init_dict : GamepadEventInit,
 ) -> GamepadEvent {
-  GamepadEvent::new_ffi(type_, event_init_dict.to_js())
+  GamepadEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
 ///|

@@ -10,31 +10,31 @@ pub extern "js" fn HeadersInit::to_js_value(self : HeadersInit) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create HeadersInit from Array[Array[String]]
+/// Create HeadersInit from FixedArray[FixedArray[String]]
 pub extern "js" fn HeadersInit::from_array_of_array_of_string(
-  v : Array[Array[String]],
+  v : FixedArray[FixedArray[String]],
 ) -> HeadersInit =
   #| (v) => v
 
 ///|
-/// Check if this HeadersInit is Array[Array[String]]
+/// Check if this HeadersInit is FixedArray[FixedArray[String]]
 pub extern "js" fn HeadersInit::is_array_of_array_of_string(
   self : HeadersInit,
 ) -> Bool =
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get HeadersInit as Array[Array[String]]
+/// Try to get HeadersInit as FixedArray[FixedArray[String]]
 pub extern "js" fn HeadersInit::as_array_of_array_of_string(
   self : HeadersInit,
-) -> Array[Array[String]]? =
-  #| (self) => (Array.isArray(self)) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> FixedArray[FixedArray[String]]? =
+  #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-/// Flatten Option[HeadersInit] to Array[Array[String]]?
+/// Flatten Option[HeadersInit] to FixedArray[FixedArray[String]]?
 pub fn HeadersInit::bind_as_array_of_array_of_string(
   value : HeadersInit?,
-) -> Array[Array[String]]? {
+) -> FixedArray[FixedArray[String]]? {
   match value {
     Some(v) => v.as_array_of_array_of_string()
     None => None
@@ -359,7 +359,7 @@ pub(all) enum RequestDestination {
   Video
   Worker
   Xslt
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -425,7 +425,7 @@ pub(all) enum RequestMode {
   SameOrigin
   NoCors
   Cors
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -456,7 +456,7 @@ pub(all) enum RequestCredentials {
   Omit
   SameOrigin
   Include
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -488,7 +488,7 @@ pub(all) enum RequestCache {
   NoCache
   ForceCache
   OnlyIfCached
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -523,7 +523,7 @@ pub(all) enum RequestRedirect {
   Follow
   Error
   Manual
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -550,7 +550,7 @@ pub fn RequestRedirect::from_string(s : String) -> RequestRedirect? {
 /// RequestDuplex enum
 pub(all) enum RequestDuplex {
   Half
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -575,7 +575,7 @@ pub(all) enum RequestPriority {
   High
   Low
   Auto
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -607,7 +607,7 @@ pub(all) enum ResponseType {
   Error
   Opaque
   Opaqueredirect
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -647,7 +647,7 @@ pub(all) struct ResponseInit {
 ///|
 /// Create a new ResponseInit with default values
 pub fn ResponseInit::default() -> ResponseInit {
-  ResponseInit::{ status: None, statusText: None, headers: None }
+  ResponseInit::{ status: None, statusText: None, headers: None, }
 }
 
 ///|
@@ -687,7 +687,7 @@ pub(all) struct DeferredRequestInit {
 ///|
 /// Create a new DeferredRequestInit with default values
 pub fn DeferredRequestInit::default() -> DeferredRequestInit {
-  DeferredRequestInit::{ activateAfter: None }
+  DeferredRequestInit::{ activateAfter: None, }
 }
 
 ///|
@@ -771,7 +771,9 @@ pub extern "js" fn Headers::get(self : Headers, name : String) -> String? =
   #| (self, name) => (self.get(name)) ?? undefined
 
 ///|
-pub extern "js" fn Headers::get_set_cookie(self : Headers) -> Array[String] =
+pub extern "js" fn Headers::get_set_cookie(
+  self : Headers,
+) -> FixedArray[String] =
   #| (self) => self.getSetCookie()
 
 ///|
@@ -807,7 +809,7 @@ pub extern "js" fn Headers::for_each(
 
 ///|
 pub extern "js" fn Headers::new_with_array_of_array_of_string(
-  init_ : Array[Array[String]],
+  init_ : FixedArray[FixedArray[String]],
 ) -> Headers =
   #| (init_) => new Headers(init_)
 
@@ -845,7 +847,7 @@ pub(all) enum RequestConstructorError {
   TypeError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -853,14 +855,14 @@ pub(all) enum RequestArrayBufferError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestBlobError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -868,14 +870,14 @@ pub(all) enum RequestBytesError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestFormDataError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -883,14 +885,14 @@ pub(all) enum RequestJsonError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestTextError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Request::new(
@@ -1085,14 +1087,14 @@ pub(all) enum ResponseRedirectError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseJsonError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1100,14 +1102,14 @@ pub(all) enum ResponseArrayBufferError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseBlobError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -1115,21 +1117,21 @@ pub(all) enum ResponseBytesError {
   TypeError(JsError)
   RangeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseFormDataError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseTextError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Response::new() -> Response =

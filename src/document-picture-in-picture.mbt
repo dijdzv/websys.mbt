@@ -156,7 +156,7 @@ pub(all) enum DocumentPictureInPictureRequestWindowError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn DocumentPictureInPicture::request_window(

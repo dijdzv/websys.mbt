@@ -11,7 +11,7 @@
 ///   table.createCaption(), table.createTHead(), etc.
 pub fn test_table_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("table")
+  let el = create_element(doc, "table")
   let table = @websys.HTMLTableElement::from_js_value(el.to_js_value())
 
   // caption — initially None, full lifecycle

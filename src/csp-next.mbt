@@ -8,7 +8,7 @@ pub(all) enum ScriptingPolicyViolationType {
   InlineScript
   InlineEventHandler
   Eval
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value

@@ -7,7 +7,7 @@ pub(all) enum PermissionState {
   Granted
   Denied
   Prompt
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -39,7 +39,7 @@ pub(all) struct PermissionDescriptor {
 ///|
 /// Create a new PermissionDescriptor with default values
 pub fn PermissionDescriptor::default() -> PermissionDescriptor {
-  PermissionDescriptor::{ name: "" }
+  PermissionDescriptor::{ name: "", }
 }
 
 ///|
@@ -83,7 +83,7 @@ pub fn PermissionSetParameters::new(
   descriptor~ : JsValue,
   state~ : PermissionState,
 ) -> PermissionSetParameters {
-  PermissionSetParameters::{ descriptor, state }
+  PermissionSetParameters::{ descriptor, state, }
 }
 
 ///|
@@ -154,14 +154,14 @@ pub(all) enum PermissionsQueryError {
   TypeError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum PermissionsRevokeError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn Permissions::query(

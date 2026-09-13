@@ -7,7 +7,7 @@ pub(all) enum ReadyState {
   Closed
   Open
   Ended
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -35,7 +35,7 @@ pub fn ReadyState::from_string(s : String) -> ReadyState? {
 pub(all) enum EndOfStreamError {
   Network
   Decode
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -61,7 +61,7 @@ pub fn EndOfStreamError::from_string(s : String) -> EndOfStreamError? {
 pub(all) enum AppendMode {
   Segments
   Sequence
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -92,7 +92,7 @@ pub(all) struct BufferedChangeEventInit {
 ///|
 /// Create a new BufferedChangeEventInit with default values
 pub fn BufferedChangeEventInit::default() -> BufferedChangeEventInit {
-  BufferedChangeEventInit::{ addedRanges: None, removedRanges: None }
+  BufferedChangeEventInit::{ addedRanges: None, removedRanges: None, }
 }
 
 ///|
@@ -175,7 +175,7 @@ pub(all) enum MediaSourceSetDurationError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -185,21 +185,21 @@ pub(all) enum MediaSourceAddSourceBufferError {
   InvalidAccessError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceRemoveSourceBufferError {
   NotFoundError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaSourceEndOfStreamError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn MediaSource::new() -> MediaSource =
@@ -410,14 +410,14 @@ pub(all) enum SourceBufferSetModeError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferSetTimestampOffsetError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -425,7 +425,7 @@ pub(all) enum SourceBufferSetAppendWindowStartError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -433,7 +433,7 @@ pub(all) enum SourceBufferSetAppendWindowEndError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -441,14 +441,14 @@ pub(all) enum SourceBufferAppendBufferError {
   InvalidStateError(JsError)
   QuotaExceededError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum SourceBufferAbortError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -457,7 +457,7 @@ pub(all) enum SourceBufferChangeTypeError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -465,7 +465,7 @@ pub(all) enum SourceBufferRemoveError {
   InvalidStateError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn SourceBuffer::get_mode(self : SourceBuffer) -> AppendMode =
@@ -945,7 +945,7 @@ pub extern "js" fn ManagedSourceBuffer::to_event_target(
 ///|
 pub extern "js" fn ManagedSourceBuffer::set_onbufferedchange(
   self : ManagedSourceBuffer,
-  handler : (Event) -> Unit,
+  handler : (BufferedChangeEvent) -> Unit,
 ) -> Unit =
   #| (self, handler) => { self.onbufferedchange = (e) => handler(e) }
 

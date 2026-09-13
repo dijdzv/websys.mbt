@@ -2,7 +2,7 @@
 fn test_video_element() -> Unit {
   let doc = get_document()
   let video = @websys.HTMLVideoElement::from_js_value(
-    doc.create_element("video").to_js_value(),
+    create_element(doc, "video").to_js_value(),
   )
   // width/height
   video.set_width(640)
@@ -30,7 +30,7 @@ fn test_video_element() -> Unit {
 fn test_audio_element() -> Unit {
   let doc = get_document()
   let audio = @websys.HTMLAudioElement::from_js_value(
-    doc.create_element("audio").to_js_value(),
+    create_element(doc, "audio").to_js_value(),
   )
   // type conversions
   let _media : @websys.HTMLMediaElement = audio.to_html_media_element()
@@ -43,7 +43,7 @@ fn test_audio_element() -> Unit {
 fn test_source_element() -> Unit {
   let doc = get_document()
   let source = @websys.HTMLSourceElement::from_js_value(
-    doc.create_element("source").to_js_value(),
+    create_element(doc, "source").to_js_value(),
   )
   // src is a URL-reflected attribute: getter returns absolute URL
   source.set_src("https://cdn.example.com/video.mp4")

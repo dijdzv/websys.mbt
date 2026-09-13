@@ -12,7 +12,7 @@ pub(all) enum RTCErrorDetailTypeIdp {
   IdpTlsFailure
   IdpTokenExpired
   IdpTokenInvalid
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -82,7 +82,7 @@ pub fn RTCIdentityProvider::new(
   generateAssertion~ : GenerateAssertionCallback,
   validateAssertion~ : ValidateAssertionCallback,
 ) -> RTCIdentityProvider {
-  RTCIdentityProvider::{ generateAssertion, validateAssertion }
+  RTCIdentityProvider::{ generateAssertion, validateAssertion, }
 }
 
 ///|
@@ -127,7 +127,7 @@ pub(all) struct RTCIdentityAssertionResult {
 pub fn RTCIdentityAssertionResult::new(
   idp~ : RTCIdentityProviderDetails,
 ) -> RTCIdentityAssertionResult {
-  RTCIdentityAssertionResult::{ idp, assertion: "" }
+  RTCIdentityAssertionResult::{ idp, assertion: "", }
 }
 
 ///|
@@ -174,7 +174,7 @@ pub(all) struct RTCIdentityProviderDetails {
 ///|
 /// Create a new RTCIdentityProviderDetails with default values
 pub fn RTCIdentityProviderDetails::default() -> RTCIdentityProviderDetails {
-  RTCIdentityProviderDetails::{ domain: "", protocol: None }
+  RTCIdentityProviderDetails::{ domain: "", protocol: None, }
 }
 
 ///|
@@ -221,7 +221,7 @@ pub(all) struct RTCIdentityValidationResult {
 ///|
 /// Create a new RTCIdentityValidationResult with default values
 pub fn RTCIdentityValidationResult::default() -> RTCIdentityValidationResult {
-  RTCIdentityValidationResult::{ identity: "", contents: "" }
+  RTCIdentityValidationResult::{ identity: "", contents: "", }
 }
 
 ///|
@@ -262,11 +262,11 @@ pub fn RTCIdentityValidationResult::from_js(
 /// RTCConfiguration dictionary
 pub(all) struct RTCConfiguration {
   peerIdentity : String?
-  iceServers : Array[RTCIceServer]?
+  iceServers : FixedArray[RTCIceServer]?
   iceTransportPolicy : RTCIceTransportPolicy?
   bundlePolicy : RTCBundlePolicy?
   rtcpMuxPolicy : RTCRtcpMuxPolicy?
-  certificates : Array[RTCCertificate]?
+  certificates : FixedArray[RTCCertificate]?
   iceCandidatePoolSize : Int?
 }
 
@@ -288,11 +288,11 @@ pub fn RTCConfiguration::default() -> RTCConfiguration {
 extern "js" fn RTCConfiguration::to_js_ffi(self : RTCConfiguration) -> JsValue =
   #| (self) => ({
   #|   peerIdentity: self.peerIdentity,
-  #|   iceServers: ((() => { const v = self.iceServers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   iceServers: self.iceServers,
   #|   iceTransportPolicy: ((() => { const v = self.iceTransportPolicy; if (v === undefined) return undefined; return ['relay', 'all'][v]; })()),
   #|   bundlePolicy: ((() => { const v = self.bundlePolicy; if (v === undefined) return undefined; return ['balanced', 'max-compat', 'max-bundle'][v]; })()),
   #|   rtcpMuxPolicy: ((() => { const v = self.rtcpMuxPolicy; if (v === undefined) return undefined; return ['require'][v]; })()),
-  #|   certificates: ((() => { const v = self.certificates; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   certificates: self.certificates,
   #|   iceCandidatePoolSize: self.iceCandidatePoolSize
   #| })
 
@@ -308,11 +308,11 @@ extern "js" fn RTCConfiguration::from_js_ffi(
 ) -> RTCConfiguration =
   #| (v) => ({
   #|   peerIdentity: v.peerIdentity,
-  #|   iceServers: (v.iceServers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iceServers }),
+  #|   iceServers: v.iceServers,
   #|   iceTransportPolicy: (v.iceTransportPolicy === undefined ? undefined : ['relay', 'all'].indexOf(v.iceTransportPolicy)),
   #|   bundlePolicy: (v.bundlePolicy === undefined ? undefined : ['balanced', 'max-compat', 'max-bundle'].indexOf(v.bundlePolicy)),
   #|   rtcpMuxPolicy: (v.rtcpMuxPolicy === undefined ? undefined : ['require'].indexOf(v.rtcpMuxPolicy)),
-  #|   certificates: (v.certificates === undefined ? { $tag: 0 } : { $tag: 1, _0: v.certificates }),
+  #|   certificates: v.certificates,
   #|   iceCandidatePoolSize: v.iceCandidatePoolSize
   #| })
 

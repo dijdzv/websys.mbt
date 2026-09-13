@@ -7,7 +7,7 @@
 fn test_data_element() -> Unit {
   let doc = get_document()
   let data = @websys.HTMLDataElement::from_js_value(
-    doc.create_element("data").to_js_value(),
+    create_element(doc, "data").to_js_value(),
   )
   // value
   assert_eq(data.get_value(), "", label="value default")
@@ -22,7 +22,7 @@ fn test_data_element() -> Unit {
 fn test_time_element() -> Unit {
   let doc = get_document()
   let time = @websys.HTMLTimeElement::from_js_value(
-    doc.create_element("time").to_js_value(),
+    create_element(doc, "time").to_js_value(),
   )
   // dateTime
   assert_eq(time.get_date_time(), "", label="dateTime default")
@@ -37,7 +37,7 @@ fn test_time_element() -> Unit {
 fn test_details_element() -> Unit {
   let doc = get_document()
   let details = @websys.HTMLDetailsElement::from_js_value(
-    doc.create_element("details").to_js_value(),
+    create_element(doc, "details").to_js_value(),
   )
   // open
   assert_false(details.get_open(), label="open default")

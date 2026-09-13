@@ -10,7 +10,7 @@ pub(all) struct PortalActivateOptions {
 ///|
 /// Create a new PortalActivateOptions with default values
 pub fn PortalActivateOptions::default() -> PortalActivateOptions {
-  PortalActivateOptions::{ data: None }
+  PortalActivateOptions::{ data: None, }
 }
 
 ///|
@@ -50,7 +50,7 @@ pub(all) struct PortalActivateEventInit {
 ///|
 /// Create a new PortalActivateEventInit with default values
 pub fn PortalActivateEventInit::default() -> PortalActivateEventInit {
-  PortalActivateEventInit::{ data: None }
+  PortalActivateEventInit::{ data: None, }
 }
 
 ///|

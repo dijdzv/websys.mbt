@@ -2,7 +2,7 @@
 fn test_html_html_element() -> Unit {
   let doc = get_document()
   let html = @websys.HTMLHtmlElement::from_js_value(
-    doc.create_element("html").to_js_value(),
+    create_element(doc, "html").to_js_value(),
   )
   // version is a deprecated string property
   html.set_version("-//W3C//DTD HTML 4.01//EN")
@@ -15,7 +15,7 @@ fn test_html_html_element() -> Unit {
 fn test_title_element() -> Unit {
   let doc = get_document()
   let title = @websys.HTMLTitleElement::from_js_value(
-    doc.create_element("title").to_js_value(),
+    create_element(doc, "title").to_js_value(),
   )
   title.set_text("My Page Title")
   assert_eq(title.get_text(), "My Page Title", label="text")
@@ -26,7 +26,7 @@ fn test_title_element() -> Unit {
 fn test_meta_element() -> Unit {
   let doc = get_document()
   let meta = @websys.HTMLMetaElement::from_js_value(
-    doc.create_element("meta").to_js_value(),
+    create_element(doc, "meta").to_js_value(),
   )
   meta.set_name("description")
   assert_eq(meta.get_name(), "description", label="name")
@@ -45,7 +45,7 @@ fn test_meta_element() -> Unit {
 fn test_style_element() -> Unit {
   let doc = get_document()
   let style = @websys.HTMLStyleElement::from_js_value(
-    doc.create_element("style").to_js_value(),
+    create_element(doc, "style").to_js_value(),
   )
   // media
   style.set_media("print")
@@ -74,7 +74,7 @@ fn test_style_element() -> Unit {
 fn test_link_element() -> Unit {
   let doc = get_document()
   let link = @websys.HTMLLinkElement::from_js_value(
-    doc.create_element("link").to_js_value(),
+    create_element(doc, "link").to_js_value(),
   )
   link.set_rel("stylesheet")
   assert_eq(link.get_rel(), "stylesheet", label="rel")
@@ -99,7 +99,7 @@ fn test_link_element() -> Unit {
 fn test_script_element() -> Unit {
   let doc = get_document()
   let script = @websys.HTMLScriptElement::from_js_value(
-    doc.create_element("script").to_js_value(),
+    create_element(doc, "script").to_js_value(),
   )
   // src is a URL-reflected attribute: getter returns absolute URL per HTML spec
   script.set_src("https://cdn.example.com/app.js").unwrap()

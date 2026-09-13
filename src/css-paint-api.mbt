@@ -10,7 +10,7 @@ pub(all) struct PaintRenderingContext2DSettings {
 ///|
 /// Create a new PaintRenderingContext2DSettings with default values
 pub fn PaintRenderingContext2DSettings::default() -> PaintRenderingContext2DSettings {
-  PaintRenderingContext2DSettings::{ alpha: None }
+  PaintRenderingContext2DSettings::{ alpha: None, }
 }
 
 ///|
@@ -95,7 +95,7 @@ pub(all) enum PaintWorkletGlobalScopeRegisterPaintError {
   TypeError(JsError)
   InvalidModificationError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PaintWorkletGlobalScope::register_paint(
@@ -673,14 +673,14 @@ pub extern "js" fn PaintRenderingContext2D::set_miter_limit(
 ///|
 pub extern "js" fn PaintRenderingContext2D::set_line_dash(
   self : PaintRenderingContext2D,
-  segments : Array[Double],
+  segments : FixedArray[Double],
 ) -> Unit =
   #| (self, segments) => self.setLineDash(segments)
 
 ///|
 pub extern "js" fn PaintRenderingContext2D::get_line_dash(
   self : PaintRenderingContext2D,
-) -> Array[Double] =
+) -> FixedArray[Double] =
   #| (self) => self.getLineDash()
 
 ///|

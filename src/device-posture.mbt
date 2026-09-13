@@ -6,7 +6,7 @@
 pub(all) enum DevicePostureType {
   Continuous
   Folded
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value

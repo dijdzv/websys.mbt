@@ -80,7 +80,7 @@ pub fn PushMessageDataInit::bind_as_string(
 pub(all) enum PushEncryptionKeyName {
   P256dh
   Auth
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -110,7 +110,7 @@ pub(all) struct PushPermissionDescriptor {
 ///|
 /// Create a new PushPermissionDescriptor with default values
 pub fn PushPermissionDescriptor::default() -> PushPermissionDescriptor {
-  PushPermissionDescriptor::{ userVisibleOnly: None }
+  PushPermissionDescriptor::{ userVisibleOnly: None, }
 }
 
 ///|
@@ -368,7 +368,7 @@ pub extern "js" fn JsValue::to_push_manager(self : JsValue) -> PushManager =
 ///|
 pub extern "js" fn PushManager::get_supported_content_encodings(
   self : PushManager,
-) -> Array[String] =
+) -> FixedArray[String] =
   #| (self) => self.supportedContentEncodings
 
 ///|

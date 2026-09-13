@@ -10,7 +10,7 @@ pub(all) struct ColorSelectionResult {
 ///|
 /// Create a new ColorSelectionResult with default values
 pub fn ColorSelectionResult::default() -> ColorSelectionResult {
-  ColorSelectionResult::{ sRGBHex: None }
+  ColorSelectionResult::{ sRGBHex: None, }
 }
 
 ///|
@@ -50,7 +50,7 @@ pub(all) struct ColorSelectionOptions {
 ///|
 /// Create a new ColorSelectionOptions with default values
 pub fn ColorSelectionOptions::default() -> ColorSelectionOptions {
-  ColorSelectionOptions::{ signal: None }
+  ColorSelectionOptions::{ signal: None, }
 }
 
 ///|
@@ -117,7 +117,7 @@ pub(all) enum EyeDropperOpenError {
   NotAllowedError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn EyeDropper::new() -> EyeDropper =

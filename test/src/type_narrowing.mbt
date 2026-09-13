@@ -6,23 +6,32 @@
 pub fn test_node_narrowing() -> Unit {
   let doc = get_document()
   // Create a div — its Node should narrow to HTMLDivElement
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let node = div.to_node()
   // Success: Node → HTMLDivElement
-  assert_true(node.as_html_div_element() is Some(_), label="Node as HTMLDivElement")
+  assert_true(
+    node.as_html_div_element() is Some(_),
+    label="Node as HTMLDivElement",
+  )
   // Success: Node → HTMLElement
   assert_true(node.as_html_element() is Some(_), label="Node as HTMLElement")
   // Success: Node → Element
   assert_true(node.as_element() is Some(_), label="Node as Element")
   // Failure: Node → HTMLInputElement (div is not input)
-  assert_true(node.as_html_input_element() is None, label="div not HTMLInputElement")
+  assert_true(
+    node.as_html_input_element() is None,
+    label="div not HTMLInputElement",
+  )
   // Failure: Node → Document
   assert_true(node.as_document() is None, label="div not Document")
   // Text node narrowing
   let text = doc.create_text_node("hello")
   let text_node = text.to_node()
   assert_true(text_node.as_text() is Some(_), label="Text node as Text")
-  assert_true(text_node.as_character_data() is Some(_), label="Text node as CharacterData")
+  assert_true(
+    text_node.as_character_data() is Some(_),
+    label="Text node as CharacterData",
+  )
   assert_true(text_node.as_element() is None, label="Text node not Element")
   // Comment node narrowing
   let comment = doc.create_comment("test")
@@ -36,7 +45,7 @@ pub fn test_node_narrowing() -> Unit {
 /// Test Element::as_* narrowing.
 pub fn test_element_narrowing() -> Unit {
   let doc = get_document()
-  let input = doc.create_element("input")
+  let input = create_element(doc, "input")
   // Element → HTMLInputElement
   assert_true(
     input.as_html_input_element() is Some(_),
@@ -62,7 +71,10 @@ pub fn test_event_narrowing() -> Unit {
     event.as_pointer_event() is Some(_),
     label="Event as PointerEvent",
   )
-  assert_true(event.as_mouse_event() is Some(_), label="PointerEvent as MouseEvent")
+  assert_true(
+    event.as_mouse_event() is Some(_),
+    label="PointerEvent as MouseEvent",
+  )
   assert_true(event.as_ui_event() is Some(_), label="PointerEvent as UIEvent")
   // Failure: PointerEvent is not KeyboardEvent
   assert_true(
@@ -94,7 +106,7 @@ pub fn test_event_narrowing() -> Unit {
 pub fn test_from_js_value_opt() -> Unit {
   let doc = get_document()
   // Create a DOMRect via getBoundingClientRect
-  let div = doc.create_element("div")
+  let div = create_element(doc, "div")
   let rect_js = div.get_bounding_client_rect().to_js_value()
   // Success: JsValue → DOMRect
   assert_true(
@@ -142,6 +154,9 @@ pub fn test_union_type_narrowing() -> Unit {
   assert_true(blob_part.is_blob(), label="BlobPart from_blob is_blob")
   assert_false(blob_part.is_string(), label="BlobPart from_blob not is_string")
   assert_true(blob_part.as_blob() is Some(_), label="blob part as_blob is Some")
-  assert_true(blob_part.as_string() is None, label="blob part as_string is None")
+  assert_true(
+    blob_part.as_string() is None,
+    label="blob part as_string is None",
+  )
   println("  union_type_narrowing: ok")
 }

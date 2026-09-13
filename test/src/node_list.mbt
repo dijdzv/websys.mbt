@@ -1,10 +1,10 @@
 ///|
 fn test_node_list() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
-  let s1 = doc.create_element("span")
-  let s2 = doc.create_element("span")
-  let s3 = doc.create_element("span")
+  let div = create_element(doc, "div")
+  let s1 = create_element(doc, "span")
+  let s2 = create_element(doc, "span")
+  let s3 = create_element(doc, "span")
   div.to_node().append_child(s1.to_node()) |> ignore
   div.to_node().append_child(s2.to_node()) |> ignore
   div.to_node().append_child(s3.to_node()) |> ignore
@@ -29,9 +29,9 @@ fn test_node_list() -> Unit {
 ///|
 fn test_html_collection() -> Unit {
   let doc = get_document()
-  let div = doc.create_element("div")
-  let p1 = doc.create_element("p")
-  let p2 = doc.create_element("p")
+  let div = create_element(doc, "div")
+  let p1 = create_element(doc, "p")
+  let p2 = create_element(doc, "p")
   p2.set_id("test-p2")
   div.to_node().append_child(p1.to_node()) |> ignore
   div.to_node().append_child(p2.to_node()) |> ignore

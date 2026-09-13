@@ -1,10 +1,10 @@
 import {
+  "moonbitlang/core/debug",
   "dijdzv/websys",
   "moonbitlang/async",
   "moonbitlang/async/js_async",
 }
 
-options(
-  "is-main": true,
-  "supported-targets": [ "js" ],
-)
+pkgtype(kind: "executable")
+
+supported_targets = "js"

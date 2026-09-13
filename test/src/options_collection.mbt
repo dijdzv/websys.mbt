@@ -6,22 +6,24 @@
 fn test_options_collection() -> Unit {
   let doc = get_document()
   let select = @websys.HTMLSelectElement::from_js_value(
-    doc.create_element("select").to_js_value(),
+    create_element(doc, "select").to_js_value(),
   )
 
   // Add four options (matching Rust test: "food options collection")
   let foods = ["Pizza", "Tacos", "Sushi", "Ramen"]
   for i = 0; i < foods.length(); i = i + 1 {
     let opt = @websys.HTMLOptionElement::from_js_value(
-      doc.create_element("option").to_js_value(),
+      create_element(doc, "option").to_js_value(),
     )
     opt.set_value(foods[i])
     opt.set_text(foods[i])
-    select.add(
+    select
+    .add(
       @websys.HTMLOptionElementOrHTMLOptGroupElement::from_html_option_element(
         opt,
       ),
-    ).unwrap()
+    )
+    .unwrap()
   }
 
   // Get the options collection

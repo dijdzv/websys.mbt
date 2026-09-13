@@ -82,7 +82,7 @@ pub(all) enum CredentialMediationRequirement {
   Optional
   Conditional
   Required
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -112,6 +112,29 @@ pub fn CredentialMediationRequirement::from_string(
 }
 
 ///|
+/// CredentialUiMode enum
+pub(all) enum CredentialUiMode {
+  Immediate
+} derive(Eq, Debug)
+
+///|
+/// Convert to string value
+pub fn CredentialUiMode::to_string(self : CredentialUiMode) -> String {
+  match self {
+    CredentialUiMode::Immediate => "immediate"
+  }
+}
+
+///|
+/// Parse from string value
+pub fn CredentialUiMode::from_string(s : String) -> CredentialUiMode? {
+  match s {
+    "immediate" => Some(CredentialUiMode::Immediate)
+    _ => None
+  }
+}
+
+///|
 /// CredentialData dictionary
 pub(all) struct CredentialData {
   id : String
@@ -120,7 +143,7 @@ pub(all) struct CredentialData {
 ///|
 /// Create a new CredentialData with default values
 pub fn CredentialData::default() -> CredentialData {
-  CredentialData::{ id: "" }
+  CredentialData::{ id: "", }
 }
 
 ///|
@@ -151,6 +174,7 @@ pub fn CredentialData::from_js(value : JsValue) -> CredentialData {
 /// CredentialRequestOptions dictionary
 pub(all) struct CredentialRequestOptions {
   mediation : CredentialMediationRequirement?
+  uiMode : String?
   signal : AbortSignal?
   password : Bool?
   federated : FederatedCredentialRequestOptions?
@@ -165,6 +189,7 @@ pub(all) struct CredentialRequestOptions {
 pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
   CredentialRequestOptions::{
     mediation: None,
+    uiMode: None,
     signal: None,
     password: None,
     federated: None,
@@ -181,6 +206,7 @@ extern "js" fn CredentialRequestOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
+  #|   uiMode: self.uiMode,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   password: (self.password === -1 ? undefined : self.password),
   #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -204,6 +230,7 @@ extern "js" fn CredentialRequestOptions::from_js_ffi(
 ) -> CredentialRequestOptions =
   #| (v) => ({
   #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
+  #|   uiMode: v.uiMode,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   password: (v.password === undefined ? -1 : v.password),
   #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated }),
@@ -350,14 +377,14 @@ pub fn PasswordCredentialData::from_js(
 ///|
 /// FederatedCredentialRequestOptions dictionary
 pub(all) struct FederatedCredentialRequestOptions {
-  providers : Array[String]?
-  protocols : Array[String]?
+  providers : FixedArray[String]?
+  protocols : FixedArray[String]?
 }
 
 ///|
 /// Create a new FederatedCredentialRequestOptions with default values
 pub fn FederatedCredentialRequestOptions::default() -> FederatedCredentialRequestOptions {
-  FederatedCredentialRequestOptions::{ providers: None, protocols: None }
+  FederatedCredentialRequestOptions::{ providers: None, protocols: None, }
 }
 
 ///|
@@ -365,8 +392,8 @@ extern "js" fn FederatedCredentialRequestOptions::to_js_ffi(
   self : FederatedCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   providers: ((() => { const v = self.providers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   protocols: ((() => { const v = self.protocols; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   providers: self.providers,
+  #|   protocols: self.protocols
   #| })
 
 ///|
@@ -382,8 +409,8 @@ extern "js" fn FederatedCredentialRequestOptions::from_js_ffi(
   value : JsValue,
 ) -> FederatedCredentialRequestOptions =
   #| (v) => ({
-  #|   providers: (v.providers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.providers }),
-  #|   protocols: (v.protocols === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocols })
+  #|   providers: v.providers,
+  #|   protocols: v.protocols
   #| })
 
 ///|
@@ -539,12 +566,6 @@ pub extern "js" fn Credential::is_conditional_mediation_available() -> Promise[
   #| () => Credential.isConditionalMediationAvailable()
 
 ///|
-pub extern "js" fn Credential::will_request_conditional_creation() -> Promise[
-  Unit,
-] =
-  #| () => Credential.willRequestConditionalCreation()
-
-///|
 /// CredentialsContainer interface
 pub type CredentialsContainer
 
@@ -592,14 +613,14 @@ pub(all) enum CredentialsContainerGetError {
   NotAllowedError(JsError)
   IdentityCredentialError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
 pub(all) enum CredentialsContainerStoreError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -608,7 +629,7 @@ pub(all) enum CredentialsContainerCreateError {
   AbortError(JsError)
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn CredentialsContainer::get(
@@ -714,7 +735,7 @@ pub extern "js" fn PasswordCredential::to_credential(
 pub(all) enum PasswordCredentialConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PasswordCredential::new_with_html_form_element(

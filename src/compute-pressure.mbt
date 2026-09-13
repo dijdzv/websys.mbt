@@ -5,7 +5,7 @@
 /// PressureSource enum
 pub(all) enum PressureSource {
   Cpu
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -31,7 +31,7 @@ pub(all) enum PressureState {
   Fair
   Serious
   Critical
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -63,7 +63,7 @@ pub type PressureUpdateCallback
 ///|
 /// Create PressureUpdateCallback from a MoonBit function
 pub extern "js" fn PressureUpdateCallback::from_fn(
-  handler : (Array[PressureRecord], PressureObserver) -> Unit,
+  handler : (FixedArray[PressureRecord], PressureObserver) -> Unit,
 ) -> PressureUpdateCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
@@ -76,7 +76,7 @@ pub(all) struct PressureObserverOptions {
 ///|
 /// Create a new PressureObserverOptions with default values
 pub fn PressureObserverOptions::default() -> PressureObserverOptions {
-  PressureObserverOptions::{ sampleInterval: None }
+  PressureObserverOptions::{ sampleInterval: None, }
 }
 
 ///|
@@ -154,7 +154,7 @@ pub extern "js" fn JsValue::to_pressure_observer(
 pub(all) enum PressureObserverConstructorError {
   NotAllowedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 /// Error type for throwing methods
@@ -162,7 +162,7 @@ pub(all) enum PressureObserverObserveError {
   NotAllowedError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub extern "js" fn PressureObserver::new(
@@ -210,13 +210,13 @@ pub extern "js" fn PressureObserver::disconnect(
 ///|
 pub extern "js" fn PressureObserver::take_records(
   self : PressureObserver,
-) -> Array[PressureRecord] =
+) -> FixedArray[PressureRecord] =
   #| (self) => self.takeRecords()
 
 ///|
 pub extern "js" fn PressureObserver::get_known_sources(
   self : PressureObserver,
-) -> Array[PressureSource] =
+) -> FixedArray[PressureSource] =
   #| (self) => self.knownSources
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum SpatialNavigationDirection {
   Down
   Left
   Right
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -42,7 +42,7 @@ pub fn SpatialNavigationDirection::from_string(
 pub(all) enum FocusableAreaSearchMode {
   Visible
   All
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -76,7 +76,7 @@ pub(all) struct FocusableAreasOption {
 ///|
 /// Create a new FocusableAreasOption with default values
 pub fn FocusableAreasOption::default() -> FocusableAreasOption {
-  FocusableAreasOption::{ mode: None }
+  FocusableAreasOption::{ mode: None, }
 }
 
 ///|
@@ -110,7 +110,7 @@ pub fn FocusableAreasOption::from_js(value : JsValue) -> FocusableAreasOption {
 ///|
 /// SpatialNavigationSearchOptions dictionary
 pub(all) struct SpatialNavigationSearchOptions {
-  candidates : Array[Node]?
+  candidates : FixedArray[Node]?
   container : Nullable[Node]
 }
 
@@ -128,7 +128,7 @@ extern "js" fn SpatialNavigationSearchOptions::to_js_ffi(
   self : SpatialNavigationSearchOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   candidates: ((() => { const v = self.candidates; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   candidates: self.candidates,
   #|   container: ((() => { const v = self.container; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
@@ -145,7 +145,7 @@ extern "js" fn SpatialNavigationSearchOptions::from_js_ffi(
   value : JsValue,
 ) -> SpatialNavigationSearchOptions =
   #| (v) => ({
-  #|   candidates: (v.candidates === undefined ? { $tag: 0 } : { $tag: 1, _0: v.candidates }),
+  #|   candidates: v.candidates,
   #|   container: (v.container === undefined ? { $tag: 0 } : v.container === null ? { $tag: 1 } : { $tag: 2, _0: v.container })
   #| })
 
@@ -167,7 +167,7 @@ pub(all) struct NavigationEventInit {
 ///|
 /// Create a new NavigationEventInit with default values
 pub fn NavigationEventInit::default() -> NavigationEventInit {
-  NavigationEventInit::{ dir: None, relatedTarget: Nullable::Undefined }
+  NavigationEventInit::{ dir: None, relatedTarget: Nullable::Undefined, }
 }
 
 ///|

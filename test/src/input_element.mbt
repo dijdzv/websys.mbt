@@ -10,7 +10,7 @@
 ///   input.value = "hello"
 pub fn test_input_element() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("input")
+  let el = create_element(doc, "input")
   let input = @websys.HTMLInputElement::from_js_value(el.to_js_value())
 
   // autofocus — via HTMLElement (Rust uses Deref, MoonBit needs upcast)
@@ -144,7 +144,7 @@ pub fn test_input_element() -> Unit {
 /// Equivalent to Rust web-sys input_element.rs image tests.
 pub fn test_input_image() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("input")
+  let el = create_element(doc, "input")
   let input = @websys.HTMLInputElement::from_js_value(el.to_js_value())
   input.set_type("image")
 
@@ -167,7 +167,7 @@ pub fn test_input_image() -> Unit {
 /// Equivalent to Rust web-sys input_element.rs validation tests.
 pub fn test_input_validation() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("input")
+  let el = create_element(doc, "input")
   let input = @websys.HTMLInputElement::from_js_value(el.to_js_value())
   input.set_type("text")
 
@@ -211,7 +211,7 @@ pub fn test_input_validation() -> Unit {
 ///   cb.checked = true
 pub fn test_input_checkbox() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("input")
+  let el = create_element(doc, "input")
   let cb = @websys.HTMLInputElement::from_js_value(el.to_js_value())
   cb.set_type("checkbox")
   assert_eq(cb.get_type(), "checkbox", label="type checkbox")
@@ -234,7 +234,7 @@ pub fn test_input_checkbox() -> Unit {
 /// Test HTMLInputElement length constraints (minLength, maxLength).
 pub fn test_input_length() -> Unit {
   let doc = get_document()
-  let el = doc.create_element("input")
+  let el = create_element(doc, "input")
   let input = @websys.HTMLInputElement::from_js_value(el.to_js_value())
   input.set_type("text")
 

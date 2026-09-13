@@ -6,7 +6,7 @@
 /// Helper: create a canvas and get its 2D rendering context.
 fn get_canvas_2d() -> @websys.CanvasRenderingContext2D {
   let doc = get_document()
-  let el = doc.create_element("canvas")
+  let el = create_element(doc, "canvas")
   let canvas = @websys.HTMLCanvasElement::from_js_value(el.to_js_value())
   canvas.set_width(200)
   canvas.set_height(200)

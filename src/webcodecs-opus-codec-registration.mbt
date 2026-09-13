@@ -6,7 +6,7 @@
 pub(all) enum OpusBitstreamFormat {
   Opus
   Ogg
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -33,7 +33,7 @@ pub(all) enum OpusSignal {
   Auto
   Music
   Voice
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value
@@ -62,7 +62,7 @@ pub(all) enum OpusApplication {
   Voip
   Audio
   Lowdelay
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 /// Convert to string value

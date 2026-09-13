@@ -15,6 +15,10 @@ generation path is unchanged.
 - DOM values use opaque `#external` references, not integer handles.
 - Strings use MoonBit's `use-js-builtin-string` link option. Instantiate with
   `builtins: ['js-string']` and `importedStringConstants: '_'`.
+- Nullable strings and declared references expose `Option`. Private opaque
+  imports carry the host value; MoonBit wrappers explicitly convert `null` to
+  `None` and non-null values to `Some`, without exposing enum layout to JS.
+  Empty strings remain `Some("")`. Setters follow the browser's own null semantics.
 - The generated `createImports()` supplies `websys` and the official
   `moonbit:ffi.make_closure` hook. No dependency on Wasm closure layout is needed.
 - Construct an opaque callback handle once and reuse it for registration and
@@ -32,8 +36,11 @@ boolean/long/double values, references to declared interfaces, and one-argument
 void callbacks. The fixture is a deliberately narrowed DOM surface, not a copy
 of the complete DOM IDL. It tests Unicode round-trips, booleans, captured callback
 state, duplicate listener registration and removal in two Wasm instances.
+Nullable attributes, operation arguments and results are supported for strings
+and declared references. Tests cover missing/found nodes, null versus empty
+strings, Unicode values and nullable DOM arguments.
 
 Unsupported definitions/types are rejected rather than silently omitted. Full
-Webref generation needs inheritance/mixins, nullable values, optional arguments,
+Webref generation needs inheritance/mixins, nullable callback arguments, optional arguments,
 overloads, dictionaries, sequences, enum/union conversions, Promise support and
 typed exception handling. Linear-memory Wasm is outside this backend's scope.

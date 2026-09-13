@@ -61,9 +61,7 @@ foreign-binary support to run the downloaded Linux tools.
 Use `mise run fmt` / `mise run fmt-check` for formatting.
 
 The library continues to publish to Mooncakes through the Release workflow.
-Only the generator's npm publication has been retired. The published module
-keeps `moon.mod.json` because moon-release 0.3.2 does not yet read `moon.mod`;
-both formats are supported by the pinned MoonBit compiler. Keep a single manifest.
+The generator is maintained locally and is not published to npm.
 
 This update uses `FixedArray` for generated WebIDL sequences and `Debug` for
 generated debugging representations. Callers using explicit `Array` types or

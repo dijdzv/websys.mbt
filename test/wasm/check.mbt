@@ -70,6 +70,46 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
     return 24
   }
   element.remove_event_listener("custom", handler, false)
+  let composition = @bindings.CompositionEvent::new("compositionupdate", @bindings.CompositionEventInit::{
+    bubbles: Some(true),
+    cancelable: Some(false),
+    composed: None,
+    data: Some("あいう😀"),
+  })
+  guard composition.data() == "あいう😀" && composition.bubbles() else {
+    return 25
+  }
+  let composition_calls = Ref(0)
+  let composition_handler = @bindings.EventListener::new(fn(value) {
+    if @bindings.CompositionEvent::from_event_opt(value) is Some(typed) &&
+      typed.data() == "あいう😀" &&
+      typed.bubbles() {
+      composition_calls.val += 1
+    }
+  })
+  element.add_event_listener("compositionupdate", composition_handler, false)
+  ignore(element.dispatch_event(composition.as_event()))
+  guard composition_calls.val == 1 else { return 26 }
+  element.remove_event_listener("compositionupdate", composition_handler, false)
+  ignore(element.dispatch_event(composition.as_event()))
+  guard composition_calls.val == 1 else { return 27 }
+  let empty_composition = @bindings.CompositionEvent::new("compositionend", @bindings.CompositionEventInit::{
+    bubbles: None,
+    cancelable: None,
+    composed: None,
+    data: None,
+  })
+  guard empty_composition.data() == "" && !empty_composition.bubbles() else {
+    return 28
+  }
+  guard @bindings.CompositionEvent::from_event_opt(event) is None else {
+    return 29
+  }
+  guard @bindings.CompositionEvent::from_ui_event_opt(composition.as_ui_event())
+    is Some(restored) &&
+    restored.data() == composition.data() else {
+    return 30
+  }
   0
 }
 

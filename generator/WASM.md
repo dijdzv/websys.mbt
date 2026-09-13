@@ -49,6 +49,20 @@ the complete standard Event constructor signature or real keyboard/IME input.
 
 ### External module boundary
 
+The event fixture also covers a narrowed `CompositionEvent`/`UIEvent` inheritance
+chain: Unicode data, inherited init fields, omitted data defaulting to an empty
+string, dispatch through an Event upcast, checked downcasts and listener removal. These are
+constructed DOM events, not physical IME input. UIEvent view/detail, optional
+constructor arguments and physical IME sequencing are not covered by this case.
+
+For each declared ancestor, interfaces expose `from_<ancestor>_opt`. The host
+checks `instanceof` against the runtime's global constructor; MoonBit constructs
+the resulting Option and preserves the original object on success. An absent
+constructor or nonmatching object produces None. This is a same-realm check,
+not cross-realm WebIDL brand validation or a security boundary. The browser
+fixture recovers CompositionEvent data inside an Event callback and rejects a
+plain Event.
+
 The WasmGC test imports generated bindings from the separate
 `dijdzv/websys-wasm-fixture` module through a local MoonBit workspace. Its host
 runtime is generated in the same invocation as the bindings, and the consumer

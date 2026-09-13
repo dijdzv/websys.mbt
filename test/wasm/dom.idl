@@ -38,6 +38,17 @@ dictionary EventInit {
   boolean composed = false;
 };
 callback EventListener = undefined (Event event);
+
+// Narrowed inheritance chain: view/detail remain outside this fixture.
+interface UIEvent : Event {};
+interface CompositionEvent : UIEvent {
+  constructor(DOMString type, CompositionEventInit init);
+  readonly attribute DOMString data;
+};
+dictionary UIEventInit : EventInit {};
+dictionary CompositionEventInit : UIEventInit {
+  DOMString data = "";
+};
 dictionary ScrollToOptions {
   double left;
   double top;

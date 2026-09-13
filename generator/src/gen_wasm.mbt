@@ -36,11 +36,16 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
               "WasmGC special members and extended attributes are not implemented",
             )
           }
-          if get_type(mem) != "operation" && get_type(mem) != "attribute" {
+          if get_type(mem) != "operation" &&
+            get_type(mem) != "attribute" &&
+            get_type(mem) != "constructor" {
             return Some("Unsupported WasmGC member: " + get_type(mem))
           }
           if wasm_has_argument_annotations(mem) ||
-            js_array_length(get_ext_attrs(get_idl_type(mem))) != 0 {
+            (
+              get_type(mem) != "constructor" &&
+              js_array_length(get_ext_attrs(get_idl_type(mem))) != 0
+            ) {
             return Some(
               "WasmGC type/argument extended attributes are not implemented",
             )
@@ -240,6 +245,10 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
               record(arg.idl_type, inputs)
             }
           }
+          Constructor(ctor) =>
+            for arg in ctor.arguments {
+              record(arg.idl_type, inputs)
+            }
           _ => ()
         }
       }
@@ -439,6 +448,37 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
               }
               js.write_string(
                 "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
+              )
+            }
+            Constructor(ctor) => {
+              guard !emitted.contains("new") else {
+                abort("WasmGC constructor overloads are not implemented")
+              }
+              emitted.push("new")
+              let params : Array[(String, IdlType)] = []
+              let arguments : Array[String] = []
+              let values : Array[String] = []
+              for i, arg in ctor.arguments {
+                guard !arg.optional && !arg.variadic else {
+                  abort(
+                    "Optional/variadic WasmGC constructor arguments are not implemented",
+                  )
+                }
+                params.push(("arg\{i}", arg.idl_type))
+                arguments.push("arg\{i}")
+                values.push(wasm_js_arg(arg.idl_type, "arg\{i}"))
+              }
+              emit_wasm_function(
+                mbt,
+                name,
+                "new",
+                params,
+                Named(name),
+                names,
+                dictionaries~,
+              )
+              js.write_string(
+                "    \{name}_new: (\{arguments.join(", ")}) => new globalThis.\{name}(\{values.join(", ")}),\n",
               )
             }
             _ => abort("Unsupported WasmGC interface member")

@@ -48,6 +48,28 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   element.as_event_target().remove_event_listener("click", callback, false)
   ignore(element.dispatch_event(event))
   guard calls.val == 1 else { return 5 }
+  let defaults = @bindings.Event::new("custom", @bindings.EventInit::{
+    bubbles: None,
+    cancelable: None,
+    composed: None,
+  })
+  guard !defaults.bubbles() && !defaults.cancelable() else { return 21 }
+  defaults.prevent_default()
+  guard !defaults.default_prevented() else { return 22 }
+  let custom = @bindings.Event::new("custom", @bindings.EventInit::{
+    bubbles: Some(true),
+    cancelable: Some(true),
+    composed: None,
+  })
+  guard custom.bubbles() && custom.cancelable() else { return 23 }
+  let handler = @bindings.EventListener::new(fn(value) {
+    value.prevent_default()
+  })
+  element.add_event_listener("custom", handler, false)
+  guard !element.dispatch_event(custom) && custom.default_prevented() else {
+    return 24
+  }
+  element.remove_event_listener("custom", handler, false)
   0
 }
 

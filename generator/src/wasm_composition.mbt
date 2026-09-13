@@ -81,6 +81,9 @@ fn compose_wasm_interfaces(
             None => return Err("Unknown WasmGC parent interface: " + name)
           }
           for mem in ancestor.members {
+            if name != value.name && mem is Constructor(_) {
+              continue
+            }
             members.push(mem)
           }
           if additions.get(name) is Some(extra) {

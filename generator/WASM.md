@@ -34,6 +34,19 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### Constructors and events
+
+Declared constructors with explicit, non-variadic arguments generate `Type::new`.
+They use the same typed argument conversion as instance methods, including input
+dictionaries. Constructors are not inherited into child interfaces. Multiple
+constructor overloads and optional constructor arguments are still rejected.
+
+The narrowed Event fixture requires an explicit EventInit argument. Browser
+tests construct events from MoonBit, check omitted/default and explicit Boolean
+options, dispatch them to a DOM element, and verify preventDefault for cancelable
+and non-cancelable events. This is event construction evidence, not support for
+the complete standard Event constructor signature or real keyboard/IME input.
+
 ### Dictionary inputs
 
 Input dictionaries use public MoonBit records and explicit `to_js()` conversion.

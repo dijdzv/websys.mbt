@@ -81,7 +81,9 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   }
   let composition_calls = Ref(0)
   let composition_handler = @bindings.EventListener::new(fn(value) {
-    if value.type_() == "compositionupdate" && value.bubbles() {
+    if @bindings.CompositionEvent::from_event_opt(value) is Some(typed) &&
+      typed.data() == "あいう😀" &&
+      typed.bubbles() {
       composition_calls.val += 1
     }
   })
@@ -99,6 +101,14 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
   })
   guard empty_composition.data() == "" && !empty_composition.bubbles() else {
     return 28
+  }
+  guard @bindings.CompositionEvent::from_event_opt(event) is None else {
+    return 29
+  }
+  guard @bindings.CompositionEvent::from_ui_event_opt(composition.as_ui_event())
+    is Some(restored) &&
+    restored.data() == composition.data() else {
+    return 30
   }
   0
 }

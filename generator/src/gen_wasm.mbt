@@ -353,6 +353,20 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
             "pub fn \{name}::\{conversion}(self : \{name}) -> \{ancestor} = \"websys\" \"\{name}_\{conversion}\"\n",
           )
           js.write_string("    \{name}_\{conversion}: self => self,\n")
+          let checked = "from_" + to_snake_case(ancestor) + "_opt"
+          emitted.push(checked)
+          mbt.write_string(
+            "fn websys_is_\{name}_from_\{ancestor}(value : \{ancestor}) -> Bool = \"websys\" \"is_\{name}_from_\{ancestor}\"\n",
+          )
+          mbt.write_string(
+            "fn websys_cast_\{name}_from_\{ancestor}(value : \{ancestor}) -> \{name} = \"websys\" \"cast_\{name}_from_\{ancestor}\"\n",
+          )
+          mbt.write_string(
+            "pub fn \{name}::\{checked}(value : \{ancestor}) -> \{name}? { if websys_is_\{name}_from_\{ancestor}(value) { Some(websys_cast_\{name}_from_\{ancestor}(value)) } else { None } }\n",
+          )
+          js.write_string(
+            "    is_\{name}_from_\{ancestor}: value => typeof globalThis.\{name} === 'function' && value instanceof globalThis.\{name},\n    cast_\{name}_from_\{ancestor}: value => value,\n",
+          )
           parent = None
           for definition in definitions {
             if definition is Interface(value) && value.name == ancestor {

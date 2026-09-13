@@ -7,7 +7,7 @@ try {
   const response = await fetch('./_build/wasm-gc/release/build/dijdzv/websys-wasm-test/websys-wasm-test.wasm');
   if (!response.ok) throw new Error(`Wasm consumer build unavailable: ${response.status}`);
   const bytes = await response.arrayBuffer();
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 4; i++) {
     const { instance } = await WebAssembly.instantiate(bytes, createImports(), {
       builtins: ['js-string'], importedStringConstants: '_',
     });
@@ -25,10 +25,13 @@ try {
       }
     }
     const api = instance.exports;
-    const input = document.createElement('input');
+    const input = document.createElement(i % 2 === 0 ? 'input' : 'textarea');
     document.body.append(input);
     const nextFrames = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     try {
+      if (api.input_is_focused(document, input)) throw new Error('Unfocused field reported focused');
+      api.input_focus(input);
+      if (!api.input_is_focused(document, input)) throw new Error('Focus identity was lost');
       api.input_start(window, input);
       input.value = '変換中';
       input.dispatchEvent(new InputEvent('input', { isComposing: true }));

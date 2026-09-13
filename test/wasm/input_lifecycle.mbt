@@ -1,7 +1,7 @@
 ///|
 priv struct InputLifecycle {
   window : @bindings.Window
-  input : @bindings.HTMLInputElement
+  input : @bindings.Element
   listener : @bindings.EventListener
   active : Ref[Bool]
   pending : Ref[UInt?]
@@ -40,9 +40,20 @@ pub fn input_stop() -> Unit {
 ///|
 pub fn input_start(
   window : @bindings.Window,
-  input : @bindings.HTMLInputElement,
+  input : @bindings.Element,
 ) -> Unit {
   input_stop()
+  let read_value : () -> String = if @bindings.HTMLInputElement::from_element_opt(
+      input,
+    )
+    is Some(field) {
+    fn() { field.value() }
+  } else if @bindings.HTMLTextAreaElement::from_element_opt(input)
+    is Some(field) {
+    fn() { field.value() }
+  } else {
+    abort("Expected input or textarea")
+  }
   let active = Ref(true)
   let pending : Ref[UInt?] = Ref(None)
   let listener = @bindings.EventListener::new(fn(event) {
@@ -64,7 +75,7 @@ pub fn input_start(
         pending.val = None
         if active.val {
           frames.val += 1
-          observed_text.val = input.value()
+          observed_text.val = read_value()
         }
       })
       pending.val = Some(window.request_animation_frame(callback))
@@ -88,4 +99,22 @@ pub fn input_frames() -> Int {
 ///|
 pub fn input_text_matches(value : String) -> Bool {
   observed_text.val == value
+}
+
+///|
+pub fn input_focus(input : @bindings.Element) -> Unit {
+  if @bindings.HTMLElement::from_element_opt(input) is Some(element) {
+    element.focus()
+  }
+}
+
+///|
+pub fn input_is_focused(
+  document : @bindings.Document,
+  input : @bindings.Element,
+) -> Bool {
+  match document.active_element() {
+    Some(active) => input.is_same_node(Some(active.as_node()))
+    None => false
+  }
 }

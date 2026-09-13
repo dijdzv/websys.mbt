@@ -15,6 +15,8 @@ options(
         "input_callbacks",
         "input_frames",
         "input_text_matches",
+        "input_focus",
+        "input_is_focused",
       ],
       "use-js-builtin-string": true,
       "imported-string-constants": "_",

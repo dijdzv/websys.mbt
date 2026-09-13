@@ -1,5 +1,37 @@
 ///|
 pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
+  guard @bindings.HTMLInputElement::from_element_opt(
+      document.create_element("input"),
+    )
+    is Some(input) else {
+    return 31
+  }
+  input.set_value("あ😀いう")
+  input.set_selection_range(1U, 3U, "backward")
+  guard input.selection_start() == Some(1U) &&
+    input.selection_end() == Some(3U) &&
+    input.selection_direction() == Some("backward") else {
+    return 32
+  }
+  input.set_type_("number")
+  guard input.selection_start() is None &&
+    input.selection_end() is None &&
+    input.selection_direction() is None else {
+    return 33
+  }
+  guard @bindings.HTMLTextAreaElement::from_element_opt(
+      document.create_element("textarea"),
+    )
+    is Some(editor) else {
+    return 34
+  }
+  editor.set_value("あ😀いう")
+  editor.set_selection_range(1U, 3U, "backward")
+  guard editor.selection_start() == 1U &&
+    editor.selection_end() == 3U &&
+    editor.selection_direction() == "backward" else {
+    return 35
+  }
   let element = document.create_element("button")
   element.scroll_to(@bindings.ScrollToOptions::{ left: Some(0.0), top: None, })
   element.set_id("日本語😀 é")

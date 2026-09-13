@@ -87,6 +87,7 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     Primitive("double") => Some("Double")
     Named(name) if names.contains(name) => Some(name)
     Nullable(String) => Some("String?")
+    Nullable(Primitive("unsigned long")) => Some("UInt?")
     Nullable(Named(name)) if names.contains(name) => Some(name + "?")
     _ => None
   }
@@ -290,8 +291,13 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     )
   }
   for typ in inputs {
+    let wrap = if typ == "UInt" {
+      "nullable_unsigned"
+    } else {
+      "nullable_identity"
+    }
     mbt.write_string(
-      "fn websys_wrap_\{typ}(value : \{typ}) -> WebsysNullable = \"websys\" \"nullable_identity\"\n",
+      "fn websys_wrap_\{typ}(value : \{typ}) -> WebsysNullable = \"websys\" \"\{wrap}\"\n",
     )
   }
   for typ in outputs {
@@ -303,7 +309,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     "// Generated from WebIDL. Do not edit.\nexport function createImports() {\n  return { 'moonbit:ffi': { make_closure: (fn, closure) => fn.bind(null, closure) }, websys: {\n",
   )
   js.write_string(
-    "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value,\n",
+    "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value, nullable_unsigned: value => value >>> 0,\n",
   )
   if !dictionaries.is_empty() {
     js.write_string(

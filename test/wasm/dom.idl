@@ -17,6 +17,23 @@ interface Node : EventTarget {
   attribute DOMString? textContent;
   readonly attribute Element? parentElement;
 };
+// Required direction narrows the optional standard argument for this fixture.
+interface HTMLElement : Element {};
+interface HTMLInputElement : HTMLElement {
+  attribute DOMString value;
+  attribute DOMString type;
+  readonly attribute unsigned long? selectionStart;
+  readonly attribute unsigned long? selectionEnd;
+  readonly attribute DOMString? selectionDirection;
+  undefined setSelectionRange(unsigned long start, unsigned long end, DOMString direction);
+};
+interface HTMLTextAreaElement : HTMLElement {
+  attribute DOMString value;
+  readonly attribute unsigned long selectionStart;
+  readonly attribute unsigned long selectionEnd;
+  readonly attribute DOMString selectionDirection;
+  undefined setSelectionRange(unsigned long start, unsigned long end, DOMString direction);
+};
 interface EventTarget {};
 interface mixin EventTargetMethods {
   undefined addEventListener(DOMString type, EventListener callback, boolean capture);

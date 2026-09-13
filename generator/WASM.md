@@ -52,7 +52,11 @@ the complete standard Event constructor signature or real keyboard/IME input.
 WebIDL `unsigned long` uses UInt on WasmGC. Outgoing i32 values are explicitly
 converted to unsigned JS numbers, including dictionary fields. The browser
 fixture checks 2147483648 and 4294967295 directly in the host object.
-Nullable numeric interface values remain unsupported.
+Nullable unsigned long values use UInt?. Other nullable numeric interface values
+remain unsupported. The input fixture checks UTF-16 selection endpoints around
+an emoji, backward selection on input/textarea, and null selection positions on
+a number input. Its setSelectionRange signature requires direction explicitly;
+the optional standard argument is not yet represented.
 
 The event fixture also covers a narrowed `CompositionEvent`/`UIEvent` inheritance
 chain: Unicode data, inherited init fields, omitted data defaulting to an empty

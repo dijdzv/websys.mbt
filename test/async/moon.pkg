@@ -9,6 +9,7 @@ options(
     "js": {
       "exports": [
         "start",
+        "start_cancel",
         "start_boolean",
         "start_unsigned",
         "start_double",
@@ -20,6 +21,7 @@ options(
     "wasm-gc": {
       "exports": [
         "start",
+        "start_cancel",
         "start_boolean",
         "start_unsigned",
         "start_double",

@@ -22,6 +22,7 @@ src/*.md
 *.mbti
 test/wasm/generated/bindings.mbt
 test/wasm/generated/runtime.mjs
+test/promise/generated/
 
 # OS
 .DS_Store

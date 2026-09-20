@@ -31,7 +31,7 @@ run = [
 run = ['"{{env.MOON_HOME}}/bin/moon" check --target js --deny-warn', '"{{env.MOON_HOME}}/bin/moon" -C generator check --target js --deny-warn']
 
 [tasks.test]
-run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm', '"{{mise_bin}}" run test-async']
+run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm', '"{{mise_bin}}" run test-async', '"{{mise_bin}}" run test-promises']
 
 [tasks.install]
 run = ['"{{mise_bin}}" exec -- bun install --frozen-lockfile', '"{{mise_bin}}" exec -- bun install --cwd test --frozen-lockfile']
@@ -65,6 +65,16 @@ run = [
   '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target wasm-gc --release --deny-warn',
   '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target js --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/async/run.mjs test/async/_build/wasm-gc/release/build/dijdzv/websys-async-tests/websys-async-tests.wasm test/async/_build/js/release/build/dijdzv/websys-async-tests/websys-async-tests.js',
+]
+
+[tasks."test-promises"]
+description = "Generate and verify WasmGC Promise methods through an external consumer"
+run = [
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-async-wasmgc.mbtx',
+  '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
+  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/promise/api.idl --wasm-gc-module dijdzv/websys-promise-fixture -o test/promise/generated',
+  '"{{env.MOON_HOME}}/bin/moon" -C test/promise build --target wasm-gc --release --deny-warn',
+  '"{{mise_bin}}" exec -- node test/promise/run.mjs',
 ]
 
 [tasks."fmt-check"]

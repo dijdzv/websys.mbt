@@ -22,6 +22,9 @@ fn valid_wasm_module_name(name : String) -> Bool {
 }
 
 ///|
-fn wasm_module_manifest(name : String) -> String {
-  "name = " + name.to_json().stringify() + "\npreferred_target = \"wasm-gc\"\n"
+fn wasm_module_manifest(name : String, promises? : Bool = false) -> String {
+  "name = " +
+  name.to_json().stringify() +
+  "\npreferred_target = \"wasm-gc\"\n" +
+  (if promises { "import { \"moonbitlang/async@0.22.1\" }\n" } else { "" })
 }

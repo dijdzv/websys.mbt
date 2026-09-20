@@ -1,0 +1,16 @@
+import {
+  "dijdzv/websys-promise-fixture" @web,
+  "moonbitlang/async",
+  "moonbitlang/async/wasm_async" @bridge,
+}
+
+supported_targets = "wasm-gc"
+
+options(
+  link: {
+    "wasm-gc": {
+      "exports": [ "start", "start_value" ],
+      "use-js-builtin-string": true,
+    },
+  },
+)

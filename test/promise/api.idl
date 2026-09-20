@@ -1,4 +1,13 @@
 typedef DOMString ResponseText;
+interface BufferPromiseProbe {
+  Promise<ArrayBuffer> plain();
+  Promise<SharedArrayBuffer> shared();
+  Promise<ArrayBufferView> view();
+  Promise<ArrayBuffer?> optionalPlain();
+  Promise<SharedArrayBuffer?> optionalShared();
+  Promise<ArrayBufferView?> optionalView();
+};
+interface SubtleCrypto { Promise<ArrayBuffer> digest(DOMString algorithm, ArrayBuffer data); };
 interface GPU {
   Promise<GPUAdapter?> requestAdapter();
   GPUTextureFormat getPreferredCanvasFormat();

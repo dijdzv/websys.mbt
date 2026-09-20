@@ -105,6 +105,37 @@ try {
     if (bufferInputs[2].byteOffset !== 2 || bufferInputs[2].byteLength !== 3 || JSON.stringify([...bufferInputs[2]]) !== '[8,9,10]') throw Error('Buffer view range changed');
     if (JSON.stringify([...new Uint8Array(copiedInput)]) !== '[99,255,0,2]' || bufferInputs.length !== 5 || bufferInputs[4].byteLength !== 0) throw Error('MoonBit bytes upload mismatch');
     count += 3;
+    const bufferProbe = {
+      plain: () => Promise.resolve(plainInput), shared: () => Promise.resolve(sharedInput),
+      view: () => Promise.resolve(partialInput), optionalPlain: () => Promise.resolve(null),
+      optionalShared: () => Promise.resolve(null), optionalView: () => Promise.resolve(null),
+    };
+    async function checkBufferProbe(probe, expected) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Buffer Promise did not finish')), 3000);
+        instance.exports.buffer_promises(probe, code => {
+          clearTimeout(watchdog);
+          if (code === expected) resolve(); else reject(Error(`Buffer Promise status ${code}, expected ${expected}`));
+        });
+      });
+      count++;
+    }
+    await checkBufferProbe(bufferProbe, 1);
+    await checkBufferProbe({ ...bufferProbe, view: () => Promise.resolve(new DataView(plainInput)),
+      optionalPlain: bufferProbe.plain, optionalShared: bufferProbe.shared, optionalView: bufferProbe.view }, 1);
+    for (const name of Object.keys(bufferProbe)) {
+      await checkBufferProbe({ ...bufferProbe, [name]: () => Promise.resolve({}) }, 2);
+      await checkBufferProbe({ ...bufferProbe, [name]: () => Promise.reject(Error('buffer rejection')) }, 3);
+    }
+    await new Promise((resolve, reject) => {
+      const watchdog = setTimeout(() => reject(Error('WebCrypto digest did not finish')), 3000);
+      instance.exports.crypto_digest(crypto.subtle, (code, text) => {
+        clearTimeout(watchdog);
+        if (code === 1 && text === 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad') resolve();
+        else reject(Error(`WebCrypto digest mismatch: ${code} ${text}`));
+      });
+    });
+    count++;
     let inputCalls = 0;
     const optionalCalls = [];
     const nullableCalls = [];

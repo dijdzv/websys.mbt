@@ -166,8 +166,11 @@ AllowSharedBufferSource union retains its three branches, including AllowShared
 on ArrayBufferView. Inputs preserve host identity and view offset/length; native
 browser operations retain responsibility for validity and sharing restrictions.
 The isolated consumer checks a shared partial view and both buffer branches.
-SharedArrayBuffer/individual TypedArray constructors and buffer Promise results
-remain unsupported. This is not yet a complete Web Crypto digest path.
+Promise results support these three buffer types and their nullable forms without
+synthetic interface declarations. Settlement validates buffer brands (or
+`ArrayBuffer.isView` for views), retaining rejection and decode-error behavior.
+The external consumer verifies an actual SHA-256 digest through WebCrypto.
+SharedArrayBuffer/individual TypedArray constructors remain unsupported.
 
 ### Constructors and events
 

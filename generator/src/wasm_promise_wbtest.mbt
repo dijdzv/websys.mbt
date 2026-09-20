@@ -1,4 +1,20 @@
 ///|
+test "Promise buffer builtins do not require interface declarations" {
+  for name in ["ArrayBuffer", "SharedArrayBuffer", "ArrayBufferView"] {
+    assert_true(wasm_promise_value(Named(name)) is Some(_))
+    assert_true(wasm_promise_value(Nullable(Named(name))) is Some(_))
+    let parsed = parse_webidl_raw(
+      "interface Source { Promise<\{name}> read(); Promise<\{name}?> optionalValue(); };",
+    )
+    assert_true(is_parse_success(parsed))
+    assert_eq(validate_wasm_input(parsed), None)
+    let (code, _) = generate_wasm(convert_to_definitions(parsed))
+    assert_true(code.contains("WebsysPromise[\{name}]"))
+    assert_true(code.contains("WebsysPromise[\{name}?]"))
+  }
+}
+
+///|
 test "Promise conversion rejects unsupported shapes before emitting bindings" {
   for
     typ in [

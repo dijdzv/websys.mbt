@@ -22,6 +22,8 @@ options(
         "unsigned_sequence",
         "operation_inputs",
         "buffer_inputs",
+        "buffer_promises",
+        "crypto_digest",
         "enum_options",
         "buffer_size_options",
         "gpu_buffer_sample",

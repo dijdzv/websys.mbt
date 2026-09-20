@@ -165,8 +165,8 @@ extern "js" fn GamepadEffectParameters::to_js_ffi(
   self : GamepadEffectParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   duration: self.duration,
-  #|   startDelay: self.startDelay,
+  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
+  #|   startDelay: ((value) => value === undefined ? undefined : Number(value))(self.startDelay),
   #|   strongMagnitude: ((() => { const v = self.strongMagnitude; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   weakMagnitude: ((() => { const v = self.weakMagnitude; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   leftTrigger: ((() => { const v = self.leftTrigger; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -186,8 +186,8 @@ extern "js" fn GamepadEffectParameters::from_js_ffi(
   value : JsValue,
 ) -> GamepadEffectParameters =
   #| (v) => ({
-  #|   duration: v.duration,
-  #|   startDelay: v.startDelay,
+  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
+  #|   startDelay: (v.startDelay === undefined ? undefined : BigInt(v.startDelay)),
   #|   strongMagnitude: (v.strongMagnitude === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strongMagnitude }),
   #|   weakMagnitude: (v.weakMagnitude === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weakMagnitude }),
   #|   leftTrigger: (v.leftTrigger === undefined ? { $tag: 0 } : { $tag: 1, _0: v.leftTrigger }),

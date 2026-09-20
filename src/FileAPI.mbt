@@ -165,7 +165,7 @@ extern "js" fn FilePropertyBag::to_js_ffi(self : FilePropertyBag) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   endings: ((() => { const v = self.endings; if (v === undefined) return undefined; return ['transparent', 'native'][v]; })()),
-  #|   lastModified: self.lastModified
+  #|   lastModified: ((value) => value === undefined ? undefined : Number(value))(self.lastModified)
   #| })
 
 ///|
@@ -179,7 +179,7 @@ extern "js" fn FilePropertyBag::from_js_ffi(value : JsValue) -> FilePropertyBag 
   #| (v) => ({
   #|   type_: v.type,
   #|   endings: (v.endings === undefined ? undefined : ['transparent', 'native'].indexOf(v.endings)),
-  #|   lastModified: v.lastModified
+  #|   lastModified: (v.lastModified === undefined ? undefined : BigInt(v.lastModified))
   #| })
 
 ///|

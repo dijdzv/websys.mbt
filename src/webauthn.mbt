@@ -464,7 +464,7 @@ extern "js" fn AuthenticatorAttestationResponseJSON::to_js_ffi(
   #|   clientDataJSON: self.clientDataJSON,
   #|   authenticatorData: self.authenticatorData,
   #|   transports: self.transports,
-  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   publicKey: self.publicKey,
   #|   publicKeyAlgorithm: self.publicKeyAlgorithm,
   #|   attestationObject: self.attestationObject
   #| })
@@ -485,7 +485,7 @@ extern "js" fn AuthenticatorAttestationResponseJSON::from_js_ffi(
   #|   clientDataJSON: v.clientDataJSON,
   #|   authenticatorData: v.authenticatorData,
   #|   transports: v.transports,
-  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey }),
+  #|   publicKey: v.publicKey,
   #|   publicKeyAlgorithm: v.publicKeyAlgorithm,
   #|   attestationObject: v.attestationObject
   #| })
@@ -600,7 +600,7 @@ extern "js" fn AuthenticatorAssertionResponseJSON::to_js_ffi(
   #|   clientDataJSON: self.clientDataJSON,
   #|   authenticatorData: self.authenticatorData,
   #|   signature: self.signature,
-  #|   userHandle: ((() => { const v = self.userHandle; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   userHandle: self.userHandle
   #| })
 
 ///|
@@ -619,7 +619,7 @@ extern "js" fn AuthenticatorAssertionResponseJSON::from_js_ffi(
   #|   clientDataJSON: v.clientDataJSON,
   #|   authenticatorData: v.authenticatorData,
   #|   signature: v.signature,
-  #|   userHandle: (v.userHandle === undefined ? { $tag: 0 } : { $tag: 1, _0: v.userHandle })
+  #|   userHandle: v.userHandle
   #| })
 
 ///|
@@ -1855,7 +1855,7 @@ extern "js" fn AuthenticationExtensionsPRFValuesJSON::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   first: self.first,
-  #|   second: ((() => { const v = self.second; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   second: self.second
   #| })
 
 ///|
@@ -1872,7 +1872,7 @@ extern "js" fn AuthenticationExtensionsPRFValuesJSON::from_js_ffi(
 ) -> AuthenticationExtensionsPRFValuesJSON =
   #| (v) => ({
   #|   first: v.first,
-  #|   second: (v.second === undefined ? { $tag: 0 } : { $tag: 1, _0: v.second })
+  #|   second: v.second
   #| })
 
 ///|
@@ -2150,7 +2150,7 @@ extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::to_js_ffi(
   #| (self) => ({
   #|   support: self.support,
   #|   read: (self.read === -1 ? undefined : self.read),
-  #|   write: ((() => { const v = self.write; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   write: self.write
   #| })
 
 ///|
@@ -2168,7 +2168,7 @@ extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::from_js_ffi(
   #| (v) => ({
   #|   support: v.support,
   #|   read: (v.read === undefined ? -1 : v.read),
-  #|   write: (v.write === undefined ? { $tag: 0 } : { $tag: 1, _0: v.write })
+  #|   write: v.write
   #| })
 
 ///|
@@ -2257,7 +2257,7 @@ extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
-  #|   blob: ((() => { const v = self.blob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   blob: self.blob,
   #|   written: (self.written === -1 ? undefined : self.written)
   #| })
 
@@ -2275,7 +2275,7 @@ extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js_ffi(
 ) -> AuthenticationExtensionsLargeBlobOutputsJSON =
   #| (v) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
-  #|   blob: (v.blob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blob }),
+  #|   blob: v.blob,
   #|   written: (v.written === undefined ? -1 : v.written)
   #| })
 

@@ -38,6 +38,7 @@ pub fn gen_dictionary(
   dict : DictionaryDef,
   enum_map : Array[(String, Array[String])],
   union_set : Array[String],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let mut result = ""
 
@@ -160,6 +161,10 @@ pub fn gen_dictionary(
     .fold(init=(result, 0), fn(state, mem) {
       let (acc, idx) = state
       let moonbit_name = field_name_to_moonbit(mem.name)
+      let conversion_type = resolve_dictionary_alias(
+        mem.idl_type,
+        primitive_typedef_map,
+      )
       // Check if field is Nullable[T] type
       let moonbit_type = mem.idl_type.to_moonbit_simple()
       let is_nullable_type = !mem.required && ends_with_question(moonbit_type)
@@ -174,14 +179,25 @@ pub fn gen_dictionary(
       } else if !mem.required {
         // Optional field (Option[T]) - explicit conversion
         gen_optional_field_value_expr(
-          mem.idl_type,
-          moonbit_name,
-          enum_map,
-          union_set,
+          conversion_type, moonbit_name, enum_map, union_set,
         )
       } else {
         // Required field (including enum conversion)
-        gen_field_value_expr(mem.idl_type, moonbit_name, enum_map, union_set)
+        gen_field_value_expr(conversion_type, moonbit_name, enum_map, union_set)
+      }
+      let value_expr = if is_dictionary_int64(
+          mem.idl_type,
+          primitive_typedef_map,
+        ) {
+        if mem.required {
+          "Number(" + value_expr + ")"
+        } else {
+          "((value) => value === undefined ? undefined : Number(value))(" +
+          value_expr +
+          ")"
+        }
+      } else {
+        value_expr
       }
       let comma = if idx < members_len - 1 { "," } else { "" }
       (acc + "  #|   " + mem.name + ": " + value_expr + comma + "\n", idx + 1)
@@ -211,14 +227,25 @@ pub fn gen_dictionary(
     .fold(init=(result, 0), fn(state, mem) {
       let (acc, idx) = state
       let moonbit_name = field_name_to_moonbit(mem.name)
+      let conversion_type = resolve_dictionary_alias(
+        mem.idl_type,
+        primitive_typedef_map,
+      )
       let moonbit_type = mem.idl_type.to_moonbit_simple()
       let is_nullable_type = !mem.required && ends_with_question(moonbit_type)
       let value_expr = if is_nullable_type {
         gen_from_js_nullable_field_expr(mem.idl_type, mem.name, enum_map)
+      } else if is_dictionary_int64(mem.idl_type, primitive_typedef_map) {
+        let value = "v." + mem.name
+        if mem.required {
+          "BigInt(" + value + ")"
+        } else {
+          "(" + value + " === undefined ? undefined : BigInt(" + value + "))"
+        }
       } else if !mem.required {
-        gen_from_js_optional_field_expr(mem.idl_type, mem.name, enum_map)
+        gen_from_js_optional_field_expr(conversion_type, mem.name, enum_map)
       } else {
-        gen_from_js_required_field_expr(mem.idl_type, mem.name, enum_map)
+        gen_from_js_required_field_expr(conversion_type, mem.name, enum_map)
       }
       let comma = if idx < members_len - 1 { "," } else { "" }
       (
@@ -239,6 +266,45 @@ pub fn gen_dictionary(
   result = result + "::from_js_ffi(value)\n"
   result = result + "}\n\n"
   result
+}
+
+///|
+fn is_dictionary_int64(
+  typ : IdlType,
+  aliases : Array[(String, IdlType)],
+) -> Bool {
+  resolve_dictionary_alias(typ, aliases)
+  is Primitive("long long" | "unsigned long long")
+}
+
+///|
+fn resolve_dictionary_alias(
+  typ : IdlType,
+  aliases : Array[(String, IdlType)],
+) -> IdlType {
+  let mut current = typ
+  let seen : Array[String] = []
+  for _index in 0..<(aliases.length() + 1) {
+    match current {
+      Named(name) => {
+        if seen.contains(name) {
+          return typ
+        }
+        seen.push(name)
+        let mut found : IdlType? = None
+        for (alias_name, value) in aliases {
+          if alias_name == name {
+            found = Some(value)
+            break
+          }
+        }
+        guard found is Some(next) else { return current }
+        current = next
+      }
+      _ => return current
+    }
+  }
+  typ
 }
 
 ///|

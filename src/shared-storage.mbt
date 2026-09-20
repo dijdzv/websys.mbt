@@ -251,8 +251,8 @@ extern "js" fn SharedStoragePrivateAggregationConfig::to_js_ffi(
   #| (self) => ({
   #|   aggregationCoordinatorOrigin: self.aggregationCoordinatorOrigin,
   #|   contextId: self.contextId,
-  #|   filteringIdMaxBytes: self.filteringIdMaxBytes,
-  #|   maxContributions: self.maxContributions
+  #|   filteringIdMaxBytes: ((value) => value === undefined ? undefined : Number(value))(self.filteringIdMaxBytes),
+  #|   maxContributions: ((value) => value === undefined ? undefined : Number(value))(self.maxContributions)
   #| })
 
 ///|
@@ -270,8 +270,8 @@ extern "js" fn SharedStoragePrivateAggregationConfig::from_js_ffi(
   #| (v) => ({
   #|   aggregationCoordinatorOrigin: v.aggregationCoordinatorOrigin,
   #|   contextId: v.contextId,
-  #|   filteringIdMaxBytes: v.filteringIdMaxBytes,
-  #|   maxContributions: v.maxContributions
+  #|   filteringIdMaxBytes: (v.filteringIdMaxBytes === undefined ? undefined : BigInt(v.filteringIdMaxBytes)),
+  #|   maxContributions: (v.maxContributions === undefined ? undefined : BigInt(v.maxContributions))
   #| })
 
 ///|

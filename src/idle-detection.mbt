@@ -69,7 +69,7 @@ pub fn IdleOptions::default() -> IdleOptions {
 ///|
 extern "js" fn IdleOptions::to_js_ffi(self : IdleOptions) -> JsValue =
   #| (self) => ({
-  #|   threshold: self.threshold,
+  #|   threshold: ((value) => value === undefined ? undefined : Number(value))(self.threshold),
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -82,7 +82,7 @@ pub fn IdleOptions::to_js(self : IdleOptions) -> JsValue {
 ///|
 extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
   #| (v) => ({
-  #|   threshold: v.threshold,
+  #|   threshold: (v.threshold === undefined ? undefined : BigInt(v.threshold)),
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 

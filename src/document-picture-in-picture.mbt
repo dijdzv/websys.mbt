@@ -26,8 +26,8 @@ extern "js" fn DocumentPictureInPictureOptions::to_js_ffi(
   self : DocumentPictureInPictureOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   width: self.width,
-  #|   height: self.height,
+  #|   width: ((value) => value === undefined ? undefined : Number(value))(self.width),
+  #|   height: ((value) => value === undefined ? undefined : Number(value))(self.height),
   #|   disallowReturnToOpener: (self.disallowReturnToOpener === -1 ? undefined : self.disallowReturnToOpener),
   #|   preferInitialWindowPlacement: (self.preferInitialWindowPlacement === -1 ? undefined : self.preferInitialWindowPlacement)
   #| })
@@ -45,8 +45,8 @@ extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(
   value : JsValue,
 ) -> DocumentPictureInPictureOptions =
   #| (v) => ({
-  #|   width: v.width,
-  #|   height: v.height,
+  #|   width: (v.width === undefined ? undefined : BigInt(v.width)),
+  #|   height: (v.height === undefined ? undefined : BigInt(v.height)),
   #|   disallowReturnToOpener: (v.disallowReturnToOpener === undefined ? -1 : v.disallowReturnToOpener),
   #|   preferInitialWindowPlacement: (v.preferInitialWindowPlacement === undefined ? -1 : v.preferInitialWindowPlacement)
   #| })

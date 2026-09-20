@@ -339,15 +339,32 @@ The browser consumer checks nullable render-attachment arrays and both sequence
 and dictionary color branches. Generated encoder/pass methods record a clear
 pass, which is submitted under a GPU validation error scope. Generated GPUQueue
 methods submit empty/nonempty command arrays and await completion from MoonBit.
-Texture creation in this test still uses host JavaScript; it does not yet
-establish an entirely generated rendering/readback path or verify pixel values.
+A second consumer path creates a 2x2 rgba8unorm texture and readback buffer,
+records a red clear pass, copies rows with 256-byte pitch, submits, maps and
+copies the bytes through generated APIs. MoonBit checks all four RGBA pixels
+after unmapping. The host supplies a device and validation error scope; device
+acquisition has its own generated-API test. Both JS and WasmGC exercise the
+pixel contract, and WasmGC also runs from the relocated source bundle.
+This is a clear-pass contract, not shader, text/scene or hardware certification.
+The fixture omits unused optional parameters/descriptor fields and narrows the
+texture-format enum to rgba8unorm; the extent union and coordinate annotations
+retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.
+The JS dictionary generator resolves primitive aliases for optional-value
+conversion and converts nonnullable 64-bit integer fields between MoonBit
+BigInt and browser Number values. Required size and optional offset round trips
+are checked. This does not establish 64-bit operation/result coverage or lossless
+Number representation outside JavaScript's safe integer range.
 
-Required nonnullable sequence operation arguments reuse the dictionary input
+Required nonnullable sequence and union operation arguments reuse the dictionary input
 builders. Supported elements include primitive values, declared references,
 dictionaries, nested sequences and nullable elements. Public MoonBit arrays are
 converted to host arrays before crossing FFI; unsigned long elements preserve
 their unsigned range, including values above 2^31-1. Sequence results,
 constructor arguments, optional arguments and enum elements remain unsupported.
+EnforceRange unsigned-long dictionary inputs use UInt, whose range is already
+the required 32-bit range, and cross FFI as unsigned Number values. This also
+applies inside the extent union's coordinate sequence. General 64-bit operation
+arguments/results and arbitrary annotations remain unsupported.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions

@@ -67,7 +67,7 @@ pub fn ProfilerSample::new(timestamp~ : DOMHighResTimeStamp) -> ProfilerSample {
 extern "js" fn ProfilerSample::to_js_ffi(self : ProfilerSample) -> JsValue =
   #| (self) => ({
   #|   timestamp: self.timestamp,
-  #|   stackId: self.stackId
+  #|   stackId: ((value) => value === undefined ? undefined : Number(value))(self.stackId)
   #| })
 
 ///|
@@ -80,7 +80,7 @@ pub fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue {
 extern "js" fn ProfilerSample::from_js_ffi(value : JsValue) -> ProfilerSample =
   #| (v) => ({
   #|   timestamp: v.timestamp,
-  #|   stackId: v.stackId
+  #|   stackId: (v.stackId === undefined ? undefined : BigInt(v.stackId))
   #| })
 
 ///|
@@ -105,8 +105,8 @@ pub fn ProfilerStack::default() -> ProfilerStack {
 ///|
 extern "js" fn ProfilerStack::to_js_ffi(self : ProfilerStack) -> JsValue =
   #| (self) => ({
-  #|   parentId: self.parentId,
-  #|   frameId: self.frameId
+  #|   parentId: ((value) => value === undefined ? undefined : Number(value))(self.parentId),
+  #|   frameId: Number(self.frameId)
   #| })
 
 ///|
@@ -118,8 +118,8 @@ pub fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue {
 ///|
 extern "js" fn ProfilerStack::from_js_ffi(value : JsValue) -> ProfilerStack =
   #| (v) => ({
-  #|   parentId: v.parentId,
-  #|   frameId: v.frameId
+  #|   parentId: (v.parentId === undefined ? undefined : BigInt(v.parentId)),
+  #|   frameId: BigInt(v.frameId)
   #| })
 
 ///|
@@ -147,9 +147,9 @@ pub fn ProfilerFrame::default() -> ProfilerFrame {
 extern "js" fn ProfilerFrame::to_js_ffi(self : ProfilerFrame) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   resourceId: self.resourceId,
-  #|   line: self.line,
-  #|   column: self.column
+  #|   resourceId: ((value) => value === undefined ? undefined : Number(value))(self.resourceId),
+  #|   line: ((value) => value === undefined ? undefined : Number(value))(self.line),
+  #|   column: ((value) => value === undefined ? undefined : Number(value))(self.column)
   #| })
 
 ///|
@@ -162,9 +162,9 @@ pub fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue {
 extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
   #| (v) => ({
   #|   name: v.name,
-  #|   resourceId: v.resourceId,
-  #|   line: v.line,
-  #|   column: v.column
+  #|   resourceId: (v.resourceId === undefined ? undefined : BigInt(v.resourceId)),
+  #|   line: (v.line === undefined ? undefined : BigInt(v.line)),
+  #|   column: (v.column === undefined ? undefined : BigInt(v.column))
   #| })
 
 ///|

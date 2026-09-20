@@ -317,12 +317,12 @@ extern "js" fn RTCReceivedRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsReceived: self.packetsReceived,
-  #|   packetsReceivedWithEct1: self.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: self.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: self.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: self.packetsReportedAsLostButRecovered,
-  #|   packetsLost: self.packetsLost,
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
+  #|   packetsReceivedWithEct1: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithEct1),
+  #|   packetsReceivedWithCe: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithCe),
+  #|   packetsReportedAsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLost),
+  #|   packetsReportedAsLostButRecovered: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLostButRecovered),
+  #|   packetsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsLost),
   #|   jitter: ((() => { const v = self.jitter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -343,12 +343,12 @@ extern "js" fn RTCReceivedRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsReceived: v.packetsReceived,
-  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: v.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
-  #|   packetsLost: v.packetsLost,
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
+  #|   packetsReceivedWithEct1: (v.packetsReceivedWithEct1 === undefined ? undefined : BigInt(v.packetsReceivedWithEct1)),
+  #|   packetsReceivedWithCe: (v.packetsReceivedWithCe === undefined ? undefined : BigInt(v.packetsReceivedWithCe)),
+  #|   packetsReportedAsLost: (v.packetsReportedAsLost === undefined ? undefined : BigInt(v.packetsReportedAsLost)),
+  #|   packetsReportedAsLostButRecovered: (v.packetsReportedAsLostButRecovered === undefined ? undefined : BigInt(v.packetsReportedAsLostButRecovered)),
+  #|   packetsLost: (v.packetsLost === undefined ? undefined : BigInt(v.packetsLost)),
   #|   jitter: (v.jitter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitter })
   #| })
 
@@ -515,12 +515,12 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsReceived: self.packetsReceived,
-  #|   packetsReceivedWithEct1: self.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: self.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: self.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: self.packetsReportedAsLostButRecovered,
-  #|   packetsLost: self.packetsLost,
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
+  #|   packetsReceivedWithEct1: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithEct1),
+  #|   packetsReceivedWithCe: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithCe),
+  #|   packetsReportedAsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLost),
+  #|   packetsReportedAsLostButRecovered: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLostButRecovered),
+  #|   packetsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsLost),
   #|   jitter: ((() => { const v = self.jitter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   trackIdentifier: self.trackIdentifier,
   #|   mid: self.mid,
@@ -532,7 +532,7 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   frameWidth: self.frameWidth,
   #|   frameHeight: self.frameHeight,
   #|   framesPerSecond: ((() => { const v = self.framesPerSecond; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   qpSum: self.qpSum,
+  #|   qpSum: ((value) => value === undefined ? undefined : Number(value))(self.qpSum),
   #|   totalDecodeTime: ((() => { const v = self.totalDecodeTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalInterFrameDelay: ((() => { const v = self.totalInterFrameDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalSquaredInterFrameDelay: ((() => { const v = self.totalSquaredInterFrameDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -541,12 +541,12 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   freezeCount: self.freezeCount,
   #|   totalFreezesDuration: ((() => { const v = self.totalFreezesDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   headerBytesReceived: self.headerBytesReceived,
-  #|   packetsDiscarded: self.packetsDiscarded,
-  #|   fecBytesReceived: self.fecBytesReceived,
-  #|   fecPacketsReceived: self.fecPacketsReceived,
-  #|   fecPacketsDiscarded: self.fecPacketsDiscarded,
-  #|   bytesReceived: self.bytesReceived,
+  #|   headerBytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.headerBytesReceived),
+  #|   packetsDiscarded: ((value) => value === undefined ? undefined : Number(value))(self.packetsDiscarded),
+  #|   fecBytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.fecBytesReceived),
+  #|   fecPacketsReceived: ((value) => value === undefined ? undefined : Number(value))(self.fecPacketsReceived),
+  #|   fecPacketsDiscarded: ((value) => value === undefined ? undefined : Number(value))(self.fecPacketsDiscarded),
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived),
   #|   nackCount: self.nackCount,
   #|   firCount: self.firCount,
   #|   pliCount: self.pliCount,
@@ -554,14 +554,14 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   estimatedPlayoutTimestamp: ((() => { const v = self.estimatedPlayoutTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   jitterBufferDelay: ((() => { const v = self.jitterBufferDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   jitterBufferTargetDelay: ((() => { const v = self.jitterBufferTargetDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   jitterBufferEmittedCount: self.jitterBufferEmittedCount,
+  #|   jitterBufferEmittedCount: ((value) => value === undefined ? undefined : Number(value))(self.jitterBufferEmittedCount),
   #|   jitterBufferMinimumDelay: ((() => { const v = self.jitterBufferMinimumDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   totalSamplesReceived: self.totalSamplesReceived,
-  #|   concealedSamples: self.concealedSamples,
-  #|   silentConcealedSamples: self.silentConcealedSamples,
-  #|   concealmentEvents: self.concealmentEvents,
-  #|   insertedSamplesForDeceleration: self.insertedSamplesForDeceleration,
-  #|   removedSamplesForAcceleration: self.removedSamplesForAcceleration,
+  #|   totalSamplesReceived: ((value) => value === undefined ? undefined : Number(value))(self.totalSamplesReceived),
+  #|   concealedSamples: ((value) => value === undefined ? undefined : Number(value))(self.concealedSamples),
+  #|   silentConcealedSamples: ((value) => value === undefined ? undefined : Number(value))(self.silentConcealedSamples),
+  #|   concealmentEvents: ((value) => value === undefined ? undefined : Number(value))(self.concealmentEvents),
+  #|   insertedSamplesForDeceleration: ((value) => value === undefined ? undefined : Number(value))(self.insertedSamplesForDeceleration),
+  #|   removedSamplesForAcceleration: ((value) => value === undefined ? undefined : Number(value))(self.removedSamplesForAcceleration),
   #|   audioLevel: ((() => { const v = self.audioLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalAudioEnergy: ((() => { const v = self.totalAudioEnergy; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalSamplesDuration: ((() => { const v = self.totalSamplesDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -571,13 +571,13 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
   #|   powerEfficientDecoder: (self.powerEfficientDecoder === -1 ? undefined : self.powerEfficientDecoder),
   #|   framesAssembledFromMultiplePackets: self.framesAssembledFromMultiplePackets,
   #|   totalAssemblyTime: ((() => { const v = self.totalAssemblyTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   retransmittedPacketsReceived: self.retransmittedPacketsReceived,
-  #|   retransmittedBytesReceived: self.retransmittedBytesReceived,
+  #|   retransmittedPacketsReceived: ((value) => value === undefined ? undefined : Number(value))(self.retransmittedPacketsReceived),
+  #|   retransmittedBytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.retransmittedBytesReceived),
   #|   rtxSsrc: self.rtxSsrc,
   #|   fecSsrc: self.fecSsrc,
   #|   totalCorruptionProbability: ((() => { const v = self.totalCorruptionProbability; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalSquaredCorruptionProbability: ((() => { const v = self.totalSquaredCorruptionProbability; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   corruptionMeasurements: self.corruptionMeasurements
+  #|   corruptionMeasurements: ((value) => value === undefined ? undefined : Number(value))(self.corruptionMeasurements)
   #| })
 
 ///|
@@ -597,12 +597,12 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsReceived: v.packetsReceived,
-  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: v.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
-  #|   packetsLost: v.packetsLost,
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
+  #|   packetsReceivedWithEct1: (v.packetsReceivedWithEct1 === undefined ? undefined : BigInt(v.packetsReceivedWithEct1)),
+  #|   packetsReceivedWithCe: (v.packetsReceivedWithCe === undefined ? undefined : BigInt(v.packetsReceivedWithCe)),
+  #|   packetsReportedAsLost: (v.packetsReportedAsLost === undefined ? undefined : BigInt(v.packetsReportedAsLost)),
+  #|   packetsReportedAsLostButRecovered: (v.packetsReportedAsLostButRecovered === undefined ? undefined : BigInt(v.packetsReportedAsLostButRecovered)),
+  #|   packetsLost: (v.packetsLost === undefined ? undefined : BigInt(v.packetsLost)),
   #|   jitter: (v.jitter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitter }),
   #|   trackIdentifier: v.trackIdentifier,
   #|   mid: v.mid,
@@ -614,7 +614,7 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
   #|   frameWidth: v.frameWidth,
   #|   frameHeight: v.frameHeight,
   #|   framesPerSecond: (v.framesPerSecond === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framesPerSecond }),
-  #|   qpSum: v.qpSum,
+  #|   qpSum: (v.qpSum === undefined ? undefined : BigInt(v.qpSum)),
   #|   totalDecodeTime: (v.totalDecodeTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalDecodeTime }),
   #|   totalInterFrameDelay: (v.totalInterFrameDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalInterFrameDelay }),
   #|   totalSquaredInterFrameDelay: (v.totalSquaredInterFrameDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalSquaredInterFrameDelay }),
@@ -623,12 +623,12 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
   #|   freezeCount: v.freezeCount,
   #|   totalFreezesDuration: (v.totalFreezesDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalFreezesDuration }),
   #|   lastPacketReceivedTimestamp: (v.lastPacketReceivedTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketReceivedTimestamp }),
-  #|   headerBytesReceived: v.headerBytesReceived,
-  #|   packetsDiscarded: v.packetsDiscarded,
-  #|   fecBytesReceived: v.fecBytesReceived,
-  #|   fecPacketsReceived: v.fecPacketsReceived,
-  #|   fecPacketsDiscarded: v.fecPacketsDiscarded,
-  #|   bytesReceived: v.bytesReceived,
+  #|   headerBytesReceived: (v.headerBytesReceived === undefined ? undefined : BigInt(v.headerBytesReceived)),
+  #|   packetsDiscarded: (v.packetsDiscarded === undefined ? undefined : BigInt(v.packetsDiscarded)),
+  #|   fecBytesReceived: (v.fecBytesReceived === undefined ? undefined : BigInt(v.fecBytesReceived)),
+  #|   fecPacketsReceived: (v.fecPacketsReceived === undefined ? undefined : BigInt(v.fecPacketsReceived)),
+  #|   fecPacketsDiscarded: (v.fecPacketsDiscarded === undefined ? undefined : BigInt(v.fecPacketsDiscarded)),
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived)),
   #|   nackCount: v.nackCount,
   #|   firCount: v.firCount,
   #|   pliCount: v.pliCount,
@@ -636,14 +636,14 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
   #|   estimatedPlayoutTimestamp: (v.estimatedPlayoutTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.estimatedPlayoutTimestamp }),
   #|   jitterBufferDelay: (v.jitterBufferDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitterBufferDelay }),
   #|   jitterBufferTargetDelay: (v.jitterBufferTargetDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitterBufferTargetDelay }),
-  #|   jitterBufferEmittedCount: v.jitterBufferEmittedCount,
+  #|   jitterBufferEmittedCount: (v.jitterBufferEmittedCount === undefined ? undefined : BigInt(v.jitterBufferEmittedCount)),
   #|   jitterBufferMinimumDelay: (v.jitterBufferMinimumDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitterBufferMinimumDelay }),
-  #|   totalSamplesReceived: v.totalSamplesReceived,
-  #|   concealedSamples: v.concealedSamples,
-  #|   silentConcealedSamples: v.silentConcealedSamples,
-  #|   concealmentEvents: v.concealmentEvents,
-  #|   insertedSamplesForDeceleration: v.insertedSamplesForDeceleration,
-  #|   removedSamplesForAcceleration: v.removedSamplesForAcceleration,
+  #|   totalSamplesReceived: (v.totalSamplesReceived === undefined ? undefined : BigInt(v.totalSamplesReceived)),
+  #|   concealedSamples: (v.concealedSamples === undefined ? undefined : BigInt(v.concealedSamples)),
+  #|   silentConcealedSamples: (v.silentConcealedSamples === undefined ? undefined : BigInt(v.silentConcealedSamples)),
+  #|   concealmentEvents: (v.concealmentEvents === undefined ? undefined : BigInt(v.concealmentEvents)),
+  #|   insertedSamplesForDeceleration: (v.insertedSamplesForDeceleration === undefined ? undefined : BigInt(v.insertedSamplesForDeceleration)),
+  #|   removedSamplesForAcceleration: (v.removedSamplesForAcceleration === undefined ? undefined : BigInt(v.removedSamplesForAcceleration)),
   #|   audioLevel: (v.audioLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audioLevel }),
   #|   totalAudioEnergy: (v.totalAudioEnergy === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalAudioEnergy }),
   #|   totalSamplesDuration: (v.totalSamplesDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalSamplesDuration }),
@@ -653,13 +653,13 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
   #|   powerEfficientDecoder: (v.powerEfficientDecoder === undefined ? -1 : v.powerEfficientDecoder),
   #|   framesAssembledFromMultiplePackets: v.framesAssembledFromMultiplePackets,
   #|   totalAssemblyTime: (v.totalAssemblyTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalAssemblyTime }),
-  #|   retransmittedPacketsReceived: v.retransmittedPacketsReceived,
-  #|   retransmittedBytesReceived: v.retransmittedBytesReceived,
+  #|   retransmittedPacketsReceived: (v.retransmittedPacketsReceived === undefined ? undefined : BigInt(v.retransmittedPacketsReceived)),
+  #|   retransmittedBytesReceived: (v.retransmittedBytesReceived === undefined ? undefined : BigInt(v.retransmittedBytesReceived)),
   #|   rtxSsrc: v.rtxSsrc,
   #|   fecSsrc: v.fecSsrc,
   #|   totalCorruptionProbability: (v.totalCorruptionProbability === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalCorruptionProbability }),
   #|   totalSquaredCorruptionProbability: (v.totalSquaredCorruptionProbability === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalSquaredCorruptionProbability }),
-  #|   corruptionMeasurements: v.corruptionMeasurements
+  #|   corruptionMeasurements: (v.corruptionMeasurements === undefined ? undefined : BigInt(v.corruptionMeasurements))
   #| })
 
 ///|
@@ -725,19 +725,19 @@ extern "js" fn RTCRemoteInboundRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsReceived: self.packetsReceived,
-  #|   packetsReceivedWithEct1: self.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: self.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: self.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: self.packetsReportedAsLostButRecovered,
-  #|   packetsLost: self.packetsLost,
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
+  #|   packetsReceivedWithEct1: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithEct1),
+  #|   packetsReceivedWithCe: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceivedWithCe),
+  #|   packetsReportedAsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLost),
+  #|   packetsReportedAsLostButRecovered: ((value) => value === undefined ? undefined : Number(value))(self.packetsReportedAsLostButRecovered),
+  #|   packetsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsLost),
   #|   jitter: ((() => { const v = self.jitter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   localId: self.localId,
   #|   roundTripTime: ((() => { const v = self.roundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalRoundTripTime: ((() => { const v = self.totalRoundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   fractionLost: ((() => { const v = self.fractionLost; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   roundTripTimeMeasurements: self.roundTripTimeMeasurements,
-  #|   packetsWithBleachedEct1Marking: self.packetsWithBleachedEct1Marking
+  #|   roundTripTimeMeasurements: ((value) => value === undefined ? undefined : Number(value))(self.roundTripTimeMeasurements),
+  #|   packetsWithBleachedEct1Marking: ((value) => value === undefined ? undefined : Number(value))(self.packetsWithBleachedEct1Marking)
   #| })
 
 ///|
@@ -757,19 +757,19 @@ extern "js" fn RTCRemoteInboundRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsReceived: v.packetsReceived,
-  #|   packetsReceivedWithEct1: v.packetsReceivedWithEct1,
-  #|   packetsReceivedWithCe: v.packetsReceivedWithCe,
-  #|   packetsReportedAsLost: v.packetsReportedAsLost,
-  #|   packetsReportedAsLostButRecovered: v.packetsReportedAsLostButRecovered,
-  #|   packetsLost: v.packetsLost,
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
+  #|   packetsReceivedWithEct1: (v.packetsReceivedWithEct1 === undefined ? undefined : BigInt(v.packetsReceivedWithEct1)),
+  #|   packetsReceivedWithCe: (v.packetsReceivedWithCe === undefined ? undefined : BigInt(v.packetsReceivedWithCe)),
+  #|   packetsReportedAsLost: (v.packetsReportedAsLost === undefined ? undefined : BigInt(v.packetsReportedAsLost)),
+  #|   packetsReportedAsLostButRecovered: (v.packetsReportedAsLostButRecovered === undefined ? undefined : BigInt(v.packetsReportedAsLostButRecovered)),
+  #|   packetsLost: (v.packetsLost === undefined ? undefined : BigInt(v.packetsLost)),
   #|   jitter: (v.jitter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitter }),
   #|   localId: v.localId,
   #|   roundTripTime: (v.roundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.roundTripTime }),
   #|   totalRoundTripTime: (v.totalRoundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalRoundTripTime }),
   #|   fractionLost: (v.fractionLost === undefined ? { $tag: 0 } : { $tag: 1, _0: v.fractionLost }),
-  #|   roundTripTimeMeasurements: v.roundTripTimeMeasurements,
-  #|   packetsWithBleachedEct1Marking: v.packetsWithBleachedEct1Marking
+  #|   roundTripTimeMeasurements: (v.roundTripTimeMeasurements === undefined ? undefined : BigInt(v.roundTripTimeMeasurements)),
+  #|   packetsWithBleachedEct1Marking: (v.packetsWithBleachedEct1Marking === undefined ? undefined : BigInt(v.packetsWithBleachedEct1Marking))
   #| })
 
 ///|
@@ -813,8 +813,8 @@ extern "js" fn RTCSentRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsSent: self.packetsSent,
-  #|   bytesSent: self.bytesSent
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent)
   #| })
 
 ///|
@@ -832,8 +832,8 @@ extern "js" fn RTCSentRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsSent: v.packetsSent,
-  #|   bytesSent: v.bytesSent
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent))
   #| })
 
 ///|
@@ -943,19 +943,19 @@ extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsSent: self.packetsSent,
-  #|   bytesSent: self.bytesSent,
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
   #|   mid: self.mid,
   #|   mediaSourceId: self.mediaSourceId,
   #|   remoteId: self.remoteId,
   #|   rid: self.rid,
   #|   encodingIndex: self.encodingIndex,
-  #|   headerBytesSent: self.headerBytesSent,
-  #|   retransmittedPacketsSent: self.retransmittedPacketsSent,
-  #|   retransmittedBytesSent: self.retransmittedBytesSent,
+  #|   headerBytesSent: ((value) => value === undefined ? undefined : Number(value))(self.headerBytesSent),
+  #|   retransmittedPacketsSent: ((value) => value === undefined ? undefined : Number(value))(self.retransmittedPacketsSent),
+  #|   retransmittedBytesSent: ((value) => value === undefined ? undefined : Number(value))(self.retransmittedBytesSent),
   #|   rtxSsrc: self.rtxSsrc,
   #|   targetBitrate: ((() => { const v = self.targetBitrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   totalEncodedBytesTarget: self.totalEncodedBytesTarget,
+  #|   totalEncodedBytesTarget: ((value) => value === undefined ? undefined : Number(value))(self.totalEncodedBytesTarget),
   #|   frameWidth: self.frameWidth,
   #|   frameHeight: self.frameHeight,
   #|   framesPerSecond: ((() => { const v = self.framesPerSecond; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -963,9 +963,9 @@ extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(
   #|   hugeFramesSent: self.hugeFramesSent,
   #|   framesEncoded: self.framesEncoded,
   #|   keyFramesEncoded: self.keyFramesEncoded,
-  #|   qpSum: self.qpSum,
+  #|   qpSum: ((value) => value === undefined ? undefined : Number(value))(self.qpSum),
   #|   psnrSum: ((() => { const v = self.psnrSum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   psnrMeasurements: self.psnrMeasurements,
+  #|   psnrMeasurements: ((value) => value === undefined ? undefined : Number(value))(self.psnrMeasurements),
   #|   totalEncodeTime: ((() => { const v = self.totalEncodeTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalPacketSendDelay: ((() => { const v = self.totalPacketSendDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   qualityLimitationReason: ((() => { const v = self.qualityLimitationReason; if (v === undefined) return undefined; return ['none', 'cpu', 'bandwidth', 'other'][v]; })()),
@@ -978,7 +978,7 @@ extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(
   #|   powerEfficientEncoder: (self.powerEfficientEncoder === -1 ? undefined : self.powerEfficientEncoder),
   #|   active: (self.active === -1 ? undefined : self.active),
   #|   scalabilityMode: self.scalabilityMode,
-  #|   packetsSentWithEct1: self.packetsSentWithEct1
+  #|   packetsSentWithEct1: ((value) => value === undefined ? undefined : Number(value))(self.packetsSentWithEct1)
   #| })
 
 ///|
@@ -998,19 +998,19 @@ extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsSent: v.packetsSent,
-  #|   bytesSent: v.bytesSent,
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
   #|   mid: v.mid,
   #|   mediaSourceId: v.mediaSourceId,
   #|   remoteId: v.remoteId,
   #|   rid: v.rid,
   #|   encodingIndex: v.encodingIndex,
-  #|   headerBytesSent: v.headerBytesSent,
-  #|   retransmittedPacketsSent: v.retransmittedPacketsSent,
-  #|   retransmittedBytesSent: v.retransmittedBytesSent,
+  #|   headerBytesSent: (v.headerBytesSent === undefined ? undefined : BigInt(v.headerBytesSent)),
+  #|   retransmittedPacketsSent: (v.retransmittedPacketsSent === undefined ? undefined : BigInt(v.retransmittedPacketsSent)),
+  #|   retransmittedBytesSent: (v.retransmittedBytesSent === undefined ? undefined : BigInt(v.retransmittedBytesSent)),
   #|   rtxSsrc: v.rtxSsrc,
   #|   targetBitrate: (v.targetBitrate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.targetBitrate }),
-  #|   totalEncodedBytesTarget: v.totalEncodedBytesTarget,
+  #|   totalEncodedBytesTarget: (v.totalEncodedBytesTarget === undefined ? undefined : BigInt(v.totalEncodedBytesTarget)),
   #|   frameWidth: v.frameWidth,
   #|   frameHeight: v.frameHeight,
   #|   framesPerSecond: (v.framesPerSecond === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framesPerSecond }),
@@ -1018,9 +1018,9 @@ extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(
   #|   hugeFramesSent: v.hugeFramesSent,
   #|   framesEncoded: v.framesEncoded,
   #|   keyFramesEncoded: v.keyFramesEncoded,
-  #|   qpSum: v.qpSum,
+  #|   qpSum: (v.qpSum === undefined ? undefined : BigInt(v.qpSum)),
   #|   psnrSum: (v.psnrSum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.psnrSum }),
-  #|   psnrMeasurements: v.psnrMeasurements,
+  #|   psnrMeasurements: (v.psnrMeasurements === undefined ? undefined : BigInt(v.psnrMeasurements)),
   #|   totalEncodeTime: (v.totalEncodeTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalEncodeTime }),
   #|   totalPacketSendDelay: (v.totalPacketSendDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalPacketSendDelay }),
   #|   qualityLimitationReason: (v.qualityLimitationReason === undefined ? undefined : ['none', 'cpu', 'bandwidth', 'other'].indexOf(v.qualityLimitationReason)),
@@ -1033,7 +1033,7 @@ extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(
   #|   powerEfficientEncoder: (v.powerEfficientEncoder === undefined ? -1 : v.powerEfficientEncoder),
   #|   active: (v.active === undefined ? -1 : v.active),
   #|   scalabilityMode: v.scalabilityMode,
-  #|   packetsSentWithEct1: v.packetsSentWithEct1
+  #|   packetsSentWithEct1: (v.packetsSentWithEct1 === undefined ? undefined : BigInt(v.packetsSentWithEct1))
   #| })
 
 ///|
@@ -1089,14 +1089,14 @@ extern "js" fn RTCRemoteOutboundRtpStreamStats::to_js_ffi(
   #|   kind: self.kind,
   #|   transportId: self.transportId,
   #|   codecId: self.codecId,
-  #|   packetsSent: self.packetsSent,
-  #|   bytesSent: self.bytesSent,
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
   #|   localId: self.localId,
   #|   remoteTimestamp: ((() => { const v = self.remoteTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reportsSent: self.reportsSent,
+  #|   reportsSent: ((value) => value === undefined ? undefined : Number(value))(self.reportsSent),
   #|   roundTripTime: ((() => { const v = self.roundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalRoundTripTime: ((() => { const v = self.totalRoundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   roundTripTimeMeasurements: self.roundTripTimeMeasurements
+  #|   roundTripTimeMeasurements: ((value) => value === undefined ? undefined : Number(value))(self.roundTripTimeMeasurements)
   #| })
 
 ///|
@@ -1116,14 +1116,14 @@ extern "js" fn RTCRemoteOutboundRtpStreamStats::from_js_ffi(
   #|   kind: v.kind,
   #|   transportId: v.transportId,
   #|   codecId: v.codecId,
-  #|   packetsSent: v.packetsSent,
-  #|   bytesSent: v.bytesSent,
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
   #|   localId: v.localId,
   #|   remoteTimestamp: (v.remoteTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.remoteTimestamp }),
-  #|   reportsSent: v.reportsSent,
+  #|   reportsSent: (v.reportsSent === undefined ? undefined : BigInt(v.reportsSent)),
   #|   roundTripTime: (v.roundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.roundTripTime }),
   #|   totalRoundTripTime: (v.totalRoundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalRoundTripTime }),
-  #|   roundTripTimeMeasurements: v.roundTripTimeMeasurements
+  #|   roundTripTimeMeasurements: (v.roundTripTimeMeasurements === undefined ? undefined : BigInt(v.roundTripTimeMeasurements))
   #| })
 
 ///|
@@ -1339,7 +1339,7 @@ extern "js" fn RTCAudioPlayoutStats::to_js_ffi(
   #|   synthesizedSamplesEvents: self.synthesizedSamplesEvents,
   #|   totalSamplesDuration: ((() => { const v = self.totalSamplesDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalPlayoutDelay: ((() => { const v = self.totalPlayoutDelay; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   totalSamplesCount: self.totalSamplesCount
+  #|   totalSamplesCount: ((value) => value === undefined ? undefined : Number(value))(self.totalSamplesCount)
   #| })
 
 ///|
@@ -1358,7 +1358,7 @@ extern "js" fn RTCAudioPlayoutStats::from_js_ffi(
   #|   synthesizedSamplesEvents: v.synthesizedSamplesEvents,
   #|   totalSamplesDuration: (v.totalSamplesDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalSamplesDuration }),
   #|   totalPlayoutDelay: (v.totalPlayoutDelay === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalPlayoutDelay }),
-  #|   totalSamplesCount: v.totalSamplesCount
+  #|   totalSamplesCount: (v.totalSamplesCount === undefined ? undefined : BigInt(v.totalSamplesCount))
   #| })
 
 ///|
@@ -1455,9 +1455,9 @@ extern "js" fn RTCDataChannelStats::to_js_ffi(
   #|   dataChannelIdentifier: self.dataChannelIdentifier,
   #|   state: ['connecting', 'open', 'closing', 'closed'][self.state],
   #|   messagesSent: self.messagesSent,
-  #|   bytesSent: self.bytesSent,
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
   #|   messagesReceived: self.messagesReceived,
-  #|   bytesReceived: self.bytesReceived
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived)
   #| })
 
 ///|
@@ -1476,9 +1476,9 @@ extern "js" fn RTCDataChannelStats::from_js_ffi(
   #|   dataChannelIdentifier: v.dataChannelIdentifier,
   #|   state: ['connecting', 'open', 'closing', 'closed'].indexOf(v.state),
   #|   messagesSent: v.messagesSent,
-  #|   bytesSent: v.bytesSent,
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
   #|   messagesReceived: v.messagesReceived,
-  #|   bytesReceived: v.bytesReceived
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived))
   #| })
 
 ///|
@@ -1542,10 +1542,10 @@ extern "js" fn RTCTransportStats::to_js_ffi(
   self : RTCTransportStats,
 ) -> JsValue =
   #| (self) => ({
-  #|   packetsSent: self.packetsSent,
-  #|   packetsReceived: self.packetsReceived,
-  #|   bytesSent: self.bytesSent,
-  #|   bytesReceived: self.bytesReceived,
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived),
   #|   iceRole: ((() => { const v = self.iceRole; if (v === undefined) return undefined; return ['unknown', 'controlling', 'controlled'][v]; })()),
   #|   iceLocalUsernameFragment: self.iceLocalUsernameFragment,
   #|   dtlsState: ['new', 'connecting', 'connected', 'closed', 'failed'][self.dtlsState],
@@ -1573,10 +1573,10 @@ extern "js" fn RTCTransportStats::from_js_ffi(
   value : JsValue,
 ) -> RTCTransportStats =
   #| (v) => ({
-  #|   packetsSent: v.packetsSent,
-  #|   packetsReceived: v.packetsReceived,
-  #|   bytesSent: v.bytesSent,
-  #|   bytesReceived: v.bytesReceived,
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived)),
   #|   iceRole: (v.iceRole === undefined ? undefined : ['unknown', 'controlling', 'controlled'].indexOf(v.iceRole)),
   #|   iceLocalUsernameFragment: v.iceLocalUsernameFragment,
   #|   dtlsState: ['new', 'connecting', 'connected', 'closed', 'failed'].indexOf(v.dtlsState),
@@ -1759,23 +1759,23 @@ extern "js" fn RTCIceCandidatePairStats::to_js_ffi(
   #|   remoteCandidateId: self.remoteCandidateId,
   #|   state: ['frozen', 'waiting', 'in-progress', 'failed', 'succeeded'][self.state],
   #|   nominated: (self.nominated === -1 ? undefined : self.nominated),
-  #|   packetsSent: self.packetsSent,
-  #|   packetsReceived: self.packetsReceived,
-  #|   bytesSent: self.bytesSent,
-  #|   bytesReceived: self.bytesReceived,
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived),
   #|   lastPacketSentTimestamp: ((() => { const v = self.lastPacketSentTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lastPacketReceivedTimestamp: ((() => { const v = self.lastPacketReceivedTimestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   totalRoundTripTime: ((() => { const v = self.totalRoundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   currentRoundTripTime: ((() => { const v = self.currentRoundTripTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   availableOutgoingBitrate: ((() => { const v = self.availableOutgoingBitrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   availableIncomingBitrate: ((() => { const v = self.availableIncomingBitrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   requestsReceived: self.requestsReceived,
-  #|   requestsSent: self.requestsSent,
-  #|   responsesReceived: self.responsesReceived,
-  #|   responsesSent: self.responsesSent,
-  #|   consentRequestsSent: self.consentRequestsSent,
+  #|   requestsReceived: ((value) => value === undefined ? undefined : Number(value))(self.requestsReceived),
+  #|   requestsSent: ((value) => value === undefined ? undefined : Number(value))(self.requestsSent),
+  #|   responsesReceived: ((value) => value === undefined ? undefined : Number(value))(self.responsesReceived),
+  #|   responsesSent: ((value) => value === undefined ? undefined : Number(value))(self.responsesSent),
+  #|   consentRequestsSent: ((value) => value === undefined ? undefined : Number(value))(self.consentRequestsSent),
   #|   packetsDiscardedOnSend: self.packetsDiscardedOnSend,
-  #|   bytesDiscardedOnSend: self.bytesDiscardedOnSend
+  #|   bytesDiscardedOnSend: ((value) => value === undefined ? undefined : Number(value))(self.bytesDiscardedOnSend)
   #| })
 
 ///|
@@ -1796,23 +1796,23 @@ extern "js" fn RTCIceCandidatePairStats::from_js_ffi(
   #|   remoteCandidateId: v.remoteCandidateId,
   #|   state: ['frozen', 'waiting', 'in-progress', 'failed', 'succeeded'].indexOf(v.state),
   #|   nominated: (v.nominated === undefined ? -1 : v.nominated),
-  #|   packetsSent: v.packetsSent,
-  #|   packetsReceived: v.packetsReceived,
-  #|   bytesSent: v.bytesSent,
-  #|   bytesReceived: v.bytesReceived,
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived)),
   #|   lastPacketSentTimestamp: (v.lastPacketSentTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketSentTimestamp }),
   #|   lastPacketReceivedTimestamp: (v.lastPacketReceivedTimestamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lastPacketReceivedTimestamp }),
   #|   totalRoundTripTime: (v.totalRoundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.totalRoundTripTime }),
   #|   currentRoundTripTime: (v.currentRoundTripTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.currentRoundTripTime }),
   #|   availableOutgoingBitrate: (v.availableOutgoingBitrate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.availableOutgoingBitrate }),
   #|   availableIncomingBitrate: (v.availableIncomingBitrate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.availableIncomingBitrate }),
-  #|   requestsReceived: v.requestsReceived,
-  #|   requestsSent: v.requestsSent,
-  #|   responsesReceived: v.responsesReceived,
-  #|   responsesSent: v.responsesSent,
-  #|   consentRequestsSent: v.consentRequestsSent,
+  #|   requestsReceived: (v.requestsReceived === undefined ? undefined : BigInt(v.requestsReceived)),
+  #|   requestsSent: (v.requestsSent === undefined ? undefined : BigInt(v.requestsSent)),
+  #|   responsesReceived: (v.responsesReceived === undefined ? undefined : BigInt(v.responsesReceived)),
+  #|   responsesSent: (v.responsesSent === undefined ? undefined : BigInt(v.responsesSent)),
+  #|   consentRequestsSent: (v.consentRequestsSent === undefined ? undefined : BigInt(v.consentRequestsSent)),
   #|   packetsDiscardedOnSend: v.packetsDiscardedOnSend,
-  #|   bytesDiscardedOnSend: v.bytesDiscardedOnSend
+  #|   bytesDiscardedOnSend: (v.bytesDiscardedOnSend === undefined ? undefined : BigInt(v.bytesDiscardedOnSend))
   #| })
 
 ///|

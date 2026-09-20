@@ -2502,7 +2502,7 @@ extern "js" fn GPUBufferDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   size: self.size,
+  #|   size: Number(self.size),
   #|   usage: self.usage,
   #|   mappedAtCreation: (self.mappedAtCreation === -1 ? undefined : self.mappedAtCreation)
   #| })
@@ -2519,7 +2519,7 @@ extern "js" fn GPUBufferDescriptor::from_js_ffi(
 ) -> GPUBufferDescriptor =
   #| (v) => ({
   #|   label: v.label,
-  #|   size: v.size,
+  #|   size: BigInt(v.size),
   #|   usage: v.usage,
   #|   mappedAtCreation: (v.mappedAtCreation === undefined ? -1 : v.mappedAtCreation)
   #| })
@@ -2571,8 +2571,8 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
   #| (self) => ({
   #|   label: self.label,
   #|   size: self.size,
-  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mipLevelCount: self.mipLevelCount,
+  #|   sampleCount: self.sampleCount,
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '3d'][v]; })()),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   usage: self.usage,
@@ -2593,8 +2593,8 @@ extern "js" fn GPUTextureDescriptor::from_js_ffi(
   #| (v) => ({
   #|   label: v.label,
   #|   size: v.size,
-  #|   mipLevelCount: (v.mipLevelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevelCount }),
-  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount }),
+  #|   mipLevelCount: v.mipLevelCount,
+  #|   sampleCount: v.sampleCount,
   #|   dimension: (v.dimension === undefined ? undefined : ['1d', '2d', '3d'].indexOf(v.dimension)),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   usage: v.usage,
@@ -2648,12 +2648,12 @@ extern "js" fn GPUTextureViewDescriptor::to_js_ffi(
   #|   label: self.label,
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })()),
-  #|   usage: ((() => { const v = self.usage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   usage: self.usage,
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })()),
-  #|   baseMipLevel: ((() => { const v = self.baseMipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   baseArrayLayer: ((() => { const v = self.baseArrayLayer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   arrayLayerCount: ((() => { const v = self.arrayLayerCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   baseMipLevel: self.baseMipLevel,
+  #|   mipLevelCount: self.mipLevelCount,
+  #|   baseArrayLayer: self.baseArrayLayer,
+  #|   arrayLayerCount: self.arrayLayerCount,
   #|   swizzle: self.swizzle
   #| })
 
@@ -2673,12 +2673,12 @@ extern "js" fn GPUTextureViewDescriptor::from_js_ffi(
   #|   label: v.label,
   #|   format: (v.format === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format)),
   #|   dimension: (v.dimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.dimension)),
-  #|   usage: (v.usage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usage }),
+  #|   usage: v.usage,
   #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect)),
-  #|   baseMipLevel: (v.baseMipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.baseMipLevel }),
-  #|   mipLevelCount: (v.mipLevelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevelCount }),
-  #|   baseArrayLayer: (v.baseArrayLayer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.baseArrayLayer }),
-  #|   arrayLayerCount: (v.arrayLayerCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.arrayLayerCount }),
+  #|   baseMipLevel: v.baseMipLevel,
+  #|   mipLevelCount: v.mipLevelCount,
+  #|   baseArrayLayer: v.baseArrayLayer,
+  #|   arrayLayerCount: v.arrayLayerCount,
   #|   swizzle: v.swizzle
   #| })
 
@@ -2969,7 +2969,7 @@ extern "js" fn GPUBufferBindingLayout::to_js_ffi(
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['uniform', 'storage', 'read-only-storage'][v]; })()),
   #|   hasDynamicOffset: (self.hasDynamicOffset === -1 ? undefined : self.hasDynamicOffset),
-  #|   minBindingSize: ((() => { const v = self.minBindingSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   minBindingSize: ((value) => value === undefined ? undefined : Number(value))(self.minBindingSize)
   #| })
 
 ///|
@@ -2985,7 +2985,7 @@ extern "js" fn GPUBufferBindingLayout::from_js_ffi(
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['uniform', 'storage', 'read-only-storage'].indexOf(v.type)),
   #|   hasDynamicOffset: (v.hasDynamicOffset === undefined ? -1 : v.hasDynamicOffset),
-  #|   minBindingSize: (v.minBindingSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minBindingSize })
+  #|   minBindingSize: (v.minBindingSize === undefined ? undefined : BigInt(v.minBindingSize))
   #| })
 
 ///|
@@ -3300,8 +3300,8 @@ pub fn GPUBufferBinding::new(buffer~ : GPUBuffer) -> GPUBufferBinding {
 extern "js" fn GPUBufferBinding::to_js_ffi(self : GPUBufferBinding) -> JsValue =
   #| (self) => ({
   #|   buffer: self.buffer,
-  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   size: ((() => { const v = self.size; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
+  #|   size: ((value) => value === undefined ? undefined : Number(value))(self.size)
   #| })
 
 ///|
@@ -3316,8 +3316,8 @@ extern "js" fn GPUBufferBinding::from_js_ffi(
 ) -> GPUBufferBinding =
   #| (v) => ({
   #|   buffer: v.buffer,
-  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
-  #|   size: (v.size === undefined ? { $tag: 0 } : { $tag: 1, _0: v.size })
+  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
+  #|   size: (v.size === undefined ? undefined : BigInt(v.size))
   #| })
 
 ///|
@@ -3816,8 +3816,8 @@ extern "js" fn GPUMultisampleState::to_js_ffi(
   self : GPUMultisampleState,
 ) -> JsValue =
   #| (self) => ({
-  #|   count: ((() => { const v = self.count; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   count: self.count,
+  #|   mask: self.mask,
   #|   alphaToCoverageEnabled: (self.alphaToCoverageEnabled === -1 ? undefined : self.alphaToCoverageEnabled)
   #| })
 
@@ -3832,8 +3832,8 @@ extern "js" fn GPUMultisampleState::from_js_ffi(
   value : JsValue,
 ) -> GPUMultisampleState =
   #| (v) => ({
-  #|   count: (v.count === undefined ? { $tag: 0 } : { $tag: 1, _0: v.count }),
-  #|   mask: (v.mask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mask }),
+  #|   count: v.count,
+  #|   mask: v.mask,
   #|   alphaToCoverageEnabled: (v.alphaToCoverageEnabled === undefined ? -1 : v.alphaToCoverageEnabled)
   #| })
 
@@ -3913,7 +3913,7 @@ extern "js" fn GPUColorTargetState::to_js_ffi(
   #| (self) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   blend: ((() => { const v = self.blend; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   writeMask: ((() => { const v = self.writeMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   writeMask: self.writeMask
   #| })
 
 ///|
@@ -3929,7 +3929,7 @@ extern "js" fn GPUColorTargetState::from_js_ffi(
   #| (v) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   blend: (v.blend === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blend }),
-  #|   writeMask: (v.writeMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.writeMask })
+  #|   writeMask: v.writeMask
   #| })
 
 ///|
@@ -4070,9 +4070,9 @@ extern "js" fn GPUDepthStencilState::to_js_ffi(
   #|   depthCompare: ((() => { const v = self.depthCompare; if (v === undefined) return undefined; return ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'][v]; })()),
   #|   stencilFront: ((() => { const v = self.stencilFront; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   stencilBack: ((() => { const v = self.stencilBack; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   stencilReadMask: ((() => { const v = self.stencilReadMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   stencilWriteMask: ((() => { const v = self.stencilWriteMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthBias: ((() => { const v = self.depthBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilReadMask: self.stencilReadMask,
+  #|   stencilWriteMask: self.stencilWriteMask,
+  #|   depthBias: self.depthBias,
   #|   depthBiasSlopeScale: ((() => { const v = self.depthBiasSlopeScale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   depthBiasClamp: ((() => { const v = self.depthBiasClamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -4093,9 +4093,9 @@ extern "js" fn GPUDepthStencilState::from_js_ffi(
   #|   depthCompare: (v.depthCompare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.depthCompare)),
   #|   stencilFront: (v.stencilFront === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilFront }),
   #|   stencilBack: (v.stencilBack === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilBack }),
-  #|   stencilReadMask: (v.stencilReadMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilReadMask }),
-  #|   stencilWriteMask: (v.stencilWriteMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilWriteMask }),
-  #|   depthBias: (v.depthBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBias }),
+  #|   stencilReadMask: v.stencilReadMask,
+  #|   stencilWriteMask: v.stencilWriteMask,
+  #|   depthBias: v.depthBias,
   #|   depthBiasSlopeScale: (v.depthBiasSlopeScale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBiasSlopeScale }),
   #|   depthBiasClamp: (v.depthBiasClamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBiasClamp })
   #| })
@@ -4226,7 +4226,7 @@ extern "js" fn GPUVertexBufferLayout::to_js_ffi(
   self : GPUVertexBufferLayout,
 ) -> JsValue =
   #| (self) => ({
-  #|   arrayStride: self.arrayStride,
+  #|   arrayStride: Number(self.arrayStride),
   #|   stepMode: ((() => { const v = self.stepMode; if (v === undefined) return undefined; return ['vertex', 'instance'][v]; })()),
   #|   attributes: self.attributes
   #| })
@@ -4242,7 +4242,7 @@ extern "js" fn GPUVertexBufferLayout::from_js_ffi(
   value : JsValue,
 ) -> GPUVertexBufferLayout =
   #| (v) => ({
-  #|   arrayStride: v.arrayStride,
+  #|   arrayStride: BigInt(v.arrayStride),
   #|   stepMode: (v.stepMode === undefined ? undefined : ['vertex', 'instance'].indexOf(v.stepMode)),
   #|   attributes: v.attributes
   #| })
@@ -4277,7 +4277,7 @@ extern "js" fn GPUVertexAttribute::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'][self.format],
-  #|   offset: self.offset,
+  #|   offset: Number(self.offset),
   #|   shaderLocation: self.shaderLocation
   #| })
 
@@ -4293,7 +4293,7 @@ extern "js" fn GPUVertexAttribute::from_js_ffi(
 ) -> GPUVertexAttribute =
   #| (v) => ({
   #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'].indexOf(v.format),
-  #|   offset: v.offset,
+  #|   offset: BigInt(v.offset),
   #|   shaderLocation: v.shaderLocation
   #| })
 
@@ -4326,9 +4326,9 @@ extern "js" fn GPUTexelCopyBufferLayout::to_js_ffi(
   self : GPUTexelCopyBufferLayout,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
+  #|   bytesPerRow: self.bytesPerRow,
+  #|   rowsPerImage: self.rowsPerImage
   #| })
 
 ///|
@@ -4344,9 +4344,9 @@ extern "js" fn GPUTexelCopyBufferLayout::from_js_ffi(
   value : JsValue,
 ) -> GPUTexelCopyBufferLayout =
   #| (v) => ({
-  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
-  #|   bytesPerRow: (v.bytesPerRow === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bytesPerRow }),
-  #|   rowsPerImage: (v.rowsPerImage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rowsPerImage })
+  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
+  #|   bytesPerRow: v.bytesPerRow,
+  #|   rowsPerImage: v.rowsPerImage
   #| })
 
 ///|
@@ -4384,9 +4384,9 @@ extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
   self : GPUTexelCopyBufferInfo,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bytesPerRow: ((() => { const v = self.bytesPerRow; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rowsPerImage: ((() => { const v = self.rowsPerImage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
+  #|   bytesPerRow: self.bytesPerRow,
+  #|   rowsPerImage: self.rowsPerImage,
   #|   buffer: self.buffer
   #| })
 
@@ -4401,9 +4401,9 @@ extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(
   value : JsValue,
 ) -> GPUTexelCopyBufferInfo =
   #| (v) => ({
-  #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
-  #|   bytesPerRow: (v.bytesPerRow === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bytesPerRow }),
-  #|   rowsPerImage: (v.rowsPerImage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rowsPerImage }),
+  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
+  #|   bytesPerRow: v.bytesPerRow,
+  #|   rowsPerImage: v.rowsPerImage,
   #|   buffer: v.buffer
   #| })
 
@@ -4443,7 +4443,7 @@ extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
-  #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mipLevel: self.mipLevel,
   #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })())
   #| })
@@ -4462,7 +4462,7 @@ extern "js" fn GPUTexelCopyTextureInfo::from_js_ffi(
 ) -> GPUTexelCopyTextureInfo =
   #| (v) => ({
   #|   texture: v.texture,
-  #|   mipLevel: (v.mipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevel }),
+  #|   mipLevel: v.mipLevel,
   #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
   #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect))
   #| })
@@ -4507,7 +4507,7 @@ extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
-  #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mipLevel: self.mipLevel,
   #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
@@ -4528,7 +4528,7 @@ extern "js" fn GPUCopyExternalImageDestInfo::from_js_ffi(
 ) -> GPUCopyExternalImageDestInfo =
   #| (v) => ({
   #|   texture: v.texture,
-  #|   mipLevel: (v.mipLevel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mipLevel }),
+  #|   mipLevel: v.mipLevel,
   #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
   #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect)),
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
@@ -4709,8 +4709,8 @@ extern "js" fn GPUComputePassTimestampWrites::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
-  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   beginningOfPassWriteIndex: self.beginningOfPassWriteIndex,
+  #|   endOfPassWriteIndex: self.endOfPassWriteIndex
   #| })
 
 ///|
@@ -4727,8 +4727,8 @@ extern "js" fn GPUComputePassTimestampWrites::from_js_ffi(
 ) -> GPUComputePassTimestampWrites =
   #| (v) => ({
   #|   querySet: v.querySet,
-  #|   beginningOfPassWriteIndex: (v.beginningOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beginningOfPassWriteIndex }),
-  #|   endOfPassWriteIndex: (v.endOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endOfPassWriteIndex })
+  #|   beginningOfPassWriteIndex: v.beginningOfPassWriteIndex,
+  #|   endOfPassWriteIndex: v.endOfPassWriteIndex
   #| })
 
 ///|
@@ -4812,8 +4812,8 @@ extern "js" fn GPURenderPassTimestampWrites::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
-  #|   beginningOfPassWriteIndex: ((() => { const v = self.beginningOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   endOfPassWriteIndex: ((() => { const v = self.endOfPassWriteIndex; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   beginningOfPassWriteIndex: self.beginningOfPassWriteIndex,
+  #|   endOfPassWriteIndex: self.endOfPassWriteIndex
   #| })
 
 ///|
@@ -4830,8 +4830,8 @@ extern "js" fn GPURenderPassTimestampWrites::from_js_ffi(
 ) -> GPURenderPassTimestampWrites =
   #| (v) => ({
   #|   querySet: v.querySet,
-  #|   beginningOfPassWriteIndex: (v.beginningOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.beginningOfPassWriteIndex }),
-  #|   endOfPassWriteIndex: (v.endOfPassWriteIndex === undefined ? { $tag: 0 } : { $tag: 1, _0: v.endOfPassWriteIndex })
+  #|   beginningOfPassWriteIndex: v.beginningOfPassWriteIndex,
+  #|   endOfPassWriteIndex: v.endOfPassWriteIndex
   #| })
 
 ///|
@@ -4876,7 +4876,7 @@ extern "js" fn GPURenderPassDescriptor::to_js_ffi(
   #|   depthStencilAttachment: ((() => { const v = self.depthStencilAttachment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   occlusionQuerySet: ((() => { const v = self.occlusionQuerySet; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxDrawCount: ((() => { const v = self.maxDrawCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   maxDrawCount: ((value) => value === undefined ? undefined : Number(value))(self.maxDrawCount)
   #| })
 
 ///|
@@ -4897,7 +4897,7 @@ extern "js" fn GPURenderPassDescriptor::from_js_ffi(
   #|   depthStencilAttachment: (v.depthStencilAttachment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthStencilAttachment }),
   #|   occlusionQuerySet: (v.occlusionQuerySet === undefined ? { $tag: 0 } : { $tag: 1, _0: v.occlusionQuerySet }),
   #|   timestampWrites: (v.timestampWrites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timestampWrites }),
-  #|   maxDrawCount: (v.maxDrawCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxDrawCount })
+  #|   maxDrawCount: (v.maxDrawCount === undefined ? undefined : BigInt(v.maxDrawCount))
   #| })
 
 ///|
@@ -4942,7 +4942,7 @@ extern "js" fn GPURenderPassColorAttachment::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   view: self.view,
-  #|   depthSlice: ((() => { const v = self.depthSlice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   depthSlice: self.depthSlice,
   #|   resolveTarget: ((() => { const v = self.resolveTarget; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   clearValue: ((() => { const v = self.clearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   loadOp: ['load', 'clear'][self.loadOp],
@@ -4963,7 +4963,7 @@ extern "js" fn GPURenderPassColorAttachment::from_js_ffi(
 ) -> GPURenderPassColorAttachment =
   #| (v) => ({
   #|   view: v.view,
-  #|   depthSlice: (v.depthSlice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSlice }),
+  #|   depthSlice: v.depthSlice,
   #|   resolveTarget: (v.resolveTarget === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resolveTarget }),
   #|   clearValue: (v.clearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.clearValue }),
   #|   loadOp: ['load', 'clear'].indexOf(v.loadOp),
@@ -5020,7 +5020,7 @@ extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(
   #|   depthLoadOp: ((() => { const v = self.depthLoadOp; if (v === undefined) return undefined; return ['load', 'clear'][v]; })()),
   #|   depthStoreOp: ((() => { const v = self.depthStoreOp; if (v === undefined) return undefined; return ['store', 'discard'][v]; })()),
   #|   depthReadOnly: (self.depthReadOnly === -1 ? undefined : self.depthReadOnly),
-  #|   stencilClearValue: ((() => { const v = self.stencilClearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   stencilClearValue: self.stencilClearValue,
   #|   stencilLoadOp: ((() => { const v = self.stencilLoadOp; if (v === undefined) return undefined; return ['load', 'clear'][v]; })()),
   #|   stencilStoreOp: ((() => { const v = self.stencilStoreOp; if (v === undefined) return undefined; return ['store', 'discard'][v]; })()),
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
@@ -5044,7 +5044,7 @@ extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(
   #|   depthLoadOp: (v.depthLoadOp === undefined ? undefined : ['load', 'clear'].indexOf(v.depthLoadOp)),
   #|   depthStoreOp: (v.depthStoreOp === undefined ? undefined : ['store', 'discard'].indexOf(v.depthStoreOp)),
   #|   depthReadOnly: (v.depthReadOnly === undefined ? -1 : v.depthReadOnly),
-  #|   stencilClearValue: (v.stencilClearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.stencilClearValue }),
+  #|   stencilClearValue: v.stencilClearValue,
   #|   stencilLoadOp: (v.stencilLoadOp === undefined ? undefined : ['load', 'clear'].indexOf(v.stencilLoadOp)),
   #|   stencilStoreOp: (v.stencilStoreOp === undefined ? undefined : ['store', 'discard'].indexOf(v.stencilStoreOp)),
   #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
@@ -5086,7 +5086,7 @@ extern "js" fn GPURenderPassLayout::to_js_ffi(
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
   #|   depthStencilFormat: ((() => { const v = self.depthStencilFormat; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   sampleCount: self.sampleCount
   #| })
 
 ///|
@@ -5103,7 +5103,7 @@ extern "js" fn GPURenderPassLayout::from_js_ffi(
   #|   label: v.label,
   #|   colorFormats: v.colorFormats,
   #|   depthStencilFormat: (v.depthStencilFormat === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.depthStencilFormat)),
-  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount })
+  #|   sampleCount: v.sampleCount
   #| })
 
 ///|
@@ -5188,7 +5188,7 @@ extern "js" fn GPURenderBundleEncoderDescriptor::to_js_ffi(
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
   #|   depthStencilFormat: ((() => { const v = self.depthStencilFormat; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
-  #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampleCount: self.sampleCount,
   #|   depthReadOnly: (self.depthReadOnly === -1 ? undefined : self.depthReadOnly),
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
   #| })
@@ -5209,7 +5209,7 @@ extern "js" fn GPURenderBundleEncoderDescriptor::from_js_ffi(
   #|   label: v.label,
   #|   colorFormats: v.colorFormats,
   #|   depthStencilFormat: (v.depthStencilFormat === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.depthStencilFormat)),
-  #|   sampleCount: (v.sampleCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleCount }),
+  #|   sampleCount: v.sampleCount,
   #|   depthReadOnly: (v.depthReadOnly === undefined ? -1 : v.depthReadOnly),
   #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
   #| })
@@ -5387,7 +5387,7 @@ extern "js" fn GPUCanvasConfiguration::to_js_ffi(
   #| (self) => ({
   #|   device: self.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
-  #|   usage: ((() => { const v = self.usage; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   usage: self.usage,
   #|   viewFormats: self.viewFormats,
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
   #|   toneMapping: ((() => { const v = self.toneMapping; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -5407,7 +5407,7 @@ extern "js" fn GPUCanvasConfiguration::from_js_ffi(
   #| (v) => ({
   #|   device: v.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
-  #|   usage: (v.usage === undefined ? { $tag: 0 } : { $tag: 1, _0: v.usage }),
+  #|   usage: v.usage,
   #|   viewFormats: v.viewFormats,
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace)),
   #|   toneMapping: (v.toneMapping === undefined ? { $tag: 0 } : { $tag: 1, _0: v.toneMapping }),
@@ -5529,8 +5529,8 @@ pub fn GPUOrigin2DDict::default() -> GPUOrigin2DDict {
 ///|
 extern "js" fn GPUOrigin2DDict::to_js_ffi(self : GPUOrigin2DDict) -> JsValue =
   #| (self) => ({
-  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   x: self.x,
+  #|   y: self.y
   #| })
 
 ///|
@@ -5542,8 +5542,8 @@ pub fn GPUOrigin2DDict::to_js(self : GPUOrigin2DDict) -> JsValue {
 ///|
 extern "js" fn GPUOrigin2DDict::from_js_ffi(value : JsValue) -> GPUOrigin2DDict =
   #| (v) => ({
-  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
-  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y })
+  #|   x: v.x,
+  #|   y: v.y
   #| })
 
 ///|
@@ -5569,9 +5569,9 @@ pub fn GPUOrigin3DDict::default() -> GPUOrigin3DDict {
 ///|
 extern "js" fn GPUOrigin3DDict::to_js_ffi(self : GPUOrigin3DDict) -> JsValue =
   #| (self) => ({
-  #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   z: ((() => { const v = self.z; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   x: self.x,
+  #|   y: self.y,
+  #|   z: self.z
   #| })
 
 ///|
@@ -5583,9 +5583,9 @@ pub fn GPUOrigin3DDict::to_js(self : GPUOrigin3DDict) -> JsValue {
 ///|
 extern "js" fn GPUOrigin3DDict::from_js_ffi(value : JsValue) -> GPUOrigin3DDict =
   #| (v) => ({
-  #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
-  #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y }),
-  #|   z: (v.z === undefined ? { $tag: 0 } : { $tag: 1, _0: v.z })
+  #|   x: v.x,
+  #|   y: v.y,
+  #|   z: v.z
   #| })
 
 ///|
@@ -5612,8 +5612,8 @@ pub fn GPUExtent3DDict::new(width~ : GPUIntegerCoordinate) -> GPUExtent3DDict {
 extern "js" fn GPUExtent3DDict::to_js_ffi(self : GPUExtent3DDict) -> JsValue =
   #| (self) => ({
   #|   width: self.width,
-  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthOrArrayLayers: ((() => { const v = self.depthOrArrayLayers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   height: self.height,
+  #|   depthOrArrayLayers: self.depthOrArrayLayers
   #| })
 
 ///|
@@ -5626,8 +5626,8 @@ pub fn GPUExtent3DDict::to_js(self : GPUExtent3DDict) -> JsValue {
 extern "js" fn GPUExtent3DDict::from_js_ffi(value : JsValue) -> GPUExtent3DDict =
   #| (v) => ({
   #|   width: v.width,
-  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
-  #|   depthOrArrayLayers: (v.depthOrArrayLayers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthOrArrayLayers })
+  #|   height: v.height,
+  #|   depthOrArrayLayers: v.depthOrArrayLayers
   #| })
 
 ///|

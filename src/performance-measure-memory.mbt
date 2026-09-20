@@ -19,7 +19,7 @@ extern "js" fn MemoryMeasurement::to_js_ffi(
   self : MemoryMeasurement,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytes: self.bytes,
+  #|   bytes: ((value) => value === undefined ? undefined : Number(value))(self.bytes),
   #|   breakdown: self.breakdown
   #| })
 
@@ -34,7 +34,7 @@ extern "js" fn MemoryMeasurement::from_js_ffi(
   value : JsValue,
 ) -> MemoryMeasurement =
   #| (v) => ({
-  #|   bytes: v.bytes,
+  #|   bytes: (v.bytes === undefined ? undefined : BigInt(v.bytes)),
   #|   breakdown: v.breakdown
   #| })
 
@@ -63,7 +63,7 @@ extern "js" fn MemoryBreakdownEntry::to_js_ffi(
   self : MemoryBreakdownEntry,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytes: self.bytes,
+  #|   bytes: ((value) => value === undefined ? undefined : Number(value))(self.bytes),
   #|   attribution: self.attribution,
   #|   types: self.types
   #| })
@@ -79,7 +79,7 @@ extern "js" fn MemoryBreakdownEntry::from_js_ffi(
   value : JsValue,
 ) -> MemoryBreakdownEntry =
   #| (v) => ({
-  #|   bytes: v.bytes,
+  #|   bytes: (v.bytes === undefined ? undefined : BigInt(v.bytes)),
   #|   attribution: v.attribution,
   #|   types: v.types
   #| })

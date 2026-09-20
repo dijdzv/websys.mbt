@@ -102,8 +102,8 @@ extern "js" fn TextEncoderEncodeIntoResult::to_js_ffi(
   self : TextEncoderEncodeIntoResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   read: self.read,
-  #|   written: self.written
+  #|   read: ((value) => value === undefined ? undefined : Number(value))(self.read),
+  #|   written: ((value) => value === undefined ? undefined : Number(value))(self.written)
   #| })
 
 ///|
@@ -119,8 +119,8 @@ extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(
   value : JsValue,
 ) -> TextEncoderEncodeIntoResult =
   #| (v) => ({
-  #|   read: v.read,
-  #|   written: v.written
+  #|   read: (v.read === undefined ? undefined : BigInt(v.read)),
+  #|   written: (v.written === undefined ? undefined : BigInt(v.written))
   #| })
 
 ///|

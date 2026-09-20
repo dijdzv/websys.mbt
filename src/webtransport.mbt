@@ -275,7 +275,7 @@ extern "js" fn WebTransportSendOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   sendOrder: self.sendOrder
+  #|   sendOrder: ((value) => value === undefined ? undefined : Number(value))(self.sendOrder)
   #| })
 
 ///|
@@ -292,7 +292,7 @@ extern "js" fn WebTransportSendOptions::from_js_ffi(
 ) -> WebTransportSendOptions =
   #| (v) => ({
   #|   sendGroup: (v.sendGroup === undefined ? { $tag: 0 } : v.sendGroup === null ? { $tag: 1 } : { $tag: 2, _0: v.sendGroup }),
-  #|   sendOrder: v.sendOrder
+  #|   sendOrder: (v.sendOrder === undefined ? undefined : BigInt(v.sendOrder))
   #| })
 
 ///|
@@ -327,7 +327,7 @@ extern "js" fn WebTransportSendStreamOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   sendGroup: ((() => { const v = self.sendGroup; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   sendOrder: self.sendOrder,
+  #|   sendOrder: ((value) => value === undefined ? undefined : Number(value))(self.sendOrder),
   #|   waitUntilAvailable: (self.waitUntilAvailable === -1 ? undefined : self.waitUntilAvailable)
   #| })
 
@@ -345,7 +345,7 @@ extern "js" fn WebTransportSendStreamOptions::from_js_ffi(
 ) -> WebTransportSendStreamOptions =
   #| (v) => ({
   #|   sendGroup: (v.sendGroup === undefined ? { $tag: 0 } : v.sendGroup === null ? { $tag: 1 } : { $tag: 2, _0: v.sendGroup }),
-  #|   sendOrder: v.sendOrder,
+  #|   sendOrder: (v.sendOrder === undefined ? undefined : BigInt(v.sendOrder)),
   #|   waitUntilAvailable: (v.waitUntilAvailable === undefined ? -1 : v.waitUntilAvailable)
   #| })
 
@@ -404,14 +404,14 @@ extern "js" fn WebTransportConnectionStats::to_js_ffi(
   self : WebTransportConnectionStats,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytesSent: self.bytesSent,
-  #|   bytesSentOverhead: self.bytesSentOverhead,
-  #|   bytesAcknowledged: self.bytesAcknowledged,
-  #|   packetsSent: self.packetsSent,
-  #|   bytesLost: self.bytesLost,
-  #|   packetsLost: self.packetsLost,
-  #|   bytesReceived: self.bytesReceived,
-  #|   packetsReceived: self.packetsReceived,
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
+  #|   bytesSentOverhead: ((value) => value === undefined ? undefined : Number(value))(self.bytesSentOverhead),
+  #|   bytesAcknowledged: ((value) => value === undefined ? undefined : Number(value))(self.bytesAcknowledged),
+  #|   packetsSent: ((value) => value === undefined ? undefined : Number(value))(self.packetsSent),
+  #|   bytesLost: ((value) => value === undefined ? undefined : Number(value))(self.bytesLost),
+  #|   packetsLost: ((value) => value === undefined ? undefined : Number(value))(self.packetsLost),
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived),
+  #|   packetsReceived: ((value) => value === undefined ? undefined : Number(value))(self.packetsReceived),
   #|   smoothedRtt: ((() => { const v = self.smoothedRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rttVariation: ((() => { const v = self.rttVariation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   minRtt: ((() => { const v = self.minRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -433,14 +433,14 @@ extern "js" fn WebTransportConnectionStats::from_js_ffi(
   value : JsValue,
 ) -> WebTransportConnectionStats =
   #| (v) => ({
-  #|   bytesSent: v.bytesSent,
-  #|   bytesSentOverhead: v.bytesSentOverhead,
-  #|   bytesAcknowledged: v.bytesAcknowledged,
-  #|   packetsSent: v.packetsSent,
-  #|   bytesLost: v.bytesLost,
-  #|   packetsLost: v.packetsLost,
-  #|   bytesReceived: v.bytesReceived,
-  #|   packetsReceived: v.packetsReceived,
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
+  #|   bytesSentOverhead: (v.bytesSentOverhead === undefined ? undefined : BigInt(v.bytesSentOverhead)),
+  #|   bytesAcknowledged: (v.bytesAcknowledged === undefined ? undefined : BigInt(v.bytesAcknowledged)),
+  #|   packetsSent: (v.packetsSent === undefined ? undefined : BigInt(v.packetsSent)),
+  #|   bytesLost: (v.bytesLost === undefined ? undefined : BigInt(v.bytesLost)),
+  #|   packetsLost: (v.packetsLost === undefined ? undefined : BigInt(v.packetsLost)),
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived)),
+  #|   packetsReceived: (v.packetsReceived === undefined ? undefined : BigInt(v.packetsReceived)),
   #|   smoothedRtt: (v.smoothedRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothedRtt }),
   #|   rttVariation: (v.rttVariation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rttVariation }),
   #|   minRtt: (v.minRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minRtt }),
@@ -482,10 +482,10 @@ extern "js" fn WebTransportDatagramStats::to_js_ffi(
   self : WebTransportDatagramStats,
 ) -> JsValue =
   #| (self) => ({
-  #|   droppedIncoming: self.droppedIncoming,
-  #|   expiredIncoming: self.expiredIncoming,
-  #|   expiredOutgoing: self.expiredOutgoing,
-  #|   lostOutgoing: self.lostOutgoing
+  #|   droppedIncoming: ((value) => value === undefined ? undefined : Number(value))(self.droppedIncoming),
+  #|   expiredIncoming: ((value) => value === undefined ? undefined : Number(value))(self.expiredIncoming),
+  #|   expiredOutgoing: ((value) => value === undefined ? undefined : Number(value))(self.expiredOutgoing),
+  #|   lostOutgoing: ((value) => value === undefined ? undefined : Number(value))(self.lostOutgoing)
   #| })
 
 ///|
@@ -501,10 +501,10 @@ extern "js" fn WebTransportDatagramStats::from_js_ffi(
   value : JsValue,
 ) -> WebTransportDatagramStats =
   #| (v) => ({
-  #|   droppedIncoming: v.droppedIncoming,
-  #|   expiredIncoming: v.expiredIncoming,
-  #|   expiredOutgoing: v.expiredOutgoing,
-  #|   lostOutgoing: v.lostOutgoing
+  #|   droppedIncoming: (v.droppedIncoming === undefined ? undefined : BigInt(v.droppedIncoming)),
+  #|   expiredIncoming: (v.expiredIncoming === undefined ? undefined : BigInt(v.expiredIncoming)),
+  #|   expiredOutgoing: (v.expiredOutgoing === undefined ? undefined : BigInt(v.expiredOutgoing)),
+  #|   lostOutgoing: (v.lostOutgoing === undefined ? undefined : BigInt(v.lostOutgoing))
   #| })
 
 ///|
@@ -538,9 +538,9 @@ extern "js" fn WebTransportSendStreamStats::to_js_ffi(
   self : WebTransportSendStreamStats,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytesWritten: self.bytesWritten,
-  #|   bytesSent: self.bytesSent,
-  #|   bytesAcknowledged: self.bytesAcknowledged
+  #|   bytesWritten: ((value) => value === undefined ? undefined : Number(value))(self.bytesWritten),
+  #|   bytesSent: ((value) => value === undefined ? undefined : Number(value))(self.bytesSent),
+  #|   bytesAcknowledged: ((value) => value === undefined ? undefined : Number(value))(self.bytesAcknowledged)
   #| })
 
 ///|
@@ -556,9 +556,9 @@ extern "js" fn WebTransportSendStreamStats::from_js_ffi(
   value : JsValue,
 ) -> WebTransportSendStreamStats =
   #| (v) => ({
-  #|   bytesWritten: v.bytesWritten,
-  #|   bytesSent: v.bytesSent,
-  #|   bytesAcknowledged: v.bytesAcknowledged
+  #|   bytesWritten: (v.bytesWritten === undefined ? undefined : BigInt(v.bytesWritten)),
+  #|   bytesSent: (v.bytesSent === undefined ? undefined : BigInt(v.bytesSent)),
+  #|   bytesAcknowledged: (v.bytesAcknowledged === undefined ? undefined : BigInt(v.bytesAcknowledged))
   #| })
 
 ///|
@@ -587,8 +587,8 @@ extern "js" fn WebTransportReceiveStreamStats::to_js_ffi(
   self : WebTransportReceiveStreamStats,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytesReceived: self.bytesReceived,
-  #|   bytesRead: self.bytesRead
+  #|   bytesReceived: ((value) => value === undefined ? undefined : Number(value))(self.bytesReceived),
+  #|   bytesRead: ((value) => value === undefined ? undefined : Number(value))(self.bytesRead)
   #| })
 
 ///|
@@ -604,8 +604,8 @@ extern "js" fn WebTransportReceiveStreamStats::from_js_ffi(
   value : JsValue,
 ) -> WebTransportReceiveStreamStats =
   #| (v) => ({
-  #|   bytesReceived: v.bytesReceived,
-  #|   bytesRead: v.bytesRead
+  #|   bytesReceived: (v.bytesReceived === undefined ? undefined : BigInt(v.bytesReceived)),
+  #|   bytesRead: (v.bytesRead === undefined ? undefined : BigInt(v.bytesRead))
   #| })
 
 ///|

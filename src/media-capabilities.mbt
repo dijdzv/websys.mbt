@@ -340,7 +340,7 @@ extern "js" fn VideoConfiguration::to_js_ffi(
   #|   contentType: self.contentType,
   #|   width: self.width,
   #|   height: self.height,
-  #|   bitrate: self.bitrate,
+  #|   bitrate: Number(self.bitrate),
   #|   framerate: self.framerate,
   #|   hasAlphaChannel: (self.hasAlphaChannel === -1 ? undefined : self.hasAlphaChannel),
   #|   hdrMetadataType: ((() => { const v = self.hdrMetadataType; if (v === undefined) return undefined; return ['smpteSt2086', 'smpteSt2094-10', 'smpteSt2094-40'][v]; })()),
@@ -364,7 +364,7 @@ extern "js" fn VideoConfiguration::from_js_ffi(
   #|   contentType: v.contentType,
   #|   width: v.width,
   #|   height: v.height,
-  #|   bitrate: v.bitrate,
+  #|   bitrate: BigInt(v.bitrate),
   #|   framerate: v.framerate,
   #|   hasAlphaChannel: (v.hasAlphaChannel === undefined ? -1 : v.hasAlphaChannel),
   #|   hdrMetadataType: (v.hdrMetadataType === undefined ? undefined : ['smpteSt2086', 'smpteSt2094-10', 'smpteSt2094-40'].indexOf(v.hdrMetadataType)),
@@ -409,7 +409,7 @@ extern "js" fn AudioConfiguration::to_js_ffi(
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   channels: self.channels,
-  #|   bitrate: self.bitrate,
+  #|   bitrate: ((value) => value === undefined ? undefined : Number(value))(self.bitrate),
   #|   samplerate: self.samplerate,
   #|   spatialRendering: (self.spatialRendering === -1 ? undefined : self.spatialRendering)
   #| })
@@ -427,7 +427,7 @@ extern "js" fn AudioConfiguration::from_js_ffi(
   #| (v) => ({
   #|   contentType: v.contentType,
   #|   channels: v.channels,
-  #|   bitrate: v.bitrate,
+  #|   bitrate: (v.bitrate === undefined ? undefined : BigInt(v.bitrate)),
   #|   samplerate: v.samplerate,
   #|   spatialRendering: (v.spatialRendering === undefined ? -1 : v.spatialRendering)
   #| })

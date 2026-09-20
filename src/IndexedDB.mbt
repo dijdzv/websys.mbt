@@ -142,7 +142,7 @@ extern "js" fn IDBVersionChangeEventInit::to_js_ffi(
   self : IDBVersionChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   oldVersion: self.oldVersion,
+  #|   oldVersion: ((value) => value === undefined ? undefined : Number(value))(self.oldVersion),
   #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
@@ -159,7 +159,7 @@ extern "js" fn IDBVersionChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> IDBVersionChangeEventInit =
   #| (v) => ({
-  #|   oldVersion: v.oldVersion,
+  #|   oldVersion: (v.oldVersion === undefined ? undefined : BigInt(v.oldVersion)),
   #|   newVersion: (v.newVersion === undefined ? { $tag: 0 } : v.newVersion === null ? { $tag: 1 } : { $tag: 2, _0: v.newVersion })
   #| })
 
@@ -188,7 +188,7 @@ pub fn IDBDatabaseInfo::default() -> IDBDatabaseInfo {
 extern "js" fn IDBDatabaseInfo::to_js_ffi(self : IDBDatabaseInfo) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   version: self.version
+  #|   version: ((value) => value === undefined ? undefined : Number(value))(self.version)
   #| })
 
 ///|
@@ -201,7 +201,7 @@ pub fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue {
 extern "js" fn IDBDatabaseInfo::from_js_ffi(value : JsValue) -> IDBDatabaseInfo =
   #| (v) => ({
   #|   name: v.name,
-  #|   version: v.version
+  #|   version: (v.version === undefined ? undefined : BigInt(v.version))
   #| })
 
 ///|

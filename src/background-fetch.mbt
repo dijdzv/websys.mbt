@@ -142,7 +142,7 @@ extern "js" fn BackgroundFetchOptions::to_js_ffi(
   #| (self) => ({
   #|   icons: self.icons,
   #|   title: self.title,
-  #|   downloadTotal: self.downloadTotal
+  #|   downloadTotal: ((value) => value === undefined ? undefined : Number(value))(self.downloadTotal)
   #| })
 
 ///|
@@ -158,7 +158,7 @@ extern "js" fn BackgroundFetchOptions::from_js_ffi(
   #| (v) => ({
   #|   icons: v.icons,
   #|   title: v.title,
-  #|   downloadTotal: v.downloadTotal
+  #|   downloadTotal: (v.downloadTotal === undefined ? undefined : BigInt(v.downloadTotal))
   #| })
 
 ///|

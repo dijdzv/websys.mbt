@@ -711,7 +711,7 @@ extern "js" fn MLOpSupportLimits::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   preferredInputLayout: ((() => { const v = self.preferredInputLayout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
-  #|   maxTensorByteLength: self.maxTensorByteLength,
+  #|   maxTensorByteLength: ((value) => value === undefined ? undefined : Number(value))(self.maxTensorByteLength),
   #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   constant: ((() => { const v = self.constant; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -824,7 +824,7 @@ extern "js" fn MLOpSupportLimits::from_js_ffi(
 ) -> MLOpSupportLimits =
   #| (v) => ({
   #|   preferredInputLayout: (v.preferredInputLayout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.preferredInputLayout)),
-  #|   maxTensorByteLength: v.maxTensorByteLength,
+  #|   maxTensorByteLength: (v.maxTensorByteLength === undefined ? undefined : BigInt(v.maxTensorByteLength)),
   #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
   #|   constant: (v.constant === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constant }),
   #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output }),
@@ -986,7 +986,7 @@ pub fn MLTensorLimits::default() -> MLTensorLimits {
 ///|
 extern "js" fn MLTensorLimits::to_js_ffi(self : MLTensorLimits) -> JsValue =
   #| (self) => ({
-  #|   dataTypes: ((() => { const v = self.dataTypes; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   dataTypes: self.dataTypes,
   #|   rankRange: ((() => { const v = self.rankRange; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -999,7 +999,7 @@ pub fn MLTensorLimits::to_js(self : MLTensorLimits) -> JsValue {
 ///|
 extern "js" fn MLTensorLimits::from_js_ffi(value : JsValue) -> MLTensorLimits =
   #| (v) => ({
-  #|   dataTypes: (v.dataTypes === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dataTypes }),
+  #|   dataTypes: v.dataTypes,
   #|   rankRange: (v.rankRange === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rankRange })
   #| })
 

@@ -55,7 +55,7 @@ extern "js" fn SchedulerPostTaskOptions::to_js_ffi(
   #| (self) => ({
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['user-blocking', 'user-visible', 'background'][v]; })()),
-  #|   delay: self.delay
+  #|   delay: ((value) => value === undefined ? undefined : Number(value))(self.delay)
   #| })
 
 ///|
@@ -73,7 +73,7 @@ extern "js" fn SchedulerPostTaskOptions::from_js_ffi(
   #| (v) => ({
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   priority: (v.priority === undefined ? undefined : ['user-blocking', 'user-visible', 'background'].indexOf(v.priority)),
-  #|   delay: v.delay
+  #|   delay: (v.delay === undefined ? undefined : BigInt(v.delay))
   #| })
 
 ///|

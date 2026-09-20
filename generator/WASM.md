@@ -80,8 +80,9 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 ### WebGPU discovery
 
 The browser fixtures require a SwiftShader adapter and create/destroy a device
-through generated JS and WasmGC APIs. The WasmGC fixture also checks a synthetic
-null adapter result. It currently exposes the no-argument requestAdapter and
+through generated JS and WasmGC APIs, then verify rejection of a second device
+request on the consumed adapter. Both fixtures also check a synthetic null
+adapter result. The WasmGC fixture exposes the no-argument requestAdapter and
 requestDevice calls; this is a deliberate subset of the standard optional-option
 signatures, not support for all GPU descriptors or rendering/readback.
 

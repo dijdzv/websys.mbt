@@ -80,7 +80,7 @@ try {
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
     if (!navigator.gpu) throw Error('WebGPU unavailable in software-adapter test');
-    for (const [gpu, expected] of [[navigator.gpu, 'created-and-destroyed'], [{ requestAdapter: () => Promise.resolve(null) }, 'unavailable']]) {
+    for (const [gpu, expected] of [[navigator.gpu, 'created-destroyed-rejected'], [{ requestAdapter: () => Promise.resolve(null) }, 'unavailable']]) {
       await new Promise((resolve, reject) => {
         const watchdog = setTimeout(() => reject(Error('GPU discovery timed out')), 10000);
         instance.exports.gpu_discovery(gpu, (code, actual) => {

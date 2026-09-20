@@ -15,7 +15,15 @@ pub fn gpu_discovery(gpu : @web.GPU, callback : Callback) -> Unit {
     }
     let device = adapter.request_device().wait()
     device.destroy()
-    notify(callback, 1, "created-and-destroyed")
+    let rejected = try {
+      let second = adapter.request_device().wait()
+      second.destroy()
+      false
+    } catch {
+      @bridge.Rejection(_) => true
+      error => raise error
+    }
+    notify(callback, if rejected { 1 } else { 2 }, "created-destroyed-rejected")
   })
 }
 

@@ -6,6 +6,19 @@ interface GPUAdapter {
   Promise<GPUDevice> requestDevice();
 };
 interface GPUDevice {
+  GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
+  undefined destroy();
+};
+typedef [EnforceRange] unsigned long long GPUSize64;
+typedef unsigned long GPUBufferUsageFlags;
+dictionary GPUBufferDescriptor {
+  required GPUSize64 size;
+  required GPUBufferUsageFlags usage;
+  boolean mappedAtCreation = false;
+};
+interface GPUBuffer {
+  ArrayBuffer getMappedRange();
+  undefined unmap();
   undefined destroy();
 };
 typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;

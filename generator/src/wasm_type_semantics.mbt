@@ -9,7 +9,7 @@ enum WasmTypeKind {
 struct WasmSemanticType {
   kind : WasmTypeKind
   nullable : Bool
-  annotated : Bool
+  annotations : Array[String]
 } derive(Eq, Debug)
 
 ///|
@@ -17,7 +17,16 @@ extern "js" fn wasm_generic_name(value : JsValue) -> String =
   #| value => value.generic || ''
 
 ///|
+extern "js" fn wasm_type_annotation(value : JsValue) -> String =
+  #| value => value.rhs != null || value.arguments?.length > 0 ? '@unsupported:' + value.name : value.name
+
+///|
 fn parse_wasm_semantic_type(value : JsValue) -> WasmSemanticType {
+  let annotations : Array[String] = []
+  let attrs = get_ext_attrs(value)
+  for index = 0; index < js_array_length(attrs); index = index + 1 {
+    annotations.push(wasm_type_annotation(js_array_get(attrs, index)))
+  }
   let generic = wasm_generic_name(value)
   let kind : WasmTypeKind = if is_union_type(value) || generic != "" {
     let raw = get_union_types(value)
@@ -33,16 +42,12 @@ fn parse_wasm_semantic_type(value : JsValue) -> WasmSemanticType {
   } else {
     Name(get_type_name(value))
   }
-  {
-    kind,
-    nullable: is_nullable_type(value),
-    annotated: js_array_length(get_ext_attrs(value)) != 0,
-  }
+  { kind, nullable: is_nullable_type(value), annotations, }
 }
 
 ///|
 fn WasmSemanticType::conversion_error(self : WasmSemanticType) -> String? {
-  if self.annotated {
+  if !self.annotations.is_empty() {
     return Some("WasmGC type annotations are not implemented")
   }
   if self.kind is Generic("record", _) {
@@ -106,7 +111,7 @@ fn resolve_wasm_semantic_aliases(
             return {
               ..target,
               nullable: typ.nullable || target.nullable,
-              annotated: typ.annotated || target.annotated,
+              annotations: typ.annotations + target.annotations,
             }
           }
         }

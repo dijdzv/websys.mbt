@@ -1,4 +1,29 @@
 ///|
+test "dictionary input plans preserve EnforceRange through typedefs" {
+  let parsed = parse_webidl_raw(
+    "typedef [EnforceRange] unsigned long long Size; typedef Size Alias;",
+  )
+  guard resolve_wasm_semantic_aliases(parsed) is Ok(types) else {
+    fail("Expected aliases")
+  }
+  assert_eq(types["Alias"].annotations, ["EnforceRange"])
+  assert_eq(
+    plan_wasm_input(types["Alias"]),
+    Some(Scalar("UInt64", "enforced-u64")),
+  )
+  assert_true(
+    plan_wasm_input(
+      semantic_typedef("typedef [Clamp] unsigned long long Size;"),
+    )
+    is None,
+  )
+  assert_true(
+    plan_wasm_input(semantic_typedef("typedef [EnforceRange] DOMString Size;"))
+    is None,
+  )
+}
+
+///|
 fn semantic_typedef(source : String) -> WasmSemanticType {
   let parsed = parse_webidl_raw(source)
   assert_true(is_parse_success(parsed)) catch {

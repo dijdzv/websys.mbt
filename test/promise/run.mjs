@@ -79,6 +79,26 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    for (const size of [0n, 4n, 4294967296n, 9007199254740991n]) {
+      const descriptor = instance.exports.buffer_size_options(size);
+      if (descriptor.size !== Number(size) || descriptor.usage !== 6 || Object.hasOwn(descriptor, 'mappedAtCreation')) throw Error('Enforced size conversion');
+      count++;
+    }
+    for (const size of [9007199254740992n, 18446744073709551615n]) {
+      let rejected = false;
+      try { instance.exports.buffer_size_options(size); } catch (error) { rejected = error instanceof TypeError; }
+      if (!rejected) throw Error('Out-of-range size accepted');
+      count++;
+    }
+    await new Promise((resolve, reject) => {
+      const watchdog = setTimeout(() => reject(Error('GPU buffer timed out')), 10000);
+      instance.exports.gpu_buffer_sample(navigator.gpu, (code, text) => {
+        clearTimeout(watchdog);
+        if (code !== 1 || text !== 'buffer-copied') reject(Error('Generated GPU buffer failed'));
+        else resolve();
+      });
+    });
+    count++;
     if (!navigator.gpu) throw Error('WebGPU unavailable in software-adapter test');
     for (const [gpu, expected] of [[navigator.gpu, 'created-destroyed-rejected'], [{ requestAdapter: () => Promise.resolve(null) }, 'unavailable']]) {
       await new Promise((resolve, reject) => {

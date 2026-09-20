@@ -6,6 +6,33 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn buffer_size_options(size : UInt64) -> @web.JsValue {
+  @web.GPUBufferDescriptor::{ size, usage: 6U, mappedAtCreation: None, }.to_js()
+}
+
+///|
+pub fn gpu_buffer_sample(gpu : @web.GPU, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let adapter = gpu.request_adapter().wait().unwrap()
+    let device = adapter.request_device().wait()
+    defer device.destroy()
+    let buffer = device.create_buffer(@web.GPUBufferDescriptor::{
+      size: 4UL,
+      usage: 6U,
+      mappedAtCreation: Some(true),
+    })
+    defer buffer.destroy()
+    let mapped = buffer.get_mapped_range()
+    let bytes = mapped.to_bytes().unwrap()
+    buffer.unmap()
+    let valid = bytes.length() == 4 &&
+      bytes[0] == b'\x00' &&
+      mapped.to_bytes() is None
+    notify(callback, if valid { 1 } else { 2 }, "buffer-copied")
+  })
+}
+
+///|
 pub fn gpu_discovery(gpu : @web.GPU, callback : Callback) -> Unit {
   @async.run_async_main(async fn() {
     let adapter = gpu.request_adapter().wait()

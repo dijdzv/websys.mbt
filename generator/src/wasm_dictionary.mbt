@@ -22,7 +22,7 @@ fn emit_wasm_dictionary(
   }
   for field in dict.members {
     if dictionary_types.get(name + "." + field.name) is Some(typ) &&
-      !(typ.kind is Name(_)) {
+      (!(typ.kind is Name(_)) || !typ.annotations.is_empty()) {
       guard plan_wasm_input(
           { ..typ, nullable: false, },
           references=references.filter(name => !dictionaries.contains(name)),

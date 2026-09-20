@@ -3,8 +3,10 @@ typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) Heade
 dictionary PostOptions {
   required DOMString method;
   required HeadersInit headers;
-  required DOMString body;
+  (Blob or URLSearchParams or USVString)? body;
 };
+interface Blob {};
+interface URLSearchParams {};
 interface PostHost {
   Promise<Response> fetch(DOMString url, PostOptions options);
 };

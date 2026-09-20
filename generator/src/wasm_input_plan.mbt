@@ -7,7 +7,10 @@ enum WasmInputPlan {
 } derive(Eq, Debug)
 
 ///|
-fn plan_wasm_input(typ : WasmSemanticType) -> WasmInputPlan? {
+fn plan_wasm_input(
+  typ : WasmSemanticType,
+  references? : Array[String] = [],
+) -> WasmInputPlan? {
   if typ.nullable || typ.annotated {
     return None
   }
@@ -20,14 +23,18 @@ fn plan_wasm_input(typ : WasmSemanticType) -> WasmInputPlan? {
     Name("long") => Some(Scalar("Int", "long"))
     Name("unsigned long") => Some(Scalar("UInt", "unsigned long"))
     Name("double") => Some(Scalar("Double", "double"))
+    Name("ArrayBuffer") => Some(Scalar("ArrayBuffer", "reference"))
+    Name(name) if references.contains(name) => Some(Scalar(name, "reference"))
     Generic("sequence", [inner]) =>
-      plan_wasm_input(inner).map(child => WasmInputPlan::Sequence(child))
+      plan_wasm_input(inner, references~).map(child => {
+        WasmInputPlan::Sequence(child)
+      })
     Generic("record", [key, value]) => {
       guard key.kind is Name("DOMString" | "USVString" | "ByteString") else {
         return None
       }
-      guard plan_wasm_input(key) is Some(key) &&
-        plan_wasm_input(value) is Some(value) else {
+      guard plan_wasm_input(key, references~) is Some(key) &&
+        plan_wasm_input(value, references~) is Some(value) else {
         return None
       }
       Some(Record(key, value))
@@ -35,7 +42,9 @@ fn plan_wasm_input(typ : WasmSemanticType) -> WasmInputPlan? {
     WasmTypeKind::Union(types) => {
       let plans : Array[WasmInputPlan] = []
       for typ in types {
-        guard plan_wasm_input(typ) is Some(plan) else { return None }
+        guard plan_wasm_input(typ, references~) is Some(plan) else {
+          return None
+        }
         plans.push(plan)
       }
       Some(WasmInputPlan::Union(plans))

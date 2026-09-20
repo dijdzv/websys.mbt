@@ -10,10 +10,24 @@ fn emit_wasm_dictionary(
   let name = dict.name
   let compound_types : Map[String, String] = Map([])
   let converters : Map[String, String] = Map([])
+  let nullable_fields : Array[String] = []
+  for field in dict.members {
+    if dictionary_types.get(name + "." + field.name) is Some(typ) {
+      if typ.nullable {
+        nullable_fields.push(field.name)
+      }
+    } else if field.idl_type is Nullable(_) {
+      nullable_fields.push(field.name)
+    }
+  }
   for field in dict.members {
     if dictionary_types.get(name + "." + field.name) is Some(typ) &&
       !(typ.kind is Name(_)) {
-      guard plan_wasm_input(typ) is Some(plan) else {
+      guard plan_wasm_input(
+          { ..typ, nullable: false, },
+          references=references.filter(name => !dictionaries.contains(name)),
+        )
+        is Some(plan) else {
         println(
           "Unsupported compound dictionary input: " + name + "." + field.name,
         )
@@ -54,8 +68,18 @@ fn emit_wasm_dictionary(
     } else {
       require_wasm_type(value_type, references)
     }
-    let public_type = match plan.presence {
-      Required => if field.idl_type is Nullable(_) { typ + "?" } else { typ }
+    let presence = if !field.required && nullable_fields.contains(field.name) {
+      OptionalNullable
+    } else {
+      plan.presence
+    }
+    let public_type = match presence {
+      Required =>
+        if nullable_fields.contains(field.name) {
+          typ + "?"
+        } else {
+          typ
+        }
       Optional => typ + "?"
       OptionalNullable => "Nullable[" + typ + "]"
     }
@@ -104,9 +128,14 @@ fn emit_wasm_dictionary(
     }
     let set = "websys_dict_\{name}_\{key}(target, \{converted})"
     let null = "websys_dict_null(target, \"\{field.name}\")"
-    match plan_dictionary_field(field).presence {
+    let presence = if !field.required && nullable_fields.contains(field.name) {
+      OptionalNullable
+    } else {
+      plan_dictionary_field(field).presence
+    }
+    match presence {
       Required =>
-        if field.idl_type is Nullable(_) {
+        if nullable_fields.contains(field.name) {
           mbt.write_string(
             "  match self.\{key} { None => \{null}; Some(value) => \{set} }\n",
           )

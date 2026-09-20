@@ -6,6 +6,35 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn post_body(
+  host : @web.PostHost,
+  url : String,
+  blob : @web.Blob,
+  params : @web.URLSearchParams,
+  mode : Int,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let body : @web.Nullable[@web.Input_websys_input_PostOptions_bodyValue] = match
+      mode {
+      0 => Undefined
+      1 => Null
+      2 => Value(Case0(blob))
+      3 => Value(Case1(params))
+      _ => Value(Case2("日本😀"))
+    }
+    let response = host
+      .fetch(url, @web.PostOptions::{
+        method_: "POST",
+        headers: Case1([("Accept", "text/plain")]),
+        body,
+      })
+      .wait()
+    notify(callback, 1, response.text().wait())
+  })
+}
+
+///|
 pub fn post_headers(
   host : @web.PostHost,
   url : String,
@@ -22,7 +51,7 @@ pub fn post_headers(
       .fetch(url, @web.PostOptions::{
         method_: "POST",
         headers,
-        body: "日本😀",
+        body: Value(Case2("日本😀")),
       })
       .wait()
     notify(callback, 1, response.text().wait())

@@ -76,11 +76,15 @@ pub extern "js" fn ReportEventType::to_js_value(
   #| (self) => self
 
 ///|
-/// Create ReportEventType from FenceEvent
-pub extern "js" fn ReportEventType::from_fence_event(
-  v : FenceEvent,
+extern "js" fn ReportEventType::from_fence_event_ffi(
+  v : JsValue,
 ) -> ReportEventType =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ReportEventType::from_fence_event(v : FenceEvent) -> ReportEventType {
+  ReportEventType::from_fence_event_ffi(v.to_js())
+}
 
 ///|
 /// Create ReportEventType from String
@@ -100,11 +104,13 @@ pub extern "js" fn ReportEventType::is_string(self : ReportEventType) -> Bool =
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get ReportEventType as FenceEvent
-pub extern "js" fn ReportEventType::as_fence_event(
-  self : ReportEventType,
-) -> FenceEvent? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub fn ReportEventType::as_fence_event(self : ReportEventType) -> FenceEvent? {
+  if self.is_fence_event() {
+    Some(FenceEvent::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get ReportEventType as String

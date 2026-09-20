@@ -17,11 +17,17 @@ pub extern "js" fn URLPatternInput::from_string(v : String) -> URLPatternInput =
   #| (v) => v
 
 ///|
-/// Create URLPatternInput from URLPatternInit
-pub extern "js" fn URLPatternInput::from_url_pattern_init(
-  v : URLPatternInit,
+extern "js" fn URLPatternInput::from_url_pattern_init_ffi(
+  v : JsValue,
 ) -> URLPatternInput =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn URLPatternInput::from_url_pattern_init(
+  v : URLPatternInit,
+) -> URLPatternInput {
+  URLPatternInput::from_url_pattern_init_ffi(v.to_js())
+}
 
 ///|
 /// Check if this URLPatternInput is String
@@ -43,11 +49,15 @@ pub extern "js" fn URLPatternInput::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get URLPatternInput as URLPatternInit
-pub extern "js" fn URLPatternInput::as_url_pattern_init(
+pub fn URLPatternInput::as_url_pattern_init(
   self : URLPatternInput,
-) -> URLPatternInit? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> URLPatternInit? {
+  if self.is_url_pattern_init() {
+    Some(URLPatternInit::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[URLPatternInput] to String?
@@ -87,11 +97,17 @@ pub extern "js" fn URLPatternCompatible::from_string(
   #| (v) => v
 
 ///|
-/// Create URLPatternCompatible from URLPatternInit
-pub extern "js" fn URLPatternCompatible::from_url_pattern_init(
-  v : URLPatternInit,
+extern "js" fn URLPatternCompatible::from_url_pattern_init_ffi(
+  v : JsValue,
 ) -> URLPatternCompatible =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn URLPatternCompatible::from_url_pattern_init(
+  v : URLPatternInit,
+) -> URLPatternCompatible {
+  URLPatternCompatible::from_url_pattern_init_ffi(v.to_js())
+}
 
 ///|
 /// Create URLPatternCompatible from URLPattern
@@ -129,11 +145,15 @@ pub extern "js" fn URLPatternCompatible::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get URLPatternCompatible as URLPatternInit
-pub extern "js" fn URLPatternCompatible::as_url_pattern_init(
+pub fn URLPatternCompatible::as_url_pattern_init(
   self : URLPatternCompatible,
-) -> URLPatternInit? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> URLPatternInit? {
+  if self.is_url_pattern_init() {
+    Some(URLPatternInit::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get URLPatternCompatible as URLPattern
@@ -316,45 +336,171 @@ pub fn URLPatternResult::default() -> URLPatternResult {
 }
 
 ///|
-extern "js" fn URLPatternResult::to_js_ffi(self : URLPatternResult) -> JsValue =
-  #| (self) => ({
+extern "js" fn URLPatternResult::to_js_ffi(
+  self : URLPatternResult,
+  convert_protocol : (URLPatternComponentResult?) -> JsValue,
+  convert_username : (URLPatternComponentResult?) -> JsValue,
+  convert_password : (URLPatternComponentResult?) -> JsValue,
+  convert_hostname : (URLPatternComponentResult?) -> JsValue,
+  convert_port : (URLPatternComponentResult?) -> JsValue,
+  convert_pathname : (URLPatternComponentResult?) -> JsValue,
+  convert_search : (URLPatternComponentResult?) -> JsValue,
+  convert_hash : (URLPatternComponentResult?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_protocol, convert_username, convert_password, convert_hostname, convert_port, convert_pathname, convert_search, convert_hash) => ({
   #|   inputs: self.inputs,
-  #|   protocol: ((() => { const v = self.protocol; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   username: ((() => { const v = self.username; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hostname: ((() => { const v = self.hostname; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   port: ((() => { const v = self.port; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pathname: ((() => { const v = self.pathname; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   search: ((() => { const v = self.search; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hash: ((() => { const v = self.hash; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   protocol: convert_protocol(self.protocol),
+  #|   username: convert_username(self.username),
+  #|   password: convert_password(self.password),
+  #|   hostname: convert_hostname(self.hostname),
+  #|   port: convert_port(self.port),
+  #|   pathname: convert_pathname(self.pathname),
+  #|   search: convert_search(self.search),
+  #|   hash: convert_hash(self.hash)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn URLPatternResult::to_js(self : URLPatternResult) -> JsValue {
-  URLPatternResult::to_js_ffi(self)
+  URLPatternResult::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn URLPatternResult::from_js_ffi(
   value : JsValue,
+  convert_protocol : (JsValue) -> URLPatternComponentResult?,
+  convert_username : (JsValue) -> URLPatternComponentResult?,
+  convert_password : (JsValue) -> URLPatternComponentResult?,
+  convert_hostname : (JsValue) -> URLPatternComponentResult?,
+  convert_port : (JsValue) -> URLPatternComponentResult?,
+  convert_pathname : (JsValue) -> URLPatternComponentResult?,
+  convert_search : (JsValue) -> URLPatternComponentResult?,
+  convert_hash : (JsValue) -> URLPatternComponentResult?,
 ) -> URLPatternResult =
-  #| (v) => ({
+  #| (v, convert_protocol, convert_username, convert_password, convert_hostname, convert_port, convert_pathname, convert_search, convert_hash) => ({
   #|   inputs: v.inputs,
-  #|   protocol: (v.protocol === undefined ? { $tag: 0 } : { $tag: 1, _0: v.protocol }),
-  #|   username: (v.username === undefined ? { $tag: 0 } : { $tag: 1, _0: v.username }),
-  #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
-  #|   hostname: (v.hostname === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hostname }),
-  #|   port: (v.port === undefined ? { $tag: 0 } : { $tag: 1, _0: v.port }),
-  #|   pathname: (v.pathname === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pathname }),
-  #|   search: (v.search === undefined ? { $tag: 0 } : { $tag: 1, _0: v.search }),
-  #|   hash: (v.hash === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hash })
+  #|   protocol: convert_protocol(v.protocol),
+  #|   username: convert_username(v.username),
+  #|   password: convert_password(v.password),
+  #|   hostname: convert_hostname(v.hostname),
+  #|   port: convert_port(v.port),
+  #|   pathname: convert_pathname(v.pathname),
+  #|   search: convert_search(v.search),
+  #|   hash: convert_hash(v.hash)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn URLPatternResult::from_js(value : JsValue) -> URLPatternResult {
-  URLPatternResult::from_js_ffi(value)
+  URLPatternResult::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(URLPatternComponentResult::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

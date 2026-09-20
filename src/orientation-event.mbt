@@ -190,35 +190,84 @@ pub fn DeviceMotionEventInit::default() -> DeviceMotionEventInit {
 ///|
 extern "js" fn DeviceMotionEventInit::to_js_ffi(
   self : DeviceMotionEventInit,
+  convert_acceleration : (DeviceMotionEventAccelerationInit?) -> JsValue,
+  convert_accelerationIncludingGravity : (DeviceMotionEventAccelerationInit?) -> JsValue,
+  convert_rotationRate : (DeviceMotionEventRotationRateInit?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   acceleration: ((() => { const v = self.acceleration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   accelerationIncludingGravity: ((() => { const v = self.accelerationIncludingGravity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   rotationRate: ((() => { const v = self.rotationRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_acceleration, convert_accelerationIncludingGravity, convert_rotationRate) => ({
+  #|   acceleration: convert_acceleration(self.acceleration),
+  #|   accelerationIncludingGravity: convert_accelerationIncludingGravity(self.accelerationIncludingGravity),
+  #|   rotationRate: convert_rotationRate(self.rotationRate),
   #|   interval: ((() => { const v = self.interval; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn DeviceMotionEventInit::to_js(self : DeviceMotionEventInit) -> JsValue {
-  DeviceMotionEventInit::to_js_ffi(self)
+  DeviceMotionEventInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn DeviceMotionEventInit::from_js_ffi(
   value : JsValue,
+  convert_acceleration : (JsValue) -> DeviceMotionEventAccelerationInit?,
+  convert_accelerationIncludingGravity : (JsValue) -> DeviceMotionEventAccelerationInit?,
+  convert_rotationRate : (JsValue) -> DeviceMotionEventRotationRateInit?,
 ) -> DeviceMotionEventInit =
-  #| (v) => ({
-  #|   acceleration: (v.acceleration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.acceleration }),
-  #|   accelerationIncludingGravity: (v.accelerationIncludingGravity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.accelerationIncludingGravity }),
-  #|   rotationRate: (v.rotationRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotationRate }),
+  #| (v, convert_acceleration, convert_accelerationIncludingGravity, convert_rotationRate) => ({
+  #|   acceleration: convert_acceleration(v.acceleration),
+  #|   accelerationIncludingGravity: convert_accelerationIncludingGravity(v.accelerationIncludingGravity),
+  #|   rotationRate: convert_rotationRate(v.rotationRate),
   #|   interval: (v.interval === undefined ? { $tag: 0 } : { $tag: 1, _0: v.interval })
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn DeviceMotionEventInit::from_js(value : JsValue) -> DeviceMotionEventInit {
-  DeviceMotionEventInit::from_js_ffi(value)
+  DeviceMotionEventInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DeviceMotionEventAccelerationInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DeviceMotionEventAccelerationInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DeviceMotionEventRotationRateInit::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

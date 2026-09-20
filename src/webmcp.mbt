@@ -81,37 +81,52 @@ pub fn ModelContextTool::new(
 }
 
 ///|
-extern "js" fn ModelContextTool::to_js_ffi(self : ModelContextTool) -> JsValue =
-  #| (self) => ({
+extern "js" fn ModelContextTool::to_js_ffi(
+  self : ModelContextTool,
+  convert_annotations : (ToolAnnotations?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_annotations) => ({
   #|   name: self.name,
   #|   description: self.description,
   #|   inputSchema: ((() => { const v = self.inputSchema; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   execute: self.execute,
-  #|   annotations: ((() => { const v = self.annotations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   annotations: convert_annotations(self.annotations)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn ModelContextTool::to_js(self : ModelContextTool) -> JsValue {
-  ModelContextTool::to_js_ffi(self)
+  ModelContextTool::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn ModelContextTool::from_js_ffi(
   value : JsValue,
+  convert_annotations : (JsValue) -> ToolAnnotations?,
 ) -> ModelContextTool =
-  #| (v) => ({
+  #| (v, convert_annotations) => ({
   #|   name: v.name,
   #|   description: v.description,
   #|   inputSchema: (v.inputSchema === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputSchema }),
   #|   execute: v.execute,
-  #|   annotations: (v.annotations === undefined ? { $tag: 0 } : { $tag: 1, _0: v.annotations })
+  #|   annotations: convert_annotations(v.annotations)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn ModelContextTool::from_js(value : JsValue) -> ModelContextTool {
-  ModelContextTool::from_js_ffi(value)
+  ModelContextTool::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(ToolAnnotations::from_js(value))
+    }
+  })
 }
 
 ///|

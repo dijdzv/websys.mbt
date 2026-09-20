@@ -12,11 +12,17 @@ pub extern "js" fn StartInDirectory::to_js_value(
   #| (self) => self
 
 ///|
-/// Create StartInDirectory from WellKnownDirectory
-pub extern "js" fn StartInDirectory::from_well_known_directory(
-  v : WellKnownDirectory,
+extern "js" fn StartInDirectory::from_well_known_directory_ffi(
+  v : String,
 ) -> StartInDirectory =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StartInDirectory::from_well_known_directory(
+  v : WellKnownDirectory,
+) -> StartInDirectory {
+  StartInDirectory::from_well_known_directory_ffi(v.to_string())
+}
 
 ///|
 /// Create StartInDirectory from FileSystemHandle
@@ -40,11 +46,21 @@ pub extern "js" fn StartInDirectory::is_file_system_handle(
   #| (self) => self instanceof FileSystemHandle
 
 ///|
-/// Try to get StartInDirectory as WellKnownDirectory
-pub extern "js" fn StartInDirectory::as_well_known_directory(
+extern "js" fn StartInDirectory::as_well_known_directory_string(
   self : StartInDirectory,
-) -> WellKnownDirectory? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn StartInDirectory::as_well_known_directory(
+  self : StartInDirectory,
+) -> WellKnownDirectory? {
+  if self.is_well_known_directory() {
+    WellKnownDirectory::from_string(self.as_well_known_directory_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get StartInDirectory as FileSystemHandle

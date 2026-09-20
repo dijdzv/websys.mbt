@@ -72,10 +72,12 @@ pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
 ///|
 extern "js" fn VideoEncoderConfig::to_js_ffi(
   self : VideoEncoderConfig,
+  convert_avc : (AvcEncoderConfig?) -> JsValue,
+  convert_hevc : (HevcEncoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   avc: ((() => { const v = self.avc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hevc: ((() => { const v = self.hevc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_avc, convert_hevc) => ({
+  #|   avc: convert_avc(self.avc),
+  #|   hevc: convert_hevc(self.hevc),
   #|   codec: self.codec,
   #|   width: self.width,
   #|   height: self.height,
@@ -94,16 +96,32 @@ extern "js" fn VideoEncoderConfig::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn VideoEncoderConfig::to_js(self : VideoEncoderConfig) -> JsValue {
-  VideoEncoderConfig::to_js_ffi(self)
+  VideoEncoderConfig::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn VideoEncoderConfig::from_js_ffi(
   value : JsValue,
+  convert_avc : (JsValue) -> AvcEncoderConfig?,
+  convert_hevc : (JsValue) -> HevcEncoderConfig?,
 ) -> VideoEncoderConfig =
-  #| (v) => ({
-  #|   avc: (v.avc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.avc }),
-  #|   hevc: (v.hevc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hevc }),
+  #| (v, convert_avc, convert_hevc) => ({
+  #|   avc: convert_avc(v.avc),
+  #|   hevc: convert_hevc(v.hevc),
   #|   codec: v.codec,
   #|   width: v.width,
   #|   height: v.height,
@@ -122,7 +140,23 @@ extern "js" fn VideoEncoderConfig::from_js_ffi(
 ///|
 /// Convert from JsValue
 pub fn VideoEncoderConfig::from_js(value : JsValue) -> VideoEncoderConfig {
-  VideoEncoderConfig::from_js_ffi(value)
+  VideoEncoderConfig::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AvcEncoderConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(HevcEncoderConfig::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

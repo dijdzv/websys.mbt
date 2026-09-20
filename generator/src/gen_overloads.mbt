@@ -47,6 +47,7 @@ fn gen_union_arg_overloads(
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let base_fn_name = op.name |> to_snake_case |> escape_reserved
@@ -113,7 +114,12 @@ fn gen_union_arg_overloads(
         )
       } else {
         js_call_args.write_string(
-          gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+          gen_js_call_arg(
+            op.arguments[i],
+            enum_map,
+            dict_map,
+            primitive_typedef_map~,
+          ),
         )
       }
     }
@@ -141,6 +147,7 @@ fn gen_static_union_arg_overloads(
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let base_fn_name = op.name |> to_snake_case |> escape_reserved
@@ -206,7 +213,12 @@ fn gen_static_union_arg_overloads(
         )
       } else {
         js_call_args.write_string(
-          gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+          gen_js_call_arg(
+            op.arguments[i],
+            enum_map,
+            dict_map,
+            primitive_typedef_map~,
+          ),
         )
       }
     }
@@ -240,6 +252,7 @@ fn gen_constructor_union_arg_overloads(
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let args_len = ctor.arguments.length()
@@ -312,7 +325,12 @@ fn gen_constructor_union_arg_overloads(
         )
       } else {
         js_call_args.write_string(
-          gen_js_call_arg(ctor.arguments[i], enum_map, dict_map),
+          gen_js_call_arg(
+            ctor.arguments[i],
+            enum_map,
+            dict_map,
+            primitive_typedef_map~,
+          ),
         )
       }
     }

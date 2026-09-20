@@ -119,8 +119,16 @@ pub fn gen_static_operation(
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
-  gen_static_operation_with_suffix(interface_name, op, enum_map, "", dict_map~)
+  gen_static_operation_with_suffix(
+    interface_name,
+    op,
+    enum_map,
+    "",
+    dict_map~,
+    primitive_typedef_map~,
+  )
 }
 
 ///|
@@ -131,6 +139,7 @@ pub fn gen_static_operation_with_suffix(
   enum_map : Array[(String, Array[String])],
   suffix : String,
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   // Skip special methods without name
   if op.name.is_empty() {
@@ -171,7 +180,12 @@ pub fn gen_static_operation_with_suffix(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        op.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
 
@@ -245,6 +259,7 @@ pub fn gen_static_operation_with_arg_count(
   arg_count : Int,
   fn_suffix : String,
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   if op.name.is_empty() {
     return ""
@@ -287,7 +302,12 @@ pub fn gen_static_operation_with_arg_count(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        op.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
 
@@ -531,6 +551,7 @@ pub fn gen_operation(
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   // Skip regular methods without name
   // (special operations are handled in gen_interface_binding)
@@ -580,7 +601,12 @@ pub fn gen_operation(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        op.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
   let result = StringBuilder()
@@ -858,6 +884,7 @@ pub fn gen_operation_with_arg_count(
   arg_count : Int,
   fn_suffix : String,
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   if op.name.is_empty() {
     return ""
@@ -909,7 +936,12 @@ pub fn gen_operation_with_arg_count(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(op.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        op.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
   let result = StringBuilder()
@@ -966,6 +998,7 @@ pub fn gen_operation_variants(
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> (String, Array[String]) {
   let result = StringBuilder()
   let fn_names : Array[String] = []
@@ -977,7 +1010,13 @@ pub fn gen_operation_variants(
 
   // Generate normally if no optional arguments
   if first_optional < 0 {
-    let code = gen_operation(interface_name, op, enum_map, dict_map~)
+    let code = gen_operation(
+      interface_name,
+      op,
+      enum_map,
+      dict_map~,
+      primitive_typedef_map~,
+    )
     result.write_string(code)
     fn_names.push(op.name |> to_snake_case |> escape_reserved)
     return (result.to_string(), fn_names)
@@ -992,6 +1031,7 @@ pub fn gen_operation_variants(
     first_optional,
     "",
     dict_map~,
+    primitive_typedef_map~,
   )
   result.write_string(base_code)
   result.write_string("\n")
@@ -1008,6 +1048,7 @@ pub fn gen_operation_variants(
     total_args,
     suffix,
     dict_map~,
+    primitive_typedef_map~,
   )
   result.write_string(full_code)
   fn_names.push(base_fn_name + "_" + suffix)
@@ -1023,6 +1064,7 @@ pub fn gen_overloaded_operations(
   enum_map : Array[(String, Array[String])],
   generated_methods : Array[String],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
 
@@ -1038,6 +1080,7 @@ pub fn gen_overloaded_operations(
       ops[0],
       enum_map,
       dict_map~,
+      primitive_typedef_map~,
     )
     fn_names.iter().each(fn(name) { generated_methods.push(name) })
     return code
@@ -1057,7 +1100,13 @@ pub fn gen_overloaded_operations(
         let base_fn_name = op.name |> to_snake_case |> escape_reserved
         generated_methods.push(base_fn_name)
         result.write_string(
-          gen_operation(interface_name, op, enum_map, dict_map~),
+          gen_operation(
+            interface_name,
+            op,
+            enum_map,
+            dict_map~,
+            primitive_typedef_map~,
+          ),
         )
         result.write_string("\n")
       } else {
@@ -1073,6 +1122,7 @@ pub fn gen_overloaded_operations(
             total_args,
             remove_leading_char(suffix), // Remove leading underscore
             dict_map~,
+            primitive_typedef_map~,
           ),
         )
         result.write_string("\n")
@@ -1108,6 +1158,7 @@ pub fn gen_overloaded_operations(
             remove_leading_char(required_suffix)
           },
           dict_map~,
+          primitive_typedef_map~,
         ),
       )
       result.write_string("\n")
@@ -1131,6 +1182,7 @@ pub fn gen_overloaded_operations(
           total_args,
           remove_leading_char(full_suffix),
           dict_map~,
+          primitive_typedef_map~,
         ),
       )
       result.write_string("\n")
@@ -1147,6 +1199,7 @@ pub fn gen_overloaded_static_operations(
   enum_map : Array[(String, Array[String])],
   generated_methods : Array[String],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
 
@@ -1165,7 +1218,13 @@ pub fn gen_overloaded_static_operations(
       let base_fn_name = op.name |> to_snake_case |> escape_reserved
       generated_methods.push(base_fn_name)
       result.write_string(
-        gen_static_operation(interface_name, op, enum_map, dict_map~),
+        gen_static_operation(
+          interface_name,
+          op,
+          enum_map,
+          dict_map~,
+          primitive_typedef_map~,
+        ),
       )
       return result.to_string()
     }
@@ -1181,6 +1240,7 @@ pub fn gen_overloaded_static_operations(
         first_optional,
         "",
         dict_map~,
+        primitive_typedef_map~,
       ),
     )
     result.write_string("\n")
@@ -1197,6 +1257,7 @@ pub fn gen_overloaded_static_operations(
         total_args,
         suffix,
         dict_map~,
+        primitive_typedef_map~,
       ),
     )
     return result.to_string()
@@ -1214,7 +1275,13 @@ pub fn gen_overloaded_static_operations(
         let base_fn_name = op.name |> to_snake_case |> escape_reserved
         generated_methods.push(base_fn_name)
         result.write_string(
-          gen_static_operation(interface_name, op, enum_map, dict_map~),
+          gen_static_operation(
+            interface_name,
+            op,
+            enum_map,
+            dict_map~,
+            primitive_typedef_map~,
+          ),
         )
         result.write_string("\n")
       } else {
@@ -1229,6 +1296,7 @@ pub fn gen_overloaded_static_operations(
             enum_map,
             suffix,
             dict_map~,
+            primitive_typedef_map~,
           ),
         )
         result.write_string("\n")
@@ -1257,6 +1325,7 @@ pub fn gen_overloaded_static_operations(
           first_optional,
           required_suffix,
           dict_map~,
+          primitive_typedef_map~,
         ),
       )
       result.write_string("\n")
@@ -1277,6 +1346,7 @@ pub fn gen_overloaded_static_operations(
           total_args,
           full_suffix,
           dict_map~,
+          primitive_typedef_map~,
         ),
       )
       result.write_string("\n")
@@ -1494,6 +1564,7 @@ pub fn gen_constructor_with_suffix(
   enum_map : Array[(String, Array[String])],
   suffix : String,
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let (return_type, is_throwing) = compute_throws_context(
     ctor.throws,
@@ -1527,7 +1598,12 @@ pub fn gen_constructor_with_suffix(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(ctor.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        ctor.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
   let result = StringBuilder()
@@ -1599,6 +1675,7 @@ pub fn gen_constructor_with_arg_count(
   arg_count : Int,
   suffix : String,
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let (return_type, is_throwing) = compute_throws_context(
     ctor.throws,
@@ -1631,7 +1708,12 @@ pub fn gen_constructor_with_arg_count(
       js_call_args.write_string(", ")
     }
     js_call_args.write_string(
-      gen_js_call_arg(ctor.arguments[i], enum_map, dict_map),
+      gen_js_call_arg(
+        ctor.arguments[i],
+        enum_map,
+        dict_map,
+        primitive_typedef_map~,
+      ),
     )
   }
   let result = StringBuilder()
@@ -1699,8 +1781,16 @@ pub fn gen_constructor(
   ctor : ConstructorDef,
   enum_map : Array[(String, Array[String])],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
-  gen_constructor_with_suffix(interface_name, ctor, enum_map, "", dict_map~)
+  gen_constructor_with_suffix(
+    interface_name,
+    ctor,
+    enum_map,
+    "",
+    dict_map~,
+    primitive_typedef_map~,
+  )
 }
 
 ///|
@@ -1836,6 +1926,7 @@ pub fn gen_all_constructors(
   members : Array[InterfaceMember],
   enum_map : Array[(String, Array[String])],
   dict_map? : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let constructors = collect_constructors(members)
   if constructors.length() == 0 {
@@ -1875,6 +1966,7 @@ pub fn gen_all_constructors(
             enum_map,
             base_suffix,
             dict_map~,
+            primitive_typedef_map~,
           ),
         )
         result.write_string("\n")
@@ -1902,6 +1994,7 @@ pub fn gen_all_constructors(
             first_optional,
             actual_base_suffix,
             dict_map~,
+            primitive_typedef_map~,
           ),
         )
         result.write_string("\n")
@@ -1922,6 +2015,7 @@ pub fn gen_all_constructors(
             total_args,
             full_suffix,
             dict_map~,
+            primitive_typedef_map~,
           ),
         )
         result.write_string("\n")
@@ -2154,6 +2248,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
   let interfaces = ctx.interfaces
   let inheritance_map = ctx.inheritance_map
   let dict_map = ctx.dict_map
+  let primitive_typedef_map = ctx.primitive_typedef_map
   let union_typedef_map = ctx.union_typedef_map
   let deprecated_set = ctx.deprecated_set
   let event_type_map = ctx.event_type_map
@@ -2269,7 +2364,13 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
               if !generated_methods.contains(fn_name) {
                 generated_methods.push(fn_name)
                 result.write_string(
-                  gen_operation(iface.name, op, enum_map, dict_map~),
+                  gen_operation(
+                    iface.name,
+                    op,
+                    enum_map,
+                    dict_map~,
+                    primitive_typedef_map~,
+                  ),
                 )
                 result.write_string("\n")
               }
@@ -2339,6 +2440,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
                   enum_map,
                   generated_methods,
                   dict_map~,
+                  primitive_typedef_map~,
                 )
                 result.write_string(code)
                 result.write_string("\n")
@@ -2369,6 +2471,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
                 enum_map,
                 generated_methods,
                 dict_map~,
+                primitive_typedef_map~,
               )
               result.write_string(code)
               result.write_string("\n")
@@ -2448,7 +2551,13 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
             result.write_string(gen_deprecated_annotation("constructor"))
           }
           result.write_string(
-            gen_all_constructors(iface.name, iface.members, enum_map, dict_map~),
+            gen_all_constructors(
+              iface.name,
+              iface.members,
+              enum_map,
+              dict_map~,
+              primitive_typedef_map~,
+            ),
           )
         }
       Const(const_def) => {
@@ -2502,6 +2611,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
                       enum_map,
                       dict_map,
                       generated_methods,
+                      primitive_typedef_map~,
                     ),
                   )
                 } else {
@@ -2514,6 +2624,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
                       enum_map,
                       dict_map,
                       generated_methods,
+                      primitive_typedef_map~,
                     ),
                   )
                 }
@@ -2535,6 +2646,7 @@ pub fn gen_interface_binding(iface : InterfaceDef, ctx : GenContext) -> String {
                   enum_map,
                   dict_map,
                   generated_methods,
+                  primitive_typedef_map~,
                 ),
               )
             None => ()

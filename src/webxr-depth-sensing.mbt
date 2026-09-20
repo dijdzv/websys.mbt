@@ -155,9 +155,12 @@ pub fn XRSessionInit::default() -> XRSessionInit {
 }
 
 ///|
-extern "js" fn XRSessionInit::to_js_ffi(self : XRSessionInit) -> JsValue =
-  #| (self) => ({
-  #|   depthSensing: ((() => { const v = self.depthSensing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+extern "js" fn XRSessionInit::to_js_ffi(
+  self : XRSessionInit,
+  convert_depthSensing : (XRDepthStateInit?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_depthSensing) => ({
+  #|   depthSensing: convert_depthSensing(self.depthSensing),
   #|   domOverlay: ((() => { const v = self.domOverlay; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   requiredFeatures: self.requiredFeatures,
   #|   optionalFeatures: self.optionalFeatures
@@ -166,13 +169,21 @@ extern "js" fn XRSessionInit::to_js_ffi(self : XRSessionInit) -> JsValue =
 ///|
 /// Convert to JsValue
 pub fn XRSessionInit::to_js(self : XRSessionInit) -> JsValue {
-  XRSessionInit::to_js_ffi(self)
+  XRSessionInit::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
-extern "js" fn XRSessionInit::from_js_ffi(value : JsValue) -> XRSessionInit =
-  #| (v) => ({
-  #|   depthSensing: (v.depthSensing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthSensing }),
+extern "js" fn XRSessionInit::from_js_ffi(
+  value : JsValue,
+  convert_depthSensing : (JsValue) -> XRDepthStateInit?,
+) -> XRSessionInit =
+  #| (v, convert_depthSensing) => ({
+  #|   depthSensing: convert_depthSensing(v.depthSensing),
   #|   domOverlay: (v.domOverlay === undefined ? { $tag: 0 } : v.domOverlay === null ? { $tag: 1 } : { $tag: 2, _0: v.domOverlay }),
   #|   requiredFeatures: v.requiredFeatures,
   #|   optionalFeatures: v.optionalFeatures
@@ -181,7 +192,13 @@ extern "js" fn XRSessionInit::from_js_ffi(value : JsValue) -> XRSessionInit =
 ///|
 /// Convert from JsValue
 pub fn XRSessionInit::from_js(value : JsValue) -> XRSessionInit {
-  XRSessionInit::from_js_ffi(value)
+  XRSessionInit::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(XRDepthStateInit::from_js(value))
+    }
+  })
 }
 
 ///|

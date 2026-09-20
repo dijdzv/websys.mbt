@@ -19,11 +19,17 @@ pub extern "js" fn ConstrainPoint2D::from_array_of_point_2d(
   #| (v) => v
 
 ///|
-/// Create ConstrainPoint2D from ConstrainPoint2DParameters
-pub extern "js" fn ConstrainPoint2D::from_constrain_point_2d_parameters(
-  v : ConstrainPoint2DParameters,
+extern "js" fn ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(
+  v : JsValue,
 ) -> ConstrainPoint2D =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainPoint2D::from_constrain_point_2d_parameters(
+  v : ConstrainPoint2DParameters,
+) -> ConstrainPoint2D {
+  ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ConstrainPoint2D is FixedArray[Point2D]
@@ -47,11 +53,15 @@ pub extern "js" fn ConstrainPoint2D::as_array_of_point_2d(
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-/// Try to get ConstrainPoint2D as ConstrainPoint2DParameters
-pub extern "js" fn ConstrainPoint2D::as_constrain_point_2d_parameters(
+pub fn ConstrainPoint2D::as_constrain_point_2d_parameters(
   self : ConstrainPoint2D,
-) -> ConstrainPoint2DParameters? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainPoint2DParameters? {
+  if self.is_constrain_point_2d_parameters() {
+    Some(ConstrainPoint2DParameters::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainPoint2D] to FixedArray[Point2D]?
@@ -188,35 +198,69 @@ pub fn PhotoCapabilities::default() -> PhotoCapabilities {
 ///|
 extern "js" fn PhotoCapabilities::to_js_ffi(
   self : PhotoCapabilities,
+  convert_imageHeight : (MediaSettingsRange?) -> JsValue,
+  convert_imageWidth : (MediaSettingsRange?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_imageHeight, convert_imageWidth) => ({
   #|   redEyeReduction: ((() => { const v = self.redEyeReduction; if (v === undefined) return undefined; return ['never', 'always', 'controllable'][v]; })()),
-  #|   imageHeight: ((() => { const v = self.imageHeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   imageWidth: ((() => { const v = self.imageWidth; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   imageHeight: convert_imageHeight(self.imageHeight),
+  #|   imageWidth: convert_imageWidth(self.imageWidth),
   #|   fillLightMode: self.fillLightMode
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PhotoCapabilities::to_js(self : PhotoCapabilities) -> JsValue {
-  PhotoCapabilities::to_js_ffi(self)
+  PhotoCapabilities::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PhotoCapabilities::from_js_ffi(
   value : JsValue,
+  convert_imageHeight : (JsValue) -> MediaSettingsRange?,
+  convert_imageWidth : (JsValue) -> MediaSettingsRange?,
 ) -> PhotoCapabilities =
-  #| (v) => ({
+  #| (v, convert_imageHeight, convert_imageWidth) => ({
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
-  #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
-  #|   imageWidth: (v.imageWidth === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageWidth }),
+  #|   imageHeight: convert_imageHeight(v.imageHeight),
+  #|   imageWidth: convert_imageWidth(v.imageWidth),
   #|   fillLightMode: v.fillLightMode
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn PhotoCapabilities::from_js(value : JsValue) -> PhotoCapabilities {
-  PhotoCapabilities::from_js_ffi(value)
+  PhotoCapabilities::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -594,37 +638,57 @@ pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
 ///|
 extern "js" fn MediaTrackCapabilities::to_js_ffi(
   self : MediaTrackCapabilities,
+  convert_exposureCompensation : (MediaSettingsRange?) -> JsValue,
+  convert_exposureTime : (MediaSettingsRange?) -> JsValue,
+  convert_colorTemperature : (MediaSettingsRange?) -> JsValue,
+  convert_iso : (MediaSettingsRange?) -> JsValue,
+  convert_brightness : (MediaSettingsRange?) -> JsValue,
+  convert_contrast : (MediaSettingsRange?) -> JsValue,
+  convert_saturation : (MediaSettingsRange?) -> JsValue,
+  convert_sharpness : (MediaSettingsRange?) -> JsValue,
+  convert_focusDistance : (MediaSettingsRange?) -> JsValue,
+  convert_pan : (MediaSettingsRange?) -> JsValue,
+  convert_tilt : (MediaSettingsRange?) -> JsValue,
+  convert_zoom : (MediaSettingsRange?) -> JsValue,
+  convert_width : (ULongRange?) -> JsValue,
+  convert_height : (ULongRange?) -> JsValue,
+  convert_aspectRatio : (DoubleRange?) -> JsValue,
+  convert_frameRate : (DoubleRange?) -> JsValue,
+  convert_sampleRate : (ULongRange?) -> JsValue,
+  convert_sampleSize : (ULongRange?) -> JsValue,
+  convert_latency : (DoubleRange?) -> JsValue,
+  convert_channelCount : (ULongRange?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_exposureCompensation, convert_exposureTime, convert_colorTemperature, convert_iso, convert_brightness, convert_contrast, convert_saturation, convert_sharpness, convert_focusDistance, convert_pan, convert_tilt, convert_zoom, convert_width, convert_height, convert_aspectRatio, convert_frameRate, convert_sampleRate, convert_sampleSize, convert_latency, convert_channelCount) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
   #|   focusMode: self.focusMode,
-  #|   exposureCompensation: ((() => { const v = self.exposureCompensation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exposureTime: ((() => { const v = self.exposureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   colorTemperature: ((() => { const v = self.colorTemperature; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   iso: ((() => { const v = self.iso; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   brightness: ((() => { const v = self.brightness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   contrast: ((() => { const v = self.contrast; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   saturation: ((() => { const v = self.saturation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sharpness: ((() => { const v = self.sharpness; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   focusDistance: ((() => { const v = self.focusDistance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pan: ((() => { const v = self.pan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   exposureCompensation: convert_exposureCompensation(self.exposureCompensation),
+  #|   exposureTime: convert_exposureTime(self.exposureTime),
+  #|   colorTemperature: convert_colorTemperature(self.colorTemperature),
+  #|   iso: convert_iso(self.iso),
+  #|   brightness: convert_brightness(self.brightness),
+  #|   contrast: convert_contrast(self.contrast),
+  #|   saturation: convert_saturation(self.saturation),
+  #|   sharpness: convert_sharpness(self.sharpness),
+  #|   focusDistance: convert_focusDistance(self.focusDistance),
+  #|   pan: convert_pan(self.pan),
+  #|   tilt: convert_tilt(self.tilt),
+  #|   zoom: convert_zoom(self.zoom),
   #|   torch: self.torch,
-  #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   frameRate: ((() => { const v = self.frameRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   width: convert_width(self.width),
+  #|   height: convert_height(self.height),
+  #|   aspectRatio: convert_aspectRatio(self.aspectRatio),
+  #|   frameRate: convert_frameRate(self.frameRate),
   #|   facingMode: self.facingMode,
   #|   resizeMode: self.resizeMode,
-  #|   sampleRate: ((() => { const v = self.sampleRate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sampleSize: ((() => { const v = self.sampleSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sampleRate: convert_sampleRate(self.sampleRate),
+  #|   sampleSize: convert_sampleSize(self.sampleSize),
   #|   echoCancellation: self.echoCancellation,
   #|   autoGainControl: self.autoGainControl,
   #|   noiseSuppression: self.noiseSuppression,
-  #|   latency: ((() => { const v = self.latency; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   channelCount: ((() => { const v = self.channelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   latency: convert_latency(self.latency),
+  #|   channelCount: convert_channelCount(self.channelCount),
   #|   deviceId: self.deviceId,
   #|   groupId: self.groupId,
   #|   backgroundBlur: self.backgroundBlur,
@@ -636,43 +700,185 @@ extern "js" fn MediaTrackCapabilities::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn MediaTrackCapabilities::to_js(self : MediaTrackCapabilities) -> JsValue {
-  MediaTrackCapabilities::to_js_ffi(self)
+  MediaTrackCapabilities::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MediaTrackCapabilities::from_js_ffi(
   value : JsValue,
+  convert_exposureCompensation : (JsValue) -> MediaSettingsRange?,
+  convert_exposureTime : (JsValue) -> MediaSettingsRange?,
+  convert_colorTemperature : (JsValue) -> MediaSettingsRange?,
+  convert_iso : (JsValue) -> MediaSettingsRange?,
+  convert_brightness : (JsValue) -> MediaSettingsRange?,
+  convert_contrast : (JsValue) -> MediaSettingsRange?,
+  convert_saturation : (JsValue) -> MediaSettingsRange?,
+  convert_sharpness : (JsValue) -> MediaSettingsRange?,
+  convert_focusDistance : (JsValue) -> MediaSettingsRange?,
+  convert_pan : (JsValue) -> MediaSettingsRange?,
+  convert_tilt : (JsValue) -> MediaSettingsRange?,
+  convert_zoom : (JsValue) -> MediaSettingsRange?,
+  convert_width : (JsValue) -> ULongRange?,
+  convert_height : (JsValue) -> ULongRange?,
+  convert_aspectRatio : (JsValue) -> DoubleRange?,
+  convert_frameRate : (JsValue) -> DoubleRange?,
+  convert_sampleRate : (JsValue) -> ULongRange?,
+  convert_sampleSize : (JsValue) -> ULongRange?,
+  convert_latency : (JsValue) -> DoubleRange?,
+  convert_channelCount : (JsValue) -> ULongRange?,
 ) -> MediaTrackCapabilities =
-  #| (v) => ({
+  #| (v, convert_exposureCompensation, convert_exposureTime, convert_colorTemperature, convert_iso, convert_brightness, convert_contrast, convert_saturation, convert_sharpness, convert_focusDistance, convert_pan, convert_tilt, convert_zoom, convert_width, convert_height, convert_aspectRatio, convert_frameRate, convert_sampleRate, convert_sampleSize, convert_latency, convert_channelCount) => ({
   #|   whiteBalanceMode: v.whiteBalanceMode,
   #|   exposureMode: v.exposureMode,
   #|   focusMode: v.focusMode,
-  #|   exposureCompensation: (v.exposureCompensation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureCompensation }),
-  #|   exposureTime: (v.exposureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureTime }),
-  #|   colorTemperature: (v.colorTemperature === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorTemperature }),
-  #|   iso: (v.iso === undefined ? { $tag: 0 } : { $tag: 1, _0: v.iso }),
-  #|   brightness: (v.brightness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.brightness }),
-  #|   contrast: (v.contrast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.contrast }),
-  #|   saturation: (v.saturation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.saturation }),
-  #|   sharpness: (v.sharpness === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharpness }),
-  #|   focusDistance: (v.focusDistance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.focusDistance }),
-  #|   pan: (v.pan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pan }),
-  #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
-  #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
+  #|   exposureCompensation: convert_exposureCompensation(v.exposureCompensation),
+  #|   exposureTime: convert_exposureTime(v.exposureTime),
+  #|   colorTemperature: convert_colorTemperature(v.colorTemperature),
+  #|   iso: convert_iso(v.iso),
+  #|   brightness: convert_brightness(v.brightness),
+  #|   contrast: convert_contrast(v.contrast),
+  #|   saturation: convert_saturation(v.saturation),
+  #|   sharpness: convert_sharpness(v.sharpness),
+  #|   focusDistance: convert_focusDistance(v.focusDistance),
+  #|   pan: convert_pan(v.pan),
+  #|   tilt: convert_tilt(v.tilt),
+  #|   zoom: convert_zoom(v.zoom),
   #|   torch: v.torch,
-  #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
-  #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
-  #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
-  #|   frameRate: (v.frameRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.frameRate }),
+  #|   width: convert_width(v.width),
+  #|   height: convert_height(v.height),
+  #|   aspectRatio: convert_aspectRatio(v.aspectRatio),
+  #|   frameRate: convert_frameRate(v.frameRate),
   #|   facingMode: v.facingMode,
   #|   resizeMode: v.resizeMode,
-  #|   sampleRate: (v.sampleRate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleRate }),
-  #|   sampleSize: (v.sampleSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sampleSize }),
+  #|   sampleRate: convert_sampleRate(v.sampleRate),
+  #|   sampleSize: convert_sampleSize(v.sampleSize),
   #|   echoCancellation: v.echoCancellation,
   #|   autoGainControl: v.autoGainControl,
   #|   noiseSuppression: v.noiseSuppression,
-  #|   latency: (v.latency === undefined ? { $tag: 0 } : { $tag: 1, _0: v.latency }),
-  #|   channelCount: (v.channelCount === undefined ? { $tag: 0 } : { $tag: 1, _0: v.channelCount }),
+  #|   latency: convert_latency(v.latency),
+  #|   channelCount: convert_channelCount(v.channelCount),
   #|   deviceId: v.deviceId,
   #|   groupId: v.groupId,
   #|   backgroundBlur: v.backgroundBlur,
@@ -686,7 +892,149 @@ extern "js" fn MediaTrackCapabilities::from_js_ffi(
 pub fn MediaTrackCapabilities::from_js(
   value : JsValue,
 ) -> MediaTrackCapabilities {
-  MediaTrackCapabilities::from_js_ffi(value)
+  MediaTrackCapabilities::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaSettingsRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ULongRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ULongRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DoubleRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DoubleRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ULongRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ULongRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DoubleRange::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ULongRange::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

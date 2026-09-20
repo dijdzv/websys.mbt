@@ -39,8 +39,34 @@ pub fn gen_dictionary(
   enum_map : Array[(String, Array[String])],
   union_set : Array[String],
   primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dictionary_names? : Array[String] = [],
 ) -> String {
   let mut result = ""
+  let nested = dict.members.filter_map(field => {
+    match resolve_dictionary_alias(field.idl_type, primitive_typedef_map) {
+      Named(name) if dictionary_names.contains(name) =>
+        Some((field_name_to_moonbit(field.name), name, field.required))
+      _ => None
+    }
+  })
+  let mut to_params = ""
+  let mut from_params = ""
+  let mut js_params = ""
+  let mut to_args = ""
+  let mut from_args = ""
+  for (field, name, required) in nested {
+    let field_type = if required { name } else { name + "?" }
+    to_params += ", convert_\{field} : (\{field_type}) -> JsValue"
+    from_params += ", convert_\{field} : (JsValue) -> \{field_type}"
+    js_params += ", convert_\{field}"
+    if required {
+      to_args += ", \{name}::to_js"
+      from_args += ", \{name}::from_js"
+    } else {
+      to_args += ", fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }"
+      from_args += ", fn(value) { if value.is_undefined() { None } else { Some(\{name}::from_js(value)) } }"
+    }
+  }
 
   // Segment marker (for avoiding 65535 line limit in large files)
   result = result + "///|\n"
@@ -153,8 +179,8 @@ pub fn gen_dictionary(
   result = result + dict.name
   result = result + "::to_js_ffi(self : "
   result = result + dict.name
-  result = result + ") -> JsValue =\n"
-  result = result + "  #| (self) => ({\n"
+  result = result + to_params + ") -> JsValue =\n"
+  result = result + "  #| (self\{js_params}) => ({\n"
   let members_len = dict.members.length()
   result = dict.members
     .iter()
@@ -209,6 +235,11 @@ pub fn gen_dictionary(
       } else {
         value_expr
       }
+      let value_expr = if nested.any(pair => pair.0 == moonbit_name) {
+        "convert_\{moonbit_name}(self.\{moonbit_name})"
+      } else {
+        value_expr
+      }
       let comma = if idx < members_len - 1 { "," } else { "" }
       (acc + "  #|   " + mem.name + ": " + value_expr + comma + "\n", idx + 1)
     }).0
@@ -222,16 +253,16 @@ pub fn gen_dictionary(
   result = result + ") -> JsValue {\n"
   result = result + "  "
   result = result + dict.name
-  result = result + "::to_js_ffi(self)\n"
+  result = result + "::to_js_ffi(self\{to_args})\n"
   result = result + "}\n\n"
 
   // Conversion function from JsValue (FFI implementation)
   result = result + "extern \"js\" fn "
   result = result + dict.name
-  result = result + "::from_js_ffi(value : JsValue) -> "
+  result = result + "::from_js_ffi(value : JsValue\{from_params}) -> "
   result = result + dict.name
   result = result + " =\n"
-  result = result + "  #| (v) => ({\n"
+  result = result + "  #| (v\{js_params}) => ({\n"
   result = dict.members
     .iter()
     .fold(init=(result, 0), fn(state, mem) {
@@ -243,7 +274,9 @@ pub fn gen_dictionary(
       )
       let moonbit_type = mem.idl_type.to_moonbit_simple()
       let is_nullable_type = !mem.required && ends_with_question(moonbit_type)
-      let value_expr = if is_nullable_type {
+      let value_expr = if nested.any(pair => pair.0 == moonbit_name) {
+        "convert_\{moonbit_name}(v.\{mem.name})"
+      } else if is_nullable_type {
         gen_from_js_nullable_field_expr(mem.idl_type, mem.name, enum_map)
       } else if is_dictionary_int64(mem.idl_type, primitive_typedef_map) {
         let value = "v." + mem.name
@@ -285,7 +318,7 @@ pub fn gen_dictionary(
   result = result + " {\n"
   result = result + "  "
   result = result + dict.name
-  result = result + "::from_js_ffi(value)\n"
+  result = result + "::from_js_ffi(value\{from_args})\n"
   result = result + "}\n\n"
   if dict.members.any(field => {
       is_dictionary_int64(field.idl_type, primitive_typedef_map)
@@ -771,7 +804,12 @@ pub fn gen_typedef(
       result = members
         .iter()
         .fold(init=result, fn(acc, mem) {
-          let factory = gen_union_factory(typedef_def.name, mem)
+          let factory = gen_union_factory(
+            typedef_def.name,
+            mem,
+            dictionary_names,
+            enum_names,
+          )
           if factory != "" {
             acc + factory
           } else {
@@ -894,13 +932,27 @@ pub fn gen_typedef(
 
 ///|
 /// Generate factory function for Union type
-fn gen_union_factory(union_name : String, member_type : IdlType) -> String {
+fn gen_union_factory(
+  union_name : String,
+  member_type : IdlType,
+  dictionaries : Array[String],
+  enums : Array[String],
+) -> String {
   let moonbit_type = member_type.to_moonbit_simple()
   let factory_name = get_factory_name(member_type)
 
   // Skip JsValue type (for Any, nested Union, etc.)
   if moonbit_type == "JsValue" || factory_name == "" {
     return ""
+  }
+  if member_type is Named(name) &&
+    (dictionaries.contains(name) || enums.contains(name)) {
+    let (host_type, convert) = if dictionaries.contains(name) {
+      ("JsValue", "v.to_js()")
+    } else {
+      ("String", "v.to_string()")
+    }
+    return "///|\nextern \"js\" fn \{union_name}::from_\{factory_name}_ffi(v : \{host_type}) -> \{union_name} =\n  #| v => v\n\n///|\npub fn \{union_name}::from_\{factory_name}(v : \{moonbit_type}) -> \{union_name} { \{union_name}::from_\{factory_name}_ffi(\{convert}) }\n\n"
   }
   let result = StringBuilder()
   result.write_string("/// Create ")
@@ -1037,6 +1089,12 @@ fn gen_union_as_cast(
   // Skip JsValue type and types that cannot be checked
   if moonbit_type == "JsValue" || factory_name == "" || js_check == "" {
     return ""
+  }
+  if member_type is Named(name) && dictionary_names.contains(name) {
+    return "///|\npub fn \{union_name}::as_\{factory_name}(self : \{union_name}) -> \{name}? { if self.is_\{factory_name}() { Some(\{name}::from_js(self.to_js_value())) } else { None } }\n\n"
+  }
+  if member_type is Named(name) && enum_names.contains(name) {
+    return "///|\nextern \"js\" fn \{union_name}::as_\{factory_name}_string(self : \{union_name}) -> String =\n  #| self => self\n\n///|\npub fn \{union_name}::as_\{factory_name}(self : \{union_name}) -> \{name}? { if self.is_\{factory_name}() { \{name}::from_string(self.as_\{factory_name}_string()) } else { None } }\n\n"
   }
   let result = StringBuilder()
   result.write_string("/// Try to get ")

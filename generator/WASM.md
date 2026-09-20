@@ -345,7 +345,17 @@ copies the bytes through generated APIs. MoonBit checks all four RGBA pixels
 after unmapping. The host supplies a device and validation error scope; device
 acquisition has its own generated-API test. Both JS and WasmGC exercise the
 pixel contract, and WasmGC also runs from the relocated source bundle.
-This is a clear-pass contract, not shader, text/scene or hardware certification.
+This is the shared JS/WasmGC clear-pass contract, not text/scene or hardware certification.
+The JS consumer additionally renders a full-screen triangle through synchronous
+and asynchronous pipelines. It uploads red and green uniform values using both
+the base and typed ArrayBuffer writeBuffer APIs and checks every readback pixel.
+Auto-layout enum unions and buffer-binding dictionary unions use their named
+converters; required/optional nested dictionaries compose child conversions in
+MoonBit instead of depending on compiler Option layouts. Integer argument aliases
+use the same conversion as their primitive types while preserving public names.
+This shader contract is not yet implemented by the WasmGC consumer: annotated
+operation arguments, optional parameters and buffer-source coverage remain work
+required before migrating Metonic's rendering path.
 The fixture omits unused optional parameters/descriptor fields and narrows the
 texture-format enum to rgba8unorm; the extent union and coordinate annotations
 retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.

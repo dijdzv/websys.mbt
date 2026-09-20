@@ -3017,7 +3017,7 @@ pub extern "js" fn WebGLRenderingContext::draw_elements(
   type_ : GLenum,
   offset : GLintptr,
 ) -> Unit =
-  #| (self, mode, count, type_, offset) => self.drawElements(mode, count, type_, offset)
+  #| (self, mode, count, type_, offset) => self.drawElements(mode, count, type_, Number(BigInt.asIntN(64, offset)))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::enable(
@@ -3598,7 +3598,7 @@ pub extern "js" fn WebGLRenderingContext::vertex_attrib_pointer(
   stride : GLsizei,
   offset : GLintptr,
 ) -> Unit =
-  #| (self, index, size, type_, normalized, stride, offset) => self.vertexAttribPointer(index, size, type_, normalized, stride, offset)
+  #| (self, index, size, type_, normalized, stride, offset) => self.vertexAttribPointer(index, size, type_, normalized, stride, Number(BigInt.asIntN(64, offset)))
 
 ///|
 pub extern "js" fn WebGLRenderingContext::viewport(
@@ -3623,7 +3623,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_data(
   size : GLsizeiptr,
   usage : GLenum,
 ) -> Unit =
-  #| (self, target, size, usage) => self.bufferData(target, size, usage)
+  #| (self, target, size, usage) => self.bufferData(target, Number(BigInt.asIntN(64, size)), usage)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_data_with_target_g_lenum_and_data_and_usage_g_lenum(
@@ -3641,7 +3641,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_sub_data(
   offset : GLintptr,
   data : AllowSharedBufferSource,
 ) -> Unit =
-  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+  #| (self, target, offset, data) => self.bufferSubData(target, Number(BigInt.asIntN(64, offset)), data)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::compressed_tex_image_2d(
@@ -3900,7 +3900,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_array_buffer(
   offset : GLintptr,
   data : ArrayBuffer,
 ) -> Unit =
-  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+  #| (self, target, offset, data) => self.bufferSubData(target, Number(BigInt.asIntN(64, offset)), data)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_shared_array_buffer(
@@ -3909,7 +3909,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_shared_array_buff
   offset : GLintptr,
   data : SharedArrayBuffer,
 ) -> Unit =
-  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+  #| (self, target, offset, data) => self.bufferSubData(target, Number(BigInt.asIntN(64, offset)), data)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_array_buffer_view(
@@ -3918,7 +3918,7 @@ pub extern "js" fn WebGLRenderingContext::buffer_sub_data_with_array_buffer_view
   offset : GLintptr,
   data : ArrayBufferView,
 ) -> Unit =
-  #| (self, target, offset, data) => self.bufferSubData(target, offset, data)
+  #| (self, target, offset, data) => self.bufferSubData(target, Number(BigInt.asIntN(64, offset)), data)
 
 ///|
 pub extern "js" fn WebGLRenderingContext::compressed_tex_image_2d_with_int8_array(

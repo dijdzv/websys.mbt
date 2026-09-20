@@ -26,12 +26,16 @@ pub fn VideoEncoderEncodeOptions::default() -> VideoEncoderEncodeOptions {
 ///|
 extern "js" fn VideoEncoderEncodeOptions::to_js_ffi(
   self : VideoEncoderEncodeOptions,
+  convert_av1 : (VideoEncoderEncodeOptionsForAv1?) -> JsValue,
+  convert_avc : (VideoEncoderEncodeOptionsForAvc?) -> JsValue,
+  convert_hevc : (VideoEncoderEncodeOptionsForHevc?) -> JsValue,
+  convert_vp9 : (VideoEncoderEncodeOptionsForVp9?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   av1: ((() => { const v = self.av1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   avc: ((() => { const v = self.avc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hevc: ((() => { const v = self.hevc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   vp9: ((() => { const v = self.vp9; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_av1, convert_avc, convert_hevc, convert_vp9) => ({
+  #|   av1: convert_av1(self.av1),
+  #|   avc: convert_avc(self.avc),
+  #|   hevc: convert_hevc(self.hevc),
+  #|   vp9: convert_vp9(self.vp9),
   #|   keyFrame: (self.keyFrame === -1 ? undefined : self.keyFrame)
   #| })
 
@@ -40,18 +44,48 @@ extern "js" fn VideoEncoderEncodeOptions::to_js_ffi(
 pub fn VideoEncoderEncodeOptions::to_js(
   self : VideoEncoderEncodeOptions,
 ) -> JsValue {
-  VideoEncoderEncodeOptions::to_js_ffi(self)
+  VideoEncoderEncodeOptions::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn VideoEncoderEncodeOptions::from_js_ffi(
   value : JsValue,
+  convert_av1 : (JsValue) -> VideoEncoderEncodeOptionsForAv1?,
+  convert_avc : (JsValue) -> VideoEncoderEncodeOptionsForAvc?,
+  convert_hevc : (JsValue) -> VideoEncoderEncodeOptionsForHevc?,
+  convert_vp9 : (JsValue) -> VideoEncoderEncodeOptionsForVp9?,
 ) -> VideoEncoderEncodeOptions =
-  #| (v) => ({
-  #|   av1: (v.av1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.av1 }),
-  #|   avc: (v.avc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.avc }),
-  #|   hevc: (v.hevc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hevc }),
-  #|   vp9: (v.vp9 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.vp9 }),
+  #| (v, convert_av1, convert_avc, convert_hevc, convert_vp9) => ({
+  #|   av1: convert_av1(v.av1),
+  #|   avc: convert_avc(v.avc),
+  #|   hevc: convert_hevc(v.hevc),
+  #|   vp9: convert_vp9(v.vp9),
   #|   keyFrame: (v.keyFrame === undefined ? -1 : v.keyFrame)
   #| })
 
@@ -60,7 +94,37 @@ extern "js" fn VideoEncoderEncodeOptions::from_js_ffi(
 pub fn VideoEncoderEncodeOptions::from_js(
   value : JsValue,
 ) -> VideoEncoderEncodeOptions {
-  VideoEncoderEncodeOptions::from_js_ffi(value)
+  VideoEncoderEncodeOptions::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoEncoderEncodeOptionsForAv1::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoEncoderEncodeOptionsForAvc::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoEncoderEncodeOptionsForHevc::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoEncoderEncodeOptionsForVp9::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

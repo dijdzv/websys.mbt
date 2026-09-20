@@ -64,13 +64,14 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
 ///|
 extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
   self : RTCRtpEncodingParameters,
+  convert_codec : (RTCRtpCodec?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_codec) => ({
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
   #|   networkPriority: ((() => { const v = self.networkPriority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
   #|   scalabilityMode: self.scalabilityMode,
   #|   active: (self.active === -1 ? undefined : self.active),
-  #|   codec: ((() => { const v = self.codec; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   codec: convert_codec(self.codec),
   #|   maxBitrate: self.maxBitrate,
   #|   maxFramerate: ((() => { const v = self.maxFramerate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   scaleResolutionDownBy: ((() => { const v = self.scaleResolutionDownBy; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
@@ -81,19 +82,25 @@ extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
 pub fn RTCRtpEncodingParameters::to_js(
   self : RTCRtpEncodingParameters,
 ) -> JsValue {
-  RTCRtpEncodingParameters::to_js_ffi(self)
+  RTCRtpEncodingParameters::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn RTCRtpEncodingParameters::from_js_ffi(
   value : JsValue,
+  convert_codec : (JsValue) -> RTCRtpCodec?,
 ) -> RTCRtpEncodingParameters =
-  #| (v) => ({
+  #| (v, convert_codec) => ({
   #|   priority: (v.priority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.priority)),
   #|   networkPriority: (v.networkPriority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.networkPriority)),
   #|   scalabilityMode: v.scalabilityMode,
   #|   active: (v.active === undefined ? -1 : v.active),
-  #|   codec: (v.codec === undefined ? { $tag: 0 } : { $tag: 1, _0: v.codec }),
+  #|   codec: convert_codec(v.codec),
   #|   maxBitrate: v.maxBitrate,
   #|   maxFramerate: (v.maxFramerate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxFramerate }),
   #|   scaleResolutionDownBy: (v.scaleResolutionDownBy === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleResolutionDownBy })
@@ -104,7 +111,13 @@ extern "js" fn RTCRtpEncodingParameters::from_js_ffi(
 pub fn RTCRtpEncodingParameters::from_js(
   value : JsValue,
 ) -> RTCRtpEncodingParameters {
-  RTCRtpEncodingParameters::from_js_ffi(value)
+  RTCRtpEncodingParameters::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(RTCRtpCodec::from_js(value))
+    }
+  })
 }
 
 ///|

@@ -12,11 +12,17 @@ pub extern "js" fn PasswordCredentialInit::to_js_value(
   #| (self) => self
 
 ///|
-/// Create PasswordCredentialInit from PasswordCredentialData
-pub extern "js" fn PasswordCredentialInit::from_password_credential_data(
-  v : PasswordCredentialData,
+extern "js" fn PasswordCredentialInit::from_password_credential_data_ffi(
+  v : JsValue,
 ) -> PasswordCredentialInit =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn PasswordCredentialInit::from_password_credential_data(
+  v : PasswordCredentialData,
+) -> PasswordCredentialInit {
+  PasswordCredentialInit::from_password_credential_data_ffi(v.to_js())
+}
 
 ///|
 /// Create PasswordCredentialInit from HTMLFormElement
@@ -40,11 +46,15 @@ pub extern "js" fn PasswordCredentialInit::is_html_form_element(
   #| (self) => self instanceof HTMLFormElement
 
 ///|
-/// Try to get PasswordCredentialInit as PasswordCredentialData
-pub extern "js" fn PasswordCredentialInit::as_password_credential_data(
+pub fn PasswordCredentialInit::as_password_credential_data(
   self : PasswordCredentialInit,
-) -> PasswordCredentialData? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PasswordCredentialData? {
+  if self.is_password_credential_data() {
+    Some(PasswordCredentialData::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get PasswordCredentialInit as HTMLFormElement
@@ -203,17 +213,22 @@ pub fn CredentialRequestOptions::default() -> CredentialRequestOptions {
 ///|
 extern "js" fn CredentialRequestOptions::to_js_ffi(
   self : CredentialRequestOptions,
+  convert_federated : (FederatedCredentialRequestOptions?) -> JsValue,
+  convert_digital : (DigitalCredentialRequestOptions?) -> JsValue,
+  convert_identity : (IdentityCredentialRequestOptions?) -> JsValue,
+  convert_otp : (OTPCredentialRequestOptions?) -> JsValue,
+  convert_publicKey : (PublicKeyCredentialRequestOptions?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_federated, convert_digital, convert_identity, convert_otp, convert_publicKey) => ({
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
   #|   uiMode: self.uiMode,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   password: (self.password === -1 ? undefined : self.password),
-  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   identity: ((() => { const v = self.identity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   otp: ((() => { const v = self.otp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   federated: convert_federated(self.federated),
+  #|   digital: convert_digital(self.digital),
+  #|   identity: convert_identity(self.identity),
+  #|   otp: convert_otp(self.otp),
+  #|   publicKey: convert_publicKey(self.publicKey)
   #| })
 
 ///|
@@ -221,23 +236,60 @@ extern "js" fn CredentialRequestOptions::to_js_ffi(
 pub fn CredentialRequestOptions::to_js(
   self : CredentialRequestOptions,
 ) -> JsValue {
-  CredentialRequestOptions::to_js_ffi(self)
+  CredentialRequestOptions::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn CredentialRequestOptions::from_js_ffi(
   value : JsValue,
+  convert_federated : (JsValue) -> FederatedCredentialRequestOptions?,
+  convert_digital : (JsValue) -> DigitalCredentialRequestOptions?,
+  convert_identity : (JsValue) -> IdentityCredentialRequestOptions?,
+  convert_otp : (JsValue) -> OTPCredentialRequestOptions?,
+  convert_publicKey : (JsValue) -> PublicKeyCredentialRequestOptions?,
 ) -> CredentialRequestOptions =
-  #| (v) => ({
+  #| (v, convert_federated, convert_digital, convert_identity, convert_otp, convert_publicKey) => ({
   #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
   #|   uiMode: v.uiMode,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   password: (v.password === undefined ? -1 : v.password),
-  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated }),
-  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
-  #|   identity: (v.identity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.identity }),
-  #|   otp: (v.otp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.otp }),
-  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey })
+  #|   federated: convert_federated(v.federated),
+  #|   digital: convert_digital(v.digital),
+  #|   identity: convert_identity(v.identity),
+  #|   otp: convert_otp(v.otp),
+  #|   publicKey: convert_publicKey(v.publicKey)
   #| })
 
 ///|
@@ -245,7 +297,44 @@ extern "js" fn CredentialRequestOptions::from_js_ffi(
 pub fn CredentialRequestOptions::from_js(
   value : JsValue,
 ) -> CredentialRequestOptions {
-  CredentialRequestOptions::from_js_ffi(value)
+  CredentialRequestOptions::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(FederatedCredentialRequestOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DigitalCredentialRequestOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(IdentityCredentialRequestOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(OTPCredentialRequestOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PublicKeyCredentialRequestOptions::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -275,14 +364,17 @@ pub fn CredentialCreationOptions::default() -> CredentialCreationOptions {
 ///|
 extern "js" fn CredentialCreationOptions::to_js_ffi(
   self : CredentialCreationOptions,
+  convert_federated : (FederatedCredentialInit?) -> JsValue,
+  convert_digital : (DigitalCredentialCreationOptions?) -> JsValue,
+  convert_publicKey : (PublicKeyCredentialCreationOptions?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_federated, convert_digital, convert_publicKey) => ({
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   federated: convert_federated(self.federated),
+  #|   digital: convert_digital(self.digital),
+  #|   publicKey: convert_publicKey(self.publicKey)
   #| })
 
 ///|
@@ -290,20 +382,43 @@ extern "js" fn CredentialCreationOptions::to_js_ffi(
 pub fn CredentialCreationOptions::to_js(
   self : CredentialCreationOptions,
 ) -> JsValue {
-  CredentialCreationOptions::to_js_ffi(self)
+  CredentialCreationOptions::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn CredentialCreationOptions::from_js_ffi(
   value : JsValue,
+  convert_federated : (JsValue) -> FederatedCredentialInit?,
+  convert_digital : (JsValue) -> DigitalCredentialCreationOptions?,
+  convert_publicKey : (JsValue) -> PublicKeyCredentialCreationOptions?,
 ) -> CredentialCreationOptions =
-  #| (v) => ({
+  #| (v, convert_federated, convert_digital, convert_publicKey) => ({
   #|   mediation: (v.mediation === undefined ? undefined : ['silent', 'optional', 'conditional', 'required'].indexOf(v.mediation)),
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   password: (v.password === undefined ? { $tag: 0 } : { $tag: 1, _0: v.password }),
-  #|   federated: (v.federated === undefined ? { $tag: 0 } : { $tag: 1, _0: v.federated }),
-  #|   digital: (v.digital === undefined ? { $tag: 0 } : { $tag: 1, _0: v.digital }),
-  #|   publicKey: (v.publicKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.publicKey })
+  #|   federated: convert_federated(v.federated),
+  #|   digital: convert_digital(v.digital),
+  #|   publicKey: convert_publicKey(v.publicKey)
   #| })
 
 ///|
@@ -311,7 +426,30 @@ extern "js" fn CredentialCreationOptions::from_js_ffi(
 pub fn CredentialCreationOptions::from_js(
   value : JsValue,
 ) -> CredentialCreationOptions {
-  CredentialCreationOptions::from_js_ffi(value)
+  CredentialCreationOptions::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(FederatedCredentialInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DigitalCredentialCreationOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PublicKeyCredentialCreationOptions::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

@@ -151,33 +151,46 @@ pub fn MemoryAttribution::default() -> MemoryAttribution {
 ///|
 extern "js" fn MemoryAttribution::to_js_ffi(
   self : MemoryAttribution,
+  convert_container : (MemoryAttributionContainer?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_container) => ({
   #|   url: self.url,
-  #|   container: ((() => { const v = self.container; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   container: convert_container(self.container),
   #|   scope: self.scope
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MemoryAttribution::to_js(self : MemoryAttribution) -> JsValue {
-  MemoryAttribution::to_js_ffi(self)
+  MemoryAttribution::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn MemoryAttribution::from_js_ffi(
   value : JsValue,
+  convert_container : (JsValue) -> MemoryAttributionContainer?,
 ) -> MemoryAttribution =
-  #| (v) => ({
+  #| (v, convert_container) => ({
   #|   url: v.url,
-  #|   container: (v.container === undefined ? { $tag: 0 } : { $tag: 1, _0: v.container }),
+  #|   container: convert_container(v.container),
   #|   scope: v.scope
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MemoryAttribution::from_js(value : JsValue) -> MemoryAttribution {
-  MemoryAttribution::from_js_ffi(value)
+  MemoryAttribution::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(MemoryAttributionContainer::from_js(value))
+    }
+  })
 }
 
 ///|

@@ -398,35 +398,37 @@ pub fn RsaHashedKeyAlgorithm::new(
 ///|
 extern "js" fn RsaHashedKeyAlgorithm::to_js_ffi(
   self : RsaHashedKeyAlgorithm,
+  convert_hash : (KeyAlgorithm) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_hash) => ({
   #|   name: self.name,
   #|   modulusLength: self.modulusLength,
   #|   publicExponent: self.publicExponent,
-  #|   hash: self.hash
+  #|   hash: convert_hash(self.hash)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RsaHashedKeyAlgorithm::to_js(self : RsaHashedKeyAlgorithm) -> JsValue {
-  RsaHashedKeyAlgorithm::to_js_ffi(self)
+  RsaHashedKeyAlgorithm::to_js_ffi(self, KeyAlgorithm::to_js)
 }
 
 ///|
 extern "js" fn RsaHashedKeyAlgorithm::from_js_ffi(
   value : JsValue,
+  convert_hash : (JsValue) -> KeyAlgorithm,
 ) -> RsaHashedKeyAlgorithm =
-  #| (v) => ({
+  #| (v, convert_hash) => ({
   #|   name: v.name,
   #|   modulusLength: v.modulusLength,
   #|   publicExponent: v.publicExponent,
-  #|   hash: v.hash
+  #|   hash: convert_hash(v.hash)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn RsaHashedKeyAlgorithm::from_js(value : JsValue) -> RsaHashedKeyAlgorithm {
-  RsaHashedKeyAlgorithm::from_js_ffi(value)
+  RsaHashedKeyAlgorithm::from_js_ffi(value, KeyAlgorithm::from_js)
 }
 
 ///|
@@ -1063,33 +1065,37 @@ pub fn HmacKeyAlgorithm::new(hash~ : KeyAlgorithm) -> HmacKeyAlgorithm {
 }
 
 ///|
-extern "js" fn HmacKeyAlgorithm::to_js_ffi(self : HmacKeyAlgorithm) -> JsValue =
-  #| (self) => ({
+extern "js" fn HmacKeyAlgorithm::to_js_ffi(
+  self : HmacKeyAlgorithm,
+  convert_hash : (KeyAlgorithm) -> JsValue,
+) -> JsValue =
+  #| (self, convert_hash) => ({
   #|   name: self.name,
-  #|   hash: self.hash,
+  #|   hash: convert_hash(self.hash),
   #|   length: self.length
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn HmacKeyAlgorithm::to_js(self : HmacKeyAlgorithm) -> JsValue {
-  HmacKeyAlgorithm::to_js_ffi(self)
+  HmacKeyAlgorithm::to_js_ffi(self, KeyAlgorithm::to_js)
 }
 
 ///|
 extern "js" fn HmacKeyAlgorithm::from_js_ffi(
   value : JsValue,
+  convert_hash : (JsValue) -> KeyAlgorithm,
 ) -> HmacKeyAlgorithm =
-  #| (v) => ({
+  #| (v, convert_hash) => ({
   #|   name: v.name,
-  #|   hash: v.hash,
+  #|   hash: convert_hash(v.hash),
   #|   length: v.length
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn HmacKeyAlgorithm::from_js(value : JsValue) -> HmacKeyAlgorithm {
-  HmacKeyAlgorithm::from_js_ffi(value)
+  HmacKeyAlgorithm::from_js_ffi(value, KeyAlgorithm::from_js)
 }
 
 ///|

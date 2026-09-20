@@ -17,11 +17,17 @@ pub extern "js" fn ConstrainULong::from_int(v : Int) -> ConstrainULong =
   #| (v) => v
 
 ///|
-/// Create ConstrainULong from ConstrainULongRange
-pub extern "js" fn ConstrainULong::from_constrain_u_long_range(
-  v : ConstrainULongRange,
+extern "js" fn ConstrainULong::from_constrain_u_long_range_ffi(
+  v : JsValue,
 ) -> ConstrainULong =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainULong::from_constrain_u_long_range(
+  v : ConstrainULongRange,
+) -> ConstrainULong {
+  ConstrainULong::from_constrain_u_long_range_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ConstrainULong is Int
@@ -41,11 +47,15 @@ pub extern "js" fn ConstrainULong::as_int(self : ConstrainULong) -> Int? =
   #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
-/// Try to get ConstrainULong as ConstrainULongRange
-pub extern "js" fn ConstrainULong::as_constrain_u_long_range(
+pub fn ConstrainULong::as_constrain_u_long_range(
   self : ConstrainULong,
-) -> ConstrainULongRange? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainULongRange? {
+  if self.is_constrain_u_long_range() {
+    Some(ConstrainULongRange::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainULong] to Int?
@@ -83,11 +93,17 @@ pub extern "js" fn ConstrainDouble::from_double(v : Double) -> ConstrainDouble =
   #| (v) => v
 
 ///|
-/// Create ConstrainDouble from ConstrainDoubleRange
-pub extern "js" fn ConstrainDouble::from_constrain_double_range(
-  v : ConstrainDoubleRange,
+extern "js" fn ConstrainDouble::from_constrain_double_range_ffi(
+  v : JsValue,
 ) -> ConstrainDouble =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainDouble::from_constrain_double_range(
+  v : ConstrainDoubleRange,
+) -> ConstrainDouble {
+  ConstrainDouble::from_constrain_double_range_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ConstrainDouble is Double
@@ -109,11 +125,15 @@ pub extern "js" fn ConstrainDouble::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ConstrainDouble as ConstrainDoubleRange
-pub extern "js" fn ConstrainDouble::as_constrain_double_range(
+pub fn ConstrainDouble::as_constrain_double_range(
   self : ConstrainDouble,
-) -> ConstrainDoubleRange? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainDoubleRange? {
+  if self.is_constrain_double_range() {
+    Some(ConstrainDoubleRange::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainDouble] to Double?
@@ -151,11 +171,17 @@ pub extern "js" fn ConstrainBoolean::from_bool(v : Bool) -> ConstrainBoolean =
   #| (v) => v
 
 ///|
-/// Create ConstrainBoolean from ConstrainBooleanParameters
-pub extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters(
-  v : ConstrainBooleanParameters,
+extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters_ffi(
+  v : JsValue,
 ) -> ConstrainBoolean =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainBoolean::from_constrain_boolean_parameters(
+  v : ConstrainBooleanParameters,
+) -> ConstrainBoolean {
+  ConstrainBoolean::from_constrain_boolean_parameters_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ConstrainBoolean is Bool
@@ -175,11 +201,15 @@ pub extern "js" fn ConstrainBoolean::as_bool(self : ConstrainBoolean) -> Bool? =
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
-/// Try to get ConstrainBoolean as ConstrainBooleanParameters
-pub extern "js" fn ConstrainBoolean::as_constrain_boolean_parameters(
+pub fn ConstrainBoolean::as_constrain_boolean_parameters(
   self : ConstrainBoolean,
-) -> ConstrainBooleanParameters? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainBooleanParameters? {
+  if self.is_constrain_boolean_parameters() {
+    Some(ConstrainBooleanParameters::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainBoolean] to Bool?
@@ -226,11 +256,17 @@ pub extern "js" fn ConstrainDOMString::from_array_of_string(
   #| (v) => v
 
 ///|
-/// Create ConstrainDOMString from ConstrainDOMStringParameters
-pub extern "js" fn ConstrainDOMString::from_constrain_dom_string_parameters(
-  v : ConstrainDOMStringParameters,
+extern "js" fn ConstrainDOMString::from_constrain_dom_string_parameters_ffi(
+  v : JsValue,
 ) -> ConstrainDOMString =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainDOMString::from_constrain_dom_string_parameters(
+  v : ConstrainDOMStringParameters,
+) -> ConstrainDOMString {
+  ConstrainDOMString::from_constrain_dom_string_parameters_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ConstrainDOMString is String
@@ -268,11 +304,15 @@ pub extern "js" fn ConstrainDOMString::as_array_of_string(
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-/// Try to get ConstrainDOMString as ConstrainDOMStringParameters
-pub extern "js" fn ConstrainDOMString::as_constrain_dom_string_parameters(
+pub fn ConstrainDOMString::as_constrain_dom_string_parameters(
   self : ConstrainDOMString,
-) -> ConstrainDOMStringParameters? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainDOMStringParameters? {
+  if self.is_constrain_dom_string_parameters() {
+    Some(ConstrainDOMStringParameters::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainDOMString] to String?
@@ -332,11 +372,19 @@ pub extern "js" fn ConstrainBooleanOrDOMString::from_string(
   #| (v) => v
 
 ///|
-/// Create ConstrainBooleanOrDOMString from ConstrainBooleanOrDOMStringParameters
-pub extern "js" fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters(
-  v : ConstrainBooleanOrDOMStringParameters,
+extern "js" fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(
+  v : JsValue,
 ) -> ConstrainBooleanOrDOMString =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters(
+  v : ConstrainBooleanOrDOMStringParameters,
+) -> ConstrainBooleanOrDOMString {
+  ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this ConstrainBooleanOrDOMString is Bool
@@ -374,11 +422,15 @@ pub extern "js" fn ConstrainBooleanOrDOMString::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get ConstrainBooleanOrDOMString as ConstrainBooleanOrDOMStringParameters
-pub extern "js" fn ConstrainBooleanOrDOMString::as_constrain_boolean_or_dom_string_parameters(
+pub fn ConstrainBooleanOrDOMString::as_constrain_boolean_or_dom_string_parameters(
   self : ConstrainBooleanOrDOMString,
-) -> ConstrainBooleanOrDOMStringParameters? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ConstrainBooleanOrDOMStringParameters? {
+  if self.is_constrain_boolean_or_dom_string_parameters() {
+    Some(ConstrainBooleanOrDOMStringParameters::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ConstrainBooleanOrDOMString] to Bool?

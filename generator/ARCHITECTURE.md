@@ -96,6 +96,15 @@ these fields expose `to_js_checked` and `from_js_checked` to return conversion
 errors; the existing conversion methods throw on invalid values. This does not
 extend to nullable 64-bit fields or 64-bit operation arguments/results.
 
+JS enum/dictionary union construction and extraction compose named converters.
+Nonnullable nested dictionary fields use MoonBit callbacks in both directions;
+MoonBit owns optional presence handling, so the generated host code does not
+assume a tagged Option for these fields. Primitive aliases are resolved for
+operation/constructor argument conversion without changing public signatures.
+The shader consumer covers auto-layout, nested vertex/fragment state, uniform
+uploads and pixel readback; this does not establish complete nested-container
+conversion or JS/WasmGC shader parity.
+
 Compound WasmGC dictionary inputs use
 semantic field types (including inherited fields and resolved aliases) to plan
 explicit sequence, record and union conversion. MoonBit traverses its arrays,

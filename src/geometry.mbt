@@ -107,33 +107,101 @@ pub fn DOMQuadInit::default() -> DOMQuadInit {
 }
 
 ///|
-extern "js" fn DOMQuadInit::to_js_ffi(self : DOMQuadInit) -> JsValue =
-  #| (self) => ({
-  #|   p1: ((() => { const v = self.p1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p2: ((() => { const v = self.p2; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p3: ((() => { const v = self.p3; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   p4: ((() => { const v = self.p4; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+extern "js" fn DOMQuadInit::to_js_ffi(
+  self : DOMQuadInit,
+  convert_p1 : (DOMPointInit?) -> JsValue,
+  convert_p2 : (DOMPointInit?) -> JsValue,
+  convert_p3 : (DOMPointInit?) -> JsValue,
+  convert_p4 : (DOMPointInit?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_p1, convert_p2, convert_p3, convert_p4) => ({
+  #|   p1: convert_p1(self.p1),
+  #|   p2: convert_p2(self.p2),
+  #|   p3: convert_p3(self.p3),
+  #|   p4: convert_p4(self.p4)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn DOMQuadInit::to_js(self : DOMQuadInit) -> JsValue {
-  DOMQuadInit::to_js_ffi(self)
+  DOMQuadInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
-extern "js" fn DOMQuadInit::from_js_ffi(value : JsValue) -> DOMQuadInit =
-  #| (v) => ({
-  #|   p1: (v.p1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p1 }),
-  #|   p2: (v.p2 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p2 }),
-  #|   p3: (v.p3 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p3 }),
-  #|   p4: (v.p4 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.p4 })
+extern "js" fn DOMQuadInit::from_js_ffi(
+  value : JsValue,
+  convert_p1 : (JsValue) -> DOMPointInit?,
+  convert_p2 : (JsValue) -> DOMPointInit?,
+  convert_p3 : (JsValue) -> DOMPointInit?,
+  convert_p4 : (JsValue) -> DOMPointInit?,
+) -> DOMQuadInit =
+  #| (v, convert_p1, convert_p2, convert_p3, convert_p4) => ({
+  #|   p1: convert_p1(v.p1),
+  #|   p2: convert_p2(v.p2),
+  #|   p3: convert_p3(v.p3),
+  #|   p4: convert_p4(v.p4)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn DOMQuadInit::from_js(value : JsValue) -> DOMQuadInit {
-  DOMQuadInit::from_js_ffi(value)
+  DOMQuadInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMPointInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMPointInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMPointInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMPointInit::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

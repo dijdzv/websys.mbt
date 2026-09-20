@@ -331,12 +331,13 @@ pub fn SharedStorageRunOperationMethodOptions::default() -> SharedStorageRunOper
 ///|
 extern "js" fn SharedStorageRunOperationMethodOptions::to_js_ffi(
   self : SharedStorageRunOperationMethodOptions,
+  convert_privateAggregationConfig : (SharedStoragePrivateAggregationConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_privateAggregationConfig) => ({
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   resolveToConfig: (self.resolveToConfig === -1 ? undefined : self.resolveToConfig),
   #|   keepAlive: (self.keepAlive === -1 ? undefined : self.keepAlive),
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(self.privateAggregationConfig),
   #|   savedQuery: self.savedQuery
   #| })
 
@@ -345,18 +346,24 @@ extern "js" fn SharedStorageRunOperationMethodOptions::to_js_ffi(
 pub fn SharedStorageRunOperationMethodOptions::to_js(
   self : SharedStorageRunOperationMethodOptions,
 ) -> JsValue {
-  SharedStorageRunOperationMethodOptions::to_js_ffi(self)
+  SharedStorageRunOperationMethodOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn SharedStorageRunOperationMethodOptions::from_js_ffi(
   value : JsValue,
+  convert_privateAggregationConfig : (JsValue) -> SharedStoragePrivateAggregationConfig?,
 ) -> SharedStorageRunOperationMethodOptions =
-  #| (v) => ({
+  #| (v, convert_privateAggregationConfig) => ({
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
   #|   resolveToConfig: (v.resolveToConfig === undefined ? -1 : v.resolveToConfig),
   #|   keepAlive: (v.keepAlive === undefined ? -1 : v.keepAlive),
-  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(v.privateAggregationConfig),
   #|   savedQuery: v.savedQuery
   #| })
 
@@ -365,7 +372,13 @@ extern "js" fn SharedStorageRunOperationMethodOptions::from_js_ffi(
 pub fn SharedStorageRunOperationMethodOptions::from_js(
   value : JsValue,
 ) -> SharedStorageRunOperationMethodOptions {
-  SharedStorageRunOperationMethodOptions::from_js_ffi(value)
+  SharedStorageRunOperationMethodOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(SharedStoragePrivateAggregationConfig::from_js(value))
+    }
+  })
 }
 
 ///|

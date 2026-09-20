@@ -61,4 +61,4 @@ pub extern "js" fn WEBGL_draw_instanced_base_vertex_base_instance::draw_elements
   base_vertex : GLint,
   base_instance : GLuint,
 ) -> Unit =
-  #| (self, mode, count, type_, offset, instance_count, base_vertex, base_instance) => self.drawElementsInstancedBaseVertexBaseInstanceWEBGL(mode, count, type_, offset, instance_count, base_vertex, base_instance)
+  #| (self, mode, count, type_, offset, instance_count, base_vertex, base_instance) => self.drawElementsInstancedBaseVertexBaseInstanceWEBGL(mode, count, type_, Number(BigInt.asIntN(64, offset)), instance_count, base_vertex, base_instance)

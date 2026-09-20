@@ -8,9 +8,10 @@ fn gen_js_call_arg(
   arg : Argument,
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let arg_name = arg.name |> to_snake_case |> escape_reserved
-  match arg.idl_type {
+  match resolve_dictionary_alias(arg.idl_type, primitive_typedef_map) {
     Named(type_name) =>
       match lookup_enum(enum_map, type_name) {
         Some(values) => gen_enum_array_lookup(values, arg_name)

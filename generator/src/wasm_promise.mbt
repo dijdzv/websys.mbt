@@ -5,6 +5,15 @@ struct WasmPromiseValue {
 }
 
 ///|
+fn WasmPromiseValue::key(self : WasmPromiseValue) -> String {
+  if self.name.has_suffix("?") {
+    "nullable_" + self.name.replace_all(old="?", new="")
+  } else {
+    self.name
+  }
+}
+
+///|
 fn wasm_promise_value(
   t : IdlType,
   interfaces? : Array[String] = [],
@@ -33,6 +42,11 @@ fn wasm_promise_value(
     Named(name) if interfaces.contains(name) =>
       Some({
         name,
+        predicate: "typeof globalThis.\{name} === 'function' && value instanceof globalThis.\{name}",
+      })
+    Nullable(Named(name)) if interfaces.contains(name) =>
+      Some({
+        name: name + "?",
         predicate: "typeof globalThis.\{name} === 'function' && value instanceof globalThis.\{name}",
       })
     Named(name) if dictionaries.contains(name) => Some({ name, predicate: "", })
@@ -73,12 +87,26 @@ fn emit_wasm_promise_support(
   }
   for plan in values {
     let name = plan.name
+    let key = plan.key()
+    guard !values.any(other => other.name != name && other.key() == key) else {
+      abort("Conflicting WasmGC Promise decoder names")
+    }
     if plan.predicate == "" {
       for definition in definitions {
         if definition is Dictionary(dict) && dict.name == name {
           emit_wasm_dictionary_result(dict, mbt, js, interfaces)
         }
       }
+      continue
+    }
+    if name.has_suffix("?") {
+      let inner = name.replace_all(old="?", new="")
+      mbt.write_string(
+        "fn websys_promise_null_\{key}(value : @wasm_async.JsValue) -> Bool = \"websys\" \"promise_null_\{key}\"\nfn websys_promise_is_\{key}(value : @wasm_async.JsValue) -> Bool = \"websys\" \"promise_is_\{key}\"\nfn websys_promise_read_\{key}(value : @wasm_async.JsValue) -> \{inner} = \"websys\" \"promise_read_\{key}\"\nfn websys_promise_decode_\{key}(value : @wasm_async.JsValue) -> \{name} raise { if websys_promise_null_\{key}(value) { return None }; if !websys_promise_is_\{key}(value) { raise PromiseDecodeError(\"\{name}\") }; Some(websys_promise_read_\{key}(value)) }\n",
+      )
+      js.write_string(
+        "    promise_null_\{key}: value => value === null, promise_is_\{key}: value => \{plan.predicate}, promise_read_\{key}: value => value,\n",
+      )
       continue
     }
     mbt.write_string(

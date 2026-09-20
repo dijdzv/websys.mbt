@@ -6,6 +6,30 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn read_optional_response(
+  values : @web.Values,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let result = values.read_optional_response().wait() catch {
+        @web.PromiseDecodeError(_) => {
+          notify(callback, 2, "")
+          return
+        }
+        @bridge.Rejection(_) => {
+          notify(callback, 3, "")
+          return
+        }
+        error => raise error
+      }
+    match result {
+      None => notify(callback, 1, "none")
+      Some(response) => notify(callback, 1, response.status().to_string())
+    }
+  })
+}
+
+///|
 pub fn inspect_response(response : @web.Response, callback : Callback) -> Unit {
   let content_type = match response.headers().get("Content-Type") {
     None => "missing"

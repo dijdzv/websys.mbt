@@ -50,7 +50,7 @@ or evidence of upstream support for the patched async dependency.
 
 `mise run test-promises` also exports to a newly created directory in the system
 temporary area, builds a consumer against only the bundled workspace members,
-and runs the 100-case Promise/Fetch/Streams suite with that build and that
+and runs the Promise/Fetch/Streams suite with that build and that
 bundle's runtime. Success removes the temporary directory; failures retain it
 at the printed path for inspection. The compiler and browser-test harness remain
 development prerequisites, not part of the exported library. This verifies
@@ -98,7 +98,7 @@ abort callback runs only when waiting is interrupted, not on settled rejection
 or decoding failure. The default does not abort the underlying operation; pass
 the operation's cancellation capability explicitly when required.
 
-`mise run test-promises` generates a separate module and executes 44 browser
+`mise run test-promises` generates a separate module and executes browser
 cases, including a real fetched Response's text, numeric boundaries, invalid
 values, rejection, synchronous operation failure, timeout and late settlement.
 It also initiates Fetch through a narrowed generated Window API, passes a
@@ -106,14 +106,20 @@ generated RequestInit containing AbortSignal, decodes Response, and awaits its
 text. The cancellation case observes an active intercepted request and its
 browser ERR_ABORTED event, alongside the generated signal's aborted state.
 Synthetic receivers check rejection and a non-Response result. Full standard
-Fetch signatures and stream-body cancellation remain separate work.
+Fetch signatures remain separate work; stream-body coverage is described below.
 It is included in the normal test task.
 The reader fixture also cancels real ReadableStreams and releases the reader
 lock after either successful or rejected source cancellation. Its narrowed
 cancel signature requires a string reason; optional/any reasons and structured
 read results are not established by this fixture.
-Promise attributes, parameters, nullable, dictionary and sequence
-settlement are rejected rather than assigned an unchecked representation.
+Nullable declared-interface settlement produces `Option[Interface]`: only host
+null becomes None, a checked interface value becomes Some, and undefined or a
+wrong object raises PromiseDecodeError. The generated decoder constructs Option
+in MoonBit without exposing its layout to JavaScript. Tests cover null, Response,
+undefined, a plain object and a number. This supplies the conversion needed by
+WebGPU requestAdapter, but is not yet evidence of an actual GPU adapter request.
+Flat dictionary results are described below. Promise attributes, parameters,
+nullable primitive/dictionary results and sequence settlement remain unsupported.
 
 ### ArrayBuffer references
 

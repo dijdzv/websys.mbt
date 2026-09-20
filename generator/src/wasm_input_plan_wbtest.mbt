@@ -31,3 +31,19 @@ test "compound dictionary planning consumes resolved inherited semantic types" {
   assert_true(code.contains("Array[(String, String)]"))
   assert_true(host.contains("Object.create(null)"))
 }
+
+///|
+test "nullable compound presence comes from semantic type rather than legacy AST" {
+  let parsed = parse_webidl_raw(
+    "interface Blob {}; dictionary Options { (Blob or USVString)? body; required sequence<DOMString>? values; };",
+  )
+  assert_true(validate_wasm_input(parsed) is None)
+  let (code, _) = generate_wasm(
+    convert_to_definitions(parsed),
+    dictionary_types=wasm_dictionary_semantics(parsed),
+  )
+  assert_true(code.contains("body : Nullable["))
+  assert_true(code.contains("values : Array[String]?"))
+  assert_true(code.contains("websys_dict_null"))
+  assert_true(code.contains("Undefined => (); Null =>"))
+}

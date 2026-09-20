@@ -227,6 +227,27 @@ try {
       });
       count++;
     }
+    for (const [mode, contentType, body] of [[0, 'undefined', ''], [1, 'undefined', ''], [2, 'text/plain', 'blob 日本'], [3, 'application/x-www-form-urlencoded;charset=UTF-8', 'q=hello+world'], [4, 'text/plain;charset=UTF-8', '日本😀']]) {
+      const blob = new Blob(['blob 日本'], { type: 'text/plain' });
+      const params = new URLSearchParams({ q: 'hello world' });
+      for (const real of [true, false]) {
+        const host = real ? window : { fetch: (url, options) => {
+          const expected = mode === 0 ? !Object.hasOwn(options, 'body') : mode === 1 ? options.body === null : mode === 2 ? options.body === blob : mode === 3 ? options.body === params : options.body === '日本😀';
+          if (!expected) throw Error('Body presence or reference identity lost');
+          return Promise.resolve(new Response('identity-ok'));
+        } };
+        await new Promise((resolve, reject) => {
+          const watchdog = setTimeout(() => reject(Error('Body union timeout')), 3000);
+          instance.exports.post_body(host, baseUrl + '/post', blob, params, mode, (code, value) => {
+            clearTimeout(watchdog);
+            const expected = real ? `POST|${contentType}|text/plain|${body}` : 'identity-ok';
+            if (code !== 1 || value !== expected) reject(Error(`Body union ${mode}: ${code}/${value}`));
+            else resolve();
+          });
+        });
+        count++;
+      }
+    }
     return count;
   }, { bytes: [...bytes], factory: createImports.toString(), baseUrl });
   for (let attempts = 0; !pendingBodyClosed && attempts < 100; attempts++) await new Promise(resolve => setTimeout(resolve, 10));

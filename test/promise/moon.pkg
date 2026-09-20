@@ -13,6 +13,7 @@ options(
         "read_bytes",
         "fetch_body",
         "post_headers",
+        "post_body",
         "read_required",
         "start",
         "start_value",

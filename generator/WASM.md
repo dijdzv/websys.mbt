@@ -252,24 +252,29 @@ Unsupported definitions/types are rejected rather than silently omitted.
 
 WasmGC validates raw WebIDL types before shared AST conversion. Compound
 dictionary inputs consume the separate semantic type model, preserving record
-key/value types and original string kinds. Other record conversions and nullable
+key/value types and original string kinds. Other record conversions and unsupported
 compound types remain rejected. Nested types and annotations are checked
 recursively; unsupported records must not silently become any.
 
-Non-null dictionary fields may use nested sequences, string-keyed records and
-unions of supported scalar/container values. Sequence inputs use MoonBit arrays;
+Dictionary fields may use nested sequences, string-keyed records and
+unions of supported scalar/container values or declared interface references.
+Sequence inputs use MoonBit arrays;
 records use arrays of key/value pairs; unions use generated explicit cases.
 Generated MoonBit code walks these values and builds host arrays or null-prototype
 objects through typed imports, without exposing compiler layouts. Duplicate
 record keys overwrite earlier entries. The receiving browser API applies WebIDL
 string validation/coercion; this builder does not replace browser conversion.
-Optional fields retain omission. Nullable compound inputs and interface-valued
-union branches remain unsupported.
+Optional fields retain omission. Outer nullable compound fields use Option when
+required and Nullable::{Undefined, Null, Value} when optional; presence is read
+from the semantic model even when the legacy AST drops it. Interface branches
+preserve host identity. Nullable values nested inside containers remain unsupported.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions
 fixture is deliberately limited; this does not establish full RequestInit or
 BodyInit support. The published JS API remains unchanged.
+Additional POST cases cover omitted/null bodies, Blob, URLSearchParams and text.
+Synthetic receivers separately verify omission versus null and object identity.
 
 Typedef aliases are resolved before dictionary inheritance and interface
 composition. Forward references and nested type containers are traversed;

@@ -22,6 +22,13 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
     Err(message) => return Some(message)
   }
   let items = get_parse_data(parsed)
+  let references : Array[String] = ["ArrayBuffer"]
+  for i = 0; i < js_array_length(items); i = i + 1 {
+    let item = js_array_get(items, i)
+    if get_type(item) == "interface" || get_type(item) == "callback" {
+      references.push(get_name(item))
+    }
+  }
   for i = 0; i < js_array_length(items); i = i + 1 {
     let item = js_array_get(items, i)
     if (is_partial(item) && get_type(item) != "interface") ||
@@ -58,7 +65,11 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
       }
       "includes" => ()
       "typedef" =>
-        if validate_wasm_dictionary_input_type(get_idl_type(item), aliases)
+        if validate_wasm_dictionary_input_type(
+            get_idl_type(item),
+            aliases,
+            references,
+          )
           is Some(message) {
           return Some(message)
         }
@@ -66,7 +77,11 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
           let field = js_array_get(members, j)
-          if validate_wasm_dictionary_input_type(get_idl_type(field), aliases)
+          if validate_wasm_dictionary_input_type(
+              get_idl_type(field),
+              aliases,
+              references,
+            )
             is Some(message) {
             return Some(message)
           }
@@ -343,7 +358,8 @@ fn generate_wasm(
     mbt.write_string(
       "#external\npub type JsValue\npub(all) enum Nullable[T] { Undefined; Null; Value(T) }\nfn websys_dict_new() -> JsValue = \"websys\" \"dict_new\"\n",
     )
-    if definitions.any(def => {
+    if dictionary_types.values().any(typ => typ.nullable) ||
+      definitions.any(def => {
         def is Dictionary(dict) &&
         dict.members.any(field => field.idl_type is Nullable(_))
       }) {

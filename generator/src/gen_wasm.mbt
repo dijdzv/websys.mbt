@@ -413,6 +413,10 @@ fn generate_wasm(
     )
   }
   js.write_string("    websys: {\n")
+  guard !names.contains("WebsysBufferSnapshot") else {
+    abort("Reserved ArrayBuffer support type name")
+  }
+  emit_wasm_arraybuffer_bytes(mbt, js)
   if !dictionaries.is_empty() {
     emit_wasm_bytes(mbt, js)
   }

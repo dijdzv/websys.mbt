@@ -145,7 +145,15 @@ the external-module browser fixture checks identity, shared mutation, null and
 detached-buffer reference preservation in four Wasm instances. Preserving a
 detached reference does not make it valid for a browser API requiring live bytes.
 
-Buffer construction, element access, SharedArrayBuffer, TypedArray, BufferSource
+`ArrayBuffer::to_bytes() -> Bytes?` explicitly copies a same-realm live buffer
+into owned MoonBit bytes. Empty buffers succeed; detached buffers, non-buffer
+objects and lengths above the signed-Int indexing limit return None. Later host
+mutation or detachment does not change the copied bytes. Browser tests include
+a host-created GPU mapped range: the snapshot survives unmap, while another
+copy from the detached range is rejected. This checks the copy boundary, not
+generated GPU buffer creation or rendering/readback.
+
+Buffer construction, SharedArrayBuffer, TypedArray, BufferSource
 unions and Promise settlement are not provided by this change. This is not yet
 a usable Web Crypto digest path. The JS generation path remains unchanged.
 

@@ -39,6 +39,19 @@ fn wasm_promise_value(
         name: "Double",
         predicate: "typeof value === 'number' && Number.isFinite(value)",
       })
+    Named("ArrayBuffer" | "SharedArrayBuffer" as name) =>
+      Some({
+        name,
+        predicate: "typeof globalThis.\{name} === 'function' && value instanceof globalThis.\{name}",
+      })
+    Named("ArrayBufferView") =>
+      Some({ name: "ArrayBufferView", predicate: "ArrayBuffer.isView(value)", })
+    Nullable(
+      Named("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name)
+    ) => {
+      let inner = wasm_promise_value(Named(name)).unwrap()
+      Some({ name: name + "?", predicate: inner.predicate, })
+    }
     Named(name) if interfaces.contains(name) =>
       Some({
         name,

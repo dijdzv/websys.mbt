@@ -711,7 +711,7 @@ extern "js" fn MLOpSupportLimits::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   preferredInputLayout: ((() => { const v = self.preferredInputLayout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
-  #|   maxTensorByteLength: ((value) => value === undefined ? undefined : Number(value))(self.maxTensorByteLength),
+  #|   maxTensorByteLength: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.maxTensorByteLength),
   #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   constant: ((() => { const v = self.constant; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -824,7 +824,7 @@ extern "js" fn MLOpSupportLimits::from_js_ffi(
 ) -> MLOpSupportLimits =
   #| (v) => ({
   #|   preferredInputLayout: (v.preferredInputLayout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.preferredInputLayout)),
-  #|   maxTensorByteLength: (v.maxTensorByteLength === undefined ? undefined : BigInt(v.maxTensorByteLength)),
+  #|   maxTensorByteLength: (v.maxTensorByteLength === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.maxTensorByteLength)),
   #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
   #|   constant: (v.constant === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constant }),
   #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output }),
@@ -929,6 +929,28 @@ extern "js" fn MLOpSupportLimits::from_js_ffi(
 /// Convert from JsValue
 pub fn MLOpSupportLimits::from_js(value : JsValue) -> MLOpSupportLimits {
   MLOpSupportLimits::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn MLOpSupportLimits::to_js_checked(
+  self : MLOpSupportLimits,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_MLOpSupportLimits(
+  convert : () -> MLOpSupportLimits,
+) -> Result[MLOpSupportLimits, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn MLOpSupportLimits::from_js_checked(
+  value : JsValue,
+) -> Result[MLOpSupportLimits, JsError] {
+  try_dictionary_MLOpSupportLimits(() => MLOpSupportLimits::from_js(value))
 }
 
 ///|

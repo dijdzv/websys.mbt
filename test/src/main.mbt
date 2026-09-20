@@ -348,6 +348,7 @@ async fn main {
     (
       "dict_keyboard_event_init_roundtrip", test_dict_keyboard_event_init_roundtrip,
     ),
+    ("dictionary_integer_range", test_dictionary_integer_range),
     // --- WebAudio tests ---
     ("audio_context", test_audio_context),
     ("oscillator_node", test_oscillator_node),

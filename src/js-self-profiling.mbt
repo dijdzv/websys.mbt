@@ -67,7 +67,7 @@ pub fn ProfilerSample::new(timestamp~ : DOMHighResTimeStamp) -> ProfilerSample {
 extern "js" fn ProfilerSample::to_js_ffi(self : ProfilerSample) -> JsValue =
   #| (self) => ({
   #|   timestamp: self.timestamp,
-  #|   stackId: ((value) => value === undefined ? undefined : Number(value))(self.stackId)
+  #|   stackId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.stackId)
   #| })
 
 ///|
@@ -80,13 +80,35 @@ pub fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue {
 extern "js" fn ProfilerSample::from_js_ffi(value : JsValue) -> ProfilerSample =
   #| (v) => ({
   #|   timestamp: v.timestamp,
-  #|   stackId: (v.stackId === undefined ? undefined : BigInt(v.stackId))
+  #|   stackId: (v.stackId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.stackId))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn ProfilerSample::from_js(value : JsValue) -> ProfilerSample {
   ProfilerSample::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn ProfilerSample::to_js_checked(
+  self : ProfilerSample,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_ProfilerSample(
+  convert : () -> ProfilerSample,
+) -> Result[ProfilerSample, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn ProfilerSample::from_js_checked(
+  value : JsValue,
+) -> Result[ProfilerSample, JsError] {
+  try_dictionary_ProfilerSample(() => ProfilerSample::from_js(value))
 }
 
 ///|
@@ -105,8 +127,8 @@ pub fn ProfilerStack::default() -> ProfilerStack {
 ///|
 extern "js" fn ProfilerStack::to_js_ffi(self : ProfilerStack) -> JsValue =
   #| (self) => ({
-  #|   parentId: ((value) => value === undefined ? undefined : Number(value))(self.parentId),
-  #|   frameId: Number(self.frameId)
+  #|   parentId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.parentId),
+  #|   frameId: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.frameId)
   #| })
 
 ///|
@@ -118,14 +140,36 @@ pub fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue {
 ///|
 extern "js" fn ProfilerStack::from_js_ffi(value : JsValue) -> ProfilerStack =
   #| (v) => ({
-  #|   parentId: (v.parentId === undefined ? undefined : BigInt(v.parentId)),
-  #|   frameId: BigInt(v.frameId)
+  #|   parentId: (v.parentId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.parentId)),
+  #|   frameId: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.frameId)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn ProfilerStack::from_js(value : JsValue) -> ProfilerStack {
   ProfilerStack::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn ProfilerStack::to_js_checked(
+  self : ProfilerStack,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_ProfilerStack(
+  convert : () -> ProfilerStack,
+) -> Result[ProfilerStack, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn ProfilerStack::from_js_checked(
+  value : JsValue,
+) -> Result[ProfilerStack, JsError] {
+  try_dictionary_ProfilerStack(() => ProfilerStack::from_js(value))
 }
 
 ///|
@@ -147,9 +191,9 @@ pub fn ProfilerFrame::default() -> ProfilerFrame {
 extern "js" fn ProfilerFrame::to_js_ffi(self : ProfilerFrame) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   resourceId: ((value) => value === undefined ? undefined : Number(value))(self.resourceId),
-  #|   line: ((value) => value === undefined ? undefined : Number(value))(self.line),
-  #|   column: ((value) => value === undefined ? undefined : Number(value))(self.column)
+  #|   resourceId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.resourceId),
+  #|   line: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.line),
+  #|   column: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.column)
   #| })
 
 ///|
@@ -162,15 +206,37 @@ pub fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue {
 extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
   #| (v) => ({
   #|   name: v.name,
-  #|   resourceId: (v.resourceId === undefined ? undefined : BigInt(v.resourceId)),
-  #|   line: (v.line === undefined ? undefined : BigInt(v.line)),
-  #|   column: (v.column === undefined ? undefined : BigInt(v.column))
+  #|   resourceId: (v.resourceId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.resourceId)),
+  #|   line: (v.line === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.line)),
+  #|   column: (v.column === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.column))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn ProfilerFrame::from_js(value : JsValue) -> ProfilerFrame {
   ProfilerFrame::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn ProfilerFrame::to_js_checked(
+  self : ProfilerFrame,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_ProfilerFrame(
+  convert : () -> ProfilerFrame,
+) -> Result[ProfilerFrame, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn ProfilerFrame::from_js_checked(
+  value : JsValue,
+) -> Result[ProfilerFrame, JsError] {
+  try_dictionary_ProfilerFrame(() => ProfilerFrame::from_js(value))
 }
 
 ///|

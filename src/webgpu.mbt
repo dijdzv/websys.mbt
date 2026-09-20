@@ -2502,7 +2502,7 @@ extern "js" fn GPUBufferDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   size: Number(self.size),
+  #|   size: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.size),
   #|   usage: self.usage,
   #|   mappedAtCreation: (self.mappedAtCreation === -1 ? undefined : self.mappedAtCreation)
   #| })
@@ -2519,7 +2519,7 @@ extern "js" fn GPUBufferDescriptor::from_js_ffi(
 ) -> GPUBufferDescriptor =
   #| (v) => ({
   #|   label: v.label,
-  #|   size: BigInt(v.size),
+  #|   size: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.size),
   #|   usage: v.usage,
   #|   mappedAtCreation: (v.mappedAtCreation === undefined ? -1 : v.mappedAtCreation)
   #| })
@@ -2528,6 +2528,28 @@ extern "js" fn GPUBufferDescriptor::from_js_ffi(
 /// Convert from JsValue
 pub fn GPUBufferDescriptor::from_js(value : JsValue) -> GPUBufferDescriptor {
   GPUBufferDescriptor::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUBufferDescriptor::to_js_checked(
+  self : GPUBufferDescriptor,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUBufferDescriptor(
+  convert : () -> GPUBufferDescriptor,
+) -> Result[GPUBufferDescriptor, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUBufferDescriptor::from_js_checked(
+  value : JsValue,
+) -> Result[GPUBufferDescriptor, JsError] {
+  try_dictionary_GPUBufferDescriptor(() => GPUBufferDescriptor::from_js(value))
 }
 
 ///|
@@ -2969,7 +2991,7 @@ extern "js" fn GPUBufferBindingLayout::to_js_ffi(
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['uniform', 'storage', 'read-only-storage'][v]; })()),
   #|   hasDynamicOffset: (self.hasDynamicOffset === -1 ? undefined : self.hasDynamicOffset),
-  #|   minBindingSize: ((value) => value === undefined ? undefined : Number(value))(self.minBindingSize)
+  #|   minBindingSize: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.minBindingSize)
   #| })
 
 ///|
@@ -2985,7 +3007,7 @@ extern "js" fn GPUBufferBindingLayout::from_js_ffi(
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['uniform', 'storage', 'read-only-storage'].indexOf(v.type)),
   #|   hasDynamicOffset: (v.hasDynamicOffset === undefined ? -1 : v.hasDynamicOffset),
-  #|   minBindingSize: (v.minBindingSize === undefined ? undefined : BigInt(v.minBindingSize))
+  #|   minBindingSize: (v.minBindingSize === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.minBindingSize))
   #| })
 
 ///|
@@ -2994,6 +3016,30 @@ pub fn GPUBufferBindingLayout::from_js(
   value : JsValue,
 ) -> GPUBufferBindingLayout {
   GPUBufferBindingLayout::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUBufferBindingLayout::to_js_checked(
+  self : GPUBufferBindingLayout,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUBufferBindingLayout(
+  convert : () -> GPUBufferBindingLayout,
+) -> Result[GPUBufferBindingLayout, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUBufferBindingLayout::from_js_checked(
+  value : JsValue,
+) -> Result[GPUBufferBindingLayout, JsError] {
+  try_dictionary_GPUBufferBindingLayout(() => {
+    GPUBufferBindingLayout::from_js(value)
+  })
 }
 
 ///|
@@ -3300,8 +3346,8 @@ pub fn GPUBufferBinding::new(buffer~ : GPUBuffer) -> GPUBufferBinding {
 extern "js" fn GPUBufferBinding::to_js_ffi(self : GPUBufferBinding) -> JsValue =
   #| (self) => ({
   #|   buffer: self.buffer,
-  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
-  #|   size: ((value) => value === undefined ? undefined : Number(value))(self.size)
+  #|   offset: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.offset),
+  #|   size: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.size)
   #| })
 
 ///|
@@ -3316,14 +3362,36 @@ extern "js" fn GPUBufferBinding::from_js_ffi(
 ) -> GPUBufferBinding =
   #| (v) => ({
   #|   buffer: v.buffer,
-  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
-  #|   size: (v.size === undefined ? undefined : BigInt(v.size))
+  #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
+  #|   size: (v.size === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.size))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn GPUBufferBinding::from_js(value : JsValue) -> GPUBufferBinding {
   GPUBufferBinding::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUBufferBinding::to_js_checked(
+  self : GPUBufferBinding,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUBufferBinding(
+  convert : () -> GPUBufferBinding,
+) -> Result[GPUBufferBinding, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUBufferBinding::from_js_checked(
+  value : JsValue,
+) -> Result[GPUBufferBinding, JsError] {
+  try_dictionary_GPUBufferBinding(() => GPUBufferBinding::from_js(value))
 }
 
 ///|
@@ -4226,7 +4294,7 @@ extern "js" fn GPUVertexBufferLayout::to_js_ffi(
   self : GPUVertexBufferLayout,
 ) -> JsValue =
   #| (self) => ({
-  #|   arrayStride: Number(self.arrayStride),
+  #|   arrayStride: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.arrayStride),
   #|   stepMode: ((() => { const v = self.stepMode; if (v === undefined) return undefined; return ['vertex', 'instance'][v]; })()),
   #|   attributes: self.attributes
   #| })
@@ -4242,7 +4310,7 @@ extern "js" fn GPUVertexBufferLayout::from_js_ffi(
   value : JsValue,
 ) -> GPUVertexBufferLayout =
   #| (v) => ({
-  #|   arrayStride: BigInt(v.arrayStride),
+  #|   arrayStride: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.arrayStride),
   #|   stepMode: (v.stepMode === undefined ? undefined : ['vertex', 'instance'].indexOf(v.stepMode)),
   #|   attributes: v.attributes
   #| })
@@ -4251,6 +4319,30 @@ extern "js" fn GPUVertexBufferLayout::from_js_ffi(
 /// Convert from JsValue
 pub fn GPUVertexBufferLayout::from_js(value : JsValue) -> GPUVertexBufferLayout {
   GPUVertexBufferLayout::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUVertexBufferLayout::to_js_checked(
+  self : GPUVertexBufferLayout,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUVertexBufferLayout(
+  convert : () -> GPUVertexBufferLayout,
+) -> Result[GPUVertexBufferLayout, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUVertexBufferLayout::from_js_checked(
+  value : JsValue,
+) -> Result[GPUVertexBufferLayout, JsError] {
+  try_dictionary_GPUVertexBufferLayout(() => {
+    GPUVertexBufferLayout::from_js(value)
+  })
 }
 
 ///|
@@ -4277,7 +4369,7 @@ extern "js" fn GPUVertexAttribute::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'][self.format],
-  #|   offset: Number(self.offset),
+  #|   offset: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.offset),
   #|   shaderLocation: self.shaderLocation
   #| })
 
@@ -4293,7 +4385,7 @@ extern "js" fn GPUVertexAttribute::from_js_ffi(
 ) -> GPUVertexAttribute =
   #| (v) => ({
   #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'].indexOf(v.format),
-  #|   offset: BigInt(v.offset),
+  #|   offset: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset),
   #|   shaderLocation: v.shaderLocation
   #| })
 
@@ -4301,6 +4393,28 @@ extern "js" fn GPUVertexAttribute::from_js_ffi(
 /// Convert from JsValue
 pub fn GPUVertexAttribute::from_js(value : JsValue) -> GPUVertexAttribute {
   GPUVertexAttribute::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUVertexAttribute::to_js_checked(
+  self : GPUVertexAttribute,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUVertexAttribute(
+  convert : () -> GPUVertexAttribute,
+) -> Result[GPUVertexAttribute, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUVertexAttribute::from_js_checked(
+  value : JsValue,
+) -> Result[GPUVertexAttribute, JsError] {
+  try_dictionary_GPUVertexAttribute(() => GPUVertexAttribute::from_js(value))
 }
 
 ///|
@@ -4326,7 +4440,7 @@ extern "js" fn GPUTexelCopyBufferLayout::to_js_ffi(
   self : GPUTexelCopyBufferLayout,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
+  #|   offset: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.offset),
   #|   bytesPerRow: self.bytesPerRow,
   #|   rowsPerImage: self.rowsPerImage
   #| })
@@ -4344,7 +4458,7 @@ extern "js" fn GPUTexelCopyBufferLayout::from_js_ffi(
   value : JsValue,
 ) -> GPUTexelCopyBufferLayout =
   #| (v) => ({
-  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
+  #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
   #|   bytesPerRow: v.bytesPerRow,
   #|   rowsPerImage: v.rowsPerImage
   #| })
@@ -4355,6 +4469,30 @@ pub fn GPUTexelCopyBufferLayout::from_js(
   value : JsValue,
 ) -> GPUTexelCopyBufferLayout {
   GPUTexelCopyBufferLayout::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUTexelCopyBufferLayout::to_js_checked(
+  self : GPUTexelCopyBufferLayout,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUTexelCopyBufferLayout(
+  convert : () -> GPUTexelCopyBufferLayout,
+) -> Result[GPUTexelCopyBufferLayout, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUTexelCopyBufferLayout::from_js_checked(
+  value : JsValue,
+) -> Result[GPUTexelCopyBufferLayout, JsError] {
+  try_dictionary_GPUTexelCopyBufferLayout(() => {
+    GPUTexelCopyBufferLayout::from_js(value)
+  })
 }
 
 ///|
@@ -4384,7 +4522,7 @@ extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
   self : GPUTexelCopyBufferInfo,
 ) -> JsValue =
   #| (self) => ({
-  #|   offset: ((value) => value === undefined ? undefined : Number(value))(self.offset),
+  #|   offset: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.offset),
   #|   bytesPerRow: self.bytesPerRow,
   #|   rowsPerImage: self.rowsPerImage,
   #|   buffer: self.buffer
@@ -4401,7 +4539,7 @@ extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(
   value : JsValue,
 ) -> GPUTexelCopyBufferInfo =
   #| (v) => ({
-  #|   offset: (v.offset === undefined ? undefined : BigInt(v.offset)),
+  #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
   #|   bytesPerRow: v.bytesPerRow,
   #|   rowsPerImage: v.rowsPerImage,
   #|   buffer: v.buffer
@@ -4413,6 +4551,30 @@ pub fn GPUTexelCopyBufferInfo::from_js(
   value : JsValue,
 ) -> GPUTexelCopyBufferInfo {
   GPUTexelCopyBufferInfo::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPUTexelCopyBufferInfo::to_js_checked(
+  self : GPUTexelCopyBufferInfo,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPUTexelCopyBufferInfo(
+  convert : () -> GPUTexelCopyBufferInfo,
+) -> Result[GPUTexelCopyBufferInfo, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPUTexelCopyBufferInfo::from_js_checked(
+  value : JsValue,
+) -> Result[GPUTexelCopyBufferInfo, JsError] {
+  try_dictionary_GPUTexelCopyBufferInfo(() => {
+    GPUTexelCopyBufferInfo::from_js(value)
+  })
 }
 
 ///|
@@ -4876,7 +5038,7 @@ extern "js" fn GPURenderPassDescriptor::to_js_ffi(
   #|   depthStencilAttachment: ((() => { const v = self.depthStencilAttachment; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   occlusionQuerySet: ((() => { const v = self.occlusionQuerySet; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   timestampWrites: ((() => { const v = self.timestampWrites; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxDrawCount: ((value) => value === undefined ? undefined : Number(value))(self.maxDrawCount)
+  #|   maxDrawCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.maxDrawCount)
   #| })
 
 ///|
@@ -4897,7 +5059,7 @@ extern "js" fn GPURenderPassDescriptor::from_js_ffi(
   #|   depthStencilAttachment: (v.depthStencilAttachment === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthStencilAttachment }),
   #|   occlusionQuerySet: (v.occlusionQuerySet === undefined ? { $tag: 0 } : { $tag: 1, _0: v.occlusionQuerySet }),
   #|   timestampWrites: (v.timestampWrites === undefined ? { $tag: 0 } : { $tag: 1, _0: v.timestampWrites }),
-  #|   maxDrawCount: (v.maxDrawCount === undefined ? undefined : BigInt(v.maxDrawCount))
+  #|   maxDrawCount: (v.maxDrawCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.maxDrawCount))
   #| })
 
 ///|
@@ -4906,6 +5068,30 @@ pub fn GPURenderPassDescriptor::from_js(
   value : JsValue,
 ) -> GPURenderPassDescriptor {
   GPURenderPassDescriptor::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GPURenderPassDescriptor::to_js_checked(
+  self : GPURenderPassDescriptor,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GPURenderPassDescriptor(
+  convert : () -> GPURenderPassDescriptor,
+) -> Result[GPURenderPassDescriptor, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GPURenderPassDescriptor::from_js_checked(
+  value : JsValue,
+) -> Result[GPURenderPassDescriptor, JsError] {
+  try_dictionary_GPURenderPassDescriptor(() => {
+    GPURenderPassDescriptor::from_js(value)
+  })
 }
 
 ///|

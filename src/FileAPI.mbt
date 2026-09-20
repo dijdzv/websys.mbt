@@ -165,7 +165,7 @@ extern "js" fn FilePropertyBag::to_js_ffi(self : FilePropertyBag) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   endings: ((() => { const v = self.endings; if (v === undefined) return undefined; return ['transparent', 'native'][v]; })()),
-  #|   lastModified: ((value) => value === undefined ? undefined : Number(value))(self.lastModified)
+  #|   lastModified: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.lastModified)
   #| })
 
 ///|
@@ -179,13 +179,35 @@ extern "js" fn FilePropertyBag::from_js_ffi(value : JsValue) -> FilePropertyBag 
   #| (v) => ({
   #|   type_: v.type,
   #|   endings: (v.endings === undefined ? undefined : ['transparent', 'native'].indexOf(v.endings)),
-  #|   lastModified: (v.lastModified === undefined ? undefined : BigInt(v.lastModified))
+  #|   lastModified: (v.lastModified === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.lastModified))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn FilePropertyBag::from_js(value : JsValue) -> FilePropertyBag {
   FilePropertyBag::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn FilePropertyBag::to_js_checked(
+  self : FilePropertyBag,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_FilePropertyBag(
+  convert : () -> FilePropertyBag,
+) -> Result[FilePropertyBag, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn FilePropertyBag::from_js_checked(
+  value : JsValue,
+) -> Result[FilePropertyBag, JsError] {
+  try_dictionary_FilePropertyBag(() => FilePropertyBag::from_js(value))
 }
 
 ///|

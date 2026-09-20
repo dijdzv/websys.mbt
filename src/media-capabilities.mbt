@@ -340,7 +340,7 @@ extern "js" fn VideoConfiguration::to_js_ffi(
   #|   contentType: self.contentType,
   #|   width: self.width,
   #|   height: self.height,
-  #|   bitrate: Number(self.bitrate),
+  #|   bitrate: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.bitrate),
   #|   framerate: self.framerate,
   #|   hasAlphaChannel: (self.hasAlphaChannel === -1 ? undefined : self.hasAlphaChannel),
   #|   hdrMetadataType: ((() => { const v = self.hdrMetadataType; if (v === undefined) return undefined; return ['smpteSt2086', 'smpteSt2094-10', 'smpteSt2094-40'][v]; })()),
@@ -364,7 +364,7 @@ extern "js" fn VideoConfiguration::from_js_ffi(
   #|   contentType: v.contentType,
   #|   width: v.width,
   #|   height: v.height,
-  #|   bitrate: BigInt(v.bitrate),
+  #|   bitrate: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bitrate),
   #|   framerate: v.framerate,
   #|   hasAlphaChannel: (v.hasAlphaChannel === undefined ? -1 : v.hasAlphaChannel),
   #|   hdrMetadataType: (v.hdrMetadataType === undefined ? undefined : ['smpteSt2086', 'smpteSt2094-10', 'smpteSt2094-40'].indexOf(v.hdrMetadataType)),
@@ -378,6 +378,28 @@ extern "js" fn VideoConfiguration::from_js_ffi(
 /// Convert from JsValue
 pub fn VideoConfiguration::from_js(value : JsValue) -> VideoConfiguration {
   VideoConfiguration::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn VideoConfiguration::to_js_checked(
+  self : VideoConfiguration,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_VideoConfiguration(
+  convert : () -> VideoConfiguration,
+) -> Result[VideoConfiguration, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn VideoConfiguration::from_js_checked(
+  value : JsValue,
+) -> Result[VideoConfiguration, JsError] {
+  try_dictionary_VideoConfiguration(() => VideoConfiguration::from_js(value))
 }
 
 ///|
@@ -409,7 +431,7 @@ extern "js" fn AudioConfiguration::to_js_ffi(
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   channels: self.channels,
-  #|   bitrate: ((value) => value === undefined ? undefined : Number(value))(self.bitrate),
+  #|   bitrate: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bitrate),
   #|   samplerate: self.samplerate,
   #|   spatialRendering: (self.spatialRendering === -1 ? undefined : self.spatialRendering)
   #| })
@@ -427,7 +449,7 @@ extern "js" fn AudioConfiguration::from_js_ffi(
   #| (v) => ({
   #|   contentType: v.contentType,
   #|   channels: v.channels,
-  #|   bitrate: (v.bitrate === undefined ? undefined : BigInt(v.bitrate)),
+  #|   bitrate: (v.bitrate === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bitrate)),
   #|   samplerate: v.samplerate,
   #|   spatialRendering: (v.spatialRendering === undefined ? -1 : v.spatialRendering)
   #| })
@@ -436,6 +458,28 @@ extern "js" fn AudioConfiguration::from_js_ffi(
 /// Convert from JsValue
 pub fn AudioConfiguration::from_js(value : JsValue) -> AudioConfiguration {
   AudioConfiguration::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn AudioConfiguration::to_js_checked(
+  self : AudioConfiguration,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_AudioConfiguration(
+  convert : () -> AudioConfiguration,
+) -> Result[AudioConfiguration, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn AudioConfiguration::from_js_checked(
+  value : JsValue,
+) -> Result[AudioConfiguration, JsError] {
+  try_dictionary_AudioConfiguration(() => AudioConfiguration::from_js(value))
 }
 
 ///|

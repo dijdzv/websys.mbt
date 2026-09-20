@@ -1213,7 +1213,7 @@ extern "js" fn RTCCertificateExpiration::to_js_ffi(
   self : RTCCertificateExpiration,
 ) -> JsValue =
   #| (self) => ({
-  #|   expires: ((value) => value === undefined ? undefined : Number(value))(self.expires)
+  #|   expires: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.expires)
   #| })
 
 ///|
@@ -1229,7 +1229,7 @@ extern "js" fn RTCCertificateExpiration::from_js_ffi(
   value : JsValue,
 ) -> RTCCertificateExpiration =
   #| (v) => ({
-  #|   expires: (v.expires === undefined ? undefined : BigInt(v.expires))
+  #|   expires: (v.expires === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.expires))
   #| })
 
 ///|
@@ -1238,6 +1238,30 @@ pub fn RTCCertificateExpiration::from_js(
   value : JsValue,
 ) -> RTCCertificateExpiration {
   RTCCertificateExpiration::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn RTCCertificateExpiration::to_js_checked(
+  self : RTCCertificateExpiration,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_RTCCertificateExpiration(
+  convert : () -> RTCCertificateExpiration,
+) -> Result[RTCCertificateExpiration, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn RTCCertificateExpiration::from_js_checked(
+  value : JsValue,
+) -> Result[RTCCertificateExpiration, JsError] {
+  try_dictionary_RTCCertificateExpiration(() => {
+    RTCCertificateExpiration::from_js(value)
+  })
 }
 
 ///|

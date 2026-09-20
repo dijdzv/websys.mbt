@@ -61,6 +61,12 @@ pub extern "js" fn try_catch(f : () -> Unit) -> String =
 pub type JsError
 
 ///|
+extern "js" fn try_dictionary_conversion(
+  convert : () -> JsValue,
+) -> Result[JsValue, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
 pub extern "js" fn JsError::message(self : JsError) -> String =
   #| (self) => self.message
 

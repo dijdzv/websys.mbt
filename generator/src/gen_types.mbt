@@ -190,9 +190,19 @@ pub fn gen_dictionary(
           primitive_typedef_map,
         ) {
         if mem.required {
-          "Number(" + value_expr + ")"
+          js_dictionary_int64_conversion(
+            value_expr,
+            true,
+            signed=conversion_type is Primitive("long long"),
+          )
         } else {
-          "((value) => value === undefined ? undefined : Number(value))(" +
+          "((value) => value === undefined ? undefined : " +
+          js_dictionary_int64_conversion(
+            "value",
+            true,
+            signed=conversion_type is Primitive("long long"),
+          ) +
+          ")(" +
           value_expr +
           ")"
         }
@@ -238,9 +248,21 @@ pub fn gen_dictionary(
       } else if is_dictionary_int64(mem.idl_type, primitive_typedef_map) {
         let value = "v." + mem.name
         if mem.required {
-          "BigInt(" + value + ")"
+          js_dictionary_int64_conversion(
+            value,
+            false,
+            signed=conversion_type is Primitive("long long"),
+          )
         } else {
-          "(" + value + " === undefined ? undefined : BigInt(" + value + "))"
+          "(" +
+          value +
+          " === undefined ? undefined : " +
+          js_dictionary_int64_conversion(
+            value,
+            false,
+            signed=conversion_type is Primitive("long long"),
+          ) +
+          ")"
         }
       } else if !mem.required {
         gen_from_js_optional_field_expr(conversion_type, mem.name, enum_map)
@@ -265,7 +287,37 @@ pub fn gen_dictionary(
   result = result + dict.name
   result = result + "::from_js_ffi(value)\n"
   result = result + "}\n\n"
+  if dict.members.any(field => {
+      is_dictionary_int64(field.idl_type, primitive_typedef_map)
+    }) {
+    result += "///|\n/// Catch dictionary conversion errors, including unsafe integer ranges.\npub fn \{dict.name}::to_js_checked(self : \{dict.name}) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }\n\n"
+    result += "///|\nextern \"js\" fn try_dictionary_\{dict.name}(convert : () -> \{dict.name}) -> Result[\{dict.name}, JsError] =\n  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }\n\n"
+    result += "///|\n/// Catch invalid host fields, including unsafe integer ranges.\npub fn \{dict.name}::from_js_checked(value : JsValue) -> Result[\{dict.name}, JsError] { try_dictionary_\{dict.name}(() => \{dict.name}::from_js(value)) }\n\n"
+  }
   result
+}
+
+///|
+fn js_dictionary_int64_conversion(
+  value : String,
+  to_host : Bool,
+  signed? : Bool = false,
+) -> String {
+  if to_host {
+    let normalize = if signed { "BigInt.asIntN" } else { "BigInt.asUintN" }
+    "((value) => { const number = Number(\{normalize}(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(" +
+    value +
+    ")"
+  } else {
+    let range_check = if signed {
+      "!Number.isSafeInteger(value)"
+    } else {
+      "!Number.isSafeInteger(value) || value < 0"
+    }
+    "((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (\{range_check}) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(" +
+    value +
+    ")"
+  }
 }
 
 ///|

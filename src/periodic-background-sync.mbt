@@ -18,7 +18,7 @@ extern "js" fn BackgroundSyncOptions::to_js_ffi(
   self : BackgroundSyncOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   minInterval: ((value) => value === undefined ? undefined : Number(value))(self.minInterval)
+  #|   minInterval: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.minInterval)
   #| })
 
 ///|
@@ -32,13 +32,37 @@ extern "js" fn BackgroundSyncOptions::from_js_ffi(
   value : JsValue,
 ) -> BackgroundSyncOptions =
   #| (v) => ({
-  #|   minInterval: (v.minInterval === undefined ? undefined : BigInt(v.minInterval))
+  #|   minInterval: (v.minInterval === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.minInterval))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn BackgroundSyncOptions::from_js(value : JsValue) -> BackgroundSyncOptions {
   BackgroundSyncOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn BackgroundSyncOptions::to_js_checked(
+  self : BackgroundSyncOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_BackgroundSyncOptions(
+  convert : () -> BackgroundSyncOptions,
+) -> Result[BackgroundSyncOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn BackgroundSyncOptions::from_js_checked(
+  value : JsValue,
+) -> Result[BackgroundSyncOptions, JsError] {
+  try_dictionary_BackgroundSyncOptions(() => {
+    BackgroundSyncOptions::from_js(value)
+  })
 }
 
 ///|

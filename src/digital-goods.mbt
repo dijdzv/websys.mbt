@@ -74,7 +74,7 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
   #|   freeTrialPeriod: self.freeTrialPeriod,
   #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   introductoryPricePeriod: self.introductoryPricePeriod,
-  #|   introductoryPriceCycles: ((value) => value === undefined ? undefined : Number(value))(self.introductoryPriceCycles)
+  #|   introductoryPriceCycles: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.introductoryPriceCycles)
   #| })
 
 ///|
@@ -96,13 +96,35 @@ extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
   #|   freeTrialPeriod: v.freeTrialPeriod,
   #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
   #|   introductoryPricePeriod: v.introductoryPricePeriod,
-  #|   introductoryPriceCycles: (v.introductoryPriceCycles === undefined ? undefined : BigInt(v.introductoryPriceCycles))
+  #|   introductoryPriceCycles: (v.introductoryPriceCycles === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.introductoryPriceCycles))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn ItemDetails::from_js(value : JsValue) -> ItemDetails {
   ItemDetails::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn ItemDetails::to_js_checked(
+  self : ItemDetails,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_ItemDetails(
+  convert : () -> ItemDetails,
+) -> Result[ItemDetails, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn ItemDetails::from_js_checked(
+  value : JsValue,
+) -> Result[ItemDetails, JsError] {
+  try_dictionary_ItemDetails(() => ItemDetails::from_js(value))
 }
 
 ///|

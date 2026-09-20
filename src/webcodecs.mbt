@@ -1227,8 +1227,8 @@ extern "js" fn EncodedAudioChunkInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: ['key', 'delta'][self.type_],
-  #|   timestamp: Number(self.timestamp),
-  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
+  #|   timestamp: ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1245,8 +1245,8 @@ extern "js" fn EncodedAudioChunkInit::from_js_ffi(
 ) -> EncodedAudioChunkInit =
   #| (v) => ({
   #|   type_: ['key', 'delta'].indexOf(v.type),
-  #|   timestamp: BigInt(v.timestamp),
-  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
+  #|   timestamp: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1255,6 +1255,30 @@ extern "js" fn EncodedAudioChunkInit::from_js_ffi(
 /// Convert from JsValue
 pub fn EncodedAudioChunkInit::from_js(value : JsValue) -> EncodedAudioChunkInit {
   EncodedAudioChunkInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn EncodedAudioChunkInit::to_js_checked(
+  self : EncodedAudioChunkInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_EncodedAudioChunkInit(
+  convert : () -> EncodedAudioChunkInit,
+) -> Result[EncodedAudioChunkInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn EncodedAudioChunkInit::from_js_checked(
+  value : JsValue,
+) -> Result[EncodedAudioChunkInit, JsError] {
+  try_dictionary_EncodedAudioChunkInit(() => {
+    EncodedAudioChunkInit::from_js(value)
+  })
 }
 
 ///|
@@ -1288,8 +1312,8 @@ extern "js" fn EncodedVideoChunkInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: ['key', 'delta'][self.type_],
-  #|   timestamp: Number(self.timestamp),
-  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
+  #|   timestamp: ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1306,8 +1330,8 @@ extern "js" fn EncodedVideoChunkInit::from_js_ffi(
 ) -> EncodedVideoChunkInit =
   #| (v) => ({
   #|   type_: ['key', 'delta'].indexOf(v.type),
-  #|   timestamp: BigInt(v.timestamp),
-  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
+  #|   timestamp: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1316,6 +1340,30 @@ extern "js" fn EncodedVideoChunkInit::from_js_ffi(
 /// Convert from JsValue
 pub fn EncodedVideoChunkInit::from_js(value : JsValue) -> EncodedVideoChunkInit {
   EncodedVideoChunkInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn EncodedVideoChunkInit::to_js_checked(
+  self : EncodedVideoChunkInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_EncodedVideoChunkInit(
+  convert : () -> EncodedVideoChunkInit,
+) -> Result[EncodedVideoChunkInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn EncodedVideoChunkInit::from_js_checked(
+  value : JsValue,
+) -> Result[EncodedVideoChunkInit, JsError] {
+  try_dictionary_EncodedVideoChunkInit(() => {
+    EncodedVideoChunkInit::from_js(value)
+  })
 }
 
 ///|
@@ -1354,7 +1402,7 @@ extern "js" fn AudioDataInit::to_js_ffi(self : AudioDataInit) -> JsValue =
   #|   sampleRate: self.sampleRate,
   #|   numberOfFrames: self.numberOfFrames,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   timestamp: Number(self.timestamp),
+  #|   timestamp: ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.timestamp),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1372,7 +1420,7 @@ extern "js" fn AudioDataInit::from_js_ffi(value : JsValue) -> AudioDataInit =
   #|   sampleRate: v.sampleRate,
   #|   numberOfFrames: v.numberOfFrames,
   #|   numberOfChannels: v.numberOfChannels,
-  #|   timestamp: BigInt(v.timestamp),
+  #|   timestamp: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1381,6 +1429,28 @@ extern "js" fn AudioDataInit::from_js_ffi(value : JsValue) -> AudioDataInit =
 /// Convert from JsValue
 pub fn AudioDataInit::from_js(value : JsValue) -> AudioDataInit {
   AudioDataInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn AudioDataInit::to_js_checked(
+  self : AudioDataInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_AudioDataInit(
+  convert : () -> AudioDataInit,
+) -> Result[AudioDataInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn AudioDataInit::from_js_checked(
+  value : JsValue,
+) -> Result[AudioDataInit, JsError] {
+  try_dictionary_AudioDataInit(() => AudioDataInit::from_js(value))
 }
 
 ///|
@@ -1472,8 +1542,8 @@ pub fn VideoFrameInit::default() -> VideoFrameInit {
 ///|
 extern "js" fn VideoFrameInit::to_js_ffi(self : VideoFrameInit) -> JsValue =
   #| (self) => ({
-  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
-  #|   timestamp: ((value) => value === undefined ? undefined : Number(value))(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
+  #|   timestamp: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timestamp),
   #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1492,8 +1562,8 @@ pub fn VideoFrameInit::to_js(self : VideoFrameInit) -> JsValue {
 ///|
 extern "js" fn VideoFrameInit::from_js_ffi(value : JsValue) -> VideoFrameInit =
   #| (v) => ({
-  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
-  #|   timestamp: (v.timestamp === undefined ? undefined : BigInt(v.timestamp)),
+  #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
+  #|   timestamp: (v.timestamp === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp)),
   #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
@@ -1507,6 +1577,28 @@ extern "js" fn VideoFrameInit::from_js_ffi(value : JsValue) -> VideoFrameInit =
 /// Convert from JsValue
 pub fn VideoFrameInit::from_js(value : JsValue) -> VideoFrameInit {
   VideoFrameInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn VideoFrameInit::to_js_checked(
+  self : VideoFrameInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_VideoFrameInit(
+  convert : () -> VideoFrameInit,
+) -> Result[VideoFrameInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn VideoFrameInit::from_js_checked(
+  value : JsValue,
+) -> Result[VideoFrameInit, JsError] {
+  try_dictionary_VideoFrameInit(() => VideoFrameInit::from_js(value))
 }
 
 ///|
@@ -1559,8 +1651,8 @@ extern "js" fn VideoFrameBufferInit::to_js_ffi(
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'][self.format],
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
-  #|   timestamp: Number(self.timestamp),
-  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
+  #|   timestamp: ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
   #|   layout: self.layout,
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1586,8 +1678,8 @@ extern "js" fn VideoFrameBufferInit::from_js_ffi(
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'].indexOf(v.format),
   #|   codedWidth: v.codedWidth,
   #|   codedHeight: v.codedHeight,
-  #|   timestamp: BigInt(v.timestamp),
-  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
+  #|   timestamp: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
   #|   layout: v.layout,
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
@@ -1603,6 +1695,28 @@ extern "js" fn VideoFrameBufferInit::from_js_ffi(
 /// Convert from JsValue
 pub fn VideoFrameBufferInit::from_js(value : JsValue) -> VideoFrameBufferInit {
   VideoFrameBufferInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn VideoFrameBufferInit::to_js_checked(
+  self : VideoFrameBufferInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_VideoFrameBufferInit(
+  convert : () -> VideoFrameBufferInit,
+) -> Result[VideoFrameBufferInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn VideoFrameBufferInit::from_js_checked(
+  value : JsValue,
+) -> Result[VideoFrameBufferInit, JsError] {
+  try_dictionary_VideoFrameBufferInit(() => VideoFrameBufferInit::from_js(value))
 }
 
 ///|

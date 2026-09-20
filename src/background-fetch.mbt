@@ -142,7 +142,7 @@ extern "js" fn BackgroundFetchOptions::to_js_ffi(
   #| (self) => ({
   #|   icons: self.icons,
   #|   title: self.title,
-  #|   downloadTotal: ((value) => value === undefined ? undefined : Number(value))(self.downloadTotal)
+  #|   downloadTotal: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.downloadTotal)
   #| })
 
 ///|
@@ -158,7 +158,7 @@ extern "js" fn BackgroundFetchOptions::from_js_ffi(
   #| (v) => ({
   #|   icons: v.icons,
   #|   title: v.title,
-  #|   downloadTotal: (v.downloadTotal === undefined ? undefined : BigInt(v.downloadTotal))
+  #|   downloadTotal: (v.downloadTotal === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.downloadTotal))
   #| })
 
 ///|
@@ -167,6 +167,30 @@ pub fn BackgroundFetchOptions::from_js(
   value : JsValue,
 ) -> BackgroundFetchOptions {
   BackgroundFetchOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn BackgroundFetchOptions::to_js_checked(
+  self : BackgroundFetchOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_BackgroundFetchOptions(
+  convert : () -> BackgroundFetchOptions,
+) -> Result[BackgroundFetchOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn BackgroundFetchOptions::from_js_checked(
+  value : JsValue,
+) -> Result[BackgroundFetchOptions, JsError] {
+  try_dictionary_BackgroundFetchOptions(() => {
+    BackgroundFetchOptions::from_js(value)
+  })
 }
 
 ///|

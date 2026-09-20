@@ -142,7 +142,7 @@ extern "js" fn IDBVersionChangeEventInit::to_js_ffi(
   self : IDBVersionChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   oldVersion: ((value) => value === undefined ? undefined : Number(value))(self.oldVersion),
+  #|   oldVersion: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.oldVersion),
   #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
@@ -159,7 +159,7 @@ extern "js" fn IDBVersionChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> IDBVersionChangeEventInit =
   #| (v) => ({
-  #|   oldVersion: (v.oldVersion === undefined ? undefined : BigInt(v.oldVersion)),
+  #|   oldVersion: (v.oldVersion === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.oldVersion)),
   #|   newVersion: (v.newVersion === undefined ? { $tag: 0 } : v.newVersion === null ? { $tag: 1 } : { $tag: 2, _0: v.newVersion })
   #| })
 
@@ -169,6 +169,30 @@ pub fn IDBVersionChangeEventInit::from_js(
   value : JsValue,
 ) -> IDBVersionChangeEventInit {
   IDBVersionChangeEventInit::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn IDBVersionChangeEventInit::to_js_checked(
+  self : IDBVersionChangeEventInit,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_IDBVersionChangeEventInit(
+  convert : () -> IDBVersionChangeEventInit,
+) -> Result[IDBVersionChangeEventInit, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn IDBVersionChangeEventInit::from_js_checked(
+  value : JsValue,
+) -> Result[IDBVersionChangeEventInit, JsError] {
+  try_dictionary_IDBVersionChangeEventInit(() => {
+    IDBVersionChangeEventInit::from_js(value)
+  })
 }
 
 ///|
@@ -188,7 +212,7 @@ pub fn IDBDatabaseInfo::default() -> IDBDatabaseInfo {
 extern "js" fn IDBDatabaseInfo::to_js_ffi(self : IDBDatabaseInfo) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   version: ((value) => value === undefined ? undefined : Number(value))(self.version)
+  #|   version: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.version)
   #| })
 
 ///|
@@ -201,13 +225,35 @@ pub fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue {
 extern "js" fn IDBDatabaseInfo::from_js_ffi(value : JsValue) -> IDBDatabaseInfo =
   #| (v) => ({
   #|   name: v.name,
-  #|   version: (v.version === undefined ? undefined : BigInt(v.version))
+  #|   version: (v.version === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.version))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn IDBDatabaseInfo::from_js(value : JsValue) -> IDBDatabaseInfo {
   IDBDatabaseInfo::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn IDBDatabaseInfo::to_js_checked(
+  self : IDBDatabaseInfo,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_IDBDatabaseInfo(
+  convert : () -> IDBDatabaseInfo,
+) -> Result[IDBDatabaseInfo, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn IDBDatabaseInfo::from_js_checked(
+  value : JsValue,
+) -> Result[IDBDatabaseInfo, JsError] {
+  try_dictionary_IDBDatabaseInfo(() => IDBDatabaseInfo::from_js(value))
 }
 
 ///|

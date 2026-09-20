@@ -90,8 +90,11 @@ extended-attribute support.
 
 The published JS signatures are preserved. Its dictionary conversions now
 resolve primitive aliases and translate nonnullable Int64/BigInt fields to and
-from host Number values. Safe-integer-range enforcement remains an open defect;
-small-value GPU round trips do not establish lossless full-range conversion.
+from host Number values. Both directions reject values outside the exact integer
+range -(2^53-1) through 2^53-1 (0 through 2^53-1 for unsigned fields) rather than silently rounding. Dictionaries with
+these fields expose `to_js_checked` and `from_js_checked` to return conversion
+errors; the existing conversion methods throw on invalid values. This does not
+extend to nullable 64-bit fields or 64-bit operation arguments/results.
 
 Compound WasmGC dictionary inputs use
 semantic field types (including inherited fields and resolved aliases) to plan

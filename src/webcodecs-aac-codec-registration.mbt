@@ -66,7 +66,7 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   bitrate: ((value) => value === undefined ? undefined : Number(value))(self.bitrate),
+  #|   bitrate: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bitrate),
   #|   bitrateMode: ((() => { const v = self.bitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })())
   #| })
 
@@ -87,7 +87,7 @@ extern "js" fn AudioEncoderConfig::from_js_ffi(
   #|   codec: v.codec,
   #|   sampleRate: v.sampleRate,
   #|   numberOfChannels: v.numberOfChannels,
-  #|   bitrate: (v.bitrate === undefined ? undefined : BigInt(v.bitrate)),
+  #|   bitrate: (v.bitrate === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bitrate)),
   #|   bitrateMode: (v.bitrateMode === undefined ? undefined : ['constant', 'variable'].indexOf(v.bitrateMode))
   #| })
 
@@ -95,6 +95,28 @@ extern "js" fn AudioEncoderConfig::from_js_ffi(
 /// Convert from JsValue
 pub fn AudioEncoderConfig::from_js(value : JsValue) -> AudioEncoderConfig {
   AudioEncoderConfig::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn AudioEncoderConfig::to_js_checked(
+  self : AudioEncoderConfig,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_AudioEncoderConfig(
+  convert : () -> AudioEncoderConfig,
+) -> Result[AudioEncoderConfig, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn AudioEncoderConfig::from_js_checked(
+  value : JsValue,
+) -> Result[AudioEncoderConfig, JsError] {
+  try_dictionary_AudioEncoderConfig(() => AudioEncoderConfig::from_js(value))
 }
 
 ///|

@@ -102,8 +102,8 @@ extern "js" fn TextEncoderEncodeIntoResult::to_js_ffi(
   self : TextEncoderEncodeIntoResult,
 ) -> JsValue =
   #| (self) => ({
-  #|   read: ((value) => value === undefined ? undefined : Number(value))(self.read),
-  #|   written: ((value) => value === undefined ? undefined : Number(value))(self.written)
+  #|   read: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.read),
+  #|   written: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.written)
   #| })
 
 ///|
@@ -119,8 +119,8 @@ extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(
   value : JsValue,
 ) -> TextEncoderEncodeIntoResult =
   #| (v) => ({
-  #|   read: (v.read === undefined ? undefined : BigInt(v.read)),
-  #|   written: (v.written === undefined ? undefined : BigInt(v.written))
+  #|   read: (v.read === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.read)),
+  #|   written: (v.written === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.written))
   #| })
 
 ///|
@@ -129,6 +129,30 @@ pub fn TextEncoderEncodeIntoResult::from_js(
   value : JsValue,
 ) -> TextEncoderEncodeIntoResult {
   TextEncoderEncodeIntoResult::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn TextEncoderEncodeIntoResult::to_js_checked(
+  self : TextEncoderEncodeIntoResult,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_TextEncoderEncodeIntoResult(
+  convert : () -> TextEncoderEncodeIntoResult,
+) -> Result[TextEncoderEncodeIntoResult, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn TextEncoderEncodeIntoResult::from_js_checked(
+  value : JsValue,
+) -> Result[TextEncoderEncodeIntoResult, JsError] {
+  try_dictionary_TextEncoderEncodeIntoResult(() => {
+    TextEncoderEncodeIntoResult::from_js(value)
+  })
 }
 
 ///|

@@ -21,7 +21,7 @@ extern "js" fn StorageBucketOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   persisted: (self.persisted === -1 ? undefined : self.persisted),
-  #|   quota: ((value) => value === undefined ? undefined : Number(value))(self.quota),
+  #|   quota: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.quota),
   #|   expires: ((() => { const v = self.expires; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -37,7 +37,7 @@ extern "js" fn StorageBucketOptions::from_js_ffi(
 ) -> StorageBucketOptions =
   #| (v) => ({
   #|   persisted: (v.persisted === undefined ? -1 : v.persisted),
-  #|   quota: (v.quota === undefined ? undefined : BigInt(v.quota)),
+  #|   quota: (v.quota === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.quota)),
   #|   expires: (v.expires === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expires })
   #| })
 
@@ -45,6 +45,28 @@ extern "js" fn StorageBucketOptions::from_js_ffi(
 /// Convert from JsValue
 pub fn StorageBucketOptions::from_js(value : JsValue) -> StorageBucketOptions {
   StorageBucketOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn StorageBucketOptions::to_js_checked(
+  self : StorageBucketOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_StorageBucketOptions(
+  convert : () -> StorageBucketOptions,
+) -> Result[StorageBucketOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn StorageBucketOptions::from_js_checked(
+  value : JsValue,
+) -> Result[StorageBucketOptions, JsError] {
+  try_dictionary_StorageBucketOptions(() => StorageBucketOptions::from_js(value))
 }
 
 ///|

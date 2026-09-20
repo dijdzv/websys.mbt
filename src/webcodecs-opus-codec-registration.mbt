@@ -121,7 +121,7 @@ extern "js" fn OpusEncoderConfig::to_js_ffi(
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['opus', 'ogg'][v]; })()),
   #|   signal: ((() => { const v = self.signal; if (v === undefined) return undefined; return ['auto', 'music', 'voice'][v]; })()),
   #|   application: ((() => { const v = self.application; if (v === undefined) return undefined; return ['voip', 'audio', 'lowdelay'][v]; })()),
-  #|   frameDuration: ((value) => value === undefined ? undefined : Number(value))(self.frameDuration),
+  #|   frameDuration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.frameDuration),
   #|   complexity: self.complexity,
   #|   packetlossperc: self.packetlossperc,
   #|   useinbandfec: (self.useinbandfec === -1 ? undefined : self.useinbandfec),
@@ -142,7 +142,7 @@ extern "js" fn OpusEncoderConfig::from_js_ffi(
   #|   format: (v.format === undefined ? undefined : ['opus', 'ogg'].indexOf(v.format)),
   #|   signal: (v.signal === undefined ? undefined : ['auto', 'music', 'voice'].indexOf(v.signal)),
   #|   application: (v.application === undefined ? undefined : ['voip', 'audio', 'lowdelay'].indexOf(v.application)),
-  #|   frameDuration: (v.frameDuration === undefined ? undefined : BigInt(v.frameDuration)),
+  #|   frameDuration: (v.frameDuration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.frameDuration)),
   #|   complexity: v.complexity,
   #|   packetlossperc: v.packetlossperc,
   #|   useinbandfec: (v.useinbandfec === undefined ? -1 : v.useinbandfec),
@@ -153,4 +153,26 @@ extern "js" fn OpusEncoderConfig::from_js_ffi(
 /// Convert from JsValue
 pub fn OpusEncoderConfig::from_js(value : JsValue) -> OpusEncoderConfig {
   OpusEncoderConfig::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn OpusEncoderConfig::to_js_checked(
+  self : OpusEncoderConfig,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_OpusEncoderConfig(
+  convert : () -> OpusEncoderConfig,
+) -> Result[OpusEncoderConfig, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn OpusEncoderConfig::from_js_checked(
+  value : JsValue,
+) -> Result[OpusEncoderConfig, JsError] {
+  try_dictionary_OpusEncoderConfig(() => OpusEncoderConfig::from_js(value))
 }

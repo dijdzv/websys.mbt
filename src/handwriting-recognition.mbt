@@ -125,11 +125,12 @@ pub fn HandwritingRecognizerQueryResult::default() -> HandwritingRecognizerQuery
 ///|
 extern "js" fn HandwritingRecognizerQueryResult::to_js_ffi(
   self : HandwritingRecognizerQueryResult,
+  convert_hints : (HandwritingHintsQueryResult?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_hints) => ({
   #|   textAlternatives: (self.textAlternatives === -1 ? undefined : self.textAlternatives),
   #|   textSegmentation: (self.textSegmentation === -1 ? undefined : self.textSegmentation),
-  #|   hints: ((() => { const v = self.hints; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   hints: convert_hints(self.hints)
   #| })
 
 ///|
@@ -137,17 +138,23 @@ extern "js" fn HandwritingRecognizerQueryResult::to_js_ffi(
 pub fn HandwritingRecognizerQueryResult::to_js(
   self : HandwritingRecognizerQueryResult,
 ) -> JsValue {
-  HandwritingRecognizerQueryResult::to_js_ffi(self)
+  HandwritingRecognizerQueryResult::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn HandwritingRecognizerQueryResult::from_js_ffi(
   value : JsValue,
+  convert_hints : (JsValue) -> HandwritingHintsQueryResult?,
 ) -> HandwritingRecognizerQueryResult =
-  #| (v) => ({
+  #| (v, convert_hints) => ({
   #|   textAlternatives: (v.textAlternatives === undefined ? -1 : v.textAlternatives),
   #|   textSegmentation: (v.textSegmentation === undefined ? -1 : v.textSegmentation),
-  #|   hints: (v.hints === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hints })
+  #|   hints: convert_hints(v.hints)
   #| })
 
 ///|
@@ -155,7 +162,13 @@ extern "js" fn HandwritingRecognizerQueryResult::from_js_ffi(
 pub fn HandwritingRecognizerQueryResult::from_js(
   value : JsValue,
 ) -> HandwritingRecognizerQueryResult {
-  HandwritingRecognizerQueryResult::from_js_ffi(value)
+  HandwritingRecognizerQueryResult::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(HandwritingHintsQueryResult::from_js(value))
+    }
+  })
 }
 
 ///|

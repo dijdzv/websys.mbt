@@ -19,11 +19,17 @@ pub extern "js" fn LineAndPositionSetting::from_double(
   #| (v) => v
 
 ///|
-/// Create LineAndPositionSetting from AutoKeyword
-pub extern "js" fn LineAndPositionSetting::from_auto_keyword(
-  v : AutoKeyword,
+extern "js" fn LineAndPositionSetting::from_auto_keyword_ffi(
+  v : String,
 ) -> LineAndPositionSetting =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn LineAndPositionSetting::from_auto_keyword(
+  v : AutoKeyword,
+) -> LineAndPositionSetting {
+  LineAndPositionSetting::from_auto_keyword_ffi(v.to_string())
+}
 
 ///|
 /// Check if this LineAndPositionSetting is Double
@@ -47,11 +53,21 @@ pub extern "js" fn LineAndPositionSetting::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get LineAndPositionSetting as AutoKeyword
-pub extern "js" fn LineAndPositionSetting::as_auto_keyword(
+extern "js" fn LineAndPositionSetting::as_auto_keyword_string(
   self : LineAndPositionSetting,
-) -> AutoKeyword? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn LineAndPositionSetting::as_auto_keyword(
+  self : LineAndPositionSetting,
+) -> AutoKeyword? {
+  if self.is_auto_keyword() {
+    AutoKeyword::from_string(self.as_auto_keyword_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[LineAndPositionSetting] to Double?

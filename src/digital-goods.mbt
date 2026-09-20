@@ -62,17 +62,21 @@ pub fn ItemDetails::new(price~ : PaymentCurrencyAmount) -> ItemDetails {
 }
 
 ///|
-extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
-  #| (self) => ({
+extern "js" fn ItemDetails::to_js_ffi(
+  self : ItemDetails,
+  convert_price : (PaymentCurrencyAmount) -> JsValue,
+  convert_introductoryPrice : (PaymentCurrencyAmount?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_price, convert_introductoryPrice) => ({
   #|   itemId: self.itemId,
   #|   title: self.title,
-  #|   price: self.price,
+  #|   price: convert_price(self.price),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['product', 'subscription'][v]; })()),
   #|   description: self.description,
   #|   iconURLs: self.iconURLs,
   #|   subscriptionPeriod: self.subscriptionPeriod,
   #|   freeTrialPeriod: self.freeTrialPeriod,
-  #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   introductoryPrice: convert_introductoryPrice(self.introductoryPrice),
   #|   introductoryPricePeriod: self.introductoryPricePeriod,
   #|   introductoryPriceCycles: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.introductoryPriceCycles)
   #| })
@@ -80,21 +84,30 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
 ///|
 /// Convert to JsValue
 pub fn ItemDetails::to_js(self : ItemDetails) -> JsValue {
-  ItemDetails::to_js_ffi(self)
+  ItemDetails::to_js_ffi(self, PaymentCurrencyAmount::to_js, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
-extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
-  #| (v) => ({
+extern "js" fn ItemDetails::from_js_ffi(
+  value : JsValue,
+  convert_price : (JsValue) -> PaymentCurrencyAmount,
+  convert_introductoryPrice : (JsValue) -> PaymentCurrencyAmount?,
+) -> ItemDetails =
+  #| (v, convert_price, convert_introductoryPrice) => ({
   #|   itemId: v.itemId,
   #|   title: v.title,
-  #|   price: v.price,
+  #|   price: convert_price(v.price),
   #|   type_: (v.type === undefined ? undefined : ['product', 'subscription'].indexOf(v.type)),
   #|   description: v.description,
   #|   iconURLs: v.iconURLs,
   #|   subscriptionPeriod: v.subscriptionPeriod,
   #|   freeTrialPeriod: v.freeTrialPeriod,
-  #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
+  #|   introductoryPrice: convert_introductoryPrice(v.introductoryPrice),
   #|   introductoryPricePeriod: v.introductoryPricePeriod,
   #|   introductoryPriceCycles: (v.introductoryPriceCycles === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.introductoryPriceCycles))
   #| })
@@ -102,7 +115,13 @@ extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
 ///|
 /// Convert from JsValue
 pub fn ItemDetails::from_js(value : JsValue) -> ItemDetails {
-  ItemDetails::from_js_ffi(value)
+  ItemDetails::from_js_ffi(value, PaymentCurrencyAmount::from_js, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(PaymentCurrencyAmount::from_js(value))
+    }
+  })
 }
 
 ///|

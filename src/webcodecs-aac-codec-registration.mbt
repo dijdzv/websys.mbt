@@ -58,11 +58,14 @@ pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
 ///|
 extern "js" fn AudioEncoderConfig::to_js_ffi(
   self : AudioEncoderConfig,
+  convert_aac : (AacEncoderConfig?) -> JsValue,
+  convert_flac : (FlacEncoderConfig?) -> JsValue,
+  convert_opus : (OpusEncoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   aac: ((() => { const v = self.aac; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   flac: ((() => { const v = self.flac; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   opus: ((() => { const v = self.opus; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_aac, convert_flac, convert_opus) => ({
+  #|   aac: convert_aac(self.aac),
+  #|   flac: convert_flac(self.flac),
+  #|   opus: convert_opus(self.opus),
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
@@ -73,17 +76,40 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsValue {
-  AudioEncoderConfig::to_js_ffi(self)
+  AudioEncoderConfig::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn AudioEncoderConfig::from_js_ffi(
   value : JsValue,
+  convert_aac : (JsValue) -> AacEncoderConfig?,
+  convert_flac : (JsValue) -> FlacEncoderConfig?,
+  convert_opus : (JsValue) -> OpusEncoderConfig?,
 ) -> AudioEncoderConfig =
-  #| (v) => ({
-  #|   aac: (v.aac === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aac }),
-  #|   flac: (v.flac === undefined ? { $tag: 0 } : { $tag: 1, _0: v.flac }),
-  #|   opus: (v.opus === undefined ? { $tag: 0 } : { $tag: 1, _0: v.opus }),
+  #| (v, convert_aac, convert_flac, convert_opus) => ({
+  #|   aac: convert_aac(v.aac),
+  #|   flac: convert_flac(v.flac),
+  #|   opus: convert_opus(v.opus),
   #|   codec: v.codec,
   #|   sampleRate: v.sampleRate,
   #|   numberOfChannels: v.numberOfChannels,
@@ -94,7 +120,30 @@ extern "js" fn AudioEncoderConfig::from_js_ffi(
 ///|
 /// Convert from JsValue
 pub fn AudioEncoderConfig::from_js(value : JsValue) -> AudioEncoderConfig {
-  AudioEncoderConfig::from_js_ffi(value)
+  AudioEncoderConfig::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AacEncoderConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(FlacEncoderConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(OpusEncoderConfig::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

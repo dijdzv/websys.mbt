@@ -10,18 +10,30 @@ pub extern "js" fn RouterSource::to_js_value(self : RouterSource) -> JsValue =
   #| (self) => self
 
 ///|
-/// Create RouterSource from RouterSourceDict
-pub extern "js" fn RouterSource::from_router_source_dict(
-  v : RouterSourceDict,
+extern "js" fn RouterSource::from_router_source_dict_ffi(
+  v : JsValue,
 ) -> RouterSource =
-  #| (v) => v
+  #| v => v
 
 ///|
-/// Create RouterSource from RouterSourceEnum
-pub extern "js" fn RouterSource::from_router_source_enum(
-  v : RouterSourceEnum,
+pub fn RouterSource::from_router_source_dict(
+  v : RouterSourceDict,
+) -> RouterSource {
+  RouterSource::from_router_source_dict_ffi(v.to_js())
+}
+
+///|
+extern "js" fn RouterSource::from_router_source_enum_ffi(
+  v : String,
 ) -> RouterSource =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn RouterSource::from_router_source_enum(
+  v : RouterSourceEnum,
+) -> RouterSource {
+  RouterSource::from_router_source_enum_ffi(v.to_string())
+}
 
 ///|
 /// Check if this RouterSource is RouterSourceDict
@@ -38,18 +50,32 @@ pub extern "js" fn RouterSource::is_router_source_enum(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get RouterSource as RouterSourceDict
-pub extern "js" fn RouterSource::as_router_source_dict(
+pub fn RouterSource::as_router_source_dict(
   self : RouterSource,
-) -> RouterSourceDict? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RouterSourceDict? {
+  if self.is_router_source_dict() {
+    Some(RouterSourceDict::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
-/// Try to get RouterSource as RouterSourceEnum
-pub extern "js" fn RouterSource::as_router_source_enum(
+extern "js" fn RouterSource::as_router_source_enum_string(
   self : RouterSource,
-) -> RouterSourceEnum? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn RouterSource::as_router_source_enum(
+  self : RouterSource,
+) -> RouterSourceEnum? {
+  if self.is_router_source_enum() {
+    RouterSourceEnum::from_string(self.as_router_source_enum_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[RouterSource] to RouterSourceDict?
@@ -455,29 +481,35 @@ pub fn RouterRule::new(
 }
 
 ///|
-extern "js" fn RouterRule::to_js_ffi(self : RouterRule) -> JsValue =
-  #| (self) => ({
-  #|   condition: self.condition,
+extern "js" fn RouterRule::to_js_ffi(
+  self : RouterRule,
+  convert_condition : (RouterCondition) -> JsValue,
+) -> JsValue =
+  #| (self, convert_condition) => ({
+  #|   condition: convert_condition(self.condition),
   #|   source: self.source
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RouterRule::to_js(self : RouterRule) -> JsValue {
-  RouterRule::to_js_ffi(self)
+  RouterRule::to_js_ffi(self, RouterCondition::to_js)
 }
 
 ///|
-extern "js" fn RouterRule::from_js_ffi(value : JsValue) -> RouterRule =
-  #| (v) => ({
-  #|   condition: v.condition,
+extern "js" fn RouterRule::from_js_ffi(
+  value : JsValue,
+  convert_condition : (JsValue) -> RouterCondition,
+) -> RouterRule =
+  #| (v, convert_condition) => ({
+  #|   condition: convert_condition(v.condition),
   #|   source: v.source
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn RouterRule::from_js(value : JsValue) -> RouterRule {
-  RouterRule::from_js_ffi(value)
+  RouterRule::from_js_ffi(value, RouterCondition::from_js)
 }
 
 ///|
@@ -507,39 +539,56 @@ pub fn RouterCondition::default() -> RouterCondition {
 }
 
 ///|
-extern "js" fn RouterCondition::to_js_ffi(self : RouterCondition) -> JsValue =
-  #| (self) => ({
+extern "js" fn RouterCondition::to_js_ffi(
+  self : RouterCondition,
+  convert_not : (RouterCondition?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_not) => ({
   #|   urlPattern: ((() => { const v = self.urlPattern; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   requestMethod: self.requestMethod,
   #|   requestMode: ((() => { const v = self.requestMode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
   #|   requestDestination: ((() => { const v = self.requestDestination; if (v === undefined) return undefined; return ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][v]; })()),
   #|   runningStatus: ((() => { const v = self.runningStatus; if (v === undefined) return undefined; return ['running', 'not-running'][v]; })()),
   #|   or: self.or,
-  #|   not: ((() => { const v = self.not; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   not: convert_not(self.not)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RouterCondition::to_js(self : RouterCondition) -> JsValue {
-  RouterCondition::to_js_ffi(self)
+  RouterCondition::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
-extern "js" fn RouterCondition::from_js_ffi(value : JsValue) -> RouterCondition =
-  #| (v) => ({
+extern "js" fn RouterCondition::from_js_ffi(
+  value : JsValue,
+  convert_not : (JsValue) -> RouterCondition?,
+) -> RouterCondition =
+  #| (v, convert_not) => ({
   #|   urlPattern: (v.urlPattern === undefined ? { $tag: 0 } : { $tag: 1, _0: v.urlPattern }),
   #|   requestMethod: v.requestMethod,
   #|   requestMode: (v.requestMode === undefined ? undefined : ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(v.requestMode)),
   #|   requestDestination: (v.requestDestination === undefined ? undefined : ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'].indexOf(v.requestDestination)),
   #|   runningStatus: (v.runningStatus === undefined ? undefined : ['running', 'not-running'].indexOf(v.runningStatus)),
   #|   or: v.or,
-  #|   not: (v.not === undefined ? { $tag: 0 } : { $tag: 1, _0: v.not })
+  #|   not: convert_not(v.not)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn RouterCondition::from_js(value : JsValue) -> RouterCondition {
-  RouterCondition::from_js_ffi(value)
+  RouterCondition::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(RouterCondition::from_js(value))
+    }
+  })
 }
 
 ///|

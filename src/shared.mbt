@@ -61,6 +61,10 @@ pub extern "js" fn try_catch(f : () -> Unit) -> String =
 pub type JsError
 
 ///|
+extern "js" fn dictionary_undefined() -> JsValue =
+  #| () => undefined
+
+///|
 extern "js" fn try_dictionary_conversion(
   convert : () -> JsValue,
 ) -> Result[JsValue, JsError] =
@@ -703,11 +707,19 @@ pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::fro
   #| (v) => v
 
 ///|
-/// Create ViewTransitionUpdateCallbackOrStartViewTransitionOptions from StartViewTransitionOptions
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options(
-  v : StartViewTransitionOptions,
+extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options_ffi(
+  v : JsValue,
 ) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options(
+  v : StartViewTransitionOptions,
+) -> ViewTransitionUpdateCallbackOrStartViewTransitionOptions {
+  ViewTransitionUpdateCallbackOrStartViewTransitionOptions::from_start_view_transition_options_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this ViewTransitionUpdateCallbackOrStartViewTransitionOptions is ViewTransitionUpdateCallback
@@ -731,11 +743,15 @@ pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_
   #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ViewTransitionUpdateCallbackOrStartViewTransitionOptions as StartViewTransitionOptions
-pub extern "js" fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_start_view_transition_options(
+pub fn ViewTransitionUpdateCallbackOrStartViewTransitionOptions::as_start_view_transition_options(
   self : ViewTransitionUpdateCallbackOrStartViewTransitionOptions,
-) -> StartViewTransitionOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> StartViewTransitionOptions? {
+  if self.is_start_view_transition_options() {
+    Some(StartViewTransitionOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ViewTransitionUpdateCallbackOrStartViewTransitionOptions] to ViewTransitionUpdateCallback?
@@ -777,11 +793,17 @@ pub extern "js" fn BoolOrScrollIntoViewOptions::from_bool(
   #| (v) => v
 
 ///|
-/// Create BoolOrScrollIntoViewOptions from ScrollIntoViewOptions
-pub extern "js" fn BoolOrScrollIntoViewOptions::from_scroll_into_view_options(
-  v : ScrollIntoViewOptions,
+extern "js" fn BoolOrScrollIntoViewOptions::from_scroll_into_view_options_ffi(
+  v : JsValue,
 ) -> BoolOrScrollIntoViewOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn BoolOrScrollIntoViewOptions::from_scroll_into_view_options(
+  v : ScrollIntoViewOptions,
+) -> BoolOrScrollIntoViewOptions {
+  BoolOrScrollIntoViewOptions::from_scroll_into_view_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this BoolOrScrollIntoViewOptions is Bool
@@ -805,11 +827,15 @@ pub extern "js" fn BoolOrScrollIntoViewOptions::as_bool(
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
-/// Try to get BoolOrScrollIntoViewOptions as ScrollIntoViewOptions
-pub extern "js" fn BoolOrScrollIntoViewOptions::as_scroll_into_view_options(
+pub fn BoolOrScrollIntoViewOptions::as_scroll_into_view_options(
   self : BoolOrScrollIntoViewOptions,
-) -> ScrollIntoViewOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ScrollIntoViewOptions? {
+  if self.is_scroll_into_view_options() {
+    Some(ScrollIntoViewOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[BoolOrScrollIntoViewOptions] to Bool?
@@ -1022,11 +1048,17 @@ pub extern "js" fn AddEventListenerOptionsOrBool::to_js_value(
   #| (self) => self
 
 ///|
-/// Create AddEventListenerOptionsOrBool from AddEventListenerOptions
-pub extern "js" fn AddEventListenerOptionsOrBool::from_add_event_listener_options(
-  v : AddEventListenerOptions,
+extern "js" fn AddEventListenerOptionsOrBool::from_add_event_listener_options_ffi(
+  v : JsValue,
 ) -> AddEventListenerOptionsOrBool =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn AddEventListenerOptionsOrBool::from_add_event_listener_options(
+  v : AddEventListenerOptions,
+) -> AddEventListenerOptionsOrBool {
+  AddEventListenerOptionsOrBool::from_add_event_listener_options_ffi(v.to_js())
+}
 
 ///|
 /// Create AddEventListenerOptionsOrBool from Bool
@@ -1050,11 +1082,15 @@ pub extern "js" fn AddEventListenerOptionsOrBool::is_bool(
   #| (self) => typeof self === 'boolean'
 
 ///|
-/// Try to get AddEventListenerOptionsOrBool as AddEventListenerOptions
-pub extern "js" fn AddEventListenerOptionsOrBool::as_add_event_listener_options(
+pub fn AddEventListenerOptionsOrBool::as_add_event_listener_options(
   self : AddEventListenerOptionsOrBool,
-) -> AddEventListenerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> AddEventListenerOptions? {
+  if self.is_add_event_listener_options() {
+    Some(AddEventListenerOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get AddEventListenerOptionsOrBool as Bool
@@ -1096,11 +1132,17 @@ pub extern "js" fn EventListenerOptionsOrBool::to_js_value(
   #| (self) => self
 
 ///|
-/// Create EventListenerOptionsOrBool from EventListenerOptions
-pub extern "js" fn EventListenerOptionsOrBool::from_event_listener_options(
-  v : EventListenerOptions,
+extern "js" fn EventListenerOptionsOrBool::from_event_listener_options_ffi(
+  v : JsValue,
 ) -> EventListenerOptionsOrBool =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn EventListenerOptionsOrBool::from_event_listener_options(
+  v : EventListenerOptions,
+) -> EventListenerOptionsOrBool {
+  EventListenerOptionsOrBool::from_event_listener_options_ffi(v.to_js())
+}
 
 ///|
 /// Create EventListenerOptionsOrBool from Bool
@@ -1124,11 +1166,15 @@ pub extern "js" fn EventListenerOptionsOrBool::is_bool(
   #| (self) => typeof self === 'boolean'
 
 ///|
-/// Try to get EventListenerOptionsOrBool as EventListenerOptions
-pub extern "js" fn EventListenerOptionsOrBool::as_event_listener_options(
+pub fn EventListenerOptionsOrBool::as_event_listener_options(
   self : EventListenerOptionsOrBool,
-) -> EventListenerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> EventListenerOptions? {
+  if self.is_event_listener_options() {
+    Some(EventListenerOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get EventListenerOptionsOrBool as Bool
@@ -1233,11 +1279,17 @@ pub extern "js" fn StringOrElementCreationOptions::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrElementCreationOptions from ElementCreationOptions
-pub extern "js" fn StringOrElementCreationOptions::from_element_creation_options(
-  v : ElementCreationOptions,
+extern "js" fn StringOrElementCreationOptions::from_element_creation_options_ffi(
+  v : JsValue,
 ) -> StringOrElementCreationOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrElementCreationOptions::from_element_creation_options(
+  v : ElementCreationOptions,
+) -> StringOrElementCreationOptions {
+  StringOrElementCreationOptions::from_element_creation_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this StringOrElementCreationOptions is String
@@ -1261,11 +1313,15 @@ pub extern "js" fn StringOrElementCreationOptions::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrElementCreationOptions as ElementCreationOptions
-pub extern "js" fn StringOrElementCreationOptions::as_element_creation_options(
+pub fn StringOrElementCreationOptions::as_element_creation_options(
   self : StringOrElementCreationOptions,
-) -> ElementCreationOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ElementCreationOptions? {
+  if self.is_element_creation_options() {
+    Some(ElementCreationOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrElementCreationOptions] to String?
@@ -1307,11 +1363,17 @@ pub extern "js" fn BoolOrImportNodeOptions::from_bool(
   #| (v) => v
 
 ///|
-/// Create BoolOrImportNodeOptions from ImportNodeOptions
-pub extern "js" fn BoolOrImportNodeOptions::from_import_node_options(
-  v : ImportNodeOptions,
+extern "js" fn BoolOrImportNodeOptions::from_import_node_options_ffi(
+  v : JsValue,
 ) -> BoolOrImportNodeOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn BoolOrImportNodeOptions::from_import_node_options(
+  v : ImportNodeOptions,
+) -> BoolOrImportNodeOptions {
+  BoolOrImportNodeOptions::from_import_node_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this BoolOrImportNodeOptions is Bool
@@ -1335,11 +1397,15 @@ pub extern "js" fn BoolOrImportNodeOptions::as_bool(
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
-/// Try to get BoolOrImportNodeOptions as ImportNodeOptions
-pub extern "js" fn BoolOrImportNodeOptions::as_import_node_options(
+pub fn BoolOrImportNodeOptions::as_import_node_options(
   self : BoolOrImportNodeOptions,
-) -> ImportNodeOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ImportNodeOptions? {
+  if self.is_import_node_options() {
+    Some(ImportNodeOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[BoolOrImportNodeOptions] to Bool?
@@ -1448,11 +1514,17 @@ pub extern "js" fn MediaKeyStatusOrVoid::to_js_value(
   #| (self) => self
 
 ///|
-/// Create MediaKeyStatusOrVoid from MediaKeyStatus
-pub extern "js" fn MediaKeyStatusOrVoid::from_media_key_status(
-  v : MediaKeyStatus,
+extern "js" fn MediaKeyStatusOrVoid::from_media_key_status_ffi(
+  v : String,
 ) -> MediaKeyStatusOrVoid =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn MediaKeyStatusOrVoid::from_media_key_status(
+  v : MediaKeyStatus,
+) -> MediaKeyStatusOrVoid {
+  MediaKeyStatusOrVoid::from_media_key_status_ffi(v.to_string())
+}
 
 ///|
 /// Check if this MediaKeyStatusOrVoid is MediaKeyStatus
@@ -1462,11 +1534,21 @@ pub extern "js" fn MediaKeyStatusOrVoid::is_media_key_status(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get MediaKeyStatusOrVoid as MediaKeyStatus
-pub extern "js" fn MediaKeyStatusOrVoid::as_media_key_status(
+extern "js" fn MediaKeyStatusOrVoid::as_media_key_status_string(
   self : MediaKeyStatusOrVoid,
-) -> MediaKeyStatus? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn MediaKeyStatusOrVoid::as_media_key_status(
+  self : MediaKeyStatusOrVoid,
+) -> MediaKeyStatus? {
+  if self.is_media_key_status() {
+    MediaKeyStatus::from_string(self.as_media_key_status_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[MediaKeyStatusOrVoid] to MediaKeyStatus?
@@ -2280,11 +2362,17 @@ pub extern "js" fn TogglePopoverOptionsOrBool::to_js_value(
   #| (self) => self
 
 ///|
-/// Create TogglePopoverOptionsOrBool from TogglePopoverOptions
-pub extern "js" fn TogglePopoverOptionsOrBool::from_toggle_popover_options(
-  v : TogglePopoverOptions,
+extern "js" fn TogglePopoverOptionsOrBool::from_toggle_popover_options_ffi(
+  v : JsValue,
 ) -> TogglePopoverOptionsOrBool =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn TogglePopoverOptionsOrBool::from_toggle_popover_options(
+  v : TogglePopoverOptions,
+) -> TogglePopoverOptionsOrBool {
+  TogglePopoverOptionsOrBool::from_toggle_popover_options_ffi(v.to_js())
+}
 
 ///|
 /// Create TogglePopoverOptionsOrBool from Bool
@@ -2308,11 +2396,15 @@ pub extern "js" fn TogglePopoverOptionsOrBool::is_bool(
   #| (self) => typeof self === 'boolean'
 
 ///|
-/// Try to get TogglePopoverOptionsOrBool as TogglePopoverOptions
-pub extern "js" fn TogglePopoverOptionsOrBool::as_toggle_popover_options(
+pub fn TogglePopoverOptionsOrBool::as_toggle_popover_options(
   self : TogglePopoverOptionsOrBool,
-) -> TogglePopoverOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> TogglePopoverOptions? {
+  if self.is_toggle_popover_options() {
+    Some(TogglePopoverOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get TogglePopoverOptionsOrBool as Bool
@@ -2629,11 +2721,19 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_doubl
   #| (v) => v
 
 ///|
-/// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from DOMPointInit
-pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_dom_point_init(
-  v : DOMPointInit,
+extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_dom_point_init_ffi(
+  v : JsValue,
 ) -> DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_dom_point_init(
+  v : DOMPointInit,
+) -> DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit {
+  DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::from_dom_point_init_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Create DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit from FixedArray[DoubleOrDOMPointInit]
@@ -2671,11 +2771,15 @@ pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as DOMPointInit
-pub extern "js" fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_dom_point_init(
+pub fn DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit::as_dom_point_init(
   self : DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit,
-) -> DOMPointInit? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DOMPointInit? {
+  if self.is_dom_point_init() {
+    Some(DOMPointInit::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get DoubleOrDOMPointInitOrArrayOfDoubleOrDOMPointInit as FixedArray[DoubleOrDOMPointInit]
@@ -2735,11 +2839,17 @@ pub extern "js" fn DoubleOrDOMPointInit::from_double(
   #| (v) => v
 
 ///|
-/// Create DoubleOrDOMPointInit from DOMPointInit
-pub extern "js" fn DoubleOrDOMPointInit::from_dom_point_init(
-  v : DOMPointInit,
+extern "js" fn DoubleOrDOMPointInit::from_dom_point_init_ffi(
+  v : JsValue,
 ) -> DoubleOrDOMPointInit =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn DoubleOrDOMPointInit::from_dom_point_init(
+  v : DOMPointInit,
+) -> DoubleOrDOMPointInit {
+  DoubleOrDOMPointInit::from_dom_point_init_ffi(v.to_js())
+}
 
 ///|
 /// Check if this DoubleOrDOMPointInit is Double
@@ -2763,11 +2873,15 @@ pub extern "js" fn DoubleOrDOMPointInit::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrDOMPointInit as DOMPointInit
-pub extern "js" fn DoubleOrDOMPointInit::as_dom_point_init(
+pub fn DoubleOrDOMPointInit::as_dom_point_init(
   self : DoubleOrDOMPointInit,
-) -> DOMPointInit? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> DOMPointInit? {
+  if self.is_dom_point_init() {
+    Some(DOMPointInit::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[DoubleOrDOMPointInit] to Double?
@@ -3219,11 +3333,17 @@ pub extern "js" fn StringOrWorkerOptions::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrWorkerOptions from WorkerOptions
-pub extern "js" fn StringOrWorkerOptions::from_worker_options(
-  v : WorkerOptions,
+extern "js" fn StringOrWorkerOptions::from_worker_options_ffi(
+  v : JsValue,
 ) -> StringOrWorkerOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrWorkerOptions::from_worker_options(
+  v : WorkerOptions,
+) -> StringOrWorkerOptions {
+  StringOrWorkerOptions::from_worker_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this StringOrWorkerOptions is String
@@ -3247,11 +3367,15 @@ pub extern "js" fn StringOrWorkerOptions::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrWorkerOptions as WorkerOptions
-pub extern "js" fn StringOrWorkerOptions::as_worker_options(
+pub fn StringOrWorkerOptions::as_worker_options(
   self : StringOrWorkerOptions,
-) -> WorkerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> WorkerOptions? {
+  if self.is_worker_options() {
+    Some(WorkerOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrWorkerOptions] to String?
@@ -3825,11 +3949,17 @@ pub extern "js" fn BoolOrMediaTrackConstraints::from_bool(
   #| (v) => v
 
 ///|
-/// Create BoolOrMediaTrackConstraints from MediaTrackConstraints
-pub extern "js" fn BoolOrMediaTrackConstraints::from_media_track_constraints(
-  v : MediaTrackConstraints,
+extern "js" fn BoolOrMediaTrackConstraints::from_media_track_constraints_ffi(
+  v : JsValue,
 ) -> BoolOrMediaTrackConstraints =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn BoolOrMediaTrackConstraints::from_media_track_constraints(
+  v : MediaTrackConstraints,
+) -> BoolOrMediaTrackConstraints {
+  BoolOrMediaTrackConstraints::from_media_track_constraints_ffi(v.to_js())
+}
 
 ///|
 /// Check if this BoolOrMediaTrackConstraints is Bool
@@ -3853,11 +3983,15 @@ pub extern "js" fn BoolOrMediaTrackConstraints::as_bool(
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
-/// Try to get BoolOrMediaTrackConstraints as MediaTrackConstraints
-pub extern "js" fn BoolOrMediaTrackConstraints::as_media_track_constraints(
+pub fn BoolOrMediaTrackConstraints::as_media_track_constraints(
   self : BoolOrMediaTrackConstraints,
-) -> MediaTrackConstraints? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> MediaTrackConstraints? {
+  if self.is_media_track_constraints() {
+    Some(MediaTrackConstraints::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[BoolOrMediaTrackConstraints] to Bool?
@@ -3973,11 +4107,17 @@ pub extern "js" fn StringOrSharedWorkerOptions::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrSharedWorkerOptions from SharedWorkerOptions
-pub extern "js" fn StringOrSharedWorkerOptions::from_shared_worker_options(
-  v : SharedWorkerOptions,
+extern "js" fn StringOrSharedWorkerOptions::from_shared_worker_options_ffi(
+  v : JsValue,
 ) -> StringOrSharedWorkerOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrSharedWorkerOptions::from_shared_worker_options(
+  v : SharedWorkerOptions,
+) -> StringOrSharedWorkerOptions {
+  StringOrSharedWorkerOptions::from_shared_worker_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this StringOrSharedWorkerOptions is String
@@ -4001,11 +4141,15 @@ pub extern "js" fn StringOrSharedWorkerOptions::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrSharedWorkerOptions as SharedWorkerOptions
-pub extern "js" fn StringOrSharedWorkerOptions::as_shared_worker_options(
+pub fn StringOrSharedWorkerOptions::as_shared_worker_options(
   self : StringOrSharedWorkerOptions,
-) -> SharedWorkerOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SharedWorkerOptions? {
+  if self.is_shared_worker_options() {
+    Some(SharedWorkerOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrSharedWorkerOptions] to String?
@@ -4047,18 +4191,34 @@ pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer(
   #| (v) => v
 
 ///|
-/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerConfig
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config(
-  v : SanitizerConfig,
+extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config_ffi(
+  v : JsValue,
 ) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
-  #| (v) => v
+  #| v => v
 
 ///|
-/// Create SanitizerOrSanitizerConfigOrSanitizerPresets from SanitizerPresets
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
-  v : SanitizerPresets,
+pub fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config(
+  v : SanitizerConfig,
+) -> SanitizerOrSanitizerConfigOrSanitizerPresets {
+  SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_config_ffi(
+    v.to_js(),
+  )
+}
+
+///|
+extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets_ffi(
+  v : String,
 ) -> SanitizerOrSanitizerConfigOrSanitizerPresets =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
+  v : SanitizerPresets,
+) -> SanitizerOrSanitizerConfigOrSanitizerPresets {
+  SanitizerOrSanitizerConfigOrSanitizerPresets::from_sanitizer_presets_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Check if this SanitizerOrSanitizerConfigOrSanitizerPresets is Sanitizer
@@ -4089,18 +4249,32 @@ pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer(
   #| (self) => (self instanceof Sanitizer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerConfig
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_config(
+pub fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_config(
   self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> SanitizerConfig? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SanitizerConfig? {
+  if self.is_sanitizer_config() {
+    Some(SanitizerConfig::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
-/// Try to get SanitizerOrSanitizerConfigOrSanitizerPresets as SanitizerPresets
-pub extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+extern "js" fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_presets_string(
   self : SanitizerOrSanitizerConfigOrSanitizerPresets,
-) -> SanitizerPresets? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn SanitizerOrSanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+  self : SanitizerOrSanitizerConfigOrSanitizerPresets,
+) -> SanitizerPresets? {
+  if self.is_sanitizer_presets() {
+    SanitizerPresets::from_string(self.as_sanitizer_presets_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[SanitizerOrSanitizerConfigOrSanitizerPresets] to Sanitizer?
@@ -4146,18 +4320,30 @@ pub extern "js" fn SanitizerConfigOrSanitizerPresets::to_js_value(
   #| (self) => self
 
 ///|
-/// Create SanitizerConfigOrSanitizerPresets from SanitizerConfig
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_config(
-  v : SanitizerConfig,
+extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_config_ffi(
+  v : JsValue,
 ) -> SanitizerConfigOrSanitizerPresets =
-  #| (v) => v
+  #| v => v
 
 ///|
-/// Create SanitizerConfigOrSanitizerPresets from SanitizerPresets
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
-  v : SanitizerPresets,
+pub fn SanitizerConfigOrSanitizerPresets::from_sanitizer_config(
+  v : SanitizerConfig,
+) -> SanitizerConfigOrSanitizerPresets {
+  SanitizerConfigOrSanitizerPresets::from_sanitizer_config_ffi(v.to_js())
+}
+
+///|
+extern "js" fn SanitizerConfigOrSanitizerPresets::from_sanitizer_presets_ffi(
+  v : String,
 ) -> SanitizerConfigOrSanitizerPresets =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn SanitizerConfigOrSanitizerPresets::from_sanitizer_presets(
+  v : SanitizerPresets,
+) -> SanitizerConfigOrSanitizerPresets {
+  SanitizerConfigOrSanitizerPresets::from_sanitizer_presets_ffi(v.to_string())
+}
 
 ///|
 /// Check if this SanitizerConfigOrSanitizerPresets is SanitizerConfig
@@ -4174,18 +4360,32 @@ pub extern "js" fn SanitizerConfigOrSanitizerPresets::is_sanitizer_presets(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerConfig
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_config(
+pub fn SanitizerConfigOrSanitizerPresets::as_sanitizer_config(
   self : SanitizerConfigOrSanitizerPresets,
-) -> SanitizerConfig? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SanitizerConfig? {
+  if self.is_sanitizer_config() {
+    Some(SanitizerConfig::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
-/// Try to get SanitizerConfigOrSanitizerPresets as SanitizerPresets
-pub extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+extern "js" fn SanitizerConfigOrSanitizerPresets::as_sanitizer_presets_string(
   self : SanitizerConfigOrSanitizerPresets,
-) -> SanitizerPresets? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn SanitizerConfigOrSanitizerPresets::as_sanitizer_presets(
+  self : SanitizerConfigOrSanitizerPresets,
+) -> SanitizerPresets? {
+  if self.is_sanitizer_presets() {
+    SanitizerPresets::from_string(self.as_sanitizer_presets_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[SanitizerConfigOrSanitizerPresets] to SanitizerConfig?
@@ -4220,11 +4420,17 @@ pub extern "js" fn TaskPriorityOrTaskSignal::to_js_value(
   #| (self) => self
 
 ///|
-/// Create TaskPriorityOrTaskSignal from TaskPriority
-pub extern "js" fn TaskPriorityOrTaskSignal::from_task_priority(
-  v : TaskPriority,
+extern "js" fn TaskPriorityOrTaskSignal::from_task_priority_ffi(
+  v : String,
 ) -> TaskPriorityOrTaskSignal =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn TaskPriorityOrTaskSignal::from_task_priority(
+  v : TaskPriority,
+) -> TaskPriorityOrTaskSignal {
+  TaskPriorityOrTaskSignal::from_task_priority_ffi(v.to_string())
+}
 
 ///|
 /// Create TaskPriorityOrTaskSignal from TaskSignal
@@ -4248,11 +4454,21 @@ pub extern "js" fn TaskPriorityOrTaskSignal::is_task_signal(
   #| (self) => self instanceof TaskSignal
 
 ///|
-/// Try to get TaskPriorityOrTaskSignal as TaskPriority
-pub extern "js" fn TaskPriorityOrTaskSignal::as_task_priority(
+extern "js" fn TaskPriorityOrTaskSignal::as_task_priority_string(
   self : TaskPriorityOrTaskSignal,
-) -> TaskPriority? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn TaskPriorityOrTaskSignal::as_task_priority(
+  self : TaskPriorityOrTaskSignal,
+) -> TaskPriority? {
+  if self.is_task_priority() {
+    TaskPriority::from_string(self.as_task_priority_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get TaskPriorityOrTaskSignal as TaskSignal
@@ -4442,18 +4658,34 @@ pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAddition
   #| (self) => self
 
 ///|
-/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data(
-  v : CollectedClientAdditionalPaymentData,
+extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data_ffi(
+  v : JsValue,
 ) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
-  #| (v) => v
+  #| v => v
 
 ///|
-/// Create CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData from CollectedClientAdditionalPaymentRegistrationData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data(
-  v : CollectedClientAdditionalPaymentRegistrationData,
+pub fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data(
+  v : CollectedClientAdditionalPaymentData,
+) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData {
+  CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_data_ffi(
+    v.to_js(),
+  )
+}
+
+///|
+extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data_ffi(
+  v : JsValue,
 ) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data(
+  v : CollectedClientAdditionalPaymentRegistrationData,
+) -> CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData {
+  CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::from_collected_client_additional_payment_registration_data_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData is CollectedClientAdditionalPaymentData
@@ -4470,18 +4702,30 @@ pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAddition
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_data(
+pub fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_data(
   self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> CollectedClientAdditionalPaymentData? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CollectedClientAdditionalPaymentData? {
+  if self.is_collected_client_additional_payment_data() {
+    Some(CollectedClientAdditionalPaymentData::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
-/// Try to get CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData as CollectedClientAdditionalPaymentRegistrationData
-pub extern "js" fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_registration_data(
+pub fn CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData::as_collected_client_additional_payment_registration_data(
   self : CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData,
-) -> CollectedClientAdditionalPaymentRegistrationData? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CollectedClientAdditionalPaymentRegistrationData? {
+  if self.is_collected_client_additional_payment_registration_data() {
+    Some(
+      CollectedClientAdditionalPaymentRegistrationData::from_js(
+        self.to_js_value(),
+      ),
+    )
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[CollectedClientAdditionalPaymentDataOrCollectedClientAdditionalPaymentRegistrationData] to CollectedClientAdditionalPaymentData?
@@ -4590,11 +4834,17 @@ pub extern "js" fn RouterRuleOrArrayOfRouterRule::to_js_value(
   #| (self) => self
 
 ///|
-/// Create RouterRuleOrArrayOfRouterRule from RouterRule
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::from_router_rule(
-  v : RouterRule,
+extern "js" fn RouterRuleOrArrayOfRouterRule::from_router_rule_ffi(
+  v : JsValue,
 ) -> RouterRuleOrArrayOfRouterRule =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn RouterRuleOrArrayOfRouterRule::from_router_rule(
+  v : RouterRule,
+) -> RouterRuleOrArrayOfRouterRule {
+  RouterRuleOrArrayOfRouterRule::from_router_rule_ffi(v.to_js())
+}
 
 ///|
 /// Create RouterRuleOrArrayOfRouterRule from FixedArray[RouterRule]
@@ -4618,11 +4868,15 @@ pub extern "js" fn RouterRuleOrArrayOfRouterRule::is_array_of_router_rule(
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get RouterRuleOrArrayOfRouterRule as RouterRule
-pub extern "js" fn RouterRuleOrArrayOfRouterRule::as_router_rule(
+pub fn RouterRuleOrArrayOfRouterRule::as_router_rule(
   self : RouterRuleOrArrayOfRouterRule,
-) -> RouterRule? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> RouterRule? {
+  if self.is_router_rule() {
+    Some(RouterRule::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get RouterRuleOrArrayOfRouterRule as FixedArray[RouterRule]
@@ -4988,11 +5242,17 @@ pub extern "js" fn PASignalValueOrBigint::to_js_value(
   #| (self) => self
 
 ///|
-/// Create PASignalValueOrBigint from PASignalValue
-pub extern "js" fn PASignalValueOrBigint::from_pa_signal_value(
-  v : PASignalValue,
+extern "js" fn PASignalValueOrBigint::from_pa_signal_value_ffi(
+  v : JsValue,
 ) -> PASignalValueOrBigint =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn PASignalValueOrBigint::from_pa_signal_value(
+  v : PASignalValue,
+) -> PASignalValueOrBigint {
+  PASignalValueOrBigint::from_pa_signal_value_ffi(v.to_js())
+}
 
 ///|
 /// Check if this PASignalValueOrBigint is PASignalValue
@@ -5002,11 +5262,15 @@ pub extern "js" fn PASignalValueOrBigint::is_pa_signal_value(
   #| (self) => typeof self === 'object' && self !== null
 
 ///|
-/// Try to get PASignalValueOrBigint as PASignalValue
-pub extern "js" fn PASignalValueOrBigint::as_pa_signal_value(
+pub fn PASignalValueOrBigint::as_pa_signal_value(
   self : PASignalValueOrBigint,
-) -> PASignalValue? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PASignalValue? {
+  if self.is_pa_signal_value() {
+    Some(PASignalValue::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[PASignalValueOrBigint] to PASignalValue?
@@ -5030,11 +5294,17 @@ pub extern "js" fn PASignalValueOrInt::to_js_value(
   #| (self) => self
 
 ///|
-/// Create PASignalValueOrInt from PASignalValue
-pub extern "js" fn PASignalValueOrInt::from_pa_signal_value(
-  v : PASignalValue,
+extern "js" fn PASignalValueOrInt::from_pa_signal_value_ffi(
+  v : JsValue,
 ) -> PASignalValueOrInt =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn PASignalValueOrInt::from_pa_signal_value(
+  v : PASignalValue,
+) -> PASignalValueOrInt {
+  PASignalValueOrInt::from_pa_signal_value_ffi(v.to_js())
+}
 
 ///|
 /// Create PASignalValueOrInt from Int
@@ -5056,11 +5326,15 @@ pub extern "js" fn PASignalValueOrInt::is_int(
   #| (self) => typeof self === 'number'
 
 ///|
-/// Try to get PASignalValueOrInt as PASignalValue
-pub extern "js" fn PASignalValueOrInt::as_pa_signal_value(
+pub fn PASignalValueOrInt::as_pa_signal_value(
   self : PASignalValueOrInt,
-) -> PASignalValue? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PASignalValue? {
+  if self.is_pa_signal_value() {
+    Some(PASignalValue::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get PASignalValueOrInt as Int
@@ -5100,11 +5374,19 @@ pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::to_js_value(
   #| (self) => self
 
 ///|
-/// Create GenerateBidOutputOrArrayOfGenerateBidOutput from GenerateBidOutput
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output(
-  v : GenerateBidOutput,
+extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output_ffi(
+  v : JsValue,
 ) -> GenerateBidOutputOrArrayOfGenerateBidOutput =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output(
+  v : GenerateBidOutput,
+) -> GenerateBidOutputOrArrayOfGenerateBidOutput {
+  GenerateBidOutputOrArrayOfGenerateBidOutput::from_generate_bid_output_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Create GenerateBidOutputOrArrayOfGenerateBidOutput from FixedArray[GenerateBidOutput]
@@ -5128,11 +5410,15 @@ pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::is_array_of_gene
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as GenerateBidOutput
-pub extern "js" fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_generate_bid_output(
+pub fn GenerateBidOutputOrArrayOfGenerateBidOutput::as_generate_bid_output(
   self : GenerateBidOutputOrArrayOfGenerateBidOutput,
-) -> GenerateBidOutput? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> GenerateBidOutput? {
+  if self.is_generate_bid_output() {
+    Some(GenerateBidOutput::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get GenerateBidOutputOrArrayOfGenerateBidOutput as FixedArray[GenerateBidOutput]
@@ -5181,11 +5467,15 @@ pub extern "js" fn StringOrAdRender::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrAdRender from AdRender
-pub extern "js" fn StringOrAdRender::from_ad_render(
-  v : AdRender,
+extern "js" fn StringOrAdRender::from_ad_render_ffi(
+  v : JsValue,
 ) -> StringOrAdRender =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrAdRender::from_ad_render(v : AdRender) -> StringOrAdRender {
+  StringOrAdRender::from_ad_render_ffi(v.to_js())
+}
 
 ///|
 /// Check if this StringOrAdRender is String
@@ -5207,11 +5497,13 @@ pub extern "js" fn StringOrAdRender::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrAdRender as AdRender
-pub extern "js" fn StringOrAdRender::as_ad_render(
-  self : StringOrAdRender,
-) -> AdRender? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub fn StringOrAdRender::as_ad_render(self : StringOrAdRender) -> AdRender? {
+  if self.is_ad_render() {
+    Some(AdRender::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrAdRender] to String?
@@ -5399,11 +5691,19 @@ pub extern "js" fn StringOrPerformanceMeasureOptions::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrPerformanceMeasureOptions from PerformanceMeasureOptions
-pub extern "js" fn StringOrPerformanceMeasureOptions::from_performance_measure_options(
-  v : PerformanceMeasureOptions,
+extern "js" fn StringOrPerformanceMeasureOptions::from_performance_measure_options_ffi(
+  v : JsValue,
 ) -> StringOrPerformanceMeasureOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrPerformanceMeasureOptions::from_performance_measure_options(
+  v : PerformanceMeasureOptions,
+) -> StringOrPerformanceMeasureOptions {
+  StringOrPerformanceMeasureOptions::from_performance_measure_options_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this StringOrPerformanceMeasureOptions is String
@@ -5427,11 +5727,15 @@ pub extern "js" fn StringOrPerformanceMeasureOptions::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrPerformanceMeasureOptions as PerformanceMeasureOptions
-pub extern "js" fn StringOrPerformanceMeasureOptions::as_performance_measure_options(
+pub fn StringOrPerformanceMeasureOptions::as_performance_measure_options(
   self : StringOrPerformanceMeasureOptions,
-) -> PerformanceMeasureOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> PerformanceMeasureOptions? {
+  if self.is_performance_measure_options() {
+    Some(PerformanceMeasureOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrPerformanceMeasureOptions] to String?
@@ -5611,11 +5915,17 @@ pub extern "js" fn DoubleOrEffectTiming::from_double(
   #| (v) => v
 
 ///|
-/// Create DoubleOrEffectTiming from EffectTiming
-pub extern "js" fn DoubleOrEffectTiming::from_effect_timing(
-  v : EffectTiming,
+extern "js" fn DoubleOrEffectTiming::from_effect_timing_ffi(
+  v : JsValue,
 ) -> DoubleOrEffectTiming =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn DoubleOrEffectTiming::from_effect_timing(
+  v : EffectTiming,
+) -> DoubleOrEffectTiming {
+  DoubleOrEffectTiming::from_effect_timing_ffi(v.to_js())
+}
 
 ///|
 /// Check if this DoubleOrEffectTiming is Double
@@ -5639,11 +5949,15 @@ pub extern "js" fn DoubleOrEffectTiming::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrEffectTiming as EffectTiming
-pub extern "js" fn DoubleOrEffectTiming::as_effect_timing(
+pub fn DoubleOrEffectTiming::as_effect_timing(
   self : DoubleOrEffectTiming,
-) -> EffectTiming? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> EffectTiming? {
+  if self.is_effect_timing() {
+    Some(EffectTiming::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[DoubleOrEffectTiming] to Double?
@@ -5678,11 +5992,19 @@ pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString
   #| (self) => self
 
 ///|
-/// Create TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString from TimelineRangeOffset
-pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::from_timeline_range_offset(
-  v : TimelineRangeOffset,
+extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::from_timeline_range_offset_ffi(
+  v : JsValue,
 ) -> TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::from_timeline_range_offset(
+  v : TimelineRangeOffset,
+) -> TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString {
+  TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::from_timeline_range_offset_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Create TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString from CSSNumericValue
@@ -5734,11 +6056,15 @@ pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString as TimelineRangeOffset
-pub extern "js" fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::as_timeline_range_offset(
+pub fn TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString::as_timeline_range_offset(
   self : TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString,
-) -> TimelineRangeOffset? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> TimelineRangeOffset? {
+  if self.is_timeline_range_offset() {
+    Some(TimelineRangeOffset::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get TimelineRangeOffsetOrCSSNumericValueOrCSSKeywordValueOrString as CSSNumericValue
@@ -5881,11 +6207,17 @@ pub extern "js" fn DoubleOrKeyframeEffectOptions::from_double(
   #| (v) => v
 
 ///|
-/// Create DoubleOrKeyframeEffectOptions from KeyframeEffectOptions
-pub extern "js" fn DoubleOrKeyframeEffectOptions::from_keyframe_effect_options(
-  v : KeyframeEffectOptions,
+extern "js" fn DoubleOrKeyframeEffectOptions::from_keyframe_effect_options_ffi(
+  v : JsValue,
 ) -> DoubleOrKeyframeEffectOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn DoubleOrKeyframeEffectOptions::from_keyframe_effect_options(
+  v : KeyframeEffectOptions,
+) -> DoubleOrKeyframeEffectOptions {
+  DoubleOrKeyframeEffectOptions::from_keyframe_effect_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this DoubleOrKeyframeEffectOptions is Double
@@ -5909,11 +6241,15 @@ pub extern "js" fn DoubleOrKeyframeEffectOptions::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrKeyframeEffectOptions as KeyframeEffectOptions
-pub extern "js" fn DoubleOrKeyframeEffectOptions::as_keyframe_effect_options(
+pub fn DoubleOrKeyframeEffectOptions::as_keyframe_effect_options(
   self : DoubleOrKeyframeEffectOptions,
-) -> KeyframeEffectOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> KeyframeEffectOptions? {
+  if self.is_keyframe_effect_options() {
+    Some(KeyframeEffectOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[DoubleOrKeyframeEffectOptions] to Double?
@@ -6022,11 +6358,19 @@ pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::to
   #| (self) => self
 
 ///|
-/// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from CompositeOperationOrAuto
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto(
-  v : CompositeOperationOrAuto,
+extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto_ffi(
+  v : String,
 ) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto(
+  v : CompositeOperationOrAuto,
+) -> CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto {
+  CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::from_composite_operation_or_auto_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Create CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto from FixedArray[CompositeOperationOrAuto]
@@ -6050,11 +6394,23 @@ pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::is
   #| (self) => Array.isArray(self)
 
 ///|
-/// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as CompositeOperationOrAuto
-pub extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_composite_operation_or_auto(
+extern "js" fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_composite_operation_or_auto_string(
   self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
-) -> CompositeOperationOrAuto? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto::as_composite_operation_or_auto(
+  self : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto,
+) -> CompositeOperationOrAuto? {
+  if self.is_composite_operation_or_auto() {
+    CompositeOperationOrAuto::from_string(
+      self.as_composite_operation_or_auto_string(),
+    )
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto as FixedArray[CompositeOperationOrAuto]
@@ -6103,11 +6459,19 @@ pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_double(
   #| (v) => v
 
 ///|
-/// Create DoubleOrKeyframeAnimationOptions from KeyframeAnimationOptions
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options(
-  v : KeyframeAnimationOptions,
+extern "js" fn DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options_ffi(
+  v : JsValue,
 ) -> DoubleOrKeyframeAnimationOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options(
+  v : KeyframeAnimationOptions,
+) -> DoubleOrKeyframeAnimationOptions {
+  DoubleOrKeyframeAnimationOptions::from_keyframe_animation_options_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this DoubleOrKeyframeAnimationOptions is Double
@@ -6131,11 +6495,15 @@ pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_double(
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get DoubleOrKeyframeAnimationOptions as KeyframeAnimationOptions
-pub extern "js" fn DoubleOrKeyframeAnimationOptions::as_keyframe_animation_options(
+pub fn DoubleOrKeyframeAnimationOptions::as_keyframe_animation_options(
   self : DoubleOrKeyframeAnimationOptions,
-) -> KeyframeAnimationOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> KeyframeAnimationOptions? {
+  if self.is_keyframe_animation_options() {
+    Some(KeyframeAnimationOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[DoubleOrKeyframeAnimationOptions] to Double?
@@ -6381,11 +6749,17 @@ pub extern "js" fn StringOrAudioSinkOptions::from_string(
   #| (v) => v
 
 ///|
-/// Create StringOrAudioSinkOptions from AudioSinkOptions
-pub extern "js" fn StringOrAudioSinkOptions::from_audio_sink_options(
-  v : AudioSinkOptions,
+extern "js" fn StringOrAudioSinkOptions::from_audio_sink_options_ffi(
+  v : JsValue,
 ) -> StringOrAudioSinkOptions =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn StringOrAudioSinkOptions::from_audio_sink_options(
+  v : AudioSinkOptions,
+) -> StringOrAudioSinkOptions {
+  StringOrAudioSinkOptions::from_audio_sink_options_ffi(v.to_js())
+}
 
 ///|
 /// Check if this StringOrAudioSinkOptions is String
@@ -6409,11 +6783,15 @@ pub extern "js" fn StringOrAudioSinkOptions::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get StringOrAudioSinkOptions as AudioSinkOptions
-pub extern "js" fn StringOrAudioSinkOptions::as_audio_sink_options(
+pub fn StringOrAudioSinkOptions::as_audio_sink_options(
   self : StringOrAudioSinkOptions,
-) -> AudioSinkOptions? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> AudioSinkOptions? {
+  if self.is_audio_sink_options() {
+    Some(AudioSinkOptions::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[StringOrAudioSinkOptions] to String?
@@ -6448,11 +6826,19 @@ pub extern "js" fn AudioContextLatencyCategoryOrDouble::to_js_value(
   #| (self) => self
 
 ///|
-/// Create AudioContextLatencyCategoryOrDouble from AudioContextLatencyCategory
-pub extern "js" fn AudioContextLatencyCategoryOrDouble::from_audio_context_latency_category(
-  v : AudioContextLatencyCategory,
+extern "js" fn AudioContextLatencyCategoryOrDouble::from_audio_context_latency_category_ffi(
+  v : String,
 ) -> AudioContextLatencyCategoryOrDouble =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn AudioContextLatencyCategoryOrDouble::from_audio_context_latency_category(
+  v : AudioContextLatencyCategory,
+) -> AudioContextLatencyCategoryOrDouble {
+  AudioContextLatencyCategoryOrDouble::from_audio_context_latency_category_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Create AudioContextLatencyCategoryOrDouble from Double
@@ -6476,11 +6862,23 @@ pub extern "js" fn AudioContextLatencyCategoryOrDouble::is_double(
   #| (self) => typeof self === 'number'
 
 ///|
-/// Try to get AudioContextLatencyCategoryOrDouble as AudioContextLatencyCategory
-pub extern "js" fn AudioContextLatencyCategoryOrDouble::as_audio_context_latency_category(
+extern "js" fn AudioContextLatencyCategoryOrDouble::as_audio_context_latency_category_string(
   self : AudioContextLatencyCategoryOrDouble,
-) -> AudioContextLatencyCategory? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn AudioContextLatencyCategoryOrDouble::as_audio_context_latency_category(
+  self : AudioContextLatencyCategoryOrDouble,
+) -> AudioContextLatencyCategory? {
+  if self.is_audio_context_latency_category() {
+    AudioContextLatencyCategory::from_string(
+      self.as_audio_context_latency_category_string(),
+    )
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get AudioContextLatencyCategoryOrDouble as Double
@@ -6522,11 +6920,19 @@ pub extern "js" fn AudioContextRenderSizeCategoryOrInt::to_js_value(
   #| (self) => self
 
 ///|
-/// Create AudioContextRenderSizeCategoryOrInt from AudioContextRenderSizeCategory
-pub extern "js" fn AudioContextRenderSizeCategoryOrInt::from_audio_context_render_size_category(
-  v : AudioContextRenderSizeCategory,
+extern "js" fn AudioContextRenderSizeCategoryOrInt::from_audio_context_render_size_category_ffi(
+  v : String,
 ) -> AudioContextRenderSizeCategoryOrInt =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn AudioContextRenderSizeCategoryOrInt::from_audio_context_render_size_category(
+  v : AudioContextRenderSizeCategory,
+) -> AudioContextRenderSizeCategoryOrInt {
+  AudioContextRenderSizeCategoryOrInt::from_audio_context_render_size_category_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Create AudioContextRenderSizeCategoryOrInt from Int
@@ -6550,11 +6956,23 @@ pub extern "js" fn AudioContextRenderSizeCategoryOrInt::is_int(
   #| (self) => typeof self === 'number'
 
 ///|
-/// Try to get AudioContextRenderSizeCategoryOrInt as AudioContextRenderSizeCategory
-pub extern "js" fn AudioContextRenderSizeCategoryOrInt::as_audio_context_render_size_category(
+extern "js" fn AudioContextRenderSizeCategoryOrInt::as_audio_context_render_size_category_string(
   self : AudioContextRenderSizeCategoryOrInt,
-) -> AudioContextRenderSizeCategory? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn AudioContextRenderSizeCategoryOrInt::as_audio_context_render_size_category(
+  self : AudioContextRenderSizeCategoryOrInt,
+) -> AudioContextRenderSizeCategory? {
+  if self.is_audio_context_render_size_category() {
+    AudioContextRenderSizeCategory::from_string(
+      self.as_audio_context_render_size_category_string(),
+    )
+  } else {
+    None
+  }
+}
 
 ///|
 /// Try to get AudioContextRenderSizeCategoryOrInt as Int
@@ -6603,11 +7021,17 @@ pub extern "js" fn CryptoKeyOrCryptoKeyPair::from_crypto_key(
   #| (v) => v
 
 ///|
-/// Create CryptoKeyOrCryptoKeyPair from CryptoKeyPair
-pub extern "js" fn CryptoKeyOrCryptoKeyPair::from_crypto_key_pair(
-  v : CryptoKeyPair,
+extern "js" fn CryptoKeyOrCryptoKeyPair::from_crypto_key_pair_ffi(
+  v : JsValue,
 ) -> CryptoKeyOrCryptoKeyPair =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn CryptoKeyOrCryptoKeyPair::from_crypto_key_pair(
+  v : CryptoKeyPair,
+) -> CryptoKeyOrCryptoKeyPair {
+  CryptoKeyOrCryptoKeyPair::from_crypto_key_pair_ffi(v.to_js())
+}
 
 ///|
 /// Check if this CryptoKeyOrCryptoKeyPair is CryptoKey
@@ -6631,11 +7055,15 @@ pub extern "js" fn CryptoKeyOrCryptoKeyPair::as_crypto_key(
   #| (self) => (self instanceof CryptoKey) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get CryptoKeyOrCryptoKeyPair as CryptoKeyPair
-pub extern "js" fn CryptoKeyOrCryptoKeyPair::as_crypto_key_pair(
+pub fn CryptoKeyOrCryptoKeyPair::as_crypto_key_pair(
   self : CryptoKeyOrCryptoKeyPair,
-) -> CryptoKeyPair? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> CryptoKeyPair? {
+  if self.is_crypto_key_pair() {
+    Some(CryptoKeyPair::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[CryptoKeyOrCryptoKeyPair] to CryptoKey?
@@ -6677,11 +7105,17 @@ pub extern "js" fn BufferSourceOrJsonWebKey::from_buffer_source(
   #| (v) => v
 
 ///|
-/// Create BufferSourceOrJsonWebKey from JsonWebKey
-pub extern "js" fn BufferSourceOrJsonWebKey::from_json_web_key(
-  v : JsonWebKey,
+extern "js" fn BufferSourceOrJsonWebKey::from_json_web_key_ffi(
+  v : JsValue,
 ) -> BufferSourceOrJsonWebKey =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn BufferSourceOrJsonWebKey::from_json_web_key(
+  v : JsonWebKey,
+) -> BufferSourceOrJsonWebKey {
+  BufferSourceOrJsonWebKey::from_json_web_key_ffi(v.to_js())
+}
 
 ///|
 /// Check if this BufferSourceOrJsonWebKey is BufferSource
@@ -6705,11 +7139,15 @@ pub extern "js" fn BufferSourceOrJsonWebKey::as_buffer_source(
   #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get BufferSourceOrJsonWebKey as JsonWebKey
-pub extern "js" fn BufferSourceOrJsonWebKey::as_json_web_key(
+pub fn BufferSourceOrJsonWebKey::as_json_web_key(
   self : BufferSourceOrJsonWebKey,
-) -> JsonWebKey? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> JsonWebKey? {
+  if self.is_json_web_key() {
+    Some(JsonWebKey::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[BufferSourceOrJsonWebKey] to BufferSource?
@@ -6751,11 +7189,17 @@ pub extern "js" fn ArrayBufferOrJsonWebKey::from_array_buffer(
   #| (v) => v
 
 ///|
-/// Create ArrayBufferOrJsonWebKey from JsonWebKey
-pub extern "js" fn ArrayBufferOrJsonWebKey::from_json_web_key(
-  v : JsonWebKey,
+extern "js" fn ArrayBufferOrJsonWebKey::from_json_web_key_ffi(
+  v : JsValue,
 ) -> ArrayBufferOrJsonWebKey =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ArrayBufferOrJsonWebKey::from_json_web_key(
+  v : JsonWebKey,
+) -> ArrayBufferOrJsonWebKey {
+  ArrayBufferOrJsonWebKey::from_json_web_key_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ArrayBufferOrJsonWebKey is ArrayBuffer
@@ -6779,11 +7223,15 @@ pub extern "js" fn ArrayBufferOrJsonWebKey::as_array_buffer(
   #| (self) => (self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ArrayBufferOrJsonWebKey as JsonWebKey
-pub extern "js" fn ArrayBufferOrJsonWebKey::as_json_web_key(
+pub fn ArrayBufferOrJsonWebKey::as_json_web_key(
   self : ArrayBufferOrJsonWebKey,
-) -> JsonWebKey? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> JsonWebKey? {
+  if self.is_json_web_key() {
+    Some(JsonWebKey::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ArrayBufferOrJsonWebKey] to ArrayBuffer?
@@ -7040,11 +7488,19 @@ pub extern "js" fn GPUTextureViewDimensionOrVoid::to_js_value(
   #| (self) => self
 
 ///|
-/// Create GPUTextureViewDimensionOrVoid from GPUTextureViewDimension
-pub extern "js" fn GPUTextureViewDimensionOrVoid::from_gpu_texture_view_dimension(
-  v : GPUTextureViewDimension,
+extern "js" fn GPUTextureViewDimensionOrVoid::from_gpu_texture_view_dimension_ffi(
+  v : String,
 ) -> GPUTextureViewDimensionOrVoid =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn GPUTextureViewDimensionOrVoid::from_gpu_texture_view_dimension(
+  v : GPUTextureViewDimension,
+) -> GPUTextureViewDimensionOrVoid {
+  GPUTextureViewDimensionOrVoid::from_gpu_texture_view_dimension_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Check if this GPUTextureViewDimensionOrVoid is GPUTextureViewDimension
@@ -7054,11 +7510,23 @@ pub extern "js" fn GPUTextureViewDimensionOrVoid::is_gpu_texture_view_dimension(
   #| (self) => typeof self === 'string'
 
 ///|
-/// Try to get GPUTextureViewDimensionOrVoid as GPUTextureViewDimension
-pub extern "js" fn GPUTextureViewDimensionOrVoid::as_gpu_texture_view_dimension(
+extern "js" fn GPUTextureViewDimensionOrVoid::as_gpu_texture_view_dimension_string(
   self : GPUTextureViewDimensionOrVoid,
-) -> GPUTextureViewDimension? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn GPUTextureViewDimensionOrVoid::as_gpu_texture_view_dimension(
+  self : GPUTextureViewDimensionOrVoid,
+) -> GPUTextureViewDimension? {
+  if self.is_gpu_texture_view_dimension() {
+    GPUTextureViewDimension::from_string(
+      self.as_gpu_texture_view_dimension_string(),
+    )
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[GPUTextureViewDimensionOrVoid] to GPUTextureViewDimension?
@@ -7163,11 +7631,19 @@ pub extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::from_gpu_pipeline_layou
   #| (v) => v
 
 ///|
-/// Create GPUPipelineLayoutOrGPUAutoLayoutMode from GPUAutoLayoutMode
-pub extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::from_gpu_auto_layout_mode(
-  v : GPUAutoLayoutMode,
+extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::from_gpu_auto_layout_mode_ffi(
+  v : String,
 ) -> GPUPipelineLayoutOrGPUAutoLayoutMode =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn GPUPipelineLayoutOrGPUAutoLayoutMode::from_gpu_auto_layout_mode(
+  v : GPUAutoLayoutMode,
+) -> GPUPipelineLayoutOrGPUAutoLayoutMode {
+  GPUPipelineLayoutOrGPUAutoLayoutMode::from_gpu_auto_layout_mode_ffi(
+    v.to_string(),
+  )
+}
 
 ///|
 /// Check if this GPUPipelineLayoutOrGPUAutoLayoutMode is GPUPipelineLayout
@@ -7191,11 +7667,21 @@ pub extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::as_gpu_pipeline_layout(
   #| (self) => (self instanceof GPUPipelineLayout) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get GPUPipelineLayoutOrGPUAutoLayoutMode as GPUAutoLayoutMode
-pub extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::as_gpu_auto_layout_mode(
+extern "js" fn GPUPipelineLayoutOrGPUAutoLayoutMode::as_gpu_auto_layout_mode_string(
   self : GPUPipelineLayoutOrGPUAutoLayoutMode,
-) -> GPUAutoLayoutMode? =
-  #| (self) => (typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> String =
+  #| self => self
+
+///|
+pub fn GPUPipelineLayoutOrGPUAutoLayoutMode::as_gpu_auto_layout_mode(
+  self : GPUPipelineLayoutOrGPUAutoLayoutMode,
+) -> GPUAutoLayoutMode? {
+  if self.is_gpu_auto_layout_mode() {
+    GPUAutoLayoutMode::from_string(self.as_gpu_auto_layout_mode_string())
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[GPUPipelineLayoutOrGPUAutoLayoutMode] to GPUPipelineLayout?

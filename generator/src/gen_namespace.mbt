@@ -230,6 +230,7 @@ fn gen_namespace_operation_single(
   arg_count : Int,
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
+  primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
   let op_snake = op.name |> to_snake_case |> escape_reserved
   let fn_name = ns_snake + "_" + op_snake + fn_suffix
@@ -281,7 +282,9 @@ fn gen_namespace_operation_single(
     if i > 0 {
       js_call_args.write_string(", ")
     }
-    js_call_args.write_string(gen_js_call_arg(args[i], enum_map, dict_map))
+    js_call_args.write_string(
+      gen_js_call_arg(args[i], enum_map, dict_map, primitive_typedef_map~),
+    )
   }
   let js_expr = ns_name + "." + op.name + "(" + js_call_args.to_string() + ")"
   let wrapped = wrap_return_or_throwing(
@@ -356,6 +359,7 @@ fn gen_namespace_attribute_getter(
 pub fn gen_namespace_binding(ns : NamespaceDef, ctx : GenContext) -> String {
   let enum_map = ctx.enum_map
   let dict_map = ctx.dict_map
+  let primitive_typedef_map = ctx.primitive_typedef_map
   let result = StringBuilder()
   let ns_snake = to_snake_case(ns.name)
   result.write_string("///|\n")
@@ -417,6 +421,7 @@ pub fn gen_namespace_binding(ns : NamespaceDef, ctx : GenContext) -> String {
                 total_count,
                 enum_map,
                 dict_map,
+                primitive_typedef_map~,
               ),
             )
             result.write_string("\n")
@@ -434,6 +439,7 @@ pub fn gen_namespace_binding(ns : NamespaceDef, ctx : GenContext) -> String {
                 total_args,
                 enum_map,
                 dict_map,
+                primitive_typedef_map~,
               ),
             )
             result.write_string("\n")
@@ -448,6 +454,7 @@ pub fn gen_namespace_binding(ns : NamespaceDef, ctx : GenContext) -> String {
                 first_optional,
                 enum_map,
                 dict_map,
+                primitive_typedef_map~,
               ),
             )
             result.write_string("\n")
@@ -463,6 +470,7 @@ pub fn gen_namespace_binding(ns : NamespaceDef, ctx : GenContext) -> String {
                 total_args,
                 enum_map,
                 dict_map,
+                primitive_typedef_map~,
               ),
             )
             result.write_string("\n")

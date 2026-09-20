@@ -1329,33 +1329,37 @@ pub fn RTCRtpParameters::new(rtcp~ : RTCRtcpParameters) -> RTCRtpParameters {
 }
 
 ///|
-extern "js" fn RTCRtpParameters::to_js_ffi(self : RTCRtpParameters) -> JsValue =
-  #| (self) => ({
+extern "js" fn RTCRtpParameters::to_js_ffi(
+  self : RTCRtpParameters,
+  convert_rtcp : (RTCRtcpParameters) -> JsValue,
+) -> JsValue =
+  #| (self, convert_rtcp) => ({
   #|   headerExtensions: self.headerExtensions,
-  #|   rtcp: self.rtcp,
+  #|   rtcp: convert_rtcp(self.rtcp),
   #|   codecs: self.codecs
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RTCRtpParameters::to_js(self : RTCRtpParameters) -> JsValue {
-  RTCRtpParameters::to_js_ffi(self)
+  RTCRtpParameters::to_js_ffi(self, RTCRtcpParameters::to_js)
 }
 
 ///|
 extern "js" fn RTCRtpParameters::from_js_ffi(
   value : JsValue,
+  convert_rtcp : (JsValue) -> RTCRtcpParameters,
 ) -> RTCRtpParameters =
-  #| (v) => ({
+  #| (v, convert_rtcp) => ({
   #|   headerExtensions: v.headerExtensions,
-  #|   rtcp: v.rtcp,
+  #|   rtcp: convert_rtcp(v.rtcp),
   #|   codecs: v.codecs
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn RTCRtpParameters::from_js(value : JsValue) -> RTCRtpParameters {
-  RTCRtpParameters::from_js_ffi(value)
+  RTCRtpParameters::from_js_ffi(value, RTCRtcpParameters::from_js)
 }
 
 ///|
@@ -1377,10 +1381,11 @@ pub fn RTCRtpReceiveParameters::new(
 ///|
 extern "js" fn RTCRtpReceiveParameters::to_js_ffi(
   self : RTCRtpReceiveParameters,
+  convert_rtcp : (RTCRtcpParameters) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_rtcp) => ({
   #|   headerExtensions: self.headerExtensions,
-  #|   rtcp: self.rtcp,
+  #|   rtcp: convert_rtcp(self.rtcp),
   #|   codecs: self.codecs
   #| })
 
@@ -1389,16 +1394,17 @@ extern "js" fn RTCRtpReceiveParameters::to_js_ffi(
 pub fn RTCRtpReceiveParameters::to_js(
   self : RTCRtpReceiveParameters,
 ) -> JsValue {
-  RTCRtpReceiveParameters::to_js_ffi(self)
+  RTCRtpReceiveParameters::to_js_ffi(self, RTCRtcpParameters::to_js)
 }
 
 ///|
 extern "js" fn RTCRtpReceiveParameters::from_js_ffi(
   value : JsValue,
+  convert_rtcp : (JsValue) -> RTCRtcpParameters,
 ) -> RTCRtpReceiveParameters =
-  #| (v) => ({
+  #| (v, convert_rtcp) => ({
   #|   headerExtensions: v.headerExtensions,
-  #|   rtcp: v.rtcp,
+  #|   rtcp: convert_rtcp(v.rtcp),
   #|   codecs: v.codecs
   #| })
 
@@ -1407,7 +1413,7 @@ extern "js" fn RTCRtpReceiveParameters::from_js_ffi(
 pub fn RTCRtpReceiveParameters::from_js(
   value : JsValue,
 ) -> RTCRtpReceiveParameters {
-  RTCRtpReceiveParameters::from_js_ffi(value)
+  RTCRtpReceiveParameters::from_js_ffi(value, RTCRtcpParameters::from_js)
 }
 
 ///|

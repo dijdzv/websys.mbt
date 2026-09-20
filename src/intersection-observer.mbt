@@ -48,12 +48,14 @@ pub fn IntersectionObserverEntryInit::new(
 ///|
 extern "js" fn IntersectionObserverEntryInit::to_js_ffi(
   self : IntersectionObserverEntryInit,
+  convert_boundingClientRect : (DOMRectInit) -> JsValue,
+  convert_intersectionRect : (DOMRectInit) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_boundingClientRect, convert_intersectionRect) => ({
   #|   time: self.time,
   #|   rootBounds: self.rootBounds,
-  #|   boundingClientRect: self.boundingClientRect,
-  #|   intersectionRect: self.intersectionRect,
+  #|   boundingClientRect: convert_boundingClientRect(self.boundingClientRect),
+  #|   intersectionRect: convert_intersectionRect(self.intersectionRect),
   #|   isIntersecting: self.isIntersecting,
   #|   isVisible: self.isVisible,
   #|   intersectionRatio: self.intersectionRatio,
@@ -65,18 +67,24 @@ extern "js" fn IntersectionObserverEntryInit::to_js_ffi(
 pub fn IntersectionObserverEntryInit::to_js(
   self : IntersectionObserverEntryInit,
 ) -> JsValue {
-  IntersectionObserverEntryInit::to_js_ffi(self)
+  IntersectionObserverEntryInit::to_js_ffi(
+    self,
+    DOMRectInit::to_js,
+    DOMRectInit::to_js,
+  )
 }
 
 ///|
 extern "js" fn IntersectionObserverEntryInit::from_js_ffi(
   value : JsValue,
+  convert_boundingClientRect : (JsValue) -> DOMRectInit,
+  convert_intersectionRect : (JsValue) -> DOMRectInit,
 ) -> IntersectionObserverEntryInit =
-  #| (v) => ({
+  #| (v, convert_boundingClientRect, convert_intersectionRect) => ({
   #|   time: v.time,
   #|   rootBounds: v.rootBounds,
-  #|   boundingClientRect: v.boundingClientRect,
-  #|   intersectionRect: v.intersectionRect,
+  #|   boundingClientRect: convert_boundingClientRect(v.boundingClientRect),
+  #|   intersectionRect: convert_intersectionRect(v.intersectionRect),
   #|   isIntersecting: v.isIntersecting,
   #|   isVisible: v.isVisible,
   #|   intersectionRatio: v.intersectionRatio,
@@ -88,7 +96,11 @@ extern "js" fn IntersectionObserverEntryInit::from_js_ffi(
 pub fn IntersectionObserverEntryInit::from_js(
   value : JsValue,
 ) -> IntersectionObserverEntryInit {
-  IntersectionObserverEntryInit::from_js_ffi(value)
+  IntersectionObserverEntryInit::from_js_ffi(
+    value,
+    DOMRectInit::from_js,
+    DOMRectInit::from_js,
+  )
 }
 
 ///|

@@ -580,9 +580,10 @@ pub fn RTCEncodedVideoFrameOptions::default() -> RTCEncodedVideoFrameOptions {
 ///|
 extern "js" fn RTCEncodedVideoFrameOptions::to_js_ffi(
   self : RTCEncodedVideoFrameOptions,
+  convert_metadata : (RTCEncodedVideoFrameMetadata?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_metadata) => ({
+  #|   metadata: convert_metadata(self.metadata)
   #| })
 
 ///|
@@ -590,15 +591,21 @@ extern "js" fn RTCEncodedVideoFrameOptions::to_js_ffi(
 pub fn RTCEncodedVideoFrameOptions::to_js(
   self : RTCEncodedVideoFrameOptions,
 ) -> JsValue {
-  RTCEncodedVideoFrameOptions::to_js_ffi(self)
+  RTCEncodedVideoFrameOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn RTCEncodedVideoFrameOptions::from_js_ffi(
   value : JsValue,
+  convert_metadata : (JsValue) -> RTCEncodedVideoFrameMetadata?,
 ) -> RTCEncodedVideoFrameOptions =
-  #| (v) => ({
-  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #| (v, convert_metadata) => ({
+  #|   metadata: convert_metadata(v.metadata)
   #| })
 
 ///|
@@ -606,7 +613,13 @@ extern "js" fn RTCEncodedVideoFrameOptions::from_js_ffi(
 pub fn RTCEncodedVideoFrameOptions::from_js(
   value : JsValue,
 ) -> RTCEncodedVideoFrameOptions {
-  RTCEncodedVideoFrameOptions::from_js_ffi(value)
+  RTCEncodedVideoFrameOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(RTCEncodedVideoFrameMetadata::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -706,9 +719,10 @@ pub fn RTCEncodedAudioFrameOptions::default() -> RTCEncodedAudioFrameOptions {
 ///|
 extern "js" fn RTCEncodedAudioFrameOptions::to_js_ffi(
   self : RTCEncodedAudioFrameOptions,
+  convert_metadata : (RTCEncodedAudioFrameMetadata?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_metadata) => ({
+  #|   metadata: convert_metadata(self.metadata)
   #| })
 
 ///|
@@ -716,15 +730,21 @@ extern "js" fn RTCEncodedAudioFrameOptions::to_js_ffi(
 pub fn RTCEncodedAudioFrameOptions::to_js(
   self : RTCEncodedAudioFrameOptions,
 ) -> JsValue {
-  RTCEncodedAudioFrameOptions::to_js_ffi(self)
+  RTCEncodedAudioFrameOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn RTCEncodedAudioFrameOptions::from_js_ffi(
   value : JsValue,
+  convert_metadata : (JsValue) -> RTCEncodedAudioFrameMetadata?,
 ) -> RTCEncodedAudioFrameOptions =
-  #| (v) => ({
-  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #| (v, convert_metadata) => ({
+  #|   metadata: convert_metadata(v.metadata)
   #| })
 
 ///|
@@ -732,7 +752,13 @@ extern "js" fn RTCEncodedAudioFrameOptions::from_js_ffi(
 pub fn RTCEncodedAudioFrameOptions::from_js(
   value : JsValue,
 ) -> RTCEncodedAudioFrameOptions {
-  RTCEncodedAudioFrameOptions::from_js_ffi(value)
+  RTCEncodedAudioFrameOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(RTCEncodedAudioFrameMetadata::from_js(value))
+    }
+  })
 }
 
 ///|

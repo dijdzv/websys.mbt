@@ -411,6 +411,9 @@ pub fn gen_shared_types_with_externals(
   )
   result.write_string("pub type JsError\n\n")
   result.write_string(
+    "///|\nextern \"js\" fn dictionary_undefined() -> JsValue =\n  #| () => undefined\n\n",
+  )
+  result.write_string(
     "///|\nextern \"js\" fn try_dictionary_conversion(convert : () -> JsValue) -> Result[JsValue, JsError] =\n  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }\n\n",
   )
   result.write_string(
@@ -636,6 +639,7 @@ pub fn format_spec_output(
               global_enum_map,
               global_union_set,
               primitive_typedef_map~,
+              dictionary_names~,
             ),
           )
           result.write_string("\n")

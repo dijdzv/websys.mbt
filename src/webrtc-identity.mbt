@@ -133,9 +133,10 @@ pub fn RTCIdentityAssertionResult::new(
 ///|
 extern "js" fn RTCIdentityAssertionResult::to_js_ffi(
   self : RTCIdentityAssertionResult,
+  convert_idp : (RTCIdentityProviderDetails) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   idp: self.idp,
+  #| (self, convert_idp) => ({
+  #|   idp: convert_idp(self.idp),
   #|   assertion: self.assertion
   #| })
 
@@ -144,15 +145,16 @@ extern "js" fn RTCIdentityAssertionResult::to_js_ffi(
 pub fn RTCIdentityAssertionResult::to_js(
   self : RTCIdentityAssertionResult,
 ) -> JsValue {
-  RTCIdentityAssertionResult::to_js_ffi(self)
+  RTCIdentityAssertionResult::to_js_ffi(self, RTCIdentityProviderDetails::to_js)
 }
 
 ///|
 extern "js" fn RTCIdentityAssertionResult::from_js_ffi(
   value : JsValue,
+  convert_idp : (JsValue) -> RTCIdentityProviderDetails,
 ) -> RTCIdentityAssertionResult =
-  #| (v) => ({
-  #|   idp: v.idp,
+  #| (v, convert_idp) => ({
+  #|   idp: convert_idp(v.idp),
   #|   assertion: v.assertion
   #| })
 
@@ -161,7 +163,10 @@ extern "js" fn RTCIdentityAssertionResult::from_js_ffi(
 pub fn RTCIdentityAssertionResult::from_js(
   value : JsValue,
 ) -> RTCIdentityAssertionResult {
-  RTCIdentityAssertionResult::from_js_ffi(value)
+  RTCIdentityAssertionResult::from_js_ffi(
+    value,
+    RTCIdentityProviderDetails::from_js,
+  )
 }
 
 ///|

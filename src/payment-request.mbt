@@ -220,37 +220,39 @@ pub fn PaymentDetailsInit::new(total~ : PaymentItem) -> PaymentDetailsInit {
 ///|
 extern "js" fn PaymentDetailsInit::to_js_ffi(
   self : PaymentDetailsInit,
+  convert_total : (PaymentItem) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_total) => ({
   #|   displayItems: self.displayItems,
   #|   shippingOptions: self.shippingOptions,
   #|   modifiers: self.modifiers,
   #|   id: self.id,
-  #|   total: self.total
+  #|   total: convert_total(self.total)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PaymentDetailsInit::to_js(self : PaymentDetailsInit) -> JsValue {
-  PaymentDetailsInit::to_js_ffi(self)
+  PaymentDetailsInit::to_js_ffi(self, PaymentItem::to_js)
 }
 
 ///|
 extern "js" fn PaymentDetailsInit::from_js_ffi(
   value : JsValue,
+  convert_total : (JsValue) -> PaymentItem,
 ) -> PaymentDetailsInit =
-  #| (v) => ({
+  #| (v, convert_total) => ({
   #|   displayItems: v.displayItems,
   #|   shippingOptions: v.shippingOptions,
   #|   modifiers: v.modifiers,
   #|   id: v.id,
-  #|   total: v.total
+  #|   total: convert_total(v.total)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn PaymentDetailsInit::from_js(value : JsValue) -> PaymentDetailsInit {
-  PaymentDetailsInit::from_js_ffi(value)
+  PaymentDetailsInit::from_js_ffi(value, PaymentItem::from_js)
 }
 
 ///|
@@ -284,43 +286,92 @@ pub fn PaymentDetailsUpdate::default() -> PaymentDetailsUpdate {
 ///|
 extern "js" fn PaymentDetailsUpdate::to_js_ffi(
   self : PaymentDetailsUpdate,
+  convert_total : (PaymentItem?) -> JsValue,
+  convert_shippingAddressErrors : (AddressErrors?) -> JsValue,
+  convert_payerErrors : (PayerErrors?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_total, convert_shippingAddressErrors, convert_payerErrors) => ({
   #|   displayItems: self.displayItems,
   #|   shippingOptions: self.shippingOptions,
   #|   modifiers: self.modifiers,
   #|   error: self.error,
-  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   shippingAddressErrors: ((() => { const v = self.shippingAddressErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   payerErrors: ((() => { const v = self.payerErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: convert_total(self.total),
+  #|   shippingAddressErrors: convert_shippingAddressErrors(self.shippingAddressErrors),
+  #|   payerErrors: convert_payerErrors(self.payerErrors),
   #|   paymentMethodErrors: ((() => { const v = self.paymentMethodErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PaymentDetailsUpdate::to_js(self : PaymentDetailsUpdate) -> JsValue {
-  PaymentDetailsUpdate::to_js_ffi(self)
+  PaymentDetailsUpdate::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PaymentDetailsUpdate::from_js_ffi(
   value : JsValue,
+  convert_total : (JsValue) -> PaymentItem?,
+  convert_shippingAddressErrors : (JsValue) -> AddressErrors?,
+  convert_payerErrors : (JsValue) -> PayerErrors?,
 ) -> PaymentDetailsUpdate =
-  #| (v) => ({
+  #| (v, convert_total, convert_shippingAddressErrors, convert_payerErrors) => ({
   #|   displayItems: v.displayItems,
   #|   shippingOptions: v.shippingOptions,
   #|   modifiers: v.modifiers,
   #|   error: v.error,
-  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
-  #|   shippingAddressErrors: (v.shippingAddressErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shippingAddressErrors }),
-  #|   payerErrors: (v.payerErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payerErrors }),
+  #|   total: convert_total(v.total),
+  #|   shippingAddressErrors: convert_shippingAddressErrors(v.shippingAddressErrors),
+  #|   payerErrors: convert_payerErrors(v.payerErrors),
   #|   paymentMethodErrors: (v.paymentMethodErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentMethodErrors })
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn PaymentDetailsUpdate::from_js(value : JsValue) -> PaymentDetailsUpdate {
-  PaymentDetailsUpdate::from_js_ffi(value)
+  PaymentDetailsUpdate::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PaymentItem::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AddressErrors::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PayerErrors::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -346,10 +397,11 @@ pub fn PaymentDetailsModifier::default() -> PaymentDetailsModifier {
 ///|
 extern "js" fn PaymentDetailsModifier::to_js_ffi(
   self : PaymentDetailsModifier,
+  convert_total : (PaymentItem?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_total) => ({
   #|   supportedMethods: self.supportedMethods,
-  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: convert_total(self.total),
   #|   additionalDisplayItems: self.additionalDisplayItems,
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -357,16 +409,22 @@ extern "js" fn PaymentDetailsModifier::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn PaymentDetailsModifier::to_js(self : PaymentDetailsModifier) -> JsValue {
-  PaymentDetailsModifier::to_js_ffi(self)
+  PaymentDetailsModifier::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn PaymentDetailsModifier::from_js_ffi(
   value : JsValue,
+  convert_total : (JsValue) -> PaymentItem?,
 ) -> PaymentDetailsModifier =
-  #| (v) => ({
+  #| (v, convert_total) => ({
   #|   supportedMethods: v.supportedMethods,
-  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
+  #|   total: convert_total(v.total),
   #|   additionalDisplayItems: v.additionalDisplayItems,
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
   #| })
@@ -376,7 +434,13 @@ extern "js" fn PaymentDetailsModifier::from_js_ffi(
 pub fn PaymentDetailsModifier::from_js(
   value : JsValue,
 ) -> PaymentDetailsModifier {
-  PaymentDetailsModifier::from_js_ffi(value)
+  PaymentDetailsModifier::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(PaymentItem::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -452,31 +516,37 @@ pub fn PaymentItem::new(amount~ : PaymentCurrencyAmount) -> PaymentItem {
 }
 
 ///|
-extern "js" fn PaymentItem::to_js_ffi(self : PaymentItem) -> JsValue =
-  #| (self) => ({
+extern "js" fn PaymentItem::to_js_ffi(
+  self : PaymentItem,
+  convert_amount : (PaymentCurrencyAmount) -> JsValue,
+) -> JsValue =
+  #| (self, convert_amount) => ({
   #|   label: self.label,
-  #|   amount: self.amount,
+  #|   amount: convert_amount(self.amount),
   #|   pending: (self.pending === -1 ? undefined : self.pending)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PaymentItem::to_js(self : PaymentItem) -> JsValue {
-  PaymentItem::to_js_ffi(self)
+  PaymentItem::to_js_ffi(self, PaymentCurrencyAmount::to_js)
 }
 
 ///|
-extern "js" fn PaymentItem::from_js_ffi(value : JsValue) -> PaymentItem =
-  #| (v) => ({
+extern "js" fn PaymentItem::from_js_ffi(
+  value : JsValue,
+  convert_amount : (JsValue) -> PaymentCurrencyAmount,
+) -> PaymentItem =
+  #| (v, convert_amount) => ({
   #|   label: v.label,
-  #|   amount: v.amount,
+  #|   amount: convert_amount(v.amount),
   #|   pending: (v.pending === undefined ? -1 : v.pending)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn PaymentItem::from_js(value : JsValue) -> PaymentItem {
-  PaymentItem::from_js_ffi(value)
+  PaymentItem::from_js_ffi(value, PaymentCurrencyAmount::from_js)
 }
 
 ///|
@@ -541,35 +611,37 @@ pub fn PaymentShippingOption::new(
 ///|
 extern "js" fn PaymentShippingOption::to_js_ffi(
   self : PaymentShippingOption,
+  convert_amount : (PaymentCurrencyAmount) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_amount) => ({
   #|   id: self.id,
   #|   label: self.label,
-  #|   amount: self.amount,
+  #|   amount: convert_amount(self.amount),
   #|   selected: (self.selected === -1 ? undefined : self.selected)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PaymentShippingOption::to_js(self : PaymentShippingOption) -> JsValue {
-  PaymentShippingOption::to_js_ffi(self)
+  PaymentShippingOption::to_js_ffi(self, PaymentCurrencyAmount::to_js)
 }
 
 ///|
 extern "js" fn PaymentShippingOption::from_js_ffi(
   value : JsValue,
+  convert_amount : (JsValue) -> PaymentCurrencyAmount,
 ) -> PaymentShippingOption =
-  #| (v) => ({
+  #| (v, convert_amount) => ({
   #|   id: v.id,
   #|   label: v.label,
-  #|   amount: v.amount,
+  #|   amount: convert_amount(v.amount),
   #|   selected: (v.selected === undefined ? -1 : v.selected)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn PaymentShippingOption::from_js(value : JsValue) -> PaymentShippingOption {
-  PaymentShippingOption::from_js_ffi(value)
+  PaymentShippingOption::from_js_ffi(value, PaymentCurrencyAmount::from_js)
 }
 
 ///|
@@ -595,10 +667,12 @@ pub fn PaymentValidationErrors::default() -> PaymentValidationErrors {
 ///|
 extern "js" fn PaymentValidationErrors::to_js_ffi(
   self : PaymentValidationErrors,
+  convert_payer : (PayerErrors?) -> JsValue,
+  convert_shippingAddress : (AddressErrors?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   payer: ((() => { const v = self.payer; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   shippingAddress: ((() => { const v = self.shippingAddress; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_payer, convert_shippingAddress) => ({
+  #|   payer: convert_payer(self.payer),
+  #|   shippingAddress: convert_shippingAddress(self.shippingAddress),
   #|   error: self.error,
   #|   paymentMethod: ((() => { const v = self.paymentMethod; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
@@ -608,16 +682,32 @@ extern "js" fn PaymentValidationErrors::to_js_ffi(
 pub fn PaymentValidationErrors::to_js(
   self : PaymentValidationErrors,
 ) -> JsValue {
-  PaymentValidationErrors::to_js_ffi(self)
+  PaymentValidationErrors::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PaymentValidationErrors::from_js_ffi(
   value : JsValue,
+  convert_payer : (JsValue) -> PayerErrors?,
+  convert_shippingAddress : (JsValue) -> AddressErrors?,
 ) -> PaymentValidationErrors =
-  #| (v) => ({
-  #|   payer: (v.payer === undefined ? { $tag: 0 } : { $tag: 1, _0: v.payer }),
-  #|   shippingAddress: (v.shippingAddress === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shippingAddress }),
+  #| (v, convert_payer, convert_shippingAddress) => ({
+  #|   payer: convert_payer(v.payer),
+  #|   shippingAddress: convert_shippingAddress(v.shippingAddress),
   #|   error: v.error,
   #|   paymentMethod: (v.paymentMethod === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentMethod })
   #| })
@@ -627,7 +717,23 @@ extern "js" fn PaymentValidationErrors::from_js_ffi(
 pub fn PaymentValidationErrors::from_js(
   value : JsValue,
 ) -> PaymentValidationErrors {
-  PaymentValidationErrors::from_js_ffi(value)
+  PaymentValidationErrors::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PayerErrors::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AddressErrors::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

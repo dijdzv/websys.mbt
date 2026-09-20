@@ -159,31 +159,65 @@ pub fn MediaConfiguration::default() -> MediaConfiguration {
 ///|
 extern "js" fn MediaConfiguration::to_js_ffi(
   self : MediaConfiguration,
+  convert_video : (VideoConfiguration?) -> JsValue,
+  convert_audio : (AudioConfiguration?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_video, convert_audio) => ({
+  #|   video: convert_video(self.video),
+  #|   audio: convert_audio(self.audio)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MediaConfiguration::to_js(self : MediaConfiguration) -> JsValue {
-  MediaConfiguration::to_js_ffi(self)
+  MediaConfiguration::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MediaConfiguration::from_js_ffi(
   value : JsValue,
+  convert_video : (JsValue) -> VideoConfiguration?,
+  convert_audio : (JsValue) -> AudioConfiguration?,
 ) -> MediaConfiguration =
-  #| (v) => ({
-  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
-  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio })
+  #| (v, convert_video, convert_audio) => ({
+  #|   video: convert_video(v.video),
+  #|   audio: convert_audio(v.audio)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MediaConfiguration::from_js(value : JsValue) -> MediaConfiguration {
-  MediaConfiguration::from_js_ffi(value)
+  MediaConfiguration::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoConfiguration::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AudioConfiguration::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -211,12 +245,15 @@ pub fn MediaDecodingConfiguration::new(
 ///|
 extern "js" fn MediaDecodingConfiguration::to_js_ffi(
   self : MediaDecodingConfiguration,
+  convert_video : (VideoConfiguration?) -> JsValue,
+  convert_audio : (AudioConfiguration?) -> JsValue,
+  convert_keySystemConfiguration : (MediaCapabilitiesKeySystemConfiguration?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_video, convert_audio, convert_keySystemConfiguration) => ({
+  #|   video: convert_video(self.video),
+  #|   audio: convert_audio(self.audio),
   #|   type: ['file', 'media-source', 'webrtc'][self.type_],
-  #|   keySystemConfiguration: ((() => { const v = self.keySystemConfiguration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   keySystemConfiguration: convert_keySystemConfiguration(self.keySystemConfiguration)
   #| })
 
 ///|
@@ -224,18 +261,41 @@ extern "js" fn MediaDecodingConfiguration::to_js_ffi(
 pub fn MediaDecodingConfiguration::to_js(
   self : MediaDecodingConfiguration,
 ) -> JsValue {
-  MediaDecodingConfiguration::to_js_ffi(self)
+  MediaDecodingConfiguration::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MediaDecodingConfiguration::from_js_ffi(
   value : JsValue,
+  convert_video : (JsValue) -> VideoConfiguration?,
+  convert_audio : (JsValue) -> AudioConfiguration?,
+  convert_keySystemConfiguration : (JsValue) -> MediaCapabilitiesKeySystemConfiguration?,
 ) -> MediaDecodingConfiguration =
-  #| (v) => ({
-  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
-  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
+  #| (v, convert_video, convert_audio, convert_keySystemConfiguration) => ({
+  #|   video: convert_video(v.video),
+  #|   audio: convert_audio(v.audio),
   #|   type_: ['file', 'media-source', 'webrtc'].indexOf(v.type),
-  #|   keySystemConfiguration: (v.keySystemConfiguration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.keySystemConfiguration })
+  #|   keySystemConfiguration: convert_keySystemConfiguration(v.keySystemConfiguration)
   #| })
 
 ///|
@@ -243,7 +303,30 @@ extern "js" fn MediaDecodingConfiguration::from_js_ffi(
 pub fn MediaDecodingConfiguration::from_js(
   value : JsValue,
 ) -> MediaDecodingConfiguration {
-  MediaDecodingConfiguration::from_js_ffi(value)
+  MediaDecodingConfiguration::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoConfiguration::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AudioConfiguration::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MediaCapabilitiesKeySystemConfiguration::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -265,10 +348,12 @@ pub fn MediaEncodingConfiguration::new(
 ///|
 extern "js" fn MediaEncodingConfiguration::to_js_ffi(
   self : MediaEncodingConfiguration,
+  convert_video : (VideoConfiguration?) -> JsValue,
+  convert_audio : (AudioConfiguration?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_video, convert_audio) => ({
+  #|   video: convert_video(self.video),
+  #|   audio: convert_audio(self.audio),
   #|   type: ['record', 'webrtc'][self.type_]
   #| })
 
@@ -277,16 +362,32 @@ extern "js" fn MediaEncodingConfiguration::to_js_ffi(
 pub fn MediaEncodingConfiguration::to_js(
   self : MediaEncodingConfiguration,
 ) -> JsValue {
-  MediaEncodingConfiguration::to_js_ffi(self)
+  MediaEncodingConfiguration::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MediaEncodingConfiguration::from_js_ffi(
   value : JsValue,
+  convert_video : (JsValue) -> VideoConfiguration?,
+  convert_audio : (JsValue) -> AudioConfiguration?,
 ) -> MediaEncodingConfiguration =
-  #| (v) => ({
-  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
-  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
+  #| (v, convert_video, convert_audio) => ({
+  #|   video: convert_video(v.video),
+  #|   audio: convert_audio(v.audio),
   #|   type_: ['record', 'webrtc'].indexOf(v.type)
   #| })
 
@@ -295,7 +396,23 @@ extern "js" fn MediaEncodingConfiguration::from_js_ffi(
 pub fn MediaEncodingConfiguration::from_js(
   value : JsValue,
 ) -> MediaEncodingConfiguration {
-  MediaEncodingConfiguration::from_js_ffi(value)
+  MediaEncodingConfiguration::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoConfiguration::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AudioConfiguration::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -511,15 +628,17 @@ pub fn MediaCapabilitiesKeySystemConfiguration::default() -> MediaCapabilitiesKe
 ///|
 extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
   self : MediaCapabilitiesKeySystemConfiguration,
+  convert_audio : (KeySystemTrackConfiguration?) -> JsValue,
+  convert_video : (KeySystemTrackConfiguration?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_audio, convert_video) => ({
   #|   keySystem: self.keySystem,
   #|   initDataType: self.initDataType,
   #|   distinctiveIdentifier: ((() => { const v = self.distinctiveIdentifier; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
   #|   persistentState: ((() => { const v = self.persistentState; if (v === undefined) return undefined; return ['required', 'optional', 'not-allowed'][v]; })()),
   #|   sessionTypes: self.sessionTypes,
-  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   audio: convert_audio(self.audio),
+  #|   video: convert_video(self.video)
   #| })
 
 ///|
@@ -527,21 +646,37 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
 pub fn MediaCapabilitiesKeySystemConfiguration::to_js(
   self : MediaCapabilitiesKeySystemConfiguration,
 ) -> JsValue {
-  MediaCapabilitiesKeySystemConfiguration::to_js_ffi(self)
+  MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
   value : JsValue,
+  convert_audio : (JsValue) -> KeySystemTrackConfiguration?,
+  convert_video : (JsValue) -> KeySystemTrackConfiguration?,
 ) -> MediaCapabilitiesKeySystemConfiguration =
-  #| (v) => ({
+  #| (v, convert_audio, convert_video) => ({
   #|   keySystem: v.keySystem,
   #|   initDataType: v.initDataType,
   #|   distinctiveIdentifier: (v.distinctiveIdentifier === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.distinctiveIdentifier)),
   #|   persistentState: (v.persistentState === undefined ? undefined : ['required', 'optional', 'not-allowed'].indexOf(v.persistentState)),
   #|   sessionTypes: v.sessionTypes,
-  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
-  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video })
+  #|   audio: convert_audio(v.audio),
+  #|   video: convert_video(v.video)
   #| })
 
 ///|
@@ -549,7 +684,23 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
 pub fn MediaCapabilitiesKeySystemConfiguration::from_js(
   value : JsValue,
 ) -> MediaCapabilitiesKeySystemConfiguration {
-  MediaCapabilitiesKeySystemConfiguration::from_js_ffi(value)
+  MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(KeySystemTrackConfiguration::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(KeySystemTrackConfiguration::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -679,13 +830,14 @@ pub fn MediaCapabilitiesDecodingInfo::new(
 ///|
 extern "js" fn MediaCapabilitiesDecodingInfo::to_js_ffi(
   self : MediaCapabilitiesDecodingInfo,
+  convert_configuration : (MediaDecodingConfiguration) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_configuration) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
   #|   powerEfficient: self.powerEfficient,
   #|   keySystemAccess: self.keySystemAccess,
-  #|   configuration: self.configuration
+  #|   configuration: convert_configuration(self.configuration)
   #| })
 
 ///|
@@ -693,19 +845,23 @@ extern "js" fn MediaCapabilitiesDecodingInfo::to_js_ffi(
 pub fn MediaCapabilitiesDecodingInfo::to_js(
   self : MediaCapabilitiesDecodingInfo,
 ) -> JsValue {
-  MediaCapabilitiesDecodingInfo::to_js_ffi(self)
+  MediaCapabilitiesDecodingInfo::to_js_ffi(
+    self,
+    MediaDecodingConfiguration::to_js,
+  )
 }
 
 ///|
 extern "js" fn MediaCapabilitiesDecodingInfo::from_js_ffi(
   value : JsValue,
+  convert_configuration : (JsValue) -> MediaDecodingConfiguration,
 ) -> MediaCapabilitiesDecodingInfo =
-  #| (v) => ({
+  #| (v, convert_configuration) => ({
   #|   supported: v.supported,
   #|   smooth: v.smooth,
   #|   powerEfficient: v.powerEfficient,
   #|   keySystemAccess: v.keySystemAccess,
-  #|   configuration: v.configuration
+  #|   configuration: convert_configuration(v.configuration)
   #| })
 
 ///|
@@ -713,7 +869,10 @@ extern "js" fn MediaCapabilitiesDecodingInfo::from_js_ffi(
 pub fn MediaCapabilitiesDecodingInfo::from_js(
   value : JsValue,
 ) -> MediaCapabilitiesDecodingInfo {
-  MediaCapabilitiesDecodingInfo::from_js_ffi(value)
+  MediaCapabilitiesDecodingInfo::from_js_ffi(
+    value,
+    MediaDecodingConfiguration::from_js,
+  )
 }
 
 ///|
@@ -741,12 +900,13 @@ pub fn MediaCapabilitiesEncodingInfo::new(
 ///|
 extern "js" fn MediaCapabilitiesEncodingInfo::to_js_ffi(
   self : MediaCapabilitiesEncodingInfo,
+  convert_configuration : (MediaEncodingConfiguration) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_configuration) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
   #|   powerEfficient: self.powerEfficient,
-  #|   configuration: self.configuration
+  #|   configuration: convert_configuration(self.configuration)
   #| })
 
 ///|
@@ -754,18 +914,22 @@ extern "js" fn MediaCapabilitiesEncodingInfo::to_js_ffi(
 pub fn MediaCapabilitiesEncodingInfo::to_js(
   self : MediaCapabilitiesEncodingInfo,
 ) -> JsValue {
-  MediaCapabilitiesEncodingInfo::to_js_ffi(self)
+  MediaCapabilitiesEncodingInfo::to_js_ffi(
+    self,
+    MediaEncodingConfiguration::to_js,
+  )
 }
 
 ///|
 extern "js" fn MediaCapabilitiesEncodingInfo::from_js_ffi(
   value : JsValue,
+  convert_configuration : (JsValue) -> MediaEncodingConfiguration,
 ) -> MediaCapabilitiesEncodingInfo =
-  #| (v) => ({
+  #| (v, convert_configuration) => ({
   #|   supported: v.supported,
   #|   smooth: v.smooth,
   #|   powerEfficient: v.powerEfficient,
-  #|   configuration: v.configuration
+  #|   configuration: convert_configuration(v.configuration)
   #| })
 
 ///|
@@ -773,7 +937,10 @@ extern "js" fn MediaCapabilitiesEncodingInfo::from_js_ffi(
 pub fn MediaCapabilitiesEncodingInfo::from_js(
   value : JsValue,
 ) -> MediaCapabilitiesEncodingInfo {
-  MediaCapabilitiesEncodingInfo::from_js_ffi(value)
+  MediaCapabilitiesEncodingInfo::from_js_ffi(
+    value,
+    MediaEncodingConfiguration::from_js,
+  )
 }
 
 ///|

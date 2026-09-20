@@ -19,11 +19,15 @@ pub extern "js" fn PreviousWinElement::from_int64(
   #| (v) => v
 
 ///|
-/// Create PreviousWinElement from AuctionAd
-pub extern "js" fn PreviousWinElement::from_auction_ad(
-  v : AuctionAd,
+extern "js" fn PreviousWinElement::from_auction_ad_ffi(
+  v : JsValue,
 ) -> PreviousWinElement =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn PreviousWinElement::from_auction_ad(v : AuctionAd) -> PreviousWinElement {
+  PreviousWinElement::from_auction_ad_ffi(v.to_js())
+}
 
 ///|
 /// Check if this PreviousWinElement is Int64
@@ -47,11 +51,15 @@ pub extern "js" fn PreviousWinElement::as_int64(
   #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
-/// Try to get PreviousWinElement as AuctionAd
-pub extern "js" fn PreviousWinElement::as_auction_ad(
+pub fn PreviousWinElement::as_auction_ad(
   self : PreviousWinElement,
-) -> AuctionAd? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> AuctionAd? {
+  if self.is_auction_ad() {
+    Some(AuctionAd::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[PreviousWinElement] to Int64?
@@ -453,8 +461,11 @@ pub fn AuctionAdInterestGroup::default() -> AuctionAdInterestGroup {
 ///|
 extern "js" fn AuctionAdInterestGroup::to_js_ffi(
   self : AuctionAdInterestGroup,
+  convert_privateAggregationConfig : (
+    ProtectedAudiencePrivateAggregationConfig?,
+  ) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_privateAggregationConfig) => ({
   #|   owner: self.owner,
   #|   name: self.name,
   #|   enableBiddingSignalsPrioritization: (self.enableBiddingSignalsPrioritization === -1 ? undefined : self.enableBiddingSignalsPrioritization),
@@ -478,20 +489,26 @@ extern "js" fn AuctionAdInterestGroup::to_js_ffi(
   #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeMs: self.lifetimeMs,
   #|   additionalBidKey: self.additionalBidKey,
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   privateAggregationConfig: convert_privateAggregationConfig(self.privateAggregationConfig)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AuctionAdInterestGroup::to_js(self : AuctionAdInterestGroup) -> JsValue {
-  AuctionAdInterestGroup::to_js_ffi(self)
+  AuctionAdInterestGroup::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AuctionAdInterestGroup::from_js_ffi(
   value : JsValue,
+  convert_privateAggregationConfig : (JsValue) -> ProtectedAudiencePrivateAggregationConfig?,
 ) -> AuctionAdInterestGroup =
-  #| (v) => ({
+  #| (v, convert_privateAggregationConfig) => ({
   #|   owner: v.owner,
   #|   name: v.name,
   #|   enableBiddingSignalsPrioritization: (v.enableBiddingSignalsPrioritization === undefined ? -1 : v.enableBiddingSignalsPrioritization),
@@ -515,7 +532,7 @@ extern "js" fn AuctionAdInterestGroup::from_js_ffi(
   #|   prioritySignalsOverrides: (v.prioritySignalsOverrides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prioritySignalsOverrides }),
   #|   lifetimeMs: v.lifetimeMs,
   #|   additionalBidKey: v.additionalBidKey,
-  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig })
+  #|   privateAggregationConfig: convert_privateAggregationConfig(v.privateAggregationConfig)
   #| })
 
 ///|
@@ -523,7 +540,13 @@ extern "js" fn AuctionAdInterestGroup::from_js_ffi(
 pub fn AuctionAdInterestGroup::from_js(
   value : JsValue,
 ) -> AuctionAdInterestGroup {
-  AuctionAdInterestGroup::from_js_ffi(value)
+  AuctionAdInterestGroup::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(ProtectedAudiencePrivateAggregationConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -807,8 +830,17 @@ pub fn AuctionAdConfig::default() -> AuctionAdConfig {
 }
 
 ///|
-extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
-  #| (self) => ({
+extern "js" fn AuctionAdConfig::to_js_ffi(
+  self : AuctionAdConfig,
+  convert_auctionReportBuyerDebugModeConfig : (
+    AuctionReportBuyerDebugModeConfig?,
+  ) -> JsValue,
+  convert_privateAggregationConfig : (
+    ProtectedAudiencePrivateAggregationConfig?,
+  ) -> JsValue,
+  convert_sellerRealTimeReportingConfig : (AuctionRealTimeReportingConfig?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_auctionReportBuyerDebugModeConfig, convert_privateAggregationConfig, convert_sellerRealTimeReportingConfig) => ({
   #|   seller: self.seller,
   #|   decisionLogicURL: self.decisionLogicURL,
   #|   trustedScoringSignalsURL: self.trustedScoringSignalsURL,
@@ -834,14 +866,14 @@ extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
   #|   perBuyerPrioritySignals: ((() => { const v = self.perBuyerPrioritySignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   auctionReportBuyerKeys: self.auctionReportBuyerKeys,
   #|   auctionReportBuyers: ((() => { const v = self.auctionReportBuyers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   auctionReportBuyerDebugModeConfig: ((() => { const v = self.auctionReportBuyerDebugModeConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   auctionReportBuyerDebugModeConfig: convert_auctionReportBuyerDebugModeConfig(self.auctionReportBuyerDebugModeConfig),
   #|   requiredSellerCapabilities: self.requiredSellerCapabilities,
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(self.privateAggregationConfig),
   #|   requestedSize: ((() => { const v = self.requestedSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   allSlotsRequestedSizes: self.allSlotsRequestedSizes,
   #|   additionalBids: ((() => { const v = self.additionalBids; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   auctionNonce: self.auctionNonce,
-  #|   sellerRealTimeReportingConfig: ((() => { const v = self.sellerRealTimeReportingConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   sellerRealTimeReportingConfig: convert_sellerRealTimeReportingConfig(self.sellerRealTimeReportingConfig),
   #|   perBuyerRealTimeReportingConfig: ((() => { const v = self.perBuyerRealTimeReportingConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   componentAuctions: self.componentAuctions,
   #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -853,12 +885,37 @@ extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
 ///|
 /// Convert to JsValue
 pub fn AuctionAdConfig::to_js(self : AuctionAdConfig) -> JsValue {
-  AuctionAdConfig::to_js_ffi(self)
+  AuctionAdConfig::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
-extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig =
-  #| (v) => ({
+extern "js" fn AuctionAdConfig::from_js_ffi(
+  value : JsValue,
+  convert_auctionReportBuyerDebugModeConfig : (JsValue) -> AuctionReportBuyerDebugModeConfig?,
+  convert_privateAggregationConfig : (JsValue) -> ProtectedAudiencePrivateAggregationConfig?,
+  convert_sellerRealTimeReportingConfig : (JsValue) -> AuctionRealTimeReportingConfig?,
+) -> AuctionAdConfig =
+  #| (v, convert_auctionReportBuyerDebugModeConfig, convert_privateAggregationConfig, convert_sellerRealTimeReportingConfig) => ({
   #|   seller: v.seller,
   #|   decisionLogicURL: v.decisionLogicURL,
   #|   trustedScoringSignalsURL: v.trustedScoringSignalsURL,
@@ -884,14 +941,14 @@ extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig 
   #|   perBuyerPrioritySignals: (v.perBuyerPrioritySignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerPrioritySignals }),
   #|   auctionReportBuyerKeys: v.auctionReportBuyerKeys,
   #|   auctionReportBuyers: (v.auctionReportBuyers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionReportBuyers }),
-  #|   auctionReportBuyerDebugModeConfig: (v.auctionReportBuyerDebugModeConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.auctionReportBuyerDebugModeConfig }),
+  #|   auctionReportBuyerDebugModeConfig: convert_auctionReportBuyerDebugModeConfig(v.auctionReportBuyerDebugModeConfig),
   #|   requiredSellerCapabilities: v.requiredSellerCapabilities,
-  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(v.privateAggregationConfig),
   #|   requestedSize: (v.requestedSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.requestedSize }),
   #|   allSlotsRequestedSizes: v.allSlotsRequestedSizes,
   #|   additionalBids: (v.additionalBids === undefined ? { $tag: 0 } : { $tag: 1, _0: v.additionalBids }),
   #|   auctionNonce: v.auctionNonce,
-  #|   sellerRealTimeReportingConfig: (v.sellerRealTimeReportingConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerRealTimeReportingConfig }),
+  #|   sellerRealTimeReportingConfig: convert_sellerRealTimeReportingConfig(v.sellerRealTimeReportingConfig),
   #|   perBuyerRealTimeReportingConfig: (v.perBuyerRealTimeReportingConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerRealTimeReportingConfig }),
   #|   componentAuctions: v.componentAuctions,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal }),
@@ -903,7 +960,30 @@ extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig 
 ///|
 /// Convert from JsValue
 pub fn AuctionAdConfig::from_js(value : JsValue) -> AuctionAdConfig {
-  AuctionAdConfig::from_js_ffi(value)
+  AuctionAdConfig::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuctionReportBuyerDebugModeConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(ProtectedAudiencePrivateAggregationConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuctionRealTimeReportingConfig::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1244,8 +1324,11 @@ pub fn StorageInterestGroup::default() -> StorageInterestGroup {
 ///|
 extern "js" fn StorageInterestGroup::to_js_ffi(
   self : StorageInterestGroup,
+  convert_privateAggregationConfig : (
+    ProtectedAudiencePrivateAggregationConfig?,
+  ) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_privateAggregationConfig) => ({
   #|   owner: self.owner,
   #|   name: self.name,
   #|   enableBiddingSignalsPrioritization: (self.enableBiddingSignalsPrioritization === -1 ? undefined : self.enableBiddingSignalsPrioritization),
@@ -1269,7 +1352,7 @@ extern "js" fn StorageInterestGroup::to_js_ffi(
   #|   prioritySignalsOverrides: ((() => { const v = self.prioritySignalsOverrides; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   lifetimeMs: self.lifetimeMs,
   #|   additionalBidKey: self.additionalBidKey,
-  #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(self.privateAggregationConfig),
   #|   joinCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.joinCount),
   #|   bidCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bidCount),
   #|   prevWinsMs: self.prevWinsMs,
@@ -1284,14 +1367,20 @@ extern "js" fn StorageInterestGroup::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn StorageInterestGroup::to_js(self : StorageInterestGroup) -> JsValue {
-  StorageInterestGroup::to_js_ffi(self)
+  StorageInterestGroup::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn StorageInterestGroup::from_js_ffi(
   value : JsValue,
+  convert_privateAggregationConfig : (JsValue) -> ProtectedAudiencePrivateAggregationConfig?,
 ) -> StorageInterestGroup =
-  #| (v) => ({
+  #| (v, convert_privateAggregationConfig) => ({
   #|   owner: v.owner,
   #|   name: v.name,
   #|   enableBiddingSignalsPrioritization: (v.enableBiddingSignalsPrioritization === undefined ? -1 : v.enableBiddingSignalsPrioritization),
@@ -1315,7 +1404,7 @@ extern "js" fn StorageInterestGroup::from_js_ffi(
   #|   prioritySignalsOverrides: (v.prioritySignalsOverrides === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prioritySignalsOverrides }),
   #|   lifetimeMs: v.lifetimeMs,
   #|   additionalBidKey: v.additionalBidKey,
-  #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
+  #|   privateAggregationConfig: convert_privateAggregationConfig(v.privateAggregationConfig),
   #|   joinCount: (v.joinCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.joinCount)),
   #|   bidCount: (v.bidCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bidCount)),
   #|   prevWinsMs: v.prevWinsMs,
@@ -1330,7 +1419,13 @@ extern "js" fn StorageInterestGroup::from_js_ffi(
 ///|
 /// Convert from JsValue
 pub fn StorageInterestGroup::from_js(value : JsValue) -> StorageInterestGroup {
-  StorageInterestGroup::from_js_ffi(value)
+  StorageInterestGroup::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(ProtectedAudiencePrivateAggregationConfig::from_js(value))
+    }
+  })
 }
 
 ///|

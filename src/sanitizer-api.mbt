@@ -19,11 +19,17 @@ pub extern "js" fn SanitizerElement::from_string(
   #| (v) => v
 
 ///|
-/// Create SanitizerElement from SanitizerElementNamespace
-pub extern "js" fn SanitizerElement::from_sanitizer_element_namespace(
-  v : SanitizerElementNamespace,
+extern "js" fn SanitizerElement::from_sanitizer_element_namespace_ffi(
+  v : JsValue,
 ) -> SanitizerElement =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn SanitizerElement::from_sanitizer_element_namespace(
+  v : SanitizerElementNamespace,
+) -> SanitizerElement {
+  SanitizerElement::from_sanitizer_element_namespace_ffi(v.to_js())
+}
 
 ///|
 /// Check if this SanitizerElement is String
@@ -45,11 +51,15 @@ pub extern "js" fn SanitizerElement::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get SanitizerElement as SanitizerElementNamespace
-pub extern "js" fn SanitizerElement::as_sanitizer_element_namespace(
+pub fn SanitizerElement::as_sanitizer_element_namespace(
   self : SanitizerElement,
-) -> SanitizerElementNamespace? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SanitizerElementNamespace? {
+  if self.is_sanitizer_element_namespace() {
+    Some(SanitizerElementNamespace::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[SanitizerElement] to String?
@@ -89,11 +99,19 @@ pub extern "js" fn SanitizerElementWithAttributes::from_string(
   #| (v) => v
 
 ///|
-/// Create SanitizerElementWithAttributes from SanitizerElementNamespaceWithAttributes
-pub extern "js" fn SanitizerElementWithAttributes::from_sanitizer_element_namespace_with_attributes(
-  v : SanitizerElementNamespaceWithAttributes,
+extern "js" fn SanitizerElementWithAttributes::from_sanitizer_element_namespace_with_attributes_ffi(
+  v : JsValue,
 ) -> SanitizerElementWithAttributes =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn SanitizerElementWithAttributes::from_sanitizer_element_namespace_with_attributes(
+  v : SanitizerElementNamespaceWithAttributes,
+) -> SanitizerElementWithAttributes {
+  SanitizerElementWithAttributes::from_sanitizer_element_namespace_with_attributes_ffi(
+    v.to_js(),
+  )
+}
 
 ///|
 /// Check if this SanitizerElementWithAttributes is String
@@ -117,11 +135,15 @@ pub extern "js" fn SanitizerElementWithAttributes::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get SanitizerElementWithAttributes as SanitizerElementNamespaceWithAttributes
-pub extern "js" fn SanitizerElementWithAttributes::as_sanitizer_element_namespace_with_attributes(
+pub fn SanitizerElementWithAttributes::as_sanitizer_element_namespace_with_attributes(
   self : SanitizerElementWithAttributes,
-) -> SanitizerElementNamespaceWithAttributes? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SanitizerElementNamespaceWithAttributes? {
+  if self.is_sanitizer_element_namespace_with_attributes() {
+    Some(SanitizerElementNamespaceWithAttributes::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[SanitizerElementWithAttributes] to String?
@@ -163,11 +185,17 @@ pub extern "js" fn SanitizerAttribute::from_string(
   #| (v) => v
 
 ///|
-/// Create SanitizerAttribute from SanitizerAttributeNamespace
-pub extern "js" fn SanitizerAttribute::from_sanitizer_attribute_namespace(
-  v : SanitizerAttributeNamespace,
+extern "js" fn SanitizerAttribute::from_sanitizer_attribute_namespace_ffi(
+  v : JsValue,
 ) -> SanitizerAttribute =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn SanitizerAttribute::from_sanitizer_attribute_namespace(
+  v : SanitizerAttributeNamespace,
+) -> SanitizerAttribute {
+  SanitizerAttribute::from_sanitizer_attribute_namespace_ffi(v.to_js())
+}
 
 ///|
 /// Check if this SanitizerAttribute is String
@@ -191,11 +219,15 @@ pub extern "js" fn SanitizerAttribute::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get SanitizerAttribute as SanitizerAttributeNamespace
-pub extern "js" fn SanitizerAttribute::as_sanitizer_attribute_namespace(
+pub fn SanitizerAttribute::as_sanitizer_attribute_namespace(
   self : SanitizerAttribute,
-) -> SanitizerAttributeNamespace? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SanitizerAttributeNamespace? {
+  if self.is_sanitizer_attribute_namespace() {
+    Some(SanitizerAttributeNamespace::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[SanitizerAttribute] to String?

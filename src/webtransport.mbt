@@ -450,8 +450,9 @@ pub fn WebTransportConnectionStats::new(
 ///|
 extern "js" fn WebTransportConnectionStats::to_js_ffi(
   self : WebTransportConnectionStats,
+  convert_datagrams : (WebTransportDatagramStats) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_datagrams) => ({
   #|   bytesSent: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesSent),
   #|   bytesSentOverhead: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesSentOverhead),
   #|   bytesAcknowledged: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesAcknowledged),
@@ -463,7 +464,7 @@ extern "js" fn WebTransportConnectionStats::to_js_ffi(
   #|   smoothedRtt: ((() => { const v = self.smoothedRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rttVariation: ((() => { const v = self.rttVariation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   minRtt: ((() => { const v = self.minRtt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   datagrams: self.datagrams,
+  #|   datagrams: convert_datagrams(self.datagrams),
   #|   estimatedSendRate: ((() => { const v = self.estimatedSendRate; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   atSendCapacity: (self.atSendCapacity === -1 ? undefined : self.atSendCapacity)
   #| })
@@ -473,14 +474,15 @@ extern "js" fn WebTransportConnectionStats::to_js_ffi(
 pub fn WebTransportConnectionStats::to_js(
   self : WebTransportConnectionStats,
 ) -> JsValue {
-  WebTransportConnectionStats::to_js_ffi(self)
+  WebTransportConnectionStats::to_js_ffi(self, WebTransportDatagramStats::to_js)
 }
 
 ///|
 extern "js" fn WebTransportConnectionStats::from_js_ffi(
   value : JsValue,
+  convert_datagrams : (JsValue) -> WebTransportDatagramStats,
 ) -> WebTransportConnectionStats =
-  #| (v) => ({
+  #| (v, convert_datagrams) => ({
   #|   bytesSent: (v.bytesSent === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesSent)),
   #|   bytesSentOverhead: (v.bytesSentOverhead === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesSentOverhead)),
   #|   bytesAcknowledged: (v.bytesAcknowledged === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesAcknowledged)),
@@ -492,7 +494,7 @@ extern "js" fn WebTransportConnectionStats::from_js_ffi(
   #|   smoothedRtt: (v.smoothedRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.smoothedRtt }),
   #|   rttVariation: (v.rttVariation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rttVariation }),
   #|   minRtt: (v.minRtt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.minRtt }),
-  #|   datagrams: v.datagrams,
+  #|   datagrams: convert_datagrams(v.datagrams),
   #|   estimatedSendRate: (v.estimatedSendRate === undefined ? { $tag: 0 } : v.estimatedSendRate === null ? { $tag: 1 } : { $tag: 2, _0: v.estimatedSendRate }),
   #|   atSendCapacity: (v.atSendCapacity === undefined ? -1 : v.atSendCapacity)
   #| })
@@ -502,7 +504,10 @@ extern "js" fn WebTransportConnectionStats::from_js_ffi(
 pub fn WebTransportConnectionStats::from_js(
   value : JsValue,
 ) -> WebTransportConnectionStats {
-  WebTransportConnectionStats::from_js_ffi(value)
+  WebTransportConnectionStats::from_js_ffi(
+    value,
+    WebTransportDatagramStats::from_js,
+  )
 }
 
 ///|

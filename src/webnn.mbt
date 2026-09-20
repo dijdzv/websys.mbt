@@ -708,227 +708,1701 @@ pub fn MLOpSupportLimits::default() -> MLOpSupportLimits {
 ///|
 extern "js" fn MLOpSupportLimits::to_js_ffi(
   self : MLOpSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_constant : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
+  convert_argMin : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_argMax : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_batchNormalization : (MLBatchNormalizationSupportLimits?) -> JsValue,
+  convert_cast : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_clamp : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_concat : (MLConcatSupportLimits?) -> JsValue,
+  convert_conv2d : (MLConv2dSupportLimits?) -> JsValue,
+  convert_convTranspose2d : (MLConv2dSupportLimits?) -> JsValue,
+  convert_cumulativeSum : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_add : (MLBinarySupportLimits?) -> JsValue,
+  convert_sub : (MLBinarySupportLimits?) -> JsValue,
+  convert_mul : (MLBinarySupportLimits?) -> JsValue,
+  convert_div : (MLBinarySupportLimits?) -> JsValue,
+  convert_max : (MLBinarySupportLimits?) -> JsValue,
+  convert_min : (MLBinarySupportLimits?) -> JsValue,
+  convert_pow : (MLBinarySupportLimits?) -> JsValue,
+  convert_equal : (MLBinarySupportLimits?) -> JsValue,
+  convert_notEqual : (MLBinarySupportLimits?) -> JsValue,
+  convert_greater : (MLBinarySupportLimits?) -> JsValue,
+  convert_greaterOrEqual : (MLBinarySupportLimits?) -> JsValue,
+  convert_lesser : (MLBinarySupportLimits?) -> JsValue,
+  convert_lesserOrEqual : (MLBinarySupportLimits?) -> JsValue,
+  convert_logicalNot : (MLLogicalNotSupportLimits?) -> JsValue,
+  convert_logicalAnd : (MLBinarySupportLimits?) -> JsValue,
+  convert_logicalOr : (MLBinarySupportLimits?) -> JsValue,
+  convert_logicalXor : (MLBinarySupportLimits?) -> JsValue,
+  convert_isNaN : (MLLogicalNotSupportLimits?) -> JsValue,
+  convert_isInfinite : (MLLogicalNotSupportLimits?) -> JsValue,
+  convert_abs : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_ceil : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_cos : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_erf : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_exp : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_floor : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_identity : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_log : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_neg : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reciprocal : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_roundEven : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_sin : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_sign : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_sqrt : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_tan : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_dequantizeLinear : (MLQuantizeDequantizeLinearSupportLimits?) -> JsValue,
+  convert_quantizeLinear : (MLQuantizeDequantizeLinearSupportLimits?) -> JsValue,
+  convert_elu : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_expand : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_gather : (MLGatherSupportLimits?) -> JsValue,
+  convert_gatherElements : (MLGatherSupportLimits?) -> JsValue,
+  convert_gatherND : (MLGatherSupportLimits?) -> JsValue,
+  convert_gelu : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_gemm : (MLGemmSupportLimits?) -> JsValue,
+  convert_gru : (MLGruSupportLimits?) -> JsValue,
+  convert_gruCell : (MLGruCellSupportLimits?) -> JsValue,
+  convert_hardSigmoid : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_hardSwish : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_instanceNormalization : (MLNormalizationSupportLimits?) -> JsValue,
+  convert_layerNormalization : (MLNormalizationSupportLimits?) -> JsValue,
+  convert_leakyRelu : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_linear : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_lstm : (MLLstmSupportLimits?) -> JsValue,
+  convert_lstmCell : (MLLstmCellSupportLimits?) -> JsValue,
+  convert_matmul : (MLBinarySupportLimits?) -> JsValue,
+  convert_pad : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_averagePool2d : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_l2Pool2d : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_maxPool2d : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_prelu : (MLPreluSupportLimits?) -> JsValue,
+  convert_reduceL1 : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceL2 : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceLogSum : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceLogSumExp : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceMax : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceMean : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceMin : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceProduct : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceSum : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reduceSumSquare : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_relu : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_resample2d : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reshape : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_reverse : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_scatterElements : (MLScatterSupportLimits?) -> JsValue,
+  convert_scatterND : (MLScatterSupportLimits?) -> JsValue,
+  convert_sigmoid : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_slice : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_softmax : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_softplus : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_softsign : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_split : (MLSplitSupportLimits?) -> JsValue,
+  convert_tanh : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_tile : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_transpose : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_triangular : (MLSingleInputSupportLimits?) -> JsValue,
+  convert_where_ : (MLWhereSupportLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_input, convert_constant, convert_output, convert_argMin, convert_argMax, convert_batchNormalization, convert_cast, convert_clamp, convert_concat, convert_conv2d, convert_convTranspose2d, convert_cumulativeSum, convert_add, convert_sub, convert_mul, convert_div, convert_max, convert_min, convert_pow, convert_equal, convert_notEqual, convert_greater, convert_greaterOrEqual, convert_lesser, convert_lesserOrEqual, convert_logicalNot, convert_logicalAnd, convert_logicalOr, convert_logicalXor, convert_isNaN, convert_isInfinite, convert_abs, convert_ceil, convert_cos, convert_erf, convert_exp, convert_floor, convert_identity, convert_log, convert_neg, convert_reciprocal, convert_roundEven, convert_sin, convert_sign, convert_sqrt, convert_tan, convert_dequantizeLinear, convert_quantizeLinear, convert_elu, convert_expand, convert_gather, convert_gatherElements, convert_gatherND, convert_gelu, convert_gemm, convert_gru, convert_gruCell, convert_hardSigmoid, convert_hardSwish, convert_instanceNormalization, convert_layerNormalization, convert_leakyRelu, convert_linear, convert_lstm, convert_lstmCell, convert_matmul, convert_pad, convert_averagePool2d, convert_l2Pool2d, convert_maxPool2d, convert_prelu, convert_reduceL1, convert_reduceL2, convert_reduceLogSum, convert_reduceLogSumExp, convert_reduceMax, convert_reduceMean, convert_reduceMin, convert_reduceProduct, convert_reduceSum, convert_reduceSumSquare, convert_relu, convert_resample2d, convert_reshape, convert_reverse, convert_scatterElements, convert_scatterND, convert_sigmoid, convert_slice, convert_softmax, convert_softplus, convert_softsign, convert_split, convert_tanh, convert_tile, convert_transpose, convert_triangular, convert_where_) => ({
   #|   preferredInputLayout: ((() => { const v = self.preferredInputLayout; if (v === undefined) return undefined; return ['nchw', 'nhwc'][v]; })()),
   #|   maxTensorByteLength: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.maxTensorByteLength),
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   constant: ((() => { const v = self.constant; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   argMin: ((() => { const v = self.argMin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   argMax: ((() => { const v = self.argMax; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   batchNormalization: ((() => { const v = self.batchNormalization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cast: ((() => { const v = self.cast; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   clamp: ((() => { const v = self.clamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   concat: ((() => { const v = self.concat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   conv2d: ((() => { const v = self.conv2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   convTranspose2d: ((() => { const v = self.convTranspose2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cumulativeSum: ((() => { const v = self.cumulativeSum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   add: ((() => { const v = self.add; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sub: ((() => { const v = self.sub; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mul: ((() => { const v = self.mul; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   div: ((() => { const v = self.div; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pow: ((() => { const v = self.pow; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   equal: ((() => { const v = self.equal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   notEqual: ((() => { const v = self.notEqual; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   greater: ((() => { const v = self.greater; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   greaterOrEqual: ((() => { const v = self.greaterOrEqual; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   lesser: ((() => { const v = self.lesser; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   lesserOrEqual: ((() => { const v = self.lesserOrEqual; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   logicalNot: ((() => { const v = self.logicalNot; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   logicalAnd: ((() => { const v = self.logicalAnd; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   logicalOr: ((() => { const v = self.logicalOr; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   logicalXor: ((() => { const v = self.logicalXor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   isNaN: ((() => { const v = self.isNaN; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   isInfinite: ((() => { const v = self.isInfinite; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   abs: ((() => { const v = self.abs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   ceil: ((() => { const v = self.ceil; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cos: ((() => { const v = self.cos; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   erf: ((() => { const v = self.erf; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   exp: ((() => { const v = self.exp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   floor: ((() => { const v = self.floor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   identity: ((() => { const v = self.identity; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   log: ((() => { const v = self.log; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   neg: ((() => { const v = self.neg; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reciprocal: ((() => { const v = self.reciprocal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   roundEven: ((() => { const v = self.roundEven; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sin: ((() => { const v = self.sin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sign: ((() => { const v = self.sign; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sqrt: ((() => { const v = self.sqrt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tan: ((() => { const v = self.tan; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   dequantizeLinear: ((() => { const v = self.dequantizeLinear; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   quantizeLinear: ((() => { const v = self.quantizeLinear; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   elu: ((() => { const v = self.elu; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   expand: ((() => { const v = self.expand; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gather: ((() => { const v = self.gather; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gatherElements: ((() => { const v = self.gatherElements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gatherND: ((() => { const v = self.gatherND; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gelu: ((() => { const v = self.gelu; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gemm: ((() => { const v = self.gemm; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gru: ((() => { const v = self.gru; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   gruCell: ((() => { const v = self.gruCell; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hardSigmoid: ((() => { const v = self.hardSigmoid; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hardSwish: ((() => { const v = self.hardSwish; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   instanceNormalization: ((() => { const v = self.instanceNormalization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   layerNormalization: ((() => { const v = self.layerNormalization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   leakyRelu: ((() => { const v = self.leakyRelu; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   linear: ((() => { const v = self.linear; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   lstm: ((() => { const v = self.lstm; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   lstmCell: ((() => { const v = self.lstmCell; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   matmul: ((() => { const v = self.matmul; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   pad: ((() => { const v = self.pad; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   averagePool2d: ((() => { const v = self.averagePool2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   l2Pool2d: ((() => { const v = self.l2Pool2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   maxPool2d: ((() => { const v = self.maxPool2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   prelu: ((() => { const v = self.prelu; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceL1: ((() => { const v = self.reduceL1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceL2: ((() => { const v = self.reduceL2; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceLogSum: ((() => { const v = self.reduceLogSum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceLogSumExp: ((() => { const v = self.reduceLogSumExp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceMax: ((() => { const v = self.reduceMax; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceMean: ((() => { const v = self.reduceMean; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceMin: ((() => { const v = self.reduceMin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceProduct: ((() => { const v = self.reduceProduct; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceSum: ((() => { const v = self.reduceSum; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reduceSumSquare: ((() => { const v = self.reduceSumSquare; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   relu: ((() => { const v = self.relu; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   resample2d: ((() => { const v = self.resample2d; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reshape: ((() => { const v = self.reshape; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reverse: ((() => { const v = self.reverse; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scatterElements: ((() => { const v = self.scatterElements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scatterND: ((() => { const v = self.scatterND; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sigmoid: ((() => { const v = self.sigmoid; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   slice: ((() => { const v = self.slice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   softmax: ((() => { const v = self.softmax; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   softplus: ((() => { const v = self.softplus; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   softsign: ((() => { const v = self.softsign; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   split: ((() => { const v = self.split; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tanh: ((() => { const v = self.tanh; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   tile: ((() => { const v = self.tile; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   transpose: ((() => { const v = self.transpose; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   triangular: ((() => { const v = self.triangular; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   where: ((() => { const v = self.where_; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   input: convert_input(self.input),
+  #|   constant: convert_constant(self.constant),
+  #|   output: convert_output(self.output),
+  #|   argMin: convert_argMin(self.argMin),
+  #|   argMax: convert_argMax(self.argMax),
+  #|   batchNormalization: convert_batchNormalization(self.batchNormalization),
+  #|   cast: convert_cast(self.cast),
+  #|   clamp: convert_clamp(self.clamp),
+  #|   concat: convert_concat(self.concat),
+  #|   conv2d: convert_conv2d(self.conv2d),
+  #|   convTranspose2d: convert_convTranspose2d(self.convTranspose2d),
+  #|   cumulativeSum: convert_cumulativeSum(self.cumulativeSum),
+  #|   add: convert_add(self.add),
+  #|   sub: convert_sub(self.sub),
+  #|   mul: convert_mul(self.mul),
+  #|   div: convert_div(self.div),
+  #|   max: convert_max(self.max),
+  #|   min: convert_min(self.min),
+  #|   pow: convert_pow(self.pow),
+  #|   equal: convert_equal(self.equal),
+  #|   notEqual: convert_notEqual(self.notEqual),
+  #|   greater: convert_greater(self.greater),
+  #|   greaterOrEqual: convert_greaterOrEqual(self.greaterOrEqual),
+  #|   lesser: convert_lesser(self.lesser),
+  #|   lesserOrEqual: convert_lesserOrEqual(self.lesserOrEqual),
+  #|   logicalNot: convert_logicalNot(self.logicalNot),
+  #|   logicalAnd: convert_logicalAnd(self.logicalAnd),
+  #|   logicalOr: convert_logicalOr(self.logicalOr),
+  #|   logicalXor: convert_logicalXor(self.logicalXor),
+  #|   isNaN: convert_isNaN(self.isNaN),
+  #|   isInfinite: convert_isInfinite(self.isInfinite),
+  #|   abs: convert_abs(self.abs),
+  #|   ceil: convert_ceil(self.ceil),
+  #|   cos: convert_cos(self.cos),
+  #|   erf: convert_erf(self.erf),
+  #|   exp: convert_exp(self.exp),
+  #|   floor: convert_floor(self.floor),
+  #|   identity: convert_identity(self.identity),
+  #|   log: convert_log(self.log),
+  #|   neg: convert_neg(self.neg),
+  #|   reciprocal: convert_reciprocal(self.reciprocal),
+  #|   roundEven: convert_roundEven(self.roundEven),
+  #|   sin: convert_sin(self.sin),
+  #|   sign: convert_sign(self.sign),
+  #|   sqrt: convert_sqrt(self.sqrt),
+  #|   tan: convert_tan(self.tan),
+  #|   dequantizeLinear: convert_dequantizeLinear(self.dequantizeLinear),
+  #|   quantizeLinear: convert_quantizeLinear(self.quantizeLinear),
+  #|   elu: convert_elu(self.elu),
+  #|   expand: convert_expand(self.expand),
+  #|   gather: convert_gather(self.gather),
+  #|   gatherElements: convert_gatherElements(self.gatherElements),
+  #|   gatherND: convert_gatherND(self.gatherND),
+  #|   gelu: convert_gelu(self.gelu),
+  #|   gemm: convert_gemm(self.gemm),
+  #|   gru: convert_gru(self.gru),
+  #|   gruCell: convert_gruCell(self.gruCell),
+  #|   hardSigmoid: convert_hardSigmoid(self.hardSigmoid),
+  #|   hardSwish: convert_hardSwish(self.hardSwish),
+  #|   instanceNormalization: convert_instanceNormalization(self.instanceNormalization),
+  #|   layerNormalization: convert_layerNormalization(self.layerNormalization),
+  #|   leakyRelu: convert_leakyRelu(self.leakyRelu),
+  #|   linear: convert_linear(self.linear),
+  #|   lstm: convert_lstm(self.lstm),
+  #|   lstmCell: convert_lstmCell(self.lstmCell),
+  #|   matmul: convert_matmul(self.matmul),
+  #|   pad: convert_pad(self.pad),
+  #|   averagePool2d: convert_averagePool2d(self.averagePool2d),
+  #|   l2Pool2d: convert_l2Pool2d(self.l2Pool2d),
+  #|   maxPool2d: convert_maxPool2d(self.maxPool2d),
+  #|   prelu: convert_prelu(self.prelu),
+  #|   reduceL1: convert_reduceL1(self.reduceL1),
+  #|   reduceL2: convert_reduceL2(self.reduceL2),
+  #|   reduceLogSum: convert_reduceLogSum(self.reduceLogSum),
+  #|   reduceLogSumExp: convert_reduceLogSumExp(self.reduceLogSumExp),
+  #|   reduceMax: convert_reduceMax(self.reduceMax),
+  #|   reduceMean: convert_reduceMean(self.reduceMean),
+  #|   reduceMin: convert_reduceMin(self.reduceMin),
+  #|   reduceProduct: convert_reduceProduct(self.reduceProduct),
+  #|   reduceSum: convert_reduceSum(self.reduceSum),
+  #|   reduceSumSquare: convert_reduceSumSquare(self.reduceSumSquare),
+  #|   relu: convert_relu(self.relu),
+  #|   resample2d: convert_resample2d(self.resample2d),
+  #|   reshape: convert_reshape(self.reshape),
+  #|   reverse: convert_reverse(self.reverse),
+  #|   scatterElements: convert_scatterElements(self.scatterElements),
+  #|   scatterND: convert_scatterND(self.scatterND),
+  #|   sigmoid: convert_sigmoid(self.sigmoid),
+  #|   slice: convert_slice(self.slice),
+  #|   softmax: convert_softmax(self.softmax),
+  #|   softplus: convert_softplus(self.softplus),
+  #|   softsign: convert_softsign(self.softsign),
+  #|   split: convert_split(self.split),
+  #|   tanh: convert_tanh(self.tanh),
+  #|   tile: convert_tile(self.tile),
+  #|   transpose: convert_transpose(self.transpose),
+  #|   triangular: convert_triangular(self.triangular),
+  #|   where: convert_where_(self.where_)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLOpSupportLimits::to_js(self : MLOpSupportLimits) -> JsValue {
-  MLOpSupportLimits::to_js_ffi(self)
+  MLOpSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLOpSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_constant : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
+  convert_argMin : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_argMax : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_batchNormalization : (JsValue) -> MLBatchNormalizationSupportLimits?,
+  convert_cast : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_clamp : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_concat : (JsValue) -> MLConcatSupportLimits?,
+  convert_conv2d : (JsValue) -> MLConv2dSupportLimits?,
+  convert_convTranspose2d : (JsValue) -> MLConv2dSupportLimits?,
+  convert_cumulativeSum : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_add : (JsValue) -> MLBinarySupportLimits?,
+  convert_sub : (JsValue) -> MLBinarySupportLimits?,
+  convert_mul : (JsValue) -> MLBinarySupportLimits?,
+  convert_div : (JsValue) -> MLBinarySupportLimits?,
+  convert_max : (JsValue) -> MLBinarySupportLimits?,
+  convert_min : (JsValue) -> MLBinarySupportLimits?,
+  convert_pow : (JsValue) -> MLBinarySupportLimits?,
+  convert_equal : (JsValue) -> MLBinarySupportLimits?,
+  convert_notEqual : (JsValue) -> MLBinarySupportLimits?,
+  convert_greater : (JsValue) -> MLBinarySupportLimits?,
+  convert_greaterOrEqual : (JsValue) -> MLBinarySupportLimits?,
+  convert_lesser : (JsValue) -> MLBinarySupportLimits?,
+  convert_lesserOrEqual : (JsValue) -> MLBinarySupportLimits?,
+  convert_logicalNot : (JsValue) -> MLLogicalNotSupportLimits?,
+  convert_logicalAnd : (JsValue) -> MLBinarySupportLimits?,
+  convert_logicalOr : (JsValue) -> MLBinarySupportLimits?,
+  convert_logicalXor : (JsValue) -> MLBinarySupportLimits?,
+  convert_isNaN : (JsValue) -> MLLogicalNotSupportLimits?,
+  convert_isInfinite : (JsValue) -> MLLogicalNotSupportLimits?,
+  convert_abs : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_ceil : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_cos : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_erf : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_exp : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_floor : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_identity : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_log : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_neg : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reciprocal : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_roundEven : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_sin : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_sign : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_sqrt : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_tan : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_dequantizeLinear : (JsValue) -> MLQuantizeDequantizeLinearSupportLimits?,
+  convert_quantizeLinear : (JsValue) -> MLQuantizeDequantizeLinearSupportLimits?,
+  convert_elu : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_expand : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_gather : (JsValue) -> MLGatherSupportLimits?,
+  convert_gatherElements : (JsValue) -> MLGatherSupportLimits?,
+  convert_gatherND : (JsValue) -> MLGatherSupportLimits?,
+  convert_gelu : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_gemm : (JsValue) -> MLGemmSupportLimits?,
+  convert_gru : (JsValue) -> MLGruSupportLimits?,
+  convert_gruCell : (JsValue) -> MLGruCellSupportLimits?,
+  convert_hardSigmoid : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_hardSwish : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_instanceNormalization : (JsValue) -> MLNormalizationSupportLimits?,
+  convert_layerNormalization : (JsValue) -> MLNormalizationSupportLimits?,
+  convert_leakyRelu : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_linear : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_lstm : (JsValue) -> MLLstmSupportLimits?,
+  convert_lstmCell : (JsValue) -> MLLstmCellSupportLimits?,
+  convert_matmul : (JsValue) -> MLBinarySupportLimits?,
+  convert_pad : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_averagePool2d : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_l2Pool2d : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_maxPool2d : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_prelu : (JsValue) -> MLPreluSupportLimits?,
+  convert_reduceL1 : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceL2 : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceLogSum : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceLogSumExp : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceMax : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceMean : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceMin : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceProduct : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceSum : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reduceSumSquare : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_relu : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_resample2d : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reshape : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_reverse : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_scatterElements : (JsValue) -> MLScatterSupportLimits?,
+  convert_scatterND : (JsValue) -> MLScatterSupportLimits?,
+  convert_sigmoid : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_slice : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_softmax : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_softplus : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_softsign : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_split : (JsValue) -> MLSplitSupportLimits?,
+  convert_tanh : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_tile : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_transpose : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_triangular : (JsValue) -> MLSingleInputSupportLimits?,
+  convert_where_ : (JsValue) -> MLWhereSupportLimits?,
 ) -> MLOpSupportLimits =
-  #| (v) => ({
+  #| (v, convert_input, convert_constant, convert_output, convert_argMin, convert_argMax, convert_batchNormalization, convert_cast, convert_clamp, convert_concat, convert_conv2d, convert_convTranspose2d, convert_cumulativeSum, convert_add, convert_sub, convert_mul, convert_div, convert_max, convert_min, convert_pow, convert_equal, convert_notEqual, convert_greater, convert_greaterOrEqual, convert_lesser, convert_lesserOrEqual, convert_logicalNot, convert_logicalAnd, convert_logicalOr, convert_logicalXor, convert_isNaN, convert_isInfinite, convert_abs, convert_ceil, convert_cos, convert_erf, convert_exp, convert_floor, convert_identity, convert_log, convert_neg, convert_reciprocal, convert_roundEven, convert_sin, convert_sign, convert_sqrt, convert_tan, convert_dequantizeLinear, convert_quantizeLinear, convert_elu, convert_expand, convert_gather, convert_gatherElements, convert_gatherND, convert_gelu, convert_gemm, convert_gru, convert_gruCell, convert_hardSigmoid, convert_hardSwish, convert_instanceNormalization, convert_layerNormalization, convert_leakyRelu, convert_linear, convert_lstm, convert_lstmCell, convert_matmul, convert_pad, convert_averagePool2d, convert_l2Pool2d, convert_maxPool2d, convert_prelu, convert_reduceL1, convert_reduceL2, convert_reduceLogSum, convert_reduceLogSumExp, convert_reduceMax, convert_reduceMean, convert_reduceMin, convert_reduceProduct, convert_reduceSum, convert_reduceSumSquare, convert_relu, convert_resample2d, convert_reshape, convert_reverse, convert_scatterElements, convert_scatterND, convert_sigmoid, convert_slice, convert_softmax, convert_softplus, convert_softsign, convert_split, convert_tanh, convert_tile, convert_transpose, convert_triangular, convert_where_) => ({
   #|   preferredInputLayout: (v.preferredInputLayout === undefined ? undefined : ['nchw', 'nhwc'].indexOf(v.preferredInputLayout)),
   #|   maxTensorByteLength: (v.maxTensorByteLength === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.maxTensorByteLength)),
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   constant: (v.constant === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constant }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output }),
-  #|   argMin: (v.argMin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.argMin }),
-  #|   argMax: (v.argMax === undefined ? { $tag: 0 } : { $tag: 1, _0: v.argMax }),
-  #|   batchNormalization: (v.batchNormalization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.batchNormalization }),
-  #|   cast: (v.cast === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cast }),
-  #|   clamp: (v.clamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.clamp }),
-  #|   concat: (v.concat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.concat }),
-  #|   conv2d: (v.conv2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.conv2d }),
-  #|   convTranspose2d: (v.convTranspose2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.convTranspose2d }),
-  #|   cumulativeSum: (v.cumulativeSum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cumulativeSum }),
-  #|   add: (v.add === undefined ? { $tag: 0 } : { $tag: 1, _0: v.add }),
-  #|   sub: (v.sub === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sub }),
-  #|   mul: (v.mul === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mul }),
-  #|   div: (v.div === undefined ? { $tag: 0 } : { $tag: 1, _0: v.div }),
-  #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
-  #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min }),
-  #|   pow: (v.pow === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pow }),
-  #|   equal: (v.equal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.equal }),
-  #|   notEqual: (v.notEqual === undefined ? { $tag: 0 } : { $tag: 1, _0: v.notEqual }),
-  #|   greater: (v.greater === undefined ? { $tag: 0 } : { $tag: 1, _0: v.greater }),
-  #|   greaterOrEqual: (v.greaterOrEqual === undefined ? { $tag: 0 } : { $tag: 1, _0: v.greaterOrEqual }),
-  #|   lesser: (v.lesser === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lesser }),
-  #|   lesserOrEqual: (v.lesserOrEqual === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lesserOrEqual }),
-  #|   logicalNot: (v.logicalNot === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalNot }),
-  #|   logicalAnd: (v.logicalAnd === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalAnd }),
-  #|   logicalOr: (v.logicalOr === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalOr }),
-  #|   logicalXor: (v.logicalXor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.logicalXor }),
-  #|   isNaN: (v.isNaN === undefined ? { $tag: 0 } : { $tag: 1, _0: v.isNaN }),
-  #|   isInfinite: (v.isInfinite === undefined ? { $tag: 0 } : { $tag: 1, _0: v.isInfinite }),
-  #|   abs: (v.abs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.abs }),
-  #|   ceil: (v.ceil === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ceil }),
-  #|   cos: (v.cos === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cos }),
-  #|   erf: (v.erf === undefined ? { $tag: 0 } : { $tag: 1, _0: v.erf }),
-  #|   exp: (v.exp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exp }),
-  #|   floor: (v.floor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.floor }),
-  #|   identity: (v.identity === undefined ? { $tag: 0 } : { $tag: 1, _0: v.identity }),
-  #|   log: (v.log === undefined ? { $tag: 0 } : { $tag: 1, _0: v.log }),
-  #|   neg: (v.neg === undefined ? { $tag: 0 } : { $tag: 1, _0: v.neg }),
-  #|   reciprocal: (v.reciprocal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reciprocal }),
-  #|   roundEven: (v.roundEven === undefined ? { $tag: 0 } : { $tag: 1, _0: v.roundEven }),
-  #|   sin: (v.sin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sin }),
-  #|   sign: (v.sign === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sign }),
-  #|   sqrt: (v.sqrt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sqrt }),
-  #|   tan: (v.tan === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tan }),
-  #|   dequantizeLinear: (v.dequantizeLinear === undefined ? { $tag: 0 } : { $tag: 1, _0: v.dequantizeLinear }),
-  #|   quantizeLinear: (v.quantizeLinear === undefined ? { $tag: 0 } : { $tag: 1, _0: v.quantizeLinear }),
-  #|   elu: (v.elu === undefined ? { $tag: 0 } : { $tag: 1, _0: v.elu }),
-  #|   expand: (v.expand === undefined ? { $tag: 0 } : { $tag: 1, _0: v.expand }),
-  #|   gather: (v.gather === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gather }),
-  #|   gatherElements: (v.gatherElements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gatherElements }),
-  #|   gatherND: (v.gatherND === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gatherND }),
-  #|   gelu: (v.gelu === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gelu }),
-  #|   gemm: (v.gemm === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gemm }),
-  #|   gru: (v.gru === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gru }),
-  #|   gruCell: (v.gruCell === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gruCell }),
-  #|   hardSigmoid: (v.hardSigmoid === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hardSigmoid }),
-  #|   hardSwish: (v.hardSwish === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hardSwish }),
-  #|   instanceNormalization: (v.instanceNormalization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.instanceNormalization }),
-  #|   layerNormalization: (v.layerNormalization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layerNormalization }),
-  #|   leakyRelu: (v.leakyRelu === undefined ? { $tag: 0 } : { $tag: 1, _0: v.leakyRelu }),
-  #|   linear: (v.linear === undefined ? { $tag: 0 } : { $tag: 1, _0: v.linear }),
-  #|   lstm: (v.lstm === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lstm }),
-  #|   lstmCell: (v.lstmCell === undefined ? { $tag: 0 } : { $tag: 1, _0: v.lstmCell }),
-  #|   matmul: (v.matmul === undefined ? { $tag: 0 } : { $tag: 1, _0: v.matmul }),
-  #|   pad: (v.pad === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pad }),
-  #|   averagePool2d: (v.averagePool2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.averagePool2d }),
-  #|   l2Pool2d: (v.l2Pool2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.l2Pool2d }),
-  #|   maxPool2d: (v.maxPool2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.maxPool2d }),
-  #|   prelu: (v.prelu === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prelu }),
-  #|   reduceL1: (v.reduceL1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceL1 }),
-  #|   reduceL2: (v.reduceL2 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceL2 }),
-  #|   reduceLogSum: (v.reduceLogSum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceLogSum }),
-  #|   reduceLogSumExp: (v.reduceLogSumExp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceLogSumExp }),
-  #|   reduceMax: (v.reduceMax === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceMax }),
-  #|   reduceMean: (v.reduceMean === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceMean }),
-  #|   reduceMin: (v.reduceMin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceMin }),
-  #|   reduceProduct: (v.reduceProduct === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceProduct }),
-  #|   reduceSum: (v.reduceSum === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceSum }),
-  #|   reduceSumSquare: (v.reduceSumSquare === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reduceSumSquare }),
-  #|   relu: (v.relu === undefined ? { $tag: 0 } : { $tag: 1, _0: v.relu }),
-  #|   resample2d: (v.resample2d === undefined ? { $tag: 0 } : { $tag: 1, _0: v.resample2d }),
-  #|   reshape: (v.reshape === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reshape }),
-  #|   reverse: (v.reverse === undefined ? { $tag: 0 } : { $tag: 1, _0: v.reverse }),
-  #|   scatterElements: (v.scatterElements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scatterElements }),
-  #|   scatterND: (v.scatterND === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scatterND }),
-  #|   sigmoid: (v.sigmoid === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sigmoid }),
-  #|   slice: (v.slice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.slice }),
-  #|   softmax: (v.softmax === undefined ? { $tag: 0 } : { $tag: 1, _0: v.softmax }),
-  #|   softplus: (v.softplus === undefined ? { $tag: 0 } : { $tag: 1, _0: v.softplus }),
-  #|   softsign: (v.softsign === undefined ? { $tag: 0 } : { $tag: 1, _0: v.softsign }),
-  #|   split: (v.split === undefined ? { $tag: 0 } : { $tag: 1, _0: v.split }),
-  #|   tanh: (v.tanh === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tanh }),
-  #|   tile: (v.tile === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tile }),
-  #|   transpose: (v.transpose === undefined ? { $tag: 0 } : { $tag: 1, _0: v.transpose }),
-  #|   triangular: (v.triangular === undefined ? { $tag: 0 } : { $tag: 1, _0: v.triangular }),
-  #|   where_: (v.where === undefined ? { $tag: 0 } : { $tag: 1, _0: v.where })
+  #|   input: convert_input(v.input),
+  #|   constant: convert_constant(v.constant),
+  #|   output: convert_output(v.output),
+  #|   argMin: convert_argMin(v.argMin),
+  #|   argMax: convert_argMax(v.argMax),
+  #|   batchNormalization: convert_batchNormalization(v.batchNormalization),
+  #|   cast: convert_cast(v.cast),
+  #|   clamp: convert_clamp(v.clamp),
+  #|   concat: convert_concat(v.concat),
+  #|   conv2d: convert_conv2d(v.conv2d),
+  #|   convTranspose2d: convert_convTranspose2d(v.convTranspose2d),
+  #|   cumulativeSum: convert_cumulativeSum(v.cumulativeSum),
+  #|   add: convert_add(v.add),
+  #|   sub: convert_sub(v.sub),
+  #|   mul: convert_mul(v.mul),
+  #|   div: convert_div(v.div),
+  #|   max: convert_max(v.max),
+  #|   min: convert_min(v.min),
+  #|   pow: convert_pow(v.pow),
+  #|   equal: convert_equal(v.equal),
+  #|   notEqual: convert_notEqual(v.notEqual),
+  #|   greater: convert_greater(v.greater),
+  #|   greaterOrEqual: convert_greaterOrEqual(v.greaterOrEqual),
+  #|   lesser: convert_lesser(v.lesser),
+  #|   lesserOrEqual: convert_lesserOrEqual(v.lesserOrEqual),
+  #|   logicalNot: convert_logicalNot(v.logicalNot),
+  #|   logicalAnd: convert_logicalAnd(v.logicalAnd),
+  #|   logicalOr: convert_logicalOr(v.logicalOr),
+  #|   logicalXor: convert_logicalXor(v.logicalXor),
+  #|   isNaN: convert_isNaN(v.isNaN),
+  #|   isInfinite: convert_isInfinite(v.isInfinite),
+  #|   abs: convert_abs(v.abs),
+  #|   ceil: convert_ceil(v.ceil),
+  #|   cos: convert_cos(v.cos),
+  #|   erf: convert_erf(v.erf),
+  #|   exp: convert_exp(v.exp),
+  #|   floor: convert_floor(v.floor),
+  #|   identity: convert_identity(v.identity),
+  #|   log: convert_log(v.log),
+  #|   neg: convert_neg(v.neg),
+  #|   reciprocal: convert_reciprocal(v.reciprocal),
+  #|   roundEven: convert_roundEven(v.roundEven),
+  #|   sin: convert_sin(v.sin),
+  #|   sign: convert_sign(v.sign),
+  #|   sqrt: convert_sqrt(v.sqrt),
+  #|   tan: convert_tan(v.tan),
+  #|   dequantizeLinear: convert_dequantizeLinear(v.dequantizeLinear),
+  #|   quantizeLinear: convert_quantizeLinear(v.quantizeLinear),
+  #|   elu: convert_elu(v.elu),
+  #|   expand: convert_expand(v.expand),
+  #|   gather: convert_gather(v.gather),
+  #|   gatherElements: convert_gatherElements(v.gatherElements),
+  #|   gatherND: convert_gatherND(v.gatherND),
+  #|   gelu: convert_gelu(v.gelu),
+  #|   gemm: convert_gemm(v.gemm),
+  #|   gru: convert_gru(v.gru),
+  #|   gruCell: convert_gruCell(v.gruCell),
+  #|   hardSigmoid: convert_hardSigmoid(v.hardSigmoid),
+  #|   hardSwish: convert_hardSwish(v.hardSwish),
+  #|   instanceNormalization: convert_instanceNormalization(v.instanceNormalization),
+  #|   layerNormalization: convert_layerNormalization(v.layerNormalization),
+  #|   leakyRelu: convert_leakyRelu(v.leakyRelu),
+  #|   linear: convert_linear(v.linear),
+  #|   lstm: convert_lstm(v.lstm),
+  #|   lstmCell: convert_lstmCell(v.lstmCell),
+  #|   matmul: convert_matmul(v.matmul),
+  #|   pad: convert_pad(v.pad),
+  #|   averagePool2d: convert_averagePool2d(v.averagePool2d),
+  #|   l2Pool2d: convert_l2Pool2d(v.l2Pool2d),
+  #|   maxPool2d: convert_maxPool2d(v.maxPool2d),
+  #|   prelu: convert_prelu(v.prelu),
+  #|   reduceL1: convert_reduceL1(v.reduceL1),
+  #|   reduceL2: convert_reduceL2(v.reduceL2),
+  #|   reduceLogSum: convert_reduceLogSum(v.reduceLogSum),
+  #|   reduceLogSumExp: convert_reduceLogSumExp(v.reduceLogSumExp),
+  #|   reduceMax: convert_reduceMax(v.reduceMax),
+  #|   reduceMean: convert_reduceMean(v.reduceMean),
+  #|   reduceMin: convert_reduceMin(v.reduceMin),
+  #|   reduceProduct: convert_reduceProduct(v.reduceProduct),
+  #|   reduceSum: convert_reduceSum(v.reduceSum),
+  #|   reduceSumSquare: convert_reduceSumSquare(v.reduceSumSquare),
+  #|   relu: convert_relu(v.relu),
+  #|   resample2d: convert_resample2d(v.resample2d),
+  #|   reshape: convert_reshape(v.reshape),
+  #|   reverse: convert_reverse(v.reverse),
+  #|   scatterElements: convert_scatterElements(v.scatterElements),
+  #|   scatterND: convert_scatterND(v.scatterND),
+  #|   sigmoid: convert_sigmoid(v.sigmoid),
+  #|   slice: convert_slice(v.slice),
+  #|   softmax: convert_softmax(v.softmax),
+  #|   softplus: convert_softplus(v.softplus),
+  #|   softsign: convert_softsign(v.softsign),
+  #|   split: convert_split(v.split),
+  #|   tanh: convert_tanh(v.tanh),
+  #|   tile: convert_tile(v.tile),
+  #|   transpose: convert_transpose(v.transpose),
+  #|   triangular: convert_triangular(v.triangular),
+  #|   where_: convert_where_(v.where)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLOpSupportLimits::from_js(value : JsValue) -> MLOpSupportLimits {
-  MLOpSupportLimits::from_js_ffi(value)
+  MLOpSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBatchNormalizationSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLConcatSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLConv2dSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLConv2dSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLLogicalNotSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLLogicalNotSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLLogicalNotSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLQuantizeDequantizeLinearSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLQuantizeDequantizeLinearSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGatherSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGatherSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGatherSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGemmSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGruSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLGruCellSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLNormalizationSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLNormalizationSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLLstmSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLLstmCellSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLBinarySupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLPreluSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLScatterSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLScatterSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSplitSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLSingleInputSupportLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLWhereSupportLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1006,29 +2480,46 @@ pub fn MLTensorLimits::default() -> MLTensorLimits {
 }
 
 ///|
-extern "js" fn MLTensorLimits::to_js_ffi(self : MLTensorLimits) -> JsValue =
-  #| (self) => ({
+extern "js" fn MLTensorLimits::to_js_ffi(
+  self : MLTensorLimits,
+  convert_rankRange : (MLRankRange?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_rankRange) => ({
   #|   dataTypes: self.dataTypes,
-  #|   rankRange: ((() => { const v = self.rankRange; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   rankRange: convert_rankRange(self.rankRange)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLTensorLimits::to_js(self : MLTensorLimits) -> JsValue {
-  MLTensorLimits::to_js_ffi(self)
+  MLTensorLimits::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
-extern "js" fn MLTensorLimits::from_js_ffi(value : JsValue) -> MLTensorLimits =
-  #| (v) => ({
+extern "js" fn MLTensorLimits::from_js_ffi(
+  value : JsValue,
+  convert_rankRange : (JsValue) -> MLRankRange?,
+) -> MLTensorLimits =
+  #| (v, convert_rankRange) => ({
   #|   dataTypes: v.dataTypes,
-  #|   rankRange: (v.rankRange === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rankRange })
+  #|   rankRange: convert_rankRange(v.rankRange)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLTensorLimits::from_js(value : JsValue) -> MLTensorLimits {
-  MLTensorLimits::from_js_ffi(value)
+  MLTensorLimits::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(MLRankRange::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1048,33 +2539,82 @@ pub fn MLBinarySupportLimits::default() -> MLBinarySupportLimits {
 ///|
 extern "js" fn MLBinarySupportLimits::to_js_ffi(
   self : MLBinarySupportLimits,
+  convert_a : (MLTensorLimits?) -> JsValue,
+  convert_b : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   a: ((() => { const v = self.a; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   b: ((() => { const v = self.b; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_a, convert_b, convert_output) => ({
+  #|   a: convert_a(self.a),
+  #|   b: convert_b(self.b),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLBinarySupportLimits::to_js(self : MLBinarySupportLimits) -> JsValue {
-  MLBinarySupportLimits::to_js_ffi(self)
+  MLBinarySupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLBinarySupportLimits::from_js_ffi(
   value : JsValue,
+  convert_a : (JsValue) -> MLTensorLimits?,
+  convert_b : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLBinarySupportLimits =
-  #| (v) => ({
-  #|   a: (v.a === undefined ? { $tag: 0 } : { $tag: 1, _0: v.a }),
-  #|   b: (v.b === undefined ? { $tag: 0 } : { $tag: 1, _0: v.b }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_a, convert_b, convert_output) => ({
+  #|   a: convert_a(v.a),
+  #|   b: convert_b(v.b),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLBinarySupportLimits::from_js(value : JsValue) -> MLBinarySupportLimits {
-  MLBinarySupportLimits::from_js_ffi(value)
+  MLBinarySupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1093,10 +2633,12 @@ pub fn MLSingleInputSupportLimits::default() -> MLSingleInputSupportLimits {
 ///|
 extern "js" fn MLSingleInputSupportLimits::to_js_ffi(
   self : MLSingleInputSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
@@ -1104,16 +2646,32 @@ extern "js" fn MLSingleInputSupportLimits::to_js_ffi(
 pub fn MLSingleInputSupportLimits::to_js(
   self : MLSingleInputSupportLimits,
 ) -> JsValue {
-  MLSingleInputSupportLimits::to_js_ffi(self)
+  MLSingleInputSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLSingleInputSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLSingleInputSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -1121,7 +2679,23 @@ extern "js" fn MLSingleInputSupportLimits::from_js_ffi(
 pub fn MLSingleInputSupportLimits::from_js(
   value : JsValue,
 ) -> MLSingleInputSupportLimits {
-  MLSingleInputSupportLimits::from_js_ffi(value)
+  MLSingleInputSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1399,14 +2973,20 @@ pub fn MLBatchNormalizationSupportLimits::default() -> MLBatchNormalizationSuppo
 ///|
 extern "js" fn MLBatchNormalizationSupportLimits::to_js_ffi(
   self : MLBatchNormalizationSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_mean : (MLTensorLimits?) -> JsValue,
+  convert_variance : (MLTensorLimits?) -> JsValue,
+  convert_scale : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   mean: ((() => { const v = self.mean; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   variance: ((() => { const v = self.variance; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_mean, convert_variance, convert_scale, convert_bias, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   mean: convert_mean(self.mean),
+  #|   variance: convert_variance(self.variance),
+  #|   scale: convert_scale(self.scale),
+  #|   bias: convert_bias(self.bias),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
@@ -1414,20 +2994,64 @@ extern "js" fn MLBatchNormalizationSupportLimits::to_js_ffi(
 pub fn MLBatchNormalizationSupportLimits::to_js(
   self : MLBatchNormalizationSupportLimits,
 ) -> JsValue {
-  MLBatchNormalizationSupportLimits::to_js_ffi(self)
+  MLBatchNormalizationSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLBatchNormalizationSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_mean : (JsValue) -> MLTensorLimits?,
+  convert_variance : (JsValue) -> MLTensorLimits?,
+  convert_scale : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLBatchNormalizationSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   mean: (v.mean === undefined ? { $tag: 0 } : { $tag: 1, _0: v.mean }),
-  #|   variance: (v.variance === undefined ? { $tag: 0 } : { $tag: 1, _0: v.variance }),
-  #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_mean, convert_variance, convert_scale, convert_bias, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   mean: convert_mean(v.mean),
+  #|   variance: convert_variance(v.variance),
+  #|   scale: convert_scale(v.scale),
+  #|   bias: convert_bias(v.bias),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -1435,7 +3059,51 @@ extern "js" fn MLBatchNormalizationSupportLimits::from_js_ffi(
 pub fn MLBatchNormalizationSupportLimits::from_js(
   value : JsValue,
 ) -> MLBatchNormalizationSupportLimits {
-  MLBatchNormalizationSupportLimits::from_js_ffi(value)
+  MLBatchNormalizationSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1496,31 +3164,65 @@ pub fn MLConcatSupportLimits::default() -> MLConcatSupportLimits {
 ///|
 extern "js" fn MLConcatSupportLimits::to_js_ffi(
   self : MLConcatSupportLimits,
+  convert_inputs : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   inputs: ((() => { const v = self.inputs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_inputs, convert_output) => ({
+  #|   inputs: convert_inputs(self.inputs),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLConcatSupportLimits::to_js(self : MLConcatSupportLimits) -> JsValue {
-  MLConcatSupportLimits::to_js_ffi(self)
+  MLConcatSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLConcatSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_inputs : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLConcatSupportLimits =
-  #| (v) => ({
-  #|   inputs: (v.inputs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inputs }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_inputs, convert_output) => ({
+  #|   inputs: convert_inputs(v.inputs),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLConcatSupportLimits::from_js(value : JsValue) -> MLConcatSupportLimits {
-  MLConcatSupportLimits::from_js_ffi(value)
+  MLConcatSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1612,35 +3314,99 @@ pub fn MLConv2dSupportLimits::default() -> MLConv2dSupportLimits {
 ///|
 extern "js" fn MLConv2dSupportLimits::to_js_ffi(
   self : MLConv2dSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_filter : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   filter: ((() => { const v = self.filter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_filter, convert_bias, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   filter: convert_filter(self.filter),
+  #|   bias: convert_bias(self.bias),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLConv2dSupportLimits::to_js(self : MLConv2dSupportLimits) -> JsValue {
-  MLConv2dSupportLimits::to_js_ffi(self)
+  MLConv2dSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLConv2dSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_filter : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLConv2dSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   filter: (v.filter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.filter }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_filter, convert_bias, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   filter: convert_filter(v.filter),
+  #|   bias: convert_bias(v.bias),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLConv2dSupportLimits::from_js(value : JsValue) -> MLConv2dSupportLimits {
-  MLConv2dSupportLimits::from_js_ffi(value)
+  MLConv2dSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1789,10 +3555,12 @@ pub fn MLLogicalNotSupportLimits::default() -> MLLogicalNotSupportLimits {
 ///|
 extern "js" fn MLLogicalNotSupportLimits::to_js_ffi(
   self : MLLogicalNotSupportLimits,
+  convert_a : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   a: ((() => { const v = self.a; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_a, convert_output) => ({
+  #|   a: convert_a(self.a),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
@@ -1800,16 +3568,32 @@ extern "js" fn MLLogicalNotSupportLimits::to_js_ffi(
 pub fn MLLogicalNotSupportLimits::to_js(
   self : MLLogicalNotSupportLimits,
 ) -> JsValue {
-  MLLogicalNotSupportLimits::to_js_ffi(self)
+  MLLogicalNotSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLLogicalNotSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_a : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLLogicalNotSupportLimits =
-  #| (v) => ({
-  #|   a: (v.a === undefined ? { $tag: 0 } : { $tag: 1, _0: v.a }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_a, convert_output) => ({
+  #|   a: convert_a(v.a),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -1817,7 +3601,23 @@ extern "js" fn MLLogicalNotSupportLimits::from_js_ffi(
 pub fn MLLogicalNotSupportLimits::from_js(
   value : JsValue,
 ) -> MLLogicalNotSupportLimits {
-  MLLogicalNotSupportLimits::from_js_ffi(value)
+  MLLogicalNotSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1843,12 +3643,16 @@ pub fn MLQuantizeDequantizeLinearSupportLimits::default() -> MLQuantizeDequantiz
 ///|
 extern "js" fn MLQuantizeDequantizeLinearSupportLimits::to_js_ffi(
   self : MLQuantizeDequantizeLinearSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_scale : (MLTensorLimits?) -> JsValue,
+  convert_zeroPoint : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   zeroPoint: ((() => { const v = self.zeroPoint; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_scale, convert_zeroPoint, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   scale: convert_scale(self.scale),
+  #|   zeroPoint: convert_zeroPoint(self.zeroPoint),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
@@ -1856,18 +3660,48 @@ extern "js" fn MLQuantizeDequantizeLinearSupportLimits::to_js_ffi(
 pub fn MLQuantizeDequantizeLinearSupportLimits::to_js(
   self : MLQuantizeDequantizeLinearSupportLimits,
 ) -> JsValue {
-  MLQuantizeDequantizeLinearSupportLimits::to_js_ffi(self)
+  MLQuantizeDequantizeLinearSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLQuantizeDequantizeLinearSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_scale : (JsValue) -> MLTensorLimits?,
+  convert_zeroPoint : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLQuantizeDequantizeLinearSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
-  #|   zeroPoint: (v.zeroPoint === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zeroPoint }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_scale, convert_zeroPoint, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   scale: convert_scale(v.scale),
+  #|   zeroPoint: convert_zeroPoint(v.zeroPoint),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -1875,7 +3709,37 @@ extern "js" fn MLQuantizeDequantizeLinearSupportLimits::from_js_ffi(
 pub fn MLQuantizeDequantizeLinearSupportLimits::from_js(
   value : JsValue,
 ) -> MLQuantizeDequantizeLinearSupportLimits {
-  MLQuantizeDequantizeLinearSupportLimits::from_js_ffi(value)
+  MLQuantizeDequantizeLinearSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1973,33 +3837,82 @@ pub fn MLGatherSupportLimits::default() -> MLGatherSupportLimits {
 ///|
 extern "js" fn MLGatherSupportLimits::to_js_ffi(
   self : MLGatherSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_indices : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   indices: ((() => { const v = self.indices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_indices, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   indices: convert_indices(self.indices),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLGatherSupportLimits::to_js(self : MLGatherSupportLimits) -> JsValue {
-  MLGatherSupportLimits::to_js_ffi(self)
+  MLGatherSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLGatherSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_indices : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLGatherSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   indices: (v.indices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.indices }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_indices, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   indices: convert_indices(v.indices),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLGatherSupportLimits::from_js(value : JsValue) -> MLGatherSupportLimits {
-  MLGatherSupportLimits::from_js_ffi(value)
+  MLGatherSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2078,35 +3991,99 @@ pub fn MLGemmSupportLimits::default() -> MLGemmSupportLimits {
 ///|
 extern "js" fn MLGemmSupportLimits::to_js_ffi(
   self : MLGemmSupportLimits,
+  convert_a : (MLTensorLimits?) -> JsValue,
+  convert_b : (MLTensorLimits?) -> JsValue,
+  convert_c : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   a: ((() => { const v = self.a; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   b: ((() => { const v = self.b; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   c: ((() => { const v = self.c; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_a, convert_b, convert_c, convert_output) => ({
+  #|   a: convert_a(self.a),
+  #|   b: convert_b(self.b),
+  #|   c: convert_c(self.c),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLGemmSupportLimits::to_js(self : MLGemmSupportLimits) -> JsValue {
-  MLGemmSupportLimits::to_js_ffi(self)
+  MLGemmSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLGemmSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_a : (JsValue) -> MLTensorLimits?,
+  convert_b : (JsValue) -> MLTensorLimits?,
+  convert_c : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLGemmSupportLimits =
-  #| (v) => ({
-  #|   a: (v.a === undefined ? { $tag: 0 } : { $tag: 1, _0: v.a }),
-  #|   b: (v.b === undefined ? { $tag: 0 } : { $tag: 1, _0: v.b }),
-  #|   c: (v.c === undefined ? { $tag: 0 } : { $tag: 1, _0: v.c }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_a, convert_b, convert_c, convert_output) => ({
+  #|   a: convert_a(v.a),
+  #|   b: convert_b(v.b),
+  #|   c: convert_c(v.c),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLGemmSupportLimits::from_js(value : JsValue) -> MLGemmSupportLimits {
-  MLGemmSupportLimits::from_js_ffi(value)
+  MLGemmSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2210,43 +4187,167 @@ pub fn MLGruSupportLimits::default() -> MLGruSupportLimits {
 ///|
 extern "js" fn MLGruSupportLimits::to_js_ffi(
   self : MLGruSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_weight : (MLTensorLimits?) -> JsValue,
+  convert_recurrentWeight : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_recurrentBias : (MLTensorLimits?) -> JsValue,
+  convert_initialHiddenState : (MLTensorLimits?) -> JsValue,
+  convert_output0 : (MLTensorLimits?) -> JsValue,
+  convert_output1 : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   weight: ((() => { const v = self.weight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentWeight: ((() => { const v = self.recurrentWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   initialHiddenState: ((() => { const v = self.initialHiddenState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output0: ((() => { const v = self.output0; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output1: ((() => { const v = self.output1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_weight, convert_recurrentWeight, convert_bias, convert_recurrentBias, convert_initialHiddenState, convert_output0, convert_output1) => ({
+  #|   input: convert_input(self.input),
+  #|   weight: convert_weight(self.weight),
+  #|   recurrentWeight: convert_recurrentWeight(self.recurrentWeight),
+  #|   bias: convert_bias(self.bias),
+  #|   recurrentBias: convert_recurrentBias(self.recurrentBias),
+  #|   initialHiddenState: convert_initialHiddenState(self.initialHiddenState),
+  #|   output0: convert_output0(self.output0),
+  #|   output1: convert_output1(self.output1)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLGruSupportLimits::to_js(self : MLGruSupportLimits) -> JsValue {
-  MLGruSupportLimits::to_js_ffi(self)
+  MLGruSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLGruSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_weight : (JsValue) -> MLTensorLimits?,
+  convert_recurrentWeight : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_recurrentBias : (JsValue) -> MLTensorLimits?,
+  convert_initialHiddenState : (JsValue) -> MLTensorLimits?,
+  convert_output0 : (JsValue) -> MLTensorLimits?,
+  convert_output1 : (JsValue) -> MLTensorLimits?,
 ) -> MLGruSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   weight: (v.weight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weight }),
-  #|   recurrentWeight: (v.recurrentWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentWeight }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
-  #|   initialHiddenState: (v.initialHiddenState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initialHiddenState }),
-  #|   output0: (v.output0 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output0 }),
-  #|   output1: (v.output1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output1 })
+  #| (v, convert_input, convert_weight, convert_recurrentWeight, convert_bias, convert_recurrentBias, convert_initialHiddenState, convert_output0, convert_output1) => ({
+  #|   input: convert_input(v.input),
+  #|   weight: convert_weight(v.weight),
+  #|   recurrentWeight: convert_recurrentWeight(v.recurrentWeight),
+  #|   bias: convert_bias(v.bias),
+  #|   recurrentBias: convert_recurrentBias(v.recurrentBias),
+  #|   initialHiddenState: convert_initialHiddenState(v.initialHiddenState),
+  #|   output0: convert_output0(v.output0),
+  #|   output1: convert_output1(v.output1)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLGruSupportLimits::from_js(value : JsValue) -> MLGruSupportLimits {
-  MLGruSupportLimits::from_js_ffi(value)
+  MLGruSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2338,35 +4439,93 @@ pub fn MLGruCellSupportLimits::default() -> MLGruCellSupportLimits {
 ///|
 extern "js" fn MLGruCellSupportLimits::to_js_ffi(
   self : MLGruCellSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_weight : (MLTensorLimits?) -> JsValue,
+  convert_recurrentWeight : (MLTensorLimits?) -> JsValue,
+  convert_hiddenState : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_recurrentBias : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   weight: ((() => { const v = self.weight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentWeight: ((() => { const v = self.recurrentWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hiddenState: ((() => { const v = self.hiddenState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_weight, convert_recurrentWeight, convert_hiddenState, convert_bias, convert_recurrentBias, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   weight: convert_weight(self.weight),
+  #|   recurrentWeight: convert_recurrentWeight(self.recurrentWeight),
+  #|   hiddenState: convert_hiddenState(self.hiddenState),
+  #|   bias: convert_bias(self.bias),
+  #|   recurrentBias: convert_recurrentBias(self.recurrentBias),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLGruCellSupportLimits::to_js(self : MLGruCellSupportLimits) -> JsValue {
-  MLGruCellSupportLimits::to_js_ffi(self)
+  MLGruCellSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLGruCellSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_weight : (JsValue) -> MLTensorLimits?,
+  convert_recurrentWeight : (JsValue) -> MLTensorLimits?,
+  convert_hiddenState : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_recurrentBias : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLGruCellSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   weight: (v.weight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weight }),
-  #|   recurrentWeight: (v.recurrentWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentWeight }),
-  #|   hiddenState: (v.hiddenState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hiddenState }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_weight, convert_recurrentWeight, convert_hiddenState, convert_bias, convert_recurrentBias, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   weight: convert_weight(v.weight),
+  #|   recurrentWeight: convert_recurrentWeight(v.recurrentWeight),
+  #|   hiddenState: convert_hiddenState(v.hiddenState),
+  #|   bias: convert_bias(v.bias),
+  #|   recurrentBias: convert_recurrentBias(v.recurrentBias),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -2374,7 +4533,58 @@ extern "js" fn MLGruCellSupportLimits::from_js_ffi(
 pub fn MLGruCellSupportLimits::from_js(
   value : JsValue,
 ) -> MLGruCellSupportLimits {
-  MLGruCellSupportLimits::from_js_ffi(value)
+  MLGruCellSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2508,12 +4718,16 @@ pub fn MLNormalizationSupportLimits::default() -> MLNormalizationSupportLimits {
 ///|
 extern "js" fn MLNormalizationSupportLimits::to_js_ffi(
   self : MLNormalizationSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_scale : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   scale: ((() => { const v = self.scale; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_scale, convert_bias, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   scale: convert_scale(self.scale),
+  #|   bias: convert_bias(self.bias),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
@@ -2521,18 +4735,48 @@ extern "js" fn MLNormalizationSupportLimits::to_js_ffi(
 pub fn MLNormalizationSupportLimits::to_js(
   self : MLNormalizationSupportLimits,
 ) -> JsValue {
-  MLNormalizationSupportLimits::to_js_ffi(self)
+  MLNormalizationSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLNormalizationSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_scale : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLNormalizationSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   scale: (v.scale === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scale }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_scale, convert_bias, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   scale: convert_scale(v.scale),
+  #|   bias: convert_bias(v.bias),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -2540,7 +4784,37 @@ extern "js" fn MLNormalizationSupportLimits::from_js_ffi(
 pub fn MLNormalizationSupportLimits::from_js(
   value : JsValue,
 ) -> MLNormalizationSupportLimits {
-  MLNormalizationSupportLimits::from_js_ffi(value)
+  MLNormalizationSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2801,49 +5075,218 @@ pub fn MLLstmSupportLimits::default() -> MLLstmSupportLimits {
 ///|
 extern "js" fn MLLstmSupportLimits::to_js_ffi(
   self : MLLstmSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_weight : (MLTensorLimits?) -> JsValue,
+  convert_recurrentWeight : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_recurrentBias : (MLTensorLimits?) -> JsValue,
+  convert_peepholeWeight : (MLTensorLimits?) -> JsValue,
+  convert_initialHiddenState : (MLTensorLimits?) -> JsValue,
+  convert_initialCellState : (MLTensorLimits?) -> JsValue,
+  convert_output0 : (MLTensorLimits?) -> JsValue,
+  convert_output1 : (MLTensorLimits?) -> JsValue,
+  convert_output2 : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   weight: ((() => { const v = self.weight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentWeight: ((() => { const v = self.recurrentWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   peepholeWeight: ((() => { const v = self.peepholeWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   initialHiddenState: ((() => { const v = self.initialHiddenState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   initialCellState: ((() => { const v = self.initialCellState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output0: ((() => { const v = self.output0; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output1: ((() => { const v = self.output1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output2: ((() => { const v = self.output2; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_weight, convert_recurrentWeight, convert_bias, convert_recurrentBias, convert_peepholeWeight, convert_initialHiddenState, convert_initialCellState, convert_output0, convert_output1, convert_output2) => ({
+  #|   input: convert_input(self.input),
+  #|   weight: convert_weight(self.weight),
+  #|   recurrentWeight: convert_recurrentWeight(self.recurrentWeight),
+  #|   bias: convert_bias(self.bias),
+  #|   recurrentBias: convert_recurrentBias(self.recurrentBias),
+  #|   peepholeWeight: convert_peepholeWeight(self.peepholeWeight),
+  #|   initialHiddenState: convert_initialHiddenState(self.initialHiddenState),
+  #|   initialCellState: convert_initialCellState(self.initialCellState),
+  #|   output0: convert_output0(self.output0),
+  #|   output1: convert_output1(self.output1),
+  #|   output2: convert_output2(self.output2)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLLstmSupportLimits::to_js(self : MLLstmSupportLimits) -> JsValue {
-  MLLstmSupportLimits::to_js_ffi(self)
+  MLLstmSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLLstmSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_weight : (JsValue) -> MLTensorLimits?,
+  convert_recurrentWeight : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_recurrentBias : (JsValue) -> MLTensorLimits?,
+  convert_peepholeWeight : (JsValue) -> MLTensorLimits?,
+  convert_initialHiddenState : (JsValue) -> MLTensorLimits?,
+  convert_initialCellState : (JsValue) -> MLTensorLimits?,
+  convert_output0 : (JsValue) -> MLTensorLimits?,
+  convert_output1 : (JsValue) -> MLTensorLimits?,
+  convert_output2 : (JsValue) -> MLTensorLimits?,
 ) -> MLLstmSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   weight: (v.weight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weight }),
-  #|   recurrentWeight: (v.recurrentWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentWeight }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
-  #|   peepholeWeight: (v.peepholeWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.peepholeWeight }),
-  #|   initialHiddenState: (v.initialHiddenState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initialHiddenState }),
-  #|   initialCellState: (v.initialCellState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.initialCellState }),
-  #|   output0: (v.output0 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output0 }),
-  #|   output1: (v.output1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output1 }),
-  #|   output2: (v.output2 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output2 })
+  #| (v, convert_input, convert_weight, convert_recurrentWeight, convert_bias, convert_recurrentBias, convert_peepholeWeight, convert_initialHiddenState, convert_initialCellState, convert_output0, convert_output1, convert_output2) => ({
+  #|   input: convert_input(v.input),
+  #|   weight: convert_weight(v.weight),
+  #|   recurrentWeight: convert_recurrentWeight(v.recurrentWeight),
+  #|   bias: convert_bias(v.bias),
+  #|   recurrentBias: convert_recurrentBias(v.recurrentBias),
+  #|   peepholeWeight: convert_peepholeWeight(v.peepholeWeight),
+  #|   initialHiddenState: convert_initialHiddenState(v.initialHiddenState),
+  #|   initialCellState: convert_initialCellState(v.initialCellState),
+  #|   output0: convert_output0(v.output0),
+  #|   output1: convert_output1(v.output1),
+  #|   output2: convert_output2(v.output2)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLLstmSupportLimits::from_js(value : JsValue) -> MLLstmSupportLimits {
-  MLLstmSupportLimits::from_js_ffi(value)
+  MLLstmSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -2943,18 +5386,28 @@ pub fn MLLstmCellSupportLimits::default() -> MLLstmCellSupportLimits {
 ///|
 extern "js" fn MLLstmCellSupportLimits::to_js_ffi(
   self : MLLstmCellSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_weight : (MLTensorLimits?) -> JsValue,
+  convert_recurrentWeight : (MLTensorLimits?) -> JsValue,
+  convert_hiddenState : (MLTensorLimits?) -> JsValue,
+  convert_cellState : (MLTensorLimits?) -> JsValue,
+  convert_bias : (MLTensorLimits?) -> JsValue,
+  convert_recurrentBias : (MLTensorLimits?) -> JsValue,
+  convert_peepholeWeight : (MLTensorLimits?) -> JsValue,
+  convert_output0 : (MLTensorLimits?) -> JsValue,
+  convert_output1 : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   weight: ((() => { const v = self.weight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentWeight: ((() => { const v = self.recurrentWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   hiddenState: ((() => { const v = self.hiddenState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   cellState: ((() => { const v = self.cellState; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   bias: ((() => { const v = self.bias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   recurrentBias: ((() => { const v = self.recurrentBias; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   peepholeWeight: ((() => { const v = self.peepholeWeight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output0: ((() => { const v = self.output0; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output1: ((() => { const v = self.output1; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_weight, convert_recurrentWeight, convert_hiddenState, convert_cellState, convert_bias, convert_recurrentBias, convert_peepholeWeight, convert_output0, convert_output1) => ({
+  #|   input: convert_input(self.input),
+  #|   weight: convert_weight(self.weight),
+  #|   recurrentWeight: convert_recurrentWeight(self.recurrentWeight),
+  #|   hiddenState: convert_hiddenState(self.hiddenState),
+  #|   cellState: convert_cellState(self.cellState),
+  #|   bias: convert_bias(self.bias),
+  #|   recurrentBias: convert_recurrentBias(self.recurrentBias),
+  #|   peepholeWeight: convert_peepholeWeight(self.peepholeWeight),
+  #|   output0: convert_output0(self.output0),
+  #|   output1: convert_output1(self.output1)
   #| })
 
 ///|
@@ -2962,24 +5415,96 @@ extern "js" fn MLLstmCellSupportLimits::to_js_ffi(
 pub fn MLLstmCellSupportLimits::to_js(
   self : MLLstmCellSupportLimits,
 ) -> JsValue {
-  MLLstmCellSupportLimits::to_js_ffi(self)
+  MLLstmCellSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLLstmCellSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_weight : (JsValue) -> MLTensorLimits?,
+  convert_recurrentWeight : (JsValue) -> MLTensorLimits?,
+  convert_hiddenState : (JsValue) -> MLTensorLimits?,
+  convert_cellState : (JsValue) -> MLTensorLimits?,
+  convert_bias : (JsValue) -> MLTensorLimits?,
+  convert_recurrentBias : (JsValue) -> MLTensorLimits?,
+  convert_peepholeWeight : (JsValue) -> MLTensorLimits?,
+  convert_output0 : (JsValue) -> MLTensorLimits?,
+  convert_output1 : (JsValue) -> MLTensorLimits?,
 ) -> MLLstmCellSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   weight: (v.weight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weight }),
-  #|   recurrentWeight: (v.recurrentWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentWeight }),
-  #|   hiddenState: (v.hiddenState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.hiddenState }),
-  #|   cellState: (v.cellState === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cellState }),
-  #|   bias: (v.bias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bias }),
-  #|   recurrentBias: (v.recurrentBias === undefined ? { $tag: 0 } : { $tag: 1, _0: v.recurrentBias }),
-  #|   peepholeWeight: (v.peepholeWeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.peepholeWeight }),
-  #|   output0: (v.output0 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output0 }),
-  #|   output1: (v.output1 === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output1 })
+  #| (v, convert_input, convert_weight, convert_recurrentWeight, convert_hiddenState, convert_cellState, convert_bias, convert_recurrentBias, convert_peepholeWeight, convert_output0, convert_output1) => ({
+  #|   input: convert_input(v.input),
+  #|   weight: convert_weight(v.weight),
+  #|   recurrentWeight: convert_recurrentWeight(v.recurrentWeight),
+  #|   hiddenState: convert_hiddenState(v.hiddenState),
+  #|   cellState: convert_cellState(v.cellState),
+  #|   bias: convert_bias(v.bias),
+  #|   recurrentBias: convert_recurrentBias(v.recurrentBias),
+  #|   peepholeWeight: convert_peepholeWeight(v.peepholeWeight),
+  #|   output0: convert_output0(v.output0),
+  #|   output1: convert_output1(v.output1)
   #| })
 
 ///|
@@ -2987,7 +5512,79 @@ extern "js" fn MLLstmCellSupportLimits::from_js_ffi(
 pub fn MLLstmCellSupportLimits::from_js(
   value : JsValue,
 ) -> MLLstmCellSupportLimits {
-  MLLstmCellSupportLimits::from_js_ffi(value)
+  MLLstmCellSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -3115,33 +5712,82 @@ pub fn MLPreluSupportLimits::default() -> MLPreluSupportLimits {
 ///|
 extern "js" fn MLPreluSupportLimits::to_js_ffi(
   self : MLPreluSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_slope : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   slope: ((() => { const v = self.slope; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_slope, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   slope: convert_slope(self.slope),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLPreluSupportLimits::to_js(self : MLPreluSupportLimits) -> JsValue {
-  MLPreluSupportLimits::to_js_ffi(self)
+  MLPreluSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLPreluSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_slope : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLPreluSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   slope: (v.slope === undefined ? { $tag: 0 } : { $tag: 1, _0: v.slope }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_slope, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   slope: convert_slope(v.slope),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLPreluSupportLimits::from_js(value : JsValue) -> MLPreluSupportLimits {
-  MLPreluSupportLimits::from_js_ffi(value)
+  MLPreluSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -3349,29 +5995,63 @@ pub fn MLScatterSupportLimits::default() -> MLScatterSupportLimits {
 ///|
 extern "js" fn MLScatterSupportLimits::to_js_ffi(
   self : MLScatterSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_indices : (MLTensorLimits?) -> JsValue,
+  convert_updates : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   indices: ((() => { const v = self.indices; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   updates: ((() => { const v = self.updates; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_indices, convert_updates, convert_output) => ({
+  #|   input: convert_input(self.input),
+  #|   indices: convert_indices(self.indices),
+  #|   updates: convert_updates(self.updates),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLScatterSupportLimits::to_js(self : MLScatterSupportLimits) -> JsValue {
-  MLScatterSupportLimits::to_js_ffi(self)
+  MLScatterSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLScatterSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_indices : (JsValue) -> MLTensorLimits?,
+  convert_updates : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLScatterSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   indices: (v.indices === undefined ? { $tag: 0 } : { $tag: 1, _0: v.indices }),
-  #|   updates: (v.updates === undefined ? { $tag: 0 } : { $tag: 1, _0: v.updates }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_input, convert_indices, convert_updates, convert_output) => ({
+  #|   input: convert_input(v.input),
+  #|   indices: convert_indices(v.indices),
+  #|   updates: convert_updates(v.updates),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
@@ -3379,7 +6059,37 @@ extern "js" fn MLScatterSupportLimits::from_js_ffi(
 pub fn MLScatterSupportLimits::from_js(
   value : JsValue,
 ) -> MLScatterSupportLimits {
-  MLScatterSupportLimits::from_js_ffi(value)
+  MLScatterSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -3476,31 +6186,65 @@ pub fn MLSplitSupportLimits::default() -> MLSplitSupportLimits {
 ///|
 extern "js" fn MLSplitSupportLimits::to_js_ffi(
   self : MLSplitSupportLimits,
+  convert_input : (MLTensorLimits?) -> JsValue,
+  convert_outputs : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   input: ((() => { const v = self.input; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   outputs: ((() => { const v = self.outputs; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_input, convert_outputs) => ({
+  #|   input: convert_input(self.input),
+  #|   outputs: convert_outputs(self.outputs)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLSplitSupportLimits::to_js(self : MLSplitSupportLimits) -> JsValue {
-  MLSplitSupportLimits::to_js_ffi(self)
+  MLSplitSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLSplitSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_input : (JsValue) -> MLTensorLimits?,
+  convert_outputs : (JsValue) -> MLTensorLimits?,
 ) -> MLSplitSupportLimits =
-  #| (v) => ({
-  #|   input: (v.input === undefined ? { $tag: 0 } : { $tag: 1, _0: v.input }),
-  #|   outputs: (v.outputs === undefined ? { $tag: 0 } : { $tag: 1, _0: v.outputs })
+  #| (v, convert_input, convert_outputs) => ({
+  #|   input: convert_input(v.input),
+  #|   outputs: convert_outputs(v.outputs)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLSplitSupportLimits::from_js(value : JsValue) -> MLSplitSupportLimits {
-  MLSplitSupportLimits::from_js_ffi(value)
+  MLSplitSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -3615,35 +6359,99 @@ pub fn MLWhereSupportLimits::default() -> MLWhereSupportLimits {
 ///|
 extern "js" fn MLWhereSupportLimits::to_js_ffi(
   self : MLWhereSupportLimits,
+  convert_condition : (MLTensorLimits?) -> JsValue,
+  convert_trueValue : (MLTensorLimits?) -> JsValue,
+  convert_falseValue : (MLTensorLimits?) -> JsValue,
+  convert_output : (MLTensorLimits?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   condition: ((() => { const v = self.condition; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   trueValue: ((() => { const v = self.trueValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   falseValue: ((() => { const v = self.falseValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   output: ((() => { const v = self.output; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_condition, convert_trueValue, convert_falseValue, convert_output) => ({
+  #|   condition: convert_condition(self.condition),
+  #|   trueValue: convert_trueValue(self.trueValue),
+  #|   falseValue: convert_falseValue(self.falseValue),
+  #|   output: convert_output(self.output)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn MLWhereSupportLimits::to_js(self : MLWhereSupportLimits) -> JsValue {
-  MLWhereSupportLimits::to_js_ffi(self)
+  MLWhereSupportLimits::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn MLWhereSupportLimits::from_js_ffi(
   value : JsValue,
+  convert_condition : (JsValue) -> MLTensorLimits?,
+  convert_trueValue : (JsValue) -> MLTensorLimits?,
+  convert_falseValue : (JsValue) -> MLTensorLimits?,
+  convert_output : (JsValue) -> MLTensorLimits?,
 ) -> MLWhereSupportLimits =
-  #| (v) => ({
-  #|   condition: (v.condition === undefined ? { $tag: 0 } : { $tag: 1, _0: v.condition }),
-  #|   trueValue: (v.trueValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.trueValue }),
-  #|   falseValue: (v.falseValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.falseValue }),
-  #|   output: (v.output === undefined ? { $tag: 0 } : { $tag: 1, _0: v.output })
+  #| (v, convert_condition, convert_trueValue, convert_falseValue, convert_output) => ({
+  #|   condition: convert_condition(v.condition),
+  #|   trueValue: convert_trueValue(v.trueValue),
+  #|   falseValue: convert_falseValue(v.falseValue),
+  #|   output: convert_output(v.output)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn MLWhereSupportLimits::from_js(value : JsValue) -> MLWhereSupportLimits {
-  MLWhereSupportLimits::from_js_ffi(value)
+  MLWhereSupportLimits::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(MLTensorLimits::from_js(value))
+      }
+    },
+  )
 }
 
 ///|

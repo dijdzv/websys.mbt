@@ -26,11 +26,17 @@ pub extern "js" fn NDEFMessageSource::from_buffer_source(
   #| (v) => v
 
 ///|
-/// Create NDEFMessageSource from NDEFMessageInit
-pub extern "js" fn NDEFMessageSource::from_ndef_message_init(
-  v : NDEFMessageInit,
+extern "js" fn NDEFMessageSource::from_ndef_message_init_ffi(
+  v : JsValue,
 ) -> NDEFMessageSource =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn NDEFMessageSource::from_ndef_message_init(
+  v : NDEFMessageInit,
+) -> NDEFMessageSource {
+  NDEFMessageSource::from_ndef_message_init_ffi(v.to_js())
+}
 
 ///|
 /// Check if this NDEFMessageSource is String
@@ -68,11 +74,15 @@ pub extern "js" fn NDEFMessageSource::as_buffer_source(
   #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get NDEFMessageSource as NDEFMessageInit
-pub extern "js" fn NDEFMessageSource::as_ndef_message_init(
+pub fn NDEFMessageSource::as_ndef_message_init(
   self : NDEFMessageSource,
-) -> NDEFMessageInit? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> NDEFMessageInit? {
+  if self.is_ndef_message_init() {
+    Some(NDEFMessageInit::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[NDEFMessageSource] to String?
@@ -217,31 +227,33 @@ pub fn NDEFReadingEventInit::new(
 ///|
 extern "js" fn NDEFReadingEventInit::to_js_ffi(
   self : NDEFReadingEventInit,
+  convert_message : (NDEFMessageInit) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_message) => ({
   #|   serialNumber: ((() => { const v = self.serialNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   message: self.message
+  #|   message: convert_message(self.message)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn NDEFReadingEventInit::to_js(self : NDEFReadingEventInit) -> JsValue {
-  NDEFReadingEventInit::to_js_ffi(self)
+  NDEFReadingEventInit::to_js_ffi(self, NDEFMessageInit::to_js)
 }
 
 ///|
 extern "js" fn NDEFReadingEventInit::from_js_ffi(
   value : JsValue,
+  convert_message : (JsValue) -> NDEFMessageInit,
 ) -> NDEFReadingEventInit =
-  #| (v) => ({
+  #| (v, convert_message) => ({
   #|   serialNumber: (v.serialNumber === undefined ? { $tag: 0 } : v.serialNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.serialNumber }),
-  #|   message: v.message
+  #|   message: convert_message(v.message)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn NDEFReadingEventInit::from_js(value : JsValue) -> NDEFReadingEventInit {
-  NDEFReadingEventInit::from_js_ffi(value)
+  NDEFReadingEventInit::from_js_ffi(value, NDEFMessageInit::from_js)
 }
 
 ///|

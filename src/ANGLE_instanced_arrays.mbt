@@ -63,7 +63,7 @@ pub extern "js" fn ANGLE_instanced_arrays::draw_elements_instanced_angle(
   offset : GLintptr,
   primcount : GLsizei,
 ) -> Unit =
-  #| (self, mode, count, type_, offset, primcount) => self.drawElementsInstancedANGLE(mode, count, type_, offset, primcount)
+  #| (self, mode, count, type_, offset, primcount) => self.drawElementsInstancedANGLE(mode, count, type_, Number(BigInt.asIntN(64, offset)), primcount)
 
 ///|
 pub extern "js" fn ANGLE_instanced_arrays::vertex_attrib_divisor_angle(

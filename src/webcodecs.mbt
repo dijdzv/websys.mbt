@@ -721,9 +721,10 @@ pub fn EncodedAudioChunkMetadata::default() -> EncodedAudioChunkMetadata {
 ///|
 extern "js" fn EncodedAudioChunkMetadata::to_js_ffi(
   self : EncodedAudioChunkMetadata,
+  convert_decoderConfig : (AudioDecoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   decoderConfig: ((() => { const v = self.decoderConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #| (self, convert_decoderConfig) => ({
+  #|   decoderConfig: convert_decoderConfig(self.decoderConfig)
   #| })
 
 ///|
@@ -731,15 +732,21 @@ extern "js" fn EncodedAudioChunkMetadata::to_js_ffi(
 pub fn EncodedAudioChunkMetadata::to_js(
   self : EncodedAudioChunkMetadata,
 ) -> JsValue {
-  EncodedAudioChunkMetadata::to_js_ffi(self)
+  EncodedAudioChunkMetadata::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn EncodedAudioChunkMetadata::from_js_ffi(
   value : JsValue,
+  convert_decoderConfig : (JsValue) -> AudioDecoderConfig?,
 ) -> EncodedAudioChunkMetadata =
-  #| (v) => ({
-  #|   decoderConfig: (v.decoderConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.decoderConfig })
+  #| (v, convert_decoderConfig) => ({
+  #|   decoderConfig: convert_decoderConfig(v.decoderConfig)
   #| })
 
 ///|
@@ -747,7 +754,13 @@ extern "js" fn EncodedAudioChunkMetadata::from_js_ffi(
 pub fn EncodedAudioChunkMetadata::from_js(
   value : JsValue,
 ) -> EncodedAudioChunkMetadata {
-  EncodedAudioChunkMetadata::from_js_ffi(value)
+  EncodedAudioChunkMetadata::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AudioDecoderConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -815,10 +828,12 @@ pub fn EncodedVideoChunkMetadata::default() -> EncodedVideoChunkMetadata {
 ///|
 extern "js" fn EncodedVideoChunkMetadata::to_js_ffi(
   self : EncodedVideoChunkMetadata,
+  convert_decoderConfig : (VideoDecoderConfig?) -> JsValue,
+  convert_svc : (SvcOutputMetadata?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   decoderConfig: ((() => { const v = self.decoderConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   svc: ((() => { const v = self.svc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_decoderConfig, convert_svc) => ({
+  #|   decoderConfig: convert_decoderConfig(self.decoderConfig),
+  #|   svc: convert_svc(self.svc),
   #|   alphaSideData: ((() => { const v = self.alphaSideData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -827,16 +842,32 @@ extern "js" fn EncodedVideoChunkMetadata::to_js_ffi(
 pub fn EncodedVideoChunkMetadata::to_js(
   self : EncodedVideoChunkMetadata,
 ) -> JsValue {
-  EncodedVideoChunkMetadata::to_js_ffi(self)
+  EncodedVideoChunkMetadata::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn EncodedVideoChunkMetadata::from_js_ffi(
   value : JsValue,
+  convert_decoderConfig : (JsValue) -> VideoDecoderConfig?,
+  convert_svc : (JsValue) -> SvcOutputMetadata?,
 ) -> EncodedVideoChunkMetadata =
-  #| (v) => ({
-  #|   decoderConfig: (v.decoderConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.decoderConfig }),
-  #|   svc: (v.svc === undefined ? { $tag: 0 } : { $tag: 1, _0: v.svc }),
+  #| (v, convert_decoderConfig, convert_svc) => ({
+  #|   decoderConfig: convert_decoderConfig(v.decoderConfig),
+  #|   svc: convert_svc(v.svc),
   #|   alphaSideData: (v.alphaSideData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.alphaSideData })
   #| })
 
@@ -845,7 +876,23 @@ extern "js" fn EncodedVideoChunkMetadata::from_js_ffi(
 pub fn EncodedVideoChunkMetadata::from_js(
   value : JsValue,
 ) -> EncodedVideoChunkMetadata {
-  EncodedVideoChunkMetadata::from_js_ffi(value)
+  EncodedVideoChunkMetadata::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoDecoderConfig::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(SvcOutputMetadata::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -904,31 +951,44 @@ pub fn AudioDecoderSupport::default() -> AudioDecoderSupport {
 ///|
 extern "js" fn AudioDecoderSupport::to_js_ffi(
   self : AudioDecoderSupport,
+  convert_config : (AudioDecoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_config) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
-  #|   config: ((() => { const v = self.config; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   config: convert_config(self.config)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AudioDecoderSupport::to_js(self : AudioDecoderSupport) -> JsValue {
-  AudioDecoderSupport::to_js_ffi(self)
+  AudioDecoderSupport::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AudioDecoderSupport::from_js_ffi(
   value : JsValue,
+  convert_config : (JsValue) -> AudioDecoderConfig?,
 ) -> AudioDecoderSupport =
-  #| (v) => ({
+  #| (v, convert_config) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
-  #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
+  #|   config: convert_config(v.config)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn AudioDecoderSupport::from_js(value : JsValue) -> AudioDecoderSupport {
-  AudioDecoderSupport::from_js_ffi(value)
+  AudioDecoderSupport::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AudioDecoderConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -947,31 +1007,44 @@ pub fn VideoDecoderSupport::default() -> VideoDecoderSupport {
 ///|
 extern "js" fn VideoDecoderSupport::to_js_ffi(
   self : VideoDecoderSupport,
+  convert_config : (VideoDecoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_config) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
-  #|   config: ((() => { const v = self.config; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   config: convert_config(self.config)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn VideoDecoderSupport::to_js(self : VideoDecoderSupport) -> JsValue {
-  VideoDecoderSupport::to_js_ffi(self)
+  VideoDecoderSupport::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn VideoDecoderSupport::from_js_ffi(
   value : JsValue,
+  convert_config : (JsValue) -> VideoDecoderConfig?,
 ) -> VideoDecoderSupport =
-  #| (v) => ({
+  #| (v, convert_config) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
-  #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
+  #|   config: convert_config(v.config)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn VideoDecoderSupport::from_js(value : JsValue) -> VideoDecoderSupport {
-  VideoDecoderSupport::from_js_ffi(value)
+  VideoDecoderSupport::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(VideoDecoderConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -990,31 +1063,44 @@ pub fn AudioEncoderSupport::default() -> AudioEncoderSupport {
 ///|
 extern "js" fn AudioEncoderSupport::to_js_ffi(
   self : AudioEncoderSupport,
+  convert_config : (AudioEncoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_config) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
-  #|   config: ((() => { const v = self.config; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   config: convert_config(self.config)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn AudioEncoderSupport::to_js(self : AudioEncoderSupport) -> JsValue {
-  AudioEncoderSupport::to_js_ffi(self)
+  AudioEncoderSupport::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AudioEncoderSupport::from_js_ffi(
   value : JsValue,
+  convert_config : (JsValue) -> AudioEncoderConfig?,
 ) -> AudioEncoderSupport =
-  #| (v) => ({
+  #| (v, convert_config) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
-  #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
+  #|   config: convert_config(v.config)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn AudioEncoderSupport::from_js(value : JsValue) -> AudioEncoderSupport {
-  AudioEncoderSupport::from_js_ffi(value)
+  AudioEncoderSupport::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AudioEncoderConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1033,31 +1119,44 @@ pub fn VideoEncoderSupport::default() -> VideoEncoderSupport {
 ///|
 extern "js" fn VideoEncoderSupport::to_js_ffi(
   self : VideoEncoderSupport,
+  convert_config : (VideoEncoderConfig?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_config) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
-  #|   config: ((() => { const v = self.config; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   config: convert_config(self.config)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn VideoEncoderSupport::to_js(self : VideoEncoderSupport) -> JsValue {
-  VideoEncoderSupport::to_js_ffi(self)
+  VideoEncoderSupport::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn VideoEncoderSupport::from_js_ffi(
   value : JsValue,
+  convert_config : (JsValue) -> VideoEncoderConfig?,
 ) -> VideoEncoderSupport =
-  #| (v) => ({
+  #| (v, convert_config) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
-  #|   config: (v.config === undefined ? { $tag: 0 } : { $tag: 1, _0: v.config })
+  #|   config: convert_config(v.config)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn VideoEncoderSupport::from_js(value : JsValue) -> VideoEncoderSupport {
-  VideoEncoderSupport::from_js_ffi(value)
+  VideoEncoderSupport::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(VideoEncoderConfig::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1151,15 +1250,16 @@ pub fn VideoDecoderConfig::default() -> VideoDecoderConfig {
 ///|
 extern "js" fn VideoDecoderConfig::to_js_ffi(
   self : VideoDecoderConfig,
+  convert_colorSpace : (VideoColorSpaceInit?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_colorSpace) => ({
   #|   codec: self.codec,
   #|   description: ((() => { const v = self.description; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
   #|   displayAspectWidth: self.displayAspectWidth,
   #|   displayAspectHeight: self.displayAspectHeight,
-  #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorSpace: convert_colorSpace(self.colorSpace),
   #|   hardwareAcceleration: ((() => { const v = self.hardwareAcceleration; if (v === undefined) return undefined; return ['no-preference', 'prefer-hardware', 'prefer-software'][v]; })()),
   #|   optimizeForLatency: (self.optimizeForLatency === -1 ? undefined : self.optimizeForLatency),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1169,21 +1269,27 @@ extern "js" fn VideoDecoderConfig::to_js_ffi(
 ///|
 /// Convert to JsValue
 pub fn VideoDecoderConfig::to_js(self : VideoDecoderConfig) -> JsValue {
-  VideoDecoderConfig::to_js_ffi(self)
+  VideoDecoderConfig::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn VideoDecoderConfig::from_js_ffi(
   value : JsValue,
+  convert_colorSpace : (JsValue) -> VideoColorSpaceInit?,
 ) -> VideoDecoderConfig =
-  #| (v) => ({
+  #| (v, convert_colorSpace) => ({
   #|   codec: v.codec,
   #|   description: (v.description === undefined ? { $tag: 0 } : { $tag: 1, _0: v.description }),
   #|   codedWidth: v.codedWidth,
   #|   codedHeight: v.codedHeight,
   #|   displayAspectWidth: v.displayAspectWidth,
   #|   displayAspectHeight: v.displayAspectHeight,
-  #|   colorSpace: (v.colorSpace === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorSpace }),
+  #|   colorSpace: convert_colorSpace(v.colorSpace),
   #|   hardwareAcceleration: (v.hardwareAcceleration === undefined ? undefined : ['no-preference', 'prefer-hardware', 'prefer-software'].indexOf(v.hardwareAcceleration)),
   #|   optimizeForLatency: (v.optimizeForLatency === undefined ? -1 : v.optimizeForLatency),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
@@ -1193,7 +1299,13 @@ extern "js" fn VideoDecoderConfig::from_js_ffi(
 ///|
 /// Convert from JsValue
 pub fn VideoDecoderConfig::from_js(value : JsValue) -> VideoDecoderConfig {
-  VideoDecoderConfig::from_js_ffi(value)
+  VideoDecoderConfig::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(VideoColorSpaceInit::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1540,43 +1652,81 @@ pub fn VideoFrameInit::default() -> VideoFrameInit {
 }
 
 ///|
-extern "js" fn VideoFrameInit::to_js_ffi(self : VideoFrameInit) -> JsValue =
-  #| (self) => ({
+extern "js" fn VideoFrameInit::to_js_ffi(
+  self : VideoFrameInit,
+  convert_visibleRect : (DOMRectInit?) -> JsValue,
+  convert_metadata : (VideoFrameMetadata?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_visibleRect, convert_metadata) => ({
   #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
   #|   timestamp: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timestamp),
   #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
-  #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   visibleRect: convert_visibleRect(self.visibleRect),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip),
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
-  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   metadata: convert_metadata(self.metadata)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn VideoFrameInit::to_js(self : VideoFrameInit) -> JsValue {
-  VideoFrameInit::to_js_ffi(self)
+  VideoFrameInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
-extern "js" fn VideoFrameInit::from_js_ffi(value : JsValue) -> VideoFrameInit =
-  #| (v) => ({
+extern "js" fn VideoFrameInit::from_js_ffi(
+  value : JsValue,
+  convert_visibleRect : (JsValue) -> DOMRectInit?,
+  convert_metadata : (JsValue) -> VideoFrameMetadata?,
+) -> VideoFrameInit =
+  #| (v, convert_visibleRect, convert_metadata) => ({
   #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
   #|   timestamp: (v.timestamp === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp)),
   #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
-  #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
+  #|   visibleRect: convert_visibleRect(v.visibleRect),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip),
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
-  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #|   metadata: convert_metadata(v.metadata)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn VideoFrameInit::from_js(value : JsValue) -> VideoFrameInit {
-  VideoFrameInit::from_js_ffi(value)
+  VideoFrameInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMRectInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoFrameMetadata::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1646,55 +1796,104 @@ pub fn VideoFrameBufferInit::new(
 ///|
 extern "js" fn VideoFrameBufferInit::to_js_ffi(
   self : VideoFrameBufferInit,
+  convert_visibleRect : (DOMRectInit?) -> JsValue,
+  convert_colorSpace : (VideoColorSpaceInit?) -> JsValue,
+  convert_metadata : (VideoFrameMetadata?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_visibleRect, convert_colorSpace, convert_metadata) => ({
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'][self.format],
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
   #|   timestamp: ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.timestamp),
   #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
   #|   layout: self.layout,
-  #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   visibleRect: convert_visibleRect(self.visibleRect),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flip: (self.flip === -1 ? undefined : self.flip),
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
-  #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorSpace: convert_colorSpace(self.colorSpace),
   #|   transfer: self.transfer,
-  #|   metadata: ((() => { const v = self.metadata; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   metadata: convert_metadata(self.metadata)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn VideoFrameBufferInit::to_js(self : VideoFrameBufferInit) -> JsValue {
-  VideoFrameBufferInit::to_js_ffi(self)
+  VideoFrameBufferInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn VideoFrameBufferInit::from_js_ffi(
   value : JsValue,
+  convert_visibleRect : (JsValue) -> DOMRectInit?,
+  convert_colorSpace : (JsValue) -> VideoColorSpaceInit?,
+  convert_metadata : (JsValue) -> VideoFrameMetadata?,
 ) -> VideoFrameBufferInit =
-  #| (v) => ({
+  #| (v, convert_visibleRect, convert_colorSpace, convert_metadata) => ({
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'].indexOf(v.format),
   #|   codedWidth: v.codedWidth,
   #|   codedHeight: v.codedHeight,
   #|   timestamp: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp),
   #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
   #|   layout: v.layout,
-  #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
+  #|   visibleRect: convert_visibleRect(v.visibleRect),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
   #|   flip: (v.flip === undefined ? -1 : v.flip),
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
-  #|   colorSpace: (v.colorSpace === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorSpace }),
+  #|   colorSpace: convert_colorSpace(v.colorSpace),
   #|   transfer: v.transfer,
-  #|   metadata: (v.metadata === undefined ? { $tag: 0 } : { $tag: 1, _0: v.metadata })
+  #|   metadata: convert_metadata(v.metadata)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn VideoFrameBufferInit::from_js(value : JsValue) -> VideoFrameBufferInit {
-  VideoFrameBufferInit::from_js_ffi(value)
+  VideoFrameBufferInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(DOMRectInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoColorSpaceInit::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(VideoFrameMetadata::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1778,9 +1977,10 @@ pub fn VideoFrameCopyToOptions::default() -> VideoFrameCopyToOptions {
 ///|
 extern "js" fn VideoFrameCopyToOptions::to_js_ffi(
   self : VideoFrameCopyToOptions,
+  convert_rect : (DOMRectInit?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   rect: ((() => { const v = self.rect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_rect) => ({
+  #|   rect: convert_rect(self.rect),
   #|   layout: self.layout,
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'][v]; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })())
@@ -1791,15 +1991,21 @@ extern "js" fn VideoFrameCopyToOptions::to_js_ffi(
 pub fn VideoFrameCopyToOptions::to_js(
   self : VideoFrameCopyToOptions,
 ) -> JsValue {
-  VideoFrameCopyToOptions::to_js_ffi(self)
+  VideoFrameCopyToOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn VideoFrameCopyToOptions::from_js_ffi(
   value : JsValue,
+  convert_rect : (JsValue) -> DOMRectInit?,
 ) -> VideoFrameCopyToOptions =
-  #| (v) => ({
-  #|   rect: (v.rect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rect }),
+  #| (v, convert_rect) => ({
+  #|   rect: convert_rect(v.rect),
   #|   layout: v.layout,
   #|   format: (v.format === undefined ? undefined : ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'].indexOf(v.format)),
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace))
@@ -1810,7 +2016,13 @@ extern "js" fn VideoFrameCopyToOptions::from_js_ffi(
 pub fn VideoFrameCopyToOptions::from_js(
   value : JsValue,
 ) -> VideoFrameCopyToOptions {
-  VideoFrameCopyToOptions::from_js_ffi(value)
+  VideoFrameCopyToOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(DOMRectInit::from_js(value))
+    }
+  })
 }
 
 ///|

@@ -311,39 +311,52 @@ pub fn FragmentResultOptions::default() -> FragmentResultOptions {
 ///|
 extern "js" fn FragmentResultOptions::to_js_ffi(
   self : FragmentResultOptions,
+  convert_breakToken : (BreakTokenOptions?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_breakToken) => ({
   #|   inlineSize: ((() => { const v = self.inlineSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   blockSize: ((() => { const v = self.blockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   autoBlockSize: ((() => { const v = self.autoBlockSize; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   childFragments: self.childFragments,
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   breakToken: ((() => { const v = self.breakToken; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   breakToken: convert_breakToken(self.breakToken)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn FragmentResultOptions::to_js(self : FragmentResultOptions) -> JsValue {
-  FragmentResultOptions::to_js_ffi(self)
+  FragmentResultOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn FragmentResultOptions::from_js_ffi(
   value : JsValue,
+  convert_breakToken : (JsValue) -> BreakTokenOptions?,
 ) -> FragmentResultOptions =
-  #| (v) => ({
+  #| (v, convert_breakToken) => ({
   #|   inlineSize: (v.inlineSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.inlineSize }),
   #|   blockSize: (v.blockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blockSize }),
   #|   autoBlockSize: (v.autoBlockSize === undefined ? { $tag: 0 } : { $tag: 1, _0: v.autoBlockSize }),
   #|   childFragments: v.childFragments,
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data }),
-  #|   breakToken: (v.breakToken === undefined ? { $tag: 0 } : { $tag: 1, _0: v.breakToken })
+  #|   breakToken: convert_breakToken(v.breakToken)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn FragmentResultOptions::from_js(value : JsValue) -> FragmentResultOptions {
-  FragmentResultOptions::from_js_ffi(value)
+  FragmentResultOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(BreakTokenOptions::from_js(value))
+    }
+  })
 }
 
 ///|

@@ -104,9 +104,13 @@ pub fn RequestInit::default() -> RequestInit {
 }
 
 ///|
-extern "js" fn RequestInit::to_js_ffi(self : RequestInit) -> JsValue =
-  #| (self) => ({
-  #|   attributionReporting: ((() => { const v = self.attributionReporting; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+extern "js" fn RequestInit::to_js_ffi(
+  self : RequestInit,
+  convert_attributionReporting : (AttributionReportingRequestOptions?) -> JsValue,
+  convert_privateToken : (PrivateToken?) -> JsValue,
+) -> JsValue =
+  #| (self, convert_attributionReporting, convert_privateToken) => ({
+  #|   attributionReporting: convert_attributionReporting(self.attributionReporting),
   #|   method: self.method_,
   #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -124,20 +128,38 @@ extern "js" fn RequestInit::to_js_ffi(self : RequestInit) -> JsValue =
   #|   window: ((() => { const v = self.window; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   targetAddressSpace: ((() => { const v = self.targetAddressSpace; if (v === undefined) return undefined; return ['public', 'local', 'loopback'][v]; })()),
   #|   sharedStorageWritable: (self.sharedStorageWritable === -1 ? undefined : self.sharedStorageWritable),
-  #|   privateToken: ((() => { const v = self.privateToken; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   privateToken: convert_privateToken(self.privateToken),
   #|   adAuctionHeaders: (self.adAuctionHeaders === -1 ? undefined : self.adAuctionHeaders)
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn RequestInit::to_js(self : RequestInit) -> JsValue {
-  RequestInit::to_js_ffi(self)
+  RequestInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
-extern "js" fn RequestInit::from_js_ffi(value : JsValue) -> RequestInit =
-  #| (v) => ({
-  #|   attributionReporting: (v.attributionReporting === undefined ? { $tag: 0 } : { $tag: 1, _0: v.attributionReporting }),
+extern "js" fn RequestInit::from_js_ffi(
+  value : JsValue,
+  convert_attributionReporting : (JsValue) -> AttributionReportingRequestOptions?,
+  convert_privateToken : (JsValue) -> PrivateToken?,
+) -> RequestInit =
+  #| (v, convert_attributionReporting, convert_privateToken) => ({
+  #|   attributionReporting: convert_attributionReporting(v.attributionReporting),
   #|   method_: v.method,
   #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers }),
   #|   body: (v.body === undefined ? { $tag: 0 } : v.body === null ? { $tag: 1 } : { $tag: 2, _0: v.body }),
@@ -155,12 +177,28 @@ extern "js" fn RequestInit::from_js_ffi(value : JsValue) -> RequestInit =
   #|   window: (v.window === undefined ? { $tag: 0 } : { $tag: 1, _0: v.window }),
   #|   targetAddressSpace: (v.targetAddressSpace === undefined ? undefined : ['public', 'local', 'loopback'].indexOf(v.targetAddressSpace)),
   #|   sharedStorageWritable: (v.sharedStorageWritable === undefined ? -1 : v.sharedStorageWritable),
-  #|   privateToken: (v.privateToken === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateToken }),
+  #|   privateToken: convert_privateToken(v.privateToken),
   #|   adAuctionHeaders: (v.adAuctionHeaders === undefined ? -1 : v.adAuctionHeaders)
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn RequestInit::from_js(value : JsValue) -> RequestInit {
-  RequestInit::from_js_ffi(value)
+  RequestInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AttributionReportingRequestOptions::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PrivateToken::from_js(value))
+      }
+    },
+  )
 }

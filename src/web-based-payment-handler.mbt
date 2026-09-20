@@ -60,14 +60,16 @@ pub fn PaymentRequestDetailsUpdate::default() -> PaymentRequestDetailsUpdate {
 ///|
 extern "js" fn PaymentRequestDetailsUpdate::to_js_ffi(
   self : PaymentRequestDetailsUpdate,
+  convert_total : (PaymentCurrencyAmount?) -> JsValue,
+  convert_shippingAddressErrors : (AddressErrors?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_total, convert_shippingAddressErrors) => ({
   #|   error: self.error,
-  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: convert_total(self.total),
   #|   modifiers: self.modifiers,
   #|   shippingOptions: self.shippingOptions,
   #|   paymentMethodErrors: ((() => { const v = self.paymentMethodErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   shippingAddressErrors: ((() => { const v = self.shippingAddressErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   shippingAddressErrors: convert_shippingAddressErrors(self.shippingAddressErrors)
   #| })
 
 ///|
@@ -75,20 +77,36 @@ extern "js" fn PaymentRequestDetailsUpdate::to_js_ffi(
 pub fn PaymentRequestDetailsUpdate::to_js(
   self : PaymentRequestDetailsUpdate,
 ) -> JsValue {
-  PaymentRequestDetailsUpdate::to_js_ffi(self)
+  PaymentRequestDetailsUpdate::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PaymentRequestDetailsUpdate::from_js_ffi(
   value : JsValue,
+  convert_total : (JsValue) -> PaymentCurrencyAmount?,
+  convert_shippingAddressErrors : (JsValue) -> AddressErrors?,
 ) -> PaymentRequestDetailsUpdate =
-  #| (v) => ({
+  #| (v, convert_total, convert_shippingAddressErrors) => ({
   #|   error: v.error,
-  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
+  #|   total: convert_total(v.total),
   #|   modifiers: v.modifiers,
   #|   shippingOptions: v.shippingOptions,
   #|   paymentMethodErrors: (v.paymentMethodErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentMethodErrors }),
-  #|   shippingAddressErrors: (v.shippingAddressErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shippingAddressErrors })
+  #|   shippingAddressErrors: convert_shippingAddressErrors(v.shippingAddressErrors)
   #| })
 
 ///|
@@ -96,7 +114,23 @@ extern "js" fn PaymentRequestDetailsUpdate::from_js_ffi(
 pub fn PaymentRequestDetailsUpdate::from_js(
   value : JsValue,
 ) -> PaymentRequestDetailsUpdate {
-  PaymentRequestDetailsUpdate::from_js_ffi(value)
+  PaymentRequestDetailsUpdate::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PaymentCurrencyAmount::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AddressErrors::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -130,15 +164,17 @@ pub fn PaymentRequestEventInit::default() -> PaymentRequestEventInit {
 ///|
 extern "js" fn PaymentRequestEventInit::to_js_ffi(
   self : PaymentRequestEventInit,
+  convert_total : (PaymentCurrencyAmount?) -> JsValue,
+  convert_paymentOptions : (PaymentOptions?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_total, convert_paymentOptions) => ({
   #|   topOrigin: self.topOrigin,
   #|   paymentRequestOrigin: self.paymentRequestOrigin,
   #|   paymentRequestId: self.paymentRequestId,
   #|   methodData: self.methodData,
-  #|   total: ((() => { const v = self.total; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   total: convert_total(self.total),
   #|   modifiers: self.modifiers,
-  #|   paymentOptions: ((() => { const v = self.paymentOptions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   paymentOptions: convert_paymentOptions(self.paymentOptions),
   #|   shippingOptions: self.shippingOptions
   #| })
 
@@ -147,21 +183,37 @@ extern "js" fn PaymentRequestEventInit::to_js_ffi(
 pub fn PaymentRequestEventInit::to_js(
   self : PaymentRequestEventInit,
 ) -> JsValue {
-  PaymentRequestEventInit::to_js_ffi(self)
+  PaymentRequestEventInit::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PaymentRequestEventInit::from_js_ffi(
   value : JsValue,
+  convert_total : (JsValue) -> PaymentCurrencyAmount?,
+  convert_paymentOptions : (JsValue) -> PaymentOptions?,
 ) -> PaymentRequestEventInit =
-  #| (v) => ({
+  #| (v, convert_total, convert_paymentOptions) => ({
   #|   topOrigin: v.topOrigin,
   #|   paymentRequestOrigin: v.paymentRequestOrigin,
   #|   paymentRequestId: v.paymentRequestId,
   #|   methodData: v.methodData,
-  #|   total: (v.total === undefined ? { $tag: 0 } : { $tag: 1, _0: v.total }),
+  #|   total: convert_total(v.total),
   #|   modifiers: v.modifiers,
-  #|   paymentOptions: (v.paymentOptions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentOptions }),
+  #|   paymentOptions: convert_paymentOptions(v.paymentOptions),
   #|   shippingOptions: v.shippingOptions
   #| })
 
@@ -170,7 +222,23 @@ extern "js" fn PaymentRequestEventInit::from_js_ffi(
 pub fn PaymentRequestEventInit::from_js(
   value : JsValue,
 ) -> PaymentRequestEventInit {
-  PaymentRequestEventInit::from_js_ffi(value)
+  PaymentRequestEventInit::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PaymentCurrencyAmount::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(PaymentOptions::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -202,34 +270,41 @@ pub fn PaymentHandlerResponse::default() -> PaymentHandlerResponse {
 ///|
 extern "js" fn PaymentHandlerResponse::to_js_ffi(
   self : PaymentHandlerResponse,
+  convert_shippingAddress : (AddressInit?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_shippingAddress) => ({
   #|   methodName: self.methodName,
   #|   details: ((() => { const v = self.details; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   payerName: ((() => { const v = self.payerName; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   payerEmail: ((() => { const v = self.payerEmail; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   payerPhone: ((() => { const v = self.payerPhone; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
-  #|   shippingAddress: ((() => { const v = self.shippingAddress; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   shippingAddress: convert_shippingAddress(self.shippingAddress),
   #|   shippingOption: ((() => { const v = self.shippingOption; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|
 /// Convert to JsValue
 pub fn PaymentHandlerResponse::to_js(self : PaymentHandlerResponse) -> JsValue {
-  PaymentHandlerResponse::to_js_ffi(self)
+  PaymentHandlerResponse::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn PaymentHandlerResponse::from_js_ffi(
   value : JsValue,
+  convert_shippingAddress : (JsValue) -> AddressInit?,
 ) -> PaymentHandlerResponse =
-  #| (v) => ({
+  #| (v, convert_shippingAddress) => ({
   #|   methodName: v.methodName,
   #|   details: (v.details === undefined ? { $tag: 0 } : { $tag: 1, _0: v.details }),
   #|   payerName: (v.payerName === undefined ? { $tag: 0 } : v.payerName === null ? { $tag: 1 } : { $tag: 2, _0: v.payerName }),
   #|   payerEmail: (v.payerEmail === undefined ? { $tag: 0 } : v.payerEmail === null ? { $tag: 1 } : { $tag: 2, _0: v.payerEmail }),
   #|   payerPhone: (v.payerPhone === undefined ? { $tag: 0 } : v.payerPhone === null ? { $tag: 1 } : { $tag: 2, _0: v.payerPhone }),
-  #|   shippingAddress: (v.shippingAddress === undefined ? { $tag: 0 } : { $tag: 1, _0: v.shippingAddress }),
+  #|   shippingAddress: convert_shippingAddress(v.shippingAddress),
   #|   shippingOption: (v.shippingOption === undefined ? { $tag: 0 } : v.shippingOption === null ? { $tag: 1 } : { $tag: 2, _0: v.shippingOption })
   #| })
 
@@ -238,7 +313,13 @@ extern "js" fn PaymentHandlerResponse::from_js_ffi(
 pub fn PaymentHandlerResponse::from_js(
   value : JsValue,
 ) -> PaymentHandlerResponse {
-  PaymentHandlerResponse::from_js_ffi(value)
+  PaymentHandlerResponse::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AddressInit::from_js(value))
+    }
+  })
 }
 
 ///|

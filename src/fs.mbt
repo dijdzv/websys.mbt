@@ -33,11 +33,17 @@ pub extern "js" fn FileSystemWriteChunkType::from_string(
   #| (v) => v
 
 ///|
-/// Create FileSystemWriteChunkType from WriteParams
-pub extern "js" fn FileSystemWriteChunkType::from_write_params(
-  v : WriteParams,
+extern "js" fn FileSystemWriteChunkType::from_write_params_ffi(
+  v : JsValue,
 ) -> FileSystemWriteChunkType =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn FileSystemWriteChunkType::from_write_params(
+  v : WriteParams,
+) -> FileSystemWriteChunkType {
+  FileSystemWriteChunkType::from_write_params_ffi(v.to_js())
+}
 
 ///|
 /// Check if this FileSystemWriteChunkType is BufferSource
@@ -89,11 +95,15 @@ pub extern "js" fn FileSystemWriteChunkType::as_string(
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-/// Try to get FileSystemWriteChunkType as WriteParams
-pub extern "js" fn FileSystemWriteChunkType::as_write_params(
+pub fn FileSystemWriteChunkType::as_write_params(
   self : FileSystemWriteChunkType,
-) -> WriteParams? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> WriteParams? {
+  if self.is_write_params() {
+    Some(WriteParams::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[FileSystemWriteChunkType] to BufferSource?

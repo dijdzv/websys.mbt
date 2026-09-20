@@ -388,13 +388,15 @@ pub fn RegistrationResponseJSON::new(
 ///|
 extern "js" fn RegistrationResponseJSON::to_js_ffi(
   self : RegistrationResponseJSON,
+  convert_response : (AuthenticatorAttestationResponseJSON) -> JsValue,
+  convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_response, convert_clientExtensionResults) => ({
   #|   id: self.id,
   #|   rawId: self.rawId,
-  #|   response: self.response,
+  #|   response: convert_response(self.response),
   #|   authenticatorAttachment: self.authenticatorAttachment,
-  #|   clientExtensionResults: self.clientExtensionResults,
+  #|   clientExtensionResults: convert_clientExtensionResults(self.clientExtensionResults),
   #|   type: self.type_
   #| })
 
@@ -403,19 +405,25 @@ extern "js" fn RegistrationResponseJSON::to_js_ffi(
 pub fn RegistrationResponseJSON::to_js(
   self : RegistrationResponseJSON,
 ) -> JsValue {
-  RegistrationResponseJSON::to_js_ffi(self)
+  RegistrationResponseJSON::to_js_ffi(
+    self,
+    AuthenticatorAttestationResponseJSON::to_js,
+    AuthenticationExtensionsClientOutputsJSON::to_js,
+  )
 }
 
 ///|
 extern "js" fn RegistrationResponseJSON::from_js_ffi(
   value : JsValue,
+  convert_response : (JsValue) -> AuthenticatorAttestationResponseJSON,
+  convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON,
 ) -> RegistrationResponseJSON =
-  #| (v) => ({
+  #| (v, convert_response, convert_clientExtensionResults) => ({
   #|   id: v.id,
   #|   rawId: v.rawId,
-  #|   response: v.response,
+  #|   response: convert_response(v.response),
   #|   authenticatorAttachment: v.authenticatorAttachment,
-  #|   clientExtensionResults: v.clientExtensionResults,
+  #|   clientExtensionResults: convert_clientExtensionResults(v.clientExtensionResults),
   #|   type_: v.type
   #| })
 
@@ -424,7 +432,11 @@ extern "js" fn RegistrationResponseJSON::from_js_ffi(
 pub fn RegistrationResponseJSON::from_js(
   value : JsValue,
 ) -> RegistrationResponseJSON {
-  RegistrationResponseJSON::from_js_ffi(value)
+  RegistrationResponseJSON::from_js_ffi(
+    value,
+    AuthenticatorAttestationResponseJSON::from_js,
+    AuthenticationExtensionsClientOutputsJSON::from_js,
+  )
 }
 
 ///|
@@ -529,13 +541,15 @@ pub fn AuthenticationResponseJSON::new(
 ///|
 extern "js" fn AuthenticationResponseJSON::to_js_ffi(
   self : AuthenticationResponseJSON,
+  convert_response : (AuthenticatorAssertionResponseJSON) -> JsValue,
+  convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_response, convert_clientExtensionResults) => ({
   #|   id: self.id,
   #|   rawId: self.rawId,
-  #|   response: self.response,
+  #|   response: convert_response(self.response),
   #|   authenticatorAttachment: self.authenticatorAttachment,
-  #|   clientExtensionResults: self.clientExtensionResults,
+  #|   clientExtensionResults: convert_clientExtensionResults(self.clientExtensionResults),
   #|   type: self.type_
   #| })
 
@@ -544,19 +558,25 @@ extern "js" fn AuthenticationResponseJSON::to_js_ffi(
 pub fn AuthenticationResponseJSON::to_js(
   self : AuthenticationResponseJSON,
 ) -> JsValue {
-  AuthenticationResponseJSON::to_js_ffi(self)
+  AuthenticationResponseJSON::to_js_ffi(
+    self,
+    AuthenticatorAssertionResponseJSON::to_js,
+    AuthenticationExtensionsClientOutputsJSON::to_js,
+  )
 }
 
 ///|
 extern "js" fn AuthenticationResponseJSON::from_js_ffi(
   value : JsValue,
+  convert_response : (JsValue) -> AuthenticatorAssertionResponseJSON,
+  convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON,
 ) -> AuthenticationResponseJSON =
-  #| (v) => ({
+  #| (v, convert_response, convert_clientExtensionResults) => ({
   #|   id: v.id,
   #|   rawId: v.rawId,
-  #|   response: v.response,
+  #|   response: convert_response(v.response),
   #|   authenticatorAttachment: v.authenticatorAttachment,
-  #|   clientExtensionResults: v.clientExtensionResults,
+  #|   clientExtensionResults: convert_clientExtensionResults(v.clientExtensionResults),
   #|   type_: v.type
   #| })
 
@@ -565,7 +585,11 @@ extern "js" fn AuthenticationResponseJSON::from_js_ffi(
 pub fn AuthenticationResponseJSON::from_js(
   value : JsValue,
 ) -> AuthenticationResponseJSON {
-  AuthenticationResponseJSON::from_js_ffi(value)
+  AuthenticationResponseJSON::from_js_ffi(
+    value,
+    AuthenticatorAssertionResponseJSON::from_js,
+    AuthenticationExtensionsClientOutputsJSON::from_js,
+  )
 }
 
 ///|
@@ -655,13 +679,16 @@ pub fn AuthenticationExtensionsClientOutputsJSON::default() -> AuthenticationExt
 ///|
 extern "js" fn AuthenticationExtensionsClientOutputsJSON::to_js_ffi(
   self : AuthenticationExtensionsClientOutputsJSON,
+  convert_credProps : (CredentialPropertiesOutput?) -> JsValue,
+  convert_prf : (AuthenticationExtensionsPRFOutputsJSON?) -> JsValue,
+  convert_largeBlob : (AuthenticationExtensionsLargeBlobOutputsJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_credProps, convert_prf, convert_largeBlob) => ({
   #|   appid: (self.appid === -1 ? undefined : self.appid),
   #|   appidExclude: (self.appidExclude === -1 ? undefined : self.appidExclude),
-  #|   credProps: ((() => { const v = self.credProps; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   prf: ((() => { const v = self.prf; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   credProps: convert_credProps(self.credProps),
+  #|   prf: convert_prf(self.prf),
+  #|   largeBlob: convert_largeBlob(self.largeBlob)
   #| })
 
 ///|
@@ -669,19 +696,42 @@ extern "js" fn AuthenticationExtensionsClientOutputsJSON::to_js_ffi(
 pub fn AuthenticationExtensionsClientOutputsJSON::to_js(
   self : AuthenticationExtensionsClientOutputsJSON,
 ) -> JsValue {
-  AuthenticationExtensionsClientOutputsJSON::to_js_ffi(self)
+  AuthenticationExtensionsClientOutputsJSON::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsClientOutputsJSON::from_js_ffi(
   value : JsValue,
+  convert_credProps : (JsValue) -> CredentialPropertiesOutput?,
+  convert_prf : (JsValue) -> AuthenticationExtensionsPRFOutputsJSON?,
+  convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobOutputsJSON?,
 ) -> AuthenticationExtensionsClientOutputsJSON =
-  #| (v) => ({
+  #| (v, convert_credProps, convert_prf, convert_largeBlob) => ({
   #|   appid: (v.appid === undefined ? -1 : v.appid),
   #|   appidExclude: (v.appidExclude === undefined ? -1 : v.appidExclude),
-  #|   credProps: (v.credProps === undefined ? { $tag: 0 } : { $tag: 1, _0: v.credProps }),
-  #|   prf: (v.prf === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prf }),
-  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob })
+  #|   credProps: convert_credProps(v.credProps),
+  #|   prf: convert_prf(v.prf),
+  #|   largeBlob: convert_largeBlob(v.largeBlob)
   #| })
 
 ///|
@@ -689,7 +739,30 @@ extern "js" fn AuthenticationExtensionsClientOutputsJSON::from_js_ffi(
 pub fn AuthenticationExtensionsClientOutputsJSON::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsClientOutputsJSON {
-  AuthenticationExtensionsClientOutputsJSON::from_js_ffi(value)
+  AuthenticationExtensionsClientOutputsJSON::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(CredentialPropertiesOutput::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsPRFOutputsJSON::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsLargeBlobOutputsJSON::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -733,19 +806,23 @@ pub fn PublicKeyCredentialCreationOptionsJSON::new(
 ///|
 extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
   self : PublicKeyCredentialCreationOptionsJSON,
+  convert_rp : (PublicKeyCredentialRpEntity) -> JsValue,
+  convert_user : (PublicKeyCredentialUserEntityJSON) -> JsValue,
+  convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue,
+  convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   rp: self.rp,
-  #|   user: self.user,
+  #| (self, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
+  #|   rp: convert_rp(self.rp),
+  #|   user: convert_user(self.user),
   #|   challenge: self.challenge,
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
   #|   excludeCredentials: self.excludeCredentials,
-  #|   authenticatorSelection: ((() => { const v = self.authenticatorSelection; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   authenticatorSelection: convert_authenticatorSelection(self.authenticatorSelection),
   #|   hints: self.hints,
   #|   attestation: self.attestation,
   #|   attestationFormats: self.attestationFormats,
-  #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   extensions: convert_extensions(self.extensions)
   #| })
 
 ///|
@@ -753,25 +830,45 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
 pub fn PublicKeyCredentialCreationOptionsJSON::to_js(
   self : PublicKeyCredentialCreationOptionsJSON,
 ) -> JsValue {
-  PublicKeyCredentialCreationOptionsJSON::to_js_ffi(self)
+  PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
+    self,
+    PublicKeyCredentialRpEntity::to_js,
+    PublicKeyCredentialUserEntityJSON::to_js,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
   value : JsValue,
+  convert_rp : (JsValue) -> PublicKeyCredentialRpEntity,
+  convert_user : (JsValue) -> PublicKeyCredentialUserEntityJSON,
+  convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?,
+  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?,
 ) -> PublicKeyCredentialCreationOptionsJSON =
-  #| (v) => ({
-  #|   rp: v.rp,
-  #|   user: v.user,
+  #| (v, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
+  #|   rp: convert_rp(v.rp),
+  #|   user: convert_user(v.user),
   #|   challenge: v.challenge,
   #|   pubKeyCredParams: v.pubKeyCredParams,
   #|   timeout: v.timeout,
   #|   excludeCredentials: v.excludeCredentials,
-  #|   authenticatorSelection: (v.authenticatorSelection === undefined ? { $tag: 0 } : { $tag: 1, _0: v.authenticatorSelection }),
+  #|   authenticatorSelection: convert_authenticatorSelection(v.authenticatorSelection),
   #|   hints: v.hints,
   #|   attestation: v.attestation,
   #|   attestationFormats: v.attestationFormats,
-  #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
+  #|   extensions: convert_extensions(v.extensions)
   #| })
 
 ///|
@@ -779,7 +876,25 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
 pub fn PublicKeyCredentialCreationOptionsJSON::from_js(
   value : JsValue,
 ) -> PublicKeyCredentialCreationOptionsJSON {
-  PublicKeyCredentialCreationOptionsJSON::from_js_ffi(value)
+  PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
+    value,
+    PublicKeyCredentialRpEntity::from_js,
+    PublicKeyCredentialUserEntityJSON::from_js,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticatorSelectionCriteria::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsClientInputsJSON::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -911,13 +1026,15 @@ pub fn AuthenticationExtensionsClientInputsJSON::default() -> AuthenticationExte
 ///|
 extern "js" fn AuthenticationExtensionsClientInputsJSON::to_js_ffi(
   self : AuthenticationExtensionsClientInputsJSON,
+  convert_prf : (AuthenticationExtensionsPRFInputsJSON?) -> JsValue,
+  convert_largeBlob : (AuthenticationExtensionsLargeBlobInputsJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_prf, convert_largeBlob) => ({
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
   #|   credProps: (self.credProps === -1 ? undefined : self.credProps),
-  #|   prf: ((() => { const v = self.prf; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   largeBlob: ((() => { const v = self.largeBlob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   prf: convert_prf(self.prf),
+  #|   largeBlob: convert_largeBlob(self.largeBlob)
   #| })
 
 ///|
@@ -925,19 +1042,35 @@ extern "js" fn AuthenticationExtensionsClientInputsJSON::to_js_ffi(
 pub fn AuthenticationExtensionsClientInputsJSON::to_js(
   self : AuthenticationExtensionsClientInputsJSON,
 ) -> JsValue {
-  AuthenticationExtensionsClientInputsJSON::to_js_ffi(self)
+  AuthenticationExtensionsClientInputsJSON::to_js_ffi(
+    self,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsClientInputsJSON::from_js_ffi(
   value : JsValue,
+  convert_prf : (JsValue) -> AuthenticationExtensionsPRFInputsJSON?,
+  convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobInputsJSON?,
 ) -> AuthenticationExtensionsClientInputsJSON =
-  #| (v) => ({
+  #| (v, convert_prf, convert_largeBlob) => ({
   #|   appid: v.appid,
   #|   appidExclude: v.appidExclude,
   #|   credProps: (v.credProps === undefined ? -1 : v.credProps),
-  #|   prf: (v.prf === undefined ? { $tag: 0 } : { $tag: 1, _0: v.prf }),
-  #|   largeBlob: (v.largeBlob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.largeBlob })
+  #|   prf: convert_prf(v.prf),
+  #|   largeBlob: convert_largeBlob(v.largeBlob)
   #| })
 
 ///|
@@ -945,7 +1078,23 @@ extern "js" fn AuthenticationExtensionsClientInputsJSON::from_js_ffi(
 pub fn AuthenticationExtensionsClientInputsJSON::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsClientInputsJSON {
-  AuthenticationExtensionsClientInputsJSON::from_js_ffi(value)
+  AuthenticationExtensionsClientInputsJSON::from_js_ffi(
+    value,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsPRFInputsJSON::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsLargeBlobInputsJSON::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -979,15 +1128,16 @@ pub fn PublicKeyCredentialRequestOptionsJSON::new(
 ///|
 extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(
   self : PublicKeyCredentialRequestOptionsJSON,
+  convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_extensions) => ({
   #|   challenge: self.challenge,
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
   #|   allowCredentials: self.allowCredentials,
   #|   userVerification: self.userVerification,
   #|   hints: self.hints,
-  #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   extensions: convert_extensions(self.extensions)
   #| })
 
 ///|
@@ -995,21 +1145,27 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(
 pub fn PublicKeyCredentialRequestOptionsJSON::to_js(
   self : PublicKeyCredentialRequestOptionsJSON,
 ) -> JsValue {
-  PublicKeyCredentialRequestOptionsJSON::to_js_ffi(self)
+  PublicKeyCredentialRequestOptionsJSON::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(
   value : JsValue,
+  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?,
 ) -> PublicKeyCredentialRequestOptionsJSON =
-  #| (v) => ({
+  #| (v, convert_extensions) => ({
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
   #|   rpId: v.rpId,
   #|   allowCredentials: v.allowCredentials,
   #|   userVerification: v.userVerification,
   #|   hints: v.hints,
-  #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
+  #|   extensions: convert_extensions(v.extensions)
   #| })
 
 ///|
@@ -1017,7 +1173,13 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(
 pub fn PublicKeyCredentialRequestOptionsJSON::from_js(
   value : JsValue,
 ) -> PublicKeyCredentialRequestOptionsJSON {
-  PublicKeyCredentialRequestOptionsJSON::from_js_ffi(value)
+  PublicKeyCredentialRequestOptionsJSON::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsClientInputsJSON::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1270,19 +1432,23 @@ pub fn PublicKeyCredentialCreationOptions::new(
 ///|
 extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
   self : PublicKeyCredentialCreationOptions,
+  convert_rp : (PublicKeyCredentialRpEntity) -> JsValue,
+  convert_user : (PublicKeyCredentialUserEntity) -> JsValue,
+  convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue,
+  convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   rp: self.rp,
-  #|   user: self.user,
+  #| (self, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
+  #|   rp: convert_rp(self.rp),
+  #|   user: convert_user(self.user),
   #|   challenge: self.challenge,
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
   #|   excludeCredentials: self.excludeCredentials,
-  #|   authenticatorSelection: ((() => { const v = self.authenticatorSelection; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   authenticatorSelection: convert_authenticatorSelection(self.authenticatorSelection),
   #|   hints: self.hints,
   #|   attestation: self.attestation,
   #|   attestationFormats: self.attestationFormats,
-  #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   extensions: convert_extensions(self.extensions)
   #| })
 
 ///|
@@ -1290,25 +1456,45 @@ extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
 pub fn PublicKeyCredentialCreationOptions::to_js(
   self : PublicKeyCredentialCreationOptions,
 ) -> JsValue {
-  PublicKeyCredentialCreationOptions::to_js_ffi(self)
+  PublicKeyCredentialCreationOptions::to_js_ffi(
+    self,
+    PublicKeyCredentialRpEntity::to_js,
+    PublicKeyCredentialUserEntity::to_js,
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+    fn(value) {
+      match value {
+        Some(value) => value.to_js()
+        None => dictionary_undefined()
+      }
+    },
+  )
 }
 
 ///|
 extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(
   value : JsValue,
+  convert_rp : (JsValue) -> PublicKeyCredentialRpEntity,
+  convert_user : (JsValue) -> PublicKeyCredentialUserEntity,
+  convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?,
+  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?,
 ) -> PublicKeyCredentialCreationOptions =
-  #| (v) => ({
-  #|   rp: v.rp,
-  #|   user: v.user,
+  #| (v, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
+  #|   rp: convert_rp(v.rp),
+  #|   user: convert_user(v.user),
   #|   challenge: v.challenge,
   #|   pubKeyCredParams: v.pubKeyCredParams,
   #|   timeout: v.timeout,
   #|   excludeCredentials: v.excludeCredentials,
-  #|   authenticatorSelection: (v.authenticatorSelection === undefined ? { $tag: 0 } : { $tag: 1, _0: v.authenticatorSelection }),
+  #|   authenticatorSelection: convert_authenticatorSelection(v.authenticatorSelection),
   #|   hints: v.hints,
   #|   attestation: v.attestation,
   #|   attestationFormats: v.attestationFormats,
-  #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
+  #|   extensions: convert_extensions(v.extensions)
   #| })
 
 ///|
@@ -1316,7 +1502,25 @@ extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(
 pub fn PublicKeyCredentialCreationOptions::from_js(
   value : JsValue,
 ) -> PublicKeyCredentialCreationOptions {
-  PublicKeyCredentialCreationOptions::from_js_ffi(value)
+  PublicKeyCredentialCreationOptions::from_js_ffi(
+    value,
+    PublicKeyCredentialRpEntity::from_js,
+    PublicKeyCredentialUserEntity::from_js,
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticatorSelectionCriteria::from_js(value))
+      }
+    },
+    fn(value) {
+      if value.is_undefined() {
+        None
+      } else {
+        Some(AuthenticationExtensionsClientInputs::from_js(value))
+      }
+    },
+  )
 }
 
 ///|
@@ -1551,15 +1755,16 @@ pub fn PublicKeyCredentialRequestOptions::new(
 ///|
 extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
   self : PublicKeyCredentialRequestOptions,
+  convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_extensions) => ({
   #|   challenge: self.challenge,
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
   #|   allowCredentials: self.allowCredentials,
   #|   userVerification: self.userVerification,
   #|   hints: self.hints,
-  #|   extensions: ((() => { const v = self.extensions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   extensions: convert_extensions(self.extensions)
   #| })
 
 ///|
@@ -1567,21 +1772,27 @@ extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
 pub fn PublicKeyCredentialRequestOptions::to_js(
   self : PublicKeyCredentialRequestOptions,
 ) -> JsValue {
-  PublicKeyCredentialRequestOptions::to_js_ffi(self)
+  PublicKeyCredentialRequestOptions::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(
   value : JsValue,
+  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?,
 ) -> PublicKeyCredentialRequestOptions =
-  #| (v) => ({
+  #| (v, convert_extensions) => ({
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
   #|   rpId: v.rpId,
   #|   allowCredentials: v.allowCredentials,
   #|   userVerification: v.userVerification,
   #|   hints: v.hints,
-  #|   extensions: (v.extensions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.extensions })
+  #|   extensions: convert_extensions(v.extensions)
   #| })
 
 ///|
@@ -1589,7 +1800,13 @@ extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(
 pub fn PublicKeyCredentialRequestOptions::from_js(
   value : JsValue,
 ) -> PublicKeyCredentialRequestOptions {
-  PublicKeyCredentialRequestOptions::from_js_ffi(value)
+  PublicKeyCredentialRequestOptions::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsClientInputs::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1899,9 +2116,10 @@ pub fn AuthenticationExtensionsPRFInputs::default() -> AuthenticationExtensionsP
 ///|
 extern "js" fn AuthenticationExtensionsPRFInputs::to_js_ffi(
   self : AuthenticationExtensionsPRFInputs,
+  convert_eval : (AuthenticationExtensionsPRFValues?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   eval: ((() => { const v = self.eval; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_eval) => ({
+  #|   eval: convert_eval(self.eval),
   #|   evalByCredential: ((() => { const v = self.evalByCredential; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1910,15 +2128,21 @@ extern "js" fn AuthenticationExtensionsPRFInputs::to_js_ffi(
 pub fn AuthenticationExtensionsPRFInputs::to_js(
   self : AuthenticationExtensionsPRFInputs,
 ) -> JsValue {
-  AuthenticationExtensionsPRFInputs::to_js_ffi(self)
+  AuthenticationExtensionsPRFInputs::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsPRFInputs::from_js_ffi(
   value : JsValue,
+  convert_eval : (JsValue) -> AuthenticationExtensionsPRFValues?,
 ) -> AuthenticationExtensionsPRFInputs =
-  #| (v) => ({
-  #|   eval: (v.eval === undefined ? { $tag: 0 } : { $tag: 1, _0: v.eval }),
+  #| (v, convert_eval) => ({
+  #|   eval: convert_eval(v.eval),
   #|   evalByCredential: (v.evalByCredential === undefined ? { $tag: 0 } : { $tag: 1, _0: v.evalByCredential })
   #| })
 
@@ -1927,7 +2151,13 @@ extern "js" fn AuthenticationExtensionsPRFInputs::from_js_ffi(
 pub fn AuthenticationExtensionsPRFInputs::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsPRFInputs {
-  AuthenticationExtensionsPRFInputs::from_js_ffi(value)
+  AuthenticationExtensionsPRFInputs::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsPRFValues::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1946,9 +2176,10 @@ pub fn AuthenticationExtensionsPRFInputsJSON::default() -> AuthenticationExtensi
 ///|
 extern "js" fn AuthenticationExtensionsPRFInputsJSON::to_js_ffi(
   self : AuthenticationExtensionsPRFInputsJSON,
+  convert_eval : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
-  #|   eval: ((() => { const v = self.eval; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #| (self, convert_eval) => ({
+  #|   eval: convert_eval(self.eval),
   #|   evalByCredential: ((() => { const v = self.evalByCredential; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -1957,15 +2188,21 @@ extern "js" fn AuthenticationExtensionsPRFInputsJSON::to_js_ffi(
 pub fn AuthenticationExtensionsPRFInputsJSON::to_js(
   self : AuthenticationExtensionsPRFInputsJSON,
 ) -> JsValue {
-  AuthenticationExtensionsPRFInputsJSON::to_js_ffi(self)
+  AuthenticationExtensionsPRFInputsJSON::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsPRFInputsJSON::from_js_ffi(
   value : JsValue,
+  convert_eval : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?,
 ) -> AuthenticationExtensionsPRFInputsJSON =
-  #| (v) => ({
-  #|   eval: (v.eval === undefined ? { $tag: 0 } : { $tag: 1, _0: v.eval }),
+  #| (v, convert_eval) => ({
+  #|   eval: convert_eval(v.eval),
   #|   evalByCredential: (v.evalByCredential === undefined ? { $tag: 0 } : { $tag: 1, _0: v.evalByCredential })
   #| })
 
@@ -1974,7 +2211,13 @@ extern "js" fn AuthenticationExtensionsPRFInputsJSON::from_js_ffi(
 pub fn AuthenticationExtensionsPRFInputsJSON::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsPRFInputsJSON {
-  AuthenticationExtensionsPRFInputsJSON::from_js_ffi(value)
+  AuthenticationExtensionsPRFInputsJSON::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsPRFValuesJSON::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -1993,10 +2236,11 @@ pub fn AuthenticationExtensionsPRFOutputs::default() -> AuthenticationExtensions
 ///|
 extern "js" fn AuthenticationExtensionsPRFOutputs::to_js_ffi(
   self : AuthenticationExtensionsPRFOutputs,
+  convert_results : (AuthenticationExtensionsPRFValues?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_results) => ({
   #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
-  #|   results: ((() => { const v = self.results; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   results: convert_results(self.results)
   #| })
 
 ///|
@@ -2004,16 +2248,22 @@ extern "js" fn AuthenticationExtensionsPRFOutputs::to_js_ffi(
 pub fn AuthenticationExtensionsPRFOutputs::to_js(
   self : AuthenticationExtensionsPRFOutputs,
 ) -> JsValue {
-  AuthenticationExtensionsPRFOutputs::to_js_ffi(self)
+  AuthenticationExtensionsPRFOutputs::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsPRFOutputs::from_js_ffi(
   value : JsValue,
+  convert_results : (JsValue) -> AuthenticationExtensionsPRFValues?,
 ) -> AuthenticationExtensionsPRFOutputs =
-  #| (v) => ({
+  #| (v, convert_results) => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
-  #|   results: (v.results === undefined ? { $tag: 0 } : { $tag: 1, _0: v.results })
+  #|   results: convert_results(v.results)
   #| })
 
 ///|
@@ -2021,7 +2271,13 @@ extern "js" fn AuthenticationExtensionsPRFOutputs::from_js_ffi(
 pub fn AuthenticationExtensionsPRFOutputs::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsPRFOutputs {
-  AuthenticationExtensionsPRFOutputs::from_js_ffi(value)
+  AuthenticationExtensionsPRFOutputs::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsPRFValues::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -2040,10 +2296,11 @@ pub fn AuthenticationExtensionsPRFOutputsJSON::default() -> AuthenticationExtens
 ///|
 extern "js" fn AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(
   self : AuthenticationExtensionsPRFOutputsJSON,
+  convert_results : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_results) => ({
   #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
-  #|   results: ((() => { const v = self.results; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   results: convert_results(self.results)
   #| })
 
 ///|
@@ -2051,16 +2308,22 @@ extern "js" fn AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(
 pub fn AuthenticationExtensionsPRFOutputsJSON::to_js(
   self : AuthenticationExtensionsPRFOutputsJSON,
 ) -> JsValue {
-  AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(self)
+  AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(
   value : JsValue,
+  convert_results : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?,
 ) -> AuthenticationExtensionsPRFOutputsJSON =
-  #| (v) => ({
+  #| (v, convert_results) => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
-  #|   results: (v.results === undefined ? { $tag: 0 } : { $tag: 1, _0: v.results })
+  #|   results: convert_results(v.results)
   #| })
 
 ///|
@@ -2068,7 +2331,13 @@ extern "js" fn AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(
 pub fn AuthenticationExtensionsPRFOutputsJSON::from_js(
   value : JsValue,
 ) -> AuthenticationExtensionsPRFOutputsJSON {
-  AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(value)
+  AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(AuthenticationExtensionsPRFValuesJSON::from_js(value))
+    }
+  })
 }
 
 ///|

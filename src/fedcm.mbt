@@ -559,14 +559,15 @@ pub fn IdentityProviderAPIConfig::default() -> IdentityProviderAPIConfig {
 ///|
 extern "js" fn IdentityProviderAPIConfig::to_js_ffi(
   self : IdentityProviderAPIConfig,
+  convert_branding : (IdentityProviderBranding?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_branding) => ({
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   client_metadata_endpoint: self.client_metadata_endpoint,
   #|   id_assertion_endpoint: self.id_assertion_endpoint,
   #|   login_url: self.login_url,
   #|   disconnect_endpoint: self.disconnect_endpoint,
-  #|   branding: ((() => { const v = self.branding; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   branding: convert_branding(self.branding),
   #|   supports_use_other_account: (self.supports_use_other_account === -1 ? undefined : self.supports_use_other_account),
   #|   account_label: self.account_label
   #| })
@@ -576,20 +577,26 @@ extern "js" fn IdentityProviderAPIConfig::to_js_ffi(
 pub fn IdentityProviderAPIConfig::to_js(
   self : IdentityProviderAPIConfig,
 ) -> JsValue {
-  IdentityProviderAPIConfig::to_js_ffi(self)
+  IdentityProviderAPIConfig::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn IdentityProviderAPIConfig::from_js_ffi(
   value : JsValue,
+  convert_branding : (JsValue) -> IdentityProviderBranding?,
 ) -> IdentityProviderAPIConfig =
-  #| (v) => ({
+  #| (v, convert_branding) => ({
   #|   accounts_endpoint: v.accounts_endpoint,
   #|   client_metadata_endpoint: v.client_metadata_endpoint,
   #|   id_assertion_endpoint: v.id_assertion_endpoint,
   #|   login_url: v.login_url,
   #|   disconnect_endpoint: v.disconnect_endpoint,
-  #|   branding: (v.branding === undefined ? { $tag: 0 } : { $tag: 1, _0: v.branding }),
+  #|   branding: convert_branding(v.branding),
   #|   supports_use_other_account: (v.supports_use_other_account === undefined ? -1 : v.supports_use_other_account),
   #|   account_label: v.account_label
   #| })
@@ -599,7 +606,13 @@ extern "js" fn IdentityProviderAPIConfig::from_js_ffi(
 pub fn IdentityProviderAPIConfig::from_js(
   value : JsValue,
 ) -> IdentityProviderAPIConfig {
-  IdentityProviderAPIConfig::from_js_ffi(value)
+  IdentityProviderAPIConfig::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(IdentityProviderBranding::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -749,11 +762,12 @@ pub fn IdentityAssertionResponse::default() -> IdentityAssertionResponse {
 ///|
 extern "js" fn IdentityAssertionResponse::to_js_ffi(
   self : IdentityAssertionResponse,
+  convert_error : (IdentityCredentialErrorInit?) -> JsValue,
 ) -> JsValue =
-  #| (self) => ({
+  #| (self, convert_error) => ({
   #|   token: ((() => { const v = self.token; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   continue_on: self.continue_on,
-  #|   error: ((() => { const v = self.error; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   error: convert_error(self.error)
   #| })
 
 ///|
@@ -761,17 +775,23 @@ extern "js" fn IdentityAssertionResponse::to_js_ffi(
 pub fn IdentityAssertionResponse::to_js(
   self : IdentityAssertionResponse,
 ) -> JsValue {
-  IdentityAssertionResponse::to_js_ffi(self)
+  IdentityAssertionResponse::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
 ///|
 extern "js" fn IdentityAssertionResponse::from_js_ffi(
   value : JsValue,
+  convert_error : (JsValue) -> IdentityCredentialErrorInit?,
 ) -> IdentityAssertionResponse =
-  #| (v) => ({
+  #| (v, convert_error) => ({
   #|   token: (v.token === undefined ? { $tag: 0 } : { $tag: 1, _0: v.token }),
   #|   continue_on: v.continue_on,
-  #|   error: (v.error === undefined ? { $tag: 0 } : { $tag: 1, _0: v.error })
+  #|   error: convert_error(v.error)
   #| })
 
 ///|
@@ -779,7 +799,13 @@ extern "js" fn IdentityAssertionResponse::from_js_ffi(
 pub fn IdentityAssertionResponse::from_js(
   value : JsValue,
 ) -> IdentityAssertionResponse {
-  IdentityAssertionResponse::from_js_ffi(value)
+  IdentityAssertionResponse::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(IdentityCredentialErrorInit::from_js(value))
+    }
+  })
 }
 
 ///|

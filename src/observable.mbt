@@ -17,11 +17,17 @@ pub extern "js" fn ObserverUnion::from_observable_subscription_callback(
   #| (v) => v
 
 ///|
-/// Create ObserverUnion from SubscriptionObserver
-pub extern "js" fn ObserverUnion::from_subscription_observer(
-  v : SubscriptionObserver,
+extern "js" fn ObserverUnion::from_subscription_observer_ffi(
+  v : JsValue,
 ) -> ObserverUnion =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ObserverUnion::from_subscription_observer(
+  v : SubscriptionObserver,
+) -> ObserverUnion {
+  ObserverUnion::from_subscription_observer_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ObserverUnion is ObservableSubscriptionCallback
@@ -45,11 +51,15 @@ pub extern "js" fn ObserverUnion::as_observable_subscription_callback(
   #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ObserverUnion as SubscriptionObserver
-pub extern "js" fn ObserverUnion::as_subscription_observer(
+pub fn ObserverUnion::as_subscription_observer(
   self : ObserverUnion,
-) -> SubscriptionObserver? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> SubscriptionObserver? {
+  if self.is_subscription_observer() {
+    Some(SubscriptionObserver::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ObserverUnion] to ObservableSubscriptionCallback?
@@ -91,11 +101,17 @@ pub extern "js" fn ObservableInspectorUnion::from_observable_subscription_callba
   #| (v) => v
 
 ///|
-/// Create ObservableInspectorUnion from ObservableInspector
-pub extern "js" fn ObservableInspectorUnion::from_observable_inspector(
-  v : ObservableInspector,
+extern "js" fn ObservableInspectorUnion::from_observable_inspector_ffi(
+  v : JsValue,
 ) -> ObservableInspectorUnion =
-  #| (v) => v
+  #| v => v
+
+///|
+pub fn ObservableInspectorUnion::from_observable_inspector(
+  v : ObservableInspector,
+) -> ObservableInspectorUnion {
+  ObservableInspectorUnion::from_observable_inspector_ffi(v.to_js())
+}
 
 ///|
 /// Check if this ObservableInspectorUnion is ObservableSubscriptionCallback
@@ -119,11 +135,15 @@ pub extern "js" fn ObservableInspectorUnion::as_observable_subscription_callback
   #| (self) => (typeof self === 'function') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-/// Try to get ObservableInspectorUnion as ObservableInspector
-pub extern "js" fn ObservableInspectorUnion::as_observable_inspector(
+pub fn ObservableInspectorUnion::as_observable_inspector(
   self : ObservableInspectorUnion,
-) -> ObservableInspector? =
-  #| (self) => (typeof self === 'object' && self !== null) ? { $tag: 1, _0: self } : { $tag: 0 }
+) -> ObservableInspector? {
+  if self.is_observable_inspector() {
+    Some(ObservableInspector::from_js(self.to_js_value()))
+  } else {
+    None
+  }
+}
 
 ///|
 /// Flatten Option[ObservableInspectorUnion] to ObservableSubscriptionCallback?

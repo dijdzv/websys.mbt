@@ -716,20 +716,42 @@ pub extern "js" fn URLPattern::get_has_reg_exp_groups(
   #| (self) => self.hasRegExpGroups
 
 ///|
-pub extern "js" fn URLPattern::new_with_string(
+extern "js" fn URLPattern::new_with_string_ffi(
   input : String,
   base_url : String,
-  options : URLPatternOptions,
+  options : JsValue,
 ) -> Result[URLPattern, URLPatternConstructorError] =
   #| (input, base_url, options) => (() => { try { return { $tag: 1, _0: new URLPattern(input, base_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn URLPattern::new_with_url_pattern_init(
+pub fn URLPattern::new_with_string(
+  input : String,
+  base_url : String,
+  options : URLPatternOptions,
+) -> Result[URLPattern, URLPatternConstructorError] {
+  URLPattern::new_with_string_ffi(input, base_url, options.to_js())
+}
+
+///|
+extern "js" fn URLPattern::new_with_url_pattern_init_ffi(
+  input : JsValue,
+  base_url : String,
+  options : JsValue,
+) -> Result[URLPattern, URLPatternConstructorError] =
+  #| (input, base_url, options) => (() => { try { return { $tag: 1, _0: new URLPattern(input, base_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub fn URLPattern::new_with_url_pattern_init(
   input : URLPatternInit,
   base_url : String,
   options : URLPatternOptions,
-) -> Result[URLPattern, URLPatternConstructorError] =
-  #| (input, base_url, options) => (() => { try { return { $tag: 1, _0: new URLPattern(input, base_url, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+) -> Result[URLPattern, URLPatternConstructorError] {
+  URLPattern::new_with_url_pattern_init_ffi(
+    input.to_js(),
+    base_url,
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn URLPattern::test__with_string(
@@ -740,12 +762,21 @@ pub extern "js" fn URLPattern::test__with_string(
   #| (self, input, base_url) => (() => { try { return { $tag: 1, _0: self.test(input, base_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn URLPattern::test__with_url_pattern_init(
+extern "js" fn URLPattern::test__with_url_pattern_init_ffi(
   self : URLPattern,
-  input : URLPatternInit,
+  input : JsValue,
   base_url : String,
 ) -> Result[Bool, URLPatternTestError] =
   #| (self, input, base_url) => (() => { try { return { $tag: 1, _0: self.test(input, base_url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub fn URLPattern::test__with_url_pattern_init(
+  self : URLPattern,
+  input : URLPatternInit,
+  base_url : String,
+) -> Result[Bool, URLPatternTestError] {
+  URLPattern::test__with_url_pattern_init_ffi(self, input.to_js(), base_url)
+}
 
 ///|
 pub extern "js" fn URLPattern::exec_with_string(
@@ -756,9 +787,18 @@ pub extern "js" fn URLPattern::exec_with_string(
   #| (self, input, base_url) => (() => { try { return { $tag: 1, _0: (() => { const v = self.exec(input, base_url); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn URLPattern::exec_with_url_pattern_init(
+extern "js" fn URLPattern::exec_with_url_pattern_init_ffi(
   self : URLPattern,
-  input : URLPatternInit,
+  input : JsValue,
   base_url : String,
 ) -> Result[URLPatternResult?, URLPatternExecError] =
   #| (self, input, base_url) => (() => { try { return { $tag: 1, _0: (() => { const v = self.exec(input, base_url); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+///|
+pub fn URLPattern::exec_with_url_pattern_init(
+  self : URLPattern,
+  input : URLPatternInit,
+  base_url : String,
+) -> Result[URLPatternResult?, URLPatternExecError] {
+  URLPattern::exec_with_url_pattern_init_ffi(self, input.to_js(), base_url)
+}

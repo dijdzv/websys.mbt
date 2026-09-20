@@ -26181,36 +26181,72 @@ pub extern "js" fn Window::get_push_manager(self : Window) -> PushManager =
   #| (self) => self.pushManager
 
 ///|
-pub extern "js" fn Window::fetch_later_with_request(
+extern "js" fn Window::fetch_later_with_request_ffi(
   self : Window,
   input : Request,
-  init_ : DeferredRequestInit,
+  init_ : JsValue,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
   #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Window::fetch_later_with_string(
+pub fn Window::fetch_later_with_request(
+  self : Window,
+  input : Request,
+  init_ : DeferredRequestInit,
+) -> Result[FetchLaterResult, WindowFetchLaterError] {
+  Window::fetch_later_with_request_ffi(self, input, init_.to_js())
+}
+
+///|
+extern "js" fn Window::fetch_later_with_string_ffi(
   self : Window,
   input : String,
-  init_ : DeferredRequestInit,
+  init_ : JsValue,
 ) -> Result[FetchLaterResult, WindowFetchLaterError] =
   #| (self, input, init_) => (() => { try { return { $tag: 1, _0: self.fetchLater(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Window::fetch_with_request(
+pub fn Window::fetch_later_with_string(
+  self : Window,
+  input : String,
+  init_ : DeferredRequestInit,
+) -> Result[FetchLaterResult, WindowFetchLaterError] {
+  Window::fetch_later_with_string_ffi(self, input, init_.to_js())
+}
+
+///|
+extern "js" fn Window::fetch_with_request_ffi(
   self : Window,
   input : Request,
-  init_ : RequestInit,
+  init_ : JsValue,
 ) -> Promise[Result[Response, WindowFetchError]] =
   #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
-pub extern "js" fn Window::fetch_with_string(
+pub fn Window::fetch_with_request(
+  self : Window,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Result[Response, WindowFetchError]] {
+  Window::fetch_with_request_ffi(self, input, init_.to_js())
+}
+
+///|
+extern "js" fn Window::fetch_with_string_ffi(
+  self : Window,
+  input : String,
+  init_ : JsValue,
+) -> Promise[Result[Response, WindowFetchError]] =
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub fn Window::fetch_with_string(
   self : Window,
   input : String,
   init_ : RequestInit,
-) -> Promise[Result[Response, WindowFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Result[Response, WindowFetchError]] {
+  Window::fetch_with_string_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn Window::set_timeout_with_string(
@@ -26267,28 +26303,59 @@ pub extern "js" fn Window::set_interval_with_trusted_script(
   #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Window::create_image_bitmap_with_canvas_image_source(
+extern "js" fn Window::create_image_bitmap_with_canvas_image_source_ffi(
+  self : Window,
+  image : CanvasImageSource,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub fn Window::create_image_bitmap_with_canvas_image_source(
   self : Window,
   image : CanvasImageSource,
   options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] {
+  Window::create_image_bitmap_with_canvas_image_source_ffi(
+    self,
+    image,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Window::create_image_bitmap_with_blob_ffi(
+  self : Window,
+  image : Blob,
+  options : JsValue,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
 ///|
-pub extern "js" fn Window::create_image_bitmap_with_blob(
+pub fn Window::create_image_bitmap_with_blob(
   self : Window,
   image : Blob,
   options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] {
+  Window::create_image_bitmap_with_blob_ffi(self, image, options.to_js())
+}
+
+///|
+extern "js" fn Window::create_image_bitmap_with_image_data_ffi(
+  self : Window,
+  image : ImageData,
+  options : JsValue,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
 ///|
-pub extern "js" fn Window::create_image_bitmap_with_image_data(
+pub fn Window::create_image_bitmap_with_image_data(
   self : Window,
   image : ImageData,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, options) => self.createImageBitmap(image, options)
+) -> Promise[ImageBitmap] {
+  Window::create_image_bitmap_with_image_data_ffi(self, image, options.to_js())
+}
 
 ///|
 /// BarProp interface
@@ -29450,22 +29517,42 @@ pub extern "js" fn ImageData::get_color_space(
   #| (self) => ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(self.colorSpace)
 
 ///|
-pub extern "js" fn ImageData::new_with_uint8_clamped_array(
+extern "js" fn ImageData::new_with_uint8_clamped_array_ffi(
   data : Uint8ClampedArray,
   sw : Int,
   sh : Int,
-  settings : ImageDataSettings,
+  settings : JsValue,
 ) -> Result[ImageData, ImageDataConstructorError] =
   #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn ImageData::new_with_float16_array(
+pub fn ImageData::new_with_uint8_clamped_array(
+  data : Uint8ClampedArray,
+  sw : Int,
+  sh : Int,
+  settings : ImageDataSettings,
+) -> Result[ImageData, ImageDataConstructorError] {
+  ImageData::new_with_uint8_clamped_array_ffi(data, sw, sh, settings.to_js())
+}
+
+///|
+extern "js" fn ImageData::new_with_float16_array_ffi(
+  data : Float16Array,
+  sw : Int,
+  sh : Int,
+  settings : JsValue,
+) -> Result[ImageData, ImageDataConstructorError] =
+  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub fn ImageData::new_with_float16_array(
   data : Float16Array,
   sw : Int,
   sh : Int,
   settings : ImageDataSettings,
-) -> Result[ImageData, ImageDataConstructorError] =
-  #| (data, sw, sh, settings) => (() => { try { return { $tag: 1, _0: new ImageData(data, sw, sh, settings) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Result[ImageData, ImageDataConstructorError] {
+  ImageData::new_with_float16_array_ffi(data, sw, sh, settings.to_js())
+}
 
 ///|
 /// ImageBitmap interface
@@ -30486,20 +30573,38 @@ pub extern "js" fn WorkerGlobalScope::get_crypto(
   #| (self) => self.crypto
 
 ///|
-pub extern "js" fn WorkerGlobalScope::fetch_with_request(
+extern "js" fn WorkerGlobalScope::fetch_with_request_ffi(
   self : WorkerGlobalScope,
   input : Request,
-  init_ : RequestInit,
+  init_ : JsValue,
 ) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
   #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
-pub extern "js" fn WorkerGlobalScope::fetch_with_string(
+pub fn WorkerGlobalScope::fetch_with_request(
+  self : WorkerGlobalScope,
+  input : Request,
+  init_ : RequestInit,
+) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] {
+  WorkerGlobalScope::fetch_with_request_ffi(self, input, init_.to_js())
+}
+
+///|
+extern "js" fn WorkerGlobalScope::fetch_with_string_ffi(
+  self : WorkerGlobalScope,
+  input : String,
+  init_ : JsValue,
+) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
+  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub fn WorkerGlobalScope::fetch_with_string(
   self : WorkerGlobalScope,
   input : String,
   init_ : RequestInit,
-) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] =
-  #| (self, input, init_) => self.fetch(input, init_).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+) -> Promise[Result[Response, WorkerGlobalScopeFetchError]] {
+  WorkerGlobalScope::fetch_with_string_ffi(self, input, init_.to_js())
+}
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
@@ -30556,28 +30661,67 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
   #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(
+extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source_ffi(
+  self : WorkerGlobalScope,
+  image : CanvasImageSource,
+  options : JsValue,
+) -> Promise[ImageBitmap] =
+  #| (self, image, options) => self.createImageBitmap(image, options)
+
+///|
+pub fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(
   self : WorkerGlobalScope,
   image : CanvasImageSource,
   options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] {
+  WorkerGlobalScope::create_image_bitmap_with_canvas_image_source_ffi(
+    self,
+    image,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn WorkerGlobalScope::create_image_bitmap_with_blob_ffi(
+  self : WorkerGlobalScope,
+  image : Blob,
+  options : JsValue,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_blob(
+pub fn WorkerGlobalScope::create_image_bitmap_with_blob(
   self : WorkerGlobalScope,
   image : Blob,
   options : ImageBitmapOptions,
+) -> Promise[ImageBitmap] {
+  WorkerGlobalScope::create_image_bitmap_with_blob_ffi(
+    self,
+    image,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_data_ffi(
+  self : WorkerGlobalScope,
+  image : ImageData,
+  options : JsValue,
 ) -> Promise[ImageBitmap] =
   #| (self, image, options) => self.createImageBitmap(image, options)
 
 ///|
-pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_image_data(
+pub fn WorkerGlobalScope::create_image_bitmap_with_image_data(
   self : WorkerGlobalScope,
   image : ImageData,
   options : ImageBitmapOptions,
-) -> Promise[ImageBitmap] =
-  #| (self, image, options) => self.createImageBitmap(image, options)
+) -> Promise[ImageBitmap] {
+  WorkerGlobalScope::create_image_bitmap_with_image_data_ffi(
+    self,
+    image,
+    options.to_js(),
+  )
+}
 
 ///|
 /// DedicatedWorkerGlobalScope interface

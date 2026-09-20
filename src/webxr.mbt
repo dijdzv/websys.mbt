@@ -2333,20 +2333,46 @@ pub extern "js" fn XRWebGLLayer::get_native_framebuffer_scale_factor(
   #| (session) => XRWebGLLayer.getNativeFramebufferScaleFactor(session)
 
 ///|
-pub extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context(
+extern "js" fn XRWebGLLayer::new_with_web_gl_rendering_context_ffi(
   session : XRSession,
   context : WebGLRenderingContext,
-  layer_init : XRWebGLLayerInit,
+  layer_init : JsValue,
 ) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
   #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context(
+pub fn XRWebGLLayer::new_with_web_gl_rendering_context(
+  session : XRSession,
+  context : WebGLRenderingContext,
+  layer_init : XRWebGLLayerInit,
+) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] {
+  XRWebGLLayer::new_with_web_gl_rendering_context_ffi(
+    session,
+    context,
+    layer_init.to_js(),
+  )
+}
+
+///|
+extern "js" fn XRWebGLLayer::new_with_web_gl2_rendering_context_ffi(
+  session : XRSession,
+  context : WebGL2RenderingContext,
+  layer_init : JsValue,
+) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
+  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub fn XRWebGLLayer::new_with_web_gl2_rendering_context(
   session : XRSession,
   context : WebGL2RenderingContext,
   layer_init : XRWebGLLayerInit,
-) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] =
-  #| (session, context, layer_init) => (() => { try { return { $tag: 1, _0: new XRWebGLLayer(session, context, layer_init) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Result[XRWebGLLayer, XRWebGLLayerConstructorError] {
+  XRWebGLLayer::new_with_web_gl2_rendering_context_ffi(
+    session,
+    context,
+    layer_init.to_js(),
+  )
+}
 
 ///|
 /// XRSessionEvent interface

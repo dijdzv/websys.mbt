@@ -1378,134 +1378,364 @@ pub extern "js" fn ReadableStreamBYOBReader::cancel_with_reason(
   #| (self, reason) => self.cancel(reason).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_int8_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_int8_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Int8Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_int8_array(
   self : ReadableStreamBYOBReader,
   view : Int8Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_int8_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_int16_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_int16_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Int16Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_int16_array(
   self : ReadableStreamBYOBReader,
   view : Int16Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_int16_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_int32_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_int32_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Int32Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_int32_array(
   self : ReadableStreamBYOBReader,
   view : Int32Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_int32_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_uint8_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_uint8_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Uint8Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_uint8_array(
   self : ReadableStreamBYOBReader,
   view : Uint8Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_uint8_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_uint16_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_uint16_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Uint16Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_uint16_array(
   self : ReadableStreamBYOBReader,
   view : Uint16Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_uint16_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_uint32_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_uint32_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Uint32Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_uint32_array(
   self : ReadableStreamBYOBReader,
   view : Uint32Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_uint32_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_uint8_clamped_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_uint8_clamped_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Uint8ClampedArray,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_uint8_clamped_array(
   self : ReadableStreamBYOBReader,
   view : Uint8ClampedArray,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_uint8_clamped_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_big_int64_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_big_int64_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : BigInt64Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_big_int64_array(
   self : ReadableStreamBYOBReader,
   view : BigInt64Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_big_int64_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_big_uint64_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_big_uint64_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : BigUint64Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_big_uint64_array(
   self : ReadableStreamBYOBReader,
   view : BigUint64Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_big_uint64_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_float16_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_float16_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Float16Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_float16_array(
   self : ReadableStreamBYOBReader,
   view : Float16Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_float16_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_float32_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_float32_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Float32Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_float32_array(
   self : ReadableStreamBYOBReader,
   view : Float32Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_float32_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_float64_array(
+extern "js" fn ReadableStreamBYOBReader::read_with_float64_array_ffi(
+  self : ReadableStreamBYOBReader,
+  view : Float64Array,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_float64_array(
   self : ReadableStreamBYOBReader,
   view : Float64Array,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_float64_array_ffi(
+    self,
+    view,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn ReadableStreamBYOBReader::read_with_data_view(
+extern "js" fn ReadableStreamBYOBReader::read_with_data_view_ffi(
+  self : ReadableStreamBYOBReader,
+  view : DataView,
+  options : JsValue,
+) -> Promise[
+  Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
+] =
+  #| (self, view, options) => self.read(view, options).then(v => ({
+  #|   value: (v.value === undefined ? { $tag: 0 } : { $tag: 1, _0: v.value }),
+  #|   done: (v.done === undefined ? -1 : v.done)
+  #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+
+///|
+pub fn ReadableStreamBYOBReader::read_with_data_view(
   self : ReadableStreamBYOBReader,
   view : DataView,
   options : ReadableStreamBYOBReaderReadOptions,
 ) -> Promise[
   Result[ReadableStreamReadResult, ReadableStreamBYOBReaderReadError],
-] =
-  #| (self, view, options) => self.read(view, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
+] {
+  ReadableStreamBYOBReader::read_with_data_view_ffi(self, view, options.to_js())
+}
 
 ///|
 /// ReadableStreamDefaultController interface

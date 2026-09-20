@@ -74,10 +74,23 @@ fn gen_union_arg_overloads(
     }
     generated_methods.push(fn_name)
     // MoonBit signature
-    result.write_string("pub extern \"js\" fn ")
+    let specialized_args = op.arguments.map(fn(arg) { arg })
+    specialized_args[union_arg_index] = {
+      ..op.arguments[union_arg_index],
+      idl_type: member_type,
+    }
+    let needs_wrapper = has_dict_args(specialized_args, args_len, dict_map)
+    if needs_wrapper {
+      result.write_string("extern \"js\" fn ")
+    } else {
+      result.write_string("pub extern \"js\" fn ")
+    }
     result.write_string(interface_name)
     result.write_string("::")
     result.write_string(fn_name)
+    if needs_wrapper {
+      result.write_string("_ffi")
+    }
     result.write_string("(self : ")
     result.write_string(interface_name)
     for i = 0; i < args_len; i = i + 1 {
@@ -85,7 +98,9 @@ fn gen_union_arg_overloads(
       result.write_string(", ")
       result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
-      if i == union_arg_index {
+      if needs_wrapper {
+        result.write_string(gen_ffi_arg_type(specialized_args[i], dict_map))
+      } else if i == union_arg_index {
         result.write_string(moonbit_type)
       } else {
         result.write_string(idl_type_to_moonbit(arg.idl_type))
@@ -124,6 +139,12 @@ fn gen_union_arg_overloads(
       }
     }
     let js_expr = "self." + op.name + "(" + js_call_args.to_string() + ")"
+    let js_expr = convert_operation_result(
+      js_expr,
+      op.return_type,
+      dict_map,
+      enum_map,
+    )
     let wrapped = wrap_return_or_throwing(
       js_expr,
       op.return_type,
@@ -133,6 +154,18 @@ fn gen_union_arg_overloads(
     result.write_string(") => ")
     result.write_string(wrapped)
     result.write_string("\n\n")
+    if needs_wrapper {
+      gen_dict_wrapper(
+        result,
+        interface_name + "::" + fn_name,
+        specialized_args,
+        args_len,
+        return_type,
+        dict_map,
+        true,
+        interface_name,
+      )
+    }
   })
   result.to_string()
 }
@@ -172,10 +205,25 @@ fn gen_static_union_arg_overloads(
       return
     }
     generated_methods.push(fn_name)
-    result.write_string("pub extern \"js\" fn ")
+    let specialized_args = op.arguments.map(fn(arg) { arg })
+    specialized_args[union_arg_index] = {
+      ..op.arguments[union_arg_index],
+      idl_type: member_type,
+    }
+    let needs_wrapper = has_dict_args(specialized_args, args_len, dict_map)
+    result.write_string(
+      if needs_wrapper {
+        "extern \"js\" fn "
+      } else {
+        "pub extern \"js\" fn "
+      },
+    )
     result.write_string(interface_name)
     result.write_string("::")
     result.write_string(fn_name)
+    if needs_wrapper {
+      result.write_string("_ffi")
+    }
     result.write_string("(")
     for i = 0; i < args_len; i = i + 1 {
       if i > 0 {
@@ -184,7 +232,9 @@ fn gen_static_union_arg_overloads(
       let arg = op.arguments[i]
       result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
-      if i == union_arg_index {
+      if needs_wrapper {
+        result.write_string(gen_ffi_arg_type(specialized_args[i], dict_map))
+      } else if i == union_arg_index {
         result.write_string(moonbit_type)
       } else {
         result.write_string(idl_type_to_moonbit(arg.idl_type))
@@ -228,6 +278,12 @@ fn gen_static_union_arg_overloads(
       "(" +
       js_call_args.to_string() +
       ")"
+    let js_expr = convert_operation_result(
+      js_expr,
+      op.return_type,
+      dict_map,
+      enum_map,
+    )
     let wrapped = wrap_return_or_throwing(
       js_expr,
       op.return_type,
@@ -237,6 +293,18 @@ fn gen_static_union_arg_overloads(
     result.write_string(") => ")
     result.write_string(wrapped)
     result.write_string("\n\n")
+    if needs_wrapper {
+      gen_dict_wrapper(
+        result,
+        interface_name + "::" + fn_name,
+        specialized_args,
+        args_len,
+        return_type,
+        dict_map,
+        false,
+        interface_name,
+      )
+    }
   })
   result.to_string()
 }
@@ -284,10 +352,25 @@ fn gen_constructor_union_arg_overloads(
       return
     }
     generated_methods.push(fn_name)
-    result.write_string("pub extern \"js\" fn ")
+    let specialized_args = ctor.arguments.map(fn(arg) { arg })
+    specialized_args[union_arg_index] = {
+      ..ctor.arguments[union_arg_index],
+      idl_type: member_type,
+    }
+    let needs_wrapper = has_dict_args(specialized_args, args_len, dict_map)
+    result.write_string(
+      if needs_wrapper {
+        "extern \"js\" fn "
+      } else {
+        "pub extern \"js\" fn "
+      },
+    )
     result.write_string(interface_name)
     result.write_string("::")
     result.write_string(fn_name)
+    if needs_wrapper {
+      result.write_string("_ffi")
+    }
     result.write_string("(")
     for i = 0; i < args_len; i = i + 1 {
       if i > 0 {
@@ -296,7 +379,9 @@ fn gen_constructor_union_arg_overloads(
       let arg = ctor.arguments[i]
       result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
-      if i == union_arg_index {
+      if needs_wrapper {
+        result.write_string(gen_ffi_arg_type(specialized_args[i], dict_map))
+      } else if i == union_arg_index {
         result.write_string(moonbit_type)
       } else {
         result.write_string(idl_type_to_moonbit(arg.idl_type))
@@ -349,6 +434,18 @@ fn gen_constructor_union_arg_overloads(
       result.write_string(") => ")
       result.write_string(js_ctor_expr)
       result.write_string("\n\n")
+    }
+    if needs_wrapper {
+      gen_dict_wrapper(
+        result,
+        interface_name + "::" + fn_name,
+        specialized_args,
+        args_len,
+        ctor_return_type,
+        dict_map,
+        false,
+        interface_name,
+      )
     }
   })
   result.to_string()

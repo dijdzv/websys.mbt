@@ -8206,58 +8206,148 @@ pub extern "js" fn GPUCommandEncoder::insert_debug_marker(
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate(
+extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(
   self : GPUCommandEncoder,
-  source : GPUTexelCopyBufferInfo,
-  destination : GPUTexelCopyTextureInfo,
+  source : JsValue,
+  destination : JsValue,
   copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict(
+pub fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate(
   self : GPUCommandEncoder,
   source : GPUTexelCopyBufferInfo,
   destination : GPUTexelCopyTextureInfo,
-  copy_size : GPUExtent3DDict,
+  copy_size : FixedArray[GPUIntegerCoordinate],
+) -> Unit {
+  GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size,
+  )
+}
+
+///|
+extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(
+  self : GPUCommandEncoder,
+  source : JsValue,
+  destination : JsValue,
+  copy_size : JsValue,
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate(
+pub fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyBufferInfo,
+  source : GPUTexelCopyBufferInfo,
+  destination : GPUTexelCopyTextureInfo,
+  copy_size : GPUExtent3DDict,
+) -> Unit {
+  GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size.to_js(),
+  )
+}
+
+///|
+extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(
+  self : GPUCommandEncoder,
+  source : JsValue,
+  destination : JsValue,
   copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict(
+pub fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyBufferInfo,
-  copy_size : GPUExtent3DDict,
+  copy_size : FixedArray[GPUIntegerCoordinate],
+) -> Unit {
+  GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size,
+  )
+}
+
+///|
+extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(
+  self : GPUCommandEncoder,
+  source : JsValue,
+  destination : JsValue,
+  copy_size : JsValue,
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate(
+pub fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyTextureInfo,
+  destination : GPUTexelCopyBufferInfo,
+  copy_size : GPUExtent3DDict,
+) -> Unit {
+  GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size.to_js(),
+  )
+}
+
+///|
+extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(
+  self : GPUCommandEncoder,
+  source : JsValue,
+  destination : JsValue,
   copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
 ///|
-pub extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict(
+pub fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate(
+  self : GPUCommandEncoder,
+  source : GPUTexelCopyTextureInfo,
+  destination : GPUTexelCopyTextureInfo,
+  copy_size : FixedArray[GPUIntegerCoordinate],
+) -> Unit {
+  GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size,
+  )
+}
+
+///|
+extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(
+  self : GPUCommandEncoder,
+  source : JsValue,
+  destination : JsValue,
+  copy_size : JsValue,
+) -> Unit =
+  #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
+
+///|
+pub fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict(
   self : GPUCommandEncoder,
   source : GPUTexelCopyTextureInfo,
   destination : GPUTexelCopyTextureInfo,
   copy_size : GPUExtent3DDict,
-) -> Unit =
-  #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
+) -> Unit {
+  GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size.to_js(),
+  )
+}
 
 ///|
 /// GPUComputePassEncoder interface
@@ -8658,11 +8748,22 @@ pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_array_of_double
   #| (self, color) => self.setBlendConstant(color)
 
 ///|
-pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict(
+extern "js" fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(
   self : GPURenderPassEncoder,
-  color : GPUColorDict,
+  color : JsValue,
 ) -> Unit =
   #| (self, color) => self.setBlendConstant(color)
+
+///|
+pub fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict(
+  self : GPURenderPassEncoder,
+  color : GPUColorDict,
+) -> Unit {
+  GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(
+    self,
+    color.to_js(),
+  )
+}
 
 ///|
 /// GPURenderBundle interface
@@ -9096,52 +9197,133 @@ pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
   #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data, Number(data_offset), Number(size)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn GPUQueue::write_texture_with_array_buffer(
+extern "js" fn GPUQueue::write_texture_with_array_buffer_ffi(
+  self : GPUQueue,
+  destination : JsValue,
+  data : ArrayBuffer,
+  data_layout : JsValue,
+  size : GPUExtent3D,
+) -> Unit =
+  #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
+
+///|
+pub fn GPUQueue::write_texture_with_array_buffer(
   self : GPUQueue,
   destination : GPUTexelCopyTextureInfo,
   data : ArrayBuffer,
   data_layout : GPUTexelCopyBufferLayout,
   size : GPUExtent3D,
+) -> Unit {
+  GPUQueue::write_texture_with_array_buffer_ffi(
+    self,
+    destination.to_js(),
+    data,
+    data_layout.to_js(),
+    size,
+  )
+}
+
+///|
+extern "js" fn GPUQueue::write_texture_with_shared_array_buffer_ffi(
+  self : GPUQueue,
+  destination : JsValue,
+  data : SharedArrayBuffer,
+  data_layout : JsValue,
+  size : GPUExtent3D,
 ) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
 ///|
-pub extern "js" fn GPUQueue::write_texture_with_shared_array_buffer(
+pub fn GPUQueue::write_texture_with_shared_array_buffer(
   self : GPUQueue,
   destination : GPUTexelCopyTextureInfo,
   data : SharedArrayBuffer,
   data_layout : GPUTexelCopyBufferLayout,
   size : GPUExtent3D,
-) -> Unit =
-  #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
+) -> Unit {
+  GPUQueue::write_texture_with_shared_array_buffer_ffi(
+    self,
+    destination.to_js(),
+    data,
+    data_layout.to_js(),
+    size,
+  )
+}
 
 ///|
-pub extern "js" fn GPUQueue::write_texture_with_array_buffer_view(
+extern "js" fn GPUQueue::write_texture_with_array_buffer_view_ffi(
   self : GPUQueue,
-  destination : GPUTexelCopyTextureInfo,
+  destination : JsValue,
   data : ArrayBufferView,
-  data_layout : GPUTexelCopyBufferLayout,
+  data_layout : JsValue,
   size : GPUExtent3D,
 ) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
 ///|
-pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate(
+pub fn GPUQueue::write_texture_with_array_buffer_view(
   self : GPUQueue,
-  source : GPUCopyExternalImageSourceInfo,
-  destination : GPUCopyExternalImageDestInfo,
+  destination : GPUTexelCopyTextureInfo,
+  data : ArrayBufferView,
+  data_layout : GPUTexelCopyBufferLayout,
+  size : GPUExtent3D,
+) -> Unit {
+  GPUQueue::write_texture_with_array_buffer_view_ffi(
+    self,
+    destination.to_js(),
+    data,
+    data_layout.to_js(),
+    size,
+  )
+}
+
+///|
+extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(
+  self : GPUQueue,
+  source : JsValue,
+  destination : JsValue,
   copy_size : FixedArray[GPUIntegerCoordinate],
 ) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
   #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
+pub fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate(
+  self : GPUQueue,
+  source : GPUCopyExternalImageSourceInfo,
+  destination : GPUCopyExternalImageDestInfo,
+  copy_size : FixedArray[GPUIntegerCoordinate],
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
+  GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size,
+  )
+}
+
+///|
+extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(
+  self : GPUQueue,
+  source : JsValue,
+  destination : JsValue,
+  copy_size : JsValue,
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
   self : GPUQueue,
   source : GPUCopyExternalImageSourceInfo,
   destination : GPUCopyExternalImageDestInfo,
   copy_size : GPUExtent3DDict,
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
-  #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
+  GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(
+    self,
+    source.to_js(),
+    destination.to_js(),
+    copy_size.to_js(),
+  )
+}
 
 ///|
 /// GPUQuerySet interface

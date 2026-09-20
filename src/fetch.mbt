@@ -1040,18 +1040,34 @@ pub extern "js" fn Request::text(
   #| (self) => self.text().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
-pub extern "js" fn Request::new_with_request(
+extern "js" fn Request::new_with_request_ffi(
   input : Request,
-  init_ : RequestInit,
+  init_ : JsValue,
 ) -> Result[Request, RequestConstructorError] =
   #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Request::new_with_string(
-  input : String,
+pub fn Request::new_with_request(
+  input : Request,
   init_ : RequestInit,
+) -> Result[Request, RequestConstructorError] {
+  Request::new_with_request_ffi(input, init_.to_js())
+}
+
+///|
+extern "js" fn Request::new_with_string_ffi(
+  input : String,
+  init_ : JsValue,
 ) -> Result[Request, RequestConstructorError] =
   #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub fn Request::new_with_string(
+  input : String,
+  init_ : RequestInit,
+) -> Result[Request, RequestConstructorError] {
+  Request::new_with_string_ffi(input, init_.to_js())
+}
 
 ///|
 /// Response interface

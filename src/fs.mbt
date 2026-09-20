@@ -1063,11 +1063,19 @@ pub extern "js" fn FileSystemWritableFileStream::write_with_string(
   #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
 ///|
-pub extern "js" fn FileSystemWritableFileStream::write_with_write_params(
+extern "js" fn FileSystemWritableFileStream::write_with_write_params_ffi(
   self : FileSystemWritableFileStream,
-  data : WriteParams,
+  data : JsValue,
 ) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] =
   #| (self, data) => self.write(data).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
+
+///|
+pub fn FileSystemWritableFileStream::write_with_write_params(
+  self : FileSystemWritableFileStream,
+  data : WriteParams,
+) -> Promise[Result[Unit, FileSystemWritableFileStreamWriteError]] {
+  FileSystemWritableFileStream::write_with_write_params_ffi(self, data.to_js())
+}
 
 ///|
 /// FileSystemSyncAccessHandle interface
@@ -1229,49 +1237,127 @@ pub extern "js" fn FileSystemSyncAccessHandle::close(
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer(
+extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBuffer,
+  options : JsValue,
+) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.read(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+
+///|
+pub fn FileSystemSyncAccessHandle::read_with_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
+) -> Result[Int64, FileSystemSyncAccessHandleReadError] {
+  FileSystemSyncAccessHandle::read_with_array_buffer_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : SharedArrayBuffer,
+  options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
   #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.read(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
+pub fn FileSystemSyncAccessHandle::read_with_shared_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
+) -> Result[Int64, FileSystemSyncAccessHandleReadError] {
+  FileSystemSyncAccessHandle::read_with_shared_array_buffer_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBufferView,
+  options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
   #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.read(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
+pub fn FileSystemSyncAccessHandle::read_with_array_buffer_view(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleReadError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.read(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+) -> Result[Int64, FileSystemSyncAccessHandleReadError] {
+  FileSystemSyncAccessHandle::read_with_array_buffer_view_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer(
+extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBuffer,
+  options : JsValue,
+) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
+  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.write(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+
+///|
+pub fn FileSystemSyncAccessHandle::write_with_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBuffer,
   options : FileSystemReadWriteOptions,
+) -> Result[Int64, FileSystemSyncAccessHandleWriteError] {
+  FileSystemSyncAccessHandle::write_with_array_buffer_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : SharedArrayBuffer,
+  options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
   #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.write(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
+pub fn FileSystemSyncAccessHandle::write_with_shared_array_buffer(
   self : FileSystemSyncAccessHandle,
   buffer : SharedArrayBuffer,
   options : FileSystemReadWriteOptions,
+) -> Result[Int64, FileSystemSyncAccessHandleWriteError] {
+  FileSystemSyncAccessHandle::write_with_shared_array_buffer_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view_ffi(
+  self : FileSystemSyncAccessHandle,
+  buffer : ArrayBufferView,
+  options : JsValue,
 ) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
   #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.write(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
+pub fn FileSystemSyncAccessHandle::write_with_array_buffer_view(
   self : FileSystemSyncAccessHandle,
   buffer : ArrayBufferView,
   options : FileSystemReadWriteOptions,
-) -> Result[Int64, FileSystemSyncAccessHandleWriteError] =
-  #| (self, buffer, options) => (() => { try { return { $tag: 1, _0: BigInt.asUintN(64, BigInt(self.write(buffer, options))) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Result[Int64, FileSystemSyncAccessHandleWriteError] {
+  FileSystemSyncAccessHandle::write_with_array_buffer_view_ffi(
+    self,
+    buffer,
+    options.to_js(),
+  )
+}

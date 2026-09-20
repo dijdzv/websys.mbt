@@ -1282,20 +1282,46 @@ pub extern "js" fn USBDevice::reset(self : USBDevice) -> Promise[Unit] =
   #| (self) => self.reset()
 
 ///|
-pub extern "js" fn USBDevice::control_transfer_out_with_array_buffer_view(
+extern "js" fn USBDevice::control_transfer_out_with_array_buffer_view_ffi(
   self : USBDevice,
-  setup : USBControlTransferParameters,
+  setup : JsValue,
   data : ArrayBufferView,
 ) -> Promise[USBOutTransferResult] =
   #| (self, setup, data) => self.controlTransferOut(setup, data)
 
 ///|
-pub extern "js" fn USBDevice::control_transfer_out_with_array_buffer(
+pub fn USBDevice::control_transfer_out_with_array_buffer_view(
   self : USBDevice,
   setup : USBControlTransferParameters,
+  data : ArrayBufferView,
+) -> Promise[USBOutTransferResult] {
+  USBDevice::control_transfer_out_with_array_buffer_view_ffi(
+    self,
+    setup.to_js(),
+    data,
+  )
+}
+
+///|
+extern "js" fn USBDevice::control_transfer_out_with_array_buffer_ffi(
+  self : USBDevice,
+  setup : JsValue,
   data : ArrayBuffer,
 ) -> Promise[USBOutTransferResult] =
   #| (self, setup, data) => self.controlTransferOut(setup, data)
+
+///|
+pub fn USBDevice::control_transfer_out_with_array_buffer(
+  self : USBDevice,
+  setup : USBControlTransferParameters,
+  data : ArrayBuffer,
+) -> Promise[USBOutTransferResult] {
+  USBDevice::control_transfer_out_with_array_buffer_ffi(
+    self,
+    setup.to_js(),
+    data,
+  )
+}
 
 ///|
 pub extern "js" fn USBDevice::transfer_out_with_array_buffer_view(

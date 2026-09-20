@@ -677,11 +677,22 @@ pub extern "js" fn Sanitizer::allow_element_with_string(
   #| (self, element) => self.allowElement(element)
 
 ///|
-pub extern "js" fn Sanitizer::allow_element_with_sanitizer_element_namespace_with_attributes(
+extern "js" fn Sanitizer::allow_element_with_sanitizer_element_namespace_with_attributes_ffi(
   self : Sanitizer,
-  element : SanitizerElementNamespaceWithAttributes,
+  element : JsValue,
 ) -> Bool =
   #| (self, element) => self.allowElement(element)
+
+///|
+pub fn Sanitizer::allow_element_with_sanitizer_element_namespace_with_attributes(
+  self : Sanitizer,
+  element : SanitizerElementNamespaceWithAttributes,
+) -> Bool {
+  Sanitizer::allow_element_with_sanitizer_element_namespace_with_attributes_ffi(
+    self,
+    element.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Sanitizer::remove_element_with_string(
@@ -691,11 +702,22 @@ pub extern "js" fn Sanitizer::remove_element_with_string(
   #| (self, element) => self.removeElement(element)
 
 ///|
-pub extern "js" fn Sanitizer::remove_element_with_sanitizer_element_namespace(
+extern "js" fn Sanitizer::remove_element_with_sanitizer_element_namespace_ffi(
   self : Sanitizer,
-  element : SanitizerElementNamespace,
+  element : JsValue,
 ) -> Bool =
   #| (self, element) => self.removeElement(element)
+
+///|
+pub fn Sanitizer::remove_element_with_sanitizer_element_namespace(
+  self : Sanitizer,
+  element : SanitizerElementNamespace,
+) -> Bool {
+  Sanitizer::remove_element_with_sanitizer_element_namespace_ffi(
+    self,
+    element.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Sanitizer::replace_element_with_children_with_string(
@@ -705,11 +727,22 @@ pub extern "js" fn Sanitizer::replace_element_with_children_with_string(
   #| (self, element) => self.replaceElementWithChildren(element)
 
 ///|
-pub extern "js" fn Sanitizer::replace_element_with_children_with_sanitizer_element_namespace(
+extern "js" fn Sanitizer::replace_element_with_children_with_sanitizer_element_namespace_ffi(
   self : Sanitizer,
-  element : SanitizerElementNamespace,
+  element : JsValue,
 ) -> Bool =
   #| (self, element) => self.replaceElementWithChildren(element)
+
+///|
+pub fn Sanitizer::replace_element_with_children_with_sanitizer_element_namespace(
+  self : Sanitizer,
+  element : SanitizerElementNamespace,
+) -> Bool {
+  Sanitizer::replace_element_with_children_with_sanitizer_element_namespace_ffi(
+    self,
+    element.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Sanitizer::allow_attribute_with_string(
@@ -719,11 +752,22 @@ pub extern "js" fn Sanitizer::allow_attribute_with_string(
   #| (self, attribute) => self.allowAttribute(attribute)
 
 ///|
-pub extern "js" fn Sanitizer::allow_attribute_with_sanitizer_attribute_namespace(
+extern "js" fn Sanitizer::allow_attribute_with_sanitizer_attribute_namespace_ffi(
   self : Sanitizer,
-  attribute : SanitizerAttributeNamespace,
+  attribute : JsValue,
 ) -> Bool =
   #| (self, attribute) => self.allowAttribute(attribute)
+
+///|
+pub fn Sanitizer::allow_attribute_with_sanitizer_attribute_namespace(
+  self : Sanitizer,
+  attribute : SanitizerAttributeNamespace,
+) -> Bool {
+  Sanitizer::allow_attribute_with_sanitizer_attribute_namespace_ffi(
+    self,
+    attribute.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Sanitizer::remove_attribute_with_string(
@@ -733,8 +777,19 @@ pub extern "js" fn Sanitizer::remove_attribute_with_string(
   #| (self, attribute) => self.removeAttribute(attribute)
 
 ///|
-pub extern "js" fn Sanitizer::remove_attribute_with_sanitizer_attribute_namespace(
+extern "js" fn Sanitizer::remove_attribute_with_sanitizer_attribute_namespace_ffi(
   self : Sanitizer,
-  attribute : SanitizerAttributeNamespace,
+  attribute : JsValue,
 ) -> Bool =
   #| (self, attribute) => self.removeAttribute(attribute)
+
+///|
+pub fn Sanitizer::remove_attribute_with_sanitizer_attribute_namespace(
+  self : Sanitizer,
+  attribute : SanitizerAttributeNamespace,
+) -> Bool {
+  Sanitizer::remove_attribute_with_sanitizer_attribute_namespace_ffi(
+    self,
+    attribute.to_js(),
+  )
+}

@@ -2579,36 +2579,72 @@ pub fn Cache::keys_with_options(
 }
 
 ///|
-pub extern "js" fn Cache::match__with_request(
+extern "js" fn Cache::match__with_request_ffi(
   self : Cache,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[ResponseOrVoid] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
-pub extern "js" fn Cache::match__with_string(
+pub fn Cache::match__with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[ResponseOrVoid] {
+  Cache::match__with_request_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::match__with_string_ffi(
   self : Cache,
   request : String,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[ResponseOrVoid] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
-pub extern "js" fn Cache::match_all_with_request(
+pub fn Cache::match__with_string(
+  self : Cache,
+  request : String,
+  options : CacheQueryOptions,
+) -> Promise[ResponseOrVoid] {
+  Cache::match__with_string_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::match_all_with_request_ffi(
   self : Cache,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[FixedArray[Response]] =
   #| (self, request, options) => self.matchAll(request, options)
 
 ///|
-pub extern "js" fn Cache::match_all_with_string(
+pub fn Cache::match_all_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[FixedArray[Response]] {
+  Cache::match_all_with_request_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::match_all_with_string_ffi(
+  self : Cache,
+  request : String,
+  options : JsValue,
+) -> Promise[FixedArray[Response]] =
+  #| (self, request, options) => self.matchAll(request, options)
+
+///|
+pub fn Cache::match_all_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[FixedArray[Response]] =
-  #| (self, request, options) => self.matchAll(request, options)
+) -> Promise[FixedArray[Response]] {
+  Cache::match_all_with_string_ffi(self, request, options.to_js())
+}
 
 ///|
 pub extern "js" fn Cache::add_with_request(
@@ -2641,36 +2677,72 @@ pub extern "js" fn Cache::put_with_string(
   #| (self, request, response) => self.put(request, response).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
-pub extern "js" fn Cache::delete_with_request(
+extern "js" fn Cache::delete_with_request_ffi(
   self : Cache,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[Bool] =
   #| (self, request, options) => self.delete(request, options)
 
 ///|
-pub extern "js" fn Cache::delete_with_string(
+pub fn Cache::delete_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[Bool] {
+  Cache::delete_with_request_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::delete_with_string_ffi(
   self : Cache,
   request : String,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[Bool] =
   #| (self, request, options) => self.delete(request, options)
 
 ///|
-pub extern "js" fn Cache::keys_with_request(
+pub fn Cache::delete_with_string(
+  self : Cache,
+  request : String,
+  options : CacheQueryOptions,
+) -> Promise[Bool] {
+  Cache::delete_with_string_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::keys_with_request_ffi(
   self : Cache,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[FixedArray[Request]] =
   #| (self, request, options) => self.keys(request, options)
 
 ///|
-pub extern "js" fn Cache::keys_with_string(
+pub fn Cache::keys_with_request(
+  self : Cache,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[FixedArray[Request]] {
+  Cache::keys_with_request_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn Cache::keys_with_string_ffi(
+  self : Cache,
+  request : String,
+  options : JsValue,
+) -> Promise[FixedArray[Request]] =
+  #| (self, request, options) => self.keys(request, options)
+
+///|
+pub fn Cache::keys_with_string(
   self : Cache,
   request : String,
   options : CacheQueryOptions,
-) -> Promise[FixedArray[Request]] =
-  #| (self, request, options) => self.keys(request, options)
+) -> Promise[FixedArray[Request]] {
+  Cache::keys_with_string_ffi(self, request, options.to_js())
+}
 
 ///|
 /// CacheStorage interface
@@ -2754,17 +2826,35 @@ pub extern "js" fn CacheStorage::keys(
   #| (self) => self.keys()
 
 ///|
-pub extern "js" fn CacheStorage::match__with_request(
+extern "js" fn CacheStorage::match__with_request_ffi(
   self : CacheStorage,
   request : Request,
-  options : MultiCacheQueryOptions,
+  options : JsValue,
 ) -> Promise[ResponseOrVoid] =
   #| (self, request, options) => self.match(request, options)
 
 ///|
-pub extern "js" fn CacheStorage::match__with_string(
+pub fn CacheStorage::match__with_request(
+  self : CacheStorage,
+  request : Request,
+  options : MultiCacheQueryOptions,
+) -> Promise[ResponseOrVoid] {
+  CacheStorage::match__with_request_ffi(self, request, options.to_js())
+}
+
+///|
+extern "js" fn CacheStorage::match__with_string_ffi(
+  self : CacheStorage,
+  request : String,
+  options : JsValue,
+) -> Promise[ResponseOrVoid] =
+  #| (self, request, options) => self.match(request, options)
+
+///|
+pub fn CacheStorage::match__with_string(
   self : CacheStorage,
   request : String,
   options : MultiCacheQueryOptions,
-) -> Promise[ResponseOrVoid] =
-  #| (self, request, options) => self.match(request, options)
+) -> Promise[ResponseOrVoid] {
+  CacheStorage::match__with_string_ffi(self, request, options.to_js())
+}

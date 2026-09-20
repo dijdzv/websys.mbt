@@ -1879,7 +1879,10 @@ pub extern "js" fn SubtleCrypto::encapsulate_key_with_string(
   extractable : Bool,
   key_usages : FixedArray[KeyUsage],
 ) -> Promise[EncapsulatedKey] =
-  #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages)
+  #| (self, encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages) => self.encapsulateKey(encapsulation_algorithm, encapsulation_key, shared_key_algorithm, extractable, key_usages).then(v => ({
+  #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
+  #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
+  #| }))
 
 ///|
 pub extern "js" fn SubtleCrypto::encapsulate_bits_with_string(
@@ -1887,7 +1890,10 @@ pub extern "js" fn SubtleCrypto::encapsulate_bits_with_string(
   encapsulation_algorithm : String,
   encapsulation_key : CryptoKey,
 ) -> Promise[EncapsulatedBits] =
-  #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key)
+  #| (self, encapsulation_algorithm, encapsulation_key) => self.encapsulateBits(encapsulation_algorithm, encapsulation_key).then(v => ({
+  #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
+  #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
+  #| }))
 
 ///|
 pub extern "js" fn SubtleCrypto::decapsulate_key_with_string(

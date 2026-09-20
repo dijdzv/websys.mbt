@@ -43,6 +43,8 @@ try {
   await page.goto(baseUrl);
   let heldRequestObserved = false;
   const abortedRequest = page.waitForEvent('requestfailed', { predicate: request => request.url() === 'http://fixture.invalid/hold', timeout: 10000 });
+  // Teardown must not mask an earlier consumer failure with this pending wait.
+  void abortedRequest.catch(() => {});
   await page.route('http://fixture.invalid/hold', () => { heldRequestObserved = true; });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -79,6 +81,22 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    let inputCalls = 0;
+    const optionalCalls = [];
+    const nullableCalls = [];
+    const argumentProbe = { accept(size, mode, headers) {
+      inputCalls++;
+      if (size !== Number.MAX_SAFE_INTEGER || mode !== 'repeat' || headers['x-test'] !== '日本😀') throw Error('Semantic operation input conversion');
+    }, defaults(count = 7, label = 'default') { optionalCalls.push([arguments.length, count, label]); }, nullable(mode) { nullableCalls.push(mode); } };
+    instance.exports.operation_inputs(argumentProbe, 0);
+    if (inputCalls !== 1) throw Error('Operation input not delivered');
+    if (JSON.stringify(optionalCalls) !== JSON.stringify([[0,7,'default'],[1,0,'default'],[2,4294967295,'']])) throw Error('Optional input arity or values changed');
+    if (JSON.stringify(nullableCalls) !== '[null,"mirror-repeat"]') throw Error('Nullable enum input changed');
+    let rejected = false;
+    try { instance.exports.operation_inputs(argumentProbe, 1); } catch (error) { rejected = error instanceof TypeError; }
+    if (!rejected || inputCalls !== 1) throw Error('Unsafe annotated input reached host');
+    if (optionalCalls.length !== 3) throw Error('Rejected input continued execution');
+    count += 4;
     instance.exports.unsigned_sequence({ unsignedValues(values) {
       if (JSON.stringify(values) !== '[0,2147483648,4294967295]') throw Error('Unsigned sequence conversion');
     } });

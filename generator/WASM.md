@@ -353,9 +353,9 @@ Auto-layout enum unions and buffer-binding dictionary unions use their named
 converters; required/optional nested dictionaries compose child conversions in
 MoonBit instead of depending on compiler Option layouts. Integer argument aliases
 use the same conversion as their primitive types while preserving public names.
-This shader contract is not yet implemented by the WasmGC consumer: annotated
-operation arguments, optional parameters and buffer-source coverage remain work
-required before migrating Metonic's rendering path.
+This shader contract is not yet implemented by the WasmGC consumer. Operation
+input support is described below; buffer-source coverage and the actual shader
+consumer remain required before migrating Metonic's rendering path.
 The fixture omits unused optional parameters/descriptor fields and narrows the
 texture-format enum to rgba8unorm; the extent union and coordinate annotations
 retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.
@@ -377,11 +377,23 @@ builders. Supported elements include primitive values, declared references,
 dictionaries, nested sequences and nullable elements. Public MoonBit arrays are
 converted to host arrays before crossing FFI; unsigned long elements preserve
 their unsigned range, including values above 2^31-1. Sequence results,
-constructor arguments, optional arguments and enum elements remain unsupported.
+constructor compound arguments and variadic arguments remain unsupported.
 EnforceRange unsigned-long dictionary inputs use UInt, whose range is already
 the required 32-bit range, and cross FFI as unsigned Number values. This also
 applies inside the extent union's coordinate sequence. General 64-bit operation
-arguments/results and arbitrary annotations remain unsupported.
+results and arbitrary annotations remain unsupported. Operation inputs now
+retain semantic type annotations through aliases, partials, inheritance and
+mixins. Supported input plans include EnforceRange unsigned-long-long, enums,
+records and the existing compound shapes. The unsigned 64-bit boundary rejects
+values above 2^53-1 with TypeError before invoking the host operation.
+
+Trailing optional operation arguments generate a method for each supplied
+prefix: the base method omits all optional arguments, while `_with_<last_arg>`
+supplies that prefix. The host applies WebIDL defaults; zero and empty strings
+remain explicit values. A consumer test checks actual arity and distinguishes
+omission from these values. Variadic operations and optional constructors remain
+unsupported. This is an operation-input prerequisite for shader rendering, not
+WasmGC shader parity or complete buffer-source support.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions

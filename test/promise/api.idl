@@ -27,6 +27,11 @@ interface GPUQueue {
 interface SequenceProbe {
   undefined unsignedValues(sequence<unsigned long> values);
 };
+interface ArgumentProbe {
+  undefined accept(GPUSize64 size, GPUAddressMode mode, record<DOMString, DOMString> headers);
+  undefined defaults(optional unsigned long count = 7, optional DOMString label = "default");
+  undefined nullable(GPUAddressMode? mode);
+};
 interface GPUTextureView {};
 interface GPUTexture {
   GPUTextureView createView();

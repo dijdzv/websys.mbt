@@ -60,7 +60,15 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
             get_type(mem) != "constructor" {
             return Some("Unsupported WasmGC member: " + get_type(mem))
           }
-          if wasm_has_argument_annotations(mem) ||
+          let invalid_arguments = if get_type(mem) == "operation" {
+            wasm_operation_arguments_error(
+              mem, aliases, references, dictionaries, enums,
+            )
+            is Some(_)
+          } else {
+            wasm_has_argument_annotations(mem)
+          }
+          if invalid_arguments ||
             (
               get_type(mem) != "constructor" &&
               validate_wasm_raw_type(get_idl_type(mem)) is Some(_)
@@ -283,6 +291,7 @@ fn emit_wasm_function(
 fn generate_wasm(
   definitions : Array[Definition],
   dictionary_types? : Map[String, WasmSemanticType] = Map([]),
+  operation_types? : Map[String, WasmSemanticType] = Map([]),
 ) -> (String, String) {
   let definitions = match resolve_wasm_typedefs(definitions) {
     Ok(values) => values
@@ -329,6 +338,7 @@ fn generate_wasm(
     names.push(name)
   }
   let mbt = StringBuilder()
+  let needs_js_values = !dictionaries.is_empty() || !operation_types.is_empty()
   for name in enums {
     guard !names.contains(name) else { abort("Conflicting WasmGC enum name") }
   }
@@ -370,7 +380,9 @@ fn generate_wasm(
             }
             record(op.return_type, outputs)
             for arg in op.arguments {
-              record(arg.idl_type, inputs)
+              if wasm_type(arg.idl_type, names) is Some(_) {
+                record(arg.idl_type, inputs)
+              }
             }
           }
           Constructor(ctor) =>
@@ -388,7 +400,7 @@ fn generate_wasm(
     abort("Reserved WebIDL buffer type name: ArrayBuffer")
   }
   mbt.write_string("#external\npub type ArrayBuffer\n")
-  if !dictionaries.is_empty() {
+  if needs_js_values {
     guard !names.contains("JsValue") && !names.contains("Nullable") else {
       abort("Reserved dictionary support type name")
     }
@@ -453,7 +465,7 @@ fn generate_wasm(
     abort("Reserved ArrayBuffer support type name")
   }
   emit_wasm_arraybuffer_bytes(mbt, js)
-  if !dictionaries.is_empty() {
+  if needs_js_values {
     emit_wasm_bytes(mbt, js)
   }
   if !promise_values.is_empty() {
@@ -464,7 +476,7 @@ fn generate_wasm(
   js.write_string(
     "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value, nullable_unsigned: value => value >>> 0,\n",
   )
-  if !dictionaries.is_empty() {
+  if needs_js_values {
     js.write_string(
       "    dict_new: () => ({}), dict_null: (target, key) => { target[key] = null; },\n",
     )
@@ -595,72 +607,88 @@ fn generate_wasm(
               guard op.special is None && op.name != "" else {
                 abort("Unsupported WasmGC operation")
               }
-              let fn_name = to_snake_case(op.name) |> escape_reserved
-              guard !emitted.contains(fn_name) else {
-                abort("WasmGC overloads are not implemented")
-              }
-              emitted.push(fn_name)
-              let parameters : Array[(String, IdlType)] = [
-                ("self", Named(name)),
-              ]
-              let arguments = StringBuilder()
-              let values = StringBuilder()
-              let input_converters : Map[String, (String, String)] = Map([])
-              for i, arg in op.arguments {
-                guard !arg.optional && !arg.variadic else {
-                  abort(
-                    "Optional/variadic WasmGC arguments are not implemented",
+              for (fn_name, variant_arguments) in wasm_operation_variants(op) {
+                guard !emitted.contains(fn_name) else {
+                  abort("WasmGC overloads are not implemented")
+                }
+                emitted.push(fn_name)
+                let parameters : Array[(String, IdlType)] = [
+                  ("self", Named(name)),
+                ]
+                let arguments = StringBuilder()
+                let values = StringBuilder()
+                let input_converters : Map[String, (String, String)] = Map([])
+                for i, arg in variant_arguments {
+                  parameters.push(("arg\{i}", arg.idl_type))
+                  let semantic = operation_types.get(
+                    name + "." + op.name + "." + i.to_string(),
+                  )
+                  let plan = match semantic {
+                    Some(typ) if !typ.annotations.is_empty() ||
+                      wasm_type(arg.idl_type, names) is None =>
+                      plan_wasm_input(
+                        typ,
+                        references=names,
+                        dictionaries~,
+                        enums~,
+                      )
+                    _ =>
+                      if arg.idl_type is Sequence(_) || arg.idl_type is Union(_) {
+                        Some(
+                          wasm_compound_argument_plan(
+                            arg.idl_type,
+                            names,
+                            dictionaries,
+                          ),
+                        )
+                      } else {
+                        None
+                      }
+                  }
+                  if plan is Some(plan) {
+                    let converter = "websys_arg_" +
+                      name +
+                      "_" +
+                      fn_name +
+                      "_" +
+                      i.to_string()
+                    let typ = emit_wasm_input_plan(plan, converter, mbt, js)
+                    input_converters["arg\{i}"] = (typ, converter)
+                  }
+                  if i > 0 {
+                    arguments.write_string(", ")
+                  }
+                  if i > 0 {
+                    values.write_string(", ")
+                  }
+                  arguments.write_string("arg\{i}")
+                  values.write_string(wasm_js_arg(arg.idl_type, "arg\{i}"))
+                }
+                emit_wasm_function(
+                  mbt,
+                  name,
+                  fn_name,
+                  parameters,
+                  op.return_type,
+                  names,
+                  dictionaries~,
+                  promise_interfaces~,
+                  input_converters~,
+                )
+                let js_params = if variant_arguments.is_empty() {
+                  "self"
+                } else {
+                  "self, " + arguments.to_string()
+                }
+                if op.return_type is Promise(_) {
+                  js.write_string(
+                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return self.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
+                  )
+                } else {
+                  js.write_string(
+                    "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
                   )
                 }
-                parameters.push(("arg\{i}", arg.idl_type))
-                if arg.idl_type is Sequence(_) || arg.idl_type is Union(_) {
-                  let plan = wasm_compound_argument_plan(
-                    arg.idl_type,
-                    names,
-                    dictionaries,
-                  )
-                  let converter = "websys_arg_" +
-                    name +
-                    "_" +
-                    fn_name +
-                    "_" +
-                    i.to_string()
-                  let typ = emit_wasm_input_plan(plan, converter, mbt, js)
-                  input_converters["arg\{i}"] = (typ, converter)
-                }
-                if i > 0 {
-                  arguments.write_string(", ")
-                }
-                if i > 0 {
-                  values.write_string(", ")
-                }
-                arguments.write_string("arg\{i}")
-                values.write_string(wasm_js_arg(arg.idl_type, "arg\{i}"))
-              }
-              emit_wasm_function(
-                mbt,
-                name,
-                fn_name,
-                parameters,
-                op.return_type,
-                names,
-                dictionaries~,
-                promise_interfaces~,
-                input_converters~,
-              )
-              let js_params = if op.arguments.is_empty() {
-                "self"
-              } else {
-                "self, " + arguments.to_string()
-              }
-              if op.return_type is Promise(_) {
-                js.write_string(
-                  "    \{name}_\{fn_name}: (\{js_params}) => { try { return self.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
-                )
-              } else {
-                js.write_string(
-                  "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
-                )
               }
             }
             Constructor(ctor) => {

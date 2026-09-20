@@ -6,6 +6,24 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn operation_inputs(probe : @web.ArgumentProbe, overflow : Bool) -> Unit {
+  probe.accept(
+    if overflow {
+      9007199254740992UL
+    } else {
+      9007199254740991UL
+    },
+    Repeat,
+    [("x-test", "日本😀")],
+  )
+  probe.defaults()
+  probe.defaults_with_count(0U)
+  probe.defaults_with_label(4294967295U, "")
+  probe.nullable(None)
+  probe.nullable(Some(MirrorRepeat))
+}
+
+///|
 pub fn gpu_readback(device : @web.GPUDevice, callback : Callback) -> Unit {
   @async.run_async_main(async fn() {
     let texture = device.create_texture(@web.GPUTextureDescriptor::{

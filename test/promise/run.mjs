@@ -1,9 +1,25 @@
 import { readFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { chromium } from 'playwright';
 import { createImports } from './generated/runtime.mjs';
 
 const bytes = await readFile('test/promise/_build/wasm-gc/release/build/dijdzv/websys-promise-tests/websys-promise-tests.wasm');
 const browser = await chromium.launch({ headless: true });
+let pendingBodyStarted = false;
+let pendingBodyClosed = false;
+const server = createServer((request, response) => {
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  if (request.url === '/no-body') { response.writeHead(204); response.end(); }
+  else if (request.url === '/pending-body') {
+    pendingBodyStarted = true;
+    response.writeHead(200, { 'Content-Type': 'application/octet-stream' });
+    response.flushHeaders();
+    response.on('close', () => { pendingBodyClosed = true; });
+  } else if (request.url === '/empty-body') { response.end(); }
+  else { response.write(Buffer.from([1, 2])); response.end(Buffer.from([255, 0])); }
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const baseUrl = `http://127.0.0.1:${server.address().port}`;
 try {
   const page = await browser.newPage();
   let heldRequestObserved = false;
@@ -11,7 +27,7 @@ try {
   await page.route('http://fixture.invalid/hold', () => { heldRequestObserved = true; });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  const cases = await page.evaluate(async ({ bytes, factory }) => {
+  const cases = await page.evaluate(async ({ bytes, factory, baseUrl }) => {
     const imports = new Function(`return (${factory})`)()();
     imports.fixture = { notify: (callback, code, text) => callback(code, text), abort: callback => { callback.aborts++; }, value: (callback, value) => { callback.value = value; callback.hasValue = true; }, error: (callback, value) => { callback.error = value; } };
     imports.spectest = { print_char() {} };
@@ -176,12 +192,33 @@ try {
       });
       count++;
     }
+    for (const [path, expected, text] of [['/bytes', 1, '1,2,255,0'], ['/empty-body', 1, ''], ['/no-body', 1, 'no-body'], ['/constructed-null', 1, 'no-body'], ['/pending-body', 4, 'true']]) {
+      let response;
+      const host = { fetch: async (...args) => { response = path === '/constructed-null' ? new Response(null) : await fetch(...args); return response; } };
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Fetch body timeout')), 3000);
+        const callback = (code, value) => {
+          clearTimeout(watchdog);
+          const expectedText = path === '/no-body' && response.body !== null ? '' : text;
+          if (code !== expected || value !== expectedText || callback.aborts !== (expected === 4 ? 1 : 0)) reject(Error(`Fetch body ${path}: ${code}/${value}, expected ${expected}/${expectedText}, aborts=${callback.aborts}`));
+          else resolve();
+        };
+        callback.aborts = 0;
+        instance.exports.fetch_body(host, baseUrl + path, expected === 4 ? 150 : 1000, callback);
+      });
+      if (!response || response.body?.locked) throw Error('Response body was not obtained or reader lock retained');
+      count++;
+    }
     return count;
-  }, { bytes: [...bytes], factory: createImports.toString() });
+  }, { bytes: [...bytes], factory: createImports.toString(), baseUrl });
+  for (let attempts = 0; !pendingBodyClosed && attempts < 100; attempts++) await new Promise(resolve => setTimeout(resolve, 10));
+  if (!pendingBodyStarted || !pendingBodyClosed) throw Error('Pending response body connection was not canceled');
   const aborted = await abortedRequest;
   if (!heldRequestObserved || !aborted.failure()?.errorText.includes('ERR_ABORTED')) throw Error('Fetch cancellation did not reach an active browser request');
   if (errors.length) throw Error(errors.join('\n'));
   console.log(`Generated Promise consumer: ${cases} cases passed`);
 } finally {
+  server.closeAllConnections();
+  await new Promise(resolve => server.close(resolve));
   await browser.close();
 }

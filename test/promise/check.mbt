@@ -3,6 +3,9 @@
 type Callback
 
 ///|
+priv suberror InvalidBody
+
+///|
 fn notify(callback : Callback, code : Int, text : String) -> Unit = "fixture" "notify"
 
 ///|
@@ -13,6 +16,57 @@ fn notify_value(callback : Callback, value : @web.JsValue) -> Unit = "fixture" "
 
 ///|
 fn notify_error(callback : Callback, value : @bridge.JsValue) -> Unit = "fixture" "error"
+
+///|
+pub fn fetch_body(
+  window : @web.Window,
+  url : String,
+  timeout : Int,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let controller = @web.AbortController::new()
+    let abort = fn() {
+      abort_wait(callback)
+      controller.abort()
+    }
+    let output = @async.with_timeout(timeout, async fn() {
+      let response = window
+        .fetch(url, @web.RequestInit::{ signal: Some(controller.signal()), })
+        .wait(abort~)
+      guard response.body() is Some(body) else { return "no-body" }
+      let reader = @web.ReadableStreamDefaultReader::new(body)
+      defer reader.release_lock()
+      let bytes : Array[String] = []
+      while true {
+        let result = reader.read().wait(abort~)
+        if result.done == Some(true) {
+          break
+        }
+        guard result.value is Some(value) && value.to_bytes() is Some(chunk) else {
+          controller.abort()
+          raise InvalidBody
+        }
+        for byte in chunk {
+          bytes.push(byte.to_int().to_string())
+        }
+      }
+      bytes.join(",")
+    }) catch {
+      @async.TimeoutError => {
+        notify(callback, 4, controller.signal().aborted().to_string())
+        return
+      }
+      @bridge.Rejection(error) => {
+        notify_error(callback, error)
+        notify(callback, 3, "")
+        return
+      }
+      error => raise error
+    }
+    notify(callback, 1, output)
+  })
+}
 
 ///|
 pub fn read_required(values : @web.Values, callback : Callback) -> Unit {

@@ -7,7 +7,7 @@ const js = await readFile(process.argv[3], 'utf8');
 const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage();
-  page.on('pageerror', error => console.error('Browser error:', error.message));
+  page.on('pageerror', error => console.error('Browser error:', error.stack ?? error.message));
   await page.route('http://fixture.invalid/ok', route => route.fulfill({
     body: 'fetch verified', headers: { 'Access-Control-Allow-Origin': '*' },
   }));
@@ -47,7 +47,7 @@ try {
         read_string: value => value,
         notify_string: (fn, code, value) => fn(code, (value => value)(value)),
 
-        abort: controller => controller.abort(), notify: (fn, code, value) => fn(code, value),
+        abort: controller => controller.abort(), settle: controller => controller.settle(), notify: (fn, code, value) => fn(code, value),
         notify_integer: (fn, code, value) => fn(code, value),
         is_integer: value => typeof value === 'number' && Number.isInteger(value) && value >= -2147483648 && value <= 2147483647,
         read_integer: value => value,
@@ -59,6 +59,27 @@ try {
       const jsApi = await import(url);
       let cases = 0;
       for (const api of [jsApi, instance.exports]) {
+        for (const [started, settleBeforeCancel, rejectSettlement] of [[false, false, false], [true, false, false], [true, true, false], [true, true, true]]) {
+          let aborts = 0;
+          let finish;
+          let calls = 0;
+          const controller = { abort() { aborts++; }, settle() { finish('settled before cancellation'); } };
+          const promise = new Promise((resolve, reject) => { finish = rejectSettlement ? reject : resolve; });
+          const result = await new Promise((resolve, reject) => {
+            const watchdog = setTimeout(() => reject(Error('explicit cancellation did not finish')), 3000);
+            api.start_cancel(promise, controller, started, settleBeforeCancel, (code, value) => {
+              calls++;
+              clearTimeout(watchdog);
+              resolve({ code, value });
+            });
+          });
+          if (result.code !== 3 || result.value !== controller) throw Error('explicit cancellation changed outcome');
+          if (aborts !== 1) throw Error('explicit cancellation abort ownership: ' + JSON.stringify({ started, aborts }));
+          finish('late value');
+          await new Promise(resolve => setTimeout(resolve, 0));
+          if (calls !== 1 || aborts !== 1) throw Error('late completion changed canceled operation');
+          cases++;
+        }
         for (const [name, valid, invalid] of [
           ['boolean', [true, false], [0, 1, 'true', null, undefined, {}]],
           ['unsigned', [0, 2147483648, 4294967295], [-1, 4294967296, 1.5, NaN, Infinity, '1', null]],

@@ -1,6 +1,12 @@
 ///|
 fn emit_wasm_arraybuffer_bytes(mbt : StringBuilder, js : StringBuilder) -> Unit {
   mbt.write_string(
+    "fn websys_buffer_allocate(length : Int) -> ArrayBuffer = \"websys\" \"buffer_allocate\"\nfn websys_buffer_write(value : ArrayBuffer, index : Int, byte : Int) -> Unit = \"websys\" \"buffer_write\"\npub fn ArrayBuffer::from_bytes(bytes : Bytes) -> ArrayBuffer { let buffer = websys_buffer_allocate(bytes.length()); for index in 0..<bytes.length() { websys_buffer_write(buffer, index, bytes[index].to_int()) }; buffer }\n",
+  )
+  js.write_string(
+    "    buffer_allocate: length => new ArrayBuffer(length), buffer_write: (value, index, byte) => { new Uint8Array(value)[index] = byte; },\n",
+  )
+  mbt.write_string(
     "#external\npriv type WebsysBufferSnapshot\nfn websys_buffer_snapshot(value : ArrayBuffer) -> WebsysBufferSnapshot = \"websys\" \"buffer_snapshot\"\nfn websys_buffer_length(value : WebsysBufferSnapshot) -> Int = \"websys\" \"buffer_length\"\nfn websys_buffer_read(value : WebsysBufferSnapshot, index : Int) -> Int = \"websys\" \"buffer_read\"\npub fn ArrayBuffer::to_bytes(self : ArrayBuffer) -> Bytes? { let snapshot = websys_buffer_snapshot(self); let length = websys_buffer_length(snapshot); if length < 0 { None } else { Some(Bytes::makei(length, i => websys_buffer_read(snapshot, i).to_byte())) } }\n",
   )
   js.write_string(

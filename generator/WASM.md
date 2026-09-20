@@ -153,9 +153,18 @@ a host-created GPU mapped range: the snapshot survives unmap, while another
 copy from the detached range is rejected. This checks the copy boundary, not
 generated GPU buffer creation or rendering/readback.
 
-Buffer construction, SharedArrayBuffer, TypedArray, BufferSource
-unions and Promise settlement are not provided by this change. This is not yet
-a usable Web Crypto digest path. The JS generation path remains unchanged.
+`ArrayBuffer::from_bytes` creates a separate host allocation and copies MoonBit
+bytes into it without exposing the GC array layout. The consumer checks empty
+and nonempty copies and verifies that host mutation cannot change the source.
+This is an explicit copy, not a zero-copy or atomic shared-memory operation.
+
+SharedArrayBuffer and ArrayBufferView are opaque built-in references. The standard
+AllowSharedBufferSource union retains its three branches, including AllowShared
+on ArrayBufferView. Inputs preserve host identity and view offset/length; native
+browser operations retain responsibility for validity and sharing restrictions.
+The isolated consumer checks a shared partial view and both buffer branches.
+SharedArrayBuffer/individual TypedArray constructors and buffer Promise results
+remain unsupported. This is not yet a complete Web Crypto digest path.
 
 ### Constructors and events
 
@@ -320,8 +329,8 @@ inputs, including enum sequences and nullable fields, call that conversion befor
 passing strings across FFI; enum tags or compiler layouts never enter the host.
 Typedef references preserve the enum identity. Conflicting generated variant
 names are rejected. The browser consumer checks required values, omission/null,
-enum sequences and actual GPU sampler creation. This does not yet support enum
-operation arguments/results, attributes or Promise settlement on WasmGC.
+enum sequences and actual GPU sampler creation. Operation inputs now also support
+enums and nullable enums; results, attributes and Promise settlement remain unsupported.
 Sequence inputs use MoonBit arrays;
 records use arrays of key/value pairs; unions use generated explicit cases.
 Generated MoonBit code walks these values and builds host arrays or null-prototype
@@ -353,9 +362,13 @@ Auto-layout enum unions and buffer-binding dictionary unions use their named
 converters; required/optional nested dictionaries compose child conversions in
 MoonBit instead of depending on compiler Option layouts. Integer argument aliases
 use the same conversion as their primitive types while preserving public names.
-This shader contract is not yet implemented by the WasmGC consumer. Operation
-input support is described below; buffer-source coverage and the actual shader
-consumer remain required before migrating Metonic's rendering path.
+The WasmGC consumer now exercises the same shader contract, including actual
+writeBuffer uploads from MoonBit bytes, auto-layout bind groups and both pipeline
+creation forms. It checks base and explicit optional-argument calls for uploads,
+bind groups and draws, validates every red/green output pixel and destroys its
+resources. GPU validation scopes are checked by the harness. The relocated source
+bundle runs this consumer too. Texture upload/sampling and canvas presentation
+remain separate requirements for the full Metonic rendering migration.
 The fixture omits unused optional parameters/descriptor fields and narrows the
 texture-format enum to rgba8unorm; the extent union and coordinate annotations
 retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.
@@ -392,8 +405,8 @@ prefix: the base method omits all optional arguments, while `_with_<last_arg>`
 supplies that prefix. The host applies WebIDL defaults; zero and empty strings
 remain explicit values. A consumer test checks actual arity and distinguishes
 omission from these values. Variadic operations and optional constructors remain
-unsupported. This is an operation-input prerequisite for shader rendering, not
-WasmGC shader parity or complete buffer-source support.
+unsupported. These operation-input contracts support the shader consumer above;
+they do not establish complete WebIDL or GPU API coverage.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions

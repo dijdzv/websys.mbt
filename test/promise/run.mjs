@@ -13,7 +13,11 @@ const browser = await chromium.launch({ headless: true, channel: 'chromium', arg
 let pendingBodyStarted = false;
 let pendingBodyClosed = false;
 const server = createServer((request, response) => {
-  if (request.url === '/') { response.setHeader('Content-Type', 'text/html'); response.end('<!doctype html><title>WebSys consumer</title>'); return; }
+  if (request.url === '/') {
+    response.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    response.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    response.setHeader('Content-Type', 'text/html'); response.end('<!doctype html><title>WebSys consumer</title>'); return;
+  }
   response.setHeader('Access-Control-Allow-Origin', '*');
   if (request.url === '/not-found') {
     response.writeHead(404, { 'Content-Type': 'application/json' });
@@ -81,6 +85,20 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    if (!crossOriginIsolated || typeof SharedArrayBuffer === 'undefined') throw Error('Shared buffer fixture requires isolation');
+    const plainInput = new ArrayBuffer(8);
+    const sharedInput = new SharedArrayBuffer(8);
+    const partialInput = new Uint8Array(sharedInput, 2, 3);
+    partialInput.set([8, 9, 10]);
+    const bufferInputs = [];
+    const copiedInput = instance.exports.buffer_inputs({ accept(value) {
+      bufferInputs.push(value);
+      if (bufferInputs.length === 4) new Uint8Array(value)[0] = 99;
+    } }, plainInput, sharedInput, partialInput);
+    if (bufferInputs[0] !== plainInput || bufferInputs[1] !== sharedInput || bufferInputs[2] !== partialInput || bufferInputs[3] !== copiedInput) throw Error('Buffer input identity changed');
+    if (bufferInputs[2].byteOffset !== 2 || bufferInputs[2].byteLength !== 3 || JSON.stringify([...bufferInputs[2]]) !== '[8,9,10]') throw Error('Buffer view range changed');
+    if (JSON.stringify([...new Uint8Array(copiedInput)]) !== '[99,255,0,2]' || bufferInputs.length !== 5 || bufferInputs[4].byteLength !== 0) throw Error('MoonBit bytes upload mismatch');
+    count += 3;
     let inputCalls = 0;
     const optionalCalls = [];
     const nullableCalls = [];
@@ -116,6 +134,18 @@ try {
       });
       const readbackError = await renderDevice.popErrorScope();
       if (readbackError) throw Error(readbackError.message);
+      count++;
+      renderDevice.pushErrorScope('validation');
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(Error('GPU shader consumer timed out')), 5000);
+        instance.exports.gpu_shader(renderDevice, (code, value) => {
+          clearTimeout(timer);
+          if (code === 1 && value === 'shader-red-green') resolve();
+          else reject(Error('GPU shader pixel mismatch'));
+        });
+      });
+      const shaderError = await renderDevice.popErrorScope();
+      if (shaderError) throw Error(shaderError.message);
       count++;
       const texture = renderDevice.createTexture({ size: [1, 1], format: 'rgba8unorm', usage: GPUTextureUsage.RENDER_ATTACHMENT });
       try {

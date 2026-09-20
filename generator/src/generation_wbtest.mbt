@@ -2,8 +2,15 @@
 test "WasmGC ArrayBuffer uses an opaque reference including nullable values" {
   assert_eq(wasm_type(Named("ArrayBuffer"), []), Some("ArrayBuffer"))
   assert_eq(wasm_type(Nullable(Named("ArrayBuffer")), []), Some("ArrayBuffer?"))
-  assert_eq(wasm_type(Named("SharedArrayBuffer"), []), None)
+  assert_eq(
+    wasm_type(Named("SharedArrayBuffer"), []),
+    Some("SharedArrayBuffer"),
+  )
   assert_eq(wasm_type(Named("Uint8Array"), []), None)
+  assert_eq(
+    wasm_type(Nullable(Named("ArrayBufferView")), []),
+    Some("ArrayBufferView?"),
+  )
 }
 
 ///|
@@ -60,7 +67,7 @@ test "WasmGC composes partials and shared mixins regardless of definition order"
   assert_true(code.contains("A::id("))
   assert_true(code.contains("A::ping("))
   assert_true(code.contains("B::ping("))
-  assert_true(!code.contains("type Shared"))
+  assert_true(!code.contains("type Shared\n"))
   assert_true(runtime.contains("self.ping("))
   let (again, _) = generate_wasm(definitions)
   assert_eq(code, again)

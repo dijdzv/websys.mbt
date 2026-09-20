@@ -18,6 +18,10 @@ test "unsupported operation argument annotations remain rejected" {
     "interface Probe { undefined send([Clamp] unsigned long long value); };",
   )
   assert_true(validate_wasm_input(parsed) is Some(_))
+  let wrong_shared = parse_webidl_raw(
+    "interface Probe { undefined send([AllowShared] long value); };",
+  )
+  assert_true(validate_wasm_input(wrong_shared) is Some(_))
 }
 
 ///|

@@ -102,8 +102,15 @@ MoonBit owns optional presence handling, so the generated host code does not
 assume a tagged Option for these fields. Primitive aliases are resolved for
 operation/constructor argument conversion without changing public signatures.
 The shader consumer covers auto-layout, nested vertex/fragment state, uniform
-uploads and pixel readback; this does not establish complete nested-container
-conversion or JS/WasmGC shader parity.
+uploads and pixel readback on both JS and WasmGC. This is representative shader
+parity, not complete nested-container conversion or full GPU API coverage.
+
+WasmGC buffer inputs preserve opaque ArrayBuffer, SharedArrayBuffer and
+ArrayBufferView references, including the AllowShared view branch. Native
+operations enforce their host contracts. MoonBit-to-ArrayBuffer conversion is an
+explicit owned copy; it does not expose GC array representation or claim shared
+snapshot atomicity. External-consumer tests retain partial-view ranges and run
+the real uniform-upload/draw/readback path from a relocated source bundle.
 
 Compound WasmGC dictionary inputs use
 semantic field types (including inherited fields and resolved aliases) to plan

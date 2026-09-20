@@ -22,7 +22,9 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
     Err(message) => return Some(message)
   }
   let items = get_parse_data(parsed)
-  let references : Array[String] = ["ArrayBuffer"]
+  let references : Array[String] = [
+    "ArrayBuffer", "SharedArrayBuffer", "ArrayBufferView",
+  ]
   let dictionaries : Array[String] = []
   let enums : Array[String] = []
   for i = 0; i < js_array_length(items); i = i + 1 {
@@ -133,11 +135,14 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     Primitive("unsigned long") => Some("UInt")
     Primitive("unsigned short") => Some("UInt")
     Primitive("double") => Some("Double")
-    Named("ArrayBuffer") => Some("ArrayBuffer")
+    Named("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name) =>
+      Some(name)
     Named(name) if names.contains(name) => Some(name)
     Nullable(String) => Some("String?")
     Nullable(Primitive("unsigned long")) => Some("UInt?")
-    Nullable(Named("ArrayBuffer")) => Some("ArrayBuffer?")
+    Nullable(
+      Named("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name)
+    ) => Some(name + "?")
     Nullable(Named(name)) if names.contains(name) => Some(name + "?")
     _ => None
   }
@@ -396,10 +401,12 @@ fn generate_wasm(
   }
   mbt.write_string("// Generated from WebIDL. Do not edit.\n")
   // ArrayBuffer is a WebIDL builtin, not an interface declaration or MoonBit array.
-  guard !names.contains("ArrayBuffer") else {
-    abort("Reserved WebIDL buffer type name: ArrayBuffer")
+  for buffer_type in ["ArrayBuffer", "SharedArrayBuffer", "ArrayBufferView"] {
+    guard !names.contains(buffer_type) else {
+      abort("Reserved WebIDL buffer type name: " + buffer_type)
+    }
+    mbt.write_string("#external\npub type \{buffer_type}\n")
   }
-  mbt.write_string("#external\npub type ArrayBuffer\n")
   if needs_js_values {
     guard !names.contains("JsValue") && !names.contains("Nullable") else {
       abort("Reserved dictionary support type name")

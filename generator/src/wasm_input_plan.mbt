@@ -31,6 +31,9 @@ fn plan_wasm_input(
   if typ.annotations == ["EnforceRange"] && typ.kind == Name("unsigned long") {
     return Some(Scalar("UInt", "unsigned long"))
   }
+  if typ.annotations == ["AllowShared"] && typ.kind == Name("ArrayBufferView") {
+    return Some(Scalar("ArrayBufferView", "reference"))
+  }
   if !typ.annotations.is_empty() {
     return None
   }
@@ -45,7 +48,8 @@ fn plan_wasm_input(
     Name("long") => Some(Scalar("Int", "long"))
     Name("unsigned long") => Some(Scalar("UInt", "unsigned long"))
     Name("double") => Some(Scalar("Double", "double"))
-    Name("ArrayBuffer") => Some(Scalar("ArrayBuffer", "reference"))
+    Name("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name) =>
+      Some(Scalar(name, "reference"))
     Name(name) if references.contains(name) => Some(Scalar(name, "reference"))
     Generic("sequence", [inner]) =>
       plan_wasm_input(inner, references~, enums~, dictionaries~).map(child => {

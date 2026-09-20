@@ -276,7 +276,8 @@ checks rejection identity and cancellation of a pending read, and releases the
 reader lock. Generic stream chunks are not assumed to be byte buffers; checked
 typed-array conversion is a separate boundary.
 
-Generated opaque `JsValue` values provide `to_bytes() -> Bytes?` for same-realm
+Both the generated JS shared API and WasmGC opaque `JsValue` values provide
+`to_bytes() -> Bytes?` for same-realm
 Uint8Array chunks. It copies only the view's element range, including a nonzero
 byte offset, into owned MoonBit bytes. Empty views are valid. Other typed arrays,
 DataView, ArrayBuffer, ordinary arrays and detached views return None. This is

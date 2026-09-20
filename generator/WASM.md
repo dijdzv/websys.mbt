@@ -138,6 +138,9 @@ nullable primitive/dictionary results and sequence settlement remain unsupported
 
 ### ArrayBuffer references
 
+JS bindings also expose `ArrayBuffer::from_bytes` and `ArrayBuffer::to_bytes`
+with the same owned-copy contract, including empty and detached buffers.
+
 The built-in WebIDL `ArrayBuffer` type is an opaque host reference. Operation
 arguments/results and attributes, including nullable values, preserve identity;
 they do not copy bytes or expose a MoonBit array layout. A synthetic receiver in

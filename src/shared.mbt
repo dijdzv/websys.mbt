@@ -29,6 +29,26 @@ pub fn JsValue::to_bytes(self : JsValue) -> Bytes? {
 }
 
 ///|
+/// Copy bytes into an independently owned ArrayBuffer.
+pub extern "js" fn ArrayBuffer::from_bytes(bytes : Bytes) -> ArrayBuffer =
+  #| bytes => { const copy = new Uint8Array(bytes.length); Uint8Array.prototype.set.call(copy, bytes); return copy.buffer; }
+
+///|
+extern "js" fn buffer_bytes_snapshot(value : ArrayBuffer) -> JsValue =
+  #| value => { if (!(value instanceof ArrayBuffer)) return null; try { const view = new Uint8Array(value); if (view.length > 2147483647) return null; const copy = new Uint8Array(view.length); Uint8Array.prototype.set.call(copy, view); return copy; } catch { return null; } }
+
+///|
+/// Copy an ArrayBuffer into owned bytes; reject detached buffers.
+pub fn ArrayBuffer::to_bytes(self : ArrayBuffer) -> Bytes? {
+  let snapshot = buffer_bytes_snapshot(self)
+  if bytes_snapshot_valid(snapshot) {
+    Some(bytes_snapshot_value(snapshot))
+  } else {
+    None
+  }
+}
+
+///|
 /// Return undefined
 pub extern "js" fn JsValue::undefined() -> JsValue =
   #| () => undefined

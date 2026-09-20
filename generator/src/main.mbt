@@ -139,6 +139,7 @@ async fn main {
     let (moonbit, runtime) = generate_wasm(
       convert_to_definitions(parsed),
       dictionary_types=wasm_dictionary_semantics(parsed),
+      operation_types=wasm_operation_semantics(parsed),
     )
     mkdir_sync(args.output)
     write_file_sync(path_join(args.output, "bindings.mbt"), moonbit)

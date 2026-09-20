@@ -109,9 +109,13 @@ Compound WasmGC dictionary inputs use
 semantic field types (including inherited fields and resolved aliases) to plan
 explicit sequence, record and union conversion. MoonBit traverses its arrays,
 tuples and enum cases; host imports construct independent JS arrays and objects.
-Nested dictionaries and nullable elements reuse these plans. Required sequence
-and union operation arguments also use the input builders, with the narrower
-legacy-AST type surface guarded separately from dictionary semantic planning.
+Nested dictionaries and nullable elements reuse these plans. Operation arguments
+retain semantic types through aliases, partials, inheritance and mixins and use
+the same input builders where conversion is required. This includes supported
+numeric annotations, enum/record inputs and nullable compound values. Trailing
+optional parameters generate supplied-prefix methods so the host applies defaults
+without conflating omission with zero, empty strings or null. Variadic parameters
+and optional constructors remain rejected.
 Other existing emitters still consume the restricted legacy AST after preflight.
 Extending those paths requires the same semantic handoff before removing guards.
 Model coverage alone does not establish runtime support for every type shape.

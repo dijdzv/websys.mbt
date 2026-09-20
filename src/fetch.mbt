@@ -655,7 +655,7 @@ extern "js" fn ResponseInit::to_js_ffi(self : ResponseInit) -> JsValue =
   #| (self) => ({
   #|   status: self.status,
   #|   statusText: self.statusText,
-  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

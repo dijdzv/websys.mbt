@@ -307,7 +307,7 @@ extern "js" fn FilePickerOptions::to_js_ffi(
   #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -363,7 +363,7 @@ extern "js" fn OpenFilePickerOptions::to_js_ffi(
   #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   multiple: (self.multiple === -1 ? undefined : self.multiple)
   #| })
 
@@ -421,7 +421,7 @@ extern "js" fn SaveFilePickerOptions::to_js_ffi(
   #|   types: self.types,
   #|   excludeAcceptAllOption: (self.excludeAcceptAllOption === -1 ? undefined : self.excludeAcceptAllOption),
   #|   id: self.id,
-  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   suggestedName: ((() => { const v = self.suggestedName; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
@@ -469,7 +469,7 @@ extern "js" fn DirectoryPickerOptions::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
-  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   startIn: ((() => { const v = self.startIn; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['read', 'readwrite'][v]; })())
   #| })
 

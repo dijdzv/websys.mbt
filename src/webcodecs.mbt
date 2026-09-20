@@ -819,7 +819,7 @@ extern "js" fn EncodedVideoChunkMetadata::to_js_ffi(
   #| (self) => ({
   #|   decoderConfig: ((() => { const v = self.decoderConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   svc: ((() => { const v = self.svc; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   alphaSideData: ((() => { const v = self.alphaSideData; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   alphaSideData: ((() => { const v = self.alphaSideData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1088,7 +1088,7 @@ extern "js" fn AudioDecoderConfig::to_js_ffi(
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   description: ((() => { const v = self.description; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   description: ((() => { const v = self.description; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -1154,7 +1154,7 @@ extern "js" fn VideoDecoderConfig::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   codec: self.codec,
-  #|   description: ((() => { const v = self.description; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   description: ((() => { const v = self.description; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
   #|   displayAspectWidth: self.displayAspectWidth,
@@ -1229,7 +1229,7 @@ extern "js" fn EncodedAudioChunkInit::to_js_ffi(
   #|   type: ['key', 'delta'][self.type_],
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
-  #|   data: self.data.to_js_value(),
+  #|   data: self.data,
   #|   transfer: self.transfer
   #| })
 
@@ -1290,7 +1290,7 @@ extern "js" fn EncodedVideoChunkInit::to_js_ffi(
   #|   type: ['key', 'delta'][self.type_],
   #|   timestamp: self.timestamp,
   #|   duration: self.duration,
-  #|   data: self.data.to_js_value(),
+  #|   data: self.data,
   #|   transfer: self.transfer
   #| })
 
@@ -1355,7 +1355,7 @@ extern "js" fn AudioDataInit::to_js_ffi(self : AudioDataInit) -> JsValue =
   #|   numberOfFrames: self.numberOfFrames,
   #|   numberOfChannels: self.numberOfChannels,
   #|   timestamp: self.timestamp,
-  #|   data: self.data.to_js_value(),
+  #|   data: self.data,
   #|   transfer: self.transfer
   #| })
 
@@ -1822,7 +1822,7 @@ pub fn ImageDecoderInit::new(data~ : ImageBufferSource) -> ImageDecoderInit {
 extern "js" fn ImageDecoderInit::to_js_ffi(self : ImageDecoderInit) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   data: self.data.to_js_value(),
+  #|   data: self.data,
   #|   colorSpaceConversion: ((() => { const v = self.colorSpaceConversion; if (v === undefined) return undefined; return ['none', 'default'][v]; })()),
   #|   desiredWidth: self.desiredWidth,
   #|   desiredHeight: self.desiredHeight,

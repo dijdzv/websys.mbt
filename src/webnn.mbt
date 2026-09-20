@@ -1434,8 +1434,8 @@ pub fn MLClampOptions::default() -> MLClampOptions {
 extern "js" fn MLClampOptions::to_js_ffi(self : MLClampOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   minValue: ((() => { const v = self.minValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   maxValue: ((() => { const v = self.maxValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   minValue: ((() => { const v = self.minValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   maxValue: ((() => { const v = self.maxValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2987,7 +2987,7 @@ extern "js" fn MLPadOptions::to_js_ffi(self : MLPadOptions) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['constant', 'edge', 'reflection'][v]; })()),
-  #|   value: ((() => { const v = self.value; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   value: ((() => { const v = self.value; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

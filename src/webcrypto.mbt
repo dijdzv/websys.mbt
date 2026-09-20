@@ -530,7 +530,7 @@ pub fn RsaOaepParams::default() -> RsaOaepParams {
 extern "js" fn RsaOaepParams::to_js_ffi(self : RsaOaepParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   label: ((() => { const v = self.label; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   label: ((() => { const v = self.label; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -773,7 +773,7 @@ pub fn AesCtrParams::new(counter~ : BufferSource) -> AesCtrParams {
 extern "js" fn AesCtrParams::to_js_ffi(self : AesCtrParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   counter: self.counter.to_js_value(),
+  #|   counter: self.counter,
   #|   length: self.length
   #| })
 
@@ -935,7 +935,7 @@ pub fn AesCbcParams::new(iv~ : BufferSource) -> AesCbcParams {
 extern "js" fn AesCbcParams::to_js_ffi(self : AesCbcParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   iv: self.iv.to_js_value()
+  #|   iv: self.iv
   #| })
 
 ///|
@@ -976,8 +976,8 @@ pub fn AesGcmParams::new(iv~ : BufferSource) -> AesGcmParams {
 extern "js" fn AesGcmParams::to_js_ffi(self : AesGcmParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   iv: self.iv.to_js_value(),
-  #|   additionalData: ((() => { const v = self.additionalData; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   iv: self.iv,
+  #|   additionalData: ((() => { const v = self.additionalData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   tagLength: self.tagLength
   #| })
 
@@ -1162,8 +1162,8 @@ extern "js" fn HkdfParams::to_js_ffi(self : HkdfParams) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   hash: self.hash,
-  #|   salt: self.salt.to_js_value(),
-  #|   info: self.info.to_js_value()
+  #|   salt: self.salt,
+  #|   info: self.info
   #| })
 
 ///|
@@ -1209,7 +1209,7 @@ pub fn Pbkdf2Params::new(
 extern "js" fn Pbkdf2Params::to_js_ffi(self : Pbkdf2Params) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   salt: self.salt.to_js_value(),
+  #|   salt: self.salt,
   #|   iterations: self.iterations,
   #|   hash: self.hash
   #| })

@@ -243,8 +243,8 @@ extern "js" fn BluetoothDataFilterInit::to_js_ffi(
   self : BluetoothDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -295,8 +295,8 @@ extern "js" fn BluetoothManufacturerDataFilterInit::to_js_ffi(
   self : BluetoothManufacturerDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   companyIdentifier: self.companyIdentifier
   #| })
 
@@ -347,9 +347,9 @@ extern "js" fn BluetoothServiceDataFilterInit::to_js_ffi(
   self : BluetoothServiceDataFilterInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   service: self.service.to_js_value()
+  #|   dataPrefix: ((() => { const v = self.dataPrefix; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   mask: ((() => { const v = self.mask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   service: self.service
   #| })
 
 ///|

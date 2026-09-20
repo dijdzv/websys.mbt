@@ -310,7 +310,7 @@ pub fn ContextParams::default() -> ContextParams {
 ///|
 extern "js" fn ContextParams::to_js_ffi(self : ContextParams) -> JsValue =
   #| (self) => ({
-  #|   context: ((() => { const v = self.context; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   context: ((() => { const v = self.context; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -348,8 +348,8 @@ pub fn AeadParams::new(iv~ : BufferSource) -> AeadParams {
 ///|
 extern "js" fn AeadParams::to_js_ffi(self : AeadParams) -> JsValue =
   #| (self) => ({
-  #|   iv: self.iv.to_js_value(),
-  #|   additionalData: ((() => { const v = self.additionalData; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   iv: self.iv,
+  #|   additionalData: ((() => { const v = self.additionalData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   tagLength: self.tagLength
   #| })
 
@@ -391,8 +391,8 @@ pub fn CShakeParams::default() -> CShakeParams {
 extern "js" fn CShakeParams::to_js_ffi(self : CShakeParams) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
-  #|   functionName: ((() => { const v = self.functionName; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   functionName: ((() => { const v = self.functionName; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -546,7 +546,7 @@ pub fn KmacParams::default() -> KmacParams {
 extern "js" fn KmacParams::to_js_ffi(self : KmacParams) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
-  #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -597,13 +597,13 @@ pub fn Argon2Params::new(nonce~ : BufferSource) -> Argon2Params {
 ///|
 extern "js" fn Argon2Params::to_js_ffi(self : Argon2Params) -> JsValue =
   #| (self) => ({
-  #|   nonce: self.nonce.to_js_value(),
+  #|   nonce: self.nonce,
   #|   parallelism: self.parallelism,
   #|   memory: self.memory,
   #|   passes: self.passes,
   #|   version: self.version,
-  #|   secretValue: ((() => { const v = self.secretValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   associatedData: ((() => { const v = self.associatedData; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   secretValue: ((() => { const v = self.secretValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   associatedData: ((() => { const v = self.associatedData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

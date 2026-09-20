@@ -242,7 +242,7 @@ pub fn gen_dictionary(
 }
 
 ///|
-/// Generate field value expression (array lookup for enum, .to_js_value() for Union)
+/// Generate field value expression with explicit enum conversion.
 fn gen_field_value_expr(
   idl_type : IdlType,
   field_name : String,
@@ -254,13 +254,7 @@ fn gen_field_value_expr(
     Named(type_name) =>
       match lookup_enum(enum_map, type_name) {
         Some(values) => gen_enum_lookup(field_name, values)
-        None =>
-          // For Union types, call .to_js_value()
-          if is_in_union_set(union_set, type_name) {
-            "self." + field_name + ".to_js_value()"
-          } else {
-            "self." + field_name
-          }
+        None => "self." + field_name
       }
     // Nullable Named field (enum or Union)
     Nullable(Named(type_name)) =>
@@ -295,7 +289,7 @@ fn gen_optional_field_value_expr(
   idl_type : IdlType,
   field_name : String,
   enum_map : Array[(String, Array[String])],
-  union_set : Array[String],
+  _union_set : Array[String],
 ) -> String {
   // Bool? uses -1 sentinel for None in MoonBit JS backend
   match idl_type {
@@ -323,22 +317,10 @@ fn gen_optional_field_value_expr(
   }
   // Non-primitive, non-enum types use tagged representation - need IIFE unwrap
   let payload = match idl_type {
-    Named(type_name) =>
-      // Not enum (handled above), check union
-      if is_in_union_set(union_set, type_name) {
-        "v._0.to_js_value()"
-      } else {
-        "v._0"
-      }
     Nullable(Named(type_name)) =>
       match lookup_enum(enum_map, type_name) {
         Some(values) => gen_nullable_enum_array_lookup(values, "v._0")
-        None =>
-          if is_in_union_set(union_set, type_name) {
-            "(v._0 != null ? v._0.to_js_value() : null)"
-          } else {
-            "v._0"
-          }
+        None => "v._0"
       }
     _ => "v._0"
   }
@@ -369,15 +351,11 @@ fn is_in_union_set(union_set : Array[String], type_name : String) -> Bool {
 }
 
 ///|
-/// Generate JS expression for Nullable Union type (null check + to_js_value)
+/// Union wrappers are host values, not objects with MoonBit methods.
 fn gen_nullable_union_expr(field_name : String) -> String {
-  let result = StringBuilder()
-  result.write_string("(self.")
-  result.write_string(field_name)
-  result.write_string(" != null ? self.")
-  result.write_string(field_name)
-  result.write_string(".to_js_value() : null)")
-  result.to_string()
+  "((() => { const v = self." +
+  field_name +
+  "; return v && v.$tag === 1 ? v._0 : null; })())"
 }
 
 ///|
@@ -386,7 +364,7 @@ fn gen_nullable_field_expr(
   field_name : String,
   inner_type : IdlType,
   enum_map : Array[(String, Array[String])],
-  union_set : Array[String],
+  _union_set : Array[String],
 ) -> String {
   let result = StringBuilder()
   result.write_string("((() => { const v = self.")
@@ -418,14 +396,7 @@ fn gen_nullable_field_expr(
           result.write_string(js_nullable_payload("v"))
           result.write_string("]")
         }
-        None =>
-          // For Union types, call .to_js_value()
-          if is_in_union_set(union_set, type_name) {
-            result.write_string(js_nullable_payload("v"))
-            result.write_string(".to_js_value()")
-          } else {
-            result.write_string(js_nullable_payload("v"))
-          }
+        None => result.write_string(js_nullable_payload("v"))
       }
     _ => result.write_string(js_nullable_payload("v"))
   }
@@ -440,7 +411,7 @@ fn gen_nullable_type_field_expr(
   idl_type : IdlType,
   field_name : String,
   enum_map : Array[(String, Array[String])],
-  union_set : Array[String],
+  _union_set : Array[String],
 ) -> String {
   // IdlType should be Nullable(inner)
   let inner_type = match idl_type {
@@ -476,17 +447,11 @@ fn gen_nullable_type_field_expr(
           result.write_string(js_nullable_payload("v"))
           result.write_string("];")
         }
-        None =>
-          // For Union types, call .to_js_value()
-          if is_in_union_set(union_set, type_name) {
-            result.write_string("return ")
-            result.write_string(js_nullable_payload("v"))
-            result.write_string(".to_js_value();")
-          } else {
-            result.write_string("return ")
-            result.write_string(js_nullable_payload("v"))
-            result.write_string(";")
-          }
+        None => {
+          result.write_string("return ")
+          result.write_string(js_nullable_payload("v"))
+          result.write_string(";")
+        }
       }
     _ => {
       result.write_string("return ")

@@ -129,7 +129,7 @@ extern "js" fn NotificationOptions::to_js_ffi(
   #|   image: self.image,
   #|   icon: self.icon,
   #|   badge: self.badge,
-  #|   vibrate: ((() => { const v = self.vibrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   vibrate: ((() => { const v = self.vibrate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   timestamp: ((() => { const v = self.timestamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   renotify: (self.renotify === -1 ? undefined : self.renotify),
   #|   silent: ((() => { const v = self.silent; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),

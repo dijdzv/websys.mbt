@@ -1274,7 +1274,7 @@ extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
   #| (self) => ({
   #|   rp: self.rp,
   #|   user: self.user,
-  #|   challenge: self.challenge.to_js_value(),
+  #|   challenge: self.challenge,
   #|   pubKeyCredParams: self.pubKeyCredParams,
   #|   timeout: self.timeout,
   #|   excludeCredentials: self.excludeCredentials,
@@ -1432,7 +1432,7 @@ extern "js" fn PublicKeyCredentialUserEntity::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
-  #|   id: self.id.to_js_value(),
+  #|   id: self.id,
   #|   displayName: self.displayName
   #| })
 
@@ -1553,7 +1553,7 @@ extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
   self : PublicKeyCredentialRequestOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   challenge: self.challenge.to_js_value(),
+  #|   challenge: self.challenge,
   #|   timeout: self.timeout,
   #|   rpId: self.rpId,
   #|   allowCredentials: self.allowCredentials,
@@ -1711,7 +1711,7 @@ extern "js" fn PublicKeyCredentialDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
-  #|   id: self.id.to_js_value(),
+  #|   id: self.id,
   #|   transports: self.transports
   #| })
 
@@ -1805,8 +1805,8 @@ extern "js" fn AuthenticationExtensionsPRFValues::to_js_ffi(
   self : AuthenticationExtensionsPRFValues,
 ) -> JsValue =
   #| (self) => ({
-  #|   first: self.first.to_js_value(),
-  #|   second: ((() => { const v = self.second; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   first: self.first,
+  #|   second: ((() => { const v = self.second; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -2096,7 +2096,7 @@ extern "js" fn AuthenticationExtensionsLargeBlobInputs::to_js_ffi(
   #| (self) => ({
   #|   support: self.support,
   #|   read: (self.read === -1 ? undefined : self.read),
-  #|   write: ((() => { const v = self.write; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   write: ((() => { const v = self.write; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

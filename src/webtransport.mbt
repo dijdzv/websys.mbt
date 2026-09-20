@@ -115,7 +115,7 @@ pub fn WebTransportHash::new(value~ : BufferSource) -> WebTransportHash {
 extern "js" fn WebTransportHash::to_js_ffi(self : WebTransportHash) -> JsValue =
   #| (self) => ({
   #|   algorithm: self.algorithm,
-  #|   value: self.value.to_js_value()
+  #|   value: self.value
   #| })
 
 ///|
@@ -176,7 +176,7 @@ extern "js" fn WebTransportOptions::to_js_ffi(
   #| (self) => ({
   #|   allowPooling: (self.allowPooling === -1 ? undefined : self.allowPooling),
   #|   requireUnreliable: (self.requireUnreliable === -1 ? undefined : self.requireUnreliable),
-  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   serverCertificateHashes: self.serverCertificateHashes,
   #|   congestionControl: ((() => { const v = self.congestionControl; if (v === undefined) return undefined; return ['default', 'throughput', 'low-latency'][v]; })()),
   #|   anticipatedConcurrentIncomingUnidirectionalStreams: ((() => { const v = self.anticipatedConcurrentIncomingUnidirectionalStreams; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),

@@ -336,7 +336,7 @@ extern "js" fn SFrameTransformErrorEventInit::to_js_ffi(
   #| (self) => ({
   #|   errorType: ['authentication', 'keyID', 'syntax'][self.errorType],
   #|   frame: self.frame,
-  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })())
+  #|   keyID: ((() => { const v = self.keyID; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|

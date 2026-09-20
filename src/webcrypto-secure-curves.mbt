@@ -16,7 +16,7 @@ pub fn Ed448Params::default() -> Ed448Params {
 ///|
 extern "js" fn Ed448Params::to_js_ffi(self : Ed448Params) -> JsValue =
   #| (self) => ({
-  #|   context: ((() => { const v = self.context; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   context: ((() => { const v = self.context; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

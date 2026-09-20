@@ -10,9 +10,30 @@ const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefi
 
 // Simple HTTP server to serve test files
 const root = fileURLToPath(new URL(".", import.meta.url));
+let pendingBodyStarted = false;
+let pendingBodyClosed = false;
 const server = createServer(async (req, res) => {
   try {
     const pathname = new URL(req.url, "http://localhost").pathname;
+    if (pathname === '/contract/post') {
+      let body = '';
+      req.setEncoding('utf8');
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => res.end(`${req.method}|${req.headers['content-type']}|${req.headers.accept}|${body}`));
+      return;
+    }
+    if (pathname === '/contract/not-found') {
+      res.writeHead(404, { 'Content-Type': 'application/json', 'X-Empty': '' });
+      res.end('{}');
+      return;
+    }
+    if (pathname === '/contract/pending') {
+      pendingBodyStarted = true;
+      res.writeHead(200, { 'Content-Type': 'application/octet-stream' });
+      res.flushHeaders();
+      res.on('close', () => { pendingBodyClosed = true; });
+      return;
+    }
     const path = resolve(root, "." + (pathname === "/" ? "/index.html" : decodeURIComponent(pathname)));
     if (!path.startsWith(resolve(root) + sep)) throw new Error("Outside test root");
     const content = await readFile(path);
@@ -53,6 +74,10 @@ try {
   await page.goto(`http://127.0.0.1:${server.address().port}${entry}`);
   await page.waitForFunction(() => window.__testsDone === true, null, { timeout: 30000 });
   const passed = await page.evaluate(() => window.__testsPassed);
+  if (!process.argv.includes('--wasm-gc')) {
+    for (let attempts = 0; !pendingBodyClosed && attempts < 100; attempts++) await new Promise(resolve => setTimeout(resolve, 10));
+    if (!pendingBodyStarted || !pendingBodyClosed) throw Error('JS Fetch cancellation did not close the pending response');
+  }
   process.exitCode = passed ? 0 : 1;
 } finally {
   if (browser) await browser.close().catch(() => {});

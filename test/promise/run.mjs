@@ -147,6 +147,22 @@ try {
       const shaderError = await renderDevice.popErrorScope();
       if (shaderError) throw Error(shaderError.message);
       count++;
+      renderDevice.pushErrorScope('validation');
+      const textureStorage = new Uint8Array(32).fill(77);
+      const textureView = new Uint8Array(textureStorage.buffer, 4, 24);
+      textureView.set([255,0,0,255,0,255,0,255], 4);
+      textureView.set([0,0,255,255,255,255,255,255], 16);
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(Error('GPU texture consumer timed out')), 5000);
+        instance.exports.gpu_texture(renderDevice, textureView, (code, value) => {
+          clearTimeout(timer);
+          if (code === 1 && value === 'texture-patterns') resolve();
+          else reject(Error('GPU texture pixel mismatch'));
+        });
+      });
+      const textureError = await renderDevice.popErrorScope();
+      if (textureError) throw Error(textureError.message);
+      count++;
       const texture = renderDevice.createTexture({ size: [1, 1], format: 'rgba8unorm', usage: GPUTextureUsage.RENDER_ATTACHMENT });
       try {
         const view = texture.createView();

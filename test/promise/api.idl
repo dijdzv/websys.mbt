@@ -33,6 +33,7 @@ interface GPUQueue {
   undefined submit(sequence<GPUCommandBuffer> commandBuffers);
   Promise<undefined> onSubmittedWorkDone();
   undefined writeBuffer(GPUBuffer buffer, GPUSize64 bufferOffset, AllowSharedBufferSource data, optional GPUSize64 dataOffset = 0, optional GPUSize64 size);
+  undefined writeTexture(GPUTexelCopyTextureInfo destination, AllowSharedBufferSource data, GPUTexelCopyBufferLayout dataLayout, GPUExtent3D size);
 };
 typedef [EnforceRange] unsigned long GPUIndex32;
 typedef [EnforceRange] unsigned long GPUBufferDynamicOffset;

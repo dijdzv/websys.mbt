@@ -210,6 +210,19 @@ checks rejection identity and cancellation of a pending read, and releases the
 reader lock. Generic stream chunks are not assumed to be byte buffers; checked
 typed-array conversion is a separate boundary.
 
+Generated opaque `JsValue` values provide `to_bytes() -> Bytes?` for same-realm
+Uint8Array chunks. It copies only the view's element range, including a nonzero
+byte offset, into owned MoonBit bytes. Empty views are valid. Other typed arrays,
+DataView, ArrayBuffer, ordinary arrays and detached views return None. This is
+an explicit byte-consumer choice, not a conversion applied to generic streams.
+Cross-realm views are not currently accepted. Concurrently modified shared
+buffers do not imply an atomic snapshot.
+
+The external consumer reads multiple chunks to completion, handles empty and
+partial views, and cancels invalid chunks before releasing its reader. Required
+result fields and unsupported default/nullable/nested result diagnostics have
+dedicated regression checks.
+
 Supported: interfaces with inheritance, partial interfaces, mixins/includes,
 instance attributes/operations, DOM strings,
 boolean/long/double values, references to declared interfaces, and one-argument

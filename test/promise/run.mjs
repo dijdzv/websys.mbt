@@ -140,6 +140,42 @@ try {
     await pendingRead;
     pendingReader.releaseLock();
     if (pendingStream.locked || canceled !== 'pending read') throw Error('Pending read cancellation lost');
+    async function byteCase(chunks, expected, text) {
+      let cancellation;
+      const stream = new ReadableStream({ start(controller) {
+        for (const chunk of chunks) controller.enqueue(chunk);
+        if (expected === 1) controller.close();
+      }, cancel(reason) { cancellation = reason; } });
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Byte stream timeout')), 3000);
+        instance.exports.read_bytes(stream, (code, value) => {
+          clearTimeout(watchdog);
+          if (code !== expected || value !== text) reject(Error(`Byte result ${code}/${value}`));
+          else resolve();
+        });
+      });
+      if (stream.locked || (expected === 2 && cancellation !== 'Expected Uint8Array')) throw Error('Byte reader ownership lost');
+      count++;
+    }
+    const backing = new Uint8Array([99, 1, 2, 88]);
+    await byteCase([backing.subarray(1, 3), new Uint8Array(), new Uint8Array([255, 0])], 1, '1,2,255,0');
+    for (const invalid of [null, undefined, [1, 2], new Uint16Array([1]), new DataView(new ArrayBuffer(2)), new ArrayBuffer(2)]) {
+      await byteCase([invalid], 2, '');
+    }
+    const detached = new Uint8Array([1]);
+    structuredClone(detached.buffer, { transfer: [detached.buffer] });
+    await byteCase([detached], 2, '');
+    for (const [result, expected, text] of [[{ done: false }, 1, 'false'], [{ done: true }, 1, 'true'], [{}, 2, ''], [{ done: undefined }, 2, ''], [{ done: null }, 2, ''], [{ done: 0 }, 2, '']]) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Required field timeout')), 3000);
+        instance.exports.read_required({ readRequired: () => Promise.resolve(result) }, (code, actual) => {
+          clearTimeout(watchdog);
+          if (code !== expected || actual !== text) reject(Error(`Required field result ${code}/${actual}`));
+          else resolve();
+        });
+      });
+      count++;
+    }
     return count;
   }, { bytes: [...bytes], factory: createImports.toString() });
   const aborted = await abortedRequest;

@@ -12,18 +12,30 @@ fn emit_wasm_dictionary_result(
   for field in dict.members {
     let plan = plan_dictionary_field(field)
     guard plan.default_value is None && !(field.idl_type is Nullable(_)) else {
-      abort(
+      println(
         "WasmGC result dictionary defaults and nullable fields are not implemented: " +
         name +
         "." +
         field.name,
       )
+      abort("Unsupported result dictionary field")
     }
     let key = field_name_to_moonbit(field.name)
     let value = if field.idl_type is Any {
       WasmPromiseValue::{ name: "JsValue", predicate: "true", }
     } else {
-      require_wasm_promise_value(field.idl_type, interfaces~)
+      match wasm_promise_value(field.idl_type, interfaces~) {
+        Some(value) => value
+        None => {
+          println(
+            "Unsupported WasmGC Promise settlement conversion: " +
+            name +
+            "." +
+            field.name,
+          )
+          abort("Unsupported result dictionary field")
+        }
+      }
     }
     guard !(field.idl_type is Void) else {
       abort("Unsupported void dictionary field")

@@ -75,6 +75,7 @@ run = [
   '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/promise/api.idl --wasm-gc-module dijdzv/websys-promise-fixture -o test/promise/generated',
   '"{{env.MOON_HOME}}/bin/moon" -C test/promise build --target wasm-gc --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/promise/run.mjs',
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/verify-result-diagnostics.mbtx',
 ]
 
 [tasks."fmt-check"]

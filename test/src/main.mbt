@@ -362,6 +362,7 @@ async fn main {
     ("idb_factory_cmp", test_idb_factory_cmp),
     ("idb_enums", test_idb_enums),
     ("gpu_canvas_format", test_gpu_canvas_format),
+    ("stream_bytes", test_stream_bytes),
   ]
   for i = 0; i < tests.length(); i = i + 1 {
     let (name, f) = tests[i]

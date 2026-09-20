@@ -335,6 +335,7 @@ pub fn gen_shared_types_with_externals(
   // JsValue type
   result.write_string("/// Generic JavaScript value\n")
   result.write_string("pub type JsValue\n\n")
+  emit_js_bytes(result)
 
   // undefined helper
   result.write_string("/// Return undefined\n")

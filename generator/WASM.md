@@ -77,6 +77,20 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### WebGPU discovery
+
+The browser fixtures require a SwiftShader adapter and create/destroy a device
+through generated JS and WasmGC APIs. The WasmGC fixture also checks a synthetic
+null adapter result. It currently exposes the no-argument requestAdapter and
+requestDevice calls; this is a deliberate subset of the standard optional-option
+signatures, not support for all GPU descriptors or rendering/readback.
+
+The runners use Chromium's new headless mode with an explicit WebGPU SwiftShader
+adapter and, on Windows, ANGLE D3D11 WARP. A missing adapter fails the acquisition
+test rather than silently skipping it. This is software GPU coverage, not physical
+GPU/driver validation. The relevant Chromium test configuration is documented in
+[FlagSpecificConfig](https://chromium.googlesource.com/chromium/src/+/HEAD/third_party/blink/web_tests/FlagSpecificConfig).
+
 ### Promise operation results
 
 Promise-returning operations support DOMString, boolean, long, unsigned long
@@ -116,8 +130,8 @@ Nullable declared-interface settlement produces `Option[Interface]`: only host
 null becomes None, a checked interface value becomes Some, and undefined or a
 wrong object raises PromiseDecodeError. The generated decoder constructs Option
 in MoonBit without exposing its layout to JavaScript. Tests cover null, Response,
-undefined, a plain object and a number. This supplies the conversion needed by
-WebGPU requestAdapter, but is not yet evidence of an actual GPU adapter request.
+undefined, a plain object and a number. WebGPU requestAdapter uses this conversion;
+actual software-adapter coverage is described above.
 Flat dictionary results are described below. Promise attributes, parameters,
 nullable primitive/dictionary results and sequence settlement remain unsupported.
 

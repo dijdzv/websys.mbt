@@ -306,7 +306,7 @@ pub extern "js" fn BackgroundFetchManager::get(
   self : BackgroundFetchManager,
   id : String,
 ) -> Promise[BackgroundFetchRegistration?] =
-  #| (self, id) => self.get(id)
+  #| (self, id) => self.get(id).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn BackgroundFetchManager::get_ids(

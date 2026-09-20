@@ -54,7 +54,8 @@ let browser;
 try {
   browser = await chromium.launch({
     executablePath,
-    args: ["--no-sandbox"],
+    channel: 'chromium',
+    args: ['--use-webgpu-adapter=swiftshader', '--enable-unsafe-webgpu', process.platform === 'win32' ? '--use-angle=d3d11-warp' : '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
   });
   const page = await browser.newPage();
 

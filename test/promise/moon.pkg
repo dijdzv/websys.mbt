@@ -10,6 +10,7 @@ options(
   link: {
     "wasm-gc": {
       "exports": [
+        "gpu_discovery",
         "read_optional_response",
         "read_bytes",
         "fetch_body",

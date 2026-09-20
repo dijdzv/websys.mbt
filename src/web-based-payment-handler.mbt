@@ -561,14 +561,14 @@ pub extern "js" fn PaymentRequestEvent::open_window(
   self : PaymentRequestEvent,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.openWindow(url)
+  #| (self, url) => self.openWindow(url).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn PaymentRequestEvent::change_payment_method(
   self : PaymentRequestEvent,
   method_name : String,
 ) -> Promise[PaymentRequestDetailsUpdate?] =
-  #| (self, method_name) => self.changePaymentMethod(method_name)
+  #| (self, method_name) => self.changePaymentMethod(method_name).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn PaymentRequestEvent::change_payment_method_with_method_details(
@@ -576,20 +576,20 @@ pub extern "js" fn PaymentRequestEvent::change_payment_method_with_method_detail
   method_name : String,
   method_details : JsValue?,
 ) -> Promise[PaymentRequestDetailsUpdate?] =
-  #| (self, method_name, method_details) => self.changePaymentMethod(method_name, (method_details.$tag === 1 ? method_details._0 : null))
+  #| (self, method_name, method_details) => self.changePaymentMethod(method_name, (method_details.$tag === 1 ? method_details._0 : null)).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn PaymentRequestEvent::change_shipping_address(
   self : PaymentRequestEvent,
 ) -> Promise[PaymentRequestDetailsUpdate?] =
-  #| (self) => self.changeShippingAddress()
+  #| (self) => self.changeShippingAddress().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 extern "js" fn PaymentRequestEvent::change_shipping_address_with_shipping_address_ffi(
   self : PaymentRequestEvent,
   shipping_address : JsValue,
 ) -> Promise[PaymentRequestDetailsUpdate?] =
-  #| (self, shipping_address) => self.changeShippingAddress(shipping_address)
+  #| (self, shipping_address) => self.changeShippingAddress(shipping_address).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub fn PaymentRequestEvent::change_shipping_address_with_shipping_address(
@@ -607,7 +607,7 @@ pub extern "js" fn PaymentRequestEvent::change_shipping_option(
   self : PaymentRequestEvent,
   shipping_option : String,
 ) -> Promise[PaymentRequestDetailsUpdate?] =
-  #| (self, shipping_option) => self.changeShippingOption(shipping_option)
+  #| (self, shipping_option) => self.changeShippingOption(shipping_option).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn PaymentRequestEvent::respond_with(

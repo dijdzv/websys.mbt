@@ -188,7 +188,7 @@ pub extern "js" fn StorageBucket::set_expires(
 pub extern "js" fn StorageBucket::expires(
   self : StorageBucket,
 ) -> Promise[DOMHighResTimeStamp?] =
-  #| (self) => self.expires()
+  #| (self) => self.expires().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn StorageBucket::get_indexed_db(

@@ -9,10 +9,11 @@ const wasmPath = process.argv[2] ?? 'test/promise/_build/wasm-gc/release/build/d
 const runtimeUrl = process.argv[3] ? pathToFileURL(resolve(process.argv[3])) : new URL('./generated/runtime.mjs', import.meta.url);
 const { createImports } = await import(runtimeUrl.href);
 const bytes = await readFile(wasmPath);
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, channel: 'chromium', args: ['--use-webgpu-adapter=swiftshader', '--enable-unsafe-webgpu', process.platform === 'win32' ? '--use-angle=d3d11-warp' : '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 let pendingBodyStarted = false;
 let pendingBodyClosed = false;
 const server = createServer((request, response) => {
+  if (request.url === '/') { response.setHeader('Content-Type', 'text/html'); response.end('<!doctype html><title>WebSys consumer</title>'); return; }
   response.setHeader('Access-Control-Allow-Origin', '*');
   if (request.url === '/not-found') {
     response.writeHead(404, { 'Content-Type': 'application/json' });
@@ -39,6 +40,7 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const baseUrl = `http://127.0.0.1:${server.address().port}`;
 try {
   const page = await browser.newPage();
+  await page.goto(baseUrl);
   let heldRequestObserved = false;
   const abortedRequest = page.waitForEvent('requestfailed', { predicate: request => request.url() === 'http://fixture.invalid/hold', timeout: 10000 });
   await page.route('http://fixture.invalid/hold', () => { heldRequestObserved = true; });
@@ -77,6 +79,18 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    if (!navigator.gpu) throw Error('WebGPU unavailable in software-adapter test');
+    for (const [gpu, expected] of [[navigator.gpu, 'created-and-destroyed'], [{ requestAdapter: () => Promise.resolve(null) }, 'unavailable']]) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('GPU discovery timed out')), 10000);
+        instance.exports.gpu_discovery(gpu, (code, actual) => {
+          clearTimeout(watchdog);
+          if (code !== 1 || actual !== expected) reject(Error(`GPU discovery: ${code} ${actual}`));
+          else resolve();
+        });
+      });
+      count++;
+    }
     for (const [value, expected, text] of [[null, 1, 'none'], [new Response('', { status: 201 }), 1, '201'], [undefined, 2, ''], [{}, 2, ''], [0, 2, '']]) {
       await new Promise((resolve, reject) => {
         const watchdog = setTimeout(() => reject(Error('Nullable result timed out')), 3000);

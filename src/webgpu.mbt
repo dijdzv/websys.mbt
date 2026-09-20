@@ -6078,14 +6078,14 @@ pub extern "js" fn JsValue::to_gpu(self : JsValue) -> GPU =
 
 ///|
 pub extern "js" fn GPU::request_adapter(self : GPU) -> Promise[GPUAdapter?] =
-  #| (self) => self.requestAdapter()
+  #| (self) => self.requestAdapter().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 extern "js" fn GPU::request_adapter_with_options_ffi(
   self : GPU,
   options : JsValue,
 ) -> Promise[GPUAdapter?] =
-  #| (self, options) => self.requestAdapter(options)
+  #| (self, options) => self.requestAdapter(options).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub fn GPU::request_adapter_with_options(
@@ -6507,7 +6507,7 @@ pub extern "js" fn GPUDevice::push_error_scope(
 pub extern "js" fn GPUDevice::pop_error_scope(
   self : GPUDevice,
 ) -> Promise[GPUError?] =
-  #| (self) => self.popErrorScope()
+  #| (self) => self.popErrorScope().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn GPUDevice::set_onuncapturederror(

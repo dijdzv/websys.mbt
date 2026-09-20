@@ -53,6 +53,10 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
         }
       }
       "includes" => ()
+      "typedef" =>
+        if js_array_length(get_ext_attrs(get_idl_type(item))) != 0 {
+          return Some("WasmGC typedef type annotations are not implemented")
+        }
       "dictionary" => {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
@@ -227,6 +231,13 @@ fn emit_wasm_function(
 
 ///|
 fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
+  let definitions = match resolve_wasm_typedefs(definitions) {
+    Ok(values) => values
+    Err(message) => {
+      println(message)
+      abort("Invalid WasmGC typedef")
+    }
+  }
   let definitions = match prepare_wasm_dictionaries(definitions) {
     Ok(values) => values
     Err(message) => abort(message)

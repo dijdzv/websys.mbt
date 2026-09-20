@@ -20,4 +20,10 @@ async fn main {
     assert_true((output.text() + errors.text()).contains(expected), msg="Missing result diagnostic: " + name)
   }
   println("Result dictionary diagnostics: 3 cases passed")
+  let input = root + "/cycle.idl"
+  @fs.write_file(input, "typedef Second First; typedef First Second;")
+  let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/cycle"], no_console_window=true)
+  assert_true(code != 0)
+  assert_true((output.text() + errors.text()).contains("Cyclic WasmGC typedef"))
+  println("Typedef cycle diagnostic: passed")
 }

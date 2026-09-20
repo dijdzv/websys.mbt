@@ -1,6 +1,7 @@
+typedef DOMString ResponseText;
 interface Response {
   readonly attribute ReadableStream? body;
-  Promise<DOMString> text();
+  Promise<ResponseText> text();
 };
 interface ReadableStream {};
 interface ReadableStreamDefaultReader {

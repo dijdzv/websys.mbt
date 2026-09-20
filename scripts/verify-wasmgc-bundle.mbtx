@@ -17,7 +17,7 @@ async fn main {
   let (repeat_code, _, _) = @process.collect_output("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root], no_console_window=true)
   assert_true(repeat_code != 0, msg="Export must reject an existing destination")
   @fs.mkdir(root + "/consumer")
-  for name in ["moon.mod", "moon.pkg", "check.mbt", "gpu_shader.mbt", "gpu_texture.mbt"] {
+  for name in ["moon.mod", "moon.pkg", "check.mbt", "gpu_shader.mbt", "gpu_texture.mbt", "gpu_canvas.mbt"] {
     @fs.write_file(root + "/consumer/" + name, @fs.read_file("test/promise/" + name))
   }
   @fs.write_file(root + "/moon.work", "members = [\"bindings\", \"async\", \"consumer\"]\n")

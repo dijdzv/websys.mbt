@@ -1,9 +1,22 @@
 typedef DOMString ResponseText;
 interface GPU {
   Promise<GPUAdapter?> requestAdapter();
+  GPUTextureFormat getPreferredCanvasFormat();
 };
 interface GPUAdapter {
   Promise<GPUDevice> requestDevice();
+};
+interface GPUCanvasContext {
+  undefined configure(GPUCanvasConfiguration configuration);
+  GPUTexture getCurrentTexture();
+  undefined unconfigure();
+};
+enum GPUCanvasAlphaMode { "opaque", "premultiplied" };
+dictionary GPUCanvasConfiguration {
+  required GPUDevice device;
+  required GPUTextureFormat format;
+  GPUTextureUsageFlags usage = 16;
+  GPUCanvasAlphaMode alphaMode = "opaque";
 };
 interface GPUDevice {
   readonly attribute GPUQueue queue;
@@ -82,6 +95,8 @@ interface BufferInputProbe {
 };
 interface GPUTextureView {};
 interface GPUTexture {
+  readonly attribute unsigned long width;
+  readonly attribute unsigned long height;
   GPUTextureView createView();
   undefined destroy();
 };
@@ -95,7 +110,7 @@ dictionary GPUExtent3DDict {
   GPUIntegerCoordinate depthOrArrayLayers = 1;
 };
 typedef (sequence<GPUIntegerCoordinate> or GPUExtent3DDict) GPUExtent3D;
-enum GPUTextureFormat { "rgba8unorm" };
+enum GPUTextureFormat { "rgba8unorm", "bgra8unorm" };
 dictionary GPUTextureDescriptor {
   required GPUExtent3D size;
   required GPUTextureFormat format;

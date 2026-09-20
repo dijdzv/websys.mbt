@@ -6,6 +6,7 @@ fn emit_wasm_dictionary(
   references : Array[String],
   dictionaries : Array[String],
   dictionary_types? : Map[String, WasmSemanticType] = Map([]),
+  enums? : Array[String] = [],
 ) -> Unit {
   let name = dict.name
   let compound_types : Map[String, String] = Map([])
@@ -22,10 +23,15 @@ fn emit_wasm_dictionary(
   }
   for field in dict.members {
     if dictionary_types.get(name + "." + field.name) is Some(typ) &&
-      (!(typ.kind is Name(_)) || !typ.annotations.is_empty()) {
+      (
+        !(typ.kind is Name(_)) ||
+        !typ.annotations.is_empty() ||
+        (typ.kind is Name(name) && enums.contains(name))
+      ) {
       guard plan_wasm_input(
           { ..typ, nullable: false, },
           references=references.filter(name => !dictionaries.contains(name)),
+          enums~,
         )
         is Some(plan) else {
         println(

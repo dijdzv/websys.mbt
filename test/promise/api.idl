@@ -6,9 +6,24 @@ interface GPUAdapter {
   Promise<GPUDevice> requestDevice();
 };
 interface GPUDevice {
+  GPUSampler createSampler(GPUSamplerDescriptor descriptor);
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
   undefined destroy();
 };
+enum GPUAddressMode { "clamp-to-edge", "repeat", "mirror-repeat" };
+enum GPUFilterMode { "nearest", "linear" };
+dictionary GPUSamplerDescriptor {
+  DOMString label = "";
+  GPUAddressMode addressModeU = "clamp-to-edge";
+  GPUFilterMode minFilter = "nearest";
+};
+interface GPUSampler { attribute DOMString label; };
+dictionary EnumInputs {
+  required AddressModeAlias mode;
+  GPUAddressMode? optionalMode;
+  sequence<GPUFilterMode> filters;
+};
+typedef GPUAddressMode AddressModeAlias;
 typedef [EnforceRange] unsigned long long GPUSize64;
 typedef unsigned long GPUBufferUsageFlags;
 dictionary GPUBufferDescriptor {

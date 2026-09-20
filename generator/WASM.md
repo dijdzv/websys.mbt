@@ -315,6 +315,13 @@ recursively; unsupported records must not silently become any.
 
 Dictionary fields may use nested sequences, string-keyed records and
 unions of supported scalar/container values or declared interface references.
+Declared enums are generated as MoonBit enums with string conversions. Dictionary
+inputs, including enum sequences and nullable fields, call that conversion before
+passing strings across FFI; enum tags or compiler layouts never enter the host.
+Typedef references preserve the enum identity. Conflicting generated variant
+names are rejected. The browser consumer checks required values, omission/null,
+enum sequences and actual GPU sampler creation. This does not yet support enum
+operation arguments/results, attributes or Promise settlement on WasmGC.
 Sequence inputs use MoonBit arrays;
 records use arrays of key/value pairs; unions use generated explicit cases.
 Generated MoonBit code walks these values and builds host arrays or null-prototype

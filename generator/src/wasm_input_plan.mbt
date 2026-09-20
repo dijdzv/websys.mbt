@@ -1,5 +1,6 @@
 ///|
 enum WasmInputPlan {
+  Enumeration(String)
   Scalar(String, String)
   Sequence(WasmInputPlan)
   Record(WasmInputPlan, WasmInputPlan)
@@ -10,6 +11,7 @@ enum WasmInputPlan {
 fn plan_wasm_input(
   typ : WasmSemanticType,
   references? : Array[String] = [],
+  enums? : Array[String] = [],
 ) -> WasmInputPlan? {
   if typ.nullable {
     return None
@@ -22,6 +24,7 @@ fn plan_wasm_input(
     return None
   }
   match typ.kind {
+    Name(name) if enums.contains(name) => Some(Enumeration(name))
     Name("DOMString" | "USVString" | "ByteString") => {
       guard typ.kind is Name(kind) else { return None }
       Some(Scalar("String", kind))
@@ -33,15 +36,15 @@ fn plan_wasm_input(
     Name("ArrayBuffer") => Some(Scalar("ArrayBuffer", "reference"))
     Name(name) if references.contains(name) => Some(Scalar(name, "reference"))
     Generic("sequence", [inner]) =>
-      plan_wasm_input(inner, references~).map(child => {
+      plan_wasm_input(inner, references~, enums~).map(child => {
         WasmInputPlan::Sequence(child)
       })
     Generic("record", [key, value]) => {
       guard key.kind is Name("DOMString" | "USVString" | "ByteString") else {
         return None
       }
-      guard plan_wasm_input(key, references~) is Some(key) &&
-        plan_wasm_input(value, references~) is Some(value) else {
+      guard plan_wasm_input(key, references~, enums~) is Some(key) &&
+        plan_wasm_input(value, references~, enums~) is Some(value) else {
         return None
       }
       Some(Record(key, value))
@@ -49,7 +52,7 @@ fn plan_wasm_input(
     WasmTypeKind::Union(types) => {
       let plans : Array[WasmInputPlan] = []
       for typ in types {
-        guard plan_wasm_input(typ, references~) is Some(plan) else {
+        guard plan_wasm_input(typ, references~, enums~) is Some(plan) else {
           return None
         }
         plans.push(plan)
@@ -70,6 +73,13 @@ fn emit_wasm_input_plan(
   let mut public_type = ""
   let mut body = ""
   match plan {
+    Enumeration(name) => {
+      mbt.write_string(
+        "fn \{prefix}_string(value : String) -> JsValue = \"websys\" \"\{prefix}\"\nfn \{prefix}(value : \{name}) -> JsValue { \{prefix}_string(value.to_string()) }\n",
+      )
+      js.write_string("    \{prefix}: value => value,\n")
+      return name
+    }
     Scalar(typ, kind) => {
       mbt.write_string(
         "fn \{prefix}(value : \{typ}) -> JsValue = \"websys\" \"\{prefix}\"\n",

@@ -17,6 +17,7 @@ fn compose_wasm_interfaces(
       }
       CallbackInterface(value) => value.name
       Dictionary(value) => value.name
+      Enum(value) => value.name
       Partial(_) | Includes(_) => continue
       _ => return Err("Unsupported WasmGC definition")
     }
@@ -95,7 +96,7 @@ fn compose_wasm_interfaces(
         }
         result.push(Interface({ ..value, members, }))
       }
-      CallbackInterface(_) | Dictionary(_) => result.push(definition)
+      CallbackInterface(_) | Dictionary(_) | Enum(_) => result.push(definition)
       _ => ()
     }
   }

@@ -396,7 +396,7 @@ pub fn PushManager::subscribe_with_options(
 pub extern "js" fn PushManager::get_subscription(
   self : PushManager,
 ) -> Promise[PushSubscription?] =
-  #| (self) => self.getSubscription()
+  #| (self) => self.getSubscription().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub extern "js" fn PushManager::permission_state(

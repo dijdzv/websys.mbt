@@ -23555,7 +23555,7 @@ pub extern "js" fn DataTransferItem::webkit_get_as_entry(
 pub extern "js" fn DataTransferItem::get_as_file_system_handle(
   self : DataTransferItem,
 ) -> Promise[FileSystemHandle?] =
-  #| (self) => self.getAsFileSystemHandle()
+  #| (self) => self.getAsFileSystemHandle().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 /// DragEvent interface
@@ -28551,7 +28551,7 @@ extern "js" fn Navigator::query_handwriting_recognizer_ffi(
   self : Navigator,
   constraint : JsValue,
 ) -> Promise[HandwritingRecognizerQueryResult?] =
-  #| (self, constraint) => self.queryHandwritingRecognizer(constraint)
+  #| (self, constraint) => self.queryHandwritingRecognizer(constraint).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 pub fn Navigator::query_handwriting_recognizer(

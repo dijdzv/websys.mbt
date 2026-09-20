@@ -319,6 +319,14 @@ pub fn int64_param_to_js(param_name : String) -> String {
 /// Replaces direct calls to wrap_nullable_return in gen_interface.mbt.
 pub fn wrap_return_expr(js_expr : String, return_type : IdlType) -> String {
   match return_type {
+    Promise(inner) => {
+      let converted = wrap_return_expr("value", inner)
+      if converted == "value" {
+        js_expr
+      } else {
+        js_expr + ".then(value => " + converted + ")"
+      }
+    }
     Nullable(inner) =>
       if is_int64_type(inner) {
         // Preserve nullability before converting the numeric payload.

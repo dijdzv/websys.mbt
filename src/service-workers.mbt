@@ -1863,7 +1863,7 @@ pub extern "js" fn WindowClient::navigate(
   self : WindowClient,
   url : String,
 ) -> Promise[WindowClient?] =
-  #| (self, url) => self.navigate(url)
+  #| (self, url) => self.navigate(url).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
 ///|
 /// Clients interface

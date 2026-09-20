@@ -1,4 +1,13 @@
 typedef DOMString ResponseText;
+interface GPU {
+  Promise<GPUAdapter?> requestAdapter();
+};
+interface GPUAdapter {
+  Promise<GPUDevice> requestDevice();
+};
+interface GPUDevice {
+  undefined destroy();
+};
 typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
 dictionary PostOptions {
   required DOMString method;

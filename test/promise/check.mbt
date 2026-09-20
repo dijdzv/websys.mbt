@@ -6,6 +6,28 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn gpu_discovery(gpu : @web.GPU, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let adapter = gpu.request_adapter().wait()
+    guard adapter is Some(adapter) else {
+      notify(callback, 1, "unavailable")
+      return
+    }
+    let device = adapter.request_device().wait()
+    device.destroy()
+    let rejected = try {
+      let second = adapter.request_device().wait()
+      second.destroy()
+      false
+    } catch {
+      @bridge.Rejection(_) => true
+      error => raise error
+    }
+    notify(callback, if rejected { 1 } else { 2 }, "created-destroyed-rejected")
+  })
+}
+
+///|
 pub fn read_optional_response(
   values : @web.Values,
   callback : Callback,

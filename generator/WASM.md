@@ -53,6 +53,9 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 Promise-returning operations support DOMString, boolean, long, unsigned long
 and finite double settlement through generated `WebsysPromise[T]` values.
+Declared interface results are also supported with a same-realm `instanceof`
+check before preserving the host reference. Unknown, dictionary and callback
+types are not treated as interfaces. This is not cross-realm brand validation.
 `wait(abort=...)` uses the pinned experimental official-async adapter described
 in [the adapter boundary](../patches/async-wasmgc.md). Generated modules require
 that patched workspace dependency; an unmodified registry version does not
@@ -66,12 +69,17 @@ abort callback runs only when waiting is interrupted, not on settled rejection
 or decoding failure. The default does not abort the underlying operation; pass
 the operation's cancellation capability explicitly when required.
 
-`mise run test-promises` generates a separate module and executes 38 browser
+`mise run test-promises` generates a separate module and executes 42 browser
 cases, including a real fetched Response's text, numeric boundaries, invalid
 values, rejection, synchronous operation failure, timeout and late settlement.
-It is included in the normal test task. Full generated Fetch initiation,
-AbortSignal binding and stream-body cancellation remain separate work.
-Promise attributes, parameters, void, nullable, interface, dictionary and sequence
+It also initiates Fetch through a narrowed generated Window API, passes a
+generated RequestInit containing AbortSignal, decodes Response, and awaits its
+text. The cancellation case observes an active intercepted request and its
+browser ERR_ABORTED event, alongside the generated signal's aborted state.
+Synthetic receivers check rejection and a non-Response result. Full standard
+Fetch signatures and stream-body cancellation remain separate work.
+It is included in the normal test task.
+Promise attributes, parameters, void, nullable, dictionary and sequence
 settlement are rejected rather than assigned an unchecked representation.
 
 ### ArrayBuffer references

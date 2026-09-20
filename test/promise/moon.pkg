@@ -9,7 +9,7 @@ supported_targets = "wasm-gc"
 options(
   link: {
     "wasm-gc": {
-      "exports": [ "start", "start_value" ],
+      "exports": [ "start", "start_value", "fetch_text" ],
       "use-js-builtin-string": true,
     },
   },

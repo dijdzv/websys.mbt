@@ -24,6 +24,23 @@ test "Promise conversion rejects unsupported shapes before emitting bindings" {
 }
 
 ///|
+test "Promise interface settlement requires a declared interface" {
+  assert_true(
+    wasm_promise_value(Named("Response"), interfaces=["Response"]) is Some(_),
+  )
+  assert_true(
+    wasm_promise_value(Named("RequestInit"), interfaces=["Response"]) is None,
+  )
+  let parsed = parse_webidl_raw(
+    "interface Window { Promise<Response> fetch(DOMString url); }; interface Response { Promise<DOMString> text(); };",
+  )
+  assert_true(is_parse_success(parsed))
+  let (code, host) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("WebsysPromise[Response]"))
+  assert_true(host.contains("value instanceof globalThis.Response"))
+}
+
+///|
 test "Promise methods decode after waiting and preserve operation rejection" {
   let parsed = parse_webidl_raw(
     "interface Response { Promise<DOMString> text(); Promise<unsigned long> size(); };",

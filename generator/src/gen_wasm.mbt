@@ -124,6 +124,7 @@ fn emit_wasm_function(
   result : IdlType,
   names : Array[String],
   dictionaries? : Array[String] = [],
+  promise_interfaces? : Array[String] = [],
 ) -> Unit {
   if result is Named(name) && dictionaries.contains(name) {
     abort("WasmGC dictionary results are not implemented")
@@ -141,7 +142,9 @@ fn emit_wasm_function(
     .join(", ")
   let result_type = match result {
     Promise(inner) =>
-      "WebsysPromise[" + require_wasm_promise_value(inner).name + "]"
+      "WebsysPromise[" +
+      require_wasm_promise_value(inner, interfaces=promise_interfaces).name +
+      "]"
     _ => require_wasm_type(result, names)
   }
   let key = owner + "_" + member_name
@@ -170,7 +173,9 @@ fn emit_wasm_function(
     })
     .join(", ")
   let raw_result = if result is Promise(inner) {
-    "@js_async.Promise[" + require_wasm_promise_value(inner).name + "]"
+    "@js_async.Promise[" +
+    require_wasm_promise_value(inner, interfaces=promise_interfaces).name +
+    "]"
   } else if result is Nullable(_) {
     "WebsysNullable"
   } else {
@@ -194,7 +199,10 @@ fn emit_wasm_function(
   )
   match result {
     Promise(inner) => {
-      let name = require_wasm_promise_value(inner).name
+      let name = require_wasm_promise_value(
+          inner,
+          interfaces=promise_interfaces,
+        ).name
       out.write_string(
         "  WebsysPromise::{ raw: websys_raw_\{key}(\{args}), decode: websys_promise_decode_\{name} }\n",
       )
@@ -220,9 +228,13 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   }
   let names : Array[String] = []
   let dictionaries : Array[String] = []
+  let promise_interfaces : Array[String] = []
   for definition in definitions {
     let name = match definition {
-      Interface(value) => value.name
+      Interface(value) => {
+        promise_interfaces.push(value.name)
+        value.name
+      }
       CallbackInterface(value) => value.name
       Dictionary(value) => {
         dictionaries.push(value.name)
@@ -263,7 +275,10 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
           }
           Operation(op) => {
             if op.return_type is Promise(inner) {
-              let plan = require_wasm_promise_value(inner)
+              let plan = require_wasm_promise_value(
+                inner,
+                interfaces=promise_interfaces,
+              )
               if !promise_values.any(value => value.name == plan.name) {
                 promise_values.push(plan)
               }
@@ -500,6 +515,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
                 op.return_type,
                 names,
                 dictionaries~,
+                promise_interfaces~,
               )
               let js_params = if op.arguments.is_empty() {
                 "self"

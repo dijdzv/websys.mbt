@@ -79,6 +79,10 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    instance.exports.unsigned_sequence({ unsignedValues(values) {
+      if (JSON.stringify(values) !== '[0,2147483648,4294967295]') throw Error('Unsigned sequence conversion');
+    } });
+    count++;
     const renderAdapter = await navigator.gpu.requestAdapter();
     if (!renderAdapter) throw Error('Render descriptor adapter unavailable');
     const renderDevice = await renderAdapter.requestDevice();
@@ -92,9 +96,14 @@ try {
           if (options.colorAttachments[0] !== null || attachment.view !== view || attachment.loadOp !== 'clear' || attachment.storeOp !== 'store') throw Error('Nested attachment conversion');
           if (dict ? attachment.clearValue.r !== 1 || attachment.clearValue.a !== 1 : JSON.stringify(attachment.clearValue) !== '[1,0,0,1]') throw Error('Color union conversion');
           renderDevice.pushErrorScope('validation');
-          const commands = instance.exports.encode_clear(renderDevice, view, dict);
-          renderDevice.queue.submit([commands]);
-          await renderDevice.queue.onSubmittedWorkDone();
+          await new Promise((resolve, reject) => {
+            const timer = setTimeout(() => reject(Error('Generated submission timed out')), 3000);
+            instance.exports.submit_clear(renderDevice, view, dict, (code, value) => {
+              clearTimeout(timer);
+              if (code === 1 && value === 'submitted') resolve();
+              else reject(Error('Generated submission failed'));
+            });
+          });
           const error = await renderDevice.popErrorScope();
           if (error) throw Error(error.message);
           count++;

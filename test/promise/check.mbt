@@ -49,6 +49,27 @@ pub fn encode_clear(
 }
 
 ///|
+pub fn submit_clear(
+  device : @web.GPUDevice,
+  view : @web.GPUTextureView,
+  dict : Bool,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let commands = encode_clear(device, view, dict)
+    device.queue().submit([])
+    device.queue().submit([commands])
+    device.queue().on_submitted_work_done().wait()
+    notify(callback, 1, "submitted")
+  })
+}
+
+///|
+pub fn unsigned_sequence(probe : @web.SequenceProbe) -> Unit {
+  probe.unsigned_values([0U, 2147483648U, 4294967295U])
+}
+
+///|
 pub fn enum_options(mode : Int) -> @web.JsValue {
   @web.EnumInputs::{
     mode: MirrorRepeat,

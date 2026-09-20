@@ -153,6 +153,7 @@ fn emit_wasm_function(
   names : Array[String],
   dictionaries? : Array[String] = [],
   promise_interfaces? : Array[String] = [],
+  input_converters? : Map[String, (String, String)] = Map([]),
 ) -> Unit {
   if result is Named(name) && dictionaries.contains(name) {
     abort("WasmGC dictionary results are not implemented")
@@ -166,7 +167,13 @@ fn emit_wasm_function(
     }
   }
   let public_params = params
-    .map(p => p.0 + " : " + require_wasm_type(p.1, names))
+    .map(p => {
+      let typ = match input_converters.get(p.0) {
+        Some((typ, _)) => typ
+        None => require_wasm_type(p.1, names)
+      }
+      p.0 + " : " + typ
+    })
     .join(", ")
   let result_type = match result {
     Promise(inner) =>
@@ -183,7 +190,9 @@ fn emit_wasm_function(
   let needs_wrapper = result is Promise(_) ||
     result is Nullable(_) ||
     params.any(p => {
-      p.1 is Nullable(_) || (p.1 is Named(name) && dictionaries.contains(name))
+      input_converters.contains(p.0) ||
+      p.1 is Nullable(_) ||
+      (p.1 is Named(name) && dictionaries.contains(name))
     })
   if !needs_wrapper {
     out.write_string(
@@ -195,7 +204,9 @@ fn emit_wasm_function(
     .map(p => {
       (if p.0 == "self" { "receiver" } else { p.0 }) +
       " : " +
-      (if p.1 is Nullable(_) {
+      (if input_converters.contains(p.0) {
+        "JsValue"
+      } else if p.1 is Nullable(_) {
         "WebsysNullable"
       } else if p.1 is Named(name) && dictionaries.contains(name) {
         "JsValue"
@@ -219,6 +230,9 @@ fn emit_wasm_function(
   }
   let args = params
     .map(p => {
+      if input_converters.get(p.0) is Some((_, converter)) {
+        return converter + "(" + p.0 + ")"
+      }
       match p.1 {
         Named(name) if dictionaries.contains(name) => p.0 + ".to_js()"
         Nullable(inner) =>
@@ -579,6 +593,7 @@ fn generate_wasm(
               ]
               let arguments = StringBuilder()
               let values = StringBuilder()
+              let input_converters : Map[String, (String, String)] = Map([])
               for i, arg in op.arguments {
                 guard !arg.optional && !arg.variadic else {
                   abort(
@@ -586,6 +601,21 @@ fn generate_wasm(
                   )
                 }
                 parameters.push(("arg\{i}", arg.idl_type))
+                if arg.idl_type is Sequence(_) {
+                  let plan = wasm_sequence_argument_plan(
+                    arg.idl_type,
+                    names,
+                    dictionaries,
+                  )
+                  let converter = "websys_arg_" +
+                    name +
+                    "_" +
+                    fn_name +
+                    "_" +
+                    i.to_string()
+                  let typ = emit_wasm_input_plan(plan, converter, mbt, js)
+                  input_converters["arg\{i}"] = (typ, converter)
+                }
                 if i > 0 {
                   arguments.write_string(", ")
                 }
@@ -604,6 +634,7 @@ fn generate_wasm(
                 names,
                 dictionaries~,
                 promise_interfaces~,
+                input_converters~,
               )
               let js_params = if op.arguments.is_empty() {
                 "self"

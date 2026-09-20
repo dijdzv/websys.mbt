@@ -12,6 +12,8 @@ options(
       "exports": [
         "render_options",
         "encode_clear",
+        "submit_clear",
+        "unsigned_sequence",
         "enum_options",
         "buffer_size_options",
         "gpu_buffer_sample",

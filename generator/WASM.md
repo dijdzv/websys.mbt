@@ -337,9 +337,17 @@ than passing MoonBit records through FFI.
 
 The browser consumer checks nullable render-attachment arrays and both sequence
 and dictionary color branches. Generated encoder/pass methods record a clear
-pass, which is submitted under a GPU validation error scope. Texture creation
-and queue submission in this test still use host JavaScript; it does not yet
+pass, which is submitted under a GPU validation error scope. Generated GPUQueue
+methods submit empty/nonempty command arrays and await completion from MoonBit.
+Texture creation in this test still uses host JavaScript; it does not yet
 establish an entirely generated rendering/readback path or verify pixel values.
+
+Required nonnullable sequence operation arguments reuse the dictionary input
+builders. Supported elements include primitive values, declared references,
+dictionaries, nested sequences and nullable elements. Public MoonBit arrays are
+converted to host arrays before crossing FFI; unsigned long elements preserve
+their unsigned range, including values above 2^31-1. Sequence results,
+constructor arguments, optional arguments and enum elements remain unsupported.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions

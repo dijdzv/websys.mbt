@@ -17,8 +17,9 @@ fn wasm_has_argument_annotations(item : JsValue) -> Bool {
 
 ///|
 fn validate_wasm_input(parsed : JsValue) -> String? {
-  if resolve_wasm_semantic_aliases(parsed) is Err(message) {
-    return Some(message)
+  let aliases = match resolve_wasm_semantic_aliases(parsed) {
+    Ok(values) => values
+    Err(message) => return Some(message)
   }
   let items = get_parse_data(parsed)
   for i = 0; i < js_array_length(items); i = i + 1 {
@@ -57,14 +58,16 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
       }
       "includes" => ()
       "typedef" =>
-        if validate_wasm_raw_type(get_idl_type(item)) is Some(message) {
+        if validate_wasm_dictionary_input_type(get_idl_type(item), aliases)
+          is Some(message) {
           return Some(message)
         }
       "dictionary" => {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
           let field = js_array_get(members, j)
-          if validate_wasm_raw_type(get_idl_type(field)) is Some(message) {
+          if validate_wasm_dictionary_input_type(get_idl_type(field), aliases)
+            is Some(message) {
             return Some(message)
           }
           if js_array_length(get_ext_attrs(field)) != 0 ||
@@ -236,7 +239,10 @@ fn emit_wasm_function(
 }
 
 ///|
-fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
+fn generate_wasm(
+  definitions : Array[Definition],
+  dictionary_types? : Map[String, WasmSemanticType] = Map([]),
+) -> (String, String) {
   let definitions = match resolve_wasm_typedefs(definitions) {
     Ok(values) => values
     Err(message) => {
@@ -409,7 +415,14 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   for definition in definitions {
     match definition {
       Dictionary(dict) =>
-        emit_wasm_dictionary(dict, mbt, js, names, dictionaries)
+        emit_wasm_dictionary(
+          dict,
+          mbt,
+          js,
+          names,
+          dictionaries,
+          dictionary_types~,
+        )
       CallbackInterface(cb) => {
         guard cb.arguments.length() == 1 && cb.return_type is Some(Void) else {
           abort(

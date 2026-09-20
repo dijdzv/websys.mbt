@@ -87,11 +87,13 @@ these nodes and rejects cycles before legacy AST conversion. Annotated types
 remain rejected; the model records their presence rather than claiming full
 extended-attribute semantics.
 
-The published JS path is unchanged. Existing WasmGC emitters still consume the
-restricted legacy AST after preflight. New compound conversion plans must consume
-the semantic model directly; removing preflight rejection without doing that
-would reintroduce information loss. Model coverage does not establish runtime
-support for record, union or nullable compound conversions.
+The published JS path is unchanged. Compound WasmGC dictionary inputs now use
+semantic field types (including inherited fields and resolved aliases) to plan
+explicit sequence, record and union conversion. MoonBit traverses its arrays,
+tuples and enum cases; host imports construct independent JS arrays and objects.
+Other existing emitters still consume the restricted legacy AST after preflight.
+Extending those paths requires the same semantic handoff before removing guards.
+Model coverage alone does not establish runtime support for every type shape.
 
 1. Parse into a lossless WebIDL representation, retaining source location,
    extended attributes, partial kind, defaults and overload identity.

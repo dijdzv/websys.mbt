@@ -9,6 +9,13 @@ let pendingBodyStarted = false;
 let pendingBodyClosed = false;
 const server = createServer((request, response) => {
   response.setHeader('Access-Control-Allow-Origin', '*');
+  if (request.url === '/post') {
+    let body = '';
+    request.setEncoding('utf8');
+    request.on('data', chunk => { body += chunk; });
+    request.on('end', () => { response.end(`${request.method}|${request.headers['content-type']}|${request.headers.accept}|${body}`); });
+    return;
+  }
   if (request.url === '/no-body') { response.writeHead(204); response.end(); }
   else if (request.url === '/pending-body') {
     pendingBodyStarted = true;
@@ -207,6 +214,17 @@ try {
         instance.exports.fetch_body(host, baseUrl + path, expected === 4 ? 150 : 1000, callback);
       });
       if (!response || response.body?.locked) throw Error('Response body was not obtained or reader lock retained');
+      count++;
+    }
+    for (const record of [false, true]) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('POST consumer timeout')), 3000);
+        instance.exports.post_headers(window, baseUrl + '/post', record, (code, value) => {
+          clearTimeout(watchdog);
+          if (code !== 1 || value !== 'POST|text/plain|text/plain|日本😀') reject(Error(`POST result ${code}/${value}`));
+          else resolve();
+        });
+      });
       count++;
     }
     return count;

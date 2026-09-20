@@ -6621,28 +6621,67 @@ pub extern "js" fn MLContext::get_lost(
   #| (self) => self.lost
 
 ///|
-pub extern "js" fn MLContext::create_constant_tensor_with_array_buffer(
+extern "js" fn MLContext::create_constant_tensor_with_array_buffer_ffi(
   self : MLContext,
-  descriptor : MLOperandDescriptor,
+  descriptor : JsValue,
   input_data : ArrayBuffer,
 ) -> Promise[MLTensor] =
   #| (self, descriptor, input_data) => self.createConstantTensor(descriptor, input_data)
 
 ///|
-pub extern "js" fn MLContext::create_constant_tensor_with_shared_array_buffer(
+pub fn MLContext::create_constant_tensor_with_array_buffer(
   self : MLContext,
   descriptor : MLOperandDescriptor,
+  input_data : ArrayBuffer,
+) -> Promise[MLTensor] {
+  MLContext::create_constant_tensor_with_array_buffer_ffi(
+    self,
+    descriptor.to_js(),
+    input_data,
+  )
+}
+
+///|
+extern "js" fn MLContext::create_constant_tensor_with_shared_array_buffer_ffi(
+  self : MLContext,
+  descriptor : JsValue,
   input_data : SharedArrayBuffer,
 ) -> Promise[MLTensor] =
   #| (self, descriptor, input_data) => self.createConstantTensor(descriptor, input_data)
 
 ///|
-pub extern "js" fn MLContext::create_constant_tensor_with_array_buffer_view(
+pub fn MLContext::create_constant_tensor_with_shared_array_buffer(
   self : MLContext,
   descriptor : MLOperandDescriptor,
+  input_data : SharedArrayBuffer,
+) -> Promise[MLTensor] {
+  MLContext::create_constant_tensor_with_shared_array_buffer_ffi(
+    self,
+    descriptor.to_js(),
+    input_data,
+  )
+}
+
+///|
+extern "js" fn MLContext::create_constant_tensor_with_array_buffer_view_ffi(
+  self : MLContext,
+  descriptor : JsValue,
   input_data : ArrayBufferView,
 ) -> Promise[MLTensor] =
   #| (self, descriptor, input_data) => self.createConstantTensor(descriptor, input_data)
+
+///|
+pub fn MLContext::create_constant_tensor_with_array_buffer_view(
+  self : MLContext,
+  descriptor : MLOperandDescriptor,
+  input_data : ArrayBufferView,
+) -> Promise[MLTensor] {
+  MLContext::create_constant_tensor_with_array_buffer_view_ffi(
+    self,
+    descriptor.to_js(),
+    input_data,
+  )
+}
 
 ///|
 pub extern "js" fn MLContext::read_tensor_with_array_buffer(
@@ -9530,28 +9569,67 @@ pub fn MLGraphBuilder::where__with_options(
 }
 
 ///|
-pub extern "js" fn MLGraphBuilder::constant_with_array_buffer(
+extern "js" fn MLGraphBuilder::constant_with_array_buffer_ffi(
   self : MLGraphBuilder,
-  descriptor : MLOperandDescriptor,
+  descriptor : JsValue,
   buffer : ArrayBuffer,
 ) -> MLOperand =
   #| (self, descriptor, buffer) => self.constant(descriptor, buffer)
 
 ///|
-pub extern "js" fn MLGraphBuilder::constant_with_shared_array_buffer(
+pub fn MLGraphBuilder::constant_with_array_buffer(
   self : MLGraphBuilder,
   descriptor : MLOperandDescriptor,
+  buffer : ArrayBuffer,
+) -> MLOperand {
+  MLGraphBuilder::constant_with_array_buffer_ffi(
+    self,
+    descriptor.to_js(),
+    buffer,
+  )
+}
+
+///|
+extern "js" fn MLGraphBuilder::constant_with_shared_array_buffer_ffi(
+  self : MLGraphBuilder,
+  descriptor : JsValue,
   buffer : SharedArrayBuffer,
 ) -> MLOperand =
   #| (self, descriptor, buffer) => self.constant(descriptor, buffer)
 
 ///|
-pub extern "js" fn MLGraphBuilder::constant_with_array_buffer_view(
+pub fn MLGraphBuilder::constant_with_shared_array_buffer(
   self : MLGraphBuilder,
   descriptor : MLOperandDescriptor,
+  buffer : SharedArrayBuffer,
+) -> MLOperand {
+  MLGraphBuilder::constant_with_shared_array_buffer_ffi(
+    self,
+    descriptor.to_js(),
+    buffer,
+  )
+}
+
+///|
+extern "js" fn MLGraphBuilder::constant_with_array_buffer_view_ffi(
+  self : MLGraphBuilder,
+  descriptor : JsValue,
   buffer : ArrayBufferView,
 ) -> MLOperand =
   #| (self, descriptor, buffer) => self.constant(descriptor, buffer)
+
+///|
+pub fn MLGraphBuilder::constant_with_array_buffer_view(
+  self : MLGraphBuilder,
+  descriptor : MLOperandDescriptor,
+  buffer : ArrayBufferView,
+) -> MLOperand {
+  MLGraphBuilder::constant_with_array_buffer_view_ffi(
+    self,
+    descriptor.to_js(),
+    buffer,
+  )
+}
 
 ///|
 pub extern "js" fn MLGraphBuilder::constant_with_double(

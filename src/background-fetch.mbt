@@ -540,30 +540,60 @@ pub fn BackgroundFetchRegistration::match_all_with_options(
 }
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::match__with_request(
+extern "js" fn BackgroundFetchRegistration::match__with_request_ffi(
   self : BackgroundFetchRegistration,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[
   Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
 ] =
   #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::match__with_string(
+pub fn BackgroundFetchRegistration::match__with_request(
+  self : BackgroundFetchRegistration,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[
+  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
+] {
+  BackgroundFetchRegistration::match__with_request_ffi(
+    self,
+    request,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn BackgroundFetchRegistration::match__with_string_ffi(
+  self : BackgroundFetchRegistration,
+  request : String,
+  options : JsValue,
+) -> Promise[
+  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
+] =
+  #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+pub fn BackgroundFetchRegistration::match__with_string(
   self : BackgroundFetchRegistration,
   request : String,
   options : CacheQueryOptions,
 ) -> Promise[
   Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
-  #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+] {
+  BackgroundFetchRegistration::match__with_string_ffi(
+    self,
+    request,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::match_all_with_request(
+extern "js" fn BackgroundFetchRegistration::match_all_with_request_ffi(
   self : BackgroundFetchRegistration,
   request : Request,
-  options : CacheQueryOptions,
+  options : JsValue,
 ) -> Promise[
   Result[
     FixedArray[BackgroundFetchRecord],
@@ -573,7 +603,38 @@ pub extern "js" fn BackgroundFetchRegistration::match_all_with_request(
   #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
-pub extern "js" fn BackgroundFetchRegistration::match_all_with_string(
+pub fn BackgroundFetchRegistration::match_all_with_request(
+  self : BackgroundFetchRegistration,
+  request : Request,
+  options : CacheQueryOptions,
+) -> Promise[
+  Result[
+    FixedArray[BackgroundFetchRecord],
+    BackgroundFetchRegistrationMatchAllError,
+  ],
+] {
+  BackgroundFetchRegistration::match_all_with_request_ffi(
+    self,
+    request,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn BackgroundFetchRegistration::match_all_with_string_ffi(
+  self : BackgroundFetchRegistration,
+  request : String,
+  options : JsValue,
+) -> Promise[
+  Result[
+    FixedArray[BackgroundFetchRecord],
+    BackgroundFetchRegistrationMatchAllError,
+  ],
+] =
+  #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+///|
+pub fn BackgroundFetchRegistration::match_all_with_string(
   self : BackgroundFetchRegistration,
   request : String,
   options : CacheQueryOptions,
@@ -582,8 +643,13 @@ pub extern "js" fn BackgroundFetchRegistration::match_all_with_string(
     FixedArray[BackgroundFetchRecord],
     BackgroundFetchRegistrationMatchAllError,
   ],
-] =
-  #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+] {
+  BackgroundFetchRegistration::match_all_with_string_ffi(
+    self,
+    request,
+    options.to_js(),
+  )
+}
 
 ///|
 /// BackgroundFetchRecord interface

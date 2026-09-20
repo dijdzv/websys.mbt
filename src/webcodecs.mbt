@@ -3225,28 +3225,63 @@ pub extern "js" fn AudioData::close(self : AudioData) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn AudioData::copy_to_with_array_buffer(
+extern "js" fn AudioData::copy_to_with_array_buffer_ffi(
+  self : AudioData,
+  destination : ArrayBuffer,
+  options : JsValue,
+) -> Result[Unit, AudioDataCopyToError] =
+  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+
+///|
+pub fn AudioData::copy_to_with_array_buffer(
   self : AudioData,
   destination : ArrayBuffer,
   options : AudioDataCopyToOptions,
+) -> Result[Unit, AudioDataCopyToError] {
+  AudioData::copy_to_with_array_buffer_ffi(self, destination, options.to_js())
+}
+
+///|
+extern "js" fn AudioData::copy_to_with_shared_array_buffer_ffi(
+  self : AudioData,
+  destination : SharedArrayBuffer,
+  options : JsValue,
 ) -> Result[Unit, AudioDataCopyToError] =
   #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn AudioData::copy_to_with_shared_array_buffer(
+pub fn AudioData::copy_to_with_shared_array_buffer(
   self : AudioData,
   destination : SharedArrayBuffer,
   options : AudioDataCopyToOptions,
+) -> Result[Unit, AudioDataCopyToError] {
+  AudioData::copy_to_with_shared_array_buffer_ffi(
+    self,
+    destination,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn AudioData::copy_to_with_array_buffer_view_ffi(
+  self : AudioData,
+  destination : ArrayBufferView,
+  options : JsValue,
 ) -> Result[Unit, AudioDataCopyToError] =
   #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn AudioData::copy_to_with_array_buffer_view(
+pub fn AudioData::copy_to_with_array_buffer_view(
   self : AudioData,
   destination : ArrayBufferView,
   options : AudioDataCopyToOptions,
-) -> Result[Unit, AudioDataCopyToError] =
-  #| (self, destination, options) => (() => { try { self.copyTo(destination, options); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
+) -> Result[Unit, AudioDataCopyToError] {
+  AudioData::copy_to_with_array_buffer_view_ffi(
+    self,
+    destination,
+    options.to_js(),
+  )
+}
 
 ///|
 /// VideoFrame interface
@@ -3435,91 +3470,198 @@ pub extern "js" fn VideoFrame::close(self : VideoFrame) -> Unit =
   #| (self) => self.close()
 
 ///|
-pub extern "js" fn VideoFrame::new_with_html_or_svg_image_element(
+extern "js" fn VideoFrame::new_with_html_or_svg_image_element_ffi(
+  image : HTMLOrSVGImageElement,
+  init_ : JsValue,
+) -> VideoFrame =
+  #| (image, init_) => new VideoFrame(image, init_)
+
+///|
+pub fn VideoFrame::new_with_html_or_svg_image_element(
   image : HTMLOrSVGImageElement,
   init_ : VideoFrameInit,
+) -> VideoFrame {
+  VideoFrame::new_with_html_or_svg_image_element_ffi(image, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_html_video_element_ffi(
+  image : HTMLVideoElement,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (image, init_) => new VideoFrame(image, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_html_video_element(
+pub fn VideoFrame::new_with_html_video_element(
   image : HTMLVideoElement,
   init_ : VideoFrameInit,
+) -> VideoFrame {
+  VideoFrame::new_with_html_video_element_ffi(image, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_html_canvas_element_ffi(
+  image : HTMLCanvasElement,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (image, init_) => new VideoFrame(image, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_html_canvas_element(
+pub fn VideoFrame::new_with_html_canvas_element(
   image : HTMLCanvasElement,
   init_ : VideoFrameInit,
+) -> VideoFrame {
+  VideoFrame::new_with_html_canvas_element_ffi(image, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_image_bitmap_ffi(
+  image : ImageBitmap,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (image, init_) => new VideoFrame(image, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_image_bitmap(
+pub fn VideoFrame::new_with_image_bitmap(
   image : ImageBitmap,
   init_ : VideoFrameInit,
+) -> VideoFrame {
+  VideoFrame::new_with_image_bitmap_ffi(image, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_offscreen_canvas_ffi(
+  image : OffscreenCanvas,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (image, init_) => new VideoFrame(image, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_offscreen_canvas(
+pub fn VideoFrame::new_with_offscreen_canvas(
   image : OffscreenCanvas,
   init_ : VideoFrameInit,
+) -> VideoFrame {
+  VideoFrame::new_with_offscreen_canvas_ffi(image, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_video_frame_ffi(
+  image : VideoFrame,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (image, init_) => new VideoFrame(image, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_video_frame(
+pub fn VideoFrame::new_with_video_frame(
   image : VideoFrame,
   init_ : VideoFrameInit,
-) -> VideoFrame =
-  #| (image, init_) => new VideoFrame(image, init_)
+) -> VideoFrame {
+  VideoFrame::new_with_video_frame_ffi(image, init_.to_js())
+}
 
 ///|
-pub extern "js" fn VideoFrame::new_with_array_buffer(
+extern "js" fn VideoFrame::new_with_array_buffer_ffi(
+  data : ArrayBuffer,
+  init_ : JsValue,
+) -> VideoFrame =
+  #| (data, init_) => new VideoFrame(data, init_)
+
+///|
+pub fn VideoFrame::new_with_array_buffer(
   data : ArrayBuffer,
   init_ : VideoFrameBufferInit,
+) -> VideoFrame {
+  VideoFrame::new_with_array_buffer_ffi(data, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_shared_array_buffer_ffi(
+  data : SharedArrayBuffer,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (data, init_) => new VideoFrame(data, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_shared_array_buffer(
+pub fn VideoFrame::new_with_shared_array_buffer(
   data : SharedArrayBuffer,
   init_ : VideoFrameBufferInit,
+) -> VideoFrame {
+  VideoFrame::new_with_shared_array_buffer_ffi(data, init_.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::new_with_array_buffer_view_ffi(
+  data : ArrayBufferView,
+  init_ : JsValue,
 ) -> VideoFrame =
   #| (data, init_) => new VideoFrame(data, init_)
 
 ///|
-pub extern "js" fn VideoFrame::new_with_array_buffer_view(
+pub fn VideoFrame::new_with_array_buffer_view(
   data : ArrayBufferView,
   init_ : VideoFrameBufferInit,
-) -> VideoFrame =
-  #| (data, init_) => new VideoFrame(data, init_)
+) -> VideoFrame {
+  VideoFrame::new_with_array_buffer_view_ffi(data, init_.to_js())
+}
 
 ///|
-pub extern "js" fn VideoFrame::copy_to_with_array_buffer(
+extern "js" fn VideoFrame::copy_to_with_array_buffer_ffi(
+  self : VideoFrame,
+  destination : ArrayBuffer,
+  options : JsValue,
+) -> Promise[FixedArray[PlaneLayout]] =
+  #| (self, destination, options) => self.copyTo(destination, options)
+
+///|
+pub fn VideoFrame::copy_to_with_array_buffer(
   self : VideoFrame,
   destination : ArrayBuffer,
   options : VideoFrameCopyToOptions,
+) -> Promise[FixedArray[PlaneLayout]] {
+  VideoFrame::copy_to_with_array_buffer_ffi(self, destination, options.to_js())
+}
+
+///|
+extern "js" fn VideoFrame::copy_to_with_shared_array_buffer_ffi(
+  self : VideoFrame,
+  destination : SharedArrayBuffer,
+  options : JsValue,
 ) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
-pub extern "js" fn VideoFrame::copy_to_with_shared_array_buffer(
+pub fn VideoFrame::copy_to_with_shared_array_buffer(
   self : VideoFrame,
   destination : SharedArrayBuffer,
   options : VideoFrameCopyToOptions,
+) -> Promise[FixedArray[PlaneLayout]] {
+  VideoFrame::copy_to_with_shared_array_buffer_ffi(
+    self,
+    destination,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn VideoFrame::copy_to_with_array_buffer_view_ffi(
+  self : VideoFrame,
+  destination : ArrayBufferView,
+  options : JsValue,
 ) -> Promise[FixedArray[PlaneLayout]] =
   #| (self, destination, options) => self.copyTo(destination, options)
 
 ///|
-pub extern "js" fn VideoFrame::copy_to_with_array_buffer_view(
+pub fn VideoFrame::copy_to_with_array_buffer_view(
   self : VideoFrame,
   destination : ArrayBufferView,
   options : VideoFrameCopyToOptions,
-) -> Promise[FixedArray[PlaneLayout]] =
-  #| (self, destination, options) => self.copyTo(destination, options)
+) -> Promise[FixedArray[PlaneLayout]] {
+  VideoFrame::copy_to_with_array_buffer_view_ffi(
+    self,
+    destination,
+    options.to_js(),
+  )
+}
 
 ///|
 /// VideoColorSpace interface

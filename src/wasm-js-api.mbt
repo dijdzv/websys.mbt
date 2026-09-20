@@ -604,18 +604,34 @@ pub extern "js" fn Module::custom_sections(
   #| (module_object, section_name) => Module.customSections(module_object, section_name)
 
 ///|
-pub extern "js" fn Module::new_with_array_buffer_view(
+extern "js" fn Module::new_with_array_buffer_view_ffi(
   bytes : ArrayBufferView,
-  options : WebAssemblyCompileOptions,
+  options : JsValue,
 ) -> Module =
   #| (bytes, options) => new Module(bytes, options)
 
 ///|
-pub extern "js" fn Module::new_with_array_buffer(
-  bytes : ArrayBuffer,
+pub fn Module::new_with_array_buffer_view(
+  bytes : ArrayBufferView,
   options : WebAssemblyCompileOptions,
+) -> Module {
+  Module::new_with_array_buffer_view_ffi(bytes, options.to_js())
+}
+
+///|
+extern "js" fn Module::new_with_array_buffer_ffi(
+  bytes : ArrayBuffer,
+  options : JsValue,
 ) -> Module =
   #| (bytes, options) => new Module(bytes, options)
+
+///|
+pub fn Module::new_with_array_buffer(
+  bytes : ArrayBuffer,
+  options : WebAssemblyCompileOptions,
+) -> Module {
+  Module::new_with_array_buffer_ffi(bytes, options.to_js())
+}
 
 ///|
 /// Instance interface

@@ -526,11 +526,19 @@ pub extern "js" fn Fence::notify_event(self : Fence, event : Event) -> Unit =
   #| (self, event) => self.notifyEvent(event)
 
 ///|
-pub extern "js" fn Fence::report_event_with_fence_event(
+extern "js" fn Fence::report_event_with_fence_event_ffi(
   self : Fence,
-  event : FenceEvent,
+  event : JsValue,
 ) -> Unit =
   #| (self, event) => self.reportEvent(event)
+
+///|
+pub fn Fence::report_event_with_fence_event(
+  self : Fence,
+  event : FenceEvent,
+) -> Unit {
+  Fence::report_event_with_fence_event_ffi(self, event.to_js())
+}
 
 ///|
 pub extern "js" fn Fence::report_event_with_string(

@@ -377,6 +377,7 @@ async fn main {
   // --- Async tests ---
   // These use Promise::wait() (equivalent to Rust's JsFuture::from().await)
   let async_tests : Array[(String, async () -> Unit)] = [
+    ("fetch_dictionary", async fn() { test_fetch_dictionary() }),
     ("js_timer", async fn() { test_js_timer() }),
     ("gpu_discovery", async fn() { test_gpu_discovery() }),
     ("gpu_readback", async fn() { test_gpu_readback() }),

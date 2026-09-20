@@ -820,20 +820,46 @@ pub fn Observable::reduce_with_options(
 }
 
 ///|
-pub extern "js" fn Observable::subscribe_with_observable_subscription_callback(
+extern "js" fn Observable::subscribe_with_observable_subscription_callback_ffi(
   self : Observable,
   observer : ObservableSubscriptionCallback,
-  options : SubscribeOptions,
+  options : JsValue,
 ) -> Unit =
   #| (self, observer, options) => self.subscribe(observer, options)
 
 ///|
-pub extern "js" fn Observable::subscribe_with_subscription_observer(
+pub fn Observable::subscribe_with_observable_subscription_callback(
+  self : Observable,
+  observer : ObservableSubscriptionCallback,
+  options : SubscribeOptions,
+) -> Unit {
+  Observable::subscribe_with_observable_subscription_callback_ffi(
+    self,
+    observer,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Observable::subscribe_with_subscription_observer_ffi(
+  self : Observable,
+  observer : JsValue,
+  options : JsValue,
+) -> Unit =
+  #| (self, observer, options) => self.subscribe(observer, options)
+
+///|
+pub fn Observable::subscribe_with_subscription_observer(
   self : Observable,
   observer : SubscriptionObserver,
   options : SubscribeOptions,
-) -> Unit =
-  #| (self, observer, options) => self.subscribe(observer, options)
+) -> Unit {
+  Observable::subscribe_with_subscription_observer_ffi(
+    self,
+    observer.to_js(),
+    options.to_js(),
+  )
+}
 
 ///|
 pub extern "js" fn Observable::inspect_with_observable_subscription_callback(
@@ -843,8 +869,19 @@ pub extern "js" fn Observable::inspect_with_observable_subscription_callback(
   #| (self, inspector_union) => self.inspect(inspector_union)
 
 ///|
-pub extern "js" fn Observable::inspect_with_observable_inspector(
+extern "js" fn Observable::inspect_with_observable_inspector_ffi(
   self : Observable,
-  inspector_union : ObservableInspector,
+  inspector_union : JsValue,
 ) -> Observable =
   #| (self, inspector_union) => self.inspect(inspector_union)
+
+///|
+pub fn Observable::inspect_with_observable_inspector(
+  self : Observable,
+  inspector_union : ObservableInspector,
+) -> Observable {
+  Observable::inspect_with_observable_inspector_ffi(
+    self,
+    inspector_union.to_js(),
+  )
+}

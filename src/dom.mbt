@@ -7762,112 +7762,292 @@ pub fn Document::aria_notify_with_options(
 }
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_text(
+extern "js" fn Document::convert_quad_from_node_with_text_ffi(
+  self : Document,
+  quad : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Document::convert_quad_from_node_with_text(
   self : Document,
   quad : DOMQuadInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_quad_from_node_with_text_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_quad_from_node_with_element_ffi(
+  self : Document,
+  quad : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_element(
+pub fn Document::convert_quad_from_node_with_element(
   self : Document,
   quad : DOMQuadInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_quad_from_node_with_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_quad_from_node_with_css_pseudo_element_ffi(
+  self : Document,
+  quad : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_css_pseudo_element(
+pub fn Document::convert_quad_from_node_with_css_pseudo_element(
   self : Document,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_quad_from_node_with_css_pseudo_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_quad_from_node_with_document_ffi(
+  self : Document,
+  quad : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Document::convert_quad_from_node_with_document(
+pub fn Document::convert_quad_from_node_with_document(
   self : Document,
   quad : DOMQuadInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Document::convert_quad_from_node_with_document_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_text(
+extern "js" fn Document::convert_rect_from_node_with_text_ffi(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub fn Document::convert_rect_from_node_with_text(
   self : Document,
   rect : DOMRectReadOnly,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_rect_from_node_with_text_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_rect_from_node_with_element_ffi(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_element(
+pub fn Document::convert_rect_from_node_with_element(
   self : Document,
   rect : DOMRectReadOnly,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_rect_from_node_with_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_rect_from_node_with_css_pseudo_element_ffi(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_css_pseudo_element(
+pub fn Document::convert_rect_from_node_with_css_pseudo_element(
   self : Document,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Document::convert_rect_from_node_with_css_pseudo_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_rect_from_node_with_document_ffi(
+  self : Document,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Document::convert_rect_from_node_with_document(
+pub fn Document::convert_rect_from_node_with_document(
   self : Document,
   rect : DOMRectReadOnly,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+) -> DOMQuad {
+  Document::convert_rect_from_node_with_document_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_text(
+extern "js" fn Document::convert_point_from_node_with_text_ffi(
+  self : Document,
+  point : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub fn Document::convert_point_from_node_with_text(
   self : Document,
   point : DOMPointInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Document::convert_point_from_node_with_text_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_point_from_node_with_element_ffi(
+  self : Document,
+  point : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_element(
+pub fn Document::convert_point_from_node_with_element(
   self : Document,
   point : DOMPointInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Document::convert_point_from_node_with_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_point_from_node_with_css_pseudo_element_ffi(
+  self : Document,
+  point : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_css_pseudo_element(
+pub fn Document::convert_point_from_node_with_css_pseudo_element(
   self : Document,
   point : DOMPointInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Document::convert_point_from_node_with_css_pseudo_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Document::convert_point_from_node_with_document_ffi(
+  self : Document,
+  point : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Document::convert_point_from_node_with_document(
+pub fn Document::convert_point_from_node_with_document(
   self : Document,
   point : DOMPointInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMPoint =
-  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+) -> DOMPoint {
+  Document::convert_point_from_node_with_document_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 /// XMLDocument interface
@@ -11166,112 +11346,292 @@ pub fn Element::get_animations_with_options(
 }
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_text(
+extern "js" fn Element::convert_quad_from_node_with_text_ffi(
+  self : Element,
+  quad : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Element::convert_quad_from_node_with_text(
   self : Element,
   quad : DOMQuadInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_quad_from_node_with_text_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_quad_from_node_with_element_ffi(
+  self : Element,
+  quad : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_element(
+pub fn Element::convert_quad_from_node_with_element(
   self : Element,
   quad : DOMQuadInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_quad_from_node_with_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_quad_from_node_with_css_pseudo_element_ffi(
+  self : Element,
+  quad : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_css_pseudo_element(
+pub fn Element::convert_quad_from_node_with_css_pseudo_element(
   self : Element,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_quad_from_node_with_css_pseudo_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_quad_from_node_with_document_ffi(
+  self : Element,
+  quad : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Element::convert_quad_from_node_with_document(
+pub fn Element::convert_quad_from_node_with_document(
   self : Element,
   quad : DOMQuadInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Element::convert_quad_from_node_with_document_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_text(
+extern "js" fn Element::convert_rect_from_node_with_text_ffi(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub fn Element::convert_rect_from_node_with_text(
   self : Element,
   rect : DOMRectReadOnly,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_rect_from_node_with_text_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_rect_from_node_with_element_ffi(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_element(
+pub fn Element::convert_rect_from_node_with_element(
   self : Element,
   rect : DOMRectReadOnly,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_rect_from_node_with_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_rect_from_node_with_css_pseudo_element_ffi(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_css_pseudo_element(
+pub fn Element::convert_rect_from_node_with_css_pseudo_element(
   self : Element,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Element::convert_rect_from_node_with_css_pseudo_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_rect_from_node_with_document_ffi(
+  self : Element,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Element::convert_rect_from_node_with_document(
+pub fn Element::convert_rect_from_node_with_document(
   self : Element,
   rect : DOMRectReadOnly,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+) -> DOMQuad {
+  Element::convert_rect_from_node_with_document_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_text(
+extern "js" fn Element::convert_point_from_node_with_text_ffi(
+  self : Element,
+  point : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub fn Element::convert_point_from_node_with_text(
   self : Element,
   point : DOMPointInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Element::convert_point_from_node_with_text_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_point_from_node_with_element_ffi(
+  self : Element,
+  point : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_element(
+pub fn Element::convert_point_from_node_with_element(
   self : Element,
   point : DOMPointInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Element::convert_point_from_node_with_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_point_from_node_with_css_pseudo_element_ffi(
+  self : Element,
+  point : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_css_pseudo_element(
+pub fn Element::convert_point_from_node_with_css_pseudo_element(
   self : Element,
   point : DOMPointInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Element::convert_point_from_node_with_css_pseudo_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Element::convert_point_from_node_with_document_ffi(
+  self : Element,
+  point : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Element::convert_point_from_node_with_document(
+pub fn Element::convert_point_from_node_with_document(
   self : Element,
   point : DOMPointInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMPoint =
-  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+) -> DOMPoint {
+  Element::convert_point_from_node_with_document_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 /// NamedNodeMap interface
@@ -11876,112 +12236,287 @@ pub extern "js" fn Text::get_assigned_slot(self : Text) -> HTMLSlotElement? =
   #| (self) => (() => { const v = self.assignedSlot; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_text(
+extern "js" fn Text::convert_quad_from_node_with_text_ffi(
+  self : Text,
+  quad : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+
+///|
+pub fn Text::convert_quad_from_node_with_text(
   self : Text,
   quad : DOMQuadInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_quad_from_node_with_text_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_quad_from_node_with_element_ffi(
+  self : Text,
+  quad : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_element(
+pub fn Text::convert_quad_from_node_with_element(
   self : Text,
   quad : DOMQuadInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_quad_from_node_with_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_quad_from_node_with_css_pseudo_element_ffi(
+  self : Text,
+  quad : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_css_pseudo_element(
+pub fn Text::convert_quad_from_node_with_css_pseudo_element(
   self : Text,
   quad : DOMQuadInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_quad_from_node_with_css_pseudo_element_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_quad_from_node_with_document_ffi(
+  self : Text,
+  quad : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
 
 ///|
-pub extern "js" fn Text::convert_quad_from_node_with_document(
+pub fn Text::convert_quad_from_node_with_document(
   self : Text,
   quad : DOMQuadInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, quad, from, options) => self.convertQuadFromNode(quad, from, options)
+) -> DOMQuad {
+  Text::convert_quad_from_node_with_document_ffi(
+    self,
+    quad.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_text(
+extern "js" fn Text::convert_rect_from_node_with_text_ffi(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Text,
+  options : JsValue,
+) -> DOMQuad =
+  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+
+///|
+pub fn Text::convert_rect_from_node_with_text(
   self : Text,
   rect : DOMRectReadOnly,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_rect_from_node_with_text_ffi(self, rect, from, options.to_js())
+}
+
+///|
+extern "js" fn Text::convert_rect_from_node_with_element_ffi(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Element,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_element(
+pub fn Text::convert_rect_from_node_with_element(
   self : Text,
   rect : DOMRectReadOnly,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_rect_from_node_with_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_rect_from_node_with_css_pseudo_element_ffi(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_css_pseudo_element(
+pub fn Text::convert_rect_from_node_with_css_pseudo_element(
   self : Text,
   rect : DOMRectReadOnly,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMQuad {
+  Text::convert_rect_from_node_with_css_pseudo_element_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_rect_from_node_with_document_ffi(
+  self : Text,
+  rect : DOMRectReadOnly,
+  from : Document,
+  options : JsValue,
 ) -> DOMQuad =
   #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
 
 ///|
-pub extern "js" fn Text::convert_rect_from_node_with_document(
+pub fn Text::convert_rect_from_node_with_document(
   self : Text,
   rect : DOMRectReadOnly,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMQuad =
-  #| (self, rect, from, options) => self.convertRectFromNode(rect, from, options)
+) -> DOMQuad {
+  Text::convert_rect_from_node_with_document_ffi(
+    self,
+    rect,
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_text(
+extern "js" fn Text::convert_point_from_node_with_text_ffi(
+  self : Text,
+  point : JsValue,
+  from : Text,
+  options : JsValue,
+) -> DOMPoint =
+  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+
+///|
+pub fn Text::convert_point_from_node_with_text(
   self : Text,
   point : DOMPointInit,
   from : Text,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Text::convert_point_from_node_with_text_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_point_from_node_with_element_ffi(
+  self : Text,
+  point : JsValue,
+  from : Element,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_element(
+pub fn Text::convert_point_from_node_with_element(
   self : Text,
   point : DOMPointInit,
   from : Element,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Text::convert_point_from_node_with_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_point_from_node_with_css_pseudo_element_ffi(
+  self : Text,
+  point : JsValue,
+  from : CSSPseudoElement,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_css_pseudo_element(
+pub fn Text::convert_point_from_node_with_css_pseudo_element(
   self : Text,
   point : DOMPointInit,
   from : CSSPseudoElement,
   options : ConvertCoordinateOptions,
+) -> DOMPoint {
+  Text::convert_point_from_node_with_css_pseudo_element_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
+
+///|
+extern "js" fn Text::convert_point_from_node_with_document_ffi(
+  self : Text,
+  point : JsValue,
+  from : Document,
+  options : JsValue,
 ) -> DOMPoint =
   #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
 
 ///|
-pub extern "js" fn Text::convert_point_from_node_with_document(
+pub fn Text::convert_point_from_node_with_document(
   self : Text,
   point : DOMPointInit,
   from : Document,
   options : ConvertCoordinateOptions,
-) -> DOMPoint =
-  #| (self, point, from, options) => self.convertPointFromNode(point, from, options)
+) -> DOMPoint {
+  Text::convert_point_from_node_with_document_ffi(
+    self,
+    point.to_js(),
+    from,
+    options.to_js(),
+  )
+}
 
 ///|
 /// CDATASection interface

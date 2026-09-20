@@ -32,6 +32,7 @@ fn emit_wasm_dictionary(
           { ..typ, nullable: false, },
           references=references.filter(name => !dictionaries.contains(name)),
           enums~,
+          dictionaries~,
         )
         is Some(plan) else {
         println(

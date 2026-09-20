@@ -6,6 +6,49 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+fn clear_descriptor(
+  view : @web.GPUTextureView,
+  dict : Bool,
+  hole : Bool,
+) -> @web.GPURenderPassDescriptor {
+  let color : @web.Input_websys_input_GPURenderPassColorAttachment_clearValueValue = if dict {
+    Case1(@web.GPUColorDict::{ r: 1.0, g: 0.0, b: 0.0, a: 1.0, })
+  } else {
+    Case0([1.0, 0.0, 0.0, 1.0])
+  }
+  let attachment = @web.GPURenderPassColorAttachment::{
+    view,
+    clearValue: Some(color),
+    loadOp: Clear,
+    storeOp: Store,
+  }
+  @web.GPURenderPassDescriptor::{
+    colorAttachments: if hole {
+      [None, Some(attachment)]
+    } else {
+      [Some(attachment)]
+    },
+  }
+}
+
+///|
+pub fn render_options(view : @web.GPUTextureView, dict : Bool) -> @web.JsValue {
+  clear_descriptor(view, dict, true).to_js()
+}
+
+///|
+pub fn encode_clear(
+  device : @web.GPUDevice,
+  view : @web.GPUTextureView,
+  dict : Bool,
+) -> @web.GPUCommandBuffer {
+  let encoder = device.create_command_encoder()
+  let pass = encoder.begin_render_pass(clear_descriptor(view, dict, false))
+  pass.end()
+  encoder.finish()
+}
+
+///|
 pub fn enum_options(mode : Int) -> @web.JsValue {
   @web.EnumInputs::{
     mode: MirrorRepeat,

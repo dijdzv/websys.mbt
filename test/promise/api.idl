@@ -6,9 +6,35 @@ interface GPUAdapter {
   Promise<GPUDevice> requestDevice();
 };
 interface GPUDevice {
+  GPUCommandEncoder createCommandEncoder();
   GPUSampler createSampler(GPUSamplerDescriptor descriptor);
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
   undefined destroy();
+};
+interface GPUCommandEncoder {
+  GPURenderPassEncoder beginRenderPass(GPURenderPassDescriptor descriptor);
+  GPUCommandBuffer finish();
+};
+interface GPURenderPassEncoder { undefined end(); };
+interface GPUCommandBuffer {};
+interface GPUTextureView {};
+enum GPULoadOp { "load", "clear" };
+enum GPUStoreOp { "store", "discard" };
+dictionary GPUColorDict {
+  required double r;
+  required double g;
+  required double b;
+  required double a;
+};
+typedef (sequence<double> or GPUColorDict) GPUColor;
+dictionary GPURenderPassColorAttachment {
+  required GPUTextureView view;
+  GPUColor clearValue;
+  required GPULoadOp loadOp;
+  required GPUStoreOp storeOp;
+};
+dictionary GPURenderPassDescriptor {
+  required sequence<GPURenderPassColorAttachment?> colorAttachments;
 };
 enum GPUAddressMode { "clamp-to-edge", "repeat", "mirror-repeat" };
 enum GPUFilterMode { "nearest", "linear" };

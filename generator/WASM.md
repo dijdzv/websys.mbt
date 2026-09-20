@@ -314,7 +314,7 @@ compound types remain rejected. Nested types and annotations are checked
 recursively; unsupported records must not silently become any.
 
 Dictionary fields may use nested sequences, string-keyed records and
-unions of supported scalar/container values or declared interface references.
+unions of supported scalar/container values, declared dictionaries or interface references.
 Declared enums are generated as MoonBit enums with string conversions. Dictionary
 inputs, including enum sequences and nullable fields, call that conversion before
 passing strings across FFI; enum tags or compiler layouts never enter the host.
@@ -331,7 +331,15 @@ string validation/coercion; this builder does not replace browser conversion.
 Optional fields retain omission. Outer nullable compound fields use Option when
 required and Nullable::{Undefined, Null, Value} when optional; presence is read
 from the semantic model even when the legacy AST drops it. Interface branches
-preserve host identity. Nullable values nested inside containers remain unsupported.
+preserve host identity. Nullable values inside containers use Option and encode
+None as host null. Nested dictionaries call their generated conversion rather
+than passing MoonBit records through FFI.
+
+The browser consumer checks nullable render-attachment arrays and both sequence
+and dictionary color branches. Generated encoder/pass methods record a clear
+pass, which is submitted under a GPU validation error scope. Texture creation
+and queue submission in this test still use host JavaScript; it does not yet
+establish an entirely generated rendering/readback path or verify pixel values.
 
 The external browser consumer sends real POST requests using both branches of
 the pinned Fetch HeadersInit shape and a Unicode text body. Its PostOptions

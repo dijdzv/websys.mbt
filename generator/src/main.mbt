@@ -133,6 +133,7 @@ async fn main {
     let parsed = parse_webidl_raw(read_wasm_input(input))
     guard is_parse_success(parsed) else { abort(get_parse_error(parsed)) }
     if validate_wasm_input(parsed) is Some(message) {
+      println(message)
       abort(message)
     }
     let (moonbit, runtime) = generate_wasm(convert_to_definitions(parsed))

@@ -3,7 +3,6 @@ test "Promise conversion rejects unsupported shapes before emitting bindings" {
   for
     typ in [
       Any,
-      Void,
       Sequence(String),
       Nullable(String),
       Named("Response"),
@@ -14,6 +13,7 @@ test "Promise conversion rejects unsupported shapes before emitting bindings" {
   for
     typ in [
       String,
+      Void,
       Primitive("long"),
       Primitive("unsigned long"),
       Primitive("boolean"),

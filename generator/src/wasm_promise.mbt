@@ -10,6 +10,7 @@ fn wasm_promise_value(
   interfaces? : Array[String] = [],
 ) -> WasmPromiseValue? {
   match t {
+    Void => Some({ name: "Unit", predicate: "value === undefined", })
     String => Some({ name: "String", predicate: "typeof value === 'string'", })
     Primitive("boolean") =>
       Some({ name: "Bool", predicate: "typeof value === 'boolean'", })

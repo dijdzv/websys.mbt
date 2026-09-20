@@ -9,6 +9,22 @@ fn notify(callback : Callback, code : Int, text : String) -> Unit = "fixture" "n
 fn abort_wait(callback : Callback) -> Unit = "fixture" "abort"
 
 ///|
+pub fn cancel_stream(stream : @web.ReadableStream, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let reader = @web.ReadableStreamDefaultReader::new(stream)
+    defer reader.release_lock()
+    reader.cancel("requested").wait() catch {
+      @bridge.Rejection(_) => {
+        notify(callback, 3, "")
+        return
+      }
+      error => raise error
+    }
+    notify(callback, 1, "")
+  })
+}
+
+///|
 pub fn fetch_text(
   window : @web.Window,
   url : String,

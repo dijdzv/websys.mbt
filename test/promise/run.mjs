@@ -82,6 +82,23 @@ try {
     await fetchCase({ fetch: () => Promise.resolve({ text: () => Promise.resolve('fake') }) }, '', 2, '');
     await fetchCase({ fetch: () => Promise.reject(Error('fixture failure')) }, '', 3, '');
     await fetchCase(window, 'http://fixture.invalid/hold', 4, 'true', 50);
+    for (const rejectCancel of [false, true]) {
+      let reason;
+      const stream = new ReadableStream({ cancel(value) {
+        reason = value;
+        if (rejectCancel) return Promise.reject(Error('source cancellation failed'));
+      } });
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Stream cancel timeout')), 3000);
+        instance.exports.cancel_stream(stream, code => {
+          clearTimeout(watchdog);
+          if (code !== (rejectCancel ? 3 : 1)) reject(Error(`Cancel result ${code}`));
+          else resolve();
+        });
+      });
+      if (stream.locked || reason !== 'requested') throw Error('Reader ownership or cancellation reason lost');
+      count++;
+    }
     return count;
   }, { bytes: [...bytes], factory: createImports.toString() });
   const aborted = await abortedRequest;

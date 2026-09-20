@@ -1,0 +1,30 @@
+import {
+  "moonbitlang/async@0.21.3",
+  "moonbitlang/async@0.21.3/fs",
+  "moonbitlang/async@0.21.3/process",
+}
+
+async fn checked(command : String, args : Array[String]) -> Unit {
+  let (code, output, errors) = @process.collect_output(command, args, no_console_window=true)
+  assert_eq(code, 0, msg=output.text() + errors.text())
+}
+
+async fn main {
+  let temporary = @fs.realpath(@fs.tmpdir(prefix="websys-consumer"))
+  let root = temporary.replace_all(old="\\", new="/") + "/bundle"
+  println("Checking relocated WasmGC consumer: " + root)
+  checked("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root])
+  let (repeat_code, _, _) = @process.collect_output("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root], no_console_window=true)
+  assert_true(repeat_code != 0, msg="Export must reject an existing destination")
+  @fs.mkdir(root + "/consumer")
+  for name in ["moon.mod", "moon.pkg", "check.mbt"] {
+    @fs.write_file(root + "/consumer/" + name, @fs.read_file("test/promise/" + name))
+  }
+  @fs.write_file(root + "/moon.work", "members = [\"bindings\", \"async\", \"consumer\"]\n")
+  checked("moon", ["-C", root + "/consumer", "build", "--target", "wasm-gc", "--release", "--deny-warn"])
+  checked("node", ["test/promise/run.mjs", root + "/_build/wasm-gc/release/build/dijdzv/websys-promise-tests/websys-promise-tests.wasm", root + "/bindings/runtime.mjs"])
+  // Only the directory atomically created by this invocation is removed.
+  assert_eq(@fs.realpath(temporary), temporary)
+  @fs.rmdir(temporary, recursive=true)
+  println("Relocated WasmGC source bundle: 100 browser cases passed")
+}

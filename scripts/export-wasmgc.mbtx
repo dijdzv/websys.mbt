@@ -1,0 +1,48 @@
+import {
+  "moonbitlang/async@0.21.3",
+  "moonbitlang/async@0.21.3/fs",
+  "moonbitlang/async@0.21.3/process",
+  "moonbitlang/core/env",
+}
+
+async fn checked(command : String, args : Array[String]) -> String {
+  let (code, output, errors) = @process.collect_output(command, args, no_console_window=true)
+  assert_eq(code, 0, msg=output.text() + errors.text())
+  output.text().trim().to_owned()
+}
+
+async fn copy_file(source : String, destination : String) -> Unit {
+  let parts = destination.split("/").map(fn(part) { part.to_owned() }).collect()
+  ignore(parts.pop())
+  let parent = parts.join("/")
+  if !@fs.exists(parent) { @fs.mkdir(parent, recursive=true) }
+  @fs.write_file(destination, @fs.read_file(source))
+}
+
+async fn main {
+  let args = @env.args()
+  assert_eq(args.length(), 3, msg="usage: export-wasmgc generated-module new-output-directory")
+  let source = args[1]
+  let destination = args[2].replace_all(old="\\", new="/")
+  assert_false(@fs.exists(destination), msg="Output must be a new directory")
+  for name in ["bindings.mbt", "runtime.mjs", "moon.mod", "moon.pkg"] {
+    assert_true(@fs.exists(source + "/" + name), msg="Missing generated module file: " + name)
+  }
+  ignore(checked("moon", ["run", "scripts/prepare-async-wasmgc.mbtx"]))
+  let dependency = ".work/dependencies/async-wasmgc"
+  let revision = checked("git", ["-C", dependency, "rev-parse", "HEAD"])
+  for name in ["bindings.mbt", "runtime.mjs", "moon.mod", "moon.pkg"] {
+    copy_file(source + "/" + name, destination + "/bindings/" + name)
+  }
+  for path in checked("git", ["-C", dependency, "ls-files"]).split("\n") {
+    let path = path.trim().to_owned()
+    if @fs.exists(dependency + "/" + path) && (path.has_prefix("src/") || path == "moon.mod" || path == "LICENSE" || path == "README.md") {
+      copy_file(dependency + "/" + path, destination + "/async/" + path)
+    }
+  }
+  copy_file("LICENSE", destination + "/LICENSE.websys")
+  copy_file("patches/async-wasmgc.patch", destination + "/async-wasmgc.patch")
+  @fs.write_file(destination + "/moon.work", "members = [\"bindings\", \"async\"]\n")
+  @fs.write_file(destination + "/PROVENANCE.txt", "Experimental WebSys WasmGC source bundle\nWebSys revision: " + checked("git", ["rev-parse", "HEAD"]) + "\nWebSys working tree status:\n" + checked("git", ["status", "--porcelain"]) + "\nAsync revision: " + revision + "\nCompiler: " + checked("moon", ["version"]) + "\nAsync modifications: async-wasmgc.patch\nBindings and runtime are copied from the supplied generated directory; regenerate together before export. This is not a registry release.\n")
+  println("Exported experimental WasmGC source bundle: " + destination)
+}

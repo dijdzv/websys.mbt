@@ -76,6 +76,7 @@ run = [
   '"{{env.MOON_HOME}}/bin/moon" -C test/promise build --target wasm-gc --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/promise/run.mjs',
   '"{{env.MOON_HOME}}/bin/moon" run scripts/verify-result-diagnostics.mbtx',
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/verify-wasmgc-bundle.mbtx',
 ]
 
 [tasks."fmt-check"]

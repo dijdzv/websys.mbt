@@ -28,6 +28,34 @@ invocation. The consumer still supplies the string-builtin linker configuration
 described below. This does not publish a registry package or expand the supported
 WebIDL surface.
 
+## Experimental source bundle
+
+After generating a standalone module, run from the WebSys checkout:
+
+```sh
+mise exec -- moon run scripts/export-wasmgc.mbtx path/to/generated-module path/to/new-bundle
+```
+
+The destination must not exist. The bundle contains the generated bindings and
+matching runtime, a verified copy of the pinned patched async source, licenses,
+the patch, compiler/revision provenance, and a workspace with relative member
+paths. It does not copy build caches or modify the registry. A failed export
+may leave a partial destination; inspect it and use a new destination on retry.
+
+Add the consuming application as another workspace member and import the module
+named in `bindings/moon.mod`. Load `bindings/runtime.mjs` from that same bundle.
+The application must still configure the string builtins described below.
+This is an experimental source delivery path, not a published registry package
+or evidence of upstream support for the patched async dependency.
+
+`mise run test-promises` also exports to a newly created directory in the system
+temporary area, builds a consumer against only the bundled workspace members,
+and runs the 100-case Promise/Fetch/Streams suite with that build and that
+bundle's runtime. Success removes the temporary directory; failures retain it
+at the printed path for inspection. The compiler and browser-test harness remain
+development prerequisites, not part of the exported library. This verifies
+relocation of the bounded generated fixture, not the full Webref corpus.
+
 ## ABI choices
 
 - DOM values use opaque `#external` references, not integer handles.

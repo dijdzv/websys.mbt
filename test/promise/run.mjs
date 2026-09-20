@@ -1,9 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { chromium } from 'playwright';
-import { createImports } from './generated/runtime.mjs';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
 
-const bytes = await readFile('test/promise/_build/wasm-gc/release/build/dijdzv/websys-promise-tests/websys-promise-tests.wasm');
+if (process.argv.length !== 2 && process.argv.length !== 4) throw Error('Supply both Wasm and runtime paths, or neither');
+const wasmPath = process.argv[2] ?? 'test/promise/_build/wasm-gc/release/build/dijdzv/websys-promise-tests/websys-promise-tests.wasm';
+const runtimeUrl = process.argv[3] ? pathToFileURL(resolve(process.argv[3])) : new URL('./generated/runtime.mjs', import.meta.url);
+const { createImports } = await import(runtimeUrl.href);
+const bytes = await readFile(wasmPath);
 const browser = await chromium.launch({ headless: true });
 let pendingBodyStarted = false;
 let pendingBodyClosed = false;

@@ -53,6 +53,7 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 Promise-returning operations support DOMString, boolean, long, unsigned long
 and finite double settlement through generated `WebsysPromise[T]` values.
+`Promise<undefined>` settles to Unit after checking for host undefined.
 Declared interface results are also supported with a same-realm `instanceof`
 check before preserving the host reference. Unknown, dictionary and callback
 types are not treated as interfaces. This is not cross-realm brand validation.
@@ -69,7 +70,7 @@ abort callback runs only when waiting is interrupted, not on settled rejection
 or decoding failure. The default does not abort the underlying operation; pass
 the operation's cancellation capability explicitly when required.
 
-`mise run test-promises` generates a separate module and executes 42 browser
+`mise run test-promises` generates a separate module and executes 44 browser
 cases, including a real fetched Response's text, numeric boundaries, invalid
 values, rejection, synchronous operation failure, timeout and late settlement.
 It also initiates Fetch through a narrowed generated Window API, passes a
@@ -79,7 +80,11 @@ browser ERR_ABORTED event, alongside the generated signal's aborted state.
 Synthetic receivers check rejection and a non-Response result. Full standard
 Fetch signatures and stream-body cancellation remain separate work.
 It is included in the normal test task.
-Promise attributes, parameters, void, nullable, dictionary and sequence
+The reader fixture also cancels real ReadableStreams and releases the reader
+lock after either successful or rejected source cancellation. Its narrowed
+cancel signature requires a string reason; optional/any reasons and structured
+read results are not established by this fixture.
+Promise attributes, parameters, nullable, dictionary and sequence
 settlement are rejected rather than assigned an unchecked representation.
 
 ### ArrayBuffer references

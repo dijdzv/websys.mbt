@@ -10,7 +10,7 @@ fn resolve_wasm_field_type(
           return {
             ..value,
             nullable: typ.nullable || value.nullable,
-            annotated: typ.annotated || value.annotated,
+            annotations: typ.annotations + value.annotations,
           }
         None => typ.kind
       }

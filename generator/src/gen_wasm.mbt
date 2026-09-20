@@ -85,8 +85,7 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
             is Some(message) {
             return Some(message)
           }
-          if js_array_length(get_ext_attrs(field)) != 0 ||
-            js_array_length(get_ext_attrs(get_idl_type(field))) != 0 {
+          if js_array_length(get_ext_attrs(field)) != 0 {
             return Some(
               "WasmGC dictionary extended attributes are not implemented",
             )

@@ -10,6 +10,8 @@ options(
   link: {
     "wasm-gc": {
       "exports": [
+        "buffer_size_options",
+        "gpu_buffer_sample",
         "gpu_discovery",
         "read_optional_response",
         "read_bytes",

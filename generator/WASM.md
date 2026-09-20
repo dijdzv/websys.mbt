@@ -345,7 +345,19 @@ composition. Forward references and nested type containers are traversed;
 cycles and duplicate names are rejected. Public signatures currently use the
 resolved type rather than emitting a separate named alias. Resolving an alias
 does not add support for its underlying union, sequence or other unsupported
-conversion. Type annotations on typedefs remain unsupported.
+conversion. Dictionary input fields support `[EnforceRange] unsigned long long`
+through typedefs, using UInt64 and preserving the annotation in the semantic
+type plan. Conversion checks the unsigned value against 2^53-1 before converting
+to a host Number, as required by Web IDL's EnforceRange integer conversion;
+larger values throw TypeError without rounding. Unknown annotations and other
+annotated conversions remain rejected. This does not add arbitrary 64-bit
+operation/attribute/Promise result support.
+
+The consumer checks zero, 2^32, the exact upper boundary and rejected values above
+it without allocating large buffers. It also creates a real mapped GPU buffer
+through generated GPUBufferDescriptor/createBuffer/getMappedRange APIs, copies
+the bytes, unmaps, and destroys resources. No-argument mapping signatures are
+deliberately narrowed; GPU rendering/submission remain separate coverage.
 
 Full Webref generation needs partial mixins, nullable callback arguments, optional arguments,
 overloads, remaining dictionary conversions, sequences, enum/union conversions, remaining Promise conversions and

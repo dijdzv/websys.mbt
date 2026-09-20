@@ -299,7 +299,7 @@ expose an empty stream for an HTTP 204 response instead of a null body.
 
 Supported: interfaces with inheritance, partial interfaces, mixins/includes,
 instance attributes/operations, DOM strings,
-boolean/long/double values, references to declared interfaces, and one-argument
+boolean/long/double values, references to declared interfaces, and zero/one-argument
 void callbacks. The fixture is a deliberately narrowed DOM surface, not a copy
 of the complete DOM IDL. It tests Unicode round-trips, booleans, captured callback
 state, duplicate listener registration and removal in two Wasm instances.

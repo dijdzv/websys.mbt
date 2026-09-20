@@ -12,6 +12,10 @@ try {
       builtins: ['js-string'], importedStringConstants: '_',
     });
     const result = instance.exports.run(document, new Event('click'));
+    instance.exports.timer_start(window);
+    if (instance.exports.timer_count() !== 0) throw new Error('Timer fired synchronously');
+    await new Promise(resolve => setTimeout(resolve, 50));
+    if (instance.exports.timer_count() !== 3) throw new Error('Zero-argument timer callback or cancellation failed');
     const original = new Uint8Array([0, 127, 128, 255]).buffer;
     if (instance.exports.buffer_capture(original) !== 4) throw new Error('Buffer copy length');
     for (const [index, expected] of [0, 127, 128, 255].entries()) {

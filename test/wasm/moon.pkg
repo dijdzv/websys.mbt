@@ -9,6 +9,8 @@ options(
     "wasm-gc": {
       "exports": [
         "run",
+        "timer_start",
+        "timer_count",
         "buffer_roundtrip",
         "buffer_clear",
         "buffer_capture",

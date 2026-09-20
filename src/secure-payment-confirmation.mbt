@@ -94,7 +94,7 @@ extern "js" fn SecurePaymentConfirmationRequest::to_js_ffi(
   self : SecurePaymentConfirmationRequest,
 ) -> JsValue =
   #| (self) => ({
-  #|   challenge: self.challenge.to_js_value(),
+  #|   challenge: self.challenge,
   #|   rpId: self.rpId,
   #|   credentialIds: self.credentialIds,
   #|   instrument: self.instrument,

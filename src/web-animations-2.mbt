@@ -278,10 +278,10 @@ extern "js" fn ComputedEffectTiming::to_js_ffi(
   #|   iterations: ((() => { const v = self.iterations; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['normal', 'reverse', 'alternate', 'alternate-reverse'][v]; })()),
   #|   easing: self.easing,
-  #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   endTime: ((() => { const v = self.endTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   activeDuration: ((() => { const v = self.activeDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   localTime: ((() => { const v = self.localTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   endTime: ((() => { const v = self.endTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   activeDuration: ((() => { const v = self.activeDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   localTime: ((() => { const v = self.localTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   progress: ((() => { const v = self.progress; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   currentIteration: ((() => { const v = self.currentIteration; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
@@ -580,8 +580,8 @@ extern "js" fn AnimationPlaybackEventInit::to_js_ffi(
   self : AnimationPlaybackEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   currentTime: ((() => { const v = self.currentTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
-  #|   timelineTime: ((() => { const v = self.timelineTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })())
+  #|   currentTime: ((() => { const v = self.currentTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   timelineTime: ((() => { const v = self.timelineTime; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
 ///|

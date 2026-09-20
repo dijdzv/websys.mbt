@@ -279,7 +279,7 @@ extern "js" fn CredentialCreationOptions::to_js_ffi(
   #| (self) => ({
   #|   mediation: ((() => { const v = self.mediation; if (v === undefined) return undefined; return ['silent', 'optional', 'conditional', 'required'][v]; })()),
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   password: ((() => { const v = self.password; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   federated: ((() => { const v = self.federated; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   digital: ((() => { const v = self.digital; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   publicKey: ((() => { const v = self.publicKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())

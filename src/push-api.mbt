@@ -264,7 +264,7 @@ pub fn PushEventInit::default() -> PushEventInit {
 ///|
 extern "js" fn PushEventInit::to_js_ffi(self : PushEventInit) -> JsValue =
   #| (self) => ({
-  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   notification: ((() => { const v = self.notification; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 

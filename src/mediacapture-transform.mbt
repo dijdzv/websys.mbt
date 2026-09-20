@@ -95,7 +95,7 @@ extern "js" fn MediaStreamTrackProcessorInit::to_js_ffi(
   self : MediaStreamTrackProcessorInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   track: self.track.to_js_value(),
+  #|   track: self.track,
   #|   maxBufferSize: self.maxBufferSize
   #| })
 

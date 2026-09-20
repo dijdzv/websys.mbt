@@ -108,8 +108,8 @@ extern "js" fn RequestInit::to_js_ffi(self : RequestInit) -> JsValue =
   #| (self) => ({
   #|   attributionReporting: ((() => { const v = self.attributionReporting; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   method: self.method_,
-  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
-  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   referrer: self.referrer,
   #|   referrerPolicy: ((() => { const v = self.referrerPolicy; if (v === undefined) return undefined; return ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'][v]; })()),
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),

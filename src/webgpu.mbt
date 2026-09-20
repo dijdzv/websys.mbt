@@ -2570,7 +2570,7 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   size: self.size.to_js_value(),
+  #|   size: self.size,
   #|   mipLevelCount: ((() => { const v = self.mipLevelCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   sampleCount: ((() => { const v = self.sampleCount; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   dimension: ((() => { const v = self.dimension; if (v === undefined) return undefined; return ['1d', '2d', '3d'][v]; })()),
@@ -3258,7 +3258,7 @@ extern "js" fn GPUBindGroupEntry::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   binding: self.binding,
-  #|   resource: self.resource.to_js_value()
+  #|   resource: self.resource
   #| })
 
 ///|
@@ -4444,7 +4444,7 @@ extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })())
   #| })
 
@@ -4508,7 +4508,7 @@ extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: ((() => { const v = self.mipLevel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })()),
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })()),
   #|   premultipliedAlpha: (self.premultipliedAlpha === -1 ? undefined : self.premultipliedAlpha)
@@ -4564,8 +4564,8 @@ extern "js" fn GPUCopyExternalImageSourceInfo::to_js_ffi(
   self : GPUCopyExternalImageSourceInfo,
 ) -> JsValue =
   #| (self) => ({
-  #|   source: self.source.to_js_value(),
-  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   source: self.source,
+  #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flipY: (self.flipY === -1 ? undefined : self.flipY)
   #| })
 
@@ -4944,7 +4944,7 @@ extern "js" fn GPURenderPassColorAttachment::to_js_ffi(
   #|   view: self.view,
   #|   depthSlice: ((() => { const v = self.depthSlice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   resolveTarget: ((() => { const v = self.resolveTarget; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   clearValue: ((() => { const v = self.clearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   clearValue: ((() => { const v = self.clearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   loadOp: ['load', 'clear'][self.loadOp],
   #|   storeOp: ['store', 'discard'][self.storeOp]
   #| })

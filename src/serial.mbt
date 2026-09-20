@@ -129,7 +129,7 @@ extern "js" fn SerialPortFilter::to_js_ffi(self : SerialPortFilter) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
   #|   usbProductId: self.usbProductId,
-  #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|
@@ -177,7 +177,7 @@ extern "js" fn SerialPortInfo::to_js_ffi(self : SerialPortInfo) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
   #|   usbProductId: self.usbProductId,
-  #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

@@ -3907,7 +3907,7 @@ extern "js" fn MessageEventInit::to_js_ffi(self : MessageEventInit) -> JsValue =
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   origin: self.origin,
   #|   lastEventId: self.lastEventId,
-  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0.to_js_value(); })()),
+  #|   source: ((() => { const v = self.source; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   ports: self.ports
   #| })
 

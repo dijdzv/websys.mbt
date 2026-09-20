@@ -458,7 +458,7 @@ pub fn RouterRule::new(
 extern "js" fn RouterRule::to_js_ffi(self : RouterRule) -> JsValue =
   #| (self) => ({
   #|   condition: self.condition,
-  #|   source: self.source.to_js_value()
+  #|   source: self.source
   #| })
 
 ///|
@@ -509,7 +509,7 @@ pub fn RouterCondition::default() -> RouterCondition {
 ///|
 extern "js" fn RouterCondition::to_js_ffi(self : RouterCondition) -> JsValue =
   #| (self) => ({
-  #|   urlPattern: ((() => { const v = self.urlPattern; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })()),
+  #|   urlPattern: ((() => { const v = self.urlPattern; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   requestMethod: self.requestMethod,
   #|   requestMode: ((() => { const v = self.requestMode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
   #|   requestDestination: ((() => { const v = self.requestDestination; if (v === undefined) return undefined; return ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'][v]; })()),

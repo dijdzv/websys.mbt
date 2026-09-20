@@ -536,7 +536,7 @@ pub fn BoxQuadOptions::default() -> BoxQuadOptions {
 extern "js" fn BoxQuadOptions::to_js_ffi(self : BoxQuadOptions) -> JsValue =
   #| (self) => ({
   #|   box: ((() => { const v = self.box; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })()),
-  #|   relativeTo: ((() => { const v = self.relativeTo; if (v === undefined || v.$tag !== 1) return undefined; return v._0.to_js_value(); })())
+  #|   relativeTo: ((() => { const v = self.relativeTo; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
 ///|

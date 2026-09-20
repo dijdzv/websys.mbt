@@ -1,4 +1,5 @@
 interface Response {
+  readonly attribute ReadableStream? body;
   Promise<DOMString> text();
 };
 interface ReadableStream {};

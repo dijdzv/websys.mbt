@@ -11,6 +11,7 @@ options(
     "wasm-gc": {
       "exports": [
         "read_bytes",
+        "fetch_body",
         "read_required",
         "start",
         "start_value",

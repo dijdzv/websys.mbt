@@ -223,6 +223,13 @@ partial views, and cancels invalid chunks before releasing its reader. Required
 result fields and unsupported default/nullable/nested result diagnostics have
 dedicated regression checks.
 
+The generated consumer also connects `Response.body` to the byte read loop.
+A local HTTP fixture covers data, empty responses, HTTP 204 and an unfinished
+body whose headers have already arrived. Timeout aborts that pending read,
+releases the reader lock, and closes the server connection. A separately
+constructed `Response(null)` checks nullable-body conversion: Chromium may
+expose an empty stream for an HTTP 204 response instead of a null body.
+
 Supported: interfaces with inheritance, partial interfaces, mixins/includes,
 instance attributes/operations, DOM strings,
 boolean/long/double values, references to declared interfaces, and one-argument

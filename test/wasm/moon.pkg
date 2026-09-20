@@ -11,6 +11,8 @@ options(
         "run",
         "buffer_roundtrip",
         "buffer_clear",
+        "buffer_capture",
+        "buffer_snapshot_at",
         "dictionary_sample",
         "nested_dictionary_sample",
         "input_start",

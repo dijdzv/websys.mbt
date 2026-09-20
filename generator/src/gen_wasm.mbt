@@ -17,6 +17,9 @@ fn wasm_has_argument_annotations(item : JsValue) -> Bool {
 
 ///|
 fn validate_wasm_input(parsed : JsValue) -> String? {
+  if resolve_wasm_semantic_aliases(parsed) is Err(message) {
+    return Some(message)
+  }
   let items = get_parse_data(parsed)
   for i = 0; i < js_array_length(items); i = i + 1 {
     let item = js_array_get(items, i)

@@ -80,6 +80,19 @@ separate APIs and separate acceptance requirements.
 
 ## Generation pipeline
 
+The WasmGC preflight now uses `WasmSemanticType` to preserve generic names and
+arguments (including record key/value types), outer nullability, nested unions,
+and the original DOMString/USVString/ByteString names. Alias resolution traverses
+these nodes and rejects cycles before legacy AST conversion. Annotated types
+remain rejected; the model records their presence rather than claiming full
+extended-attribute semantics.
+
+The published JS path is unchanged. Existing WasmGC emitters still consume the
+restricted legacy AST after preflight. New compound conversion plans must consume
+the semantic model directly; removing preflight rejection without doing that
+would reintroduce information loss. Model coverage does not establish runtime
+support for record, union or nullable compound conversions.
+
 1. Parse into a lossless WebIDL representation, retaining source location,
    extended attributes, partial kind, defaults and overload identity.
 2. Resolve named types, typedefs, partials, includes and inheritance into a

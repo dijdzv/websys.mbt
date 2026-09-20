@@ -1,0 +1,32 @@
+import {
+  "moonbitlang/async",
+  "moonbitlang/async/js_async",
+  "moonbitlang/async/wasm_async" @bridge,
+}
+
+options(
+  link: {
+    "js": {
+      "exports": [
+        "start",
+        "start_boolean",
+        "start_unsigned",
+        "start_double",
+        "start_string",
+        "start_integer",
+      ],
+      "format": "esm",
+    },
+    "wasm-gc": {
+      "exports": [
+        "start",
+        "start_boolean",
+        "start_unsigned",
+        "start_double",
+        "start_string",
+        "start_integer",
+      ],
+      "use-js-builtin-string": true,
+    },
+  },
+)

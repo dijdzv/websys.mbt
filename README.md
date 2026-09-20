@@ -54,6 +54,12 @@ generator tests plus headless browser integration. Install the browser once with
 Chromium can be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 Playwright runs on Node; Bun remains the generator host and dependency installer.
 
+`mise run test-async` verifies an experimental pinned official-async WasmGC
+adapter from a separate consumer module. The normal test task includes it;
+Git/network access is needed for first preparation. See the
+[adapter boundary](patches/async-wasmgc.md). This does not change the published
+JS dependency or claim generated Promise/Fetch support.
+
 Environment and task configuration lives only in `mise.toml`; Nix/devenv,
 direnv and just are not required. Nix-managed Linux machines can supply mise
 through their system configuration. NixOS may additionally need its usual

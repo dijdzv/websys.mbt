@@ -31,7 +31,7 @@ run = [
 run = ['"{{env.MOON_HOME}}/bin/moon" check --target js --deny-warn', '"{{env.MOON_HOME}}/bin/moon" -C generator check --target js --deny-warn']
 
 [tasks.test]
-run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm']
+run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm', '"{{mise_bin}}" run test-async']
 
 [tasks.install]
 run = ['"{{mise_bin}}" exec -- bun install --frozen-lockfile', '"{{mise_bin}}" exec -- bun install --cwd test --frozen-lockfile']
@@ -57,6 +57,15 @@ run = [
 
 [tasks.fmt]
 run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt check.mbt input_lifecycle.mbt buffer.mbt']
+
+[tasks."test-async"]
+description = "Verify the pinned async candidate from a separate JS/WasmGC consumer"
+run = [
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-async-wasmgc.mbtx',
+  '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target wasm-gc --release --deny-warn',
+  '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target js --release --deny-warn',
+  '"{{mise_bin}}" exec -- node test/async/run.mjs test/async/_build/wasm-gc/release/build/dijdzv/websys-async-tests/websys-async-tests.wasm test/async/_build/js/release/build/dijdzv/websys-async-tests/websys-async-tests.js',
+]
 
 [tasks."fmt-check"]
 run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt --check check.mbt input_lifecycle.mbt buffer.mbt']

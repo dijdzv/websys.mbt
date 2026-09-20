@@ -1,0 +1,36 @@
+import {
+  "moonbitlang/async@0.21.3",
+  "moonbitlang/async@0.21.3/fs",
+  "moonbitlang/async@0.21.3/process",
+}
+
+async fn git(args : Array[String]) -> String {
+  let (code, output, errors) = @process.collect_output("git", args, no_console_window=true)
+  assert_eq(code, 0, msg=errors.text())
+  output.text().trim().to_owned()
+}
+
+async fn main {
+  let root = ".work/dependencies/async-wasmgc"
+  let revision = "a4cbfabbcdf4fa70ef28ad7ccc388082d92371de"
+  let patch = @fs.realpath("patches/async-wasmgc.patch")
+  if !@fs.exists(root) {
+    @fs.mkdir(root, recursive=true)
+    ignore(git(["init", root]))
+    ignore(git(["-C", root, "remote", "add", "origin", "https://github.com/moonbitlang/async.git"]))
+    ignore(git(["-C", root, "fetch", "--depth=1", "origin", revision]))
+    ignore(git(["-C", root, "checkout", "--detach", "FETCH_HEAD"]))
+  }
+  assert_eq(git(["-C", root, "rev-parse", "HEAD"]), revision)
+  let (applied, _, _) = @process.collect_output("git", ["-C", root, "apply", "--reverse", "--check", patch], no_console_window=true)
+  if applied != 0 {
+    // Never overwrite an interrupted preparation or local investigation.
+    assert_eq(git(["-C", root, "status", "--porcelain"]), "", msg="Prepared dependency differs from the reviewed patch")
+    ignore(git(["-C", root, "apply", "--check", patch]))
+    ignore(git(["-C", root, "apply", patch]))
+  }
+  ignore(git(["-C", root, "add", "-N", "src/wasm_async/moon.pkg", "src/wasm_async/wait.mbt"]))
+  assert_eq(git(["-C", root, "diff", "HEAD"]), @fs.read_file(patch).text().trim().to_owned(), msg="Prepared dependency differs from the reviewed patch")
+  assert_eq(git(["-C", root, "ls-files", "--others", "--exclude-standard"]), "", msg="Unexpected files in prepared dependency")
+  println("Prepared pinned WasmGC async candidate: " + root)
+}

@@ -1,0 +1,248 @@
+diff --git a/src/integration.mbt b/src/integration.mbt
+index 5e21d26..12c48df 100644
+--- a/src/integration.mbt
++++ b/src/integration.mbt
+@@ -59,7 +59,7 @@ extern "C" fn exit(code : Int) = "exit"
+ 
+ ///|
+ #coverage.skip
+-#cfg(target="js")
++#cfg(any(target="js", target="wasm-gc"))
+ #doc(hidden)
+ pub fn run_async_main(main : async () -> Unit) -> Unit {
+   let _ = @coroutine.spawn <| () => {
+diff --git a/src/internal/event_loop/moon.pkg b/src/internal/event_loop/moon.pkg
+index c33d4fa..f1209de 100644
+--- a/src/internal/event_loop/moon.pkg
++++ b/src/internal/event_loop/moon.pkg
+@@ -42,7 +42,8 @@ options(
+   ],
+   targets: {
+     "cancel_before_submit_test.mbt": [ "native", "wasm" ],
+-    "event_loop.js.mbt": [ "js" ],
++    "event_loop.js.mbt": [ "js", "wasm-gc" ],
++    "timer.js.mbt": [ "js", "wasm-gc" ],
+     "event_loop.mbt": [ "native", "wasm" ],
+     "event_loop_unix.mbt": [ "native", "wasm" ],
+     "event_loop_windows.mbt": [ "native", "wasm" ],
+@@ -68,7 +69,6 @@ options(
+     "thread_pool.mbt": [ "native" ],
+     "timer.mbt": [ "native", "wasm" ],
+     "io.wasm.mbt": [ "wasm" ],
+-    "unimplemented.mbt": [ "wasm-gc" ],
+     "worker_wbtest.mbt": [ "native", "wasm", "js" ],
+     "thread_pool.wasm.mbt": [ "wasm" ],
+   },
+diff --git a/src/internal/event_loop/timer.js.mbt b/src/internal/event_loop/timer.js.mbt
+index 39e915f..7399563 100644
+--- a/src/internal/event_loop/timer.js.mbt
++++ b/src/internal/event_loop/timer.js.mbt
+@@ -17,9 +17,14 @@
+ type Timer
+ 
+ ///|
++#cfg(target="js")
+ extern "js" fn set_timeout(duration : Int, f : () -> Unit) -> Timer =
+   #| (duration, f) => setTimeout(f, duration)
+ 
++///|
++#cfg(target="wasm-gc")
++fn set_timeout(duration : Int, f : () -> Unit) -> Timer = "moonbit:async" "set_timeout"
++
+ ///|
+ pub fn Timer::new(duration : Int, f : () -> Unit) -> Timer {
+   set_timeout(duration) <| () => {
+@@ -29,11 +34,16 @@ pub fn Timer::new(duration : Int, f : () -> Unit) -> Timer {
+ }
+ 
+ ///|
++#cfg(target="js")
+ pub extern "js" fn Timer::cancel(self : Timer) =
+   #| (timer) => clearTimeout(timer)
+ 
+ ///|
+-pub async fn sleep(duration : Int) -> Unit noraise {
++#cfg(target="wasm-gc")
++pub fn Timer::cancel(self : Timer) -> Unit = "moonbit:async" "clear_timeout"
++
++///|
++pub async fn sleep(duration : Int) -> Unit {
+   let coro = @coroutine.current_coroutine()
+   let timer = Timer::new(duration, () => coro.wake())
+   defer timer.cancel()
+diff --git a/src/internal/event_loop/unimplemented.mbt b/src/internal/event_loop/unimplemented.mbt
+deleted file mode 100644
+index 8f41501..0000000
+--- a/src/internal/event_loop/unimplemented.mbt
++++ /dev/null
+@@ -1,57 +0,0 @@
+-// Copyright 2025 International Digital Economy Academy
+-//
+-// Licensed under the Apache License, Version 2.0 (the "License");
+-// you may not use this file except in compliance with the License.
+-// You may obtain a copy of the License at
+-//
+-//     http://www.apache.org/licenses/LICENSE-2.0
+-//
+-// Unless required by applicable law or agreed to in writing, software
+-// distributed under the License is distributed on an "AS IS" BASIS,
+-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-// See the License for the specific language governing permissions and
+-// limitations under the License.
+-
+-///|
+-#coverage.skip
+-let _ignore_unused_import : Unit = {
+-  let _ : (@deque.Deque[Int]) -> Unit = ignore
+-  let _ : (@sorted_set.SortedSet[Int]) -> Unit = ignore
+-  ignore(@cmp.minimum(0, 0))
+-  ignore(@debug.to_string(0))
+-  ignore(@c_buffer.unimplemented)
+-  ignore(@fd_util.unimplemented)
+-  ignore(@os_string.unimplemented)
+-  ignore(@os_error.unimplemented)
+-  ignore(@coroutine.is_being_cancelled)
+-  ignore(@env_util.eprintln)
+-  let _ : (&@external_loop_integration.ExternalEventLoop) -> Unit = ignore
+-}
+-
+-///|
+-pub fn now() -> Int64 {
+-  @env.now().reinterpret_as_int64()
+-}
+-
+-///|
+-type Timer
+-
+-///|
+-pub fn Timer::new(duration : Int, callback : () -> Unit) -> Timer {
+-  ignore(duration)
+-  ignore(callback)
+-  abort("`Timer::new()` is unimplemented on WASM backend")
+-}
+-
+-///|
+-pub fn Timer::cancel(timer : Timer) -> Unit {
+-  ignore(timer)
+-  abort("`Timer::cancel()` is unimplemented on WASM backend")
+-}
+-
+-///|
+-#warnings("-unused_async")
+-pub async fn sleep(duration : Int) -> Unit {
+-  ignore(duration)
+-  abort("`sleep()` is unimplemented on WASM backend")
+-}
+diff --git a/src/js_async/unimplemented.mbt b/src/js_async/unimplemented.mbt
+index 6ac45ef..41d04b6 100644
+--- a/src/js_async/unimplemented.mbt
++++ b/src/js_async/unimplemented.mbt
+@@ -21,11 +21,17 @@ let _ignore_unused_import : Unit = {
+ 
+ ///|
+ /// A JavaScript promise that resolves to a value of type `X`
++#cfg(not(target="wasm-gc"))
+ #external
+ #internal(unimplemented, "unimplemented in native backend")
+ #coverage.skip
+ pub type Promise[X]
+ 
++///|
++#cfg(target="wasm-gc")
++#external
++pub type Promise[X]
++
+ ///|
+ /// A JavaScript exception wrapped in MoonBit error
+ #internal(unimplemented, "unimplemented in native backend")
+diff --git a/src/wasm_async/moon.pkg b/src/wasm_async/moon.pkg
+new file mode 100644
+index 0000000..a9eab53
+--- /dev/null
++++ b/src/wasm_async/moon.pkg
+@@ -0,0 +1,5 @@
++import {
++  "moonbitlang/async/js_async",
++  "moonbitlang/async/internal/coroutine",
++  "moonbitlang/async/internal/event_loop",
++}
+diff --git a/src/wasm_async/wait.mbt b/src/wasm_async/wait.mbt
+new file mode 100644
+index 0000000..11527fb
+--- /dev/null
++++ b/src/wasm_async/wait.mbt
+@@ -0,0 +1,74 @@
++///|
++#external
++pub type JsValue
++
++///|
++#external
++priv type Subscription
++
++///|
++pub suberror Rejection { Rejection(JsValue) }
++
++///|
++priv struct Waiter {
++  mut coro : @coroutine.Coroutine?
++  mut value : JsValue?
++  mut failure : JsValue?
++}
++
++///|
++#cfg(target="wasm-gc")
++fn subscribe(promise : JsValue, resolve : (JsValue) -> Unit, reject : (JsValue) -> Unit) -> Subscription = "moonbit:async" "subscribe"
++
++///|
++#cfg(target="js")
++extern "js" fn subscribe(promise : JsValue, resolve : (JsValue) -> Unit, reject : (JsValue) -> Unit) -> Subscription =
++  #| (promise, resolve, reject) => {
++  #|   const slot = { resolve, reject };
++  #|   Promise.resolve(promise).then(value => slot.resolve?.(value), reason => slot.reject?.(reason));
++  #|   return slot;
++  #| }
++
++///|
++#cfg(target="wasm-gc")
++fn detach(subscription : Subscription) -> Unit = "moonbit:async" "detach"
++
++///|
++#cfg(target="js")
++extern "js" fn detach(subscription : Subscription) -> Unit =
++  #| slot => { slot.resolve = undefined; slot.reject = undefined; }
++
++///|
++fn[T] promise_reference(promise : @js_async.Promise[T]) -> JsValue = "%identity"
++
++///|
++pub async fn[T] wait(promise : @js_async.Promise[T], decode : (JsValue) -> T raise, abort : () -> Unit) -> T {
++  let waiter = Waiter::{ coro: Some(@coroutine.current_coroutine()), value: None, failure: None }
++  defer {
++    waiter.coro = None
++    waiter.value = None
++    waiter.failure = None
++  }
++  let subscription = subscribe(promise_reference(promise), value => {
++    if waiter.coro is Some(coro) {
++      waiter.value = Some(value)
++      coro.wake()
++      @event_loop.reschedule()
++    }
++  }, reason => {
++    if waiter.coro is Some(coro) {
++      waiter.failure = Some(reason)
++      coro.wake()
++      @event_loop.reschedule()
++    }
++  })
++  defer detach(subscription)
++  let _ : Unit = {
++    errdefer abort()
++    @coroutine.suspend()
++  }
++  match waiter.failure {
++    Some(reason) => raise Rejection(reason)
++    None => decode(waiter.value.unwrap())
++  }
++}

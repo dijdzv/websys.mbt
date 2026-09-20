@@ -9,7 +9,13 @@ supported_targets = "wasm-gc"
 options(
   link: {
     "wasm-gc": {
-      "exports": [ "start", "start_value", "fetch_text", "cancel_stream" ],
+      "exports": [
+        "start",
+        "start_value",
+        "fetch_text",
+        "cancel_stream",
+        "read_stream",
+      ],
       "use-js-builtin-string": true,
     },
   },

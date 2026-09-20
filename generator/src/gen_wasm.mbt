@@ -143,7 +143,11 @@ fn emit_wasm_function(
   let result_type = match result {
     Promise(inner) =>
       "WebsysPromise[" +
-      require_wasm_promise_value(inner, interfaces=promise_interfaces).name +
+      require_wasm_promise_value(
+        inner,
+        interfaces=promise_interfaces,
+        dictionaries~,
+      ).name +
       "]"
     _ => require_wasm_type(result, names)
   }
@@ -174,7 +178,11 @@ fn emit_wasm_function(
     .join(", ")
   let raw_result = if result is Promise(inner) {
     "@js_async.Promise[" +
-    require_wasm_promise_value(inner, interfaces=promise_interfaces).name +
+    require_wasm_promise_value(
+      inner,
+      interfaces=promise_interfaces,
+      dictionaries~,
+    ).name +
     "]"
   } else if result is Nullable(_) {
     "WebsysNullable"
@@ -202,6 +210,7 @@ fn emit_wasm_function(
       let name = require_wasm_promise_value(
           inner,
           interfaces=promise_interfaces,
+          dictionaries~,
         ).name
       out.write_string(
         "  WebsysPromise::{ raw: websys_raw_\{key}(\{args}), decode: websys_promise_decode_\{name} }\n",
@@ -278,6 +287,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
               let plan = require_wasm_promise_value(
                 inner,
                 interfaces=promise_interfaces,
+                dictionaries~,
               )
               if !promise_values.any(value => value.name == plan.name) {
                 promise_values.push(plan)
@@ -364,7 +374,9 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   }
   js.write_string("    websys: {\n")
   if !promise_values.is_empty() {
-    emit_wasm_promise_support(mbt, js, promise_values)
+    emit_wasm_promise_support(
+      mbt, js, promise_values, definitions, promise_interfaces,
+    )
   }
   js.write_string(
     "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value, nullable_unsigned: value => value >>> 0,\n",

@@ -183,13 +183,32 @@ Nested records are converted recursively with `to_js()` before the opaque host
 object enters FFI. Each conversion creates a new host dictionary; shared MoonBit
 record values do not imply shared JavaScript object identity. The external
 consumer checks nested required values, omission, explicit null, Unicode and
-zero in four Wasm instances. This does not add conversion from a returned host
-dictionary into a MoonBit record.
+zero in four Wasm instances.
 
-Dictionary results, nullable dictionary arguments, partial
+Synchronous dictionary results, nullable dictionary arguments, partial
 dictionaries and generated convenience constructors are not implemented. Use
 record literals for the supported input path. This is not full parity with the
 published JS dictionary API or full EventInit/Fetch/WebGPU coverage.
+
+### Promise dictionary results
+
+Promise results may contain flat dictionaries with checked primitive or declared
+interface fields, and opaque `any` fields represented by `JsValue`. The host
+properties are read once into a snapshot, validated, and then assembled into a
+MoonBit record. No compiler-specific record layout crosses FFI. Missing or
+undefined optional fields become `None`; an `any` field containing null, false,
+zero, or an object retains its value and object identity in `Some`.
+
+Getter exceptions are preserved by `DictionaryReadError`; invalid field values
+produce a TypeError carried by the same error. Promise rejection remains a
+separate async rejection. Required fields cannot be missing. Defaults, nullable
+fields and nested result dictionaries are currently rejected during generation.
+This checked result boundary does not implement general WebIDL coercion.
+
+The browser consumer reads actual `ReadableStream` chunks and end-of-stream,
+checks rejection identity and cancellation of a pending read, and releases the
+reader lock. Generic stream chunks are not assumed to be byte buffers; checked
+typed-array conversion is a separate boundary.
 
 Supported: interfaces with inheritance, partial interfaces, mixins/includes,
 instance attributes/operations, DOM strings,

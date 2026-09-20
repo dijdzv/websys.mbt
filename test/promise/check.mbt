@@ -9,6 +9,45 @@ fn notify(callback : Callback, code : Int, text : String) -> Unit = "fixture" "n
 fn abort_wait(callback : Callback) -> Unit = "fixture" "abort"
 
 ///|
+fn notify_value(callback : Callback, value : @web.JsValue) -> Unit = "fixture" "value"
+
+///|
+fn notify_error(callback : Callback, value : @bridge.JsValue) -> Unit = "fixture" "error"
+
+///|
+pub fn read_stream(
+  reader : @web.ReadableStreamDefaultReader,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let result = reader.read().wait() catch {
+        @web.DictionaryReadError(error) => {
+          notify_error(callback, error)
+          notify(callback, 2, "")
+          return
+        }
+        @bridge.Rejection(error) => {
+          notify_error(callback, error)
+          notify(callback, 3, "")
+          return
+        }
+        error => raise error
+      }
+    if result.value is Some(value) {
+      notify_value(callback, value)
+    }
+    notify(
+      callback,
+      1,
+      match result.done {
+        None => "missing"
+        Some(done) => done.to_string()
+      },
+    )
+  })
+}
+
+///|
 pub fn cancel_stream(stream : @web.ReadableStream, callback : Callback) -> Unit {
   @async.run_async_main(async fn() {
     let reader = @web.ReadableStreamDefaultReader::new(stream)

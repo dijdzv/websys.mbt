@@ -13,7 +13,7 @@ try {
   page.on('pageerror', error => errors.push(error.message));
   const cases = await page.evaluate(async ({ bytes, factory }) => {
     const imports = new Function(`return (${factory})`)()();
-    imports.fixture = { notify: (callback, code, text) => callback(code, text), abort: callback => { callback.aborts++; } };
+    imports.fixture = { notify: (callback, code, text) => callback(code, text), abort: callback => { callback.aborts++; }, value: (callback, value) => { callback.value = value; callback.hasValue = true; }, error: (callback, value) => { callback.error = value; } };
     imports.spectest = { print_char() {} };
     imports.console = { log: value => console.log(value) };
     const { instance } = await WebAssembly.instantiate(new Uint8Array(bytes), imports, { builtins: ['js-string'], importedStringConstants: '_' });
@@ -99,6 +99,47 @@ try {
       if (stream.locked || reason !== 'requested') throw Error('Reader ownership or cancellation reason lost');
       count++;
     }
+    async function readCase(reader, expected, done, hasValue, value, error) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Stream read timeout')), 3000);
+        const callback = (code, text) => {
+          clearTimeout(watchdog);
+          if (code !== expected || text !== done || Boolean(callback.hasValue) !== hasValue || (hasValue && callback.value !== value) || (error !== undefined && callback.error !== error)) reject(Error(`Stream read result ${code}/${text}`));
+          else resolve();
+        };
+        instance.exports.read_stream(reader, callback);
+      });
+      count++;
+    }
+    const object = { chunk: 'identity' };
+    for (const value of [object, null, false, '', 0, undefined]) {
+      const stream = new ReadableStream({ start(controller) { controller.enqueue(value); controller.close(); } });
+      const reader = stream.getReader();
+      await readCase(reader, 1, 'false', value !== undefined, value);
+      await readCase(reader, 1, 'true', false);
+      reader.releaseLock();
+      if (stream.locked) throw Error('Stream remained locked');
+    }
+    await readCase({ read: () => Promise.resolve({}) }, 1, 'missing', false);
+    let reads = 0;
+    await readCase({ read: () => Promise.resolve({ get value() { reads++; return object; }, get done() { reads++; return false; } }) }, 1, 'false', true, object);
+    if (reads !== 2) throw Error('Result getters were read more than once');
+    const getterError = { getter: 'failure' };
+    await readCase({ read: () => Promise.resolve({ get value() { throw getterError; } }) }, 2, '', false, undefined, getterError);
+    await readCase({ read: () => Promise.resolve({ done: 'false' }) }, 2, '', false);
+    const rejection = { stream: 'failure' };
+    const failed = new ReadableStream({ start(controller) { controller.error(rejection); } });
+    const failedReader = failed.getReader();
+    await readCase(failedReader, 3, '', false, undefined, rejection);
+    failedReader.releaseLock();
+    let canceled;
+    const pendingStream = new ReadableStream({ cancel(reason) { canceled = reason; } });
+    const pendingReader = pendingStream.getReader();
+    const pendingRead = readCase(pendingReader, 1, 'true', false);
+    await pendingReader.cancel('pending read');
+    await pendingRead;
+    pendingReader.releaseLock();
+    if (pendingStream.locked || canceled !== 'pending read') throw Error('Pending read cancellation lost');
     return count;
   }, { bytes: [...bytes], factory: createImports.toString() });
   const aborted = await abortedRequest;

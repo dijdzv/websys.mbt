@@ -11831,7 +11831,7 @@ pub extern "js" fn HTMLMediaElement::can_play_type(
   self : HTMLMediaElement,
   type_ : String,
 ) -> CanPlayTypeResult =
-  #| (self, type_) => self.canPlayType(type_)
+  #| (self, type_) => ['', 'maybe', 'probably'].indexOf(self.canPlayType(type_))
 
 // HTMLMediaElement.HAVE_NOTHING
 
@@ -28431,21 +28431,21 @@ pub extern "js" fn Navigator::get_autoplay_policy(
   self : Navigator,
   type_ : AutoplayPolicyMediaType,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, type_) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, type_) => (() => { try { return { $tag: 1, _0: ['allowed', 'allowed-muted', 'disallowed'].indexOf(self.getAutoplayPolicy(['mediaelement', 'audiocontext'][type_])) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_autoplay_policy_with_element_html_media_element(
   self : Navigator,
   element : HTMLMediaElement,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, element) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(element) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, element) => (() => { try { return { $tag: 1, _0: ['allowed', 'allowed-muted', 'disallowed'].indexOf(self.getAutoplayPolicy(element)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_autoplay_policy_with_context_audio_context(
   self : Navigator,
   context : AudioContext,
 ) -> Result[AutoplayPolicy, NavigatorGetAutoplayPolicyError] =
-  #| (self, context) => (() => { try { return { $tag: 1, _0: self.getAutoplayPolicy(context) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, context) => (() => { try { return { $tag: 1, _0: ['allowed', 'allowed-muted', 'disallowed'].indexOf(self.getAutoplayPolicy(context)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Navigator::get_battery(

@@ -219,14 +219,18 @@ fn wrap_promise_dict_return(
 }
 
 ///|
-/// If return type is Promise[Dict], wrap js_expr with .then() conversion.
-/// Otherwise return js_expr unchanged.
-fn match_promise_dict(
+/// Convert operation results before the shared nullable/exception wrapper.
+fn convert_operation_result(
   js_expr : String,
   return_type : IdlType,
   dict_map : Array[(String, DictionaryDef)],
   enum_map : Array[(String, Array[String])],
 ) -> String {
+  if return_type is Named(name) {
+    if lookup_enum(enum_map, name) is Some(values) {
+      return gen_enum_index_of_expr(values, js_expr)
+    }
+  }
   if returns_promise_dict(return_type, dict_map) {
     let dict_name = get_promise_dict_name(return_type)
     match lookup_dict(dict_map, dict_name) {

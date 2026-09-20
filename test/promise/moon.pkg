@@ -12,6 +12,8 @@ options(
       "exports": [
         "read_bytes",
         "fetch_body",
+        "inspect_response",
+        "fetch_metadata",
         "post_headers",
         "post_body",
         "read_required",

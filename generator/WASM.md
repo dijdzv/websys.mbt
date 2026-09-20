@@ -276,6 +276,13 @@ BodyInit support. The published JS API remains unchanged.
 Additional POST cases cover omitted/null bodies, Blob, URLSearchParams and text.
 Synthetic receivers separately verify omission versus null and object identity.
 
+The Fetch consumer reads Response.status as its actual WebIDL unsigned-short
+type (represented by MoonBit UInt), Response.ok, and Headers.get with nullable
+ByteString results. Real 200/404 requests verify that HTTP error statuses still
+resolve to a Response. Missing and empty headers remain distinct, including
+constructed 204/599/error responses. This does not turn HTTP statuses into
+Promise rejections or claim general foreign-object numeric validation.
+
 Typedef aliases are resolved before dictionary inheritance and interface
 composition. Forward references and nested type containers are traversed;
 cycles and duplicate names are rejected. Public signatures currently use the

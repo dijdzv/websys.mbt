@@ -9,6 +9,11 @@ let pendingBodyStarted = false;
 let pendingBodyClosed = false;
 const server = createServer((request, response) => {
   response.setHeader('Access-Control-Allow-Origin', '*');
+  if (request.url === '/not-found') {
+    response.writeHead(404, { 'Content-Type': 'application/json' });
+    response.end('{"error":"not found"}');
+    return;
+  }
   if (request.url === '/post') {
     let body = '';
     request.setEncoding('utf8');
@@ -247,6 +252,33 @@ try {
         });
         count++;
       }
+    }
+    for (const [response, expected] of [
+      [await fetch(baseUrl + '/bytes'), '200|true|missing'],
+      [await fetch(baseUrl + '/not-found'), '404|false|present:application/json'],
+      [new Response(null, { status: 204 }), '204|true|missing'],
+      [new Response(null, { status: 599, headers: { 'Content-Type': '' } }), '599|false|present:'],
+      [Response.error(), '0|false|missing'],
+    ]) {
+      let calls = 0;
+      instance.exports.inspect_response(response, (code, actual) => {
+        calls++;
+        if (code !== 1 || actual !== expected) throw Error(`Response metadata ${actual}, expected ${expected}`);
+      });
+      if (calls !== 1) throw Error('Response metadata callback missing');
+      if (response.body) await response.body.cancel();
+      count++;
+    }
+    for (const [path, expected] of [['/bytes', '200|true|missing'], ['/not-found', '404|false|present:application/json']]) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Metadata Fetch timeout')), 3000);
+        instance.exports.fetch_metadata(window, baseUrl + path, (code, actual) => {
+          clearTimeout(watchdog);
+          if (code !== 1 || actual !== expected) reject(Error(`Generated metadata Fetch ${code}/${actual}`));
+          else resolve();
+        });
+      });
+      count++;
     }
     return count;
   }, { bytes: [...bytes], factory: createImports.toString(), baseUrl });

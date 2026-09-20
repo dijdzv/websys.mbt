@@ -49,6 +49,31 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### Promise operation results
+
+Promise-returning operations support DOMString, boolean, long, unsigned long
+and finite double settlement through generated `WebsysPromise[T]` values.
+`wait(abort=...)` uses the pinned experimental official-async adapter described
+in [the adapter boundary](../patches/async-wasmgc.md). Generated modules require
+that patched workspace dependency; an unmodified registry version does not
+provide the experimental `wasm_async` package. Generated host imports include
+its timer/subscription boundary. Existing published JS Promise APIs are unchanged.
+
+Values are checked after suspension and converted through typed imports. Invalid
+values raise `PromiseDecodeError`; host rejection remains the adapter's Rejection
+with its original value. Operation exceptions become rejected Promises. A supplied
+abort callback runs only when waiting is interrupted, not on settled rejection
+or decoding failure. The default does not abort the underlying operation; pass
+the operation's cancellation capability explicitly when required.
+
+`mise run test-promises` generates a separate module and executes 38 browser
+cases, including a real fetched Response's text, numeric boundaries, invalid
+values, rejection, synchronous operation failure, timeout and late settlement.
+It is included in the normal test task. Full generated Fetch initiation,
+AbortSignal binding and stream-body cancellation remain separate work.
+Promise attributes, parameters, void, nullable, interface, dictionary and sequence
+settlement are rejected rather than assigned an unchecked representation.
+
 ### ArrayBuffer references
 
 The built-in WebIDL `ArrayBuffer` type is an opaque host reference. Operation
@@ -173,5 +198,5 @@ overloads remain unsupported and produce generation errors.
 
 Unsupported definitions/types are rejected rather than silently omitted. Full
 Webref generation needs partial mixins, nullable callback arguments, optional arguments,
-overloads, remaining dictionary conversions, sequences, enum/union conversions, Promise support and
+overloads, remaining dictionary conversions, sequences, enum/union conversions, remaining Promise conversions and
 typed exception handling. Linear-memory Wasm is outside this backend's scope.

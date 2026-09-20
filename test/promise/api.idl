@@ -1,0 +1,9 @@
+interface Response {
+  Promise<DOMString> text();
+};
+interface Values {
+  Promise<long> readInteger();
+  Promise<unsigned long> readUnsigned();
+  Promise<boolean> readBoolean();
+  Promise<double> readDouble();
+};

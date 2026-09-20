@@ -142,10 +142,18 @@ async fn main {
     if args.wasm_module is Some(name) {
       write_file_sync(
         path_join(args.output, "moon.mod"),
-        wasm_module_manifest(name),
+        wasm_module_manifest(
+          name,
+          promises=moonbit.contains("pub struct WebsysPromise"),
+        ),
       )
       write_file_sync(
         path_join(args.output, "moon.pkg"),
+        (if moonbit.contains("pub struct WebsysPromise") {
+          "import { \"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\" }\n"
+        } else {
+          ""
+        }) +
         "supported_targets = \"wasm-gc\"\n",
       )
     }

@@ -139,9 +139,14 @@ fn emit_wasm_function(
   let public_params = params
     .map(p => p.0 + " : " + require_wasm_type(p.1, names))
     .join(", ")
-  let result_type = require_wasm_type(result, names)
+  let result_type = match result {
+    Promise(inner) =>
+      "WebsysPromise[" + require_wasm_promise_value(inner).name + "]"
+    _ => require_wasm_type(result, names)
+  }
   let key = owner + "_" + member_name
-  let needs_wrapper = result is Nullable(_) ||
+  let needs_wrapper = result is Promise(_) ||
+    result is Nullable(_) ||
     params.any(p => {
       p.1 is Nullable(_) || (p.1 is Named(name) && dictionaries.contains(name))
     })
@@ -164,7 +169,9 @@ fn emit_wasm_function(
       })
     })
     .join(", ")
-  let raw_result = if result is Nullable(_) {
+  let raw_result = if result is Promise(inner) {
+    "@js_async.Promise[" + require_wasm_promise_value(inner).name + "]"
+  } else if result is Nullable(_) {
     "WebsysNullable"
   } else {
     result_type
@@ -186,6 +193,12 @@ fn emit_wasm_function(
     "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} {\n",
   )
   match result {
+    Promise(inner) => {
+      let name = require_wasm_promise_value(inner).name
+      out.write_string(
+        "  WebsysPromise::{ raw: websys_raw_\{key}(\{args}), decode: websys_promise_decode_\{name} }\n",
+      )
+    }
     Nullable(inner) =>
       out.write_string(
         "  let value = websys_raw_\{key}(\{args})\n  if websys_is_null(value) { None } else { Some(websys_unwrap_\{require_wasm_type(inner, names)}(value)) }\n",
@@ -226,6 +239,7 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
   let js = StringBuilder()
   let inputs : Array[String] = []
   let outputs : Array[String] = []
+  let promise_values : Array[WasmPromiseValue] = []
   let record = fn(t : IdlType, types : Array[String]) {
     if t is Nullable(inner) {
       let name = require_wasm_type(inner, names)
@@ -239,12 +253,21 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
       for mem in iface.members {
         match mem {
           Attribute(attr) => {
+            if attr.idl_type is Promise(_) {
+              abort("WasmGC Promise attributes are not implemented")
+            }
             record(attr.idl_type, outputs)
             if !attr.is_readonly {
               record(attr.idl_type, inputs)
             }
           }
           Operation(op) => {
+            if op.return_type is Promise(inner) {
+              let plan = require_wasm_promise_value(inner)
+              if !promise_values.any(value => value.name == plan.name) {
+                promise_values.push(plan)
+              }
+            }
             record(op.return_type, outputs)
             for arg in op.arguments {
               record(arg.idl_type, inputs)
@@ -313,8 +336,21 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     )
   }
   js.write_string(
-    "// Generated from WebIDL. Do not edit.\nexport function createImports() {\n  return { 'moonbit:ffi': { make_closure: (fn, closure) => fn.bind(null, closure) }, websys: {\n",
+    "// Generated from WebIDL. Do not edit.\nexport function createImports() {\n  return { 'moonbit:ffi': { make_closure: (fn, closure) => fn.bind(null, closure) },\n",
   )
+  if !promise_values.is_empty() {
+    guard !names.contains("WebsysPromise") &&
+      !names.contains("PromiseDecodeError") else {
+      abort("Reserved Promise support type name")
+    }
+    js.write_string(
+      "    'moonbit:async': { set_timeout: (duration, callback) => setTimeout(callback, duration), clear_timeout: timer => clearTimeout(timer), subscribe: (promise, resolve, reject) => { const slot = { resolve, reject }; Promise.resolve(promise).then(value => slot.resolve?.(value), reason => slot.reject?.(reason)); return slot; }, detach: slot => { slot.resolve = undefined; slot.reject = undefined; } },\n",
+    )
+  }
+  js.write_string("    websys: {\n")
+  if !promise_values.is_empty() {
+    emit_wasm_promise_support(mbt, js, promise_values)
+  }
   js.write_string(
     "    nullable_null: () => null, nullable_is_null: value => value === null, nullable_identity: value => value, nullable_unsigned: value => value >>> 0,\n",
   )
@@ -470,9 +506,15 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
               } else {
                 "self, " + arguments.to_string()
               }
-              js.write_string(
-                "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
-              )
+              if op.return_type is Promise(_) {
+                js.write_string(
+                  "    \{name}_\{fn_name}: (\{js_params}) => { try { return self.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
+                )
+              } else {
+                js.write_string(
+                  "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
+                )
+              }
             }
             Constructor(ctor) => {
               guard !emitted.contains("new") else {

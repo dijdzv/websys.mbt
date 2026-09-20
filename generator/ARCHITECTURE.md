@@ -101,6 +101,12 @@ Nonnullable nested dictionary fields use MoonBit callbacks in both directions;
 MoonBit owns optional presence handling, so the generated host code does not
 assume a tagged Option for these fields. Primitive aliases are resolved for
 operation/constructor argument conversion without changing public signatures.
+The texture consumer uploads two distinct 2x2 patterns through `writeTexture`,
+binds a texture view and verifies every pixel after `textureLoad` rendering on
+JS and WasmGC. It covers a partial ArrayBufferView, an ArrayBuffer, a nonzero
+data-layout offset and padded rows, including the relocated WasmGC bundle.
+Canvas presentation and filtering/sampler coverage remain separate contracts.
+
 The shader consumer covers auto-layout, nested vertex/fragment state, uniform
 uploads and pixel readback on both JS and WasmGC. This is representative shader
 parity, not complete nested-container conversion or full GPU API coverage.

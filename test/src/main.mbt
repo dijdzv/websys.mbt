@@ -378,6 +378,7 @@ async fn main {
     ("gpu_discovery", async fn() { test_gpu_discovery() }),
     ("gpu_readback", async fn() { test_gpu_readback() }),
     ("gpu_shader", async fn() { test_gpu_shader() }),
+    ("gpu_texture", async fn() { test_gpu_texture() }),
     ("js_fetch_post_contract", async fn() { test_js_fetch_post_contract() }),
     (
       "js_fetch_metadata_contract",

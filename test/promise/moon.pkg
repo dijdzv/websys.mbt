@@ -15,6 +15,7 @@ options(
         "submit_clear",
         "gpu_readback",
         "gpu_shader",
+        "gpu_texture",
         "unsigned_sequence",
         "operation_inputs",
         "buffer_inputs",

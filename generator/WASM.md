@@ -248,7 +248,15 @@ methods preserve host object identity when a parent reference is required.
 Missing parents and inheritance cycles are rejected. Member overrides and
 overloads remain unsupported and produce generation errors.
 
-Unsupported definitions/types are rejected rather than silently omitted. Full
-Webref generation needs partial mixins, nullable callback arguments, optional arguments,
+Unsupported definitions/types are rejected rather than silently omitted.
+
+Typedef aliases are resolved before dictionary inheritance and interface
+composition. Forward references and nested type containers are traversed;
+cycles and duplicate names are rejected. Public signatures currently use the
+resolved type rather than emitting a separate named alias. Resolving an alias
+does not add support for its underlying union, sequence or other unsupported
+conversion. Type annotations on typedefs remain unsupported.
+
+Full Webref generation needs partial mixins, nullable callback arguments, optional arguments,
 overloads, remaining dictionary conversions, sequences, enum/union conversions, remaining Promise conversions and
 typed exception handling. Linear-memory Wasm is outside this backend's scope.

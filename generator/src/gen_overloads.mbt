@@ -83,7 +83,7 @@ fn gen_union_arg_overloads(
     for i = 0; i < args_len; i = i + 1 {
       let arg = op.arguments[i]
       result.write_string(", ")
-      result.write_string(arg.name |> to_snake_case |> escape_reserved)
+      result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
       if i == union_arg_index {
         result.write_string(moonbit_type)
@@ -99,7 +99,7 @@ fn gen_union_arg_overloads(
     for i = 0; i < args_len; i = i + 1 {
       result.write_string(", ")
       result.write_string(
-        op.arguments[i].name |> to_snake_case |> escape_reserved,
+        op.arguments[i].name |> to_snake_case |> escape_parameter,
       )
     }
     let js_call_args = StringBuilder()
@@ -110,7 +110,7 @@ fn gen_union_arg_overloads(
       if i == union_arg_index {
         // Union member: pass through directly
         js_call_args.write_string(
-          op.arguments[i].name |> to_snake_case |> escape_reserved,
+          op.arguments[i].name |> to_snake_case |> escape_parameter,
         )
       } else {
         js_call_args.write_string(
@@ -182,7 +182,7 @@ fn gen_static_union_arg_overloads(
         result.write_string(", ")
       }
       let arg = op.arguments[i]
-      result.write_string(arg.name |> to_snake_case |> escape_reserved)
+      result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
       if i == union_arg_index {
         result.write_string(moonbit_type)
@@ -199,7 +199,7 @@ fn gen_static_union_arg_overloads(
         result.write_string(", ")
       }
       result.write_string(
-        op.arguments[i].name |> to_snake_case |> escape_reserved,
+        op.arguments[i].name |> to_snake_case |> escape_parameter,
       )
     }
     let js_call_args = StringBuilder()
@@ -209,7 +209,7 @@ fn gen_static_union_arg_overloads(
       }
       if i == union_arg_index {
         js_call_args.write_string(
-          op.arguments[i].name |> to_snake_case |> escape_reserved,
+          op.arguments[i].name |> to_snake_case |> escape_parameter,
         )
       } else {
         js_call_args.write_string(
@@ -294,7 +294,7 @@ fn gen_constructor_union_arg_overloads(
         result.write_string(", ")
       }
       let arg = ctor.arguments[i]
-      result.write_string(arg.name |> to_snake_case |> escape_reserved)
+      result.write_string(arg.name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
       if i == union_arg_index {
         result.write_string(moonbit_type)
@@ -311,7 +311,7 @@ fn gen_constructor_union_arg_overloads(
         result.write_string(", ")
       }
       result.write_string(
-        ctor.arguments[i].name |> to_snake_case |> escape_reserved,
+        ctor.arguments[i].name |> to_snake_case |> escape_parameter,
       )
     }
     let js_call_args = StringBuilder()
@@ -321,7 +321,7 @@ fn gen_constructor_union_arg_overloads(
       }
       if i == union_arg_index {
         js_call_args.write_string(
-          ctor.arguments[i].name |> to_snake_case |> escape_reserved,
+          ctor.arguments[i].name |> to_snake_case |> escape_parameter,
         )
       } else {
         js_call_args.write_string(

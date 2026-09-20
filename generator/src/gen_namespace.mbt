@@ -258,7 +258,7 @@ fn gen_namespace_operation_single(
       result.write_string(", ")
     }
     let arg = args[i]
-    result.write_string(arg.name |> to_snake_case |> escape_reserved)
+    result.write_string(arg.name |> to_snake_case |> escape_parameter)
     result.write_string(" : ")
     if needs_wrapper {
       result.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -274,7 +274,7 @@ fn gen_namespace_operation_single(
     if i > 0 {
       result.write_string(", ")
     }
-    result.write_string(args[i].name |> to_snake_case |> escape_reserved)
+    result.write_string(args[i].name |> to_snake_case |> escape_parameter)
   }
   result.write_string(") => ")
   let js_call_args = StringBuilder()
@@ -303,7 +303,7 @@ fn gen_namespace_operation_single(
       if i > 0 {
         result.write_string(", ")
       }
-      result.write_string(args[i].name |> to_snake_case |> escape_reserved)
+      result.write_string(args[i].name |> to_snake_case |> escape_parameter)
       result.write_string(" : ")
       result.write_string(idl_type_to_moonbit(args[i].idl_type))
     }

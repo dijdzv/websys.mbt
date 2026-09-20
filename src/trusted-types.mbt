@@ -510,22 +510,22 @@ pub extern "js" fn TrustedTypePolicy::get_name(
 pub extern "js" fn TrustedTypePolicy::create_html(
   self : TrustedTypePolicy,
   input : String,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[TrustedHTML, TrustedTypePolicyCreateHTMLError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createHTML(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createHTML(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script(
   self : TrustedTypePolicy,
   input : String,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[TrustedScript, TrustedTypePolicyCreateScriptError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createScript(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createScript(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn TrustedTypePolicy::create_script_url(
   self : TrustedTypePolicy,
   input : String,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[TrustedScriptURL, TrustedTypePolicyCreateScriptURLError] =
-  #| (self, input, arguments) => (() => { try { return { $tag: 1, _0: self.createScriptURL(input, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+  #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createScriptURL(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()

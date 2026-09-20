@@ -10,7 +10,7 @@ fn gen_js_call_arg(
   dict_map : Array[(String, DictionaryDef)],
   primitive_typedef_map? : Array[(String, IdlType)] = [],
 ) -> String {
-  let arg_name = arg.name |> to_snake_case |> escape_reserved
+  let arg_name = arg.name |> to_snake_case |> escape_parameter
   match resolve_dictionary_alias(arg.idl_type, primitive_typedef_map) {
     Named(type_name) =>
       match lookup_enum(enum_map, type_name) {
@@ -97,7 +97,7 @@ fn gen_wrapper_call_arg(
   arg : Argument,
   dict_map : Array[(String, DictionaryDef)],
 ) -> String {
-  let arg_name = arg.name |> to_snake_case |> escape_reserved
+  let arg_name = arg.name |> to_snake_case |> escape_parameter
   match arg.idl_type {
     Named(type_name) =>
       if !(lookup_dict(dict_map, type_name) is None) {
@@ -135,7 +135,7 @@ fn gen_dict_wrapper(
       result.write_string(", ")
     }
     first = false
-    result.write_string(args[i].name |> to_snake_case |> escape_reserved)
+    result.write_string(args[i].name |> to_snake_case |> escape_parameter)
     result.write_string(" : ")
     result.write_string(idl_type_to_moonbit(args[i].idl_type))
   }

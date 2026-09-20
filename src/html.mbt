@@ -25991,9 +25991,9 @@ pub extern "js" fn Window::set_timeout_with_arguments(
   self : Window,
   handler : TimerHandler,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::clear_timeout(self : Window) -> Unit =
@@ -26018,9 +26018,9 @@ pub extern "js" fn Window::set_interval_with_arguments(
   self : Window,
   handler : TimerHandler,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::clear_interval(self : Window) -> Unit =
@@ -26217,54 +26217,54 @@ pub extern "js" fn Window::set_timeout_with_string(
   self : Window,
   handler : String,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_function(
   self : Window,
   handler : Function,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_timeout_with_trusted_script(
   self : Window,
   handler : TrustedScript,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_string(
   self : Window,
   handler : String,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_function(
   self : Window,
   handler : Function,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::set_interval_with_trusted_script(
   self : Window,
   handler : TrustedScript,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WindowSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::create_image_bitmap_with_canvas_image_source(
@@ -30302,9 +30302,9 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_arguments(
   self : WorkerGlobalScope,
   handler : TimerHandler,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_timeout(
@@ -30331,9 +30331,9 @@ pub extern "js" fn WorkerGlobalScope::set_interval_with_arguments(
   self : WorkerGlobalScope,
   handler : TimerHandler,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::clear_interval(
@@ -30506,54 +30506,54 @@ pub extern "js" fn WorkerGlobalScope::set_timeout_with_string(
   self : WorkerGlobalScope,
   handler : String,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_function(
   self : WorkerGlobalScope,
   handler : Function,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_timeout_with_trusted_script(
   self : WorkerGlobalScope,
   handler : TrustedScript,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetTimeoutError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setTimeout(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_string(
   self : WorkerGlobalScope,
   handler : String,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_function(
   self : WorkerGlobalScope,
   handler : Function,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::set_interval_with_trusted_script(
   self : WorkerGlobalScope,
   handler : TrustedScript,
   timeout : Int,
-  arguments : JsValue,
+  arguments_ : JsValue,
 ) -> Result[Int, WorkerGlobalScopeSetIntervalError] =
-  #| (self, handler, timeout, arguments) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
+  #| (self, handler, timeout, arguments_) => (() => { try { return { $tag: 1, _0: self.setInterval(handler, timeout, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn WorkerGlobalScope::create_image_bitmap_with_canvas_image_source(

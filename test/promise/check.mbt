@@ -6,6 +6,19 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn enum_options(mode : Int) -> @web.JsValue {
+  @web.EnumInputs::{
+    mode: MirrorRepeat,
+    optionalMode: match mode {
+      0 => Undefined
+      1 => Null
+      _ => Value(ClampToEdge)
+    },
+    filters: Some([Nearest, Linear]),
+  }.to_js()
+}
+
+///|
 pub fn buffer_size_options(size : UInt64) -> @web.JsValue {
   @web.GPUBufferDescriptor::{ size, usage: 6U, mappedAtCreation: None, }.to_js()
 }
@@ -16,6 +29,11 @@ pub fn gpu_buffer_sample(gpu : @web.GPU, callback : Callback) -> Unit {
     let adapter = gpu.request_adapter().wait().unwrap()
     let device = adapter.request_device().wait()
     defer device.destroy()
+    let sampler = device.create_sampler(@web.GPUSamplerDescriptor::{
+      label: Some("enum sampler"),
+      addressModeU: Some(Repeat),
+      minFilter: Some(Linear),
+    })
     let buffer = device.create_buffer(@web.GPUBufferDescriptor::{
       size: 4UL,
       usage: 6U,
@@ -25,7 +43,8 @@ pub fn gpu_buffer_sample(gpu : @web.GPU, callback : Callback) -> Unit {
     let mapped = buffer.get_mapped_range()
     let bytes = mapped.to_bytes().unwrap()
     buffer.unmap()
-    let valid = bytes.length() == 4 &&
+    let valid = sampler.label() == "enum sampler" &&
+      bytes.length() == 4 &&
       bytes[0] == b'\x00' &&
       mapped.to_bytes() is None
     notify(callback, if valid { 1 } else { 2 }, "buffer-copied")

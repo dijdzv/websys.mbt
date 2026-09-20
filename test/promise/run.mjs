@@ -79,6 +79,12 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    for (let mode = 0; mode < 3; mode++) {
+      const value = instance.exports.enum_options(mode);
+      if (value.mode !== 'mirror-repeat' || JSON.stringify(value.filters) !== '["nearest","linear"]') throw Error('Enum input encoding');
+      if (mode === 0 ? Object.hasOwn(value, 'optionalMode') : value.optionalMode !== (mode === 1 ? null : 'clamp-to-edge')) throw Error('Nullable enum presence');
+      count++;
+    }
     for (const size of [0n, 4n, 4294967296n, 9007199254740991n]) {
       const descriptor = instance.exports.buffer_size_options(size);
       if (descriptor.size !== Number(size) || descriptor.usage !== 6 || Object.hasOwn(descriptor, 'mappedAtCreation')) throw Error('Enforced size conversion');

@@ -10,6 +10,7 @@ options(
   link: {
     "wasm-gc": {
       "exports": [
+        "enum_options",
         "buffer_size_options",
         "gpu_buffer_sample",
         "gpu_discovery",

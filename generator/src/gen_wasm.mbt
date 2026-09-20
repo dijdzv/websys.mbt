@@ -63,7 +63,7 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
           }
         }
       }
-      "includes" => ()
+      "includes" | "enum" => ()
       "typedef" =>
         if validate_wasm_dictionary_input_type(
             get_idl_type(item),
@@ -274,10 +274,18 @@ fn generate_wasm(
     Err(message) => abort(message)
   }
   let names : Array[String] = []
+  let enums : Array[String] = []
   let dictionaries : Array[String] = []
   let promise_interfaces : Array[String] = []
   for definition in definitions {
     let name = match definition {
+      Enum(value) => {
+        guard !enums.contains(value.name) else {
+          abort("Duplicate WasmGC enum")
+        }
+        enums.push(value.name)
+        continue
+      }
       Interface(value) => {
         promise_interfaces.push(value.name)
         value.name
@@ -295,6 +303,9 @@ fn generate_wasm(
     names.push(name)
   }
   let mbt = StringBuilder()
+  for name in enums {
+    guard !names.contains(name) else { abort("Conflicting WasmGC enum name") }
+  }
   let js = StringBuilder()
   let inputs : Array[String] = []
   let outputs : Array[String] = []
@@ -434,6 +445,17 @@ fn generate_wasm(
   }
   for definition in definitions {
     match definition {
+      Enum(value) => {
+        let variants : Array[String] = []
+        for value in value.values {
+          let variant = to_pascal_case(value)
+          guard !variants.contains(variant) else {
+            abort("Conflicting WasmGC enum variants")
+          }
+          variants.push(variant)
+        }
+        mbt.write_string(gen_enum(value))
+      }
       Dictionary(dict) =>
         emit_wasm_dictionary(
           dict,
@@ -442,6 +464,7 @@ fn generate_wasm(
           names,
           dictionaries,
           dictionary_types~,
+          enums~,
         )
       CallbackInterface(cb) => {
         guard cb.arguments.length() == 1 && cb.return_type is Some(Void) else {

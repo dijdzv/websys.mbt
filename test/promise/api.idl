@@ -46,6 +46,7 @@ interface AbortController {
   undefined abort();
 };
 interface Values {
+  Promise<Response?> readOptionalResponse();
   Promise<RequiredResult> readRequired();
   Promise<long> readInteger();
   Promise<unsigned long> readUnsigned();

@@ -77,6 +77,17 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    for (const [value, expected, text] of [[null, 1, 'none'], [new Response('', { status: 201 }), 1, '201'], [undefined, 2, ''], [{}, 2, ''], [0, 2, '']]) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Nullable result timed out')), 3000);
+        instance.exports.read_optional_response({ readOptionalResponse: () => Promise.resolve(value) }, (code, actual) => {
+          clearTimeout(watchdog);
+          if (code !== expected || actual !== text) reject(Error(`Nullable result: ${code} ${actual}`));
+          else resolve();
+        });
+      });
+      count++;
+    }
     for (const [kind, name, valid, invalid] of [
       [0, 'integer', [-2147483648, 0, 2147483647], [-2147483649, 2147483648, 1.5, NaN, Infinity, '1', null]],
       [1, 'unsigned', [0, 2147483648, 4294967295], [-1, 4294967296, 1.5, '1', null]],

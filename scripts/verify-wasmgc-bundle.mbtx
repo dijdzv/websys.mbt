@@ -26,5 +26,5 @@ async fn main {
   // Only the directory atomically created by this invocation is removed.
   assert_eq(@fs.realpath(temporary), temporary)
   @fs.rmdir(temporary, recursive=true)
-  println("Relocated WasmGC source bundle: 100 browser cases passed")
+  println("Relocated WasmGC source bundle: browser suite passed")
 }

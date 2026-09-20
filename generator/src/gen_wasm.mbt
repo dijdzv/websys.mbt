@@ -237,10 +237,10 @@ fn emit_wasm_function(
   match result {
     Promise(inner) => {
       let name = require_wasm_promise_value(
-          inner,
-          interfaces=promise_interfaces,
-          dictionaries~,
-        ).name
+        inner,
+        interfaces=promise_interfaces,
+        dictionaries~,
+      ).key()
       out.write_string(
         "  WebsysPromise::{ raw: websys_raw_\{key}(\{args}), decode: websys_promise_decode_\{name} }\n",
       )

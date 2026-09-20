@@ -85,6 +85,12 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    for (const format of ['rgba8unorm', 'bgra8unorm']) {
+      if (instance.exports.gpu_canvas_format({ getPreferredCanvasFormat: () => format }) !== format) throw Error('Enum result conversion failed');
+      count++;
+    }
+    if (instance.exports.gpu_canvas_format(navigator.gpu) !== navigator.gpu.getPreferredCanvasFormat()) throw Error('Preferred canvas format mismatch');
+    count++;
     if (!crossOriginIsolated || typeof SharedArrayBuffer === 'undefined') throw Error('Shared buffer fixture requires isolation');
     const plainInput = new ArrayBuffer(8);
     const sharedInput = new SharedArrayBuffer(8);
@@ -163,6 +169,41 @@ try {
       const textureError = await renderDevice.popErrorScope();
       if (textureError) throw Error(textureError.message);
       count++;
+      const canvas = document.createElement('canvas');
+      document.body.append(canvas);
+      const canvasContext = canvas.getContext('webgpu');
+      if (!canvasContext) throw Error('WebGPU canvas unavailable');
+      try {
+        for (let round = 0; round < 2; round++) {
+          canvas.width = round + 2;
+          canvas.height = round + 1;
+          renderDevice.pushErrorScope('validation');
+          const dimensions = instance.exports.gpu_canvas_frame(navigator.gpu, renderDevice, canvasContext, round === 1);
+          if ((dimensions >>> 16) !== canvas.width || (dimensions & 65535) !== canvas.height) throw Error('Canvas texture dimensions mismatch');
+          // Snapshot before an await lets the browser present/discard its current texture.
+          const copy = document.createElement('canvas');
+          copy.width = canvas.width;
+          copy.height = canvas.height;
+          const copyContext = copy.getContext('2d');
+          copyContext.drawImage(canvas, 0, 0);
+          const pixels = copyContext.getImageData(0, 0, copy.width, copy.height).data;
+          const expected = round === 0 ? [255,0,0,255] : [0,255,0,255];
+          for (let i = 0; i < pixels.length; i++) {
+            if (pixels[i] !== expected[i % 4]) throw Error(`Canvas pixel mismatch at ${i}: ${pixels[i]}`);
+          }
+          await renderDevice.queue.onSubmittedWorkDone();
+          const canvasError = await renderDevice.popErrorScope();
+          if (canvasError) throw Error(canvasError.message);
+          instance.exports.gpu_canvas_finish(canvasContext);
+          let unconfigured = false;
+          try { canvasContext.getCurrentTexture(); } catch (error) { unconfigured = error.name === 'InvalidStateError'; }
+          if (!unconfigured) throw Error('Canvas remained configured');
+          count++;
+        }
+      } finally {
+        instance.exports.gpu_canvas_finish(canvasContext);
+        canvas.remove();
+      }
       const texture = renderDevice.createTexture({ size: [1, 1], format: 'rgba8unorm', usage: GPUTextureUsage.RENDER_ATTACHMENT });
       try {
         const view = texture.createView();

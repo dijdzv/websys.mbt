@@ -208,6 +208,14 @@ pub fn gpu_buffer_sample(gpu : @web.GPU, callback : Callback) -> Unit {
 }
 
 ///|
+pub fn gpu_canvas_format(gpu : @web.GPU) -> String {
+  match gpu.get_preferred_canvas_format() {
+    Rgba8unorm => "rgba8unorm"
+    Bgra8unorm => "bgra8unorm"
+  }
+}
+
+///|
 pub fn gpu_discovery(gpu : @web.GPU, callback : Callback) -> Unit {
   @async.run_async_main(async fn() {
     let adapter = gpu.request_adapter().wait()

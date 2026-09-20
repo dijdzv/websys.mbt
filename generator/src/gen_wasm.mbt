@@ -179,6 +179,7 @@ fn emit_wasm_function(
   dictionaries? : Array[String] = [],
   promise_interfaces? : Array[String] = [],
   input_converters? : Map[String, (String, String)] = Map([]),
+  result_enums? : Array[String] = [],
 ) -> Unit {
   if result is Named(name) && dictionaries.contains(name) {
     abort("WasmGC dictionary results are not implemented")
@@ -201,6 +202,7 @@ fn emit_wasm_function(
     })
     .join(", ")
   let result_type = match result {
+    Named(name) if result_enums.contains(name) => name
     Promise(inner) =>
       "WebsysPromise[" +
       require_wasm_promise_value(
@@ -212,7 +214,9 @@ fn emit_wasm_function(
     _ => require_wasm_type(result, names)
   }
   let key = owner + "_" + member_name
-  let needs_wrapper = result is Promise(_) ||
+  let enum_result = result is Named(name) && result_enums.contains(name)
+  let needs_wrapper = enum_result ||
+    result is Promise(_) ||
     result is Nullable(_) ||
     params.any(p => {
       input_converters.contains(p.0) ||
@@ -240,7 +244,9 @@ fn emit_wasm_function(
       })
     })
     .join(", ")
-  let raw_result = if result is Promise(inner) {
+  let raw_result = if enum_result {
+    "String"
+  } else if result is Promise(inner) {
     "@js_async.Promise[" +
     require_wasm_promise_value(
       inner,
@@ -273,6 +279,10 @@ fn emit_wasm_function(
     "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} {\n",
   )
   match result {
+    Named(name) if result_enums.contains(name) =>
+      out.write_string(
+        "  \{name}::from_string(websys_raw_\{key}(\{args})).unwrap()\n",
+      )
     Promise(inner) => {
       let name = require_wasm_promise_value(
         inner,
@@ -681,6 +691,7 @@ fn generate_wasm(
                   dictionaries~,
                   promise_interfaces~,
                   input_converters~,
+                  result_enums=enums,
                 )
                 let js_params = if variant_arguments.is_empty() {
                   "self"

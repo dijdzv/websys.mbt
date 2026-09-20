@@ -105,7 +105,15 @@ The texture consumer uploads two distinct 2x2 patterns through `writeTexture`,
 binds a texture view and verifies every pixel after `textureLoad` rendering on
 JS and WasmGC. It covers a partial ArrayBufferView, an ArrayBuffer, a nonzero
 data-layout offset and padded rows, including the relocated WasmGC bundle.
-Canvas presentation and filtering/sampler coverage remain separate contracts.
+The canvas consumer configures a real browser canvas with its preferred format,
+renders two colors across resize/reconfiguration and verifies every pixel through
+a 2D canvas snapshot before the current texture can expire. Both backends check
+dimensions, unconfiguration and GPU validation; the relocated bundle repeats the
+WasmGC path. This does not certify physical display output or sampler filtering.
+
+Nonnullable synchronous enum operation results use the declared enum conversion:
+JS maps host strings to variant indices; WasmGC imports strings and decodes in
+MoonBit. WasmGC nullable/Promise enum results and enum attributes remain unsupported.
 
 The shader consumer covers auto-layout, nested vertex/fragment state, uniform
 uploads and pixel readback on both JS and WasmGC. This is representative shader

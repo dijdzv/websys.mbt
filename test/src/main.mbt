@@ -380,6 +380,7 @@ async fn main {
     ("gpu_readback", async fn() { test_gpu_readback() }),
     ("gpu_shader", async fn() { test_gpu_shader() }),
     ("gpu_texture", async fn() { test_gpu_texture() }),
+    ("gpu_canvas", async fn() { test_gpu_canvas() }),
     ("js_fetch_post_contract", async fn() { test_js_fetch_post_contract() }),
     (
       "js_fetch_metadata_contract",

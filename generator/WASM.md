@@ -330,7 +330,9 @@ passing strings across FFI; enum tags or compiler layouts never enter the host.
 Typedef references preserve the enum identity. Conflicting generated variant
 names are rejected. The browser consumer checks required values, omission/null,
 enum sequences and actual GPU sampler creation. Operation inputs now also support
-enums and nullable enums; results, attributes and Promise settlement remain unsupported.
+enums and nullable enums. Nonnullable synchronous operation results cross the ABI
+as strings and decode through the declared enum; an undeclared host value fails
+decoding. Nullable results, enum attributes and Promise settlement remain unsupported.
 Sequence inputs use MoonBit arrays;
 records use arrays of key/value pairs; unions use generated explicit cases.
 Generated MoonBit code walks these values and builds host arrays or null-prototype
@@ -367,10 +369,16 @@ writeBuffer uploads from MoonBit bytes, auto-layout bind groups and both pipelin
 creation forms. It checks base and explicit optional-argument calls for uploads,
 bind groups and draws, validates every red/green output pixel and destroys its
 resources. GPU validation scopes are checked by the harness. The relocated source
-bundle runs this consumer too. Texture upload/sampling and canvas presentation
-remain separate requirements for the full Metonic rendering migration.
+bundle runs this consumer too. Texture consumers additionally verify padded
+writeTexture uploads from partial views and ArrayBuffers through textureLoad.
+Canvas consumers configure a real HTML canvas using the preferred format, render
+red and green frames across resize/reconfiguration, check texture dimensions and
+unconfigure it. A 2D canvas snapshots every RGBA pixel immediately after submit,
+before asynchronous waiting permits presentation to discard the current texture.
+This verifies browser canvas content, not physical monitor presentation.
+Both JS and WasmGC run these contracts, including the relocated WasmGC bundle.
 The fixture omits unused optional parameters/descriptor fields and narrows the
-texture-format enum to rgba8unorm; the extent union and coordinate annotations
+texture-format enum to rgba8unorm and bgra8unorm; the extent union and coordinate annotations
 retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.
 The JS dictionary generator resolves primitive aliases for optional-value
 conversion and converts nonnullable 64-bit integer fields between MoonBit

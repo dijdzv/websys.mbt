@@ -6,6 +6,7 @@ interface GPUAdapter {
   Promise<GPUDevice> requestDevice();
 };
 interface GPUDevice {
+  readonly attribute GPUQueue queue;
   GPUCommandEncoder createCommandEncoder();
   GPUSampler createSampler(GPUSamplerDescriptor descriptor);
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
@@ -17,6 +18,13 @@ interface GPUCommandEncoder {
 };
 interface GPURenderPassEncoder { undefined end(); };
 interface GPUCommandBuffer {};
+interface GPUQueue {
+  undefined submit(sequence<GPUCommandBuffer> commandBuffers);
+  Promise<undefined> onSubmittedWorkDone();
+};
+interface SequenceProbe {
+  undefined unsignedValues(sequence<unsigned long> values);
+};
 interface GPUTextureView {};
 enum GPULoadOp { "load", "clear" };
 enum GPUStoreOp { "store", "discard" };

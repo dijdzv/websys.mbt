@@ -112,6 +112,7 @@ fn emit_wasm_input_plan(
       )
       let expression = match kind {
         "boolean" => "value !== 0"
+        "unsigned long" => "value >>> 0"
         "enforced-u64" =>
           "(() => { const unsigned = BigInt.asUintN(64, value); if (unsigned > 9007199254740991n) throw new TypeError('EnforceRange unsigned long long exceeds the exact WebIDL range'); return Number(unsigned); })()"
         _ => "value"

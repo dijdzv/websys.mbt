@@ -20,7 +20,11 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    let typ = require_wasm_type(value_type, references)
+    let typ = if value_type is Any {
+      "JsValue"
+    } else {
+      require_wasm_type(value_type, references)
+    }
     let public_type = match plan.presence {
       Required => if field.idl_type is Nullable(_) { typ + "?" } else { typ }
       Optional => typ + "?"
@@ -36,7 +40,9 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    let typ = if value_type is Named(name) && dictionaries.contains(name) {
+    let typ = if value_type is Any {
+      "JsValue"
+    } else if value_type is Named(name) && dictionaries.contains(name) {
       "JsValue"
     } else {
       require_wasm_type(value_type, references)

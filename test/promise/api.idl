@@ -5,7 +5,12 @@ interface ReadableStream {};
 interface ReadableStreamDefaultReader {
   constructor(ReadableStream stream);
   Promise<undefined> cancel(DOMString reason);
+  Promise<ReadableStreamReadResult> read();
   undefined releaseLock();
+};
+dictionary ReadableStreamReadResult {
+  any value;
+  boolean done;
 };
 interface Window {
   Promise<Response> fetch(DOMString url, RequestInit options);

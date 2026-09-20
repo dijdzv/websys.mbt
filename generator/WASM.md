@@ -7,6 +7,9 @@ The generator can emit WasmGC imports and a matching JavaScript host module from
 a restricted WebIDL file. This is an experimental path, not WasmGC support for
 the published `dijdzv/websys` package or the complete Webref corpus.
 
+The [consumer compatibility contract](COMPATIBILITY.md) compares representative
+JS/WasmGC behavior and distinguishes source delivery from registry support.
+
 Run `mise run test-wasm` to generate the DOM fixture, compile it and exercise it
 in headless Chromium. `mise run test` includes this verification automatically.
 The generator flag is `--wasm-gc-input <file> -o <directory>`; it writes

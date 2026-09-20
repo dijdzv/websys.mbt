@@ -44,7 +44,10 @@ Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
 Development uses MoonBit `0.10.12+1634b282e` and `moonbitlang/async` `0.21.3`.
 Published bindings currently support JavaScript. An [experimental WasmGC backend](generator/WASM.md)
-generates and tests a restricted DOM surface; it does not yet cover the published API.
+generates and tests representative DOM/input, Fetch/Streams, buffer and WebGPU
+paths. It does not cover the full published API or make the published package
+generally usable on WasmGC. See the [consumer compatibility contract](generator/COMPATIBILITY.md)
+for verified behavior, backend differences and external-use instructions.
 Change the generator rather than editing generated `src/*.mbt` files.
 Generation reads MDN metadata over the network for typed errors and event types.
 
@@ -58,7 +61,9 @@ Playwright runs on Node; Bun remains the generator host and dependency installer
 adapter from a separate consumer module. The normal test task includes it;
 Git/network access is needed for first preparation. See the
 [adapter boundary](patches/async-wasmgc.md). This does not change the published
-JS dependency or claim generated Promise/Fetch support.
+JS dependency. Generated Promise/Fetch/Streams/WebGPU coverage and relocated
+source delivery are verified separately by `mise run test-promises`, also part
+of the normal test task.
 
 Environment and task configuration lives only in `mise.toml`; Nix/devenv,
 direnv and just are not required. Nix-managed Linux machines can supply mise

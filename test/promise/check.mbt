@@ -15,6 +15,49 @@ fn notify_value(callback : Callback, value : @web.JsValue) -> Unit = "fixture" "
 fn notify_error(callback : Callback, value : @bridge.JsValue) -> Unit = "fixture" "error"
 
 ///|
+pub fn read_required(values : @web.Values, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let result = values.read_required().wait() catch {
+        @web.DictionaryReadError(error) => {
+          notify_error(callback, error)
+          notify(callback, 2, "")
+          return
+        }
+        error => raise error
+      }
+    notify(callback, 1, result.done.to_string())
+  })
+}
+
+///|
+pub fn read_bytes(stream : @web.ReadableStream, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let reader = @web.ReadableStreamDefaultReader::new(stream)
+    defer reader.release_lock()
+    let output : Array[String] = []
+    while true {
+      let result = reader.read().wait()
+      if result.done == Some(true) {
+        break
+      }
+      let bytes = match result.value {
+        Some(value) => value.to_bytes()
+        None => None
+      }
+      guard bytes is Some(bytes) else {
+        reader.cancel("Expected Uint8Array").wait()
+        notify(callback, 2, "")
+        return
+      }
+      for byte in bytes {
+        output.push(byte.to_int().to_string())
+      }
+    }
+    notify(callback, 1, output.join(","))
+  })
+}
+
+///|
 pub fn read_stream(
   reader : @web.ReadableStreamDefaultReader,
   callback : Callback,

@@ -27,8 +27,12 @@ interface AbortController {
   undefined abort();
 };
 interface Values {
+  Promise<RequiredResult> readRequired();
   Promise<long> readInteger();
   Promise<unsigned long> readUnsigned();
   Promise<boolean> readBoolean();
   Promise<double> readDouble();
+};
+dictionary RequiredResult {
+  required boolean done;
 };

@@ -1,0 +1,23 @@
+import {
+  "moonbitlang/async@0.21.3",
+  "moonbitlang/async@0.21.3/fs",
+  "moonbitlang/async@0.21.3/process",
+}
+
+async fn main {
+  let root = ".work/result-diagnostics"
+  if !@fs.exists(root) { @fs.mkdir(root, recursive=true) }
+  let cases = [
+    ("default", "boolean done = false;", "", "defaults and nullable fields"),
+    ("nullable", "boolean? done;", "", "defaults and nullable fields"),
+    ("nested", "Child child;", "dictionary Child { boolean value; };", "Unsupported WasmGC Promise settlement conversion"),
+  ]
+  for (name, field_source, extra, expected) in cases {
+    let input = root + "/" + name + ".idl"
+    @fs.write_file(input, "interface Source { Promise<Result> read(); }; dictionary Result { " + field_source + " }; " + extra)
+    let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name], no_console_window=true)
+    assert_true(code != 0, msg="Unsupported result accepted: " + name)
+    assert_true((output.text() + errors.text()).contains(expected), msg="Missing result diagnostic: " + name)
+  }
+  println("Result dictionary diagnostics: 3 cases passed")
+}

@@ -373,6 +373,9 @@ fn generate_wasm(definitions : Array[Definition]) -> (String, String) {
     )
   }
   js.write_string("    websys: {\n")
+  if !dictionaries.is_empty() {
+    emit_wasm_bytes(mbt, js)
+  }
   if !promise_values.is_empty() {
     emit_wasm_promise_support(
       mbt, js, promise_values, definitions, promise_interfaces,

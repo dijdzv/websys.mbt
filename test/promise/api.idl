@@ -1,4 +1,13 @@
 typedef DOMString ResponseText;
+typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
+dictionary PostOptions {
+  required DOMString method;
+  required HeadersInit headers;
+  required DOMString body;
+};
+interface PostHost {
+  Promise<Response> fetch(DOMString url, PostOptions options);
+};
 interface Response {
   readonly attribute ReadableStream? body;
   Promise<ResponseText> text();

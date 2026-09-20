@@ -5,11 +5,38 @@ fn emit_wasm_dictionary(
   js : StringBuilder,
   references : Array[String],
   dictionaries : Array[String],
+  dictionary_types? : Map[String, WasmSemanticType] = Map([]),
 ) -> Unit {
   let name = dict.name
+  let compound_types : Map[String, String] = Map([])
+  let converters : Map[String, String] = Map([])
+  for field in dict.members {
+    if dictionary_types.get(name + "." + field.name) is Some(typ) &&
+      !(typ.kind is Name(_)) {
+      guard plan_wasm_input(typ) is Some(plan) else {
+        println(
+          "Unsupported compound dictionary input: " + name + "." + field.name,
+        )
+        abort("Unsupported dictionary input")
+      }
+      let prefix = "websys_input_" +
+        name +
+        "_" +
+        field_name_to_moonbit(field.name)
+      compound_types[field.name] = emit_wasm_input_plan(plan, prefix, mbt, js)
+      converters[field.name] = prefix
+    }
+  }
   mbt.write_string("pub(all) struct \{name} {\n")
   let fields : Array[String] = []
   for field in dict.members {
+    if dictionary_types.get(name + "." + field.name) is Some(typ) {
+      if !compound_types.contains(field.name) &&
+        typ.conversion_error() is Some(message) {
+        println(message)
+        abort("Unsupported dictionary input conversion")
+      }
+    }
     let key = field_name_to_moonbit(field.name)
     guard !fields.contains(key) else {
       abort("Duplicate dictionary field: " + name + "." + key)
@@ -20,7 +47,9 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    let typ = if value_type is Any {
+    let typ = if compound_types.get(field.name) is Some(typ) {
+      typ
+    } else if value_type is Any {
       "JsValue"
     } else {
       require_wasm_type(value_type, references)
@@ -40,7 +69,9 @@ fn emit_wasm_dictionary(
       Nullable(inner) => inner
       other => other
     }
-    let typ = if value_type is Any {
+    let typ = if compound_types.contains(field.name) {
+      "JsValue"
+    } else if value_type is Any {
       "JsValue"
     } else if value_type is Named(name) && dictionaries.contains(name) {
       "JsValue"
@@ -64,7 +95,13 @@ fn emit_wasm_dictionary(
       Named(name) | Nullable(Named(name)) => dictionaries.contains(name)
       _ => false
     }
-    let converted = if nested { "value.to_js()" } else { "value" }
+    let converted = if converters.get(field.name) is Some(convert) {
+      convert + "(value)"
+    } else if nested {
+      "value.to_js()"
+    } else {
+      "value"
+    }
     let set = "websys_dict_\{name}_\{key}(target, \{converted})"
     let null = "websys_dict_null(target, \"\{field.name}\")"
     match plan_dictionary_field(field).presence {
@@ -74,9 +111,12 @@ fn emit_wasm_dictionary(
             "  match self.\{key} { None => \{null}; Some(value) => \{set} }\n",
           )
         } else {
-          mbt.write_string(
-            "  websys_dict_\{name}_\{key}(target, self.\{key}\{if nested { ".to_js()" } else { "" }})\n",
-          )
+          let value = if converters.get(field.name) is Some(convert) {
+            convert + "(self." + key + ")"
+          } else {
+            "self." + key + (if nested { ".to_js()" } else { "" })
+          }
+          mbt.write_string("  websys_dict_\{name}_\{key}(target, \{value})\n")
         }
       Optional =>
         mbt.write_string("  if self.\{key} is Some(value) { \{set} }\n")

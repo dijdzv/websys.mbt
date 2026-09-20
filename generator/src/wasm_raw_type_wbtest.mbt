@@ -2,9 +2,9 @@
 test "WasmGC rejects type information the shared AST cannot preserve" {
   for
     source in [
-      "typedef record<DOMString, DOMString> Headers;", "typedef (DOMString or record<DOMString, DOMString>) Headers;",
-      "interface Source { Promise<record<DOMString, DOMString>> read(); };", "dictionary Options { sequence<DOMString>? values; };",
-      "dictionary Options { (DOMString or long)? value; };", "interface Source { undefined send(record<DOMString, DOMString> headers); };",
+      "typedef record<DOMString, Promise<DOMString>> Headers;", "interface Source { Promise<record<DOMString, DOMString>> read(); };",
+      "dictionary Options { sequence<DOMString>? values; };", "dictionary Options { (DOMString or long)? value; };",
+      "interface Source { undefined send(record<DOMString, DOMString> headers); };",
     ] {
     let parsed = parse_webidl_raw(source)
     assert_true(is_parse_success(parsed))

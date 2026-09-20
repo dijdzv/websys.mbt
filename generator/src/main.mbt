@@ -136,7 +136,10 @@ async fn main {
       println(message)
       abort(message)
     }
-    let (moonbit, runtime) = generate_wasm(convert_to_definitions(parsed))
+    let (moonbit, runtime) = generate_wasm(
+      convert_to_definitions(parsed),
+      dictionary_types=wasm_dictionary_semantics(parsed),
+    )
     mkdir_sync(args.output)
     write_file_sync(path_join(args.output, "bindings.mbt"), moonbit)
     write_file_sync(path_join(args.output, "runtime.mjs"), runtime)

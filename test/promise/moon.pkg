@@ -12,6 +12,7 @@ options(
       "exports": [
         "read_bytes",
         "fetch_body",
+        "post_headers",
         "read_required",
         "start",
         "start_value",

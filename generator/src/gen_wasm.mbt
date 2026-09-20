@@ -522,20 +522,26 @@ fn generate_wasm(
           enums~,
         )
       CallbackInterface(cb) => {
-        guard cb.arguments.length() == 1 && cb.return_type is Some(Void) else {
+        guard cb.arguments.length() <= 1 && cb.return_type is Some(Void) else {
           abort(
-            "WasmGC callbacks currently require one argument and a void result",
+            "WasmGC callbacks currently require zero or one argument and a void result",
           )
         }
-        let event = require_wasm_type(cb.arguments[0].idl_type, names)
-        guard !dictionaries.contains(event) else {
-          abort("WasmGC dictionary callback values are not implemented")
-        }
-        guard !(cb.arguments[0].idl_type is Nullable(_)) else {
-          abort("Nullable WasmGC callback arguments are not implemented")
-        }
-        guard !cb.arguments[0].optional && !cb.arguments[0].variadic else {
-          abort("Optional/variadic WasmGC callbacks are not implemented")
+        let event = if cb.arguments.is_empty() {
+          ""
+        } else {
+          let argument = cb.arguments[0]
+          let typ = require_wasm_type(argument.idl_type, names)
+          guard !dictionaries.contains(typ) else {
+            abort("WasmGC dictionary callback values are not implemented")
+          }
+          guard !(argument.idl_type is Nullable(_)) else {
+            abort("Nullable WasmGC callback arguments are not implemented")
+          }
+          guard !argument.optional && !argument.variadic else {
+            abort("Optional/variadic WasmGC callbacks are not implemented")
+          }
+          typ
         }
         let name = cb.name
         mbt.write_string("#external\npub type \{name}\n")

@@ -119,9 +119,9 @@ pub fn to_pascal_case(s : String) -> String {
 }
 
 ///|
-/// Escape MoonBit reserved keywords
+/// Escape MoonBit reserved keywords.
 pub fn escape_reserved(name : String) -> String {
-  // MoonBit reserved keywords (including future reserved keywords that cause warnings)
+  // MoonBit reserved keywords include future keywords that cause warnings.
   match name {
     "type"
     | "match"
@@ -175,6 +175,15 @@ pub fn escape_reserved(name : String) -> String {
     | "extend"
     | "use" => name + "_"
     _ => name
+  }
+}
+
+///|
+pub fn escape_parameter(name : String) -> String {
+  // These names remain valid properties, but cannot bind strict JS parameters.
+  match name {
+    "arguments" | "eval" => name + "_"
+    _ => escape_reserved(name)
   }
 }
 

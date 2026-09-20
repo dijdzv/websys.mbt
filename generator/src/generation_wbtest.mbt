@@ -108,6 +108,9 @@ test "WasmGC inherits partial and mixin members and exposes ancestor conversions
 test "browser names that are MoonBit keywords are escaped" {
   assert_eq(escape_reserved("extend"), "extend_")
   assert_eq(escape_reserved("append"), "append")
+  assert_eq(escape_parameter("arguments"), "arguments_")
+  assert_eq(escape_parameter("eval"), "eval_")
+  assert_eq(escape_reserved("eval"), "eval")
 }
 
 ///|

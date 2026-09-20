@@ -164,7 +164,7 @@ pub fn gen_static_operation_with_suffix(
     if i > 0 {
       args.write_string(", ")
     }
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -196,7 +196,7 @@ pub fn gen_static_operation_with_suffix(
     if i > 0 {
       js_params.write_string(", ")
     }
-    js_params.write_string(arg.name |> to_snake_case |> escape_reserved)
+    js_params.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
   let result = StringBuilder()
   if needs_wrapper {
@@ -291,7 +291,7 @@ pub fn gen_static_operation_with_arg_count(
     if i > 0 {
       args.write_string(", ")
     }
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -323,7 +323,7 @@ pub fn gen_static_operation_with_arg_count(
     if i > 0 {
       js_params.write_string(", ")
     }
-    js_params.write_string(arg.name |> to_snake_case |> escape_reserved)
+    js_params.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
   let result = StringBuilder()
   if needs_wrapper {
@@ -413,7 +413,7 @@ pub fn gen_special_operation(
         _ => false
       }
       let fn_name = if is_index_getter { "get" } else { "get_named" }
-      let arg_name = arg.name |> to_snake_case |> escape_reserved
+      let arg_name = arg.name |> to_snake_case |> escape_parameter
       let result = StringBuilder()
       if is_index_getter {
         result.write_string("#alias(\"_[_]\")\n")
@@ -455,8 +455,8 @@ pub fn gen_special_operation(
       let value_arg = op.arguments[1]
       let index_type = idl_type_to_moonbit(index_arg.idl_type)
       let value_type = idl_type_to_moonbit(value_arg.idl_type)
-      let index_name = index_arg.name |> to_snake_case |> escape_reserved
-      let value_name = value_arg.name |> to_snake_case |> escape_reserved
+      let index_name = index_arg.name |> to_snake_case |> escape_parameter
+      let value_name = value_arg.name |> to_snake_case |> escape_parameter
       let is_index_setter = index_arg.idl_type is Primitive(_)
       let is_throwing = op.throws.length() > 0
       let error_enum_name = if is_throwing {
@@ -512,7 +512,7 @@ pub fn gen_special_operation(
       }
       let arg = op.arguments[0]
       let arg_type = idl_type_to_moonbit(arg.idl_type)
-      let arg_name = arg.name |> to_snake_case |> escape_reserved
+      let arg_name = arg.name |> to_snake_case |> escape_parameter
       let is_throwing = op.throws.length() > 0
       let error_enum_name = if is_throwing {
         gen_error_enum_name(op.name, interface_prefix=interface_name)
@@ -586,7 +586,7 @@ pub fn gen_operation(
   for i = 0; i < args_len; i = i + 1 {
     let arg = op.arguments[i]
     args.write_string(", ")
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -601,7 +601,7 @@ pub fn gen_operation(
   for i = 0; i < args_len; i = i + 1 {
     let arg = op.arguments[i]
     js_args.write_string(", ")
-    js_args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    js_args.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
 
   // JS call arguments
@@ -926,7 +926,7 @@ pub fn gen_operation_with_arg_count(
   for i = 0; i < arg_count; i = i + 1 {
     let arg = op.arguments[i]
     args.write_string(", ")
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -941,7 +941,7 @@ pub fn gen_operation_with_arg_count(
   for i = 0; i < arg_count; i = i + 1 {
     let arg = op.arguments[i]
     js_args.write_string(", ")
-    js_args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    js_args.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
 
   // JS call arguments
@@ -1602,7 +1602,7 @@ pub fn gen_constructor_with_suffix(
     if i > 0 {
       args.write_string(", ")
     }
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -1651,7 +1651,7 @@ pub fn gen_constructor_with_suffix(
     if i > 0 {
       result.write_string(", ")
     }
-    result.write_string(arg.name |> to_snake_case |> escape_reserved)
+    result.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
   let js_ctor_expr = "new " +
     interface_name +
@@ -1712,7 +1712,7 @@ pub fn gen_constructor_with_arg_count(
     if i > 0 {
       args.write_string(", ")
     }
-    args.write_string(arg.name |> to_snake_case |> escape_reserved)
+    args.write_string(arg.name |> to_snake_case |> escape_parameter)
     args.write_string(" : ")
     if needs_wrapper {
       args.write_string(gen_ffi_arg_type(arg, dict_map))
@@ -1760,7 +1760,7 @@ pub fn gen_constructor_with_arg_count(
     if i > 0 {
       result.write_string(", ")
     }
-    result.write_string(arg.name |> to_snake_case |> escape_reserved)
+    result.write_string(arg.name |> to_snake_case |> escape_parameter)
   }
   let js_ctor_expr = "new " +
     interface_name +

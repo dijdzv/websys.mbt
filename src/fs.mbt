@@ -437,7 +437,7 @@ extern "js" fn FileSystemReadWriteOptions::to_js_ffi(
   self : FileSystemReadWriteOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   at: ((value) => value === undefined ? undefined : Number(value))(self.at)
+  #|   at: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.at)
   #| })
 
 ///|
@@ -453,7 +453,7 @@ extern "js" fn FileSystemReadWriteOptions::from_js_ffi(
   value : JsValue,
 ) -> FileSystemReadWriteOptions =
   #| (v) => ({
-  #|   at: (v.at === undefined ? undefined : BigInt(v.at))
+  #|   at: (v.at === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.at))
   #| })
 
 ///|
@@ -462,6 +462,30 @@ pub fn FileSystemReadWriteOptions::from_js(
   value : JsValue,
 ) -> FileSystemReadWriteOptions {
   FileSystemReadWriteOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn FileSystemReadWriteOptions::to_js_checked(
+  self : FileSystemReadWriteOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_FileSystemReadWriteOptions(
+  convert : () -> FileSystemReadWriteOptions,
+) -> Result[FileSystemReadWriteOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn FileSystemReadWriteOptions::from_js_checked(
+  value : JsValue,
+) -> Result[FileSystemReadWriteOptions, JsError] {
+  try_dictionary_FileSystemReadWriteOptions(() => {
+    FileSystemReadWriteOptions::from_js(value)
+  })
 }
 
 ///|

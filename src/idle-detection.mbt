@@ -69,7 +69,7 @@ pub fn IdleOptions::default() -> IdleOptions {
 ///|
 extern "js" fn IdleOptions::to_js_ffi(self : IdleOptions) -> JsValue =
   #| (self) => ({
-  #|   threshold: ((value) => value === undefined ? undefined : Number(value))(self.threshold),
+  #|   threshold: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.threshold),
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
@@ -82,7 +82,7 @@ pub fn IdleOptions::to_js(self : IdleOptions) -> JsValue {
 ///|
 extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
   #| (v) => ({
-  #|   threshold: (v.threshold === undefined ? undefined : BigInt(v.threshold)),
+  #|   threshold: (v.threshold === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.threshold)),
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
@@ -90,6 +90,28 @@ extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
 /// Convert from JsValue
 pub fn IdleOptions::from_js(value : JsValue) -> IdleOptions {
   IdleOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn IdleOptions::to_js_checked(
+  self : IdleOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_IdleOptions(
+  convert : () -> IdleOptions,
+) -> Result[IdleOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn IdleOptions::from_js_checked(
+  value : JsValue,
+) -> Result[IdleOptions, JsError] {
+  try_dictionary_IdleOptions(() => IdleOptions::from_js(value))
 }
 
 ///|

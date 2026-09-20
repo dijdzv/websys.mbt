@@ -55,7 +55,7 @@ extern "js" fn SchedulerPostTaskOptions::to_js_ffi(
   #| (self) => ({
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['user-blocking', 'user-visible', 'background'][v]; })()),
-  #|   delay: ((value) => value === undefined ? undefined : Number(value))(self.delay)
+  #|   delay: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.delay)
   #| })
 
 ///|
@@ -73,7 +73,7 @@ extern "js" fn SchedulerPostTaskOptions::from_js_ffi(
   #| (v) => ({
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   priority: (v.priority === undefined ? undefined : ['user-blocking', 'user-visible', 'background'].indexOf(v.priority)),
-  #|   delay: (v.delay === undefined ? undefined : BigInt(v.delay))
+  #|   delay: (v.delay === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.delay))
   #| })
 
 ///|
@@ -82,6 +82,30 @@ pub fn SchedulerPostTaskOptions::from_js(
   value : JsValue,
 ) -> SchedulerPostTaskOptions {
   SchedulerPostTaskOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn SchedulerPostTaskOptions::to_js_checked(
+  self : SchedulerPostTaskOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_SchedulerPostTaskOptions(
+  convert : () -> SchedulerPostTaskOptions,
+) -> Result[SchedulerPostTaskOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn SchedulerPostTaskOptions::from_js_checked(
+  value : JsValue,
+) -> Result[SchedulerPostTaskOptions, JsError] {
+  try_dictionary_SchedulerPostTaskOptions(() => {
+    SchedulerPostTaskOptions::from_js(value)
+  })
 }
 
 ///|

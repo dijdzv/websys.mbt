@@ -494,13 +494,13 @@ extern "js" fn RTCEncodedVideoFrameMetadata::to_js_ffi(
   #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType,
-  #|   frameId: ((value) => value === undefined ? undefined : Number(value))(self.frameId),
+  #|   frameId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.frameId),
   #|   dependencies: self.dependencies,
   #|   width: self.width,
   #|   height: self.height,
   #|   spatialIndex: self.spatialIndex,
   #|   temporalIndex: self.temporalIndex,
-  #|   timestamp: ((value) => value === undefined ? undefined : Number(value))(self.timestamp)
+  #|   timestamp: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timestamp)
   #| })
 
 ///|
@@ -524,13 +524,13 @@ extern "js" fn RTCEncodedVideoFrameMetadata::from_js_ffi(
   #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
   #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
   #|   mimeType: v.mimeType,
-  #|   frameId: (v.frameId === undefined ? undefined : BigInt(v.frameId)),
+  #|   frameId: (v.frameId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.frameId)),
   #|   dependencies: v.dependencies,
   #|   width: v.width,
   #|   height: v.height,
   #|   spatialIndex: v.spatialIndex,
   #|   temporalIndex: v.temporalIndex,
-  #|   timestamp: (v.timestamp === undefined ? undefined : BigInt(v.timestamp))
+  #|   timestamp: (v.timestamp === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timestamp))
   #| })
 
 ///|
@@ -539,6 +539,30 @@ pub fn RTCEncodedVideoFrameMetadata::from_js(
   value : JsValue,
 ) -> RTCEncodedVideoFrameMetadata {
   RTCEncodedVideoFrameMetadata::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn RTCEncodedVideoFrameMetadata::to_js_checked(
+  self : RTCEncodedVideoFrameMetadata,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_RTCEncodedVideoFrameMetadata(
+  convert : () -> RTCEncodedVideoFrameMetadata,
+) -> Result[RTCEncodedVideoFrameMetadata, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn RTCEncodedVideoFrameMetadata::from_js_checked(
+  value : JsValue,
+) -> Result[RTCEncodedVideoFrameMetadata, JsError] {
+  try_dictionary_RTCEncodedVideoFrameMetadata(() => {
+    RTCEncodedVideoFrameMetadata::from_js(value)
+  })
 }
 
 ///|

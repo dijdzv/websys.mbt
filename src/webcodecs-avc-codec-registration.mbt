@@ -81,7 +81,7 @@ extern "js" fn VideoEncoderConfig::to_js_ffi(
   #|   height: self.height,
   #|   displayWidth: self.displayWidth,
   #|   displayHeight: self.displayHeight,
-  #|   bitrate: ((value) => value === undefined ? undefined : Number(value))(self.bitrate),
+  #|   bitrate: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bitrate),
   #|   framerate: ((() => { const v = self.framerate; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   hardwareAcceleration: ((() => { const v = self.hardwareAcceleration; if (v === undefined) return undefined; return ['no-preference', 'prefer-hardware', 'prefer-software'][v]; })()),
   #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
@@ -109,7 +109,7 @@ extern "js" fn VideoEncoderConfig::from_js_ffi(
   #|   height: v.height,
   #|   displayWidth: v.displayWidth,
   #|   displayHeight: v.displayHeight,
-  #|   bitrate: (v.bitrate === undefined ? undefined : BigInt(v.bitrate)),
+  #|   bitrate: (v.bitrate === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bitrate)),
   #|   framerate: (v.framerate === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framerate }),
   #|   hardwareAcceleration: (v.hardwareAcceleration === undefined ? undefined : ['no-preference', 'prefer-hardware', 'prefer-software'].indexOf(v.hardwareAcceleration)),
   #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
@@ -123,6 +123,28 @@ extern "js" fn VideoEncoderConfig::from_js_ffi(
 /// Convert from JsValue
 pub fn VideoEncoderConfig::from_js(value : JsValue) -> VideoEncoderConfig {
   VideoEncoderConfig::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn VideoEncoderConfig::to_js_checked(
+  self : VideoEncoderConfig,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_VideoEncoderConfig(
+  convert : () -> VideoEncoderConfig,
+) -> Result[VideoEncoderConfig, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn VideoEncoderConfig::from_js_checked(
+  value : JsValue,
+) -> Result[VideoEncoderConfig, JsError] {
+  try_dictionary_VideoEncoderConfig(() => VideoEncoderConfig::from_js(value))
 }
 
 ///|

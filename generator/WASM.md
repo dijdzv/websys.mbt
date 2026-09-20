@@ -352,8 +352,15 @@ retain their WebIDL types. JS byte copying uses a test-side Uint8Array helper.
 The JS dictionary generator resolves primitive aliases for optional-value
 conversion and converts nonnullable 64-bit integer fields between MoonBit
 BigInt and browser Number values. Required size and optional offset round trips
-are checked. This does not establish 64-bit operation/result coverage or lossless
-Number representation outside JavaScript's safe integer range.
+are checked. Conversions accept only the exact integer range -(2^53-1) through
+2^53-1 (0 through 2^53-1 for unsigned fields) and reject unsafe, negative unsigned
+or fractional Numbers with RangeError. Host values must
+be Numbers; other representations produce TypeError. Optional omission remains
+undefined. Generated `to_js_checked` / `from_js_checked` methods expose these
+errors as Result; existing conversion methods throw. Additional WebIDL
+operation constraints remain the browser's responsibility. Boundary checks cover
+required aliases, optional aliases and direct signed fields. This does not
+establish nullable 64-bit field or 64-bit operation/result coverage.
 
 Required nonnullable sequence and union operation arguments reuse the dictionary input
 builders. Supported elements include primitive values, declared references,

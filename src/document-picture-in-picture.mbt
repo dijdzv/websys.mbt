@@ -26,8 +26,8 @@ extern "js" fn DocumentPictureInPictureOptions::to_js_ffi(
   self : DocumentPictureInPictureOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   width: ((value) => value === undefined ? undefined : Number(value))(self.width),
-  #|   height: ((value) => value === undefined ? undefined : Number(value))(self.height),
+  #|   width: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.width),
+  #|   height: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.height),
   #|   disallowReturnToOpener: (self.disallowReturnToOpener === -1 ? undefined : self.disallowReturnToOpener),
   #|   preferInitialWindowPlacement: (self.preferInitialWindowPlacement === -1 ? undefined : self.preferInitialWindowPlacement)
   #| })
@@ -45,8 +45,8 @@ extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(
   value : JsValue,
 ) -> DocumentPictureInPictureOptions =
   #| (v) => ({
-  #|   width: (v.width === undefined ? undefined : BigInt(v.width)),
-  #|   height: (v.height === undefined ? undefined : BigInt(v.height)),
+  #|   width: (v.width === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.width)),
+  #|   height: (v.height === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.height)),
   #|   disallowReturnToOpener: (v.disallowReturnToOpener === undefined ? -1 : v.disallowReturnToOpener),
   #|   preferInitialWindowPlacement: (v.preferInitialWindowPlacement === undefined ? -1 : v.preferInitialWindowPlacement)
   #| })
@@ -57,6 +57,30 @@ pub fn DocumentPictureInPictureOptions::from_js(
   value : JsValue,
 ) -> DocumentPictureInPictureOptions {
   DocumentPictureInPictureOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn DocumentPictureInPictureOptions::to_js_checked(
+  self : DocumentPictureInPictureOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_DocumentPictureInPictureOptions(
+  convert : () -> DocumentPictureInPictureOptions,
+) -> Result[DocumentPictureInPictureOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn DocumentPictureInPictureOptions::from_js_checked(
+  value : JsValue,
+) -> Result[DocumentPictureInPictureOptions, JsError] {
+  try_dictionary_DocumentPictureInPictureOptions(() => {
+    DocumentPictureInPictureOptions::from_js(value)
+  })
 }
 
 ///|

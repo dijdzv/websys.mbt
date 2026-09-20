@@ -541,7 +541,7 @@ extern "js" fn UnderlyingSource::to_js_ffi(self : UnderlyingSource) -> JsValue =
   #|   pull: ((() => { const v = self.pull; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   cancel: ((() => { const v = self.cancel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['bytes'][v]; })()),
-  #|   autoAllocateChunkSize: ((value) => value === undefined ? undefined : Number(value))(self.autoAllocateChunkSize)
+  #|   autoAllocateChunkSize: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.autoAllocateChunkSize)
   #| })
 
 ///|
@@ -559,13 +559,35 @@ extern "js" fn UnderlyingSource::from_js_ffi(
   #|   pull: (v.pull === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pull }),
   #|   cancel: (v.cancel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cancel }),
   #|   type_: (v.type === undefined ? undefined : ['bytes'].indexOf(v.type)),
-  #|   autoAllocateChunkSize: (v.autoAllocateChunkSize === undefined ? undefined : BigInt(v.autoAllocateChunkSize))
+  #|   autoAllocateChunkSize: (v.autoAllocateChunkSize === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.autoAllocateChunkSize))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn UnderlyingSource::from_js(value : JsValue) -> UnderlyingSource {
   UnderlyingSource::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn UnderlyingSource::to_js_checked(
+  self : UnderlyingSource,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_UnderlyingSource(
+  convert : () -> UnderlyingSource,
+) -> Result[UnderlyingSource, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn UnderlyingSource::from_js_checked(
+  value : JsValue,
+) -> Result[UnderlyingSource, JsError] {
+  try_dictionary_UnderlyingSource(() => UnderlyingSource::from_js(value))
 }
 
 ///|
@@ -632,7 +654,7 @@ extern "js" fn ReadableStreamBYOBReaderReadOptions::to_js_ffi(
   self : ReadableStreamBYOBReaderReadOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   min: ((value) => value === undefined ? undefined : Number(value))(self.min)
+  #|   min: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.min)
   #| })
 
 ///|
@@ -648,7 +670,7 @@ extern "js" fn ReadableStreamBYOBReaderReadOptions::from_js_ffi(
   value : JsValue,
 ) -> ReadableStreamBYOBReaderReadOptions =
   #| (v) => ({
-  #|   min: (v.min === undefined ? undefined : BigInt(v.min))
+  #|   min: (v.min === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.min))
   #| })
 
 ///|
@@ -657,6 +679,30 @@ pub fn ReadableStreamBYOBReaderReadOptions::from_js(
   value : JsValue,
 ) -> ReadableStreamBYOBReaderReadOptions {
   ReadableStreamBYOBReaderReadOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn ReadableStreamBYOBReaderReadOptions::to_js_checked(
+  self : ReadableStreamBYOBReaderReadOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_ReadableStreamBYOBReaderReadOptions(
+  convert : () -> ReadableStreamBYOBReaderReadOptions,
+) -> Result[ReadableStreamBYOBReaderReadOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn ReadableStreamBYOBReaderReadOptions::from_js_checked(
+  value : JsValue,
+) -> Result[ReadableStreamBYOBReaderReadOptions, JsError] {
+  try_dictionary_ReadableStreamBYOBReaderReadOptions(() => {
+    ReadableStreamBYOBReaderReadOptions::from_js(value)
+  })
 }
 
 ///|

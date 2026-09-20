@@ -19,7 +19,7 @@ extern "js" fn MemoryMeasurement::to_js_ffi(
   self : MemoryMeasurement,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytes: ((value) => value === undefined ? undefined : Number(value))(self.bytes),
+  #|   bytes: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytes),
   #|   breakdown: self.breakdown
   #| })
 
@@ -34,7 +34,7 @@ extern "js" fn MemoryMeasurement::from_js_ffi(
   value : JsValue,
 ) -> MemoryMeasurement =
   #| (v) => ({
-  #|   bytes: (v.bytes === undefined ? undefined : BigInt(v.bytes)),
+  #|   bytes: (v.bytes === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytes)),
   #|   breakdown: v.breakdown
   #| })
 
@@ -42,6 +42,28 @@ extern "js" fn MemoryMeasurement::from_js_ffi(
 /// Convert from JsValue
 pub fn MemoryMeasurement::from_js(value : JsValue) -> MemoryMeasurement {
   MemoryMeasurement::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn MemoryMeasurement::to_js_checked(
+  self : MemoryMeasurement,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_MemoryMeasurement(
+  convert : () -> MemoryMeasurement,
+) -> Result[MemoryMeasurement, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn MemoryMeasurement::from_js_checked(
+  value : JsValue,
+) -> Result[MemoryMeasurement, JsError] {
+  try_dictionary_MemoryMeasurement(() => MemoryMeasurement::from_js(value))
 }
 
 ///|
@@ -63,7 +85,7 @@ extern "js" fn MemoryBreakdownEntry::to_js_ffi(
   self : MemoryBreakdownEntry,
 ) -> JsValue =
   #| (self) => ({
-  #|   bytes: ((value) => value === undefined ? undefined : Number(value))(self.bytes),
+  #|   bytes: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytes),
   #|   attribution: self.attribution,
   #|   types: self.types
   #| })
@@ -79,7 +101,7 @@ extern "js" fn MemoryBreakdownEntry::from_js_ffi(
   value : JsValue,
 ) -> MemoryBreakdownEntry =
   #| (v) => ({
-  #|   bytes: (v.bytes === undefined ? undefined : BigInt(v.bytes)),
+  #|   bytes: (v.bytes === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytes)),
   #|   attribution: v.attribution,
   #|   types: v.types
   #| })
@@ -88,6 +110,28 @@ extern "js" fn MemoryBreakdownEntry::from_js_ffi(
 /// Convert from JsValue
 pub fn MemoryBreakdownEntry::from_js(value : JsValue) -> MemoryBreakdownEntry {
   MemoryBreakdownEntry::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn MemoryBreakdownEntry::to_js_checked(
+  self : MemoryBreakdownEntry,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_MemoryBreakdownEntry(
+  convert : () -> MemoryBreakdownEntry,
+) -> Result[MemoryBreakdownEntry, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn MemoryBreakdownEntry::from_js_checked(
+  value : JsValue,
+) -> Result[MemoryBreakdownEntry, JsError] {
+  try_dictionary_MemoryBreakdownEntry(() => MemoryBreakdownEntry::from_js(value))
 }
 
 ///|

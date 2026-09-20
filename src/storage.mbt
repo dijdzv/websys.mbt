@@ -17,8 +17,8 @@ pub fn StorageEstimate::default() -> StorageEstimate {
 ///|
 extern "js" fn StorageEstimate::to_js_ffi(self : StorageEstimate) -> JsValue =
   #| (self) => ({
-  #|   usage: ((value) => value === undefined ? undefined : Number(value))(self.usage),
-  #|   quota: ((value) => value === undefined ? undefined : Number(value))(self.quota)
+  #|   usage: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.usage),
+  #|   quota: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.quota)
   #| })
 
 ///|
@@ -30,14 +30,36 @@ pub fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue {
 ///|
 extern "js" fn StorageEstimate::from_js_ffi(value : JsValue) -> StorageEstimate =
   #| (v) => ({
-  #|   usage: (v.usage === undefined ? undefined : BigInt(v.usage)),
-  #|   quota: (v.quota === undefined ? undefined : BigInt(v.quota))
+  #|   usage: (v.usage === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.usage)),
+  #|   quota: (v.quota === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.quota))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn StorageEstimate::from_js(value : JsValue) -> StorageEstimate {
   StorageEstimate::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn StorageEstimate::to_js_checked(
+  self : StorageEstimate,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_StorageEstimate(
+  convert : () -> StorageEstimate,
+) -> Result[StorageEstimate, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn StorageEstimate::from_js_checked(
+  value : JsValue,
+) -> Result[StorageEstimate, JsError] {
+  try_dictionary_StorageEstimate(() => StorageEstimate::from_js(value))
 }
 
 ///|

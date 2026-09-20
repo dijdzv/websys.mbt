@@ -251,8 +251,8 @@ extern "js" fn SharedStoragePrivateAggregationConfig::to_js_ffi(
   #| (self) => ({
   #|   aggregationCoordinatorOrigin: self.aggregationCoordinatorOrigin,
   #|   contextId: self.contextId,
-  #|   filteringIdMaxBytes: ((value) => value === undefined ? undefined : Number(value))(self.filteringIdMaxBytes),
-  #|   maxContributions: ((value) => value === undefined ? undefined : Number(value))(self.maxContributions)
+  #|   filteringIdMaxBytes: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.filteringIdMaxBytes),
+  #|   maxContributions: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.maxContributions)
   #| })
 
 ///|
@@ -270,8 +270,8 @@ extern "js" fn SharedStoragePrivateAggregationConfig::from_js_ffi(
   #| (v) => ({
   #|   aggregationCoordinatorOrigin: v.aggregationCoordinatorOrigin,
   #|   contextId: v.contextId,
-  #|   filteringIdMaxBytes: (v.filteringIdMaxBytes === undefined ? undefined : BigInt(v.filteringIdMaxBytes)),
-  #|   maxContributions: (v.maxContributions === undefined ? undefined : BigInt(v.maxContributions))
+  #|   filteringIdMaxBytes: (v.filteringIdMaxBytes === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.filteringIdMaxBytes)),
+  #|   maxContributions: (v.maxContributions === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.maxContributions))
   #| })
 
 ///|
@@ -280,6 +280,30 @@ pub fn SharedStoragePrivateAggregationConfig::from_js(
   value : JsValue,
 ) -> SharedStoragePrivateAggregationConfig {
   SharedStoragePrivateAggregationConfig::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn SharedStoragePrivateAggregationConfig::to_js_checked(
+  self : SharedStoragePrivateAggregationConfig,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_SharedStoragePrivateAggregationConfig(
+  convert : () -> SharedStoragePrivateAggregationConfig,
+) -> Result[SharedStoragePrivateAggregationConfig, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn SharedStoragePrivateAggregationConfig::from_js_checked(
+  value : JsValue,
+) -> Result[SharedStoragePrivateAggregationConfig, JsError] {
+  try_dictionary_SharedStoragePrivateAggregationConfig(() => {
+    SharedStoragePrivateAggregationConfig::from_js(value)
+  })
 }
 
 ///|

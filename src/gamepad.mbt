@@ -165,8 +165,8 @@ extern "js" fn GamepadEffectParameters::to_js_ffi(
   self : GamepadEffectParameters,
 ) -> JsValue =
   #| (self) => ({
-  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
-  #|   startDelay: ((value) => value === undefined ? undefined : Number(value))(self.startDelay),
+  #|   duration: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.duration),
+  #|   startDelay: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.startDelay),
   #|   strongMagnitude: ((() => { const v = self.strongMagnitude; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   weakMagnitude: ((() => { const v = self.weakMagnitude; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   leftTrigger: ((() => { const v = self.leftTrigger; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -186,8 +186,8 @@ extern "js" fn GamepadEffectParameters::from_js_ffi(
   value : JsValue,
 ) -> GamepadEffectParameters =
   #| (v) => ({
-  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
-  #|   startDelay: (v.startDelay === undefined ? undefined : BigInt(v.startDelay)),
+  #|   duration: (v.duration === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.duration)),
+  #|   startDelay: (v.startDelay === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.startDelay)),
   #|   strongMagnitude: (v.strongMagnitude === undefined ? { $tag: 0 } : { $tag: 1, _0: v.strongMagnitude }),
   #|   weakMagnitude: (v.weakMagnitude === undefined ? { $tag: 0 } : { $tag: 1, _0: v.weakMagnitude }),
   #|   leftTrigger: (v.leftTrigger === undefined ? { $tag: 0 } : { $tag: 1, _0: v.leftTrigger }),
@@ -200,6 +200,30 @@ pub fn GamepadEffectParameters::from_js(
   value : JsValue,
 ) -> GamepadEffectParameters {
   GamepadEffectParameters::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn GamepadEffectParameters::to_js_checked(
+  self : GamepadEffectParameters,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_GamepadEffectParameters(
+  convert : () -> GamepadEffectParameters,
+) -> Result[GamepadEffectParameters, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn GamepadEffectParameters::from_js_checked(
+  value : JsValue,
+) -> Result[GamepadEffectParameters, JsError] {
+  try_dictionary_GamepadEffectParameters(() => {
+    GamepadEffectParameters::from_js(value)
+  })
 }
 
 ///|

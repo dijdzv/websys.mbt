@@ -37,7 +37,7 @@ extern "js" fn PerformanceObserverCallbackOptions::to_js_ffi(
   self : PerformanceObserverCallbackOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   droppedEntriesCount: ((value) => value === undefined ? undefined : Number(value))(self.droppedEntriesCount)
+  #|   droppedEntriesCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.droppedEntriesCount)
   #| })
 
 ///|
@@ -53,7 +53,7 @@ extern "js" fn PerformanceObserverCallbackOptions::from_js_ffi(
   value : JsValue,
 ) -> PerformanceObserverCallbackOptions =
   #| (v) => ({
-  #|   droppedEntriesCount: (v.droppedEntriesCount === undefined ? undefined : BigInt(v.droppedEntriesCount))
+  #|   droppedEntriesCount: (v.droppedEntriesCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.droppedEntriesCount))
   #| })
 
 ///|
@@ -62,6 +62,30 @@ pub fn PerformanceObserverCallbackOptions::from_js(
   value : JsValue,
 ) -> PerformanceObserverCallbackOptions {
   PerformanceObserverCallbackOptions::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn PerformanceObserverCallbackOptions::to_js_checked(
+  self : PerformanceObserverCallbackOptions,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_PerformanceObserverCallbackOptions(
+  convert : () -> PerformanceObserverCallbackOptions,
+) -> Result[PerformanceObserverCallbackOptions, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn PerformanceObserverCallbackOptions::from_js_checked(
+  value : JsValue,
+) -> Result[PerformanceObserverCallbackOptions, JsError] {
+  try_dictionary_PerformanceObserverCallbackOptions(() => {
+    PerformanceObserverCallbackOptions::from_js(value)
+  })
 }
 
 ///|

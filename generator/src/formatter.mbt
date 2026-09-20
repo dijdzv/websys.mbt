@@ -411,6 +411,9 @@ pub fn gen_shared_types_with_externals(
   )
   result.write_string("pub type JsError\n\n")
   result.write_string(
+    "///|\nextern \"js\" fn try_dictionary_conversion(convert : () -> JsValue) -> Result[JsValue, JsError] =\n  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }\n\n",
+  )
+  result.write_string(
     "pub extern \"js\" fn JsError::message(self : JsError) -> String =\n",
   )
   result.write_string("  #| (self) => self.message\n\n")

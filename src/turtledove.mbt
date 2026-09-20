@@ -820,12 +820,12 @@ extern "js" fn AuctionAdConfig::to_js_ffi(self : AuctionAdConfig) -> JsValue =
   #|   sellerSignals: ((() => { const v = self.sellerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   directFromSellerSignalsHeaderAdSlot: ((() => { const v = self.directFromSellerSignalsHeaderAdSlot; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   deprecatedRenderURLReplacements: ((() => { const v = self.deprecatedRenderURLReplacements; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   sellerTimeout: ((value) => value === undefined ? undefined : Number(value))(self.sellerTimeout),
+  #|   sellerTimeout: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.sellerTimeout),
   #|   sellerExperimentGroupId: self.sellerExperimentGroupId,
   #|   perBuyerSignals: ((() => { const v = self.perBuyerSignals; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   perBuyerTimeouts: ((() => { const v = self.perBuyerTimeouts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   perBuyerCumulativeTimeouts: ((() => { const v = self.perBuyerCumulativeTimeouts; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   reportingTimeout: ((value) => value === undefined ? undefined : Number(value))(self.reportingTimeout),
+  #|   reportingTimeout: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.reportingTimeout),
   #|   sellerCurrency: self.sellerCurrency,
   #|   perBuyerCurrencies: ((() => { const v = self.perBuyerCurrencies; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   perBuyerMultiBidLimits: ((() => { const v = self.perBuyerMultiBidLimits; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -870,12 +870,12 @@ extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig 
   #|   sellerSignals: (v.sellerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sellerSignals }),
   #|   directFromSellerSignalsHeaderAdSlot: (v.directFromSellerSignalsHeaderAdSlot === undefined ? { $tag: 0 } : { $tag: 1, _0: v.directFromSellerSignalsHeaderAdSlot }),
   #|   deprecatedRenderURLReplacements: (v.deprecatedRenderURLReplacements === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deprecatedRenderURLReplacements }),
-  #|   sellerTimeout: (v.sellerTimeout === undefined ? undefined : BigInt(v.sellerTimeout)),
+  #|   sellerTimeout: (v.sellerTimeout === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.sellerTimeout)),
   #|   sellerExperimentGroupId: v.sellerExperimentGroupId,
   #|   perBuyerSignals: (v.perBuyerSignals === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerSignals }),
   #|   perBuyerTimeouts: (v.perBuyerTimeouts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerTimeouts }),
   #|   perBuyerCumulativeTimeouts: (v.perBuyerCumulativeTimeouts === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerCumulativeTimeouts }),
-  #|   reportingTimeout: (v.reportingTimeout === undefined ? undefined : BigInt(v.reportingTimeout)),
+  #|   reportingTimeout: (v.reportingTimeout === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.reportingTimeout)),
   #|   sellerCurrency: v.sellerCurrency,
   #|   perBuyerCurrencies: (v.perBuyerCurrencies === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerCurrencies }),
   #|   perBuyerMultiBidLimits: (v.perBuyerMultiBidLimits === undefined ? { $tag: 0 } : { $tag: 1, _0: v.perBuyerMultiBidLimits }),
@@ -904,6 +904,28 @@ extern "js" fn AuctionAdConfig::from_js_ffi(value : JsValue) -> AuctionAdConfig 
 /// Convert from JsValue
 pub fn AuctionAdConfig::from_js(value : JsValue) -> AuctionAdConfig {
   AuctionAdConfig::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn AuctionAdConfig::to_js_checked(
+  self : AuctionAdConfig,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_AuctionAdConfig(
+  convert : () -> AuctionAdConfig,
+) -> Result[AuctionAdConfig, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn AuctionAdConfig::from_js_checked(
+  value : JsValue,
+) -> Result[AuctionAdConfig, JsError] {
+  try_dictionary_AuctionAdConfig(() => AuctionAdConfig::from_js(value))
 }
 
 ///|
@@ -1248,15 +1270,15 @@ extern "js" fn StorageInterestGroup::to_js_ffi(
   #|   lifetimeMs: self.lifetimeMs,
   #|   additionalBidKey: self.additionalBidKey,
   #|   privateAggregationConfig: ((() => { const v = self.privateAggregationConfig; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   joinCount: ((value) => value === undefined ? undefined : Number(value))(self.joinCount),
-  #|   bidCount: ((value) => value === undefined ? undefined : Number(value))(self.bidCount),
+  #|   joinCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.joinCount),
+  #|   bidCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bidCount),
   #|   prevWinsMs: self.prevWinsMs,
   #|   joiningOrigin: self.joiningOrigin,
-  #|   timeSinceGroupJoinedMs: ((value) => value === undefined ? undefined : Number(value))(self.timeSinceGroupJoinedMs),
-  #|   lifetimeRemainingMs: ((value) => value === undefined ? undefined : Number(value))(self.lifetimeRemainingMs),
-  #|   timeSinceLastUpdateMs: ((value) => value === undefined ? undefined : Number(value))(self.timeSinceLastUpdateMs),
-  #|   timeUntilNextUpdateMs: ((value) => value === undefined ? undefined : Number(value))(self.timeUntilNextUpdateMs),
-  #|   estimatedSize: ((value) => value === undefined ? undefined : Number(value))(self.estimatedSize)
+  #|   timeSinceGroupJoinedMs: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timeSinceGroupJoinedMs),
+  #|   lifetimeRemainingMs: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.lifetimeRemainingMs),
+  #|   timeSinceLastUpdateMs: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timeSinceLastUpdateMs),
+  #|   timeUntilNextUpdateMs: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asIntN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.timeUntilNextUpdateMs),
+  #|   estimatedSize: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.estimatedSize)
   #| })
 
 ///|
@@ -1294,21 +1316,43 @@ extern "js" fn StorageInterestGroup::from_js_ffi(
   #|   lifetimeMs: v.lifetimeMs,
   #|   additionalBidKey: v.additionalBidKey,
   #|   privateAggregationConfig: (v.privateAggregationConfig === undefined ? { $tag: 0 } : { $tag: 1, _0: v.privateAggregationConfig }),
-  #|   joinCount: (v.joinCount === undefined ? undefined : BigInt(v.joinCount)),
-  #|   bidCount: (v.bidCount === undefined ? undefined : BigInt(v.bidCount)),
+  #|   joinCount: (v.joinCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.joinCount)),
+  #|   bidCount: (v.bidCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bidCount)),
   #|   prevWinsMs: v.prevWinsMs,
   #|   joiningOrigin: v.joiningOrigin,
-  #|   timeSinceGroupJoinedMs: (v.timeSinceGroupJoinedMs === undefined ? undefined : BigInt(v.timeSinceGroupJoinedMs)),
-  #|   lifetimeRemainingMs: (v.lifetimeRemainingMs === undefined ? undefined : BigInt(v.lifetimeRemainingMs)),
-  #|   timeSinceLastUpdateMs: (v.timeSinceLastUpdateMs === undefined ? undefined : BigInt(v.timeSinceLastUpdateMs)),
-  #|   timeUntilNextUpdateMs: (v.timeUntilNextUpdateMs === undefined ? undefined : BigInt(v.timeUntilNextUpdateMs)),
-  #|   estimatedSize: (v.estimatedSize === undefined ? undefined : BigInt(v.estimatedSize))
+  #|   timeSinceGroupJoinedMs: (v.timeSinceGroupJoinedMs === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timeSinceGroupJoinedMs)),
+  #|   lifetimeRemainingMs: (v.lifetimeRemainingMs === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.lifetimeRemainingMs)),
+  #|   timeSinceLastUpdateMs: (v.timeSinceLastUpdateMs === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timeSinceLastUpdateMs)),
+  #|   timeUntilNextUpdateMs: (v.timeUntilNextUpdateMs === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.timeUntilNextUpdateMs)),
+  #|   estimatedSize: (v.estimatedSize === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.estimatedSize))
   #| })
 
 ///|
 /// Convert from JsValue
 pub fn StorageInterestGroup::from_js(value : JsValue) -> StorageInterestGroup {
   StorageInterestGroup::from_js_ffi(value)
+}
+
+///|
+/// Catch dictionary conversion errors, including unsafe integer ranges.
+pub fn StorageInterestGroup::to_js_checked(
+  self : StorageInterestGroup,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
+
+///|
+extern "js" fn try_dictionary_StorageInterestGroup(
+  convert : () -> StorageInterestGroup,
+) -> Result[StorageInterestGroup, JsError] =
+  #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
+
+///|
+/// Catch invalid host fields, including unsafe integer ranges.
+pub fn StorageInterestGroup::from_js_checked(
+  value : JsValue,
+) -> Result[StorageInterestGroup, JsError] {
+  try_dictionary_StorageInterestGroup(() => StorageInterestGroup::from_js(value))
 }
 
 ///|

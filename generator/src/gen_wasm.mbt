@@ -112,6 +112,7 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     Primitive("boolean") => Some("Bool")
     Primitive("long") => Some("Int")
     Primitive("unsigned long") => Some("UInt")
+    Primitive("unsigned short") => Some("UInt")
     Primitive("double") => Some("Double")
     Named("ArrayBuffer") => Some("ArrayBuffer")
     Named(name) if names.contains(name) => Some(name)

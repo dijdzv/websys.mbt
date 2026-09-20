@@ -11,8 +11,14 @@ interface PostHost {
   Promise<Response> fetch(DOMString url, PostOptions options);
 };
 interface Response {
+  readonly attribute unsigned short status;
+  readonly attribute boolean ok;
+  readonly attribute Headers headers;
   readonly attribute ReadableStream? body;
   Promise<ResponseText> text();
+};
+interface Headers {
+  ByteString? get(ByteString name);
 };
 interface ReadableStream {};
 interface ReadableStreamDefaultReader {

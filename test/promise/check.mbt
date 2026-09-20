@@ -6,6 +6,40 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn inspect_response(response : @web.Response, callback : Callback) -> Unit {
+  let content_type = match response.headers().get("Content-Type") {
+    None => "missing"
+    Some(value) => "present:" + value
+  }
+  notify(
+    callback,
+    1,
+    response.status().to_string() +
+    "|" +
+    response.ok().to_string() +
+    "|" +
+    content_type,
+  )
+}
+
+///|
+pub fn fetch_metadata(
+  host : @web.Window,
+  url : String,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let response = host.fetch(url, @web.RequestInit::{ signal: None, }).wait()
+    if response.body() is Some(body) {
+      let reader = @web.ReadableStreamDefaultReader::new(body)
+      defer reader.release_lock()
+      reader.cancel("metadata only").wait()
+    }
+    inspect_response(response, callback)
+  })
+}
+
+///|
 pub fn post_body(
   host : @web.PostHost,
   url : String,

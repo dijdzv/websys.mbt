@@ -628,7 +628,12 @@ pub fn format_spec_output(
       match def {
         Dictionary(d) => {
           result.write_string(
-            gen_dictionary(d, global_enum_map, global_union_set),
+            gen_dictionary(
+              d,
+              global_enum_map,
+              global_union_set,
+              primitive_typedef_map~,
+            ),
           )
           result.write_string("\n")
         }

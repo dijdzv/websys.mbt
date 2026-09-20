@@ -437,7 +437,7 @@ extern "js" fn FileSystemReadWriteOptions::to_js_ffi(
   self : FileSystemReadWriteOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   at: self.at
+  #|   at: ((value) => value === undefined ? undefined : Number(value))(self.at)
   #| })
 
 ///|
@@ -453,7 +453,7 @@ extern "js" fn FileSystemReadWriteOptions::from_js_ffi(
   value : JsValue,
 ) -> FileSystemReadWriteOptions =
   #| (v) => ({
-  #|   at: v.at
+  #|   at: (v.at === undefined ? undefined : BigInt(v.at))
   #| })
 
 ///|

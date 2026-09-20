@@ -10,9 +10,11 @@ interface GPUDevice {
   GPUCommandEncoder createCommandEncoder();
   GPUSampler createSampler(GPUSamplerDescriptor descriptor);
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
+  GPUTexture createTexture(GPUTextureDescriptor descriptor);
   undefined destroy();
 };
 interface GPUCommandEncoder {
+  undefined copyTextureToBuffer(GPUTexelCopyTextureInfo source, GPUTexelCopyBufferInfo destination, GPUExtent3D copySize);
   GPURenderPassEncoder beginRenderPass(GPURenderPassDescriptor descriptor);
   GPUCommandBuffer finish();
 };
@@ -26,6 +28,37 @@ interface SequenceProbe {
   undefined unsignedValues(sequence<unsigned long> values);
 };
 interface GPUTextureView {};
+interface GPUTexture {
+  GPUTextureView createView();
+  undefined destroy();
+};
+typedef [EnforceRange] unsigned long GPUIntegerCoordinate;
+typedef [EnforceRange] unsigned long GPUSize32;
+typedef unsigned long GPUTextureUsageFlags;
+typedef unsigned long GPUMapModeFlags;
+dictionary GPUExtent3DDict {
+  required GPUIntegerCoordinate width;
+  GPUIntegerCoordinate height = 1;
+  GPUIntegerCoordinate depthOrArrayLayers = 1;
+};
+typedef (sequence<GPUIntegerCoordinate> or GPUExtent3DDict) GPUExtent3D;
+enum GPUTextureFormat { "rgba8unorm" };
+dictionary GPUTextureDescriptor {
+  required GPUExtent3D size;
+  required GPUTextureFormat format;
+  required GPUTextureUsageFlags usage;
+};
+dictionary GPUTexelCopyBufferLayout {
+  GPUSize64 offset = 0;
+  GPUSize32 bytesPerRow;
+  GPUSize32 rowsPerImage;
+};
+dictionary GPUTexelCopyBufferInfo : GPUTexelCopyBufferLayout {
+  required GPUBuffer buffer;
+};
+dictionary GPUTexelCopyTextureInfo {
+  required GPUTexture texture;
+};
 enum GPULoadOp { "load", "clear" };
 enum GPUStoreOp { "store", "discard" };
 dictionary GPUColorDict {
@@ -66,6 +99,7 @@ dictionary GPUBufferDescriptor {
   boolean mappedAtCreation = false;
 };
 interface GPUBuffer {
+  Promise<undefined> mapAsync(GPUMapModeFlags mode);
   ArrayBuffer getMappedRange();
   undefined unmap();
   undefined destroy();

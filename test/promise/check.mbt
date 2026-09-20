@@ -6,6 +6,60 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn gpu_readback(device : @web.GPUDevice, callback : Callback) -> Unit {
+  @async.run_async_main(async fn() {
+    let texture = device.create_texture(@web.GPUTextureDescriptor::{
+      size: Case0([2U, 2U, 1U]),
+      format: Rgba8unorm,
+      usage: 17U,
+    })
+    defer texture.destroy()
+    let buffer = device.create_buffer(@web.GPUBufferDescriptor::{
+      size: 512UL,
+      usage: 9U,
+      mappedAtCreation: None,
+    })
+    defer buffer.destroy()
+    let encoder = device.create_command_encoder()
+    let pass = encoder.begin_render_pass(
+      clear_descriptor(texture.create_view(), true, false),
+    )
+    pass.end()
+    encoder.copy_texture_to_buffer(
+      @web.GPUTexelCopyTextureInfo::{ texture, },
+      @web.GPUTexelCopyBufferInfo::{
+        buffer,
+        offset: None,
+        bytesPerRow: Some(256U),
+        rowsPerImage: Some(2U),
+      },
+      Case1(@web.GPUExtent3DDict::{
+        width: 2U,
+        height: Some(2U),
+        depthOrArrayLayers: Some(1U),
+      }),
+    )
+    device.queue().submit([encoder.finish()])
+    device.queue().on_submitted_work_done().wait()
+    buffer.map_async(1U).wait()
+    let bytes = buffer.get_mapped_range().to_bytes().unwrap()
+    buffer.unmap()
+    let mut valid = bytes.length() == 512
+    for row in 0..<2 {
+      for col in 0..<2 {
+        let offset = row * 256 + col * 4
+        valid = valid &&
+          bytes[offset] == 255 &&
+          bytes[offset + 1] == 0 &&
+          bytes[offset + 2] == 0 &&
+          bytes[offset + 3] == 255
+      }
+    }
+    notify(callback, if valid { 1 } else { 2 }, "rgba-red")
+  })
+}
+
+///|
 fn clear_descriptor(
   view : @web.GPUTextureView,
   dict : Bool,

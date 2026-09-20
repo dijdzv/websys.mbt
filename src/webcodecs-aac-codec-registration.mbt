@@ -66,7 +66,7 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
   #|   codec: self.codec,
   #|   sampleRate: self.sampleRate,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   bitrate: self.bitrate,
+  #|   bitrate: ((value) => value === undefined ? undefined : Number(value))(self.bitrate),
   #|   bitrateMode: ((() => { const v = self.bitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })())
   #| })
 
@@ -87,7 +87,7 @@ extern "js" fn AudioEncoderConfig::from_js_ffi(
   #|   codec: v.codec,
   #|   sampleRate: v.sampleRate,
   #|   numberOfChannels: v.numberOfChannels,
-  #|   bitrate: v.bitrate,
+  #|   bitrate: (v.bitrate === undefined ? undefined : BigInt(v.bitrate)),
   #|   bitrateMode: (v.bitrateMode === undefined ? undefined : ['constant', 'variable'].indexOf(v.bitrateMode))
   #| })
 

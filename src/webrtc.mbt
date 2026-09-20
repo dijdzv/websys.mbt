@@ -1213,7 +1213,7 @@ extern "js" fn RTCCertificateExpiration::to_js_ffi(
   self : RTCCertificateExpiration,
 ) -> JsValue =
   #| (self) => ({
-  #|   expires: self.expires
+  #|   expires: ((value) => value === undefined ? undefined : Number(value))(self.expires)
   #| })
 
 ///|
@@ -1229,7 +1229,7 @@ extern "js" fn RTCCertificateExpiration::from_js_ffi(
   value : JsValue,
 ) -> RTCCertificateExpiration =
   #| (v) => ({
-  #|   expires: v.expires
+  #|   expires: (v.expires === undefined ? undefined : BigInt(v.expires))
   #| })
 
 ///|

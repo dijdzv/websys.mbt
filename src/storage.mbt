@@ -17,8 +17,8 @@ pub fn StorageEstimate::default() -> StorageEstimate {
 ///|
 extern "js" fn StorageEstimate::to_js_ffi(self : StorageEstimate) -> JsValue =
   #| (self) => ({
-  #|   usage: self.usage,
-  #|   quota: self.quota
+  #|   usage: ((value) => value === undefined ? undefined : Number(value))(self.usage),
+  #|   quota: ((value) => value === undefined ? undefined : Number(value))(self.quota)
   #| })
 
 ///|
@@ -30,8 +30,8 @@ pub fn StorageEstimate::to_js(self : StorageEstimate) -> JsValue {
 ///|
 extern "js" fn StorageEstimate::from_js_ffi(value : JsValue) -> StorageEstimate =
   #| (v) => ({
-  #|   usage: v.usage,
-  #|   quota: v.quota
+  #|   usage: (v.usage === undefined ? undefined : BigInt(v.usage)),
+  #|   quota: (v.quota === undefined ? undefined : BigInt(v.quota))
   #| })
 
 ///|

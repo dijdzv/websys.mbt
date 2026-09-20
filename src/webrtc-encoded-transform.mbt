@@ -494,13 +494,13 @@ extern "js" fn RTCEncodedVideoFrameMetadata::to_js_ffi(
   #|   captureTime: ((() => { const v = self.captureTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   senderCaptureTimeOffset: ((() => { const v = self.senderCaptureTimeOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   mimeType: self.mimeType,
-  #|   frameId: self.frameId,
+  #|   frameId: ((value) => value === undefined ? undefined : Number(value))(self.frameId),
   #|   dependencies: self.dependencies,
   #|   width: self.width,
   #|   height: self.height,
   #|   spatialIndex: self.spatialIndex,
   #|   temporalIndex: self.temporalIndex,
-  #|   timestamp: self.timestamp
+  #|   timestamp: ((value) => value === undefined ? undefined : Number(value))(self.timestamp)
   #| })
 
 ///|
@@ -524,13 +524,13 @@ extern "js" fn RTCEncodedVideoFrameMetadata::from_js_ffi(
   #|   captureTime: (v.captureTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.captureTime }),
   #|   senderCaptureTimeOffset: (v.senderCaptureTimeOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.senderCaptureTimeOffset }),
   #|   mimeType: v.mimeType,
-  #|   frameId: v.frameId,
+  #|   frameId: (v.frameId === undefined ? undefined : BigInt(v.frameId)),
   #|   dependencies: v.dependencies,
   #|   width: v.width,
   #|   height: v.height,
   #|   spatialIndex: v.spatialIndex,
   #|   temporalIndex: v.temporalIndex,
-  #|   timestamp: v.timestamp
+  #|   timestamp: (v.timestamp === undefined ? undefined : BigInt(v.timestamp))
   #| })
 
 ///|

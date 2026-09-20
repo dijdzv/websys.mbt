@@ -541,7 +541,7 @@ extern "js" fn UnderlyingSource::to_js_ffi(self : UnderlyingSource) -> JsValue =
   #|   pull: ((() => { const v = self.pull; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   cancel: ((() => { const v = self.cancel; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['bytes'][v]; })()),
-  #|   autoAllocateChunkSize: self.autoAllocateChunkSize
+  #|   autoAllocateChunkSize: ((value) => value === undefined ? undefined : Number(value))(self.autoAllocateChunkSize)
   #| })
 
 ///|
@@ -559,7 +559,7 @@ extern "js" fn UnderlyingSource::from_js_ffi(
   #|   pull: (v.pull === undefined ? { $tag: 0 } : { $tag: 1, _0: v.pull }),
   #|   cancel: (v.cancel === undefined ? { $tag: 0 } : { $tag: 1, _0: v.cancel }),
   #|   type_: (v.type === undefined ? undefined : ['bytes'].indexOf(v.type)),
-  #|   autoAllocateChunkSize: v.autoAllocateChunkSize
+  #|   autoAllocateChunkSize: (v.autoAllocateChunkSize === undefined ? undefined : BigInt(v.autoAllocateChunkSize))
   #| })
 
 ///|
@@ -632,7 +632,7 @@ extern "js" fn ReadableStreamBYOBReaderReadOptions::to_js_ffi(
   self : ReadableStreamBYOBReaderReadOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   min: self.min
+  #|   min: ((value) => value === undefined ? undefined : Number(value))(self.min)
   #| })
 
 ///|
@@ -648,7 +648,7 @@ extern "js" fn ReadableStreamBYOBReaderReadOptions::from_js_ffi(
   value : JsValue,
 ) -> ReadableStreamBYOBReaderReadOptions =
   #| (v) => ({
-  #|   min: v.min
+  #|   min: (v.min === undefined ? undefined : BigInt(v.min))
   #| })
 
 ///|

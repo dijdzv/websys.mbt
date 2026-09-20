@@ -119,8 +119,8 @@ extern "js" fn XRProjectionLayerInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   depthFormat: ((() => { const v = self.depthFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
+  #|   depthFormat: self.depthFormat,
   #|   scaleFactor: ((() => { const v = self.scaleFactor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   clearOnAccess: (self.clearOnAccess === -1 ? undefined : self.clearOnAccess)
   #| })
@@ -137,8 +137,8 @@ extern "js" fn XRProjectionLayerInit::from_js_ffi(
 ) -> XRProjectionLayerInit =
   #| (v) => ({
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
-  #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthFormat }),
+  #|   colorFormat: v.colorFormat,
+  #|   depthFormat: v.depthFormat,
   #|   scaleFactor: (v.scaleFactor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleFactor }),
   #|   clearOnAccess: (v.clearOnAccess === undefined ? -1 : v.clearOnAccess)
   #| })
@@ -186,7 +186,7 @@ extern "js" fn XRLayerInit::to_js_ffi(self : XRLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
@@ -207,7 +207,7 @@ extern "js" fn XRLayerInit::from_js_ffi(value : JsValue) -> XRLayerInit =
   #| (v) => ({
   #|   space: v.space,
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   colorFormat: v.colorFormat,
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
   #|   mipLevels: v.mipLevels,
   #|   viewPixelWidth: v.viewPixelWidth,
@@ -266,7 +266,7 @@ extern "js" fn XRQuadLayerInit::to_js_ffi(self : XRQuadLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
@@ -290,7 +290,7 @@ extern "js" fn XRQuadLayerInit::from_js_ffi(value : JsValue) -> XRQuadLayerInit 
   #| (v) => ({
   #|   space: v.space,
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   colorFormat: v.colorFormat,
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
   #|   mipLevels: v.mipLevels,
   #|   viewPixelWidth: v.viewPixelWidth,
@@ -356,7 +356,7 @@ extern "js" fn XRCylinderLayerInit::to_js_ffi(
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
@@ -383,7 +383,7 @@ extern "js" fn XRCylinderLayerInit::from_js_ffi(
   #| (v) => ({
   #|   space: v.space,
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   colorFormat: v.colorFormat,
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
   #|   mipLevels: v.mipLevels,
   #|   viewPixelWidth: v.viewPixelWidth,
@@ -452,7 +452,7 @@ extern "js" fn XREquirectLayerInit::to_js_ffi(
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
@@ -480,7 +480,7 @@ extern "js" fn XREquirectLayerInit::from_js_ffi(
   #| (v) => ({
   #|   space: v.space,
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   colorFormat: v.colorFormat,
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
   #|   mipLevels: v.mipLevels,
   #|   viewPixelWidth: v.viewPixelWidth,
@@ -540,7 +540,7 @@ extern "js" fn XRCubeLayerInit::to_js_ffi(self : XRCubeLayerInit) -> JsValue =
   #| (self) => ({
   #|   space: self.space,
   #|   textureType: ((() => { const v = self.textureType; if (v === undefined) return undefined; return ['texture', 'texture-array'][v]; })()),
-  #|   colorFormat: ((() => { const v = self.colorFormat; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   colorFormat: self.colorFormat,
   #|   depthFormat: ((() => { const v = self.depthFormat; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   mipLevels: self.mipLevels,
   #|   viewPixelWidth: self.viewPixelWidth,
@@ -562,7 +562,7 @@ extern "js" fn XRCubeLayerInit::from_js_ffi(value : JsValue) -> XRCubeLayerInit 
   #| (v) => ({
   #|   space: v.space,
   #|   textureType: (v.textureType === undefined ? undefined : ['texture', 'texture-array'].indexOf(v.textureType)),
-  #|   colorFormat: (v.colorFormat === undefined ? { $tag: 0 } : { $tag: 1, _0: v.colorFormat }),
+  #|   colorFormat: v.colorFormat,
   #|   depthFormat: (v.depthFormat === undefined ? { $tag: 0 } : v.depthFormat === null ? { $tag: 1 } : { $tag: 2, _0: v.depthFormat }),
   #|   mipLevels: v.mipLevels,
   #|   viewPixelWidth: v.viewPixelWidth,

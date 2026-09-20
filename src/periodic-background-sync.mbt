@@ -18,7 +18,7 @@ extern "js" fn BackgroundSyncOptions::to_js_ffi(
   self : BackgroundSyncOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   minInterval: self.minInterval
+  #|   minInterval: ((value) => value === undefined ? undefined : Number(value))(self.minInterval)
   #| })
 
 ///|
@@ -32,7 +32,7 @@ extern "js" fn BackgroundSyncOptions::from_js_ffi(
   value : JsValue,
 ) -> BackgroundSyncOptions =
   #| (v) => ({
-  #|   minInterval: v.minInterval
+  #|   minInterval: (v.minInterval === undefined ? undefined : BigInt(v.minInterval))
   #| })
 
 ///|

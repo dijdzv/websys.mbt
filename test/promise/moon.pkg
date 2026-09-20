@@ -13,6 +13,7 @@ options(
         "render_options",
         "encode_clear",
         "submit_clear",
+        "gpu_readback",
         "unsigned_sequence",
         "enum_options",
         "buffer_size_options",

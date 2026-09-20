@@ -28,6 +28,9 @@ fn plan_wasm_input(
     typ.kind == Name("unsigned long long") {
     return Some(Scalar("UInt64", "enforced-u64"))
   }
+  if typ.annotations == ["EnforceRange"] && typ.kind == Name("unsigned long") {
+    return Some(Scalar("UInt", "unsigned long"))
+  }
   if !typ.annotations.is_empty() {
     return None
   }

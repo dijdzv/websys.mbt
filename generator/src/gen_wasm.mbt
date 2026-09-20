@@ -23,8 +23,16 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
   }
   let items = get_parse_data(parsed)
   let references : Array[String] = ["ArrayBuffer"]
+  let dictionaries : Array[String] = []
+  let enums : Array[String] = []
   for i = 0; i < js_array_length(items); i = i + 1 {
     let item = js_array_get(items, i)
+    if get_type(item) == "dictionary" {
+      dictionaries.push(get_name(item))
+    }
+    if get_type(item) == "enum" {
+      enums.push(get_name(item))
+    }
     if get_type(item) == "interface" || get_type(item) == "callback" {
       references.push(get_name(item))
     }
@@ -69,6 +77,8 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
             get_idl_type(item),
             aliases,
             references,
+            dictionaries~,
+            enums~,
           )
           is Some(message) {
           return Some(message)
@@ -81,6 +91,8 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
               get_idl_type(field),
               aliases,
               references,
+              dictionaries~,
+              enums~,
             )
             is Some(message) {
             return Some(message)
@@ -601,8 +613,8 @@ fn generate_wasm(
                   )
                 }
                 parameters.push(("arg\{i}", arg.idl_type))
-                if arg.idl_type is Sequence(_) {
-                  let plan = wasm_sequence_argument_plan(
+                if arg.idl_type is Sequence(_) || arg.idl_type is Union(_) {
+                  let plan = wasm_compound_argument_plan(
                     arg.idl_type,
                     names,
                     dictionaries,

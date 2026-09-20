@@ -74,7 +74,7 @@ extern "js" fn ItemDetails::to_js_ffi(self : ItemDetails) -> JsValue =
   #|   freeTrialPeriod: self.freeTrialPeriod,
   #|   introductoryPrice: ((() => { const v = self.introductoryPrice; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   introductoryPricePeriod: self.introductoryPricePeriod,
-  #|   introductoryPriceCycles: self.introductoryPriceCycles
+  #|   introductoryPriceCycles: ((value) => value === undefined ? undefined : Number(value))(self.introductoryPriceCycles)
   #| })
 
 ///|
@@ -96,7 +96,7 @@ extern "js" fn ItemDetails::from_js_ffi(value : JsValue) -> ItemDetails =
   #|   freeTrialPeriod: v.freeTrialPeriod,
   #|   introductoryPrice: (v.introductoryPrice === undefined ? { $tag: 0 } : { $tag: 1, _0: v.introductoryPrice }),
   #|   introductoryPricePeriod: v.introductoryPricePeriod,
-  #|   introductoryPriceCycles: v.introductoryPriceCycles
+  #|   introductoryPriceCycles: (v.introductoryPriceCycles === undefined ? undefined : BigInt(v.introductoryPriceCycles))
   #| })
 
 ///|

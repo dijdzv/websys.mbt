@@ -37,7 +37,7 @@ extern "js" fn PerformanceObserverCallbackOptions::to_js_ffi(
   self : PerformanceObserverCallbackOptions,
 ) -> JsValue =
   #| (self) => ({
-  #|   droppedEntriesCount: self.droppedEntriesCount
+  #|   droppedEntriesCount: ((value) => value === undefined ? undefined : Number(value))(self.droppedEntriesCount)
   #| })
 
 ///|
@@ -53,7 +53,7 @@ extern "js" fn PerformanceObserverCallbackOptions::from_js_ffi(
   value : JsValue,
 ) -> PerformanceObserverCallbackOptions =
   #| (v) => ({
-  #|   droppedEntriesCount: v.droppedEntriesCount
+  #|   droppedEntriesCount: (v.droppedEntriesCount === undefined ? undefined : BigInt(v.droppedEntriesCount))
   #| })
 
 ///|

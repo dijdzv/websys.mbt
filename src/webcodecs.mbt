@@ -1227,8 +1227,8 @@ extern "js" fn EncodedAudioChunkInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: ['key', 'delta'][self.type_],
-  #|   timestamp: self.timestamp,
-  #|   duration: self.duration,
+  #|   timestamp: Number(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1245,8 +1245,8 @@ extern "js" fn EncodedAudioChunkInit::from_js_ffi(
 ) -> EncodedAudioChunkInit =
   #| (v) => ({
   #|   type_: ['key', 'delta'].indexOf(v.type),
-  #|   timestamp: v.timestamp,
-  #|   duration: v.duration,
+  #|   timestamp: BigInt(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1288,8 +1288,8 @@ extern "js" fn EncodedVideoChunkInit::to_js_ffi(
 ) -> JsValue =
   #| (self) => ({
   #|   type: ['key', 'delta'][self.type_],
-  #|   timestamp: self.timestamp,
-  #|   duration: self.duration,
+  #|   timestamp: Number(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1306,8 +1306,8 @@ extern "js" fn EncodedVideoChunkInit::from_js_ffi(
 ) -> EncodedVideoChunkInit =
   #| (v) => ({
   #|   type_: ['key', 'delta'].indexOf(v.type),
-  #|   timestamp: v.timestamp,
-  #|   duration: v.duration,
+  #|   timestamp: BigInt(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1354,7 +1354,7 @@ extern "js" fn AudioDataInit::to_js_ffi(self : AudioDataInit) -> JsValue =
   #|   sampleRate: self.sampleRate,
   #|   numberOfFrames: self.numberOfFrames,
   #|   numberOfChannels: self.numberOfChannels,
-  #|   timestamp: self.timestamp,
+  #|   timestamp: Number(self.timestamp),
   #|   data: self.data,
   #|   transfer: self.transfer
   #| })
@@ -1372,7 +1372,7 @@ extern "js" fn AudioDataInit::from_js_ffi(value : JsValue) -> AudioDataInit =
   #|   sampleRate: v.sampleRate,
   #|   numberOfFrames: v.numberOfFrames,
   #|   numberOfChannels: v.numberOfChannels,
-  #|   timestamp: v.timestamp,
+  #|   timestamp: BigInt(v.timestamp),
   #|   data: v.data,
   #|   transfer: v.transfer
   #| })
@@ -1472,8 +1472,8 @@ pub fn VideoFrameInit::default() -> VideoFrameInit {
 ///|
 extern "js" fn VideoFrameInit::to_js_ffi(self : VideoFrameInit) -> JsValue =
   #| (self) => ({
-  #|   duration: self.duration,
-  #|   timestamp: self.timestamp,
+  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
+  #|   timestamp: ((value) => value === undefined ? undefined : Number(value))(self.timestamp),
   #|   alpha: ((() => { const v = self.alpha; if (v === undefined) return undefined; return ['keep', 'discard'][v]; })()),
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1492,8 +1492,8 @@ pub fn VideoFrameInit::to_js(self : VideoFrameInit) -> JsValue {
 ///|
 extern "js" fn VideoFrameInit::from_js_ffi(value : JsValue) -> VideoFrameInit =
   #| (v) => ({
-  #|   duration: v.duration,
-  #|   timestamp: v.timestamp,
+  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
+  #|   timestamp: (v.timestamp === undefined ? undefined : BigInt(v.timestamp)),
   #|   alpha: (v.alpha === undefined ? undefined : ['keep', 'discard'].indexOf(v.alpha)),
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),
@@ -1559,8 +1559,8 @@ extern "js" fn VideoFrameBufferInit::to_js_ffi(
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'][self.format],
   #|   codedWidth: self.codedWidth,
   #|   codedHeight: self.codedHeight,
-  #|   timestamp: self.timestamp,
-  #|   duration: self.duration,
+  #|   timestamp: Number(self.timestamp),
+  #|   duration: ((value) => value === undefined ? undefined : Number(value))(self.duration),
   #|   layout: self.layout,
   #|   visibleRect: ((() => { const v = self.visibleRect; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   rotation: ((() => { const v = self.rotation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1586,8 +1586,8 @@ extern "js" fn VideoFrameBufferInit::from_js_ffi(
   #|   format: ['I420', 'I420P10', 'I420P12', 'I420A', 'I420AP10', 'I420AP12', 'I422', 'I422P10', 'I422P12', 'I422A', 'I422AP10', 'I422AP12', 'I444', 'I444P10', 'I444P12', 'I444A', 'I444AP10', 'I444AP12', 'NV12', 'RGBA', 'RGBX', 'BGRA', 'BGRX'].indexOf(v.format),
   #|   codedWidth: v.codedWidth,
   #|   codedHeight: v.codedHeight,
-  #|   timestamp: v.timestamp,
-  #|   duration: v.duration,
+  #|   timestamp: BigInt(v.timestamp),
+  #|   duration: (v.duration === undefined ? undefined : BigInt(v.duration)),
   #|   layout: v.layout,
   #|   visibleRect: (v.visibleRect === undefined ? { $tag: 0 } : { $tag: 1, _0: v.visibleRect }),
   #|   rotation: (v.rotation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.rotation }),

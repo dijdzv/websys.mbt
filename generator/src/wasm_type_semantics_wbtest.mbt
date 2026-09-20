@@ -1,4 +1,19 @@
 ///|
+test "GPU extent aliases retain enforced unsigned coordinates in union inputs" {
+  let parsed = parse_webidl_raw(
+    "typedef [EnforceRange] unsigned long Coordinate; dictionary Extent { required Coordinate width; }; typedef (sequence<Coordinate> or Extent) Size; dictionary Options { required Size size; };",
+  )
+  assert_true(validate_wasm_input(parsed) is None)
+  let (code, host) = generate_wasm(
+    convert_to_definitions(parsed),
+    dictionary_types=wasm_dictionary_semantics(parsed),
+  )
+  assert_true(code.contains("width : UInt"))
+  assert_true(code.contains("Case0(Array[UInt])"))
+  assert_true(host.contains("value >>> 0"))
+}
+
+///|
 test "dictionary input plans preserve EnforceRange through typedefs" {
   let parsed = parse_webidl_raw(
     "typedef [EnforceRange] unsigned long long Size; typedef Size Alias;",

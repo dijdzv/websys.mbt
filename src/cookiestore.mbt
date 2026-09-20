@@ -258,8 +258,8 @@ extern "js" fn CookieChangeEventInit::to_js_ffi(
   self : CookieChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   changed: ((() => { const v = self.changed; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deleted: ((() => { const v = self.deleted; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   changed: self.changed,
+  #|   deleted: self.deleted
   #| })
 
 ///|
@@ -273,8 +273,8 @@ extern "js" fn CookieChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> CookieChangeEventInit =
   #| (v) => ({
-  #|   changed: (v.changed === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changed }),
-  #|   deleted: (v.deleted === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deleted })
+  #|   changed: v.changed,
+  #|   deleted: v.deleted
   #| })
 
 ///|
@@ -301,8 +301,8 @@ extern "js" fn ExtendableCookieChangeEventInit::to_js_ffi(
   self : ExtendableCookieChangeEventInit,
 ) -> JsValue =
   #| (self) => ({
-  #|   changed: ((() => { const v = self.changed; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   deleted: ((() => { const v = self.deleted; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
+  #|   changed: self.changed,
+  #|   deleted: self.deleted
   #| })
 
 ///|
@@ -318,8 +318,8 @@ extern "js" fn ExtendableCookieChangeEventInit::from_js_ffi(
   value : JsValue,
 ) -> ExtendableCookieChangeEventInit =
   #| (v) => ({
-  #|   changed: (v.changed === undefined ? { $tag: 0 } : { $tag: 1, _0: v.changed }),
-  #|   deleted: (v.deleted === undefined ? { $tag: 0 } : { $tag: 1, _0: v.deleted })
+  #|   changed: v.changed,
+  #|   deleted: v.deleted
   #| })
 
 ///|

@@ -87,6 +87,18 @@ try {
     if (!renderAdapter) throw Error('Render descriptor adapter unavailable');
     const renderDevice = await renderAdapter.requestDevice();
     try {
+      renderDevice.pushErrorScope('validation');
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(Error('GPU readback timed out')), 5000);
+        instance.exports.gpu_readback(renderDevice, (code, value) => {
+          clearTimeout(timer);
+          if (code === 1 && value === 'rgba-red') resolve();
+          else reject(Error('GPU pixel readback mismatch'));
+        });
+      });
+      const readbackError = await renderDevice.popErrorScope();
+      if (readbackError) throw Error(readbackError.message);
+      count++;
       const texture = renderDevice.createTexture({ size: [1, 1], format: 'rgba8unorm', usage: GPUTextureUsage.RENDER_ATTACHMENT });
       try {
         const view = texture.createView();

@@ -83,14 +83,23 @@ separate APIs and separate acceptance requirements.
 The WasmGC preflight now uses `WasmSemanticType` to preserve generic names and
 arguments (including record key/value types), outer nullability, nested unions,
 and the original DOMString/USVString/ByteString names. Alias resolution traverses
-these nodes and rejects cycles before legacy AST conversion. Annotated types
-remain rejected; the model records their presence rather than claiming full
-extended-attribute semantics.
+these nodes and rejects cycles before legacy AST conversion. The input planner
+supports EnforceRange unsigned-long and unsigned-long-long dictionary values;
+unsupported annotations still produce diagnostics. This is not general
+extended-attribute support.
 
-The published JS path is unchanged. Compound WasmGC dictionary inputs now use
+The published JS signatures are preserved. Its dictionary conversions now
+resolve primitive aliases and translate nonnullable Int64/BigInt fields to and
+from host Number values. Safe-integer-range enforcement remains an open defect;
+small-value GPU round trips do not establish lossless full-range conversion.
+
+Compound WasmGC dictionary inputs use
 semantic field types (including inherited fields and resolved aliases) to plan
 explicit sequence, record and union conversion. MoonBit traverses its arrays,
 tuples and enum cases; host imports construct independent JS arrays and objects.
+Nested dictionaries and nullable elements reuse these plans. Required sequence
+and union operation arguments also use the input builders, with the narrower
+legacy-AST type surface guarded separately from dictionary semantic planning.
 Other existing emitters still consume the restricted legacy AST after preflight.
 Extending those paths requires the same semantic handoff before removing guards.
 Model coverage alone does not establish runtime support for every type shape.

@@ -6,6 +6,26 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+pub fn buffer_inputs(
+  probe : @web.BufferInputProbe,
+  plain : @web.ArrayBuffer,
+  shared : @web.SharedArrayBuffer,
+  view : @web.ArrayBufferView,
+) -> @web.ArrayBuffer {
+  probe.accept(Case0(plain))
+  probe.accept(Case1(shared))
+  probe.accept(Case2(view))
+  let bytes : Bytes = b"\x01\xff\x00\x02"
+  let copied = @web.ArrayBuffer::from_bytes(bytes)
+  probe.accept(Case0(copied))
+  guard bytes[0] == 1 && bytes[1] == 255 else {
+    abort("Host mutation changed source bytes")
+  }
+  probe.accept(Case0(@web.ArrayBuffer::from_bytes(b"")))
+  copied
+}
+
+///|
 pub fn operation_inputs(probe : @web.ArgumentProbe, overflow : Bool) -> Unit {
   probe.accept(
     if overflow {

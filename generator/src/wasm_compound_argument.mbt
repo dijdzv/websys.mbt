@@ -18,7 +18,8 @@ fn wasm_compound_argument_plan(
     Nullable(inner) =>
       NullableValue(wasm_compound_argument_plan(inner, names, dictionaries))
     Named(name) if dictionaries.contains(name) => DictionaryValue(name)
-    Named("ArrayBuffer") => Scalar("ArrayBuffer", "reference")
+    Named("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name) =>
+      Scalar(name, "reference")
     Named(name) if names.contains(name) => Scalar(name, "reference")
     String => Scalar("String", "DOMString")
     Primitive("boolean") => Scalar("Bool", "boolean")

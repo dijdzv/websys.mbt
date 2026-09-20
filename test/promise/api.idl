@@ -11,6 +11,10 @@ interface GPUDevice {
   GPUSampler createSampler(GPUSamplerDescriptor descriptor);
   GPUBuffer createBuffer(GPUBufferDescriptor descriptor);
   GPUTexture createTexture(GPUTextureDescriptor descriptor);
+  GPUShaderModule createShaderModule(GPUShaderModuleDescriptor descriptor);
+  GPURenderPipeline createRenderPipeline(GPURenderPipelineDescriptor descriptor);
+  Promise<GPURenderPipeline> createRenderPipelineAsync(GPURenderPipelineDescriptor descriptor);
+  GPUBindGroup createBindGroup(GPUBindGroupDescriptor descriptor);
   undefined destroy();
 };
 interface GPUCommandEncoder {
@@ -18,11 +22,50 @@ interface GPUCommandEncoder {
   GPURenderPassEncoder beginRenderPass(GPURenderPassDescriptor descriptor);
   GPUCommandBuffer finish();
 };
-interface GPURenderPassEncoder { undefined end(); };
+interface GPURenderPassEncoder {
+  undefined setPipeline(GPURenderPipeline pipeline);
+  undefined setBindGroup(GPUIndex32 index, GPUBindGroup? bindGroup, optional sequence<GPUBufferDynamicOffset> dynamicOffsets = []);
+  undefined draw(GPUSize32 vertexCount, optional GPUSize32 instanceCount = 1, optional GPUSize32 firstVertex = 0, optional GPUSize32 firstInstance = 0);
+  undefined end();
+};
 interface GPUCommandBuffer {};
 interface GPUQueue {
   undefined submit(sequence<GPUCommandBuffer> commandBuffers);
   Promise<undefined> onSubmittedWorkDone();
+  undefined writeBuffer(GPUBuffer buffer, GPUSize64 bufferOffset, AllowSharedBufferSource data, optional GPUSize64 dataOffset = 0, optional GPUSize64 size);
+};
+typedef [EnforceRange] unsigned long GPUIndex32;
+typedef [EnforceRange] unsigned long GPUBufferDynamicOffset;
+interface GPUShaderModule {};
+interface GPUPipelineLayout {};
+interface GPUBindGroupLayout {};
+interface GPUBindGroup {};
+interface GPUExternalTexture {};
+interface GPURenderPipeline { GPUBindGroupLayout getBindGroupLayout(unsigned long index); };
+enum GPUAutoLayoutMode { "auto" };
+dictionary GPUShaderModuleDescriptor { required USVString code; };
+dictionary GPUProgrammableStage {
+  required GPUShaderModule module;
+  USVString entryPoint;
+};
+dictionary GPUVertexState : GPUProgrammableStage {};
+dictionary GPUColorTargetState { required GPUTextureFormat format; };
+dictionary GPUFragmentState : GPUProgrammableStage { required sequence<GPUColorTargetState?> targets; };
+dictionary GPURenderPipelineDescriptor {
+  required (GPUPipelineLayout or GPUAutoLayoutMode) layout;
+  required GPUVertexState vertex;
+  GPUFragmentState fragment;
+};
+dictionary GPUBufferBinding {
+  required GPUBuffer buffer;
+  GPUSize64 offset = 0;
+  GPUSize64 size;
+};
+typedef (GPUSampler or GPUTexture or GPUTextureView or GPUBuffer or GPUBufferBinding or GPUExternalTexture) GPUBindingResource;
+dictionary GPUBindGroupEntry { required GPUIndex32 binding; required GPUBindingResource resource; };
+dictionary GPUBindGroupDescriptor {
+  required GPUBindGroupLayout layout;
+  required sequence<GPUBindGroupEntry> entries;
 };
 interface SequenceProbe {
   undefined unsignedValues(sequence<unsigned long> values);
@@ -31,6 +74,10 @@ interface ArgumentProbe {
   undefined accept(GPUSize64 size, GPUAddressMode mode, record<DOMString, DOMString> headers);
   undefined defaults(optional unsigned long count = 7, optional DOMString label = "default");
   undefined nullable(GPUAddressMode? mode);
+};
+typedef (ArrayBuffer or SharedArrayBuffer or [AllowShared] ArrayBufferView) AllowSharedBufferSource;
+interface BufferInputProbe {
+  undefined accept(AllowSharedBufferSource value);
 };
 interface GPUTextureView {};
 interface GPUTexture {

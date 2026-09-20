@@ -9,6 +9,43 @@ fn notify(callback : Callback, code : Int, text : String) -> Unit = "fixture" "n
 fn abort_wait(callback : Callback) -> Unit = "fixture" "abort"
 
 ///|
+pub fn fetch_text(
+  window : @web.Window,
+  url : String,
+  timeout : Int,
+  callback : Callback,
+) -> Unit {
+  @async.run_async_main(async fn() {
+    let controller = @web.AbortController::new()
+    let abort = fn() {
+      abort_wait(callback)
+      controller.abort()
+    }
+    let text = @async.with_timeout(timeout, async fn() {
+      let response = window
+        .fetch(url, @web.RequestInit::{ signal: Some(controller.signal()), })
+        .wait(abort~)
+      response.text().wait(abort~)
+    }) catch {
+      @web.PromiseDecodeError(_) => {
+        notify(callback, 2, "")
+        return
+      }
+      @bridge.Rejection(_) => {
+        notify(callback, 3, "")
+        return
+      }
+      @async.TimeoutError => {
+        notify(callback, 4, controller.signal().aborted().to_string())
+        return
+      }
+      error => raise error
+    }
+    notify(callback, 1, text)
+  })
+}
+
+///|
 pub fn start(
   response : @web.Response,
   timeout : Int,

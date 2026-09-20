@@ -6,6 +6,9 @@ const bytes = await readFile('test/promise/_build/wasm-gc/release/build/dijdzv/w
 const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage();
+  let heldRequestObserved = false;
+  const abortedRequest = page.waitForEvent('requestfailed', { predicate: request => request.url() === 'http://fixture.invalid/hold', timeout: 10000 });
+  await page.route('http://fixture.invalid/hold', () => { heldRequestObserved = true; });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const cases = await page.evaluate(async ({ bytes, factory }) => {
@@ -62,8 +65,27 @@ try {
         count++;
       }
     }
+    async function fetchCase(host, url, expected, text, timeout = 1000) {
+      await new Promise((resolve, reject) => {
+        const watchdog = setTimeout(() => reject(Error('Fetch consumer timeout')), 3000);
+        const callback = (code, value) => {
+          clearTimeout(watchdog);
+          if (code !== expected || value !== text || callback.aborts !== (expected === 4 ? 1 : 0)) reject(Error(`Fetch result ${code}/${value}, aborts=${callback.aborts}`));
+          else resolve();
+        };
+        callback.aborts = 0;
+        instance.exports.fetch_text(host, url, timeout, callback);
+      });
+      count++;
+    }
+    await fetchCase(window, 'data:text/plain;charset=utf-8,generated%20fetch', 1, 'generated fetch');
+    await fetchCase({ fetch: () => Promise.resolve({ text: () => Promise.resolve('fake') }) }, '', 2, '');
+    await fetchCase({ fetch: () => Promise.reject(Error('fixture failure')) }, '', 3, '');
+    await fetchCase(window, 'http://fixture.invalid/hold', 4, 'true', 50);
     return count;
   }, { bytes: [...bytes], factory: createImports.toString() });
+  const aborted = await abortedRequest;
+  if (!heldRequestObserved || !aborted.failure()?.errorText.includes('ERR_ABORTED')) throw Error('Fetch cancellation did not reach an active browser request');
   if (errors.length) throw Error(errors.join('\n'));
   console.log(`Generated Promise consumer: ${cases} cases passed`);
 } finally {

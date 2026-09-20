@@ -5,7 +5,10 @@ struct WasmPromiseValue {
 }
 
 ///|
-fn wasm_promise_value(t : IdlType) -> WasmPromiseValue? {
+fn wasm_promise_value(
+  t : IdlType,
+  interfaces? : Array[String] = [],
+) -> WasmPromiseValue? {
   match t {
     String => Some({ name: "String", predicate: "typeof value === 'string'", })
     Primitive("boolean") =>
@@ -25,13 +28,21 @@ fn wasm_promise_value(t : IdlType) -> WasmPromiseValue? {
         name: "Double",
         predicate: "typeof value === 'number' && Number.isFinite(value)",
       })
+    Named(name) if interfaces.contains(name) =>
+      Some({
+        name,
+        predicate: "typeof globalThis.\{name} === 'function' && value instanceof globalThis.\{name}",
+      })
     _ => None
   }
 }
 
 ///|
-fn require_wasm_promise_value(t : IdlType) -> WasmPromiseValue {
-  match wasm_promise_value(t) {
+fn require_wasm_promise_value(
+  t : IdlType,
+  interfaces? : Array[String] = [],
+) -> WasmPromiseValue {
+  match wasm_promise_value(t, interfaces~) {
     Some(plan) => plan
     None => abort("Unsupported WasmGC Promise settlement conversion")
   }

@@ -1,6 +1,20 @@
 interface Response {
   Promise<DOMString> text();
 };
+interface Window {
+  Promise<Response> fetch(DOMString url, RequestInit options);
+};
+dictionary RequestInit {
+  AbortSignal signal;
+};
+interface AbortSignal {
+  readonly attribute boolean aborted;
+};
+interface AbortController {
+  constructor();
+  readonly attribute AbortSignal signal;
+  undefined abort();
+};
 interface Values {
   Promise<long> readInteger();
   Promise<unsigned long> readUnsigned();

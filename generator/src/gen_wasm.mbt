@@ -8,7 +8,7 @@ fn wasm_has_argument_annotations(item : JsValue) -> Bool {
   for i = 0; i < js_array_length(args); i = i + 1 {
     let arg = js_array_get(args, i)
     if js_array_length(get_ext_attrs(arg)) != 0 ||
-      js_array_length(get_ext_attrs(get_idl_type(arg))) != 0 {
+      validate_wasm_raw_type(get_idl_type(arg)) is Some(_) {
       return true
     }
   }
@@ -44,23 +44,26 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
           if wasm_has_argument_annotations(mem) ||
             (
               get_type(mem) != "constructor" &&
-              js_array_length(get_ext_attrs(get_idl_type(mem))) != 0
+              validate_wasm_raw_type(get_idl_type(mem)) is Some(_)
             ) {
             return Some(
-              "WasmGC type/argument extended attributes are not implemented",
+              "WasmGC type/argument conversion or annotation is not implemented",
             )
           }
         }
       }
       "includes" => ()
       "typedef" =>
-        if js_array_length(get_ext_attrs(get_idl_type(item))) != 0 {
-          return Some("WasmGC typedef type annotations are not implemented")
+        if validate_wasm_raw_type(get_idl_type(item)) is Some(message) {
+          return Some(message)
         }
       "dictionary" => {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
           let field = js_array_get(members, j)
+          if validate_wasm_raw_type(get_idl_type(field)) is Some(message) {
+            return Some(message)
+          }
           if js_array_length(get_ext_attrs(field)) != 0 ||
             js_array_length(get_ext_attrs(get_idl_type(field))) != 0 {
             return Some(
@@ -71,7 +74,7 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
       }
       "callback" =>
         if wasm_has_argument_annotations(item) ||
-          js_array_length(get_ext_attrs(get_idl_type(item))) != 0 {
+          validate_wasm_raw_type(get_idl_type(item)) is Some(_) {
           return Some("WasmGC callback extended attributes are not implemented")
         }
       _ => return Some("Unsupported WasmGC definition: " + get_type(item))

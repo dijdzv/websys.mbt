@@ -250,6 +250,12 @@ overloads remain unsupported and produce generation errors.
 
 Unsupported definitions/types are rejected rather than silently omitted.
 
+WasmGC validates raw WebIDL types before shared AST conversion. Records and
+nullable compound types are currently rejected there because the shared parser
+does not preserve all their key/value or nullability information. Nested record
+types and type annotations are checked recursively. Explicit `any` remains a
+different supported contract; unsupported records must not silently become any.
+
 Typedef aliases are resolved before dictionary inheritance and interface
 composition. Forward references and nested type containers are traversed;
 cycles and duplicate names are rejected. Public signatures currently use the

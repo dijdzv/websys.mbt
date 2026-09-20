@@ -26,4 +26,9 @@ async fn main {
   assert_true(code != 0)
   assert_true((output.text() + errors.text()).contains("Cyclic WasmGC typedef"))
   println("Typedef cycle diagnostic: passed")
+  @fs.write_file(input, "dictionary Options { record<DOMString, DOMString> headers; };")
+  let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/record"], no_console_window=true)
+  assert_true(code != 0)
+  assert_true((output.text() + errors.text()).contains("record key/value conversion"))
+  println("Lossy record conversion diagnostic: passed")
 }

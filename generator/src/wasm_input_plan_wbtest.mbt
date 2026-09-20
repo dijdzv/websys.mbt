@@ -1,4 +1,27 @@
 ///|
+test "nested nullable dictionary inputs require declared dictionary conversion" {
+  let parsed = parse_webidl_raw(
+    "dictionary Color { required double r; }; dictionary Options { required sequence<Color?> colors; (sequence<double> or Color) clear; };",
+  )
+  let types = wasm_dictionary_semantics(parsed)
+  assert_eq(plan_wasm_input(types["Options.colors"]), None)
+  guard plan_wasm_input(types["Options.colors"], dictionaries=["Color"])
+    is Some(plan) else {
+    fail("Missing nullable dictionary sequence")
+  }
+  assert_true(
+    plan is WasmInputPlan::Sequence(NullableValue(DictionaryValue("Color"))),
+  )
+  let (code, host) = generate_wasm(
+    convert_to_definitions(parsed),
+    dictionary_types=types,
+  )
+  assert_true(code.contains("Array[Color?]"))
+  assert_true(code.contains("value.to_js()"))
+  assert_true(host.contains("=> null"))
+}
+
+///|
 test "compound dictionary planning consumes resolved inherited semantic types" {
   let parsed = parse_webidl_raw(
     "typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit; dictionary Base { HeadersInit headers; }; dictionary Child : Base { DOMString body; };",

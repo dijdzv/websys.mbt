@@ -79,6 +79,28 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    const renderAdapter = await navigator.gpu.requestAdapter();
+    if (!renderAdapter) throw Error('Render descriptor adapter unavailable');
+    const renderDevice = await renderAdapter.requestDevice();
+    try {
+      const texture = renderDevice.createTexture({ size: [1, 1], format: 'rgba8unorm', usage: GPUTextureUsage.RENDER_ATTACHMENT });
+      try {
+        const view = texture.createView();
+        for (const dict of [false, true]) {
+          const options = instance.exports.render_options(view, dict);
+          const attachment = options.colorAttachments[1];
+          if (options.colorAttachments[0] !== null || attachment.view !== view || attachment.loadOp !== 'clear' || attachment.storeOp !== 'store') throw Error('Nested attachment conversion');
+          if (dict ? attachment.clearValue.r !== 1 || attachment.clearValue.a !== 1 : JSON.stringify(attachment.clearValue) !== '[1,0,0,1]') throw Error('Color union conversion');
+          renderDevice.pushErrorScope('validation');
+          const commands = instance.exports.encode_clear(renderDevice, view, dict);
+          renderDevice.queue.submit([commands]);
+          await renderDevice.queue.onSubmittedWorkDone();
+          const error = await renderDevice.popErrorScope();
+          if (error) throw Error(error.message);
+          count++;
+        }
+      } finally { texture.destroy(); }
+    } finally { renderDevice.destroy(); }
     for (let mode = 0; mode < 3; mode++) {
       const value = instance.exports.enum_options(mode);
       if (value.mode !== 'mirror-repeat' || JSON.stringify(value.filters) !== '["nearest","linear"]') throw Error('Enum input encoding');

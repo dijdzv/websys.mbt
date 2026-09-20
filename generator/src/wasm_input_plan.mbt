@@ -1,5 +1,7 @@
 ///|
 enum WasmInputPlan {
+  DictionaryValue(String)
+  NullableValue(WasmInputPlan)
   Enumeration(String)
   Scalar(String, String)
   Sequence(WasmInputPlan)
@@ -12,9 +14,15 @@ fn plan_wasm_input(
   typ : WasmSemanticType,
   references? : Array[String] = [],
   enums? : Array[String] = [],
+  dictionaries? : Array[String] = [],
 ) -> WasmInputPlan? {
   if typ.nullable {
-    return None
+    return plan_wasm_input(
+      { ..typ, nullable: false, },
+      references~,
+      enums~,
+      dictionaries~,
+    ).map(child => NullableValue(child))
   }
   if typ.annotations == ["EnforceRange"] &&
     typ.kind == Name("unsigned long long") {
@@ -24,6 +32,7 @@ fn plan_wasm_input(
     return None
   }
   match typ.kind {
+    Name(name) if dictionaries.contains(name) => Some(DictionaryValue(name))
     Name(name) if enums.contains(name) => Some(Enumeration(name))
     Name("DOMString" | "USVString" | "ByteString") => {
       guard typ.kind is Name(kind) else { return None }
@@ -36,15 +45,17 @@ fn plan_wasm_input(
     Name("ArrayBuffer") => Some(Scalar("ArrayBuffer", "reference"))
     Name(name) if references.contains(name) => Some(Scalar(name, "reference"))
     Generic("sequence", [inner]) =>
-      plan_wasm_input(inner, references~, enums~).map(child => {
+      plan_wasm_input(inner, references~, enums~, dictionaries~).map(child => {
         WasmInputPlan::Sequence(child)
       })
     Generic("record", [key, value]) => {
       guard key.kind is Name("DOMString" | "USVString" | "ByteString") else {
         return None
       }
-      guard plan_wasm_input(key, references~, enums~) is Some(key) &&
-        plan_wasm_input(value, references~, enums~) is Some(value) else {
+      guard plan_wasm_input(key, references~, enums~, dictionaries~)
+        is Some(key) &&
+        plan_wasm_input(value, references~, enums~, dictionaries~)
+        is Some(value) else {
         return None
       }
       Some(Record(key, value))
@@ -52,7 +63,8 @@ fn plan_wasm_input(
     WasmTypeKind::Union(types) => {
       let plans : Array[WasmInputPlan] = []
       for typ in types {
-        guard plan_wasm_input(typ, references~, enums~) is Some(plan) else {
+        guard plan_wasm_input(typ, references~, enums~, dictionaries~)
+          is Some(plan) else {
           return None
         }
         plans.push(plan)
@@ -73,6 +85,20 @@ fn emit_wasm_input_plan(
   let mut public_type = ""
   let mut body = ""
   match plan {
+    DictionaryValue(name) => {
+      mbt.write_string(
+        "fn \{prefix}(value : \{name}) -> JsValue { value.to_js() }\n",
+      )
+      return name
+    }
+    NullableValue(child) => {
+      let typ = emit_wasm_input_plan(child, prefix + "_value", mbt, js)
+      mbt.write_string(
+        "fn \{prefix}_null() -> JsValue = \"websys\" \"\{prefix}_null\"\nfn \{prefix}(value : \{typ}?) -> JsValue { match value { None => \{prefix}_null(); Some(value) => \{prefix}_value(value) } }\n",
+      )
+      js.write_string("    \{prefix}_null: () => null,\n")
+      return typ + "?"
+    }
     Enumeration(name) => {
       mbt.write_string(
         "fn \{prefix}_string(value : String) -> JsValue = \"websys\" \"\{prefix}\"\nfn \{prefix}(value : \{name}) -> JsValue { \{prefix}_string(value.to_string()) }\n",

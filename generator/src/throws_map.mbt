@@ -31,6 +31,16 @@ pub fn set_attribute_throws(
 }
 
 ///|
+pub fn set_attribute_getter_throws(
+  map : ThrowsMap,
+  iface : String,
+  attr : String,
+  exceptions : Array[String],
+) -> Unit {
+  set_throws(map, iface, "get_" + attr, exceptions)
+}
+
+///|
 /// Type for throws map (JS Map<string, string[]>)
 pub type ThrowsMap
 

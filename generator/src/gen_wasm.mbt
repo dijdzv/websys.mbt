@@ -478,6 +478,17 @@ fn generate_wasm(
     )
   }
   js.write_string("    websys: {\n")
+  if definitions.any(definition => {
+      definition is Interface(iface) &&
+      iface.members.any(item => {
+        item is Attribute(attr) && !attr.getter_throws.is_empty()
+      })
+    }) {
+    guard !names.contains("JsError") && !names.contains("WebsysGetterOutcome") else {
+      abort("Reserved getter error support type name")
+    }
+    emit_wasm_getter_error_support(mbt, js)
+  }
   guard !names.contains("WebsysBufferSnapshot") else {
     abort("Reserved ArrayBuffer support type name")
   }
@@ -593,18 +604,24 @@ fn generate_wasm(
                 abort("Duplicate WasmGC member")
               }
               emitted.push(getter)
-              emit_wasm_function(
-                mbt,
-                name,
-                getter,
-                [("self", Named(name))],
-                attr.idl_type,
-                names,
-                dictionaries~,
-              )
-              js.write_string(
-                "    \{name}_\{getter}: self => self.\{attr.name},\n",
-              )
+              if !attr.getter_throws.is_empty() {
+                emit_wasm_throwing_getter(
+                  mbt, js, name, getter, attr, names, dictionaries,
+                )
+              } else {
+                emit_wasm_function(
+                  mbt,
+                  name,
+                  getter,
+                  [("self", Named(name))],
+                  attr.idl_type,
+                  names,
+                  dictionaries~,
+                )
+                js.write_string(
+                  "    \{name}_\{getter}: self => self.\{attr.name},\n",
+                )
+              }
               if !attr.is_readonly {
                 let setter = "set_" + getter
                 guard !emitted.contains(setter) else {

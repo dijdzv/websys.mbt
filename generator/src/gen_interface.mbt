@@ -1383,7 +1383,15 @@ pub fn gen_attribute_getter(
   enum_map? : Array[(String, Array[String])] = [],
 ) -> String {
   let fn_name = "get_" + to_snake_case(attr.name)
-  let return_type = idl_type_to_moonbit(attr.idl_type)
+  let value_type = idl_type_to_moonbit(attr.idl_type)
+  let return_type = if attr.getter_throws.is_empty() {
+    value_type
+  } else {
+    gen_throwing_return_type(
+      value_type,
+      gen_error_enum_name("get_" + attr.name, interface_prefix=interface_name),
+    )
+  }
   let result = StringBuilder()
   result.write_string("pub extern \"js\" fn ")
   result.write_string(interface_name)
@@ -1415,7 +1423,20 @@ pub fn gen_attribute_getter(
     _ => wrap_return_expr("self." + attr.name, attr.idl_type)
   }
   result.write_string("  #| (self) => ")
-  result.write_string(js_expr)
+  if attr.getter_throws.is_empty() {
+    result.write_string(js_expr)
+  } else {
+    let classify = gen_inline_classify_js(attr.getter_throws)
+    // js_expr already converts enums and nullable values; wrapping it through
+    // wrap_return_expr again would convert the successful value twice.
+    result.write_string(
+      "(() => { try { return { $tag: 1, _0: " +
+      js_expr +
+      " }; } catch(e) { return { $tag: 0, _0: " +
+      classify +
+      " }; } })()",
+    )
+  }
   result.write_string("\n")
   result.to_string()
 }

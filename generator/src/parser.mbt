@@ -366,6 +366,7 @@ fn convert_interface_member(js_mem : JsValue) -> InterfaceMember {
         idl_type: convert_idl_type(get_idl_type(js_mem)),
         is_readonly: is_readonly(js_mem),
         setter_throws: [],
+        getter_throws: [],
       }
       Attribute(attr)
     }

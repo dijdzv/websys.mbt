@@ -566,6 +566,16 @@ pub fn gen_error_enums_for_members(
   let result = StringBuilder()
   let generated : Array[String] = []
   for mem in members {
+    if mem is Attribute(attr) && !attr.getter_throws.is_empty() {
+      let enum_name = gen_error_enum_name(
+        "get_" + attr.name,
+        interface_prefix=name,
+      )
+      if !generated.contains(enum_name) {
+        generated.push(enum_name)
+        result.write_string(gen_error_enum(enum_name, attr.getter_throws))
+      }
+    }
     let (member_name, throws) = match mem {
       Operation(op) =>
         if op.throws.length() > 0 && !op.name.is_empty() {

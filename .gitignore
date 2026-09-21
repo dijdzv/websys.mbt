@@ -23,6 +23,7 @@ src/*.md
 test/wasm/generated/bindings.mbt
 test/wasm/generated/runtime.mjs
 test/promise/generated/
+test/getter/generated/
 
 # OS
 .DS_Store

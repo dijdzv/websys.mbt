@@ -96,6 +96,18 @@ if err != "" {
 
 See `src/throws_not_found.md` for the full list of undetected throwing methods.
 
+Getter failures can be supplied explicitly with `--getter-errors <file>` during
+normal JS generation or `--wasm-gc-input` generation. The JSON maps interface
+or mixin names to attribute names and nonempty exception-name arrays, for example
+`{"WindowLocalStorage":{"localStorage":["SecurityError"]}}`. Use the original
+WebIDL declaration owner, before mixins are merged. Getter metadata is separate
+from setter metadata and also applies to readonly attributes. Declared failures
+produce `Result` values with named variants and an `OtherError` fallback; getters
+without metadata retain their existing return types. This option does not infer
+getter failures from live documentation. `mise run test-getters` checks the
+generated WasmGC boundary in headless Chromium, including nullable values and
+one property read per call.
+
 ### Typed Event Handlers
 
 Event handler setters (e.g., `set_onclick`) accept callbacks with specific event types (e.g., `PointerEvent` instead of `Event`). Event type resolution also relies on MDN — approximately 90 event handlers fall back to the generic `Event` type due to missing MDN pages. See `src/event_type_report.md` for details.

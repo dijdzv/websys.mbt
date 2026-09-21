@@ -106,6 +106,7 @@ pub struct AttributeDef {
   idl_type : IdlType
   is_readonly : Bool
   setter_throws : Array[String] // exception names for setter
+  getter_throws : Array[String] // exception names for getter
 }
 
 ///|

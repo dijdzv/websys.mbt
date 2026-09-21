@@ -244,6 +244,7 @@ async fn main {
     ("area_element", test_area_element),
     // Storage API
     ("storage", test_storage),
+    ("storage_getter_errors", test_storage_getter_errors),
     // CustomEvent
     ("custom_event", test_custom_event),
     ("custom_event_with_init", test_custom_event_with_init),

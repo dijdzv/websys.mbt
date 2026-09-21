@@ -4,7 +4,7 @@
 ///|
 fn test_storage() -> Unit {
   let win = @websys.window().unwrap()
-  let storage = win.get_local_storage()
+  let storage = win.get_local_storage().unwrap()
   // Initially empty (or clear it first)
   storage.clear()
   assert_eq(storage.get_length(), 0, label="length after clear")

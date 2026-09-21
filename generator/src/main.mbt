@@ -37,6 +37,7 @@ struct CliArgs {
   wasm_module : String?
   wasm_audit : Bool
   getter_errors : String?
+  method_errors : String?
 }
 
 ///|
@@ -48,6 +49,7 @@ fn parse_args() -> CliArgs {
   let mut wasm_module = None
   let mut wasm_audit = false
   let mut getter_errors = None
+  let mut method_errors = None
   let mut i = 2 // Skip node and script path
   while i < argc {
     let arg = get_argv_string(i)
@@ -63,6 +65,10 @@ fn parse_args() -> CliArgs {
       i = i + 1
       guard i < argc else { abort("--wasm-gc-input requires an IDL file") }
       wasm_input = Some(get_argv_string(i))
+    } else if arg == "--method-errors" {
+      i = i + 1
+      guard i < argc else { abort("--method-errors requires a JSON file") }
+      method_errors = Some(get_argv_string(i))
     } else if arg == "--getter-errors" {
       i = i + 1
       guard i < argc else { abort("--getter-errors requires a JSON file") }
@@ -75,7 +81,15 @@ fn parse_args() -> CliArgs {
     }
     i = i + 1
   }
-  { output, help, wasm_input, wasm_module, wasm_audit, getter_errors, }
+  {
+    output,
+    help,
+    wasm_input,
+    wasm_module,
+    wasm_audit,
+    getter_errors,
+    method_errors,
+  }
 }
 
 ///|
@@ -88,6 +102,9 @@ fn print_usage() -> Unit {
   println("Options:")
   println("  -o, --output <dir>  Output directory (default: ./)")
   println("  -h, --help          Show this help message")
+  println(
+    "  --method-errors <file>  Method exception metadata as interface/method/error-list JSON",
+  )
   println(
     "  --getter-errors <file>  Getter exception metadata as interface/attribute/error-list JSON",
   )
@@ -146,6 +163,14 @@ async fn main {
       abort(message)
     }
     let definitions = convert_to_definitions(parsed)
+    if args.method_errors is Some(path) {
+      inject_throws(definitions, [
+        (
+          "method metadata",
+          getter_error_metadata(read_wasm_input(path), methods=true),
+        ),
+      ])
+    }
     if args.getter_errors is Some(path) {
       inject_throws(definitions, [
         ("getter metadata", getter_error_metadata(read_wasm_input(path))),
@@ -263,7 +288,9 @@ async fn main {
 
   // Inject throws into definitions
   let final_size = throws_map_size(mdn_result.throws_map)
-  if final_size > 0 || args.getter_errors is Some(_) {
+  if final_size > 0 ||
+    args.getter_errors is Some(_) ||
+    args.method_errors is Some(_) {
     let throws_maps : Array[(String, ThrowsMap)] = match args.getter_errors {
       Some(path) =>
         [
@@ -271,6 +298,15 @@ async fn main {
           ("mdn", mdn_result.throws_map),
         ]
       None => [("mdn", mdn_result.throws_map)]
+    }
+    if args.method_errors is Some(path) {
+      throws_maps.insert(
+        0,
+        (
+          "method metadata",
+          getter_error_metadata(read_wasm_input(path), methods=true),
+        ),
+      )
     }
     for result in results {
       if result.success {

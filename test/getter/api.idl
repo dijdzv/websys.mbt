@@ -2,3 +2,7 @@ interface Example {
   readonly attribute DOMString value;
   readonly attribute DOMString? nullableValue;
 };
+interface Storage {
+  undefined setItem(DOMString key, DOMString value);
+  DOMString? getItem(DOMString key);
+};

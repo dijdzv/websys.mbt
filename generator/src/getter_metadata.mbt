@@ -1,5 +1,8 @@
 ///|
-fn getter_error_metadata(text : String) -> ThrowsMap raise {
+fn getter_error_metadata(
+  text : String,
+  methods? : Bool = false,
+) -> ThrowsMap raise {
   let entries : Map[String, Map[String, Array[String]]] = @json.from_json(
     @json.parse(text),
   )
@@ -33,7 +36,11 @@ fn getter_error_metadata(text : String) -> ThrowsMap raise {
         )
         seen.push(error)
       }
-      set_attribute_getter_throws(output, owner, field, errors)
+      if methods {
+        set_throws(output, owner, field, errors)
+      } else {
+        set_attribute_getter_throws(output, owner, field, errors)
+      }
     }
   }
   output

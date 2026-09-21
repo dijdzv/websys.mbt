@@ -16,3 +16,22 @@ pub fn read_optional(value : @web.Example) -> String {
     Err(OtherError(error)) => "other:" + error.name()
   }
 }
+
+///|
+pub fn save(storage : @web.Storage, value : String) -> String {
+  match storage.set_item("memo", value) {
+    Ok(_) => "saved"
+    Err(QuotaExceededError(_)) => "quota"
+    Err(OtherError(error)) => "other:" + error.name()
+  }
+}
+
+///|
+pub fn load(storage : @web.Storage) -> String {
+  match storage.get_item("memo") {
+    Ok(Some(value)) => value
+    Ok(None) => "missing"
+    Err(SecurityError(_)) => "denied"
+    Err(OtherError(error)) => "other:" + error.name()
+  }
+}

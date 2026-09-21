@@ -7,7 +7,7 @@ supported_targets = "wasm-gc"
 options(
   link: {
     "wasm-gc": {
-      "exports": [ "read_value", "read_optional" ],
+      "exports": [ "read_value", "read_optional", "save", "load" ],
       "use-js-builtin-string": true,
     },
   },

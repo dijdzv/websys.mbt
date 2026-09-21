@@ -31,6 +31,7 @@ run = [
 run = ['"{{env.MOON_HOME}}/bin/moon" check --target js --deny-warn', '"{{env.MOON_HOME}}/bin/moon" -C generator check --target js --deny-warn']
 
 [tasks.test]
+depends = ["test-getters"]
 run = ['"{{env.MOON_HOME}}/bin/moon" -C generator test --target js', '"{{env.MOON_HOME}}/bin/moon" -C test build --target js --release --deny-warn', '"{{mise_bin}}" exec -- node test/run.mjs', '"{{mise_bin}}" run test-wasm', '"{{mise_bin}}" run test-async', '"{{mise_bin}}" run test-promises']
 
 [tasks.install]
@@ -56,7 +57,17 @@ run = [
 ]
 
 [tasks.fmt]
+depends = ["fmt-getters"]
 run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt check.mbt input_lifecycle.mbt buffer.mbt']
+
+[tasks."test-getters"]
+description = "Verify generated getter failures in headless Chromium"
+run = [
+  '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
+  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/getter/api.idl --getter-errors test/getter/errors.json --wasm-gc-module dijdzv/websys-getter-fixture -o test/getter/generated',
+  '"{{env.MOON_HOME}}/bin/moon" -C test/getter build --target wasm-gc --release --deny-warn',
+  '"{{mise_bin}}" exec -- node test/getter/run.mjs',
+]
 
 [tasks."test-async"]
 description = "Verify the pinned async candidate from a separate JS/WasmGC consumer"
@@ -80,4 +91,10 @@ run = [
 ]
 
 [tasks."fmt-check"]
+depends = ["fmt-check-getters"]
 run = ['"{{env.MOON_HOME}}/bin/moon" fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C generator fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test fmt --check src', '"{{env.MOON_HOME}}/bin/moon" -C test/wasm fmt --check check.mbt input_lifecycle.mbt buffer.mbt']
+[tasks."fmt-getters"]
+run = '"{{env.MOON_HOME}}/bin/moon" -C test/getter fmt check.mbt'
+
+[tasks."fmt-check-getters"]
+run = '"{{env.MOON_HOME}}/bin/moon" -C test/getter fmt --check check.mbt'

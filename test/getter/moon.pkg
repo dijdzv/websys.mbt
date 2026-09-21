@@ -1,0 +1,14 @@
+import {
+  "dijdzv/websys-getter-fixture" @web,
+}
+
+supported_targets = "wasm-gc"
+
+options(
+  link: {
+    "wasm-gc": {
+      "exports": [ "read_value", "read_optional" ],
+      "use-js-builtin-string": true,
+    },
+  },
+)

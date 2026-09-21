@@ -36,6 +36,7 @@ struct CliArgs {
   wasm_input : String?
   wasm_module : String?
   wasm_audit : Bool
+  getter_errors : String?
 }
 
 ///|
@@ -46,6 +47,7 @@ fn parse_args() -> CliArgs {
   let mut wasm_input = None
   let mut wasm_module = None
   let mut wasm_audit = false
+  let mut getter_errors = None
   let mut i = 2 // Skip node and script path
   while i < argc {
     let arg = get_argv_string(i)
@@ -61,6 +63,10 @@ fn parse_args() -> CliArgs {
       i = i + 1
       guard i < argc else { abort("--wasm-gc-input requires an IDL file") }
       wasm_input = Some(get_argv_string(i))
+    } else if arg == "--getter-errors" {
+      i = i + 1
+      guard i < argc else { abort("--getter-errors requires a JSON file") }
+      getter_errors = Some(get_argv_string(i))
     } else if arg == "--output" || arg == "-o" {
       i = i + 1
       if i < argc {
@@ -69,7 +75,7 @@ fn parse_args() -> CliArgs {
     }
     i = i + 1
   }
-  { output, help, wasm_input, wasm_module, wasm_audit, }
+  { output, help, wasm_input, wasm_module, wasm_audit, getter_errors, }
 }
 
 ///|
@@ -82,6 +88,9 @@ fn print_usage() -> Unit {
   println("Options:")
   println("  -o, --output <dir>  Output directory (default: ./)")
   println("  -h, --help          Show this help message")
+  println(
+    "  --getter-errors <file>  Getter exception metadata as interface/attribute/error-list JSON",
+  )
   println(
     "  --audit-wasm-gc     Inventory installed Webref IDL without generating bindings",
   )
@@ -136,8 +145,14 @@ async fn main {
       println(message)
       abort(message)
     }
+    let definitions = convert_to_definitions(parsed)
+    if args.getter_errors is Some(path) {
+      inject_throws(definitions, [
+        ("getter metadata", getter_error_metadata(read_wasm_input(path))),
+      ])
+    }
     let (moonbit, runtime) = generate_wasm(
-      convert_to_definitions(parsed),
+      definitions,
       dictionary_types=wasm_dictionary_semantics(parsed),
       operation_types=wasm_operation_semantics(parsed),
     )
@@ -156,6 +171,11 @@ async fn main {
         path_join(args.output, "moon.pkg"),
         (if moonbit.contains("pub struct WebsysPromise") {
           "import { \"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\" }\n"
+        } else {
+          ""
+        }) +
+        (if moonbit.contains("pub type JsError") {
+          "import { \"moonbitlang/core/debug\" }\n"
         } else {
           ""
         }) +
@@ -243,10 +263,15 @@ async fn main {
 
   // Inject throws into definitions
   let final_size = throws_map_size(mdn_result.throws_map)
-  if final_size > 0 {
-    let throws_maps : Array[(String, ThrowsMap)] = [
-      ("mdn", mdn_result.throws_map),
-    ]
+  if final_size > 0 || args.getter_errors is Some(_) {
+    let throws_maps : Array[(String, ThrowsMap)] = match args.getter_errors {
+      Some(path) =>
+        [
+          ("getter metadata", getter_error_metadata(read_wasm_input(path))),
+          ("mdn", mdn_result.throws_map),
+        ]
+      None => [("mdn", mdn_result.throws_map)]
+    }
     for result in results {
       if result.success {
         inject_throws(result.definitions, throws_maps)

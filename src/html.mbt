@@ -23809,6 +23809,20 @@ pub(all) enum WindowStructuredCloneError {
 } derive(Debug)
 
 ///|
+/// Error type for throwing methods
+pub(all) enum WindowGetSessionStorageError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
+/// Error type for throwing methods
+pub(all) enum WindowGetLocalStorageError {
+  SecurityError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+///|
 pub extern "js" fn Window::get_window(self : Window) -> Window =
   #| (self) => self.window
 
@@ -26169,12 +26183,16 @@ pub extern "js" fn Window::cancel_animation_frame(
   #| (self, handle) => self.cancelAnimationFrame(handle)
 
 ///|
-pub extern "js" fn Window::get_session_storage(self : Window) -> Storage =
-  #| (self) => self.sessionStorage
+pub extern "js" fn Window::get_session_storage(
+  self : Window,
+) -> Result[Storage, WindowGetSessionStorageError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.sessionStorage }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
-pub extern "js" fn Window::get_local_storage(self : Window) -> Storage =
-  #| (self) => self.localStorage
+pub extern "js" fn Window::get_local_storage(
+  self : Window,
+) -> Result[Storage, WindowGetLocalStorageError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.localStorage }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 pub extern "js" fn Window::get_push_manager(self : Window) -> PushManager =

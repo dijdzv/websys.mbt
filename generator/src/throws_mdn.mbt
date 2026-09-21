@@ -670,6 +670,8 @@ pub fn apply_event_type_overrides(
 /// Built-in throws overrides: entries MDN doesn't detect.
 /// ("Interface", "method", ["Exception1", ...])
 let builtin_throws_add : Array[(String, String, Array[String])] = [
+  ("WindowLocalStorage", "get_localStorage", ["SecurityError"]),
+  ("WindowSessionStorage", "get_sessionStorage", ["SecurityError"]),
   ("Animation", "finish", ["InvalidStateError"]),
   ("CSSStyleSheet", "deleteRule", ["IndexSizeError"]),
   ("Node", "insertBefore", ["HierarchyRequestError", "NotFoundError"]),

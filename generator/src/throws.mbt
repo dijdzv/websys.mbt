@@ -3,7 +3,7 @@
 ///|
 /// Inject throws information into all definitions using throws maps.
 /// Modifies the definitions in-place by setting throws fields on operations,
-/// constructors, and attribute setters.
+/// constructors, and attribute accessors.
 pub fn inject_throws(
   definitions : Array[Definition],
   throws_maps : Array[(String, ThrowsMap)],
@@ -55,9 +55,11 @@ fn inject_throws_into_members(
         }
       }
       Attribute(attr) => {
-        if attr.is_readonly {
-          continue
-        }
+        let getter_throws = lookup_throws(
+          throws_maps,
+          interface_name,
+          "get_" + attr.name,
+        )
         // Check setter throws: "Interface.attributeName" (setter)
         let setter_throws = lookup_throws(
           throws_maps,
@@ -70,12 +72,17 @@ fn inject_throws_into_members(
         } else {
           lookup_throws(throws_maps, interface_name, attr.name)
         }
-        if setter_throws.length() > 0 {
+        if setter_throws.length() > 0 || getter_throws.length() > 0 {
           members[i] = Attribute({
             name: attr.name,
             idl_type: attr.idl_type,
             is_readonly: attr.is_readonly,
-            setter_throws,
+            setter_throws: if attr.is_readonly {
+              []
+            } else {
+              setter_throws
+            },
+            getter_throws,
           })
         }
       }

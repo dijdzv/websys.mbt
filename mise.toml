@@ -64,7 +64,7 @@ run = ['"{{env.MOON_HOME}}/bin/moon" fmt src', '"{{env.MOON_HOME}}/bin/moon" -C 
 description = "Verify generated getter failures in headless Chromium"
 run = [
   '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
-  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/getter/api.idl --getter-errors test/getter/errors.json --wasm-gc-module dijdzv/websys-getter-fixture -o test/getter/generated',
+  '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/getter/api.idl --getter-errors test/getter/errors.json --method-errors test/getter/method-errors.json --wasm-gc-module dijdzv/websys-getter-fixture -o test/getter/generated',
   '"{{env.MOON_HOME}}/bin/moon" -C test/getter build --target wasm-gc --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/getter/run.mjs',
 ]

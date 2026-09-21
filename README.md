@@ -108,6 +108,11 @@ getter failures from live documentation. `mise run test-getters` checks the
 generated WasmGC boundary in headless Chromium, including nullable values and
 one property read per call.
 
+`--method-errors <file>` accepts the same JSON shape with method names, for example
+`{"Storage":{"setItem":["QuotaExceededError"]}}`. Synchronous methods then return
+typed `Result` values on JS and WasmGC, preserving successful return conversion
+and unexpected exceptions. Promise methods keep their existing rejection behavior.
+
 ### Typed Event Handlers
 
 Event handler setters (e.g., `set_onclick`) accept callbacks with specific event types (e.g., `PointerEvent` instead of `Event`). Event type resolution also relies on MDN — approximately 90 event handlers fall back to the generic `Event` type due to missing MDN pages. See `src/event_type_report.md` for details.

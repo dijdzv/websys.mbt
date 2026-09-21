@@ -24,6 +24,23 @@ try {
     const deniedOptional = api.read_optional({ get nullableValue() { reads++; throw new DOMException('denied', 'SecurityError'); } });
     const primitive = api.read_value({ get value() { reads++; throw 42; } });
     const recovered = api.read_value({ value: 'recovered' });
+    let stored = 'previous', writes = 0, quota = true;
+    const storage = {
+      setItem(key, value) {
+        if (key !== 'memo') throw new Error('wrong key');
+        writes++;
+        if (quota) throw new DOMException('full', 'QuotaExceededError');
+        stored = value;
+      },
+      getItem() { return stored; },
+    };
+    const failedSave = api.save(storage, '日本語');
+    if (failedSave !== 'quota' || stored !== 'previous' || writes !== 1) throw new Error('failed save changed storage');
+    quota = false;
+    if (api.save(storage, '日本語') !== 'saved' || api.load(storage) !== '日本語' || writes !== 2) throw new Error('retry failed');
+    if (api.load({ getItem() { return null; } }) !== 'missing') throw new Error('nullable result lost');
+    if (api.load({ getItem() { throw new DOMException('denied', 'SecurityError'); } }) !== 'denied') throw new Error('declared read failure lost');
+    if (api.save({ setItem() { throw new TypeError('unexpected'); } }, 'value') !== 'other:TypeError') throw new Error('fallback lost');
     return { success, denied, unexpected, empty, optional, deniedOptional, primitive, recovered, reads };
   }, { bytes: [...bytes], runtime });
   assert.deepEqual(result, {
@@ -31,7 +48,7 @@ try {
     optional: 'ok:nullable 日本語', deniedOptional: 'denied', primitive: 'other:', recovered: 'ok:recovered', reads: 5,
   });
   assert.deepEqual(errors, []);
-  console.log('GETTER_ERRORS_WASM_OK success denied fallback nullable single_read recovery');
+  console.log('GETTER_METHOD_ERRORS_WASM_OK success denied fallback nullable single_call quota retry');
 } finally {
   await browser.close();
 }

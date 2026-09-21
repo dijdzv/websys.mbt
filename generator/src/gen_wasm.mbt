@@ -180,7 +180,9 @@ fn emit_wasm_function(
   promise_interfaces? : Array[String] = [],
   input_converters? : Map[String, (String, String)] = Map([]),
   result_enums? : Array[String] = [],
+  throws? : Array[String] = [],
 ) -> Unit {
+  let throwing = !throws.is_empty() && !(result is Promise(_))
   if result is Named(name) && dictionaries.contains(name) {
     abort("WasmGC dictionary results are not implemented")
   }
@@ -215,7 +217,8 @@ fn emit_wasm_function(
   }
   let key = owner + "_" + member_name
   let enum_result = result is Named(name) && result_enums.contains(name)
-  let needs_wrapper = enum_result ||
+  let needs_wrapper = throwing ||
+    enum_result ||
     result is Promise(_) ||
     result is Nullable(_) ||
     params.any(p => {
@@ -272,17 +275,36 @@ fn emit_wasm_function(
       }
     })
     .join(", ")
-  out.write_string(
-    "fn websys_raw_\{key}(\{raw_params}) -> \{raw_result} = \"websys\" \"\{key}\"\n",
-  )
-  out.write_string(
-    "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} {\n",
-  )
+  let mut call = "websys_raw_\{key}(\{args})"
+  if throwing {
+    let error_type = gen_error_enum_name(member_name, interface_prefix=owner)
+    out.write_string(gen_error_enum(error_type, throws))
+    out.write_string(
+      "fn websys_raw_\{key}(\{raw_params}) -> WebsysGetterOutcome = \"websys\" \"\{key}\"\n" +
+      "fn websys_value_\{key}(result : WebsysGetterOutcome) -> \{raw_result} = \"websys\" \"\{key}_value\"\n" +
+      "pub fn \{owner}::\{member_name}(\{public_params}) -> Result[\{result_type}, \{error_type}] {\n" +
+      "  let outcome = \{call}\n  if !websys_getter_ok(outcome) {\n    let error = websys_getter_error(outcome)\n    return Err(match error.name() {\n",
+    )
+    for exception in throws {
+      out.write_string(
+        "      \"\{exception}\" => \{error_type}::\{capitalize_first(exception)}(error)\n",
+      )
+    }
+    out.write_string(
+      "      _ => \{error_type}::OtherError(error)\n    })\n  }\n  let decoded = {\n",
+    )
+    call = "websys_value_\{key}(outcome)"
+  } else {
+    out.write_string(
+      "fn websys_raw_\{key}(\{raw_params}) -> \{raw_result} = \"websys\" \"\{key}\"\n",
+    )
+    out.write_string(
+      "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} {\n",
+    )
+  }
   match result {
     Named(name) if result_enums.contains(name) =>
-      out.write_string(
-        "  \{name}::from_string(websys_raw_\{key}(\{args})).unwrap()\n",
-      )
+      out.write_string("  \{name}::from_string(\{call}).unwrap()\n")
     Promise(inner) => {
       let name = require_wasm_promise_value(
         inner,
@@ -295,9 +317,12 @@ fn emit_wasm_function(
     }
     Nullable(inner) =>
       out.write_string(
-        "  let value = websys_raw_\{key}(\{args})\n  if websys_is_null(value) { None } else { Some(websys_unwrap_\{require_wasm_type(inner, names)}(value)) }\n",
+        "  let value = \{call}\n  if websys_is_null(value) { None } else { Some(websys_unwrap_\{require_wasm_type(inner, names)}(value)) }\n",
       )
-    _ => out.write_string("  websys_raw_\{key}(\{args})\n")
+    _ => out.write_string("  \{call}\n")
+  }
+  if throwing {
+    out.write_string("  }\n  Ok(decoded)\n")
   }
   out.write_string("}\n")
 }
@@ -422,8 +447,13 @@ fn generate_wasm(
       abort("Reserved dictionary support type name")
     }
     mbt.write_string(
-      "#external\npub type JsValue\npub(all) enum Nullable[T] { Undefined; Null; Value(T) }\nfn websys_dict_new() -> JsValue = \"websys\" \"dict_new\"\n",
+      "#external\npub type JsValue\npub(all) enum Nullable[T] { Undefined; Null; Value(T) }\n",
     )
+    if !dictionaries.is_empty() {
+      mbt.write_string(
+        "fn websys_dict_new() -> JsValue = \"websys\" \"dict_new\"\n",
+      )
+    }
     if dictionary_types.values().any(typ => typ.nullable) ||
       definitions.any(def => {
         def is Dictionary(dict) &&
@@ -481,7 +511,12 @@ fn generate_wasm(
   if definitions.any(definition => {
       definition is Interface(iface) &&
       iface.members.any(item => {
-        item is Attribute(attr) && !attr.getter_throws.is_empty()
+        (item is Attribute(attr) && !attr.getter_throws.is_empty()) ||
+        (
+          item is Operation(op) &&
+          !op.throws.is_empty() &&
+          !(op.return_type is Promise(_))
+        )
       })
     }) {
     guard !names.contains("JsError") && !names.contains("WebsysGetterOutcome") else {
@@ -715,6 +750,7 @@ fn generate_wasm(
                   promise_interfaces~,
                   input_converters~,
                   result_enums=enums,
+                  throws=op.throws,
                 )
                 let js_params = if variant_arguments.is_empty() {
                   "self"
@@ -724,6 +760,11 @@ fn generate_wasm(
                 if op.return_type is Promise(_) {
                   js.write_string(
                     "    \{name}_\{fn_name}: (\{js_params}) => { try { return self.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
+                  )
+                } else if !op.throws.is_empty() {
+                  js.write_string(
+                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return { ok: true, value: self.\{op.name}(\{values}) }; } catch(error) { return { ok: false, error }; } },\n" +
+                    "    \{name}_\{fn_name}_value: result => result.value,\n",
                   )
                 } else {
                   js.write_string(

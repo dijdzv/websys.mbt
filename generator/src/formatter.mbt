@@ -431,6 +431,8 @@ pub fn gen_shared_types_with_externals(
   result.write_string(
     "pub impl Debug for JsError with to_repr(self) { @debug.Repr::Repr(self.message()) }\n\n",
   )
+  result.write_string("pub extend JsError with Show::{to_string, output}\n")
+  result.write_string("pub extend JsError with @debug.Debug::{to_repr}\n\n")
 
   //External type declarations
   if external_types.length() > 0 {

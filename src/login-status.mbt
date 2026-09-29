@@ -8,7 +8,9 @@ pub(all) enum LoginStatus {
   LoggedOut
 } derive(Eq, Debug)
 
-///|
+pub extend LoginStatus with Eq::{equal, not_equal}
+pub extend LoginStatus with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn LoginStatus::to_string(self : LoginStatus) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn LoginStatus::to_string(self : LoginStatus) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn LoginStatus::from_string(s : String) -> LoginStatus? {
   match s {
@@ -31,36 +32,23 @@ pub fn LoginStatus::from_string(s : String) -> LoginStatus? {
 /// NavigatorLogin interface
 pub type NavigatorLogin
 
-///|
-pub extern "js" fn NavigatorLogin::to_js_value(
-  self : NavigatorLogin,
-) -> JsValue =
+pub extern "js" fn NavigatorLogin::to_js_value(self : NavigatorLogin) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to NavigatorLogin (unchecked)
 pub extern "js" fn NavigatorLogin::from_js_value(v : JsValue) -> NavigatorLogin =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to NavigatorLogin (checked with instanceof)
-pub extern "js" fn NavigatorLogin::from_js_value_opt(
-  v : JsValue,
-) -> NavigatorLogin? =
+pub extern "js" fn NavigatorLogin::from_js_value_opt(v : JsValue) -> NavigatorLogin? =
   #| (v) => (v instanceof NavigatorLogin) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to NavigatorLogin (checked with instanceof)
-pub extern "js" fn JsValue::as_navigator_login(
-  self : JsValue,
-) -> NavigatorLogin? =
+pub extern "js" fn JsValue::as_navigator_login(self : JsValue) -> NavigatorLogin? =
   #| (self) => (self instanceof NavigatorLogin) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to NavigatorLogin (unchecked)
-pub extern "js" fn JsValue::to_navigator_login(
-  self : JsValue,
-) -> NavigatorLogin =
+pub extern "js" fn JsValue::to_navigator_login(self : JsValue) -> NavigatorLogin =
   #| (self) => self
 
 ///|
@@ -70,9 +58,7 @@ pub(all) enum NavigatorLoginSetStatusError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn NavigatorLogin::set_status(
-  self : NavigatorLogin,
-  status : LoginStatus,
-) -> Promise[Result[Unit, NavigatorLoginSetStatusError]] =
+pub extend NavigatorLoginSetStatusError with @debug.Debug::{to_repr}
+
+pub extern "js" fn NavigatorLogin::set_status(self : NavigatorLogin, status : LoginStatus) -> Promise[Result[Unit, NavigatorLoginSetStatusError]] =
   #| (self, status) => self.setStatus(['logged-in', 'logged-out'][status]).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))

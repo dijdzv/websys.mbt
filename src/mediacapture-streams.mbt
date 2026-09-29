@@ -5,59 +5,35 @@
 /// ConstrainULong typedef
 pub type ConstrainULong
 
-///|
-pub extern "js" fn ConstrainULong::to_js_value(
-  self : ConstrainULong,
-) -> JsValue =
+pub extern "js" fn ConstrainULong::to_js_value(self : ConstrainULong) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainULong from Int
 pub extern "js" fn ConstrainULong::from_int(v : Int) -> ConstrainULong =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainULong::from_constrain_u_long_range_ffi(
-  v : JsValue,
-) -> ConstrainULong =
+extern "js" fn ConstrainULong::from_constrain_u_long_range_ffi(v : JsValue) -> ConstrainULong =
   #| v => v
 
 ///|
-pub fn ConstrainULong::from_constrain_u_long_range(
-  v : ConstrainULongRange,
-) -> ConstrainULong {
-  ConstrainULong::from_constrain_u_long_range_ffi(v.to_js())
-}
+pub fn ConstrainULong::from_constrain_u_long_range(v : ConstrainULongRange) -> ConstrainULong { ConstrainULong::from_constrain_u_long_range_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainULong is Int
 pub extern "js" fn ConstrainULong::is_int(self : ConstrainULong) -> Bool =
   #| (self) => typeof self === 'number'
 
-///|
 /// Check if this ConstrainULong is ConstrainULongRange
-pub extern "js" fn ConstrainULong::is_constrain_u_long_range(
-  self : ConstrainULong,
-) -> Bool =
+pub extern "js" fn ConstrainULong::is_constrain_u_long_range(self : ConstrainULong) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainULong as Int
 pub extern "js" fn ConstrainULong::as_int(self : ConstrainULong) -> Int? =
   #| (self) => (typeof self === 'number') ? self : undefined
 
 ///|
-pub fn ConstrainULong::as_constrain_u_long_range(
-  self : ConstrainULong,
-) -> ConstrainULongRange? {
-  if self.is_constrain_u_long_range() {
-    Some(ConstrainULongRange::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainULong::as_constrain_u_long_range(self : ConstrainULong) -> ConstrainULongRange? { if self.is_constrain_u_long_range() { Some(ConstrainULongRange::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainULong] to Int?
 pub fn ConstrainULong::bind_as_int(value : ConstrainULong?) -> Int? {
   match value {
@@ -66,11 +42,8 @@ pub fn ConstrainULong::bind_as_int(value : ConstrainULong?) -> Int? {
   }
 }
 
-///|
 /// Flatten Option[ConstrainULong] to ConstrainULongRange?
-pub fn ConstrainULong::bind_as_constrain_u_long_range(
-  value : ConstrainULong?,
-) -> ConstrainULongRange? {
+pub fn ConstrainULong::bind_as_constrain_u_long_range(value : ConstrainULong?) -> ConstrainULongRange? {
   match value {
     Some(v) => v.as_constrain_u_long_range()
     None => None
@@ -81,61 +54,35 @@ pub fn ConstrainULong::bind_as_constrain_u_long_range(
 /// ConstrainDouble typedef
 pub type ConstrainDouble
 
-///|
-pub extern "js" fn ConstrainDouble::to_js_value(
-  self : ConstrainDouble,
-) -> JsValue =
+pub extern "js" fn ConstrainDouble::to_js_value(self : ConstrainDouble) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainDouble from Double
 pub extern "js" fn ConstrainDouble::from_double(v : Double) -> ConstrainDouble =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainDouble::from_constrain_double_range_ffi(
-  v : JsValue,
-) -> ConstrainDouble =
+extern "js" fn ConstrainDouble::from_constrain_double_range_ffi(v : JsValue) -> ConstrainDouble =
   #| v => v
 
 ///|
-pub fn ConstrainDouble::from_constrain_double_range(
-  v : ConstrainDoubleRange,
-) -> ConstrainDouble {
-  ConstrainDouble::from_constrain_double_range_ffi(v.to_js())
-}
+pub fn ConstrainDouble::from_constrain_double_range(v : ConstrainDoubleRange) -> ConstrainDouble { ConstrainDouble::from_constrain_double_range_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainDouble is Double
 pub extern "js" fn ConstrainDouble::is_double(self : ConstrainDouble) -> Bool =
   #| (self) => typeof self === 'number'
 
-///|
 /// Check if this ConstrainDouble is ConstrainDoubleRange
-pub extern "js" fn ConstrainDouble::is_constrain_double_range(
-  self : ConstrainDouble,
-) -> Bool =
+pub extern "js" fn ConstrainDouble::is_constrain_double_range(self : ConstrainDouble) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainDouble as Double
-pub extern "js" fn ConstrainDouble::as_double(
-  self : ConstrainDouble,
-) -> Double? =
+pub extern "js" fn ConstrainDouble::as_double(self : ConstrainDouble) -> Double? =
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub fn ConstrainDouble::as_constrain_double_range(
-  self : ConstrainDouble,
-) -> ConstrainDoubleRange? {
-  if self.is_constrain_double_range() {
-    Some(ConstrainDoubleRange::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainDouble::as_constrain_double_range(self : ConstrainDouble) -> ConstrainDoubleRange? { if self.is_constrain_double_range() { Some(ConstrainDoubleRange::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainDouble] to Double?
 pub fn ConstrainDouble::bind_as_double(value : ConstrainDouble?) -> Double? {
   match value {
@@ -144,11 +91,8 @@ pub fn ConstrainDouble::bind_as_double(value : ConstrainDouble?) -> Double? {
   }
 }
 
-///|
 /// Flatten Option[ConstrainDouble] to ConstrainDoubleRange?
-pub fn ConstrainDouble::bind_as_constrain_double_range(
-  value : ConstrainDouble?,
-) -> ConstrainDoubleRange? {
+pub fn ConstrainDouble::bind_as_constrain_double_range(value : ConstrainDouble?) -> ConstrainDoubleRange? {
   match value {
     Some(v) => v.as_constrain_double_range()
     None => None
@@ -159,59 +103,35 @@ pub fn ConstrainDouble::bind_as_constrain_double_range(
 /// ConstrainBoolean typedef
 pub type ConstrainBoolean
 
-///|
-pub extern "js" fn ConstrainBoolean::to_js_value(
-  self : ConstrainBoolean,
-) -> JsValue =
+pub extern "js" fn ConstrainBoolean::to_js_value(self : ConstrainBoolean) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainBoolean from Bool
 pub extern "js" fn ConstrainBoolean::from_bool(v : Bool) -> ConstrainBoolean =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters_ffi(
-  v : JsValue,
-) -> ConstrainBoolean =
+extern "js" fn ConstrainBoolean::from_constrain_boolean_parameters_ffi(v : JsValue) -> ConstrainBoolean =
   #| v => v
 
 ///|
-pub fn ConstrainBoolean::from_constrain_boolean_parameters(
-  v : ConstrainBooleanParameters,
-) -> ConstrainBoolean {
-  ConstrainBoolean::from_constrain_boolean_parameters_ffi(v.to_js())
-}
+pub fn ConstrainBoolean::from_constrain_boolean_parameters(v : ConstrainBooleanParameters) -> ConstrainBoolean { ConstrainBoolean::from_constrain_boolean_parameters_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainBoolean is Bool
 pub extern "js" fn ConstrainBoolean::is_bool(self : ConstrainBoolean) -> Bool =
   #| (self) => typeof self === 'boolean'
 
-///|
 /// Check if this ConstrainBoolean is ConstrainBooleanParameters
-pub extern "js" fn ConstrainBoolean::is_constrain_boolean_parameters(
-  self : ConstrainBoolean,
-) -> Bool =
+pub extern "js" fn ConstrainBoolean::is_constrain_boolean_parameters(self : ConstrainBoolean) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainBoolean as Bool
 pub extern "js" fn ConstrainBoolean::as_bool(self : ConstrainBoolean) -> Bool? =
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
 ///|
-pub fn ConstrainBoolean::as_constrain_boolean_parameters(
-  self : ConstrainBoolean,
-) -> ConstrainBooleanParameters? {
-  if self.is_constrain_boolean_parameters() {
-    Some(ConstrainBooleanParameters::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainBoolean::as_constrain_boolean_parameters(self : ConstrainBoolean) -> ConstrainBooleanParameters? { if self.is_constrain_boolean_parameters() { Some(ConstrainBooleanParameters::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainBoolean] to Bool?
 pub fn ConstrainBoolean::bind_as_bool(value : ConstrainBoolean?) -> Bool? {
   match value {
@@ -220,11 +140,8 @@ pub fn ConstrainBoolean::bind_as_bool(value : ConstrainBoolean?) -> Bool? {
   }
 }
 
-///|
 /// Flatten Option[ConstrainBoolean] to ConstrainBooleanParameters?
-pub fn ConstrainBoolean::bind_as_constrain_boolean_parameters(
-  value : ConstrainBoolean?,
-) -> ConstrainBooleanParameters? {
+pub fn ConstrainBoolean::bind_as_constrain_boolean_parameters(value : ConstrainBoolean?) -> ConstrainBooleanParameters? {
   match value {
     Some(v) => v.as_constrain_boolean_parameters()
     None => None
@@ -235,112 +152,65 @@ pub fn ConstrainBoolean::bind_as_constrain_boolean_parameters(
 /// ConstrainDOMString typedef
 pub type ConstrainDOMString
 
-///|
-pub extern "js" fn ConstrainDOMString::to_js_value(
-  self : ConstrainDOMString,
-) -> JsValue =
+pub extern "js" fn ConstrainDOMString::to_js_value(self : ConstrainDOMString) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainDOMString from String
-pub extern "js" fn ConstrainDOMString::from_string(
-  v : String,
-) -> ConstrainDOMString =
+pub extern "js" fn ConstrainDOMString::from_string(v : String) -> ConstrainDOMString =
   #| (v) => v
 
-///|
 /// Create ConstrainDOMString from FixedArray[String]
-pub extern "js" fn ConstrainDOMString::from_array_of_string(
-  v : FixedArray[String],
-) -> ConstrainDOMString =
+pub extern "js" fn ConstrainDOMString::from_array_of_string(v : FixedArray[String]) -> ConstrainDOMString =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainDOMString::from_constrain_dom_string_parameters_ffi(
-  v : JsValue,
-) -> ConstrainDOMString =
+extern "js" fn ConstrainDOMString::from_constrain_dom_string_parameters_ffi(v : JsValue) -> ConstrainDOMString =
   #| v => v
 
 ///|
-pub fn ConstrainDOMString::from_constrain_dom_string_parameters(
-  v : ConstrainDOMStringParameters,
-) -> ConstrainDOMString {
-  ConstrainDOMString::from_constrain_dom_string_parameters_ffi(v.to_js())
-}
+pub fn ConstrainDOMString::from_constrain_dom_string_parameters(v : ConstrainDOMStringParameters) -> ConstrainDOMString { ConstrainDOMString::from_constrain_dom_string_parameters_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainDOMString is String
-pub extern "js" fn ConstrainDOMString::is_string(
-  self : ConstrainDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainDOMString::is_string(self : ConstrainDOMString) -> Bool =
   #| (self) => typeof self === 'string'
 
-///|
 /// Check if this ConstrainDOMString is FixedArray[String]
-pub extern "js" fn ConstrainDOMString::is_array_of_string(
-  self : ConstrainDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainDOMString::is_array_of_string(self : ConstrainDOMString) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this ConstrainDOMString is ConstrainDOMStringParameters
-pub extern "js" fn ConstrainDOMString::is_constrain_dom_string_parameters(
-  self : ConstrainDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainDOMString::is_constrain_dom_string_parameters(self : ConstrainDOMString) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainDOMString as String
-pub extern "js" fn ConstrainDOMString::as_string(
-  self : ConstrainDOMString,
-) -> String? =
+pub extern "js" fn ConstrainDOMString::as_string(self : ConstrainDOMString) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
-///|
 /// Try to get ConstrainDOMString as FixedArray[String]
-pub extern "js" fn ConstrainDOMString::as_array_of_string(
-  self : ConstrainDOMString,
-) -> FixedArray[String]? =
+pub extern "js" fn ConstrainDOMString::as_array_of_string(self : ConstrainDOMString) -> FixedArray[String]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn ConstrainDOMString::as_constrain_dom_string_parameters(
-  self : ConstrainDOMString,
-) -> ConstrainDOMStringParameters? {
-  if self.is_constrain_dom_string_parameters() {
-    Some(ConstrainDOMStringParameters::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainDOMString::as_constrain_dom_string_parameters(self : ConstrainDOMString) -> ConstrainDOMStringParameters? { if self.is_constrain_dom_string_parameters() { Some(ConstrainDOMStringParameters::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainDOMString] to String?
-pub fn ConstrainDOMString::bind_as_string(
-  value : ConstrainDOMString?,
-) -> String? {
+pub fn ConstrainDOMString::bind_as_string(value : ConstrainDOMString?) -> String? {
   match value {
     Some(v) => v.as_string()
     None => None
   }
 }
 
-///|
 /// Flatten Option[ConstrainDOMString] to FixedArray[String]?
-pub fn ConstrainDOMString::bind_as_array_of_string(
-  value : ConstrainDOMString?,
-) -> FixedArray[String]? {
+pub fn ConstrainDOMString::bind_as_array_of_string(value : ConstrainDOMString?) -> FixedArray[String]? {
   match value {
     Some(v) => v.as_array_of_string()
     None => None
   }
 }
 
-///|
 /// Flatten Option[ConstrainDOMString] to ConstrainDOMStringParameters?
-pub fn ConstrainDOMString::bind_as_constrain_dom_string_parameters(
-  value : ConstrainDOMString?,
-) -> ConstrainDOMStringParameters? {
+pub fn ConstrainDOMString::bind_as_constrain_dom_string_parameters(value : ConstrainDOMString?) -> ConstrainDOMStringParameters? {
   match value {
     Some(v) => v.as_constrain_dom_string_parameters()
     None => None
@@ -351,114 +221,65 @@ pub fn ConstrainDOMString::bind_as_constrain_dom_string_parameters(
 /// ConstrainBooleanOrDOMString typedef
 pub type ConstrainBooleanOrDOMString
 
-///|
-pub extern "js" fn ConstrainBooleanOrDOMString::to_js_value(
-  self : ConstrainBooleanOrDOMString,
-) -> JsValue =
+pub extern "js" fn ConstrainBooleanOrDOMString::to_js_value(self : ConstrainBooleanOrDOMString) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainBooleanOrDOMString from Bool
-pub extern "js" fn ConstrainBooleanOrDOMString::from_bool(
-  v : Bool,
-) -> ConstrainBooleanOrDOMString =
+pub extern "js" fn ConstrainBooleanOrDOMString::from_bool(v : Bool) -> ConstrainBooleanOrDOMString =
   #| (v) => v
 
-///|
 /// Create ConstrainBooleanOrDOMString from String
-pub extern "js" fn ConstrainBooleanOrDOMString::from_string(
-  v : String,
-) -> ConstrainBooleanOrDOMString =
+pub extern "js" fn ConstrainBooleanOrDOMString::from_string(v : String) -> ConstrainBooleanOrDOMString =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(
-  v : JsValue,
-) -> ConstrainBooleanOrDOMString =
+extern "js" fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(v : JsValue) -> ConstrainBooleanOrDOMString =
   #| v => v
 
 ///|
-pub fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters(
-  v : ConstrainBooleanOrDOMStringParameters,
-) -> ConstrainBooleanOrDOMString {
-  ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(
-    v.to_js(),
-  )
-}
+pub fn ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters(v : ConstrainBooleanOrDOMStringParameters) -> ConstrainBooleanOrDOMString { ConstrainBooleanOrDOMString::from_constrain_boolean_or_dom_string_parameters_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainBooleanOrDOMString is Bool
-pub extern "js" fn ConstrainBooleanOrDOMString::is_bool(
-  self : ConstrainBooleanOrDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainBooleanOrDOMString::is_bool(self : ConstrainBooleanOrDOMString) -> Bool =
   #| (self) => typeof self === 'boolean'
 
-///|
 /// Check if this ConstrainBooleanOrDOMString is String
-pub extern "js" fn ConstrainBooleanOrDOMString::is_string(
-  self : ConstrainBooleanOrDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainBooleanOrDOMString::is_string(self : ConstrainBooleanOrDOMString) -> Bool =
   #| (self) => typeof self === 'string'
 
-///|
 /// Check if this ConstrainBooleanOrDOMString is ConstrainBooleanOrDOMStringParameters
-pub extern "js" fn ConstrainBooleanOrDOMString::is_constrain_boolean_or_dom_string_parameters(
-  self : ConstrainBooleanOrDOMString,
-) -> Bool =
+pub extern "js" fn ConstrainBooleanOrDOMString::is_constrain_boolean_or_dom_string_parameters(self : ConstrainBooleanOrDOMString) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainBooleanOrDOMString as Bool
-pub extern "js" fn ConstrainBooleanOrDOMString::as_bool(
-  self : ConstrainBooleanOrDOMString,
-) -> Bool? =
+pub extern "js" fn ConstrainBooleanOrDOMString::as_bool(self : ConstrainBooleanOrDOMString) -> Bool? =
   #| (self) => (typeof self === 'boolean') ? self : undefined
 
-///|
 /// Try to get ConstrainBooleanOrDOMString as String
-pub extern "js" fn ConstrainBooleanOrDOMString::as_string(
-  self : ConstrainBooleanOrDOMString,
-) -> String? =
+pub extern "js" fn ConstrainBooleanOrDOMString::as_string(self : ConstrainBooleanOrDOMString) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
 ///|
-pub fn ConstrainBooleanOrDOMString::as_constrain_boolean_or_dom_string_parameters(
-  self : ConstrainBooleanOrDOMString,
-) -> ConstrainBooleanOrDOMStringParameters? {
-  if self.is_constrain_boolean_or_dom_string_parameters() {
-    Some(ConstrainBooleanOrDOMStringParameters::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainBooleanOrDOMString::as_constrain_boolean_or_dom_string_parameters(self : ConstrainBooleanOrDOMString) -> ConstrainBooleanOrDOMStringParameters? { if self.is_constrain_boolean_or_dom_string_parameters() { Some(ConstrainBooleanOrDOMStringParameters::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainBooleanOrDOMString] to Bool?
-pub fn ConstrainBooleanOrDOMString::bind_as_bool(
-  value : ConstrainBooleanOrDOMString?,
-) -> Bool? {
+pub fn ConstrainBooleanOrDOMString::bind_as_bool(value : ConstrainBooleanOrDOMString?) -> Bool? {
   match value {
     Some(v) => v.as_bool()
     None => None
   }
 }
 
-///|
 /// Flatten Option[ConstrainBooleanOrDOMString] to String?
-pub fn ConstrainBooleanOrDOMString::bind_as_string(
-  value : ConstrainBooleanOrDOMString?,
-) -> String? {
+pub fn ConstrainBooleanOrDOMString::bind_as_string(value : ConstrainBooleanOrDOMString?) -> String? {
   match value {
     Some(v) => v.as_string()
     None => None
   }
 }
 
-///|
 /// Flatten Option[ConstrainBooleanOrDOMString] to ConstrainBooleanOrDOMStringParameters?
-pub fn ConstrainBooleanOrDOMString::bind_as_constrain_boolean_or_dom_string_parameters(
-  value : ConstrainBooleanOrDOMString?,
-) -> ConstrainBooleanOrDOMStringParameters? {
+pub fn ConstrainBooleanOrDOMString::bind_as_constrain_boolean_or_dom_string_parameters(value : ConstrainBooleanOrDOMString?) -> ConstrainBooleanOrDOMStringParameters? {
   match value {
     Some(v) => v.as_constrain_boolean_or_dom_string_parameters()
     None => None
@@ -472,7 +293,9 @@ pub(all) enum MediaStreamTrackState {
   Ended
 } derive(Eq, Debug)
 
-///|
+pub extend MediaStreamTrackState with Eq::{equal, not_equal}
+pub extend MediaStreamTrackState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn MediaStreamTrackState::to_string(self : MediaStreamTrackState) -> String {
   match self {
@@ -481,7 +304,6 @@ pub fn MediaStreamTrackState::to_string(self : MediaStreamTrackState) -> String 
   }
 }
 
-///|
 /// Parse from string value
 pub fn MediaStreamTrackState::from_string(s : String) -> MediaStreamTrackState? {
   match s {
@@ -500,7 +322,9 @@ pub(all) enum VideoFacingModeEnum {
   Right
 } derive(Eq, Debug)
 
-///|
+pub extend VideoFacingModeEnum with Eq::{equal, not_equal}
+pub extend VideoFacingModeEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn VideoFacingModeEnum::to_string(self : VideoFacingModeEnum) -> String {
   match self {
@@ -511,7 +335,6 @@ pub fn VideoFacingModeEnum::to_string(self : VideoFacingModeEnum) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn VideoFacingModeEnum::from_string(s : String) -> VideoFacingModeEnum? {
   match s {
@@ -530,7 +353,9 @@ pub(all) enum VideoResizeModeEnum {
   CropAndScale
 } derive(Eq, Debug)
 
-///|
+pub extend VideoResizeModeEnum with Eq::{equal, not_equal}
+pub extend VideoResizeModeEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn VideoResizeModeEnum::to_string(self : VideoResizeModeEnum) -> String {
   match self {
@@ -539,7 +364,6 @@ pub fn VideoResizeModeEnum::to_string(self : VideoResizeModeEnum) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn VideoResizeModeEnum::from_string(s : String) -> VideoResizeModeEnum? {
   match s {
@@ -556,22 +380,19 @@ pub(all) enum EchoCancellationModeEnum {
   RemoteOnly
 } derive(Eq, Debug)
 
-///|
+pub extend EchoCancellationModeEnum with Eq::{equal, not_equal}
+pub extend EchoCancellationModeEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn EchoCancellationModeEnum::to_string(
-  self : EchoCancellationModeEnum,
-) -> String {
+pub fn EchoCancellationModeEnum::to_string(self : EchoCancellationModeEnum) -> String {
   match self {
     EchoCancellationModeEnum::All => "all"
     EchoCancellationModeEnum::RemoteOnly => "remote-only"
   }
 }
 
-///|
 /// Parse from string value
-pub fn EchoCancellationModeEnum::from_string(
-  s : String,
-) -> EchoCancellationModeEnum? {
+pub fn EchoCancellationModeEnum::from_string(s : String) -> EchoCancellationModeEnum? {
   match s {
     "all" => Some(EchoCancellationModeEnum::All)
     "remote-only" => Some(EchoCancellationModeEnum::RemoteOnly)
@@ -587,7 +408,9 @@ pub(all) enum MediaDeviceKind {
   Videoinput
 } derive(Eq, Debug)
 
-///|
+pub extend MediaDeviceKind with Eq::{equal, not_equal}
+pub extend MediaDeviceKind with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn MediaDeviceKind::to_string(self : MediaDeviceKind) -> String {
   match self {
@@ -597,7 +420,6 @@ pub fn MediaDeviceKind::to_string(self : MediaDeviceKind) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn MediaDeviceKind::from_string(s : String) -> MediaDeviceKind? {
   match s {
@@ -614,35 +436,28 @@ pub(all) struct MediaTrackConstraints {
   advanced : FixedArray[MediaTrackConstraintSet]?
 }
 
-///|
 /// Create a new MediaTrackConstraints with default values
 pub fn MediaTrackConstraints::default() -> MediaTrackConstraints {
-  MediaTrackConstraints::{ advanced: None, }
+  MediaTrackConstraints::{
+    advanced: None,
+  }
 }
 
-///|
-extern "js" fn MediaTrackConstraints::to_js_ffi(
-  self : MediaTrackConstraints,
-) -> JsValue =
+extern "js" fn MediaTrackConstraints::to_js_ffi(self : MediaTrackConstraints) -> JsValue =
   #| (self) => ({
   #|   advanced: self.advanced
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaTrackConstraints::to_js(self : MediaTrackConstraints) -> JsValue {
   MediaTrackConstraints::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaTrackConstraints::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackConstraints =
+extern "js" fn MediaTrackConstraints::from_js_ffi(value : JsValue) -> MediaTrackConstraints =
   #| (v) => ({
   #|   advanced: v.advanced
   #| })
 
-///|
 /// Convert from JsValue
 pub fn MediaTrackConstraints::from_js(value : JsValue) -> MediaTrackConstraints {
   MediaTrackConstraints::from_js_ffi(value)
@@ -654,43 +469,30 @@ pub(all) struct MediaStreamTrackEventInit {
   track : MediaStreamTrack
 }
 
-///|
 /// Create a new MediaStreamTrackEventInit
-pub fn MediaStreamTrackEventInit::new(
-  track~ : MediaStreamTrack,
-) -> MediaStreamTrackEventInit {
-  MediaStreamTrackEventInit::{ track, }
+pub fn MediaStreamTrackEventInit::new(track~ : MediaStreamTrack) -> MediaStreamTrackEventInit {
+  MediaStreamTrackEventInit::{
+    track: track,
+  }
 }
 
-///|
-extern "js" fn MediaStreamTrackEventInit::to_js_ffi(
-  self : MediaStreamTrackEventInit,
-) -> JsValue =
+extern "js" fn MediaStreamTrackEventInit::to_js_ffi(self : MediaStreamTrackEventInit) -> JsValue =
   #| (self) => ({
   #|   track: self.track
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaStreamTrackEventInit::to_js(
-  self : MediaStreamTrackEventInit,
-) -> JsValue {
+pub fn MediaStreamTrackEventInit::to_js(self : MediaStreamTrackEventInit) -> JsValue {
   MediaStreamTrackEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaStreamTrackEventInit::from_js_ffi(
-  value : JsValue,
-) -> MediaStreamTrackEventInit =
+extern "js" fn MediaStreamTrackEventInit::from_js_ffi(value : JsValue) -> MediaStreamTrackEventInit =
   #| (v) => ({
   #|   track: v.track
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaStreamTrackEventInit::from_js(
-  value : JsValue,
-) -> MediaStreamTrackEventInit {
+pub fn MediaStreamTrackEventInit::from_js(value : JsValue) -> MediaStreamTrackEventInit {
   MediaStreamTrackEventInit::from_js_ffi(value)
 }
 
@@ -700,94 +502,31 @@ pub(all) struct DeviceChangeEventInit {
   devices : FixedArray[MediaDeviceInfo]?
 }
 
-///|
 /// Create a new DeviceChangeEventInit with default values
 pub fn DeviceChangeEventInit::default() -> DeviceChangeEventInit {
-  DeviceChangeEventInit::{ devices: None, }
+  DeviceChangeEventInit::{
+    devices: None,
+  }
 }
 
-///|
-extern "js" fn DeviceChangeEventInit::to_js_ffi(
-  self : DeviceChangeEventInit,
-) -> JsValue =
+extern "js" fn DeviceChangeEventInit::to_js_ffi(self : DeviceChangeEventInit) -> JsValue =
   #| (self) => ({
   #|   devices: self.devices
   #| })
 
-///|
 /// Convert to JsValue
 pub fn DeviceChangeEventInit::to_js(self : DeviceChangeEventInit) -> JsValue {
   DeviceChangeEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DeviceChangeEventInit::from_js_ffi(
-  value : JsValue,
-) -> DeviceChangeEventInit =
+extern "js" fn DeviceChangeEventInit::from_js_ffi(value : JsValue) -> DeviceChangeEventInit =
   #| (v) => ({
   #|   devices: v.devices
   #| })
 
-///|
 /// Convert from JsValue
 pub fn DeviceChangeEventInit::from_js(value : JsValue) -> DeviceChangeEventInit {
   DeviceChangeEventInit::from_js_ffi(value)
-}
-
-///|
-/// MediaStreamConstraints dictionary
-pub(all) struct MediaStreamConstraints {
-  video : BoolOrMediaTrackConstraints?
-  audio : BoolOrMediaTrackConstraints?
-  preferCurrentTab : Bool?
-  peerIdentity : String?
-}
-
-///|
-/// Create a new MediaStreamConstraints with default values
-pub fn MediaStreamConstraints::default() -> MediaStreamConstraints {
-  MediaStreamConstraints::{
-    video: None,
-    audio: None,
-    preferCurrentTab: None,
-    peerIdentity: None,
-  }
-}
-
-///|
-extern "js" fn MediaStreamConstraints::to_js_ffi(
-  self : MediaStreamConstraints,
-) -> JsValue =
-  #| (self) => ({
-  #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
-  #|   preferCurrentTab: (self.preferCurrentTab === -1 ? undefined : self.preferCurrentTab),
-  #|   peerIdentity: self.peerIdentity
-  #| })
-
-///|
-/// Convert to JsValue
-pub fn MediaStreamConstraints::to_js(self : MediaStreamConstraints) -> JsValue {
-  MediaStreamConstraints::to_js_ffi(self)
-}
-
-///|
-extern "js" fn MediaStreamConstraints::from_js_ffi(
-  value : JsValue,
-) -> MediaStreamConstraints =
-  #| (v) => ({
-  #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
-  #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
-  #|   preferCurrentTab: (v.preferCurrentTab === undefined ? -1 : v.preferCurrentTab),
-  #|   peerIdentity: v.peerIdentity
-  #| })
-
-///|
-/// Convert from JsValue
-pub fn MediaStreamConstraints::from_js(
-  value : JsValue,
-) -> MediaStreamConstraints {
-  MediaStreamConstraints::from_js_ffi(value)
 }
 
 ///|
@@ -797,33 +536,31 @@ pub(all) struct DoubleRange {
   min : Double?
 }
 
-///|
 /// Create a new DoubleRange with default values
 pub fn DoubleRange::default() -> DoubleRange {
-  DoubleRange::{ max: None, min: None, }
+  DoubleRange::{
+    max: None,
+    min: None,
+  }
 }
 
-///|
 extern "js" fn DoubleRange::to_js_ffi(self : DoubleRange) -> JsValue =
   #| (self) => ({
   #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn DoubleRange::to_js(self : DoubleRange) -> JsValue {
   DoubleRange::to_js_ffi(self)
 }
 
-///|
 extern "js" fn DoubleRange::from_js_ffi(value : JsValue) -> DoubleRange =
   #| (v) => ({
   #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
   #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn DoubleRange::from_js(value : JsValue) -> DoubleRange {
   DoubleRange::from_js_ffi(value)
@@ -838,16 +575,17 @@ pub(all) struct ConstrainDoubleRange {
   ideal : Double?
 }
 
-///|
 /// Create a new ConstrainDoubleRange with default values
 pub fn ConstrainDoubleRange::default() -> ConstrainDoubleRange {
-  ConstrainDoubleRange::{ max: None, min: None, exact: None, ideal: None, }
+  ConstrainDoubleRange::{
+    max: None,
+    min: None,
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainDoubleRange::to_js_ffi(
-  self : ConstrainDoubleRange,
-) -> JsValue =
+extern "js" fn ConstrainDoubleRange::to_js_ffi(self : ConstrainDoubleRange) -> JsValue =
   #| (self) => ({
   #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -855,16 +593,12 @@ extern "js" fn ConstrainDoubleRange::to_js_ffi(
   #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ConstrainDoubleRange::to_js(self : ConstrainDoubleRange) -> JsValue {
   ConstrainDoubleRange::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainDoubleRange::from_js_ffi(
-  value : JsValue,
-) -> ConstrainDoubleRange =
+extern "js" fn ConstrainDoubleRange::from_js_ffi(value : JsValue) -> ConstrainDoubleRange =
   #| (v) => ({
   #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
   #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min }),
@@ -872,7 +606,6 @@ extern "js" fn ConstrainDoubleRange::from_js_ffi(
   #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ConstrainDoubleRange::from_js(value : JsValue) -> ConstrainDoubleRange {
   ConstrainDoubleRange::from_js_ffi(value)
@@ -885,33 +618,31 @@ pub(all) struct ULongRange {
   min : Int?
 }
 
-///|
 /// Create a new ULongRange with default values
 pub fn ULongRange::default() -> ULongRange {
-  ULongRange::{ max: None, min: None, }
+  ULongRange::{
+    max: None,
+    min: None,
+  }
 }
 
-///|
 extern "js" fn ULongRange::to_js_ffi(self : ULongRange) -> JsValue =
   #| (self) => ({
   #|   max: self.max,
   #|   min: self.min
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ULongRange::to_js(self : ULongRange) -> JsValue {
   ULongRange::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ULongRange::from_js_ffi(value : JsValue) -> ULongRange =
   #| (v) => ({
   #|   max: v.max,
   #|   min: v.min
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ULongRange::from_js(value : JsValue) -> ULongRange {
   ULongRange::from_js_ffi(value)
@@ -926,16 +657,17 @@ pub(all) struct ConstrainULongRange {
   ideal : Int?
 }
 
-///|
 /// Create a new ConstrainULongRange with default values
 pub fn ConstrainULongRange::default() -> ConstrainULongRange {
-  ConstrainULongRange::{ max: None, min: None, exact: None, ideal: None, }
+  ConstrainULongRange::{
+    max: None,
+    min: None,
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainULongRange::to_js_ffi(
-  self : ConstrainULongRange,
-) -> JsValue =
+extern "js" fn ConstrainULongRange::to_js_ffi(self : ConstrainULongRange) -> JsValue =
   #| (self) => ({
   #|   max: self.max,
   #|   min: self.min,
@@ -943,16 +675,12 @@ extern "js" fn ConstrainULongRange::to_js_ffi(
   #|   ideal: self.ideal
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ConstrainULongRange::to_js(self : ConstrainULongRange) -> JsValue {
   ConstrainULongRange::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainULongRange::from_js_ffi(
-  value : JsValue,
-) -> ConstrainULongRange =
+extern "js" fn ConstrainULongRange::from_js_ffi(value : JsValue) -> ConstrainULongRange =
   #| (v) => ({
   #|   max: v.max,
   #|   min: v.min,
@@ -960,7 +688,6 @@ extern "js" fn ConstrainULongRange::from_js_ffi(
   #|   ideal: v.ideal
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ConstrainULongRange::from_js(value : JsValue) -> ConstrainULongRange {
   ConstrainULongRange::from_js_ffi(value)
@@ -973,43 +700,33 @@ pub(all) struct ConstrainBooleanParameters {
   ideal : Bool?
 }
 
-///|
 /// Create a new ConstrainBooleanParameters with default values
 pub fn ConstrainBooleanParameters::default() -> ConstrainBooleanParameters {
-  ConstrainBooleanParameters::{ exact: None, ideal: None, }
+  ConstrainBooleanParameters::{
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainBooleanParameters::to_js_ffi(
-  self : ConstrainBooleanParameters,
-) -> JsValue =
+extern "js" fn ConstrainBooleanParameters::to_js_ffi(self : ConstrainBooleanParameters) -> JsValue =
   #| (self) => ({
   #|   exact: (self.exact === -1 ? undefined : self.exact),
   #|   ideal: (self.ideal === -1 ? undefined : self.ideal)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ConstrainBooleanParameters::to_js(
-  self : ConstrainBooleanParameters,
-) -> JsValue {
+pub fn ConstrainBooleanParameters::to_js(self : ConstrainBooleanParameters) -> JsValue {
   ConstrainBooleanParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainBooleanParameters::from_js_ffi(
-  value : JsValue,
-) -> ConstrainBooleanParameters =
+extern "js" fn ConstrainBooleanParameters::from_js_ffi(value : JsValue) -> ConstrainBooleanParameters =
   #| (v) => ({
   #|   exact: (v.exact === undefined ? -1 : v.exact),
   #|   ideal: (v.ideal === undefined ? -1 : v.ideal)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ConstrainBooleanParameters::from_js(
-  value : JsValue,
-) -> ConstrainBooleanParameters {
+pub fn ConstrainBooleanParameters::from_js(value : JsValue) -> ConstrainBooleanParameters {
   ConstrainBooleanParameters::from_js_ffi(value)
 }
 
@@ -1020,43 +737,33 @@ pub(all) struct ConstrainDOMStringParameters {
   ideal : StringOrArrayOfString?
 }
 
-///|
 /// Create a new ConstrainDOMStringParameters with default values
 pub fn ConstrainDOMStringParameters::default() -> ConstrainDOMStringParameters {
-  ConstrainDOMStringParameters::{ exact: None, ideal: None, }
+  ConstrainDOMStringParameters::{
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainDOMStringParameters::to_js_ffi(
-  self : ConstrainDOMStringParameters,
-) -> JsValue =
+extern "js" fn ConstrainDOMStringParameters::to_js_ffi(self : ConstrainDOMStringParameters) -> JsValue =
   #| (self) => ({
   #|   exact: ((() => { const v = self.exact; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ConstrainDOMStringParameters::to_js(
-  self : ConstrainDOMStringParameters,
-) -> JsValue {
+pub fn ConstrainDOMStringParameters::to_js(self : ConstrainDOMStringParameters) -> JsValue {
   ConstrainDOMStringParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainDOMStringParameters::from_js_ffi(
-  value : JsValue,
-) -> ConstrainDOMStringParameters =
+extern "js" fn ConstrainDOMStringParameters::from_js_ffi(value : JsValue) -> ConstrainDOMStringParameters =
   #| (v) => ({
   #|   exact: (v.exact === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exact }),
   #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ConstrainDOMStringParameters::from_js(
-  value : JsValue,
-) -> ConstrainDOMStringParameters {
+pub fn ConstrainDOMStringParameters::from_js(value : JsValue) -> ConstrainDOMStringParameters {
   ConstrainDOMStringParameters::from_js_ffi(value)
 }
 
@@ -1067,43 +774,33 @@ pub(all) struct ConstrainBooleanOrDOMStringParameters {
   ideal : BoolOrString?
 }
 
-///|
 /// Create a new ConstrainBooleanOrDOMStringParameters with default values
 pub fn ConstrainBooleanOrDOMStringParameters::default() -> ConstrainBooleanOrDOMStringParameters {
-  ConstrainBooleanOrDOMStringParameters::{ exact: None, ideal: None, }
+  ConstrainBooleanOrDOMStringParameters::{
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainBooleanOrDOMStringParameters::to_js_ffi(
-  self : ConstrainBooleanOrDOMStringParameters,
-) -> JsValue =
+extern "js" fn ConstrainBooleanOrDOMStringParameters::to_js_ffi(self : ConstrainBooleanOrDOMStringParameters) -> JsValue =
   #| (self) => ({
   #|   exact: ((() => { const v = self.exact; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   ideal: ((() => { const v = self.ideal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ConstrainBooleanOrDOMStringParameters::to_js(
-  self : ConstrainBooleanOrDOMStringParameters,
-) -> JsValue {
+pub fn ConstrainBooleanOrDOMStringParameters::to_js(self : ConstrainBooleanOrDOMStringParameters) -> JsValue {
   ConstrainBooleanOrDOMStringParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainBooleanOrDOMStringParameters::from_js_ffi(
-  value : JsValue,
-) -> ConstrainBooleanOrDOMStringParameters =
+extern "js" fn ConstrainBooleanOrDOMStringParameters::from_js_ffi(value : JsValue) -> ConstrainBooleanOrDOMStringParameters =
   #| (v) => ({
   #|   exact: (v.exact === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exact }),
   #|   ideal: (v.ideal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ideal })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ConstrainBooleanOrDOMStringParameters::from_js(
-  value : JsValue,
-) -> ConstrainBooleanOrDOMStringParameters {
+pub fn ConstrainBooleanOrDOMStringParameters::from_js(value : JsValue) -> ConstrainBooleanOrDOMStringParameters {
   ConstrainBooleanOrDOMStringParameters::from_js_ffi(value)
 }
 
@@ -1113,41 +810,30 @@ pub(all) struct CameraDevicePermissionDescriptor {
   panTiltZoom : Bool?
 }
 
-///|
 /// Create a new CameraDevicePermissionDescriptor with default values
 pub fn CameraDevicePermissionDescriptor::default() -> CameraDevicePermissionDescriptor {
-  CameraDevicePermissionDescriptor::{ panTiltZoom: None, }
+  CameraDevicePermissionDescriptor::{
+    panTiltZoom: None,
+  }
 }
 
-///|
-extern "js" fn CameraDevicePermissionDescriptor::to_js_ffi(
-  self : CameraDevicePermissionDescriptor,
-) -> JsValue =
+extern "js" fn CameraDevicePermissionDescriptor::to_js_ffi(self : CameraDevicePermissionDescriptor) -> JsValue =
   #| (self) => ({
   #|   panTiltZoom: (self.panTiltZoom === -1 ? undefined : self.panTiltZoom)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn CameraDevicePermissionDescriptor::to_js(
-  self : CameraDevicePermissionDescriptor,
-) -> JsValue {
+pub fn CameraDevicePermissionDescriptor::to_js(self : CameraDevicePermissionDescriptor) -> JsValue {
   CameraDevicePermissionDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CameraDevicePermissionDescriptor::from_js_ffi(
-  value : JsValue,
-) -> CameraDevicePermissionDescriptor =
+extern "js" fn CameraDevicePermissionDescriptor::from_js_ffi(value : JsValue) -> CameraDevicePermissionDescriptor =
   #| (v) => ({
   #|   panTiltZoom: (v.panTiltZoom === undefined ? -1 : v.panTiltZoom)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CameraDevicePermissionDescriptor::from_js(
-  value : JsValue,
-) -> CameraDevicePermissionDescriptor {
+pub fn CameraDevicePermissionDescriptor::from_js(value : JsValue) -> CameraDevicePermissionDescriptor {
   CameraDevicePermissionDescriptor::from_js_ffi(value)
 }
 
@@ -1155,122 +841,73 @@ pub fn CameraDevicePermissionDescriptor::from_js(
 /// MediaStream interface
 pub type MediaStream
 
-///|
 pub extern "js" fn MediaStream::to_js_value(self : MediaStream) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaStream (unchecked)
 pub extern "js" fn MediaStream::from_js_value(v : JsValue) -> MediaStream =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaStream (checked with instanceof)
 pub extern "js" fn MediaStream::from_js_value_opt(v : JsValue) -> MediaStream? =
   #| (v) => (v instanceof MediaStream) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaStream (checked with instanceof)
 pub extern "js" fn JsValue::as_media_stream(self : JsValue) -> MediaStream? =
   #| (self) => (self instanceof MediaStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaStream (unchecked)
 pub extern "js" fn JsValue::to_media_stream(self : JsValue) -> MediaStream =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaStream::to_event_target(
-  self : MediaStream,
-) -> EventTarget =
+pub extern "js" fn MediaStream::to_event_target(self : MediaStream) -> EventTarget =
   #| (self) => self
 
-///|
 pub extern "js" fn MediaStream::new() -> MediaStream =
   #| () => new MediaStream()
 
-///|
-pub extern "js" fn MediaStream::new_with_media_stream(
-  stream : MediaStream,
-) -> MediaStream =
+pub extern "js" fn MediaStream::new_with_media_stream(stream : MediaStream) -> MediaStream =
   #| (stream) => new MediaStream(stream)
 
-///|
-pub extern "js" fn MediaStream::new_with_array(
-  tracks : FixedArray[MediaStreamTrack],
-) -> MediaStream =
+pub extern "js" fn MediaStream::new_with_array(tracks : FixedArray[MediaStreamTrack]) -> MediaStream =
   #| (tracks) => new MediaStream(tracks)
 
-///|
 pub extern "js" fn MediaStream::get_id(self : MediaStream) -> String =
   #| (self) => self.id
 
-///|
-pub extern "js" fn MediaStream::get_audio_tracks(
-  self : MediaStream,
-) -> FixedArray[MediaStreamTrack] =
+pub extern "js" fn MediaStream::get_audio_tracks(self : MediaStream) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getAudioTracks()
 
-///|
-pub extern "js" fn MediaStream::get_video_tracks(
-  self : MediaStream,
-) -> FixedArray[MediaStreamTrack] =
+pub extern "js" fn MediaStream::get_video_tracks(self : MediaStream) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getVideoTracks()
 
-///|
-pub extern "js" fn MediaStream::get_tracks(
-  self : MediaStream,
-) -> FixedArray[MediaStreamTrack] =
+pub extern "js" fn MediaStream::get_tracks(self : MediaStream) -> FixedArray[MediaStreamTrack] =
   #| (self) => self.getTracks()
 
-///|
-pub extern "js" fn MediaStream::get_track_by_id(
-  self : MediaStream,
-  track_id : String,
-) -> MediaStreamTrack? =
+pub extern "js" fn MediaStream::get_track_by_id(self : MediaStream, track_id : String) -> MediaStreamTrack? =
   #| (self, track_id) => (() => { const v = self.getTrackById(track_id); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn MediaStream::add_track(
-  self : MediaStream,
-  track : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStream::add_track(self : MediaStream, track : MediaStreamTrack) -> Unit =
   #| (self, track) => self.addTrack(track)
 
-///|
-pub extern "js" fn MediaStream::remove_track(
-  self : MediaStream,
-  track : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStream::remove_track(self : MediaStream, track : MediaStreamTrack) -> Unit =
   #| (self, track) => self.removeTrack(track)
 
-///|
 pub extern "js" fn MediaStream::clone(self : MediaStream) -> MediaStream =
   #| (self) => self.clone()
 
-///|
 pub extern "js" fn MediaStream::get_active(self : MediaStream) -> Bool =
   #| (self) => self.active
 
-///|
-pub extern "js" fn MediaStream::set_onaddtrack(
-  self : MediaStream,
-  handler : (MediaStreamTrackEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStream::set_onaddtrack(self : MediaStream, handler : (MediaStreamTrackEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onaddtrack = (e) => handler(e) }
 
-///|
 pub extern "js" fn MediaStream::clear_onaddtrack(self : MediaStream) -> Unit =
   #| (self) => { self.onaddtrack = null }
 
-///|
-pub extern "js" fn MediaStream::set_onremovetrack(
-  self : MediaStream,
-  handler : (MediaStreamTrackEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStream::set_onremovetrack(self : MediaStream, handler : (MediaStreamTrackEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onremovetrack = (e) => handler(e) }
 
-///|
 pub extern "js" fn MediaStream::clear_onremovetrack(self : MediaStream) -> Unit =
   #| (self) => { self.onremovetrack = null }
 
@@ -1278,414 +915,232 @@ pub extern "js" fn MediaStream::clear_onremovetrack(self : MediaStream) -> Unit 
 /// MediaStreamTrack interface
 pub type MediaStreamTrack
 
-///|
-pub extern "js" fn MediaStreamTrack::to_js_value(
-  self : MediaStreamTrack,
-) -> JsValue =
+pub extern "js" fn MediaStreamTrack::to_js_value(self : MediaStreamTrack) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaStreamTrack (unchecked)
-pub extern "js" fn MediaStreamTrack::from_js_value(
-  v : JsValue,
-) -> MediaStreamTrack =
+pub extern "js" fn MediaStreamTrack::from_js_value(v : JsValue) -> MediaStreamTrack =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaStreamTrack (checked with instanceof)
-pub extern "js" fn MediaStreamTrack::from_js_value_opt(
-  v : JsValue,
-) -> MediaStreamTrack? =
+pub extern "js" fn MediaStreamTrack::from_js_value_opt(v : JsValue) -> MediaStreamTrack? =
   #| (v) => (v instanceof MediaStreamTrack) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaStreamTrack (checked with instanceof)
-pub extern "js" fn JsValue::as_media_stream_track(
-  self : JsValue,
-) -> MediaStreamTrack? =
+pub extern "js" fn JsValue::as_media_stream_track(self : JsValue) -> MediaStreamTrack? =
   #| (self) => (self instanceof MediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaStreamTrack (unchecked)
-pub extern "js" fn JsValue::to_media_stream_track(
-  self : JsValue,
-) -> MediaStreamTrack =
+pub extern "js" fn JsValue::to_media_stream_track(self : JsValue) -> MediaStreamTrack =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaStreamTrack::to_event_target(
-  self : MediaStreamTrack,
-) -> EventTarget =
+pub extern "js" fn MediaStreamTrack::to_event_target(self : MediaStreamTrack) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaStreamTrack::as_canvas_capture_media_stream_track(
-  self : MediaStreamTrack,
-) -> CanvasCaptureMediaStreamTrack? =
+pub extern "js" fn MediaStreamTrack::as_canvas_capture_media_stream_track(self : MediaStreamTrack) -> CanvasCaptureMediaStreamTrack? =
   #| (self) => (self instanceof CanvasCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn MediaStreamTrack::as_browser_capture_media_stream_track(
-  self : MediaStreamTrack,
-) -> BrowserCaptureMediaStreamTrack? =
+pub extern "js" fn MediaStreamTrack::as_browser_capture_media_stream_track(self : MediaStreamTrack) -> BrowserCaptureMediaStreamTrack? =
   #| (self) => (self instanceof BrowserCaptureMediaStreamTrack) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn MediaStreamTrack::get_kind(
-  self : MediaStreamTrack,
-) -> String =
+pub extern "js" fn MediaStreamTrack::get_kind(self : MediaStreamTrack) -> String =
   #| (self) => self.kind
 
-///|
 pub extern "js" fn MediaStreamTrack::get_id(self : MediaStreamTrack) -> String =
   #| (self) => self.id
 
-///|
-pub extern "js" fn MediaStreamTrack::get_label(
-  self : MediaStreamTrack,
-) -> String =
+pub extern "js" fn MediaStreamTrack::get_label(self : MediaStreamTrack) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn MediaStreamTrack::get_enabled(
-  self : MediaStreamTrack,
-) -> Bool =
+pub extern "js" fn MediaStreamTrack::get_enabled(self : MediaStreamTrack) -> Bool =
   #| (self) => self.enabled
 
-///|
-pub extern "js" fn MediaStreamTrack::set_enabled(
-  self : MediaStreamTrack,
-  value : Bool,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_enabled(self : MediaStreamTrack, value : Bool) -> Unit =
   #| (self, value) => { self.enabled = value }
 
-///|
 pub extern "js" fn MediaStreamTrack::get_muted(self : MediaStreamTrack) -> Bool =
   #| (self) => self.muted
 
-///|
-pub extern "js" fn MediaStreamTrack::set_onmute(
-  self : MediaStreamTrack,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_onmute(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onmute = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaStreamTrack::clear_onmute(
-  self : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::clear_onmute(self : MediaStreamTrack) -> Unit =
   #| (self) => { self.onmute = null }
 
-///|
-pub extern "js" fn MediaStreamTrack::set_onunmute(
-  self : MediaStreamTrack,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_onunmute(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onunmute = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaStreamTrack::clear_onunmute(
-  self : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::clear_onunmute(self : MediaStreamTrack) -> Unit =
   #| (self) => { self.onunmute = null }
 
-///|
-pub extern "js" fn MediaStreamTrack::get_ready_state(
-  self : MediaStreamTrack,
-) -> MediaStreamTrackState =
+pub extern "js" fn MediaStreamTrack::get_ready_state(self : MediaStreamTrack) -> MediaStreamTrackState =
   #| (self) => ['live', 'ended'].indexOf(self.readyState)
 
-///|
-pub extern "js" fn MediaStreamTrack::set_onended(
-  self : MediaStreamTrack,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_onended(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onended = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaStreamTrack::clear_onended(
-  self : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::clear_onended(self : MediaStreamTrack) -> Unit =
   #| (self) => { self.onended = null }
 
-///|
-pub extern "js" fn MediaStreamTrack::clone(
-  self : MediaStreamTrack,
-) -> MediaStreamTrack =
+pub extern "js" fn MediaStreamTrack::clone(self : MediaStreamTrack) -> MediaStreamTrack =
   #| (self) => self.clone()
 
-///|
 pub extern "js" fn MediaStreamTrack::stop(self : MediaStreamTrack) -> Unit =
   #| (self) => self.stop()
 
-///|
-pub extern "js" fn MediaStreamTrack::get_capabilities(
-  self : MediaStreamTrack,
-) -> MediaTrackCapabilities =
+pub extern "js" fn MediaStreamTrack::get_capabilities(self : MediaStreamTrack) -> MediaTrackCapabilities =
   #| (self) => self.getCapabilities()
 
-///|
-pub extern "js" fn MediaStreamTrack::get_constraints(
-  self : MediaStreamTrack,
-) -> MediaTrackConstraints =
+pub extern "js" fn MediaStreamTrack::get_constraints(self : MediaStreamTrack) -> MediaTrackConstraints =
   #| (self) => self.getConstraints()
 
-///|
-pub extern "js" fn MediaStreamTrack::get_settings(
-  self : MediaStreamTrack,
-) -> MediaTrackSettings =
+pub extern "js" fn MediaStreamTrack::get_settings(self : MediaStreamTrack) -> MediaTrackSettings =
   #| (self) => self.getSettings()
 
-///|
-pub extern "js" fn MediaStreamTrack::apply_constraints(
-  self : MediaStreamTrack,
-) -> Promise[Unit] =
+pub extern "js" fn MediaStreamTrack::apply_constraints(self : MediaStreamTrack) -> Promise[Unit] =
   #| (self) => self.applyConstraints()
 
-///|
-extern "js" fn MediaStreamTrack::apply_constraints_with_constraints_ffi(
-  self : MediaStreamTrack,
-  constraints : JsValue,
-) -> Promise[Unit] =
+extern "js" fn MediaStreamTrack::apply_constraints_with_constraints_ffi(self : MediaStreamTrack, constraints : JsValue) -> Promise[Unit] =
   #| (self, constraints) => self.applyConstraints(constraints)
 
-///|
-pub fn MediaStreamTrack::apply_constraints_with_constraints(
-  self : MediaStreamTrack,
-  constraints : MediaTrackConstraints,
-) -> Promise[Unit] {
-  MediaStreamTrack::apply_constraints_with_constraints_ffi(
-    self,
-    constraints.to_js(),
-  )
+pub fn MediaStreamTrack::apply_constraints_with_constraints(self : MediaStreamTrack, constraints : MediaTrackConstraints) -> Promise[Unit] {
+  MediaStreamTrack::apply_constraints_with_constraints_ffi(self, constraints.to_js())
 }
 
-///|
-pub extern "js" fn MediaStreamTrack::get_capture_handle(
-  self : MediaStreamTrack,
-) -> CaptureHandle? =
+pub extern "js" fn MediaStreamTrack::get_capture_handle(self : MediaStreamTrack) -> CaptureHandle? =
   #| (self) => (() => { const v = self.getCaptureHandle(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(
-  self : MediaStreamTrack,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_oncapturehandlechange(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.oncapturehandlechange = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaStreamTrack::clear_oncapturehandlechange(
-  self : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::clear_oncapturehandlechange(self : MediaStreamTrack) -> Unit =
   #| (self) => { self.oncapturehandlechange = null }
 
-///|
-pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(
-  self : MediaStreamTrack,
-) -> FixedArray[String] =
+pub extern "js" fn MediaStreamTrack::get_stats(self : MediaStreamTrack) -> MediaStreamTrackAudioStatsOrMediaStreamTrackVideoStats =
+  #| (self) => self.stats
+
+pub extern "js" fn MediaStreamTrack::set_onconfigurationchange(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
+  #| (self, handler) => { self.onconfigurationchange = (e) => handler(e) }
+
+pub extern "js" fn MediaStreamTrack::clear_onconfigurationchange(self : MediaStreamTrack) -> Unit =
+  #| (self) => { self.onconfigurationchange = null }
+
+pub extern "js" fn MediaStreamTrack::get_supported_capture_actions(self : MediaStreamTrack) -> FixedArray[String] =
   #| (self) => self.getSupportedCaptureActions()
 
-///|
-pub extern "js" fn MediaStreamTrack::send_capture_action(
-  self : MediaStreamTrack,
-  action : CaptureAction,
-) -> Promise[Unit] =
+pub extern "js" fn MediaStreamTrack::send_capture_action(self : MediaStreamTrack, action : CaptureAction) -> Promise[Unit] =
   #| (self, action) => self.sendCaptureAction(['next', 'previous', 'first', 'last'][action])
 
-///|
-pub extern "js" fn MediaStreamTrack::get_content_hint(
-  self : MediaStreamTrack,
-) -> String =
+pub extern "js" fn MediaStreamTrack::get_content_hint(self : MediaStreamTrack) -> String =
   #| (self) => self.contentHint
 
-///|
-pub extern "js" fn MediaStreamTrack::set_content_hint(
-  self : MediaStreamTrack,
-  value : String,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_content_hint(self : MediaStreamTrack, value : String) -> Unit =
   #| (self, value) => { self.contentHint = value }
 
-///|
-pub extern "js" fn MediaStreamTrack::get_isolated(
-  self : MediaStreamTrack,
-) -> Bool =
+pub extern "js" fn MediaStreamTrack::get_isolated(self : MediaStreamTrack) -> Bool =
   #| (self) => self.isolated
 
-///|
-pub extern "js" fn MediaStreamTrack::set_onisolationchange(
-  self : MediaStreamTrack,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::set_onisolationchange(self : MediaStreamTrack, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onisolationchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaStreamTrack::clear_onisolationchange(
-  self : MediaStreamTrack,
-) -> Unit =
+pub extern "js" fn MediaStreamTrack::clear_onisolationchange(self : MediaStreamTrack) -> Unit =
   #| (self) => { self.onisolationchange = null }
 
 ///|
 /// MediaStreamTrackEvent interface
 pub type MediaStreamTrackEvent
 
-///|
-pub extern "js" fn MediaStreamTrackEvent::to_js_value(
-  self : MediaStreamTrackEvent,
-) -> JsValue =
+pub extern "js" fn MediaStreamTrackEvent::to_js_value(self : MediaStreamTrackEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaStreamTrackEvent (unchecked)
-pub extern "js" fn MediaStreamTrackEvent::from_js_value(
-  v : JsValue,
-) -> MediaStreamTrackEvent =
+pub extern "js" fn MediaStreamTrackEvent::from_js_value(v : JsValue) -> MediaStreamTrackEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaStreamTrackEvent (checked with instanceof)
-pub extern "js" fn MediaStreamTrackEvent::from_js_value_opt(
-  v : JsValue,
-) -> MediaStreamTrackEvent? =
+pub extern "js" fn MediaStreamTrackEvent::from_js_value_opt(v : JsValue) -> MediaStreamTrackEvent? =
   #| (v) => (v instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaStreamTrackEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_media_stream_track_event(
-  self : JsValue,
-) -> MediaStreamTrackEvent? =
+pub extern "js" fn JsValue::as_media_stream_track_event(self : JsValue) -> MediaStreamTrackEvent? =
   #| (self) => (self instanceof MediaStreamTrackEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaStreamTrackEvent (unchecked)
-pub extern "js" fn JsValue::to_media_stream_track_event(
-  self : JsValue,
-) -> MediaStreamTrackEvent =
+pub extern "js" fn JsValue::to_media_stream_track_event(self : JsValue) -> MediaStreamTrackEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaStreamTrackEvent::to_event(
-  self : MediaStreamTrackEvent,
-) -> Event =
+pub extern "js" fn MediaStreamTrackEvent::to_event(self : MediaStreamTrackEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn MediaStreamTrackEvent::new_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> MediaStreamTrackEvent =
+extern "js" fn MediaStreamTrackEvent::new_ffi(type_ : String, event_init_dict : JsValue) -> MediaStreamTrackEvent =
   #| (type_, event_init_dict) => new MediaStreamTrackEvent(type_, event_init_dict)
 
-///|
-pub fn MediaStreamTrackEvent::new(
-  type_ : String,
-  event_init_dict : MediaStreamTrackEventInit,
-) -> MediaStreamTrackEvent {
+pub fn MediaStreamTrackEvent::new(type_ : String, event_init_dict : MediaStreamTrackEventInit) -> MediaStreamTrackEvent {
   MediaStreamTrackEvent::new_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn MediaStreamTrackEvent::get_track(
-  self : MediaStreamTrackEvent,
-) -> MediaStreamTrack =
+pub extern "js" fn MediaStreamTrackEvent::get_track(self : MediaStreamTrackEvent) -> MediaStreamTrack =
   #| (self) => self.track
 
 ///|
 /// OverconstrainedError interface
 pub type OverconstrainedError
 
-///|
-pub extern "js" fn OverconstrainedError::to_js_value(
-  self : OverconstrainedError,
-) -> JsValue =
+pub extern "js" fn OverconstrainedError::to_js_value(self : OverconstrainedError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to OverconstrainedError (unchecked)
-pub extern "js" fn OverconstrainedError::from_js_value(
-  v : JsValue,
-) -> OverconstrainedError =
+pub extern "js" fn OverconstrainedError::from_js_value(v : JsValue) -> OverconstrainedError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to OverconstrainedError (checked with instanceof)
-pub extern "js" fn OverconstrainedError::from_js_value_opt(
-  v : JsValue,
-) -> OverconstrainedError? =
+pub extern "js" fn OverconstrainedError::from_js_value_opt(v : JsValue) -> OverconstrainedError? =
   #| (v) => (v instanceof OverconstrainedError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to OverconstrainedError (checked with instanceof)
-pub extern "js" fn JsValue::as_overconstrained_error(
-  self : JsValue,
-) -> OverconstrainedError? =
+pub extern "js" fn JsValue::as_overconstrained_error(self : JsValue) -> OverconstrainedError? =
   #| (self) => (self instanceof OverconstrainedError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to OverconstrainedError (unchecked)
-pub extern "js" fn JsValue::to_overconstrained_error(
-  self : JsValue,
-) -> OverconstrainedError =
+pub extern "js" fn JsValue::to_overconstrained_error(self : JsValue) -> OverconstrainedError =
   #| (self) => self
 
-///|
-pub extern "js" fn OverconstrainedError::to_dom_exception(
-  self : OverconstrainedError,
-) -> DOMException =
+pub extern "js" fn OverconstrainedError::to_dom_exception(self : OverconstrainedError) -> DOMException =
   #| (self) => self
 
-///|
-pub extern "js" fn OverconstrainedError::new(
-  constraint : String,
-) -> OverconstrainedError =
+pub extern "js" fn OverconstrainedError::new(constraint : String) -> OverconstrainedError =
   #| (constraint) => new OverconstrainedError(constraint)
 
-///|
-pub extern "js" fn OverconstrainedError::new_with_message(
-  constraint : String,
-  message : String,
-) -> OverconstrainedError =
+pub extern "js" fn OverconstrainedError::new_with_message(constraint : String, message : String) -> OverconstrainedError =
   #| (constraint, message) => new OverconstrainedError(constraint, message)
 
-///|
-pub extern "js" fn OverconstrainedError::get_constraint(
-  self : OverconstrainedError,
-) -> String =
+pub extern "js" fn OverconstrainedError::get_constraint(self : OverconstrainedError) -> String =
   #| (self) => self.constraint
 
 ///|
 /// MediaDevices interface
 pub type MediaDevices
 
-///|
 pub extern "js" fn MediaDevices::to_js_value(self : MediaDevices) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaDevices (unchecked)
 pub extern "js" fn MediaDevices::from_js_value(v : JsValue) -> MediaDevices =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaDevices (checked with instanceof)
-pub extern "js" fn MediaDevices::from_js_value_opt(
-  v : JsValue,
-) -> MediaDevices? =
+pub extern "js" fn MediaDevices::from_js_value_opt(v : JsValue) -> MediaDevices? =
   #| (v) => (v instanceof MediaDevices) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaDevices (checked with instanceof)
 pub extern "js" fn JsValue::as_media_devices(self : JsValue) -> MediaDevices? =
   #| (self) => (self instanceof MediaDevices) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaDevices (unchecked)
 pub extern "js" fn JsValue::to_media_devices(self : JsValue) -> MediaDevices =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaDevices::to_event_target(
-  self : MediaDevices,
-) -> EventTarget =
+pub extern "js" fn MediaDevices::to_event_target(self : MediaDevices) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1696,6 +1151,8 @@ pub(all) enum MediaDevicesSelectAudioOutputError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend MediaDevicesSelectAudioOutputError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1711,6 +1168,8 @@ pub(all) enum MediaDevicesGetUserMediaError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend MediaDevicesGetUserMediaError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaDevicesGetDisplayMediaError {
@@ -1724,153 +1183,79 @@ pub(all) enum MediaDevicesGetDisplayMediaError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn MediaDevices::set_ondevicechange(
-  self : MediaDevices,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extend MediaDevicesGetDisplayMediaError with @debug.Debug::{to_repr}
+
+pub extern "js" fn MediaDevices::set_ondevicechange(self : MediaDevices, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.ondevicechange = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaDevices::clear_ondevicechange(
-  self : MediaDevices,
-) -> Unit =
+pub extern "js" fn MediaDevices::clear_ondevicechange(self : MediaDevices) -> Unit =
   #| (self) => { self.ondevicechange = null }
 
-///|
-pub extern "js" fn MediaDevices::enumerate_devices(
-  self : MediaDevices,
-) -> Promise[FixedArray[MediaDeviceInfo]] =
+pub extern "js" fn MediaDevices::enumerate_devices(self : MediaDevices) -> Promise[FixedArray[MediaDeviceInfo]] =
   #| (self) => self.enumerateDevices()
 
-///|
-pub extern "js" fn MediaDevices::select_audio_output(
-  self : MediaDevices,
-) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+pub extern "js" fn MediaDevices::select_audio_output(self : MediaDevices) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
   #| (self) => self.selectAudioOutput().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn MediaDevices::select_audio_output_with_options_ffi(
-  self : MediaDevices,
-  options : JsValue,
-) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
+extern "js" fn MediaDevices::select_audio_output_with_options_ffi(self : MediaDevices, options : JsValue) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] =
   #| (self, options) => self.selectAudioOutput(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn MediaDevices::select_audio_output_with_options(
-  self : MediaDevices,
-  options : AudioOutputOptions,
-) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] {
+pub fn MediaDevices::select_audio_output_with_options(self : MediaDevices, options : AudioOutputOptions) -> Promise[Result[MediaDeviceInfo, MediaDevicesSelectAudioOutputError]] {
   MediaDevices::select_audio_output_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn MediaDevices::set_capture_handle_config(
-  self : MediaDevices,
-) -> Unit =
+pub extern "js" fn MediaDevices::set_capture_handle_config(self : MediaDevices) -> Unit =
   #| (self) => self.setCaptureHandleConfig()
 
-///|
-extern "js" fn MediaDevices::set_capture_handle_config_with_config_ffi(
-  self : MediaDevices,
-  config : JsValue,
-) -> Unit =
+extern "js" fn MediaDevices::set_capture_handle_config_with_config_ffi(self : MediaDevices, config : JsValue) -> Unit =
   #| (self, config) => self.setCaptureHandleConfig(config)
 
-///|
-pub fn MediaDevices::set_capture_handle_config_with_config(
-  self : MediaDevices,
-  config : CaptureHandleConfig,
-) -> Unit {
+pub fn MediaDevices::set_capture_handle_config_with_config(self : MediaDevices, config : CaptureHandleConfig) -> Unit {
   MediaDevices::set_capture_handle_config_with_config_ffi(self, config.to_js())
 }
 
-///|
-pub extern "js" fn MediaDevices::set_supported_capture_actions(
-  self : MediaDevices,
-  actions : FixedArray[String],
-) -> Unit =
+pub extern "js" fn MediaDevices::get_default_semantics(self : MediaDevices) -> GetUserMediaSemantics =
+  #| (self) => ['browser-chooses', 'user-chooses'].indexOf(self.defaultSemantics)
+
+pub extern "js" fn MediaDevices::set_supported_capture_actions(self : MediaDevices, actions : FixedArray[String]) -> Unit =
   #| (self, actions) => self.setSupportedCaptureActions(actions)
 
-///|
-pub extern "js" fn MediaDevices::set_oncaptureaction(
-  self : MediaDevices,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaDevices::set_oncaptureaction(self : MediaDevices, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.oncaptureaction = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaDevices::clear_oncaptureaction(
-  self : MediaDevices,
-) -> Unit =
+pub extern "js" fn MediaDevices::clear_oncaptureaction(self : MediaDevices) -> Unit =
   #| (self) => { self.oncaptureaction = null }
 
-///|
-pub extern "js" fn MediaDevices::get_supported_constraints(
-  self : MediaDevices,
-) -> MediaTrackSupportedConstraints =
+pub extern "js" fn MediaDevices::get_supported_constraints(self : MediaDevices) -> MediaTrackSupportedConstraints =
   #| (self) => self.getSupportedConstraints()
 
-///|
-pub extern "js" fn MediaDevices::get_user_media(
-  self : MediaDevices,
-) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+pub extern "js" fn MediaDevices::get_user_media(self : MediaDevices) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
   #| (self) => self.getUserMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
-///|
-extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(
-  self : MediaDevices,
-  constraints : JsValue,
-) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
+extern "js" fn MediaDevices::get_user_media_with_constraints_ffi(self : MediaDevices, constraints : JsValue) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] =
   #| (self, constraints) => self.getUserMedia(constraints).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'SecurityError') return { $tag: 3, _0: e }; if (n === 'NotAllowedError') return { $tag: 4, _0: e }; if (n === 'NotReadableError') return { $tag: 5, _0: e }; if (n === 'InvalidStateError') return { $tag: 6, _0: e }; if (n === 'OverconstrainedError') return { $tag: 7, _0: e }; return { $tag: 8, _0: e }; })() }))
 
-///|
-pub fn MediaDevices::get_user_media_with_constraints(
-  self : MediaDevices,
-  constraints : MediaStreamConstraints,
-) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] {
+pub fn MediaDevices::get_user_media_with_constraints(self : MediaDevices, constraints : MediaStreamConstraints) -> Promise[Result[MediaStream, MediaDevicesGetUserMediaError]] {
   MediaDevices::get_user_media_with_constraints_ffi(self, constraints.to_js())
 }
 
-///|
-pub extern "js" fn MediaDevices::get_viewport_media(
-  self : MediaDevices,
-) -> Promise[MediaStream] =
+pub extern "js" fn MediaDevices::get_viewport_media(self : MediaDevices) -> Promise[MediaStream] =
   #| (self) => self.getViewportMedia()
 
-///|
-extern "js" fn MediaDevices::get_viewport_media_with_options_ffi(
-  self : MediaDevices,
-  options : JsValue,
-) -> Promise[MediaStream] =
+extern "js" fn MediaDevices::get_viewport_media_with_options_ffi(self : MediaDevices, options : JsValue) -> Promise[MediaStream] =
   #| (self, options) => self.getViewportMedia(options)
 
-///|
-pub fn MediaDevices::get_viewport_media_with_options(
-  self : MediaDevices,
-  options : DisplayMediaStreamOptions,
-) -> Promise[MediaStream] {
+pub fn MediaDevices::get_viewport_media_with_options(self : MediaDevices, options : DisplayMediaStreamOptions) -> Promise[MediaStream] {
   MediaDevices::get_viewport_media_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn MediaDevices::get_display_media(
-  self : MediaDevices,
-) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+pub extern "js" fn MediaDevices::get_display_media(self : MediaDevices) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
   #| (self) => self.getDisplayMedia().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
-///|
-extern "js" fn MediaDevices::get_display_media_with_options_ffi(
-  self : MediaDevices,
-  options : JsValue,
-) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
+extern "js" fn MediaDevices::get_display_media_with_options_ffi(self : MediaDevices, options : JsValue) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] =
   #| (self, options) => self.getDisplayMedia(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotFoundError') return { $tag: 2, _0: e }; if (n === 'NotAllowedError') return { $tag: 3, _0: e }; if (n === 'NotReadableError') return { $tag: 4, _0: e }; if (n === 'InvalidStateError') return { $tag: 5, _0: e }; if (n === 'OverconstrainedError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
-///|
-pub fn MediaDevices::get_display_media_with_options(
-  self : MediaDevices,
-  options : DisplayMediaStreamOptions,
-) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] {
+pub fn MediaDevices::get_display_media_with_options(self : MediaDevices, options : DisplayMediaStreamOptions) -> Promise[Result[MediaStream, MediaDevicesGetDisplayMediaError]] {
   MediaDevices::get_display_media_with_options_ffi(self, options.to_js())
 }
 
@@ -1878,69 +1263,40 @@ pub fn MediaDevices::get_display_media_with_options(
 /// MediaDeviceInfo interface
 pub type MediaDeviceInfo
 
-///|
-pub extern "js" fn MediaDeviceInfo::to_js_value(
-  self : MediaDeviceInfo,
-) -> JsValue =
+pub extern "js" fn MediaDeviceInfo::to_js_value(self : MediaDeviceInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaDeviceInfo (unchecked)
-pub extern "js" fn MediaDeviceInfo::from_js_value(
-  v : JsValue,
-) -> MediaDeviceInfo =
+pub extern "js" fn MediaDeviceInfo::from_js_value(v : JsValue) -> MediaDeviceInfo =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaDeviceInfo (checked with instanceof)
-pub extern "js" fn MediaDeviceInfo::from_js_value_opt(
-  v : JsValue,
-) -> MediaDeviceInfo? =
+pub extern "js" fn MediaDeviceInfo::from_js_value_opt(v : JsValue) -> MediaDeviceInfo? =
   #| (v) => (v instanceof MediaDeviceInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaDeviceInfo (checked with instanceof)
-pub extern "js" fn JsValue::as_media_device_info(
-  self : JsValue,
-) -> MediaDeviceInfo? =
+pub extern "js" fn JsValue::as_media_device_info(self : JsValue) -> MediaDeviceInfo? =
   #| (self) => (self instanceof MediaDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaDeviceInfo (unchecked)
-pub extern "js" fn JsValue::to_media_device_info(
-  self : JsValue,
-) -> MediaDeviceInfo =
+pub extern "js" fn JsValue::to_media_device_info(self : JsValue) -> MediaDeviceInfo =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaDeviceInfo::as_input_device_info(
-  self : MediaDeviceInfo,
-) -> InputDeviceInfo? =
+pub extern "js" fn MediaDeviceInfo::as_input_device_info(self : MediaDeviceInfo) -> InputDeviceInfo? =
   #| (self) => (self instanceof InputDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn MediaDeviceInfo::get_device_id(
-  self : MediaDeviceInfo,
-) -> String =
+pub extern "js" fn MediaDeviceInfo::get_device_id(self : MediaDeviceInfo) -> String =
   #| (self) => self.deviceId
 
-///|
-pub extern "js" fn MediaDeviceInfo::get_kind(
-  self : MediaDeviceInfo,
-) -> MediaDeviceKind =
+pub extern "js" fn MediaDeviceInfo::get_kind(self : MediaDeviceInfo) -> MediaDeviceKind =
   #| (self) => ['audioinput', 'audiooutput', 'videoinput'].indexOf(self.kind)
 
-///|
 pub extern "js" fn MediaDeviceInfo::get_label(self : MediaDeviceInfo) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn MediaDeviceInfo::get_group_id(
-  self : MediaDeviceInfo,
-) -> String =
+pub extern "js" fn MediaDeviceInfo::get_group_id(self : MediaDeviceInfo) -> String =
   #| (self) => self.groupId
 
-///|
 pub extern "js" fn MediaDeviceInfo::to_json(self : MediaDeviceInfo) -> JsValue =
   #| (self) => self.toJSON()
 
@@ -1948,126 +1304,69 @@ pub extern "js" fn MediaDeviceInfo::to_json(self : MediaDeviceInfo) -> JsValue =
 /// InputDeviceInfo interface
 pub type InputDeviceInfo
 
-///|
-pub extern "js" fn InputDeviceInfo::to_js_value(
-  self : InputDeviceInfo,
-) -> JsValue =
+pub extern "js" fn InputDeviceInfo::to_js_value(self : InputDeviceInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to InputDeviceInfo (unchecked)
-pub extern "js" fn InputDeviceInfo::from_js_value(
-  v : JsValue,
-) -> InputDeviceInfo =
+pub extern "js" fn InputDeviceInfo::from_js_value(v : JsValue) -> InputDeviceInfo =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to InputDeviceInfo (checked with instanceof)
-pub extern "js" fn InputDeviceInfo::from_js_value_opt(
-  v : JsValue,
-) -> InputDeviceInfo? =
+pub extern "js" fn InputDeviceInfo::from_js_value_opt(v : JsValue) -> InputDeviceInfo? =
   #| (v) => (v instanceof InputDeviceInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to InputDeviceInfo (checked with instanceof)
-pub extern "js" fn JsValue::as_input_device_info(
-  self : JsValue,
-) -> InputDeviceInfo? =
+pub extern "js" fn JsValue::as_input_device_info(self : JsValue) -> InputDeviceInfo? =
   #| (self) => (self instanceof InputDeviceInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to InputDeviceInfo (unchecked)
-pub extern "js" fn JsValue::to_input_device_info(
-  self : JsValue,
-) -> InputDeviceInfo =
+pub extern "js" fn JsValue::to_input_device_info(self : JsValue) -> InputDeviceInfo =
   #| (self) => self
 
-///|
-pub extern "js" fn InputDeviceInfo::to_media_device_info(
-  self : InputDeviceInfo,
-) -> MediaDeviceInfo =
+pub extern "js" fn InputDeviceInfo::to_media_device_info(self : InputDeviceInfo) -> MediaDeviceInfo =
   #| (self) => self
 
-///|
-pub extern "js" fn InputDeviceInfo::get_capabilities(
-  self : InputDeviceInfo,
-) -> MediaTrackCapabilities =
+pub extern "js" fn InputDeviceInfo::get_capabilities(self : InputDeviceInfo) -> MediaTrackCapabilities =
   #| (self) => self.getCapabilities()
 
 ///|
 /// DeviceChangeEvent interface
 pub type DeviceChangeEvent
 
-///|
-pub extern "js" fn DeviceChangeEvent::to_js_value(
-  self : DeviceChangeEvent,
-) -> JsValue =
+pub extern "js" fn DeviceChangeEvent::to_js_value(self : DeviceChangeEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DeviceChangeEvent (unchecked)
-pub extern "js" fn DeviceChangeEvent::from_js_value(
-  v : JsValue,
-) -> DeviceChangeEvent =
+pub extern "js" fn DeviceChangeEvent::from_js_value(v : JsValue) -> DeviceChangeEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DeviceChangeEvent (checked with instanceof)
-pub extern "js" fn DeviceChangeEvent::from_js_value_opt(
-  v : JsValue,
-) -> DeviceChangeEvent? =
+pub extern "js" fn DeviceChangeEvent::from_js_value_opt(v : JsValue) -> DeviceChangeEvent? =
   #| (v) => (v instanceof DeviceChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DeviceChangeEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_device_change_event(
-  self : JsValue,
-) -> DeviceChangeEvent? =
+pub extern "js" fn JsValue::as_device_change_event(self : JsValue) -> DeviceChangeEvent? =
   #| (self) => (self instanceof DeviceChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DeviceChangeEvent (unchecked)
-pub extern "js" fn JsValue::to_device_change_event(
-  self : JsValue,
-) -> DeviceChangeEvent =
+pub extern "js" fn JsValue::to_device_change_event(self : JsValue) -> DeviceChangeEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn DeviceChangeEvent::to_event(
-  self : DeviceChangeEvent,
-) -> Event =
+pub extern "js" fn DeviceChangeEvent::to_event(self : DeviceChangeEvent) -> Event =
   #| (self) => self
 
-///|
 pub extern "js" fn DeviceChangeEvent::new(type_ : String) -> DeviceChangeEvent =
   #| (type_) => new DeviceChangeEvent(type_)
 
-///|
-extern "js" fn DeviceChangeEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> DeviceChangeEvent =
+extern "js" fn DeviceChangeEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> DeviceChangeEvent =
   #| (type_, event_init_dict) => new DeviceChangeEvent(type_, event_init_dict)
 
-///|
-pub fn DeviceChangeEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : DeviceChangeEventInit,
-) -> DeviceChangeEvent {
-  DeviceChangeEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn DeviceChangeEvent::new_with_event_init_dict(type_ : String, event_init_dict : DeviceChangeEventInit) -> DeviceChangeEvent {
+  DeviceChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn DeviceChangeEvent::get_devices(
-  self : DeviceChangeEvent,
-) -> FixedArray[MediaDeviceInfo] =
+pub extern "js" fn DeviceChangeEvent::get_devices(self : DeviceChangeEvent) -> FixedArray[MediaDeviceInfo] =
   #| (self) => self.devices
 
-///|
-pub extern "js" fn DeviceChangeEvent::get_user_inserted_devices(
-  self : DeviceChangeEvent,
-) -> FixedArray[MediaDeviceInfo] =
+pub extern "js" fn DeviceChangeEvent::get_user_inserted_devices(self : DeviceChangeEvent) -> FixedArray[MediaDeviceInfo] =
   #| (self) => self.userInsertedDevices

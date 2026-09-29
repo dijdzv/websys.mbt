@@ -19,7 +19,7 @@ pub fn start_cancel(
       }
       task.cancel()
       let result = task.wait() catch {
-        @async.TaskCancelled => {
+        @async.WaitedTaskAlreadyCancelled => {
           notify(callback, 3, controller)
           return
         }

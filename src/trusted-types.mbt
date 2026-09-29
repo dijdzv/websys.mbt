@@ -5,70 +5,45 @@
 /// TrustedType typedef
 pub type TrustedType
 
-///|
 pub extern "js" fn TrustedType::to_js_value(self : TrustedType) -> JsValue =
   #| (self) => self
 
-///|
 /// Create TrustedType from TrustedHTML
-pub extern "js" fn TrustedType::from_trusted_html(
-  v : TrustedHTML,
-) -> TrustedType =
+pub extern "js" fn TrustedType::from_trusted_html(v : TrustedHTML) -> TrustedType =
   #| (v) => v
 
-///|
 /// Create TrustedType from TrustedScript
-pub extern "js" fn TrustedType::from_trusted_script(
-  v : TrustedScript,
-) -> TrustedType =
+pub extern "js" fn TrustedType::from_trusted_script(v : TrustedScript) -> TrustedType =
   #| (v) => v
 
-///|
 /// Create TrustedType from TrustedScriptURL
-pub extern "js" fn TrustedType::from_trusted_script_url(
-  v : TrustedScriptURL,
-) -> TrustedType =
+pub extern "js" fn TrustedType::from_trusted_script_url(v : TrustedScriptURL) -> TrustedType =
   #| (v) => v
 
-///|
 /// Check if this TrustedType is TrustedHTML
 pub extern "js" fn TrustedType::is_trusted_html(self : TrustedType) -> Bool =
   #| (self) => self instanceof TrustedHTML
 
-///|
 /// Check if this TrustedType is TrustedScript
 pub extern "js" fn TrustedType::is_trusted_script(self : TrustedType) -> Bool =
   #| (self) => self instanceof TrustedScript
 
-///|
 /// Check if this TrustedType is TrustedScriptURL
-pub extern "js" fn TrustedType::is_trusted_script_url(
-  self : TrustedType,
-) -> Bool =
+pub extern "js" fn TrustedType::is_trusted_script_url(self : TrustedType) -> Bool =
   #| (self) => self instanceof TrustedScriptURL
 
-///|
 /// Try to get TrustedType as TrustedHTML
-pub extern "js" fn TrustedType::as_trusted_html(
-  self : TrustedType,
-) -> TrustedHTML? =
+pub extern "js" fn TrustedType::as_trusted_html(self : TrustedType) -> TrustedHTML? =
   #| (self) => (self instanceof TrustedHTML) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get TrustedType as TrustedScript
-pub extern "js" fn TrustedType::as_trusted_script(
-  self : TrustedType,
-) -> TrustedScript? =
+pub extern "js" fn TrustedType::as_trusted_script(self : TrustedType) -> TrustedScript? =
   #| (self) => (self instanceof TrustedScript) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get TrustedType as TrustedScriptURL
-pub extern "js" fn TrustedType::as_trusted_script_url(
-  self : TrustedType,
-) -> TrustedScriptURL? =
+pub extern "js" fn TrustedType::as_trusted_script_url(self : TrustedType) -> TrustedScriptURL? =
   #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Flatten Option[TrustedType] to TrustedHTML?
 pub fn TrustedType::bind_as_trusted_html(value : TrustedType?) -> TrustedHTML? {
   match value {
@@ -77,59 +52,41 @@ pub fn TrustedType::bind_as_trusted_html(value : TrustedType?) -> TrustedHTML? {
   }
 }
 
-///|
 /// Flatten Option[TrustedType] to TrustedScript?
-pub fn TrustedType::bind_as_trusted_script(
-  value : TrustedType?,
-) -> TrustedScript? {
+pub fn TrustedType::bind_as_trusted_script(value : TrustedType?) -> TrustedScript? {
   match value {
     Some(v) => v.as_trusted_script()
     None => None
   }
 }
 
-///|
 /// Flatten Option[TrustedType] to TrustedScriptURL?
-pub fn TrustedType::bind_as_trusted_script_url(
-  value : TrustedType?,
-) -> TrustedScriptURL? {
+pub fn TrustedType::bind_as_trusted_script_url(value : TrustedType?) -> TrustedScriptURL? {
   match value {
     Some(v) => v.as_trusted_script_url()
     None => None
   }
 }
 
-///|
 /// CreateHTMLCallback callback interface
 pub type CreateHTMLCallback
 
-///|
 /// Create CreateHTMLCallback from a MoonBit function
-pub extern "js" fn CreateHTMLCallback::from_fn(
-  handler : (String, JsValue) -> String?,
-) -> CreateHTMLCallback =
+pub extern "js" fn CreateHTMLCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateHTMLCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
-///|
 /// CreateScriptCallback callback interface
 pub type CreateScriptCallback
 
-///|
 /// Create CreateScriptCallback from a MoonBit function
-pub extern "js" fn CreateScriptCallback::from_fn(
-  handler : (String, JsValue) -> String?,
-) -> CreateScriptCallback =
+pub extern "js" fn CreateScriptCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateScriptCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
-///|
 /// CreateScriptURLCallback callback interface
 pub type CreateScriptURLCallback
 
-///|
 /// Create CreateScriptURLCallback from a MoonBit function
-pub extern "js" fn CreateScriptURLCallback::from_fn(
-  handler : (String, JsValue) -> String?,
-) -> CreateScriptURLCallback =
+pub extern "js" fn CreateScriptURLCallback::from_fn(handler : (String, JsValue) -> String?) -> CreateScriptURLCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
@@ -140,7 +97,6 @@ pub(all) struct TrustedTypePolicyOptions {
   createScriptURL : CreateScriptURLCallback?
 }
 
-///|
 /// Create a new TrustedTypePolicyOptions with default values
 pub fn TrustedTypePolicyOptions::default() -> TrustedTypePolicyOptions {
   TrustedTypePolicyOptions::{
@@ -150,39 +106,27 @@ pub fn TrustedTypePolicyOptions::default() -> TrustedTypePolicyOptions {
   }
 }
 
-///|
-extern "js" fn TrustedTypePolicyOptions::to_js_ffi(
-  self : TrustedTypePolicyOptions,
-) -> JsValue =
+extern "js" fn TrustedTypePolicyOptions::to_js_ffi(self : TrustedTypePolicyOptions) -> JsValue =
   #| (self) => ({
   #|   createHTML: ((() => { const v = self.createHTML; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   createScript: ((() => { const v = self.createScript; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   createScriptURL: ((() => { const v = self.createScriptURL; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn TrustedTypePolicyOptions::to_js(
-  self : TrustedTypePolicyOptions,
-) -> JsValue {
+pub fn TrustedTypePolicyOptions::to_js(self : TrustedTypePolicyOptions) -> JsValue {
   TrustedTypePolicyOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TrustedTypePolicyOptions::from_js_ffi(
-  value : JsValue,
-) -> TrustedTypePolicyOptions =
+extern "js" fn TrustedTypePolicyOptions::from_js_ffi(value : JsValue) -> TrustedTypePolicyOptions =
   #| (v) => ({
   #|   createHTML: (v.createHTML === undefined ? { $tag: 0 } : { $tag: 1, _0: v.createHTML }),
   #|   createScript: (v.createScript === undefined ? { $tag: 0 } : { $tag: 1, _0: v.createScript }),
   #|   createScriptURL: (v.createScriptURL === undefined ? { $tag: 0 } : { $tag: 1, _0: v.createScriptURL })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn TrustedTypePolicyOptions::from_js(
-  value : JsValue,
-) -> TrustedTypePolicyOptions {
+pub fn TrustedTypePolicyOptions::from_js(value : JsValue) -> TrustedTypePolicyOptions {
   TrustedTypePolicyOptions::from_js_ffi(value)
 }
 
@@ -190,31 +134,25 @@ pub fn TrustedTypePolicyOptions::from_js(
 /// TrustedHTML interface
 pub type TrustedHTML
 
-///|
 pub extern "js" fn TrustedHTML::to_js_value(self : TrustedHTML) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TrustedHTML (unchecked)
 pub extern "js" fn TrustedHTML::from_js_value(v : JsValue) -> TrustedHTML =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TrustedHTML (checked with instanceof)
 pub extern "js" fn TrustedHTML::from_js_value_opt(v : JsValue) -> TrustedHTML? =
   #| (v) => (v instanceof TrustedHTML) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TrustedHTML (checked with instanceof)
 pub extern "js" fn JsValue::as_trusted_html(self : JsValue) -> TrustedHTML? =
   #| (self) => (self instanceof TrustedHTML) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TrustedHTML (unchecked)
 pub extern "js" fn JsValue::to_trusted_html(self : JsValue) -> TrustedHTML =
   #| (self) => self
 
-///|
 pub extern "js" fn TrustedHTML::to_json(self : TrustedHTML) -> String =
   #| (self) => self.toJSON()
 
@@ -222,33 +160,25 @@ pub extern "js" fn TrustedHTML::to_json(self : TrustedHTML) -> String =
 /// TrustedScript interface
 pub type TrustedScript
 
-///|
 pub extern "js" fn TrustedScript::to_js_value(self : TrustedScript) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TrustedScript (unchecked)
 pub extern "js" fn TrustedScript::from_js_value(v : JsValue) -> TrustedScript =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TrustedScript (checked with instanceof)
-pub extern "js" fn TrustedScript::from_js_value_opt(
-  v : JsValue,
-) -> TrustedScript? =
+pub extern "js" fn TrustedScript::from_js_value_opt(v : JsValue) -> TrustedScript? =
   #| (v) => (v instanceof TrustedScript) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TrustedScript (checked with instanceof)
 pub extern "js" fn JsValue::as_trusted_script(self : JsValue) -> TrustedScript? =
   #| (self) => (self instanceof TrustedScript) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TrustedScript (unchecked)
 pub extern "js" fn JsValue::to_trusted_script(self : JsValue) -> TrustedScript =
   #| (self) => self
 
-///|
 pub extern "js" fn TrustedScript::to_json(self : TrustedScript) -> String =
   #| (self) => self.toJSON()
 
@@ -256,41 +186,25 @@ pub extern "js" fn TrustedScript::to_json(self : TrustedScript) -> String =
 /// TrustedScriptURL interface
 pub type TrustedScriptURL
 
-///|
-pub extern "js" fn TrustedScriptURL::to_js_value(
-  self : TrustedScriptURL,
-) -> JsValue =
+pub extern "js" fn TrustedScriptURL::to_js_value(self : TrustedScriptURL) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TrustedScriptURL (unchecked)
-pub extern "js" fn TrustedScriptURL::from_js_value(
-  v : JsValue,
-) -> TrustedScriptURL =
+pub extern "js" fn TrustedScriptURL::from_js_value(v : JsValue) -> TrustedScriptURL =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TrustedScriptURL (checked with instanceof)
-pub extern "js" fn TrustedScriptURL::from_js_value_opt(
-  v : JsValue,
-) -> TrustedScriptURL? =
+pub extern "js" fn TrustedScriptURL::from_js_value_opt(v : JsValue) -> TrustedScriptURL? =
   #| (v) => (v instanceof TrustedScriptURL) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TrustedScriptURL (checked with instanceof)
-pub extern "js" fn JsValue::as_trusted_script_url(
-  self : JsValue,
-) -> TrustedScriptURL? =
+pub extern "js" fn JsValue::as_trusted_script_url(self : JsValue) -> TrustedScriptURL? =
   #| (self) => (self instanceof TrustedScriptURL) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TrustedScriptURL (unchecked)
-pub extern "js" fn JsValue::to_trusted_script_url(
-  self : JsValue,
-) -> TrustedScriptURL =
+pub extern "js" fn JsValue::to_trusted_script_url(self : JsValue) -> TrustedScriptURL =
   #| (self) => self
 
-///|
 pub extern "js" fn TrustedScriptURL::to_json(self : TrustedScriptURL) -> String =
   #| (self) => self.toJSON()
 
@@ -298,38 +212,23 @@ pub extern "js" fn TrustedScriptURL::to_json(self : TrustedScriptURL) -> String 
 /// TrustedTypePolicyFactory interface
 pub type TrustedTypePolicyFactory
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::to_js_value(
-  self : TrustedTypePolicyFactory,
-) -> JsValue =
+pub extern "js" fn TrustedTypePolicyFactory::to_js_value(self : TrustedTypePolicyFactory) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TrustedTypePolicyFactory (unchecked)
-pub extern "js" fn TrustedTypePolicyFactory::from_js_value(
-  v : JsValue,
-) -> TrustedTypePolicyFactory =
+pub extern "js" fn TrustedTypePolicyFactory::from_js_value(v : JsValue) -> TrustedTypePolicyFactory =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TrustedTypePolicyFactory (checked with instanceof)
-pub extern "js" fn TrustedTypePolicyFactory::from_js_value_opt(
-  v : JsValue,
-) -> TrustedTypePolicyFactory? =
+pub extern "js" fn TrustedTypePolicyFactory::from_js_value_opt(v : JsValue) -> TrustedTypePolicyFactory? =
   #| (v) => (v instanceof TrustedTypePolicyFactory) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TrustedTypePolicyFactory (checked with instanceof)
-pub extern "js" fn JsValue::as_trusted_type_policy_factory(
-  self : JsValue,
-) -> TrustedTypePolicyFactory? =
+pub extern "js" fn JsValue::as_trusted_type_policy_factory(self : JsValue) -> TrustedTypePolicyFactory? =
   #| (self) => (self instanceof TrustedTypePolicyFactory) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TrustedTypePolicyFactory (unchecked)
-pub extern "js" fn JsValue::to_trusted_type_policy_factory(
-  self : JsValue,
-) -> TrustedTypePolicyFactory =
+pub extern "js" fn JsValue::to_trusted_type_policy_factory(self : JsValue) -> TrustedTypePolicyFactory =
   #| (self) => self
 
 ///|
@@ -339,144 +238,69 @@ pub(all) enum TrustedTypePolicyFactoryCreatePolicyError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::create_policy(
-  self : TrustedTypePolicyFactory,
-  policy_name : String,
-) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
+pub extend TrustedTypePolicyFactoryCreatePolicyError with @debug.Debug::{to_repr}
+
+pub extern "js" fn TrustedTypePolicyFactory::create_policy(self : TrustedTypePolicyFactory, policy_name : String) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
   #| (self, policy_name) => (() => { try { return { $tag: 1, _0: self.createPolicy(policy_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
-  self : TrustedTypePolicyFactory,
-  policy_name : String,
-  policy_options : JsValue,
-) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
+extern "js" fn TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(self : TrustedTypePolicyFactory, policy_name : String, policy_options : JsValue) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] =
   #| (self, policy_name, policy_options) => (() => { try { return { $tag: 1, _0: self.createPolicy(policy_name, policy_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TrustedTypePolicyFactory::create_policy_with_policy_options(
-  self : TrustedTypePolicyFactory,
-  policy_name : String,
-  policy_options : TrustedTypePolicyOptions,
-) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] {
-  TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(
-    self,
-    policy_name,
-    policy_options.to_js(),
-  )
+pub fn TrustedTypePolicyFactory::create_policy_with_policy_options(self : TrustedTypePolicyFactory, policy_name : String, policy_options : TrustedTypePolicyOptions) -> Result[TrustedTypePolicy, TrustedTypePolicyFactoryCreatePolicyError] {
+  TrustedTypePolicyFactory::create_policy_with_policy_options_ffi(self, policy_name, policy_options.to_js())
 }
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::is_html(
-  self : TrustedTypePolicyFactory,
-  value : JsValue,
-) -> Bool =
+pub extern "js" fn TrustedTypePolicyFactory::is_html(self : TrustedTypePolicyFactory, value : JsValue) -> Bool =
   #| (self, value) => self.isHTML(value)
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::is_script(
-  self : TrustedTypePolicyFactory,
-  value : JsValue,
-) -> Bool =
+pub extern "js" fn TrustedTypePolicyFactory::is_script(self : TrustedTypePolicyFactory, value : JsValue) -> Bool =
   #| (self, value) => self.isScript(value)
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::is_script_url(
-  self : TrustedTypePolicyFactory,
-  value : JsValue,
-) -> Bool =
+pub extern "js" fn TrustedTypePolicyFactory::is_script_url(self : TrustedTypePolicyFactory, value : JsValue) -> Bool =
   #| (self, value) => self.isScriptURL(value)
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_empty_html(
-  self : TrustedTypePolicyFactory,
-) -> TrustedHTML =
+pub extern "js" fn TrustedTypePolicyFactory::get_empty_html(self : TrustedTypePolicyFactory) -> TrustedHTML =
   #| (self) => self.emptyHTML
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_empty_script(
-  self : TrustedTypePolicyFactory,
-) -> TrustedScript =
+pub extern "js" fn TrustedTypePolicyFactory::get_empty_script(self : TrustedTypePolicyFactory) -> TrustedScript =
   #| (self) => self.emptyScript
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type(
-  self : TrustedTypePolicyFactory,
-  tag_name : String,
-  attribute : String,
-) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type(self : TrustedTypePolicyFactory, tag_name : String, attribute : String) -> String? =
   #| (self, tag_name, attribute) => (self.getAttributeType(tag_name, attribute)) ?? undefined
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type_with_attr_ns(
-  self : TrustedTypePolicyFactory,
-  tag_name : String,
-  attribute : String,
-  element_ns : String?,
-  attr_ns : String?,
-) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_attribute_type_with_attr_ns(self : TrustedTypePolicyFactory, tag_name : String, attribute : String, element_ns : String?, attr_ns : String?) -> String? =
   #| (self, tag_name, attribute, element_ns, attr_ns) => (self.getAttributeType(tag_name, attribute, element_ns, attr_ns)) ?? undefined
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_property_type(
-  self : TrustedTypePolicyFactory,
-  tag_name : String,
-  property : String,
-) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_property_type(self : TrustedTypePolicyFactory, tag_name : String, property : String) -> String? =
   #| (self, tag_name, property) => (self.getPropertyType(tag_name, property)) ?? undefined
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_property_type_with_element_ns(
-  self : TrustedTypePolicyFactory,
-  tag_name : String,
-  property : String,
-  element_ns : String?,
-) -> String? =
+pub extern "js" fn TrustedTypePolicyFactory::get_property_type_with_element_ns(self : TrustedTypePolicyFactory, tag_name : String, property : String, element_ns : String?) -> String? =
   #| (self, tag_name, property, element_ns) => (self.getPropertyType(tag_name, property, element_ns)) ?? undefined
 
-///|
-pub extern "js" fn TrustedTypePolicyFactory::get_default_policy(
-  self : TrustedTypePolicyFactory,
-) -> TrustedTypePolicy? =
+pub extern "js" fn TrustedTypePolicyFactory::get_default_policy(self : TrustedTypePolicyFactory) -> TrustedTypePolicy? =
   #| (self) => (() => { const v = self.defaultPolicy; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// TrustedTypePolicy interface
 pub type TrustedTypePolicy
 
-///|
-pub extern "js" fn TrustedTypePolicy::to_js_value(
-  self : TrustedTypePolicy,
-) -> JsValue =
+pub extern "js" fn TrustedTypePolicy::to_js_value(self : TrustedTypePolicy) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TrustedTypePolicy (unchecked)
-pub extern "js" fn TrustedTypePolicy::from_js_value(
-  v : JsValue,
-) -> TrustedTypePolicy =
+pub extern "js" fn TrustedTypePolicy::from_js_value(v : JsValue) -> TrustedTypePolicy =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TrustedTypePolicy (checked with instanceof)
-pub extern "js" fn TrustedTypePolicy::from_js_value_opt(
-  v : JsValue,
-) -> TrustedTypePolicy? =
+pub extern "js" fn TrustedTypePolicy::from_js_value_opt(v : JsValue) -> TrustedTypePolicy? =
   #| (v) => (v instanceof TrustedTypePolicy) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TrustedTypePolicy (checked with instanceof)
-pub extern "js" fn JsValue::as_trusted_type_policy(
-  self : JsValue,
-) -> TrustedTypePolicy? =
+pub extern "js" fn JsValue::as_trusted_type_policy(self : JsValue) -> TrustedTypePolicy? =
   #| (self) => (self instanceof TrustedTypePolicy) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TrustedTypePolicy (unchecked)
-pub extern "js" fn JsValue::to_trusted_type_policy(
-  self : JsValue,
-) -> TrustedTypePolicy =
+pub extern "js" fn JsValue::to_trusted_type_policy(self : JsValue) -> TrustedTypePolicy =
   #| (self) => self
 
 ///|
@@ -486,12 +310,16 @@ pub(all) enum TrustedTypePolicyCreateHTMLError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend TrustedTypePolicyCreateHTMLError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum TrustedTypePolicyCreateScriptError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend TrustedTypePolicyCreateScriptError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -500,32 +328,16 @@ pub(all) enum TrustedTypePolicyCreateScriptURLError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn TrustedTypePolicy::get_name(
-  self : TrustedTypePolicy,
-) -> String =
+pub extend TrustedTypePolicyCreateScriptURLError with @debug.Debug::{to_repr}
+
+pub extern "js" fn TrustedTypePolicy::get_name(self : TrustedTypePolicy) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn TrustedTypePolicy::create_html(
-  self : TrustedTypePolicy,
-  input : String,
-  arguments_ : JsValue,
-) -> Result[TrustedHTML, TrustedTypePolicyCreateHTMLError] =
+pub extern "js" fn TrustedTypePolicy::create_html(self : TrustedTypePolicy, input : String, arguments_ : JsValue) -> Result[TrustedHTML, TrustedTypePolicyCreateHTMLError] =
   #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createHTML(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn TrustedTypePolicy::create_script(
-  self : TrustedTypePolicy,
-  input : String,
-  arguments_ : JsValue,
-) -> Result[TrustedScript, TrustedTypePolicyCreateScriptError] =
+pub extern "js" fn TrustedTypePolicy::create_script(self : TrustedTypePolicy, input : String, arguments_ : JsValue) -> Result[TrustedScript, TrustedTypePolicyCreateScriptError] =
   #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createScript(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn TrustedTypePolicy::create_script_url(
-  self : TrustedTypePolicy,
-  input : String,
-  arguments_ : JsValue,
-) -> Result[TrustedScriptURL, TrustedTypePolicyCreateScriptURLError] =
+pub extern "js" fn TrustedTypePolicy::create_script_url(self : TrustedTypePolicy, input : String, arguments_ : JsValue) -> Result[TrustedScriptURL, TrustedTypePolicyCreateScriptURLError] =
   #| (self, input, arguments_) => (() => { try { return { $tag: 1, _0: self.createScriptURL(input, arguments_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()

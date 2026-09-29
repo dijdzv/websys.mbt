@@ -8,43 +8,33 @@ pub(all) struct TranslatorCreateCoreOptions {
   targetLanguage : String
 }
 
-///|
 /// Create a new TranslatorCreateCoreOptions with default values
 pub fn TranslatorCreateCoreOptions::default() -> TranslatorCreateCoreOptions {
-  TranslatorCreateCoreOptions::{ sourceLanguage: "", targetLanguage: "", }
+  TranslatorCreateCoreOptions::{
+    sourceLanguage: "",
+    targetLanguage: "",
+  }
 }
 
-///|
-extern "js" fn TranslatorCreateCoreOptions::to_js_ffi(
-  self : TranslatorCreateCoreOptions,
-) -> JsValue =
+extern "js" fn TranslatorCreateCoreOptions::to_js_ffi(self : TranslatorCreateCoreOptions) -> JsValue =
   #| (self) => ({
   #|   sourceLanguage: self.sourceLanguage,
   #|   targetLanguage: self.targetLanguage
   #| })
 
-///|
 /// Convert to JsValue
-pub fn TranslatorCreateCoreOptions::to_js(
-  self : TranslatorCreateCoreOptions,
-) -> JsValue {
+pub fn TranslatorCreateCoreOptions::to_js(self : TranslatorCreateCoreOptions) -> JsValue {
   TranslatorCreateCoreOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TranslatorCreateCoreOptions::from_js_ffi(
-  value : JsValue,
-) -> TranslatorCreateCoreOptions =
+extern "js" fn TranslatorCreateCoreOptions::from_js_ffi(value : JsValue) -> TranslatorCreateCoreOptions =
   #| (v) => ({
   #|   sourceLanguage: v.sourceLanguage,
   #|   targetLanguage: v.targetLanguage
   #| })
 
-///|
 /// Convert from JsValue
-pub fn TranslatorCreateCoreOptions::from_js(
-  value : JsValue,
-) -> TranslatorCreateCoreOptions {
+pub fn TranslatorCreateCoreOptions::from_js(value : JsValue) -> TranslatorCreateCoreOptions {
   TranslatorCreateCoreOptions::from_js_ffi(value)
 }
 
@@ -57,7 +47,6 @@ pub(all) struct TranslatorCreateOptions {
   monitor : CreateMonitorCallback?
 }
 
-///|
 /// Create a new TranslatorCreateOptions with default values
 pub fn TranslatorCreateOptions::default() -> TranslatorCreateOptions {
   TranslatorCreateOptions::{
@@ -68,10 +57,7 @@ pub fn TranslatorCreateOptions::default() -> TranslatorCreateOptions {
   }
 }
 
-///|
-extern "js" fn TranslatorCreateOptions::to_js_ffi(
-  self : TranslatorCreateOptions,
-) -> JsValue =
+extern "js" fn TranslatorCreateOptions::to_js_ffi(self : TranslatorCreateOptions) -> JsValue =
   #| (self) => ({
   #|   sourceLanguage: self.sourceLanguage,
   #|   targetLanguage: self.targetLanguage,
@@ -79,18 +65,12 @@ extern "js" fn TranslatorCreateOptions::to_js_ffi(
   #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn TranslatorCreateOptions::to_js(
-  self : TranslatorCreateOptions,
-) -> JsValue {
+pub fn TranslatorCreateOptions::to_js(self : TranslatorCreateOptions) -> JsValue {
   TranslatorCreateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TranslatorCreateOptions::from_js_ffi(
-  value : JsValue,
-) -> TranslatorCreateOptions =
+extern "js" fn TranslatorCreateOptions::from_js_ffi(value : JsValue) -> TranslatorCreateOptions =
   #| (v) => ({
   #|   sourceLanguage: v.sourceLanguage,
   #|   targetLanguage: v.targetLanguage,
@@ -98,11 +78,8 @@ extern "js" fn TranslatorCreateOptions::from_js_ffi(
   #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn TranslatorCreateOptions::from_js(
-  value : JsValue,
-) -> TranslatorCreateOptions {
+pub fn TranslatorCreateOptions::from_js(value : JsValue) -> TranslatorCreateOptions {
   TranslatorCreateOptions::from_js_ffi(value)
 }
 
@@ -112,41 +89,30 @@ pub(all) struct TranslatorTranslateOptions {
   signal : AbortSignal?
 }
 
-///|
 /// Create a new TranslatorTranslateOptions with default values
 pub fn TranslatorTranslateOptions::default() -> TranslatorTranslateOptions {
-  TranslatorTranslateOptions::{ signal: None, }
+  TranslatorTranslateOptions::{
+    signal: None,
+  }
 }
 
-///|
-extern "js" fn TranslatorTranslateOptions::to_js_ffi(
-  self : TranslatorTranslateOptions,
-) -> JsValue =
+extern "js" fn TranslatorTranslateOptions::to_js_ffi(self : TranslatorTranslateOptions) -> JsValue =
   #| (self) => ({
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn TranslatorTranslateOptions::to_js(
-  self : TranslatorTranslateOptions,
-) -> JsValue {
+pub fn TranslatorTranslateOptions::to_js(self : TranslatorTranslateOptions) -> JsValue {
   TranslatorTranslateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TranslatorTranslateOptions::from_js_ffi(
-  value : JsValue,
-) -> TranslatorTranslateOptions =
+extern "js" fn TranslatorTranslateOptions::from_js_ffi(value : JsValue) -> TranslatorTranslateOptions =
   #| (v) => ({
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn TranslatorTranslateOptions::from_js(
-  value : JsValue,
-) -> TranslatorTranslateOptions {
+pub fn TranslatorTranslateOptions::from_js(value : JsValue) -> TranslatorTranslateOptions {
   TranslatorTranslateOptions::from_js_ffi(value)
 }
 
@@ -156,41 +122,30 @@ pub(all) struct LanguageDetectorCreateCoreOptions {
   expectedInputLanguages : FixedArray[String]?
 }
 
-///|
 /// Create a new LanguageDetectorCreateCoreOptions with default values
 pub fn LanguageDetectorCreateCoreOptions::default() -> LanguageDetectorCreateCoreOptions {
-  LanguageDetectorCreateCoreOptions::{ expectedInputLanguages: None, }
+  LanguageDetectorCreateCoreOptions::{
+    expectedInputLanguages: None,
+  }
 }
 
-///|
-extern "js" fn LanguageDetectorCreateCoreOptions::to_js_ffi(
-  self : LanguageDetectorCreateCoreOptions,
-) -> JsValue =
+extern "js" fn LanguageDetectorCreateCoreOptions::to_js_ffi(self : LanguageDetectorCreateCoreOptions) -> JsValue =
   #| (self) => ({
   #|   expectedInputLanguages: self.expectedInputLanguages
   #| })
 
-///|
 /// Convert to JsValue
-pub fn LanguageDetectorCreateCoreOptions::to_js(
-  self : LanguageDetectorCreateCoreOptions,
-) -> JsValue {
+pub fn LanguageDetectorCreateCoreOptions::to_js(self : LanguageDetectorCreateCoreOptions) -> JsValue {
   LanguageDetectorCreateCoreOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn LanguageDetectorCreateCoreOptions::from_js_ffi(
-  value : JsValue,
-) -> LanguageDetectorCreateCoreOptions =
+extern "js" fn LanguageDetectorCreateCoreOptions::from_js_ffi(value : JsValue) -> LanguageDetectorCreateCoreOptions =
   #| (v) => ({
   #|   expectedInputLanguages: v.expectedInputLanguages
   #| })
 
-///|
 /// Convert from JsValue
-pub fn LanguageDetectorCreateCoreOptions::from_js(
-  value : JsValue,
-) -> LanguageDetectorCreateCoreOptions {
+pub fn LanguageDetectorCreateCoreOptions::from_js(value : JsValue) -> LanguageDetectorCreateCoreOptions {
   LanguageDetectorCreateCoreOptions::from_js_ffi(value)
 }
 
@@ -202,7 +157,6 @@ pub(all) struct LanguageDetectorCreateOptions {
   monitor : CreateMonitorCallback?
 }
 
-///|
 /// Create a new LanguageDetectorCreateOptions with default values
 pub fn LanguageDetectorCreateOptions::default() -> LanguageDetectorCreateOptions {
   LanguageDetectorCreateOptions::{
@@ -212,39 +166,27 @@ pub fn LanguageDetectorCreateOptions::default() -> LanguageDetectorCreateOptions
   }
 }
 
-///|
-extern "js" fn LanguageDetectorCreateOptions::to_js_ffi(
-  self : LanguageDetectorCreateOptions,
-) -> JsValue =
+extern "js" fn LanguageDetectorCreateOptions::to_js_ffi(self : LanguageDetectorCreateOptions) -> JsValue =
   #| (self) => ({
   #|   expectedInputLanguages: self.expectedInputLanguages,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   monitor: ((() => { const v = self.monitor; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn LanguageDetectorCreateOptions::to_js(
-  self : LanguageDetectorCreateOptions,
-) -> JsValue {
+pub fn LanguageDetectorCreateOptions::to_js(self : LanguageDetectorCreateOptions) -> JsValue {
   LanguageDetectorCreateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn LanguageDetectorCreateOptions::from_js_ffi(
-  value : JsValue,
-) -> LanguageDetectorCreateOptions =
+extern "js" fn LanguageDetectorCreateOptions::from_js_ffi(value : JsValue) -> LanguageDetectorCreateOptions =
   #| (v) => ({
   #|   expectedInputLanguages: v.expectedInputLanguages,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   monitor: (v.monitor === undefined ? { $tag: 0 } : { $tag: 1, _0: v.monitor })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn LanguageDetectorCreateOptions::from_js(
-  value : JsValue,
-) -> LanguageDetectorCreateOptions {
+pub fn LanguageDetectorCreateOptions::from_js(value : JsValue) -> LanguageDetectorCreateOptions {
   LanguageDetectorCreateOptions::from_js_ffi(value)
 }
 
@@ -254,41 +196,30 @@ pub(all) struct LanguageDetectorDetectOptions {
   signal : AbortSignal?
 }
 
-///|
 /// Create a new LanguageDetectorDetectOptions with default values
 pub fn LanguageDetectorDetectOptions::default() -> LanguageDetectorDetectOptions {
-  LanguageDetectorDetectOptions::{ signal: None, }
+  LanguageDetectorDetectOptions::{
+    signal: None,
+  }
 }
 
-///|
-extern "js" fn LanguageDetectorDetectOptions::to_js_ffi(
-  self : LanguageDetectorDetectOptions,
-) -> JsValue =
+extern "js" fn LanguageDetectorDetectOptions::to_js_ffi(self : LanguageDetectorDetectOptions) -> JsValue =
   #| (self) => ({
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn LanguageDetectorDetectOptions::to_js(
-  self : LanguageDetectorDetectOptions,
-) -> JsValue {
+pub fn LanguageDetectorDetectOptions::to_js(self : LanguageDetectorDetectOptions) -> JsValue {
   LanguageDetectorDetectOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn LanguageDetectorDetectOptions::from_js_ffi(
-  value : JsValue,
-) -> LanguageDetectorDetectOptions =
+extern "js" fn LanguageDetectorDetectOptions::from_js_ffi(value : JsValue) -> LanguageDetectorDetectOptions =
   #| (v) => ({
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn LanguageDetectorDetectOptions::from_js(
-  value : JsValue,
-) -> LanguageDetectorDetectOptions {
+pub fn LanguageDetectorDetectOptions::from_js(value : JsValue) -> LanguageDetectorDetectOptions {
   LanguageDetectorDetectOptions::from_js_ffi(value)
 }
 
@@ -299,43 +230,33 @@ pub(all) struct LanguageDetectionResult {
   confidence : Double?
 }
 
-///|
 /// Create a new LanguageDetectionResult with default values
 pub fn LanguageDetectionResult::default() -> LanguageDetectionResult {
-  LanguageDetectionResult::{ detectedLanguage: None, confidence: None, }
+  LanguageDetectionResult::{
+    detectedLanguage: None,
+    confidence: None,
+  }
 }
 
-///|
-extern "js" fn LanguageDetectionResult::to_js_ffi(
-  self : LanguageDetectionResult,
-) -> JsValue =
+extern "js" fn LanguageDetectionResult::to_js_ffi(self : LanguageDetectionResult) -> JsValue =
   #| (self) => ({
   #|   detectedLanguage: self.detectedLanguage,
   #|   confidence: ((() => { const v = self.confidence; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn LanguageDetectionResult::to_js(
-  self : LanguageDetectionResult,
-) -> JsValue {
+pub fn LanguageDetectionResult::to_js(self : LanguageDetectionResult) -> JsValue {
   LanguageDetectionResult::to_js_ffi(self)
 }
 
-///|
-extern "js" fn LanguageDetectionResult::from_js_ffi(
-  value : JsValue,
-) -> LanguageDetectionResult =
+extern "js" fn LanguageDetectionResult::from_js_ffi(value : JsValue) -> LanguageDetectionResult =
   #| (v) => ({
   #|   detectedLanguage: v.detectedLanguage,
   #|   confidence: (v.confidence === undefined ? { $tag: 0 } : { $tag: 1, _0: v.confidence })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn LanguageDetectionResult::from_js(
-  value : JsValue,
-) -> LanguageDetectionResult {
+pub fn LanguageDetectionResult::from_js(value : JsValue) -> LanguageDetectionResult {
   LanguageDetectionResult::from_js_ffi(value)
 }
 
@@ -343,26 +264,21 @@ pub fn LanguageDetectionResult::from_js(
 /// Translator interface
 pub type Translator
 
-///|
 pub extern "js" fn Translator::to_js_value(self : Translator) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Translator (unchecked)
 pub extern "js" fn Translator::from_js_value(v : JsValue) -> Translator =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Translator (checked with instanceof)
 pub extern "js" fn Translator::from_js_value_opt(v : JsValue) -> Translator? =
   #| (v) => (v instanceof Translator) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Translator (checked with instanceof)
 pub extern "js" fn JsValue::as_translator(self : JsValue) -> Translator? =
   #| (self) => (self instanceof Translator) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Translator (unchecked)
 pub extern "js" fn JsValue::to_translator(self : JsValue) -> Translator =
   #| (self) => self
@@ -378,6 +294,8 @@ pub(all) enum TranslatorCreateError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend TranslatorCreateError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum TranslatorAvailabilityError {
@@ -386,6 +304,8 @@ pub(all) enum TranslatorAvailabilityError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend TranslatorAvailabilityError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -396,6 +316,8 @@ pub(all) enum TranslatorTranslateError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend TranslatorTranslateError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum TranslatorTranslateStreamingError {
@@ -404,6 +326,8 @@ pub(all) enum TranslatorTranslateStreamingError {
   QuotaExceededError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend TranslatorTranslateStreamingError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -414,156 +338,94 @@ pub(all) enum TranslatorMeasureInputUsageError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn Translator::create_ffi(
-  options : JsValue,
-) -> Promise[Result[Translator, TranslatorCreateError]] =
-  #| (options) => Translator.create(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+pub extend TranslatorMeasureInputUsageError with @debug.Debug::{to_repr}
 
 ///|
-pub fn Translator::create(
-  options : TranslatorCreateOptions,
-) -> Promise[Result[Translator, TranslatorCreateError]] {
+/// Error type for throwing methods
+pub(all) enum TranslatorDestroyError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend TranslatorDestroyError with @debug.Debug::{to_repr}
+
+extern "js" fn Translator::create_ffi(options : JsValue) -> Promise[Result[Translator, TranslatorCreateError]] =
+  #| (options) => Translator.create(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
+
+pub fn Translator::create(options : TranslatorCreateOptions) -> Promise[Result[Translator, TranslatorCreateError]] {
   Translator::create_ffi(options.to_js())
 }
 
-///|
-extern "js" fn Translator::availability_ffi(
-  options : JsValue,
-) -> Promise[Result[Availability, TranslatorAvailabilityError]] =
+extern "js" fn Translator::availability_ffi(options : JsValue) -> Promise[Result[Availability, TranslatorAvailabilityError]] =
   #| (options) => Translator.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn Translator::availability(
-  options : TranslatorCreateCoreOptions,
-) -> Promise[Result[Availability, TranslatorAvailabilityError]] {
+pub fn Translator::availability(options : TranslatorCreateCoreOptions) -> Promise[Result[Availability, TranslatorAvailabilityError]] {
   Translator::availability_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn Translator::translate(
-  self : Translator,
-  input : String,
-) -> Promise[Result[String, TranslatorTranslateError]] =
+pub extern "js" fn Translator::translate(self : Translator, input : String) -> Promise[Result[String, TranslatorTranslateError]] =
   #| (self, input) => self.translate(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn Translator::translate_with_options_ffi(
-  self : Translator,
-  input : String,
-  options : JsValue,
-) -> Promise[Result[String, TranslatorTranslateError]] =
+extern "js" fn Translator::translate_with_options_ffi(self : Translator, input : String, options : JsValue) -> Promise[Result[String, TranslatorTranslateError]] =
   #| (self, input, options) => self.translate(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn Translator::translate_with_options(
-  self : Translator,
-  input : String,
-  options : TranslatorTranslateOptions,
-) -> Promise[Result[String, TranslatorTranslateError]] {
+pub fn Translator::translate_with_options(self : Translator, input : String, options : TranslatorTranslateOptions) -> Promise[Result[String, TranslatorTranslateError]] {
   Translator::translate_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn Translator::translate_streaming(
-  self : Translator,
-  input : String,
-) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
+pub extern "js" fn Translator::translate_streaming(self : Translator, input : String) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
   #| (self, input) => (() => { try { return { $tag: 1, _0: self.translateStreaming(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Translator::translate_streaming_with_options_ffi(
-  self : Translator,
-  input : String,
-  options : JsValue,
-) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
+extern "js" fn Translator::translate_streaming_with_options_ffi(self : Translator, input : String, options : JsValue) -> Result[ReadableStream, TranslatorTranslateStreamingError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.translateStreaming(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub fn Translator::translate_streaming_with_options(
-  self : Translator,
-  input : String,
-  options : TranslatorTranslateOptions,
-) -> Result[ReadableStream, TranslatorTranslateStreamingError] {
+pub fn Translator::translate_streaming_with_options(self : Translator, input : String, options : TranslatorTranslateOptions) -> Result[ReadableStream, TranslatorTranslateStreamingError] {
   Translator::translate_streaming_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Translator::get_source_language(self : Translator) -> String =
   #| (self) => self.sourceLanguage
 
-///|
 pub extern "js" fn Translator::get_target_language(self : Translator) -> String =
   #| (self) => self.targetLanguage
 
-///|
-pub extern "js" fn Translator::measure_input_usage(
-  self : Translator,
-  input : String,
-) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
+pub extern "js" fn Translator::measure_input_usage(self : Translator, input : String) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
   #| (self, input) => self.measureInputUsage(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn Translator::measure_input_usage_with_options_ffi(
-  self : Translator,
-  input : String,
-  options : JsValue,
-) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
+extern "js" fn Translator::measure_input_usage_with_options_ffi(self : Translator, input : String, options : JsValue) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] =
   #| (self, input, options) => self.measureInputUsage(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn Translator::measure_input_usage_with_options(
-  self : Translator,
-  input : String,
-  options : TranslatorTranslateOptions,
-) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] {
+pub fn Translator::measure_input_usage_with_options(self : Translator, input : String, options : TranslatorTranslateOptions) -> Promise[Result[Double, TranslatorMeasureInputUsageError]] {
   Translator::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Translator::get_input_quota(self : Translator) -> Double =
   #| (self) => self.inputQuota
 
-///|
-pub extern "js" fn Translator::destroy(self : Translator) -> Unit =
-  #| (self) => self.destroy()
+pub extern "js" fn Translator::destroy(self : Translator) -> Result[Unit, TranslatorDestroyError] =
+  #| (self) => (() => { try { self.destroy(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// LanguageDetector interface
 pub type LanguageDetector
 
-///|
-pub extern "js" fn LanguageDetector::to_js_value(
-  self : LanguageDetector,
-) -> JsValue =
+pub extern "js" fn LanguageDetector::to_js_value(self : LanguageDetector) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to LanguageDetector (unchecked)
-pub extern "js" fn LanguageDetector::from_js_value(
-  v : JsValue,
-) -> LanguageDetector =
+pub extern "js" fn LanguageDetector::from_js_value(v : JsValue) -> LanguageDetector =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to LanguageDetector (checked with instanceof)
-pub extern "js" fn LanguageDetector::from_js_value_opt(
-  v : JsValue,
-) -> LanguageDetector? =
+pub extern "js" fn LanguageDetector::from_js_value_opt(v : JsValue) -> LanguageDetector? =
   #| (v) => (v instanceof LanguageDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to LanguageDetector (checked with instanceof)
-pub extern "js" fn JsValue::as_language_detector(
-  self : JsValue,
-) -> LanguageDetector? =
+pub extern "js" fn JsValue::as_language_detector(self : JsValue) -> LanguageDetector? =
   #| (self) => (self instanceof LanguageDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to LanguageDetector (unchecked)
-pub extern "js" fn JsValue::to_language_detector(
-  self : JsValue,
-) -> LanguageDetector =
+pub extern "js" fn JsValue::to_language_detector(self : JsValue) -> LanguageDetector =
   #| (self) => self
 
 ///|
@@ -577,6 +439,8 @@ pub(all) enum LanguageDetectorCreateError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend LanguageDetectorCreateError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum LanguageDetectorAvailabilityError {
@@ -585,6 +449,8 @@ pub(all) enum LanguageDetectorAvailabilityError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend LanguageDetectorAvailabilityError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -595,6 +461,8 @@ pub(all) enum LanguageDetectorDetectError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend LanguageDetectorDetectError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum LanguageDetectorMeasureInputUsageError {
@@ -603,114 +471,62 @@ pub(all) enum LanguageDetectorMeasureInputUsageError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend LanguageDetectorMeasureInputUsageError with @debug.Debug::{to_repr}
+
 ///|
-pub extern "js" fn LanguageDetector::create() -> Promise[
-  Result[LanguageDetector, LanguageDetectorCreateError],
-] =
+/// Error type for throwing methods
+pub(all) enum LanguageDetectorDestroyError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend LanguageDetectorDestroyError with @debug.Debug::{to_repr}
+
+pub extern "js" fn LanguageDetector::create() -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] =
   #| () => LanguageDetector.create().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
-///|
-extern "js" fn LanguageDetector::create_with_options_ffi(
-  options : JsValue,
-) -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] =
+extern "js" fn LanguageDetector::create_with_options_ffi(options : JsValue) -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] =
   #| (options) => LanguageDetector.create(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }))
 
-///|
-pub fn LanguageDetector::create_with_options(
-  options : LanguageDetectorCreateOptions,
-) -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] {
+pub fn LanguageDetector::create_with_options(options : LanguageDetectorCreateOptions) -> Promise[Result[LanguageDetector, LanguageDetectorCreateError]] {
   LanguageDetector::create_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn LanguageDetector::availability() -> Promise[
-  Result[Availability, LanguageDetectorAvailabilityError],
-] =
+pub extern "js" fn LanguageDetector::availability() -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] =
   #| () => LanguageDetector.availability().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn LanguageDetector::availability_with_options_ffi(
-  options : JsValue,
-) -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] =
+extern "js" fn LanguageDetector::availability_with_options_ffi(options : JsValue) -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] =
   #| (options) => LanguageDetector.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn LanguageDetector::availability_with_options(
-  options : LanguageDetectorCreateCoreOptions,
-) -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] {
+pub fn LanguageDetector::availability_with_options(options : LanguageDetectorCreateCoreOptions) -> Promise[Result[Availability, LanguageDetectorAvailabilityError]] {
   LanguageDetector::availability_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn LanguageDetector::detect(
-  self : LanguageDetector,
-  input : String,
-) -> Promise[
-  Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError],
-] =
+pub extern "js" fn LanguageDetector::detect(self : LanguageDetector, input : String) -> Promise[Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError]] =
   #| (self, input) => self.detect(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn LanguageDetector::detect_with_options_ffi(
-  self : LanguageDetector,
-  input : String,
-  options : JsValue,
-) -> Promise[
-  Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError],
-] =
+extern "js" fn LanguageDetector::detect_with_options_ffi(self : LanguageDetector, input : String, options : JsValue) -> Promise[Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError]] =
   #| (self, input, options) => self.detect(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'QuotaExceededError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn LanguageDetector::detect_with_options(
-  self : LanguageDetector,
-  input : String,
-  options : LanguageDetectorDetectOptions,
-) -> Promise[
-  Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError],
-] {
+pub fn LanguageDetector::detect_with_options(self : LanguageDetector, input : String, options : LanguageDetectorDetectOptions) -> Promise[Result[FixedArray[LanguageDetectionResult], LanguageDetectorDetectError]] {
   LanguageDetector::detect_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn LanguageDetector::get_expected_input_languages(
-  self : LanguageDetector,
-) -> FixedArray[String] =
+pub extern "js" fn LanguageDetector::get_expected_input_languages(self : LanguageDetector) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
-///|
-pub extern "js" fn LanguageDetector::measure_input_usage(
-  self : LanguageDetector,
-  input : String,
-) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
+pub extern "js" fn LanguageDetector::measure_input_usage(self : LanguageDetector, input : String) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
   #| (self, input) => self.measureInputUsage(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn LanguageDetector::measure_input_usage_with_options_ffi(
-  self : LanguageDetector,
-  input : String,
-  options : JsValue,
-) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
+extern "js" fn LanguageDetector::measure_input_usage_with_options_ffi(self : LanguageDetector, input : String, options : JsValue) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] =
   #| (self, input, options) => self.measureInputUsage(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn LanguageDetector::measure_input_usage_with_options(
-  self : LanguageDetector,
-  input : String,
-  options : LanguageDetectorDetectOptions,
-) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] {
-  LanguageDetector::measure_input_usage_with_options_ffi(
-    self,
-    input,
-    options.to_js(),
-  )
+pub fn LanguageDetector::measure_input_usage_with_options(self : LanguageDetector, input : String, options : LanguageDetectorDetectOptions) -> Promise[Result[Double, LanguageDetectorMeasureInputUsageError]] {
+  LanguageDetector::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn LanguageDetector::get_input_quota(
-  self : LanguageDetector,
-) -> Double =
+pub extern "js" fn LanguageDetector::get_input_quota(self : LanguageDetector) -> Double =
   #| (self) => self.inputQuota
 
-///|
-pub extern "js" fn LanguageDetector::destroy(self : LanguageDetector) -> Unit =
-  #| (self) => self.destroy()
+pub extern "js" fn LanguageDetector::destroy(self : LanguageDetector) -> Result[Unit, LanguageDetectorDestroyError] =
+  #| (self) => (() => { try { self.destroy(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()

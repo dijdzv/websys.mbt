@@ -8,7 +8,9 @@ pub(all) enum IDBRequestReadyState {
   Done
 } derive(Eq, Debug)
 
-///|
+pub extend IDBRequestReadyState with Eq::{equal, not_equal}
+pub extend IDBRequestReadyState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn IDBRequestReadyState::to_string(self : IDBRequestReadyState) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn IDBRequestReadyState::to_string(self : IDBRequestReadyState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn IDBRequestReadyState::from_string(s : String) -> IDBRequestReadyState? {
   match s {
@@ -35,11 +36,11 @@ pub(all) enum IDBTransactionDurability {
   Relaxed
 } derive(Eq, Debug)
 
-///|
+pub extend IDBTransactionDurability with Eq::{equal, not_equal}
+pub extend IDBTransactionDurability with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn IDBTransactionDurability::to_string(
-  self : IDBTransactionDurability,
-) -> String {
+pub fn IDBTransactionDurability::to_string(self : IDBTransactionDurability) -> String {
   match self {
     IDBTransactionDurability::Default => "default"
     IDBTransactionDurability::Strict => "strict"
@@ -47,11 +48,8 @@ pub fn IDBTransactionDurability::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn IDBTransactionDurability::from_string(
-  s : String,
-) -> IDBTransactionDurability? {
+pub fn IDBTransactionDurability::from_string(s : String) -> IDBTransactionDurability? {
   match s {
     "default" => Some(IDBTransactionDurability::Default)
     "strict" => Some(IDBTransactionDurability::Strict)
@@ -69,7 +67,9 @@ pub(all) enum IDBCursorDirection {
   Prevunique
 } derive(Eq, Debug)
 
-///|
+pub extend IDBCursorDirection with Eq::{equal, not_equal}
+pub extend IDBCursorDirection with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn IDBCursorDirection::to_string(self : IDBCursorDirection) -> String {
   match self {
@@ -80,7 +80,6 @@ pub fn IDBCursorDirection::to_string(self : IDBCursorDirection) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn IDBCursorDirection::from_string(s : String) -> IDBCursorDirection? {
   match s {
@@ -100,7 +99,9 @@ pub(all) enum IDBTransactionMode {
   Versionchange
 } derive(Eq, Debug)
 
-///|
+pub extend IDBTransactionMode with Eq::{equal, not_equal}
+pub extend IDBTransactionMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn IDBTransactionMode::to_string(self : IDBTransactionMode) -> String {
   match self {
@@ -110,7 +111,6 @@ pub fn IDBTransactionMode::to_string(self : IDBTransactionMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn IDBTransactionMode::from_string(s : String) -> IDBTransactionMode? {
   match s {
@@ -128,7 +128,6 @@ pub(all) struct IDBVersionChangeEventInit {
   newVersion : Nullable[Int64]
 }
 
-///|
 /// Create a new IDBVersionChangeEventInit with default values
 pub fn IDBVersionChangeEventInit::default() -> IDBVersionChangeEventInit {
   IDBVersionChangeEventInit::{
@@ -137,63 +136,39 @@ pub fn IDBVersionChangeEventInit::default() -> IDBVersionChangeEventInit {
   }
 }
 
-///|
-extern "js" fn IDBVersionChangeEventInit::to_js_ffi(
-  self : IDBVersionChangeEventInit,
-) -> JsValue =
+extern "js" fn IDBVersionChangeEventInit::to_js_ffi(self : IDBVersionChangeEventInit) -> JsValue =
   #| (self) => ({
   #|   oldVersion: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.oldVersion),
   #|   newVersion: ((() => { const v = self.newVersion; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IDBVersionChangeEventInit::to_js(
-  self : IDBVersionChangeEventInit,
-) -> JsValue {
+pub fn IDBVersionChangeEventInit::to_js(self : IDBVersionChangeEventInit) -> JsValue {
   IDBVersionChangeEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IDBVersionChangeEventInit::from_js_ffi(
-  value : JsValue,
-) -> IDBVersionChangeEventInit =
+extern "js" fn IDBVersionChangeEventInit::from_js_ffi(value : JsValue) -> IDBVersionChangeEventInit =
   #| (v) => ({
   #|   oldVersion: (v.oldVersion === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.oldVersion)),
   #|   newVersion: (v.newVersion === undefined ? { $tag: 0 } : v.newVersion === null ? { $tag: 1 } : { $tag: 2, _0: v.newVersion })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IDBVersionChangeEventInit::from_js(
-  value : JsValue,
-) -> IDBVersionChangeEventInit {
+pub fn IDBVersionChangeEventInit::from_js(value : JsValue) -> IDBVersionChangeEventInit {
   IDBVersionChangeEventInit::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn IDBVersionChangeEventInit::to_js_checked(
-  self : IDBVersionChangeEventInit,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn IDBVersionChangeEventInit::to_js_checked(self : IDBVersionChangeEventInit) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_IDBVersionChangeEventInit(
-  convert : () -> IDBVersionChangeEventInit,
-) -> Result[IDBVersionChangeEventInit, JsError] =
+extern "js" fn try_dictionary_IDBVersionChangeEventInit(convert : () -> IDBVersionChangeEventInit) -> Result[IDBVersionChangeEventInit, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn IDBVersionChangeEventInit::from_js_checked(
-  value : JsValue,
-) -> Result[IDBVersionChangeEventInit, JsError] {
-  try_dictionary_IDBVersionChangeEventInit(() => {
-    IDBVersionChangeEventInit::from_js(value)
-  })
-}
+pub fn IDBVersionChangeEventInit::from_js_checked(value : JsValue) -> Result[IDBVersionChangeEventInit, JsError] { try_dictionary_IDBVersionChangeEventInit(() => IDBVersionChangeEventInit::from_js(value)) }
 
 ///|
 /// IDBDatabaseInfo dictionary
@@ -202,33 +177,31 @@ pub(all) struct IDBDatabaseInfo {
   version : Int64?
 }
 
-///|
 /// Create a new IDBDatabaseInfo with default values
 pub fn IDBDatabaseInfo::default() -> IDBDatabaseInfo {
-  IDBDatabaseInfo::{ name: None, version: None, }
+  IDBDatabaseInfo::{
+    name: None,
+    version: None,
+  }
 }
 
-///|
 extern "js" fn IDBDatabaseInfo::to_js_ffi(self : IDBDatabaseInfo) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   version: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.version)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IDBDatabaseInfo::to_js(self : IDBDatabaseInfo) -> JsValue {
   IDBDatabaseInfo::to_js_ffi(self)
 }
 
-///|
 extern "js" fn IDBDatabaseInfo::from_js_ffi(value : JsValue) -> IDBDatabaseInfo =
   #| (v) => ({
   #|   name: v.name,
   #|   version: (v.version === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.version))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IDBDatabaseInfo::from_js(value : JsValue) -> IDBDatabaseInfo {
   IDBDatabaseInfo::from_js_ffi(value)
@@ -236,25 +209,15 @@ pub fn IDBDatabaseInfo::from_js(value : JsValue) -> IDBDatabaseInfo {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn IDBDatabaseInfo::to_js_checked(
-  self : IDBDatabaseInfo,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn IDBDatabaseInfo::to_js_checked(self : IDBDatabaseInfo) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_IDBDatabaseInfo(
-  convert : () -> IDBDatabaseInfo,
-) -> Result[IDBDatabaseInfo, JsError] =
+extern "js" fn try_dictionary_IDBDatabaseInfo(convert : () -> IDBDatabaseInfo) -> Result[IDBDatabaseInfo, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn IDBDatabaseInfo::from_js_checked(
-  value : JsValue,
-) -> Result[IDBDatabaseInfo, JsError] {
-  try_dictionary_IDBDatabaseInfo(() => IDBDatabaseInfo::from_js(value))
-}
+pub fn IDBDatabaseInfo::from_js_checked(value : JsValue) -> Result[IDBDatabaseInfo, JsError] { try_dictionary_IDBDatabaseInfo(() => IDBDatabaseInfo::from_js(value)) }
 
 ///|
 /// IDBTransactionOptions dictionary
@@ -262,35 +225,28 @@ pub(all) struct IDBTransactionOptions {
   durability : IDBTransactionDurability?
 }
 
-///|
 /// Create a new IDBTransactionOptions with default values
 pub fn IDBTransactionOptions::default() -> IDBTransactionOptions {
-  IDBTransactionOptions::{ durability: None, }
+  IDBTransactionOptions::{
+    durability: None,
+  }
 }
 
-///|
-extern "js" fn IDBTransactionOptions::to_js_ffi(
-  self : IDBTransactionOptions,
-) -> JsValue =
+extern "js" fn IDBTransactionOptions::to_js_ffi(self : IDBTransactionOptions) -> JsValue =
   #| (self) => ({
   #|   durability: ((() => { const v = self.durability; if (v === undefined) return undefined; return ['default', 'strict', 'relaxed'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IDBTransactionOptions::to_js(self : IDBTransactionOptions) -> JsValue {
   IDBTransactionOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IDBTransactionOptions::from_js_ffi(
-  value : JsValue,
-) -> IDBTransactionOptions =
+extern "js" fn IDBTransactionOptions::from_js_ffi(value : JsValue) -> IDBTransactionOptions =
   #| (v) => ({
   #|   durability: (v.durability === undefined ? undefined : ['default', 'strict', 'relaxed'].indexOf(v.durability))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IDBTransactionOptions::from_js(value : JsValue) -> IDBTransactionOptions {
   IDBTransactionOptions::from_js_ffi(value)
@@ -303,43 +259,33 @@ pub(all) struct IDBObjectStoreParameters {
   autoIncrement : Bool?
 }
 
-///|
 /// Create a new IDBObjectStoreParameters with default values
 pub fn IDBObjectStoreParameters::default() -> IDBObjectStoreParameters {
-  IDBObjectStoreParameters::{ keyPath: None, autoIncrement: None, }
+  IDBObjectStoreParameters::{
+    keyPath: None,
+    autoIncrement: None,
+  }
 }
 
-///|
-extern "js" fn IDBObjectStoreParameters::to_js_ffi(
-  self : IDBObjectStoreParameters,
-) -> JsValue =
+extern "js" fn IDBObjectStoreParameters::to_js_ffi(self : IDBObjectStoreParameters) -> JsValue =
   #| (self) => ({
   #|   keyPath: ((() => { const v = self.keyPath; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   autoIncrement: (self.autoIncrement === -1 ? undefined : self.autoIncrement)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IDBObjectStoreParameters::to_js(
-  self : IDBObjectStoreParameters,
-) -> JsValue {
+pub fn IDBObjectStoreParameters::to_js(self : IDBObjectStoreParameters) -> JsValue {
   IDBObjectStoreParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IDBObjectStoreParameters::from_js_ffi(
-  value : JsValue,
-) -> IDBObjectStoreParameters =
+extern "js" fn IDBObjectStoreParameters::from_js_ffi(value : JsValue) -> IDBObjectStoreParameters =
   #| (v) => ({
   #|   keyPath: (v.keyPath === undefined ? { $tag: 0 } : { $tag: 1, _0: v.keyPath }),
   #|   autoIncrement: (v.autoIncrement === undefined ? -1 : v.autoIncrement)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IDBObjectStoreParameters::from_js(
-  value : JsValue,
-) -> IDBObjectStoreParameters {
+pub fn IDBObjectStoreParameters::from_js(value : JsValue) -> IDBObjectStoreParameters {
   IDBObjectStoreParameters::from_js_ffi(value)
 }
 
@@ -350,37 +296,31 @@ pub(all) struct IDBIndexParameters {
   multiEntry : Bool?
 }
 
-///|
 /// Create a new IDBIndexParameters with default values
 pub fn IDBIndexParameters::default() -> IDBIndexParameters {
-  IDBIndexParameters::{ unique: None, multiEntry: None, }
+  IDBIndexParameters::{
+    unique: None,
+    multiEntry: None,
+  }
 }
 
-///|
-extern "js" fn IDBIndexParameters::to_js_ffi(
-  self : IDBIndexParameters,
-) -> JsValue =
+extern "js" fn IDBIndexParameters::to_js_ffi(self : IDBIndexParameters) -> JsValue =
   #| (self) => ({
   #|   unique: (self.unique === -1 ? undefined : self.unique),
   #|   multiEntry: (self.multiEntry === -1 ? undefined : self.multiEntry)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IDBIndexParameters::to_js(self : IDBIndexParameters) -> JsValue {
   IDBIndexParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IDBIndexParameters::from_js_ffi(
-  value : JsValue,
-) -> IDBIndexParameters =
+extern "js" fn IDBIndexParameters::from_js_ffi(value : JsValue) -> IDBIndexParameters =
   #| (v) => ({
   #|   unique: (v.unique === undefined ? -1 : v.unique),
   #|   multiEntry: (v.multiEntry === undefined ? -1 : v.multiEntry)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IDBIndexParameters::from_js(value : JsValue) -> IDBIndexParameters {
   IDBIndexParameters::from_js_ffi(value)
@@ -394,13 +334,15 @@ pub(all) struct IDBGetAllOptions {
   direction : IDBCursorDirection?
 }
 
-///|
 /// Create a new IDBGetAllOptions with default values
 pub fn IDBGetAllOptions::default() -> IDBGetAllOptions {
-  IDBGetAllOptions::{ query: None, count: None, direction: None, }
+  IDBGetAllOptions::{
+    query: None,
+    count: None,
+    direction: None,
+  }
 }
 
-///|
 extern "js" fn IDBGetAllOptions::to_js_ffi(self : IDBGetAllOptions) -> JsValue =
   #| (self) => ({
   #|   query: ((() => { const v = self.query; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -408,23 +350,18 @@ extern "js" fn IDBGetAllOptions::to_js_ffi(self : IDBGetAllOptions) -> JsValue =
   #|   direction: ((() => { const v = self.direction; if (v === undefined) return undefined; return ['next', 'nextunique', 'prev', 'prevunique'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IDBGetAllOptions::to_js(self : IDBGetAllOptions) -> JsValue {
   IDBGetAllOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IDBGetAllOptions::from_js_ffi(
-  value : JsValue,
-) -> IDBGetAllOptions =
+extern "js" fn IDBGetAllOptions::from_js_ffi(value : JsValue) -> IDBGetAllOptions =
   #| (v) => ({
   #|   query: (v.query === undefined ? { $tag: 0 } : { $tag: 1, _0: v.query }),
   #|   count: v.count,
   #|   direction: (v.direction === undefined ? undefined : ['next', 'nextunique', 'prev', 'prevunique'].indexOf(v.direction))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IDBGetAllOptions::from_js(value : JsValue) -> IDBGetAllOptions {
   IDBGetAllOptions::from_js_ffi(value)
@@ -434,87 +371,55 @@ pub fn IDBGetAllOptions::from_js(value : JsValue) -> IDBGetAllOptions {
 /// IDBRequest interface
 pub type IDBRequest
 
-///|
 pub extern "js" fn IDBRequest::to_js_value(self : IDBRequest) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBRequest (unchecked)
 pub extern "js" fn IDBRequest::from_js_value(v : JsValue) -> IDBRequest =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBRequest (checked with instanceof)
 pub extern "js" fn IDBRequest::from_js_value_opt(v : JsValue) -> IDBRequest? =
   #| (v) => (v instanceof IDBRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBRequest (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_request(self : JsValue) -> IDBRequest? =
   #| (self) => (self instanceof IDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBRequest (unchecked)
 pub extern "js" fn JsValue::to_idb_request(self : JsValue) -> IDBRequest =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBRequest::to_event_target(
-  self : IDBRequest,
-) -> EventTarget =
+pub extern "js" fn IDBRequest::to_event_target(self : IDBRequest) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBRequest::as_idb_open_db_request(
-  self : IDBRequest,
-) -> IDBOpenDBRequest? =
+pub extern "js" fn IDBRequest::as_idb_open_db_request(self : IDBRequest) -> IDBOpenDBRequest? =
   #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn IDBRequest::get_result(self : IDBRequest) -> JsValue =
   #| (self) => self.result
 
-///|
 pub extern "js" fn IDBRequest::get_error(self : IDBRequest) -> DOMException? =
   #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn IDBRequest::get_source(
-  self : IDBRequest,
-) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
+pub extern "js" fn IDBRequest::get_source(self : IDBRequest) -> IDBObjectStoreOrIDBIndexOrIDBCursor =
   #| (self) => self.source
 
-///|
-pub extern "js" fn IDBRequest::get_transaction(
-  self : IDBRequest,
-) -> IDBTransaction? =
+pub extern "js" fn IDBRequest::get_transaction(self : IDBRequest) -> IDBTransaction? =
   #| (self) => (() => { const v = self.transaction; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn IDBRequest::get_ready_state(
-  self : IDBRequest,
-) -> IDBRequestReadyState =
+pub extern "js" fn IDBRequest::get_ready_state(self : IDBRequest) -> IDBRequestReadyState =
   #| (self) => ['pending', 'done'].indexOf(self.readyState)
 
-///|
-pub extern "js" fn IDBRequest::set_onsuccess(
-  self : IDBRequest,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBRequest::set_onsuccess(self : IDBRequest, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onsuccess = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBRequest::clear_onsuccess(self : IDBRequest) -> Unit =
   #| (self) => { self.onsuccess = null }
 
-///|
-pub extern "js" fn IDBRequest::set_onerror(
-  self : IDBRequest,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBRequest::set_onerror(self : IDBRequest, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBRequest::clear_onerror(self : IDBRequest) -> Unit =
   #| (self) => { self.onerror = null }
 
@@ -522,182 +427,104 @@ pub extern "js" fn IDBRequest::clear_onerror(self : IDBRequest) -> Unit =
 /// IDBOpenDBRequest interface
 pub type IDBOpenDBRequest
 
-///|
-pub extern "js" fn IDBOpenDBRequest::to_js_value(
-  self : IDBOpenDBRequest,
-) -> JsValue =
+pub extern "js" fn IDBOpenDBRequest::to_js_value(self : IDBOpenDBRequest) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBOpenDBRequest (unchecked)
-pub extern "js" fn IDBOpenDBRequest::from_js_value(
-  v : JsValue,
-) -> IDBOpenDBRequest =
+pub extern "js" fn IDBOpenDBRequest::from_js_value(v : JsValue) -> IDBOpenDBRequest =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBOpenDBRequest (checked with instanceof)
-pub extern "js" fn IDBOpenDBRequest::from_js_value_opt(
-  v : JsValue,
-) -> IDBOpenDBRequest? =
+pub extern "js" fn IDBOpenDBRequest::from_js_value_opt(v : JsValue) -> IDBOpenDBRequest? =
   #| (v) => (v instanceof IDBOpenDBRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBOpenDBRequest (checked with instanceof)
-pub extern "js" fn JsValue::as_idb_open_db_request(
-  self : JsValue,
-) -> IDBOpenDBRequest? =
+pub extern "js" fn JsValue::as_idb_open_db_request(self : JsValue) -> IDBOpenDBRequest? =
   #| (self) => (self instanceof IDBOpenDBRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBOpenDBRequest (unchecked)
-pub extern "js" fn JsValue::to_idb_open_db_request(
-  self : JsValue,
-) -> IDBOpenDBRequest =
+pub extern "js" fn JsValue::to_idb_open_db_request(self : JsValue) -> IDBOpenDBRequest =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBOpenDBRequest::to_idb_request(
-  self : IDBOpenDBRequest,
-) -> IDBRequest =
+pub extern "js" fn IDBOpenDBRequest::to_idb_request(self : IDBOpenDBRequest) -> IDBRequest =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBOpenDBRequest::to_event_target(
-  self : IDBOpenDBRequest,
-) -> EventTarget =
+pub extern "js" fn IDBOpenDBRequest::to_event_target(self : IDBOpenDBRequest) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBOpenDBRequest::set_onblocked(
-  self : IDBOpenDBRequest,
-  handler : (IDBVersionChangeEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBOpenDBRequest::set_onblocked(self : IDBOpenDBRequest, handler : (IDBVersionChangeEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onblocked = (e) => handler(e) }
 
-///|
-pub extern "js" fn IDBOpenDBRequest::clear_onblocked(
-  self : IDBOpenDBRequest,
-) -> Unit =
+pub extern "js" fn IDBOpenDBRequest::clear_onblocked(self : IDBOpenDBRequest) -> Unit =
   #| (self) => { self.onblocked = null }
 
-///|
-pub extern "js" fn IDBOpenDBRequest::set_onupgradeneeded(
-  self : IDBOpenDBRequest,
-  handler : (IDBVersionChangeEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBOpenDBRequest::set_onupgradeneeded(self : IDBOpenDBRequest, handler : (IDBVersionChangeEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onupgradeneeded = (e) => handler(e) }
 
-///|
-pub extern "js" fn IDBOpenDBRequest::clear_onupgradeneeded(
-  self : IDBOpenDBRequest,
-) -> Unit =
+pub extern "js" fn IDBOpenDBRequest::clear_onupgradeneeded(self : IDBOpenDBRequest) -> Unit =
   #| (self) => { self.onupgradeneeded = null }
 
 ///|
 /// IDBVersionChangeEvent interface
 pub type IDBVersionChangeEvent
 
-///|
-pub extern "js" fn IDBVersionChangeEvent::to_js_value(
-  self : IDBVersionChangeEvent,
-) -> JsValue =
+pub extern "js" fn IDBVersionChangeEvent::to_js_value(self : IDBVersionChangeEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBVersionChangeEvent (unchecked)
-pub extern "js" fn IDBVersionChangeEvent::from_js_value(
-  v : JsValue,
-) -> IDBVersionChangeEvent =
+pub extern "js" fn IDBVersionChangeEvent::from_js_value(v : JsValue) -> IDBVersionChangeEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBVersionChangeEvent (checked with instanceof)
-pub extern "js" fn IDBVersionChangeEvent::from_js_value_opt(
-  v : JsValue,
-) -> IDBVersionChangeEvent? =
+pub extern "js" fn IDBVersionChangeEvent::from_js_value_opt(v : JsValue) -> IDBVersionChangeEvent? =
   #| (v) => (v instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBVersionChangeEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_idb_version_change_event(
-  self : JsValue,
-) -> IDBVersionChangeEvent? =
+pub extern "js" fn JsValue::as_idb_version_change_event(self : JsValue) -> IDBVersionChangeEvent? =
   #| (self) => (self instanceof IDBVersionChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBVersionChangeEvent (unchecked)
-pub extern "js" fn JsValue::to_idb_version_change_event(
-  self : JsValue,
-) -> IDBVersionChangeEvent =
+pub extern "js" fn JsValue::to_idb_version_change_event(self : JsValue) -> IDBVersionChangeEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBVersionChangeEvent::to_event(
-  self : IDBVersionChangeEvent,
-) -> Event =
+pub extern "js" fn IDBVersionChangeEvent::to_event(self : IDBVersionChangeEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBVersionChangeEvent::new(
-  type_ : String,
-) -> IDBVersionChangeEvent =
+pub extern "js" fn IDBVersionChangeEvent::new(type_ : String) -> IDBVersionChangeEvent =
   #| (type_) => new IDBVersionChangeEvent(type_)
 
-///|
-extern "js" fn IDBVersionChangeEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> IDBVersionChangeEvent =
+extern "js" fn IDBVersionChangeEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> IDBVersionChangeEvent =
   #| (type_, event_init_dict) => new IDBVersionChangeEvent(type_, event_init_dict)
 
-///|
-pub fn IDBVersionChangeEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : IDBVersionChangeEventInit,
-) -> IDBVersionChangeEvent {
-  IDBVersionChangeEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn IDBVersionChangeEvent::new_with_event_init_dict(type_ : String, event_init_dict : IDBVersionChangeEventInit) -> IDBVersionChangeEvent {
+  IDBVersionChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn IDBVersionChangeEvent::get_old_version(
-  self : IDBVersionChangeEvent,
-) -> Int64 =
+pub extern "js" fn IDBVersionChangeEvent::get_old_version(self : IDBVersionChangeEvent) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.oldVersion))
 
-///|
-pub extern "js" fn IDBVersionChangeEvent::get_new_version(
-  self : IDBVersionChangeEvent,
-) -> Int64? =
+pub extern "js" fn IDBVersionChangeEvent::get_new_version(self : IDBVersionChangeEvent) -> Int64? =
   #| (self) => (() => { const v = self.newVersion; return v == null ? undefined : BigInt.asUintN(64, BigInt(v)); })()
 
 ///|
 /// IDBFactory interface
 pub type IDBFactory
 
-///|
 pub extern "js" fn IDBFactory::to_js_value(self : IDBFactory) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBFactory (unchecked)
 pub extern "js" fn IDBFactory::from_js_value(v : JsValue) -> IDBFactory =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBFactory (checked with instanceof)
 pub extern "js" fn IDBFactory::from_js_value_opt(v : JsValue) -> IDBFactory? =
   #| (v) => (v instanceof IDBFactory) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBFactory (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_factory(self : JsValue) -> IDBFactory? =
   #| (self) => (self instanceof IDBFactory) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBFactory (unchecked)
 pub extern "js" fn JsValue::to_idb_factory(self : JsValue) -> IDBFactory =
   #| (self) => self
@@ -709,6 +536,8 @@ pub(all) enum IDBFactoryOpenError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBFactoryOpenError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBFactoryDatabasesError {
@@ -717,6 +546,8 @@ pub(all) enum IDBFactoryDatabasesError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBFactoryDatabasesError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBFactoryCmpError {
@@ -724,74 +555,47 @@ pub(all) enum IDBFactoryCmpError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn IDBFactory::open(
-  self : IDBFactory,
-  name : String,
-) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
+pub extend IDBFactoryCmpError with @debug.Debug::{to_repr}
+
+pub extern "js" fn IDBFactory::open(self : IDBFactory, name : String) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
   #| (self, name) => (() => { try { return { $tag: 1, _0: self.open(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBFactory::open_with_version(
-  self : IDBFactory,
-  name : String,
-  version : Int64,
-) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
+pub extern "js" fn IDBFactory::open_with_version(self : IDBFactory, name : String, version : Int64) -> Result[IDBOpenDBRequest, IDBFactoryOpenError] =
   #| (self, name, version) => (() => { try { return { $tag: 1, _0: self.open(name, Number(version)) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBFactory::delete_database(
-  self : IDBFactory,
-  name : String,
-) -> IDBOpenDBRequest =
+pub extern "js" fn IDBFactory::delete_database(self : IDBFactory, name : String) -> IDBOpenDBRequest =
   #| (self, name) => self.deleteDatabase(name)
 
-///|
-pub extern "js" fn IDBFactory::databases(
-  self : IDBFactory,
-) -> Promise[Result[FixedArray[IDBDatabaseInfo], IDBFactoryDatabasesError]] =
+pub extern "js" fn IDBFactory::databases(self : IDBFactory) -> Promise[Result[FixedArray[IDBDatabaseInfo], IDBFactoryDatabasesError]] =
   #| (self) => self.databases().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn IDBFactory::cmp(
-  self : IDBFactory,
-  first : JsValue,
-  second : JsValue,
-) -> Result[Int, IDBFactoryCmpError] =
+pub extern "js" fn IDBFactory::cmp(self : IDBFactory, first : JsValue, second : JsValue) -> Result[Int, IDBFactoryCmpError] =
   #| (self, first, second) => (() => { try { return { $tag: 1, _0: self.cmp(first, second) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// IDBDatabase interface
 pub type IDBDatabase
 
-///|
 pub extern "js" fn IDBDatabase::to_js_value(self : IDBDatabase) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBDatabase (unchecked)
 pub extern "js" fn IDBDatabase::from_js_value(v : JsValue) -> IDBDatabase =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBDatabase (checked with instanceof)
 pub extern "js" fn IDBDatabase::from_js_value_opt(v : JsValue) -> IDBDatabase? =
   #| (v) => (v instanceof IDBDatabase) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBDatabase (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_database(self : JsValue) -> IDBDatabase? =
   #| (self) => (self instanceof IDBDatabase) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBDatabase (unchecked)
 pub extern "js" fn JsValue::to_idb_database(self : JsValue) -> IDBDatabase =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBDatabase::to_event_target(
-  self : IDBDatabase,
-) -> EventTarget =
+pub extern "js" fn IDBDatabase::to_event_target(self : IDBDatabase) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -804,6 +608,8 @@ pub(all) enum IDBDatabaseTransactionError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBDatabaseTransactionError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBDatabaseCreateObjectStoreError {
@@ -815,6 +621,8 @@ pub(all) enum IDBDatabaseCreateObjectStoreError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBDatabaseCreateObjectStoreError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBDatabaseDeleteObjectStoreError {
@@ -824,166 +632,88 @@ pub(all) enum IDBDatabaseDeleteObjectStoreError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IDBDatabaseDeleteObjectStoreError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IDBDatabase::get_name(self : IDBDatabase) -> String =
   #| (self) => self.name
 
-///|
 pub extern "js" fn IDBDatabase::get_version(self : IDBDatabase) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.version))
 
-///|
-pub extern "js" fn IDBDatabase::get_object_store_names(
-  self : IDBDatabase,
-) -> DOMStringList =
+pub extern "js" fn IDBDatabase::get_object_store_names(self : IDBDatabase) -> DOMStringList =
   #| (self) => self.objectStoreNames
 
-///|
-pub extern "js" fn IDBDatabase::transaction(
-  self : IDBDatabase,
-  store_names : StringOrArrayOfString,
-) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
+pub extern "js" fn IDBDatabase::transaction(self : IDBDatabase, store_names : StringOrArrayOfString) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
   #| (self, store_names) => (() => { try { return { $tag: 1, _0: self.transaction(store_names) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-extern "js" fn IDBDatabase::transaction_with_options_ffi(
-  self : IDBDatabase,
-  store_names : StringOrArrayOfString,
-  mode : IDBTransactionMode,
-  options : JsValue,
-) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
+extern "js" fn IDBDatabase::transaction_with_options_ffi(self : IDBDatabase, store_names : StringOrArrayOfString, mode : IDBTransactionMode, options : JsValue) -> Result[IDBTransaction, IDBDatabaseTransactionError] =
   #| (self, store_names, mode, options) => (() => { try { return { $tag: 1, _0: self.transaction(store_names, ['readonly', 'readwrite', 'versionchange'][mode], options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotFoundError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub fn IDBDatabase::transaction_with_options(
-  self : IDBDatabase,
-  store_names : StringOrArrayOfString,
-  mode : IDBTransactionMode,
-  options : IDBTransactionOptions,
-) -> Result[IDBTransaction, IDBDatabaseTransactionError] {
-  IDBDatabase::transaction_with_options_ffi(
-    self,
-    store_names,
-    mode,
-    options.to_js(),
-  )
+pub fn IDBDatabase::transaction_with_options(self : IDBDatabase, store_names : StringOrArrayOfString, mode : IDBTransactionMode, options : IDBTransactionOptions) -> Result[IDBTransaction, IDBDatabaseTransactionError] {
+  IDBDatabase::transaction_with_options_ffi(self, store_names, mode, options.to_js())
 }
 
-///|
 pub extern "js" fn IDBDatabase::close(self : IDBDatabase) -> Unit =
   #| (self) => self.close()
 
-///|
-pub extern "js" fn IDBDatabase::create_object_store(
-  self : IDBDatabase,
-  name : String,
-) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
+pub extern "js" fn IDBDatabase::create_object_store(self : IDBDatabase, name : String) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
   #| (self, name) => (() => { try { return { $tag: 1, _0: self.createObjectStore(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-extern "js" fn IDBDatabase::create_object_store_with_options_ffi(
-  self : IDBDatabase,
-  name : String,
-  options : JsValue,
-) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
+extern "js" fn IDBDatabase::create_object_store_with_options_ffi(self : IDBDatabase, name : String, options : JsValue) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] =
   #| (self, name, options) => (() => { try { return { $tag: 1, _0: self.createObjectStore(name, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-pub fn IDBDatabase::create_object_store_with_options(
-  self : IDBDatabase,
-  name : String,
-  options : IDBObjectStoreParameters,
-) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] {
+pub fn IDBDatabase::create_object_store_with_options(self : IDBDatabase, name : String, options : IDBObjectStoreParameters) -> Result[IDBObjectStore, IDBDatabaseCreateObjectStoreError] {
   IDBDatabase::create_object_store_with_options_ffi(self, name, options.to_js())
 }
 
-///|
-pub extern "js" fn IDBDatabase::delete_object_store(
-  self : IDBDatabase,
-  name : String,
-) -> Result[Unit, IDBDatabaseDeleteObjectStoreError] =
+pub extern "js" fn IDBDatabase::delete_object_store(self : IDBDatabase, name : String) -> Result[Unit, IDBDatabaseDeleteObjectStoreError] =
   #| (self, name) => (() => { try { self.deleteObjectStore(name); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBDatabase::set_onabort(
-  self : IDBDatabase,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBDatabase::set_onabort(self : IDBDatabase, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onabort = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBDatabase::clear_onabort(self : IDBDatabase) -> Unit =
   #| (self) => { self.onabort = null }
 
-///|
-pub extern "js" fn IDBDatabase::set_onclose(
-  self : IDBDatabase,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBDatabase::set_onclose(self : IDBDatabase, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onclose = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBDatabase::clear_onclose(self : IDBDatabase) -> Unit =
   #| (self) => { self.onclose = null }
 
-///|
-pub extern "js" fn IDBDatabase::set_onerror(
-  self : IDBDatabase,
-  handler : (ErrorEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBDatabase::set_onerror(self : IDBDatabase, handler : (ErrorEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBDatabase::clear_onerror(self : IDBDatabase) -> Unit =
   #| (self) => { self.onerror = null }
 
-///|
-pub extern "js" fn IDBDatabase::set_onversionchange(
-  self : IDBDatabase,
-  handler : (IDBVersionChangeEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBDatabase::set_onversionchange(self : IDBDatabase, handler : (IDBVersionChangeEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onversionchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn IDBDatabase::clear_onversionchange(
-  self : IDBDatabase,
-) -> Unit =
+pub extern "js" fn IDBDatabase::clear_onversionchange(self : IDBDatabase) -> Unit =
   #| (self) => { self.onversionchange = null }
 
 ///|
 /// IDBObjectStore interface
 pub type IDBObjectStore
 
-///|
-pub extern "js" fn IDBObjectStore::to_js_value(
-  self : IDBObjectStore,
-) -> JsValue =
+pub extern "js" fn IDBObjectStore::to_js_value(self : IDBObjectStore) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBObjectStore (unchecked)
 pub extern "js" fn IDBObjectStore::from_js_value(v : JsValue) -> IDBObjectStore =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBObjectStore (checked with instanceof)
-pub extern "js" fn IDBObjectStore::from_js_value_opt(
-  v : JsValue,
-) -> IDBObjectStore? =
+pub extern "js" fn IDBObjectStore::from_js_value_opt(v : JsValue) -> IDBObjectStore? =
   #| (v) => (v instanceof IDBObjectStore) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBObjectStore (checked with instanceof)
-pub extern "js" fn JsValue::as_idb_object_store(
-  self : JsValue,
-) -> IDBObjectStore? =
+pub extern "js" fn JsValue::as_idb_object_store(self : JsValue) -> IDBObjectStore? =
   #| (self) => (self instanceof IDBObjectStore) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBObjectStore (unchecked)
-pub extern "js" fn JsValue::to_idb_object_store(
-  self : JsValue,
-) -> IDBObjectStore =
+pub extern "js" fn JsValue::to_idb_object_store(self : JsValue) -> IDBObjectStore =
   #| (self) => self
 
 ///|
@@ -995,6 +725,8 @@ pub(all) enum IDBObjectStoreSetNameError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreSetNameError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStorePutError {
@@ -1005,6 +737,8 @@ pub(all) enum IDBObjectStorePutError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStorePutError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1018,6 +752,8 @@ pub(all) enum IDBObjectStoreAddError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreAddError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreDeleteError {
@@ -1028,6 +764,8 @@ pub(all) enum IDBObjectStoreDeleteError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreDeleteError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreClearError {
@@ -1036,6 +774,8 @@ pub(all) enum IDBObjectStoreClearError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStoreClearError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1046,6 +786,8 @@ pub(all) enum IDBObjectStoreGetError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreGetError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetKeyError {
@@ -1054,6 +796,8 @@ pub(all) enum IDBObjectStoreGetKeyError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStoreGetKeyError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1065,6 +809,8 @@ pub(all) enum IDBObjectStoreGetAllError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreGetAllError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetAllKeysError {
@@ -1075,6 +821,8 @@ pub(all) enum IDBObjectStoreGetAllKeysError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreGetAllKeysError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreGetAllRecordsError {
@@ -1083,6 +831,8 @@ pub(all) enum IDBObjectStoreGetAllRecordsError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStoreGetAllRecordsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1093,6 +843,8 @@ pub(all) enum IDBObjectStoreCountError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreCountError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreOpenCursorError {
@@ -1101,6 +853,8 @@ pub(all) enum IDBObjectStoreOpenCursorError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStoreOpenCursorError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1111,6 +865,8 @@ pub(all) enum IDBObjectStoreOpenKeyCursorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreOpenKeyCursorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreIndexError {
@@ -1118,6 +874,8 @@ pub(all) enum IDBObjectStoreIndexError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBObjectStoreIndexError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1130,6 +888,8 @@ pub(all) enum IDBObjectStoreCreateIndexError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBObjectStoreCreateIndexError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBObjectStoreDeleteIndexError {
@@ -1139,258 +899,125 @@ pub(all) enum IDBObjectStoreDeleteIndexError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IDBObjectStoreDeleteIndexError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IDBObjectStore::get_name(self : IDBObjectStore) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn IDBObjectStore::set_name(
-  self : IDBObjectStore,
-  value : String,
-) -> Result[Unit, IDBObjectStoreSetNameError] =
+pub extern "js" fn IDBObjectStore::set_name(self : IDBObjectStore, value : String) -> Result[Unit, IDBObjectStoreSetNameError] =
   #| (self, value) => (() => { try { self.name = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ConstraintError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_key_path(
-  self : IDBObjectStore,
-) -> JsValue =
+pub extern "js" fn IDBObjectStore::get_key_path(self : IDBObjectStore) -> JsValue =
   #| (self) => self.keyPath
 
-///|
-pub extern "js" fn IDBObjectStore::get_index_names(
-  self : IDBObjectStore,
-) -> DOMStringList =
+pub extern "js" fn IDBObjectStore::get_index_names(self : IDBObjectStore) -> DOMStringList =
   #| (self) => self.indexNames
 
-///|
-pub extern "js" fn IDBObjectStore::get_transaction(
-  self : IDBObjectStore,
-) -> IDBTransaction =
+pub extern "js" fn IDBObjectStore::get_transaction(self : IDBObjectStore) -> IDBTransaction =
   #| (self) => self.transaction
 
-///|
-pub extern "js" fn IDBObjectStore::get_auto_increment(
-  self : IDBObjectStore,
-) -> Bool =
+pub extern "js" fn IDBObjectStore::get_auto_increment(self : IDBObjectStore) -> Bool =
   #| (self) => self.autoIncrement
 
-///|
-pub extern "js" fn IDBObjectStore::put(
-  self : IDBObjectStore,
-  value : JsValue,
-) -> Result[IDBRequest, IDBObjectStorePutError] =
+pub extern "js" fn IDBObjectStore::put(self : IDBObjectStore, value : JsValue) -> Result[IDBRequest, IDBObjectStorePutError] =
   #| (self, value) => (() => { try { return { $tag: 1, _0: self.put(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::put_with_key(
-  self : IDBObjectStore,
-  value : JsValue,
-  key : JsValue,
-) -> Result[IDBRequest, IDBObjectStorePutError] =
+pub extern "js" fn IDBObjectStore::put_with_key(self : IDBObjectStore, value : JsValue, key : JsValue) -> Result[IDBRequest, IDBObjectStorePutError] =
   #| (self, value, key) => (() => { try { return { $tag: 1, _0: self.put(value, key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::add(
-  self : IDBObjectStore,
-  value : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreAddError] =
+pub extern "js" fn IDBObjectStore::add(self : IDBObjectStore, value : JsValue) -> Result[IDBRequest, IDBObjectStoreAddError] =
   #| (self, value) => (() => { try { return { $tag: 1, _0: self.add(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'ConstraintError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::add_with_key(
-  self : IDBObjectStore,
-  value : JsValue,
-  key : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreAddError] =
+pub extern "js" fn IDBObjectStore::add_with_key(self : IDBObjectStore, value : JsValue, key : JsValue) -> Result[IDBRequest, IDBObjectStoreAddError] =
   #| (self, value, key) => (() => { try { return { $tag: 1, _0: self.add(value, key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'ConstraintError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::delete(
-  self : IDBObjectStore,
-  query : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreDeleteError] =
+pub extern "js" fn IDBObjectStore::delete(self : IDBObjectStore, query : JsValue) -> Result[IDBRequest, IDBObjectStoreDeleteError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.delete(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::clear(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreClearError] =
+pub extern "js" fn IDBObjectStore::clear(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreClearError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.clear() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ReadOnlyError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get(
-  self : IDBObjectStore,
-  query : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreGetError] =
+pub extern "js" fn IDBObjectStore::get(self : IDBObjectStore, query : JsValue) -> Result[IDBRequest, IDBObjectStoreGetError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.get(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_key(
-  self : IDBObjectStore,
-  query : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreGetKeyError] =
+pub extern "js" fn IDBObjectStore::get_key(self : IDBObjectStore, query : JsValue) -> Result[IDBRequest, IDBObjectStoreGetKeyError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.getKey(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_all(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
+pub extern "js" fn IDBObjectStore::get_all(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAll() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_all_with_count(
-  self : IDBObjectStore,
-  query_or_options : JsValue,
-  count : Int,
-) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
+pub extern "js" fn IDBObjectStore::get_all_with_count(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> Result[IDBRequest, IDBObjectStoreGetAllError] =
   #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_all_keys(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
+pub extern "js" fn IDBObjectStore::get_all_keys(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAllKeys() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_all_keys_with_count(
-  self : IDBObjectStore,
-  query_or_options : JsValue,
-  count : Int,
-) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
+pub extern "js" fn IDBObjectStore::get_all_keys_with_count(self : IDBObjectStore, query_or_options : JsValue, count : Int) -> Result[IDBRequest, IDBObjectStoreGetAllKeysError] =
   #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::get_all_records(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
+pub extern "js" fn IDBObjectStore::get_all_records(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAllRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-extern "js" fn IDBObjectStore::get_all_records_with_options_ffi(
-  self : IDBObjectStore,
-  options : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
+extern "js" fn IDBObjectStore::get_all_records_with_options_ffi(self : IDBObjectStore, options : JsValue) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] =
   #| (self, options) => (() => { try { return { $tag: 1, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub fn IDBObjectStore::get_all_records_with_options(
-  self : IDBObjectStore,
-  options : IDBGetAllOptions,
-) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] {
+pub fn IDBObjectStore::get_all_records_with_options(self : IDBObjectStore, options : IDBGetAllOptions) -> Result[IDBRequest, IDBObjectStoreGetAllRecordsError] {
   IDBObjectStore::get_all_records_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn IDBObjectStore::count(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreCountError] =
+pub extern "js" fn IDBObjectStore::count(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreCountError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.count() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::count_with_query(
-  self : IDBObjectStore,
-  query : JsValue,
-) -> Result[IDBRequest, IDBObjectStoreCountError] =
+pub extern "js" fn IDBObjectStore::count_with_query(self : IDBObjectStore, query : JsValue) -> Result[IDBRequest, IDBObjectStoreCountError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.count(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::open_cursor(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
+pub extern "js" fn IDBObjectStore::open_cursor(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.openCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::open_cursor_with_direction(
-  self : IDBObjectStore,
-  query : JsValue,
-  direction : IDBCursorDirection,
-) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
+pub extern "js" fn IDBObjectStore::open_cursor_with_direction(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> Result[IDBRequest, IDBObjectStoreOpenCursorError] =
   #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::open_key_cursor(
-  self : IDBObjectStore,
-) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
+pub extern "js" fn IDBObjectStore::open_key_cursor(self : IDBObjectStore) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::open_key_cursor_with_direction(
-  self : IDBObjectStore,
-  query : JsValue,
-  direction : IDBCursorDirection,
-) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
+pub extern "js" fn IDBObjectStore::open_key_cursor_with_direction(self : IDBObjectStore, query : JsValue, direction : IDBCursorDirection) -> Result[IDBRequest, IDBObjectStoreOpenKeyCursorError] =
   #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::index(
-  self : IDBObjectStore,
-  name : String,
-) -> Result[IDBIndex, IDBObjectStoreIndexError] =
+pub extern "js" fn IDBObjectStore::index(self : IDBObjectStore, name : String) -> Result[IDBIndex, IDBObjectStoreIndexError] =
   #| (self, name) => (() => { try { return { $tag: 1, _0: self.index(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBObjectStore::create_index(
-  self : IDBObjectStore,
-  name : String,
-  key_path : StringOrArrayOfString,
-) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
+pub extern "js" fn IDBObjectStore::create_index(self : IDBObjectStore, name : String, key_path : StringOrArrayOfString) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
   #| (self, name, key_path) => (() => { try { return { $tag: 1, _0: self.createIndex(name, key_path) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-extern "js" fn IDBObjectStore::create_index_with_options_ffi(
-  self : IDBObjectStore,
-  name : String,
-  key_path : StringOrArrayOfString,
-  options : JsValue,
-) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
+extern "js" fn IDBObjectStore::create_index_with_options_ffi(self : IDBObjectStore, name : String, key_path : StringOrArrayOfString, options : JsValue) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] =
   #| (self, name, key_path, options) => (() => { try { return { $tag: 1, _0: self.createIndex(name, key_path, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'ConstraintError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'InvalidAccessError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-pub fn IDBObjectStore::create_index_with_options(
-  self : IDBObjectStore,
-  name : String,
-  key_path : StringOrArrayOfString,
-  options : IDBIndexParameters,
-) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] {
-  IDBObjectStore::create_index_with_options_ffi(
-    self,
-    name,
-    key_path,
-    options.to_js(),
-  )
+pub fn IDBObjectStore::create_index_with_options(self : IDBObjectStore, name : String, key_path : StringOrArrayOfString, options : IDBIndexParameters) -> Result[IDBIndex, IDBObjectStoreCreateIndexError] {
+  IDBObjectStore::create_index_with_options_ffi(self, name, key_path, options.to_js())
 }
 
-///|
-pub extern "js" fn IDBObjectStore::delete_index(
-  self : IDBObjectStore,
-  name : String,
-) -> Result[Unit, IDBObjectStoreDeleteIndexError] =
+pub extern "js" fn IDBObjectStore::delete_index(self : IDBObjectStore, name : String) -> Result[Unit, IDBObjectStoreDeleteIndexError] =
   #| (self, name) => (() => { try { self.deleteIndex(name); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// IDBIndex interface
 pub type IDBIndex
 
-///|
 pub extern "js" fn IDBIndex::to_js_value(self : IDBIndex) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBIndex (unchecked)
 pub extern "js" fn IDBIndex::from_js_value(v : JsValue) -> IDBIndex =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBIndex (checked with instanceof)
 pub extern "js" fn IDBIndex::from_js_value_opt(v : JsValue) -> IDBIndex? =
   #| (v) => (v instanceof IDBIndex) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBIndex (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_index(self : JsValue) -> IDBIndex? =
   #| (self) => (self instanceof IDBIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBIndex (unchecked)
 pub extern "js" fn JsValue::to_idb_index(self : JsValue) -> IDBIndex =
   #| (self) => self
@@ -1404,6 +1031,8 @@ pub(all) enum IDBIndexSetNameError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBIndexSetNameError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetError {
@@ -1412,6 +1041,8 @@ pub(all) enum IDBIndexGetError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBIndexGetError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1422,6 +1053,8 @@ pub(all) enum IDBIndexGetKeyError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBIndexGetKeyError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetAllError {
@@ -1430,6 +1063,8 @@ pub(all) enum IDBIndexGetAllError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBIndexGetAllError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1440,6 +1075,8 @@ pub(all) enum IDBIndexGetAllKeysError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBIndexGetAllKeysError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexGetAllRecordsError {
@@ -1449,6 +1086,8 @@ pub(all) enum IDBIndexGetAllRecordsError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBIndexGetAllRecordsError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexCountError {
@@ -1457,6 +1096,8 @@ pub(all) enum IDBIndexCountError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBIndexCountError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1468,6 +1109,8 @@ pub(all) enum IDBIndexOpenCursorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBIndexOpenCursorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBIndexOpenKeyCursorError {
@@ -1478,163 +1121,91 @@ pub(all) enum IDBIndexOpenKeyCursorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IDBIndexOpenKeyCursorError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IDBIndex::get_name(self : IDBIndex) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn IDBIndex::set_name(
-  self : IDBIndex,
-  value : String,
-) -> Result[Unit, IDBIndexSetNameError] =
+pub extern "js" fn IDBIndex::set_name(self : IDBIndex, value : String) -> Result[Unit, IDBIndexSetNameError] =
   #| (self, value) => (() => { try { self.name = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ConstraintError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_object_store(
-  self : IDBIndex,
-) -> IDBObjectStore =
+pub extern "js" fn IDBIndex::get_object_store(self : IDBIndex) -> IDBObjectStore =
   #| (self) => self.objectStore
 
-///|
 pub extern "js" fn IDBIndex::get_key_path(self : IDBIndex) -> JsValue =
   #| (self) => self.keyPath
 
-///|
 pub extern "js" fn IDBIndex::get_multi_entry(self : IDBIndex) -> Bool =
   #| (self) => self.multiEntry
 
-///|
 pub extern "js" fn IDBIndex::get_unique(self : IDBIndex) -> Bool =
   #| (self) => self.unique
 
-///|
-pub extern "js" fn IDBIndex::get(
-  self : IDBIndex,
-  query : JsValue,
-) -> Result[IDBRequest, IDBIndexGetError] =
+pub extern "js" fn IDBIndex::get(self : IDBIndex, query : JsValue) -> Result[IDBRequest, IDBIndexGetError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.get(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_key(
-  self : IDBIndex,
-  query : JsValue,
-) -> Result[IDBRequest, IDBIndexGetKeyError] =
+pub extern "js" fn IDBIndex::get_key(self : IDBIndex, query : JsValue) -> Result[IDBRequest, IDBIndexGetKeyError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.getKey(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_all(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexGetAllError] =
+pub extern "js" fn IDBIndex::get_all(self : IDBIndex) -> Result[IDBRequest, IDBIndexGetAllError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAll() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_all_with_count(
-  self : IDBIndex,
-  query_or_options : JsValue,
-  count : Int,
-) -> Result[IDBRequest, IDBIndexGetAllError] =
+pub extern "js" fn IDBIndex::get_all_with_count(self : IDBIndex, query_or_options : JsValue, count : Int) -> Result[IDBRequest, IDBIndexGetAllError] =
   #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAll(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_all_keys(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
+pub extern "js" fn IDBIndex::get_all_keys(self : IDBIndex) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAllKeys() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_all_keys_with_count(
-  self : IDBIndex,
-  query_or_options : JsValue,
-  count : Int,
-) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
+pub extern "js" fn IDBIndex::get_all_keys_with_count(self : IDBIndex, query_or_options : JsValue, count : Int) -> Result[IDBRequest, IDBIndexGetAllKeysError] =
   #| (self, query_or_options, count) => (() => { try { return { $tag: 1, _0: self.getAllKeys(query_or_options, count) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::get_all_records(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
+pub extern "js" fn IDBIndex::get_all_records(self : IDBIndex) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getAllRecords() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-extern "js" fn IDBIndex::get_all_records_with_options_ffi(
-  self : IDBIndex,
-  options : JsValue,
-) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
+extern "js" fn IDBIndex::get_all_records_with_options_ffi(self : IDBIndex, options : JsValue) -> Result[IDBRequest, IDBIndexGetAllRecordsError] =
   #| (self, options) => (() => { try { return { $tag: 1, _0: self.getAllRecords(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub fn IDBIndex::get_all_records_with_options(
-  self : IDBIndex,
-  options : IDBGetAllOptions,
-) -> Result[IDBRequest, IDBIndexGetAllRecordsError] {
+pub fn IDBIndex::get_all_records_with_options(self : IDBIndex, options : IDBGetAllOptions) -> Result[IDBRequest, IDBIndexGetAllRecordsError] {
   IDBIndex::get_all_records_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn IDBIndex::count(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexCountError] =
+pub extern "js" fn IDBIndex::count(self : IDBIndex) -> Result[IDBRequest, IDBIndexCountError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.count() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::count_with_query(
-  self : IDBIndex,
-  query : JsValue,
-) -> Result[IDBRequest, IDBIndexCountError] =
+pub extern "js" fn IDBIndex::count_with_query(self : IDBIndex, query : JsValue) -> Result[IDBRequest, IDBIndexCountError] =
   #| (self, query) => (() => { try { return { $tag: 1, _0: self.count(query) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::open_cursor(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexOpenCursorError] =
+pub extern "js" fn IDBIndex::open_cursor(self : IDBIndex) -> Result[IDBRequest, IDBIndexOpenCursorError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.openCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::open_cursor_with_direction(
-  self : IDBIndex,
-  query : JsValue,
-  direction : IDBCursorDirection,
-) -> Result[IDBRequest, IDBIndexOpenCursorError] =
+pub extern "js" fn IDBIndex::open_cursor_with_direction(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> Result[IDBRequest, IDBIndexOpenCursorError] =
   #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::open_key_cursor(
-  self : IDBIndex,
-) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
+pub extern "js" fn IDBIndex::open_key_cursor(self : IDBIndex) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.openKeyCursor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBIndex::open_key_cursor_with_direction(
-  self : IDBIndex,
-  query : JsValue,
-  direction : IDBCursorDirection,
-) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
+pub extern "js" fn IDBIndex::open_key_cursor_with_direction(self : IDBIndex, query : JsValue, direction : IDBCursorDirection) -> Result[IDBRequest, IDBIndexOpenKeyCursorError] =
   #| (self, query, direction) => (() => { try { return { $tag: 1, _0: self.openKeyCursor(query, ['next', 'nextunique', 'prev', 'prevunique'][direction]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'TypeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
 ///|
 /// IDBKeyRange interface
 pub type IDBKeyRange
 
-///|
 pub extern "js" fn IDBKeyRange::to_js_value(self : IDBKeyRange) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBKeyRange (unchecked)
 pub extern "js" fn IDBKeyRange::from_js_value(v : JsValue) -> IDBKeyRange =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBKeyRange (checked with instanceof)
 pub extern "js" fn IDBKeyRange::from_js_value_opt(v : JsValue) -> IDBKeyRange? =
   #| (v) => (v instanceof IDBKeyRange) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBKeyRange (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_key_range(self : JsValue) -> IDBKeyRange? =
   #| (self) => (self instanceof IDBKeyRange) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBKeyRange (unchecked)
 pub extern "js" fn JsValue::to_idb_key_range(self : JsValue) -> IDBKeyRange =
   #| (self) => self
@@ -1646,12 +1217,16 @@ pub(all) enum IDBKeyRangeOnlyError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBKeyRangeOnlyError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeLowerBoundError {
   DataError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBKeyRangeLowerBoundError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1660,12 +1235,16 @@ pub(all) enum IDBKeyRangeUpperBoundError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBKeyRangeUpperBoundError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBKeyRangeBoundError {
   DataError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBKeyRangeBoundError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1674,114 +1253,73 @@ pub(all) enum IDBKeyRangeIncludesError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IDBKeyRangeIncludesError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IDBKeyRange::get_lower(self : IDBKeyRange) -> JsValue =
   #| (self) => self.lower
 
-///|
 pub extern "js" fn IDBKeyRange::get_upper(self : IDBKeyRange) -> JsValue =
   #| (self) => self.upper
 
-///|
 pub extern "js" fn IDBKeyRange::get_lower_open(self : IDBKeyRange) -> Bool =
   #| (self) => self.lowerOpen
 
-///|
 pub extern "js" fn IDBKeyRange::get_upper_open(self : IDBKeyRange) -> Bool =
   #| (self) => self.upperOpen
 
-///|
-pub extern "js" fn IDBKeyRange::only(
-  value : JsValue,
-) -> Result[IDBKeyRange, IDBKeyRangeOnlyError] =
+pub extern "js" fn IDBKeyRange::only(value : JsValue) -> Result[IDBKeyRange, IDBKeyRangeOnlyError] =
   #| (value) => (() => { try { return { $tag: 1, _0: IDBKeyRange.only(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::lower_bound(
-  lower : JsValue,
-) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
+pub extern "js" fn IDBKeyRange::lower_bound(lower : JsValue) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
   #| (lower) => (() => { try { return { $tag: 1, _0: IDBKeyRange.lowerBound(lower) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::lower_bound_with_open(
-  lower : JsValue,
-  open : Bool,
-) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
+pub extern "js" fn IDBKeyRange::lower_bound_with_open(lower : JsValue, open : Bool) -> Result[IDBKeyRange, IDBKeyRangeLowerBoundError] =
   #| (lower, open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.lowerBound(lower, open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::upper_bound(
-  upper : JsValue,
-) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
+pub extern "js" fn IDBKeyRange::upper_bound(upper : JsValue) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
   #| (upper) => (() => { try { return { $tag: 1, _0: IDBKeyRange.upperBound(upper) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::upper_bound_with_open(
-  upper : JsValue,
-  open : Bool,
-) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
+pub extern "js" fn IDBKeyRange::upper_bound_with_open(upper : JsValue, open : Bool) -> Result[IDBKeyRange, IDBKeyRangeUpperBoundError] =
   #| (upper, open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.upperBound(upper, open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::bound(
-  lower : JsValue,
-  upper : JsValue,
-) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
+pub extern "js" fn IDBKeyRange::bound(lower : JsValue, upper : JsValue) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
   #| (lower, upper) => (() => { try { return { $tag: 1, _0: IDBKeyRange.bound(lower, upper) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::bound_with_upper_open(
-  lower : JsValue,
-  upper : JsValue,
-  lower_open : Bool,
-  upper_open : Bool,
-) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
+pub extern "js" fn IDBKeyRange::bound_with_upper_open(lower : JsValue, upper : JsValue, lower_open : Bool, upper_open : Bool) -> Result[IDBKeyRange, IDBKeyRangeBoundError] =
   #| (lower, upper, lower_open, upper_open) => (() => { try { return { $tag: 1, _0: IDBKeyRange.bound(lower, upper, lower_open, upper_open) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBKeyRange::includes(
-  self : IDBKeyRange,
-  key : JsValue,
-) -> Result[Bool, IDBKeyRangeIncludesError] =
+pub extern "js" fn IDBKeyRange::includes(self : IDBKeyRange, key : JsValue) -> Result[Bool, IDBKeyRangeIncludesError] =
   #| (self, key) => (() => { try { return { $tag: 1, _0: self.includes(key) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// IDBRecord interface
 pub type IDBRecord
 
-///|
 pub extern "js" fn IDBRecord::to_js_value(self : IDBRecord) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBRecord (unchecked)
 pub extern "js" fn IDBRecord::from_js_value(v : JsValue) -> IDBRecord =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBRecord (checked with instanceof)
 pub extern "js" fn IDBRecord::from_js_value_opt(v : JsValue) -> IDBRecord? =
   #| (v) => (v instanceof IDBRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBRecord (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_record(self : JsValue) -> IDBRecord? =
   #| (self) => (self instanceof IDBRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBRecord (unchecked)
 pub extern "js" fn JsValue::to_idb_record(self : JsValue) -> IDBRecord =
   #| (self) => self
 
-///|
 pub extern "js" fn IDBRecord::get_key(self : IDBRecord) -> JsValue =
   #| (self) => self.key
 
-///|
 pub extern "js" fn IDBRecord::get_primary_key(self : IDBRecord) -> JsValue =
   #| (self) => self.primaryKey
 
-///|
 pub extern "js" fn IDBRecord::get_value(self : IDBRecord) -> JsValue =
   #| (self) => self.value
 
@@ -1789,34 +1327,26 @@ pub extern "js" fn IDBRecord::get_value(self : IDBRecord) -> JsValue =
 /// IDBCursor interface
 pub type IDBCursor
 
-///|
 pub extern "js" fn IDBCursor::to_js_value(self : IDBCursor) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBCursor (unchecked)
 pub extern "js" fn IDBCursor::from_js_value(v : JsValue) -> IDBCursor =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBCursor (checked with instanceof)
 pub extern "js" fn IDBCursor::from_js_value_opt(v : JsValue) -> IDBCursor? =
   #| (v) => (v instanceof IDBCursor) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBCursor (checked with instanceof)
 pub extern "js" fn JsValue::as_idb_cursor(self : JsValue) -> IDBCursor? =
   #| (self) => (self instanceof IDBCursor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBCursor (unchecked)
 pub extern "js" fn JsValue::to_idb_cursor(self : JsValue) -> IDBCursor =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBCursor::as_idb_cursor_with_value(
-  self : IDBCursor,
-) -> IDBCursorWithValue? =
+pub extern "js" fn IDBCursor::as_idb_cursor_with_value(self : IDBCursor) -> IDBCursorWithValue? =
   #| (self) => (self instanceof IDBCursorWithValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
@@ -1828,6 +1358,8 @@ pub(all) enum IDBCursorAdvanceError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBCursorAdvanceError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBCursorContinueError {
@@ -1836,6 +1368,8 @@ pub(all) enum IDBCursorContinueError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBCursorContinueError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1846,6 +1380,8 @@ pub(all) enum IDBCursorContinuePrimaryKeyError {
   TransactionInactiveError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBCursorContinuePrimaryKeyError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1858,6 +1394,8 @@ pub(all) enum IDBCursorUpdateError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBCursorUpdateError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBCursorDeleteError {
@@ -1867,161 +1405,94 @@ pub(all) enum IDBCursorDeleteError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn IDBCursor::get_source(
-  self : IDBCursor,
-) -> IDBObjectStoreOrIDBIndex =
+pub extend IDBCursorDeleteError with @debug.Debug::{to_repr}
+
+pub extern "js" fn IDBCursor::get_source(self : IDBCursor) -> IDBObjectStoreOrIDBIndex =
   #| (self) => self.source
 
-///|
-pub extern "js" fn IDBCursor::get_direction(
-  self : IDBCursor,
-) -> IDBCursorDirection =
+pub extern "js" fn IDBCursor::get_direction(self : IDBCursor) -> IDBCursorDirection =
   #| (self) => ['next', 'nextunique', 'prev', 'prevunique'].indexOf(self.direction)
 
-///|
 pub extern "js" fn IDBCursor::get_key(self : IDBCursor) -> JsValue =
   #| (self) => self.key
 
-///|
 pub extern "js" fn IDBCursor::get_primary_key(self : IDBCursor) -> JsValue =
   #| (self) => self.primaryKey
 
-///|
 pub extern "js" fn IDBCursor::get_request(self : IDBCursor) -> IDBRequest =
   #| (self) => self.request
 
-///|
-pub extern "js" fn IDBCursor::advance(
-  self : IDBCursor,
-  count : Int,
-) -> Result[Unit, IDBCursorAdvanceError] =
+pub extern "js" fn IDBCursor::advance(self : IDBCursor, count : Int) -> Result[Unit, IDBCursorAdvanceError] =
   #| (self, count) => (() => { try { self.advance(count); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBCursor::continue_(
-  self : IDBCursor,
-) -> Result[Unit, IDBCursorContinueError] =
+pub extern "js" fn IDBCursor::continue_(self : IDBCursor) -> Result[Unit, IDBCursorContinueError] =
   #| (self) => (() => { try { self.continue(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBCursor::continue__with_key(
-  self : IDBCursor,
-  key : JsValue,
-) -> Result[Unit, IDBCursorContinueError] =
+pub extern "js" fn IDBCursor::continue__with_key(self : IDBCursor, key : JsValue) -> Result[Unit, IDBCursorContinueError] =
   #| (self, key) => (() => { try { self.continue(key); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBCursor::continue_primary_key(
-  self : IDBCursor,
-  key : JsValue,
-  primary_key : JsValue,
-) -> Result[Unit, IDBCursorContinuePrimaryKeyError] =
+pub extern "js" fn IDBCursor::continue_primary_key(self : IDBCursor, key : JsValue, primary_key : JsValue) -> Result[Unit, IDBCursorContinuePrimaryKeyError] =
   #| (self, key, primary_key) => (() => { try { self.continuePrimaryKey(key, primary_key); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBCursor::update(
-  self : IDBCursor,
-  value : JsValue,
-) -> Result[IDBRequest, IDBCursorUpdateError] =
+pub extern "js" fn IDBCursor::update(self : IDBCursor, value : JsValue) -> Result[IDBRequest, IDBCursorUpdateError] =
   #| (self, value) => (() => { try { return { $tag: 1, _0: self.update(value) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'DataError') return { $tag: 0, _0: e }; if (n === 'ReadOnlyError') return { $tag: 1, _0: e }; if (n === 'DataCloneError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 4, _0: e }; return { $tag: 5, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBCursor::delete(
-  self : IDBCursor,
-) -> Result[IDBRequest, IDBCursorDeleteError] =
+pub extern "js" fn IDBCursor::delete(self : IDBCursor) -> Result[IDBRequest, IDBCursorDeleteError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.delete() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'ReadOnlyError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'TransactionInactiveError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }; } })()
 
 ///|
 /// IDBCursorWithValue interface
 pub type IDBCursorWithValue
 
-///|
-pub extern "js" fn IDBCursorWithValue::to_js_value(
-  self : IDBCursorWithValue,
-) -> JsValue =
+pub extern "js" fn IDBCursorWithValue::to_js_value(self : IDBCursorWithValue) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBCursorWithValue (unchecked)
-pub extern "js" fn IDBCursorWithValue::from_js_value(
-  v : JsValue,
-) -> IDBCursorWithValue =
+pub extern "js" fn IDBCursorWithValue::from_js_value(v : JsValue) -> IDBCursorWithValue =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBCursorWithValue (checked with instanceof)
-pub extern "js" fn IDBCursorWithValue::from_js_value_opt(
-  v : JsValue,
-) -> IDBCursorWithValue? =
+pub extern "js" fn IDBCursorWithValue::from_js_value_opt(v : JsValue) -> IDBCursorWithValue? =
   #| (v) => (v instanceof IDBCursorWithValue) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBCursorWithValue (checked with instanceof)
-pub extern "js" fn JsValue::as_idb_cursor_with_value(
-  self : JsValue,
-) -> IDBCursorWithValue? =
+pub extern "js" fn JsValue::as_idb_cursor_with_value(self : JsValue) -> IDBCursorWithValue? =
   #| (self) => (self instanceof IDBCursorWithValue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBCursorWithValue (unchecked)
-pub extern "js" fn JsValue::to_idb_cursor_with_value(
-  self : JsValue,
-) -> IDBCursorWithValue =
+pub extern "js" fn JsValue::to_idb_cursor_with_value(self : JsValue) -> IDBCursorWithValue =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBCursorWithValue::to_idb_cursor(
-  self : IDBCursorWithValue,
-) -> IDBCursor =
+pub extern "js" fn IDBCursorWithValue::to_idb_cursor(self : IDBCursorWithValue) -> IDBCursor =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBCursorWithValue::get_value(
-  self : IDBCursorWithValue,
-) -> JsValue =
+pub extern "js" fn IDBCursorWithValue::get_value(self : IDBCursorWithValue) -> JsValue =
   #| (self) => self.value
 
 ///|
 /// IDBTransaction interface
 pub type IDBTransaction
 
-///|
-pub extern "js" fn IDBTransaction::to_js_value(
-  self : IDBTransaction,
-) -> JsValue =
+pub extern "js" fn IDBTransaction::to_js_value(self : IDBTransaction) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IDBTransaction (unchecked)
 pub extern "js" fn IDBTransaction::from_js_value(v : JsValue) -> IDBTransaction =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IDBTransaction (checked with instanceof)
-pub extern "js" fn IDBTransaction::from_js_value_opt(
-  v : JsValue,
-) -> IDBTransaction? =
+pub extern "js" fn IDBTransaction::from_js_value_opt(v : JsValue) -> IDBTransaction? =
   #| (v) => (v instanceof IDBTransaction) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IDBTransaction (checked with instanceof)
-pub extern "js" fn JsValue::as_idb_transaction(
-  self : JsValue,
-) -> IDBTransaction? =
+pub extern "js" fn JsValue::as_idb_transaction(self : JsValue) -> IDBTransaction? =
   #| (self) => (self instanceof IDBTransaction) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IDBTransaction (unchecked)
-pub extern "js" fn JsValue::to_idb_transaction(
-  self : JsValue,
-) -> IDBTransaction =
+pub extern "js" fn JsValue::to_idb_transaction(self : JsValue) -> IDBTransaction =
   #| (self) => self
 
-///|
-pub extern "js" fn IDBTransaction::to_event_target(
-  self : IDBTransaction,
-) -> EventTarget =
+pub extern "js" fn IDBTransaction::to_event_target(self : IDBTransaction) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -2032,12 +1503,16 @@ pub(all) enum IDBTransactionObjectStoreError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend IDBTransactionObjectStoreError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum IDBTransactionCommitError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend IDBTransactionCommitError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -2046,84 +1521,46 @@ pub(all) enum IDBTransactionAbortError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn IDBTransaction::get_object_store_names(
-  self : IDBTransaction,
-) -> DOMStringList =
+pub extend IDBTransactionAbortError with @debug.Debug::{to_repr}
+
+pub extern "js" fn IDBTransaction::get_object_store_names(self : IDBTransaction) -> DOMStringList =
   #| (self) => self.objectStoreNames
 
-///|
-pub extern "js" fn IDBTransaction::get_mode(
-  self : IDBTransaction,
-) -> IDBTransactionMode =
+pub extern "js" fn IDBTransaction::get_mode(self : IDBTransaction) -> IDBTransactionMode =
   #| (self) => ['readonly', 'readwrite', 'versionchange'].indexOf(self.mode)
 
-///|
-pub extern "js" fn IDBTransaction::get_durability(
-  self : IDBTransaction,
-) -> IDBTransactionDurability =
+pub extern "js" fn IDBTransaction::get_durability(self : IDBTransaction) -> IDBTransactionDurability =
   #| (self) => ['default', 'strict', 'relaxed'].indexOf(self.durability)
 
-///|
 pub extern "js" fn IDBTransaction::get_db(self : IDBTransaction) -> IDBDatabase =
   #| (self) => self.db
 
-///|
-pub extern "js" fn IDBTransaction::get_error(
-  self : IDBTransaction,
-) -> DOMException? =
+pub extern "js" fn IDBTransaction::get_error(self : IDBTransaction) -> DOMException? =
   #| (self) => (() => { const v = self.error; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn IDBTransaction::object_store(
-  self : IDBTransaction,
-  name : String,
-) -> Result[IDBObjectStore, IDBTransactionObjectStoreError] =
+pub extern "js" fn IDBTransaction::object_store(self : IDBTransaction, name : String) -> Result[IDBObjectStore, IDBTransactionObjectStoreError] =
   #| (self, name) => (() => { try { return { $tag: 1, _0: self.objectStore(name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBTransaction::commit(
-  self : IDBTransaction,
-) -> Result[Unit, IDBTransactionCommitError] =
+pub extern "js" fn IDBTransaction::commit(self : IDBTransaction) -> Result[Unit, IDBTransactionCommitError] =
   #| (self) => (() => { try { self.commit(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBTransaction::abort(
-  self : IDBTransaction,
-) -> Result[Unit, IDBTransactionAbortError] =
+pub extern "js" fn IDBTransaction::abort(self : IDBTransaction) -> Result[Unit, IDBTransactionAbortError] =
   #| (self) => (() => { try { self.abort(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn IDBTransaction::set_onabort(
-  self : IDBTransaction,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBTransaction::set_onabort(self : IDBTransaction, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onabort = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBTransaction::clear_onabort(self : IDBTransaction) -> Unit =
   #| (self) => { self.onabort = null }
 
-///|
-pub extern "js" fn IDBTransaction::set_oncomplete(
-  self : IDBTransaction,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBTransaction::set_oncomplete(self : IDBTransaction, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.oncomplete = (e) => handler(e) }
 
-///|
-pub extern "js" fn IDBTransaction::clear_oncomplete(
-  self : IDBTransaction,
-) -> Unit =
+pub extern "js" fn IDBTransaction::clear_oncomplete(self : IDBTransaction) -> Unit =
   #| (self) => { self.oncomplete = null }
 
-///|
-pub extern "js" fn IDBTransaction::set_onerror(
-  self : IDBTransaction,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IDBTransaction::set_onerror(self : IDBTransaction, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 
-///|
 pub extern "js" fn IDBTransaction::clear_onerror(self : IDBTransaction) -> Unit =
   #| (self) => { self.onerror = null }

@@ -24,22 +24,19 @@ pub(all) enum AuthenticatorAttachment {
   CrossPlatform
 } derive(Eq, Debug)
 
-///|
+pub extend AuthenticatorAttachment with Eq::{equal, not_equal}
+pub extend AuthenticatorAttachment with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn AuthenticatorAttachment::to_string(
-  self : AuthenticatorAttachment,
-) -> String {
+pub fn AuthenticatorAttachment::to_string(self : AuthenticatorAttachment) -> String {
   match self {
     AuthenticatorAttachment::Platform => "platform"
     AuthenticatorAttachment::CrossPlatform => "cross-platform"
   }
 }
 
-///|
 /// Parse from string value
-pub fn AuthenticatorAttachment::from_string(
-  s : String,
-) -> AuthenticatorAttachment? {
+pub fn AuthenticatorAttachment::from_string(s : String) -> AuthenticatorAttachment? {
   match s {
     "platform" => Some(AuthenticatorAttachment::Platform)
     "cross-platform" => Some(AuthenticatorAttachment::CrossPlatform)
@@ -55,11 +52,11 @@ pub(all) enum ResidentKeyRequirement {
   Required
 } derive(Eq, Debug)
 
-///|
+pub extend ResidentKeyRequirement with Eq::{equal, not_equal}
+pub extend ResidentKeyRequirement with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn ResidentKeyRequirement::to_string(
-  self : ResidentKeyRequirement,
-) -> String {
+pub fn ResidentKeyRequirement::to_string(self : ResidentKeyRequirement) -> String {
   match self {
     ResidentKeyRequirement::Discouraged => "discouraged"
     ResidentKeyRequirement::Preferred => "preferred"
@@ -67,11 +64,8 @@ pub fn ResidentKeyRequirement::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn ResidentKeyRequirement::from_string(
-  s : String,
-) -> ResidentKeyRequirement? {
+pub fn ResidentKeyRequirement::from_string(s : String) -> ResidentKeyRequirement? {
   match s {
     "discouraged" => Some(ResidentKeyRequirement::Discouraged)
     "preferred" => Some(ResidentKeyRequirement::Preferred)
@@ -89,11 +83,11 @@ pub(all) enum AttestationConveyancePreference {
   Enterprise
 } derive(Eq, Debug)
 
-///|
+pub extend AttestationConveyancePreference with Eq::{equal, not_equal}
+pub extend AttestationConveyancePreference with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn AttestationConveyancePreference::to_string(
-  self : AttestationConveyancePreference,
-) -> String {
+pub fn AttestationConveyancePreference::to_string(self : AttestationConveyancePreference) -> String {
   match self {
     AttestationConveyancePreference::None => "none"
     AttestationConveyancePreference::Indirect => "indirect"
@@ -102,11 +96,8 @@ pub fn AttestationConveyancePreference::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn AttestationConveyancePreference::from_string(
-  s : String,
-) -> AttestationConveyancePreference? {
+pub fn AttestationConveyancePreference::from_string(s : String) -> AttestationConveyancePreference? {
   match s {
     "none" => Some(AttestationConveyancePreference::None)
     "indirect" => Some(AttestationConveyancePreference::Indirect)
@@ -123,7 +114,9 @@ pub(all) enum TokenBindingStatus {
   Supported
 } derive(Eq, Debug)
 
-///|
+pub extend TokenBindingStatus with Eq::{equal, not_equal}
+pub extend TokenBindingStatus with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn TokenBindingStatus::to_string(self : TokenBindingStatus) -> String {
   match self {
@@ -132,7 +125,6 @@ pub fn TokenBindingStatus::to_string(self : TokenBindingStatus) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn TokenBindingStatus::from_string(s : String) -> TokenBindingStatus? {
   match s {
@@ -148,21 +140,18 @@ pub(all) enum PublicKeyCredentialType {
   PublicKey
 } derive(Eq, Debug)
 
-///|
+pub extend PublicKeyCredentialType with Eq::{equal, not_equal}
+pub extend PublicKeyCredentialType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn PublicKeyCredentialType::to_string(
-  self : PublicKeyCredentialType,
-) -> String {
+pub fn PublicKeyCredentialType::to_string(self : PublicKeyCredentialType) -> String {
   match self {
     PublicKeyCredentialType::PublicKey => "public-key"
   }
 }
 
-///|
 /// Parse from string value
-pub fn PublicKeyCredentialType::from_string(
-  s : String,
-) -> PublicKeyCredentialType? {
+pub fn PublicKeyCredentialType::from_string(s : String) -> PublicKeyCredentialType? {
   match s {
     "public-key" => Some(PublicKeyCredentialType::PublicKey)
     _ => None
@@ -180,11 +169,11 @@ pub(all) enum AuthenticatorTransport {
   Internal
 } derive(Eq, Debug)
 
-///|
+pub extend AuthenticatorTransport with Eq::{equal, not_equal}
+pub extend AuthenticatorTransport with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn AuthenticatorTransport::to_string(
-  self : AuthenticatorTransport,
-) -> String {
+pub fn AuthenticatorTransport::to_string(self : AuthenticatorTransport) -> String {
   match self {
     AuthenticatorTransport::Usb => "usb"
     AuthenticatorTransport::Nfc => "nfc"
@@ -195,11 +184,8 @@ pub fn AuthenticatorTransport::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn AuthenticatorTransport::from_string(
-  s : String,
-) -> AuthenticatorTransport? {
+pub fn AuthenticatorTransport::from_string(s : String) -> AuthenticatorTransport? {
   match s {
     "usb" => Some(AuthenticatorTransport::Usb)
     "nfc" => Some(AuthenticatorTransport::Nfc)
@@ -219,11 +205,11 @@ pub(all) enum UserVerificationRequirement {
   Discouraged
 } derive(Eq, Debug)
 
-///|
+pub extend UserVerificationRequirement with Eq::{equal, not_equal}
+pub extend UserVerificationRequirement with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn UserVerificationRequirement::to_string(
-  self : UserVerificationRequirement,
-) -> String {
+pub fn UserVerificationRequirement::to_string(self : UserVerificationRequirement) -> String {
   match self {
     UserVerificationRequirement::Required => "required"
     UserVerificationRequirement::Preferred => "preferred"
@@ -231,11 +217,8 @@ pub fn UserVerificationRequirement::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn UserVerificationRequirement::from_string(
-  s : String,
-) -> UserVerificationRequirement? {
+pub fn UserVerificationRequirement::from_string(s : String) -> UserVerificationRequirement? {
   match s {
     "required" => Some(UserVerificationRequirement::Required)
     "preferred" => Some(UserVerificationRequirement::Preferred)
@@ -258,41 +241,35 @@ pub(all) enum ClientCapability {
   SignalUnknownCredential
 } derive(Eq, Debug)
 
-///|
+pub extend ClientCapability with Eq::{equal, not_equal}
+pub extend ClientCapability with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ClientCapability::to_string(self : ClientCapability) -> String {
   match self {
     ClientCapability::ConditionalCreate => "conditionalCreate"
     ClientCapability::ConditionalGet => "conditionalGet"
     ClientCapability::HybridTransport => "hybridTransport"
-    ClientCapability::PasskeyPlatformAuthenticator =>
-      "passkeyPlatformAuthenticator"
-    ClientCapability::UserVerifyingPlatformAuthenticator =>
-      "userVerifyingPlatformAuthenticator"
+    ClientCapability::PasskeyPlatformAuthenticator => "passkeyPlatformAuthenticator"
+    ClientCapability::UserVerifyingPlatformAuthenticator => "userVerifyingPlatformAuthenticator"
     ClientCapability::RelatedOrigins => "relatedOrigins"
-    ClientCapability::SignalAllAcceptedCredentials =>
-      "signalAllAcceptedCredentials"
+    ClientCapability::SignalAllAcceptedCredentials => "signalAllAcceptedCredentials"
     ClientCapability::SignalCurrentUserDetails => "signalCurrentUserDetails"
     ClientCapability::SignalUnknownCredential => "signalUnknownCredential"
   }
 }
 
-///|
 /// Parse from string value
 pub fn ClientCapability::from_string(s : String) -> ClientCapability? {
   match s {
     "conditionalCreate" => Some(ClientCapability::ConditionalCreate)
     "conditionalGet" => Some(ClientCapability::ConditionalGet)
     "hybridTransport" => Some(ClientCapability::HybridTransport)
-    "passkeyPlatformAuthenticator" =>
-      Some(ClientCapability::PasskeyPlatformAuthenticator)
-    "userVerifyingPlatformAuthenticator" =>
-      Some(ClientCapability::UserVerifyingPlatformAuthenticator)
+    "passkeyPlatformAuthenticator" => Some(ClientCapability::PasskeyPlatformAuthenticator)
+    "userVerifyingPlatformAuthenticator" => Some(ClientCapability::UserVerifyingPlatformAuthenticator)
     "relatedOrigins" => Some(ClientCapability::RelatedOrigins)
-    "signalAllAcceptedCredentials" =>
-      Some(ClientCapability::SignalAllAcceptedCredentials)
-    "signalCurrentUserDetails" =>
-      Some(ClientCapability::SignalCurrentUserDetails)
+    "signalAllAcceptedCredentials" => Some(ClientCapability::SignalAllAcceptedCredentials)
+    "signalCurrentUserDetails" => Some(ClientCapability::SignalCurrentUserDetails)
     "signalUnknownCredential" => Some(ClientCapability::SignalUnknownCredential)
     _ => None
   }
@@ -306,11 +283,11 @@ pub(all) enum PublicKeyCredentialHint {
   Hybrid
 } derive(Eq, Debug)
 
-///|
+pub extend PublicKeyCredentialHint with Eq::{equal, not_equal}
+pub extend PublicKeyCredentialHint with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn PublicKeyCredentialHint::to_string(
-  self : PublicKeyCredentialHint,
-) -> String {
+pub fn PublicKeyCredentialHint::to_string(self : PublicKeyCredentialHint) -> String {
   match self {
     PublicKeyCredentialHint::SecurityKey => "security-key"
     PublicKeyCredentialHint::ClientDevice => "client-device"
@@ -318,11 +295,8 @@ pub fn PublicKeyCredentialHint::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn PublicKeyCredentialHint::from_string(
-  s : String,
-) -> PublicKeyCredentialHint? {
+pub fn PublicKeyCredentialHint::from_string(s : String) -> PublicKeyCredentialHint? {
   match s {
     "security-key" => Some(PublicKeyCredentialHint::SecurityKey)
     "client-device" => Some(PublicKeyCredentialHint::ClientDevice)
@@ -338,7 +312,9 @@ pub(all) enum LargeBlobSupport {
   Preferred
 } derive(Eq, Debug)
 
-///|
+pub extend LargeBlobSupport with Eq::{equal, not_equal}
+pub extend LargeBlobSupport with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn LargeBlobSupport::to_string(self : LargeBlobSupport) -> String {
   match self {
@@ -347,7 +323,6 @@ pub fn LargeBlobSupport::to_string(self : LargeBlobSupport) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn LargeBlobSupport::from_string(s : String) -> LargeBlobSupport? {
   match s {
@@ -368,29 +343,19 @@ pub(all) struct RegistrationResponseJSON {
   type_ : String
 }
 
-///|
 /// Create a new RegistrationResponseJSON
-pub fn RegistrationResponseJSON::new(
-  rawId~ : Base64URLString,
-  response~ : AuthenticatorAttestationResponseJSON,
-  clientExtensionResults~ : AuthenticationExtensionsClientOutputsJSON,
-) -> RegistrationResponseJSON {
+pub fn RegistrationResponseJSON::new(rawId~ : Base64URLString, response~ : AuthenticatorAttestationResponseJSON, clientExtensionResults~ : AuthenticationExtensionsClientOutputsJSON) -> RegistrationResponseJSON {
   RegistrationResponseJSON::{
     id: "",
-    rawId,
-    response,
+    rawId: rawId,
+    response: response,
     authenticatorAttachment: None,
-    clientExtensionResults,
+    clientExtensionResults: clientExtensionResults,
     type_: "",
   }
 }
 
-///|
-extern "js" fn RegistrationResponseJSON::to_js_ffi(
-  self : RegistrationResponseJSON,
-  convert_response : (AuthenticatorAttestationResponseJSON) -> JsValue,
-  convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue,
-) -> JsValue =
+extern "js" fn RegistrationResponseJSON::to_js_ffi(self : RegistrationResponseJSON, convert_response : (AuthenticatorAttestationResponseJSON) -> JsValue, convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue) -> JsValue =
   #| (self, convert_response, convert_clientExtensionResults) => ({
   #|   id: self.id,
   #|   rawId: self.rawId,
@@ -400,24 +365,12 @@ extern "js" fn RegistrationResponseJSON::to_js_ffi(
   #|   type: self.type_
   #| })
 
-///|
 /// Convert to JsValue
-pub fn RegistrationResponseJSON::to_js(
-  self : RegistrationResponseJSON,
-) -> JsValue {
-  RegistrationResponseJSON::to_js_ffi(
-    self,
-    AuthenticatorAttestationResponseJSON::to_js,
-    AuthenticationExtensionsClientOutputsJSON::to_js,
-  )
+pub fn RegistrationResponseJSON::to_js(self : RegistrationResponseJSON) -> JsValue {
+  RegistrationResponseJSON::to_js_ffi(self, AuthenticatorAttestationResponseJSON::to_js, AuthenticationExtensionsClientOutputsJSON::to_js)
 }
 
-///|
-extern "js" fn RegistrationResponseJSON::from_js_ffi(
-  value : JsValue,
-  convert_response : (JsValue) -> AuthenticatorAttestationResponseJSON,
-  convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON,
-) -> RegistrationResponseJSON =
+extern "js" fn RegistrationResponseJSON::from_js_ffi(value : JsValue, convert_response : (JsValue) -> AuthenticatorAttestationResponseJSON, convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON) -> RegistrationResponseJSON =
   #| (v, convert_response, convert_clientExtensionResults) => ({
   #|   id: v.id,
   #|   rawId: v.rawId,
@@ -427,16 +380,9 @@ extern "js" fn RegistrationResponseJSON::from_js_ffi(
   #|   type_: v.type
   #| })
 
-///|
 /// Convert from JsValue
-pub fn RegistrationResponseJSON::from_js(
-  value : JsValue,
-) -> RegistrationResponseJSON {
-  RegistrationResponseJSON::from_js_ffi(
-    value,
-    AuthenticatorAttestationResponseJSON::from_js,
-    AuthenticationExtensionsClientOutputsJSON::from_js,
-  )
+pub fn RegistrationResponseJSON::from_js(value : JsValue) -> RegistrationResponseJSON {
+  RegistrationResponseJSON::from_js_ffi(value, AuthenticatorAttestationResponseJSON::from_js, AuthenticationExtensionsClientOutputsJSON::from_js)
 }
 
 ///|
@@ -450,28 +396,19 @@ pub(all) struct AuthenticatorAttestationResponseJSON {
   attestationObject : Base64URLString
 }
 
-///|
 /// Create a new AuthenticatorAttestationResponseJSON
-pub fn AuthenticatorAttestationResponseJSON::new(
-  clientDataJSON~ : Base64URLString,
-  authenticatorData~ : Base64URLString,
-  publicKeyAlgorithm~ : COSEAlgorithmIdentifier,
-  attestationObject~ : Base64URLString,
-) -> AuthenticatorAttestationResponseJSON {
+pub fn AuthenticatorAttestationResponseJSON::new(clientDataJSON~ : Base64URLString, authenticatorData~ : Base64URLString, publicKeyAlgorithm~ : COSEAlgorithmIdentifier, attestationObject~ : Base64URLString) -> AuthenticatorAttestationResponseJSON {
   AuthenticatorAttestationResponseJSON::{
-    clientDataJSON,
-    authenticatorData,
+    clientDataJSON: clientDataJSON,
+    authenticatorData: authenticatorData,
     transports: [],
     publicKey: None,
-    publicKeyAlgorithm,
-    attestationObject,
+    publicKeyAlgorithm: publicKeyAlgorithm,
+    attestationObject: attestationObject,
   }
 }
 
-///|
-extern "js" fn AuthenticatorAttestationResponseJSON::to_js_ffi(
-  self : AuthenticatorAttestationResponseJSON,
-) -> JsValue =
+extern "js" fn AuthenticatorAttestationResponseJSON::to_js_ffi(self : AuthenticatorAttestationResponseJSON) -> JsValue =
   #| (self) => ({
   #|   clientDataJSON: self.clientDataJSON,
   #|   authenticatorData: self.authenticatorData,
@@ -481,18 +418,12 @@ extern "js" fn AuthenticatorAttestationResponseJSON::to_js_ffi(
   #|   attestationObject: self.attestationObject
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticatorAttestationResponseJSON::to_js(
-  self : AuthenticatorAttestationResponseJSON,
-) -> JsValue {
+pub fn AuthenticatorAttestationResponseJSON::to_js(self : AuthenticatorAttestationResponseJSON) -> JsValue {
   AuthenticatorAttestationResponseJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticatorAttestationResponseJSON::from_js_ffi(
-  value : JsValue,
-) -> AuthenticatorAttestationResponseJSON =
+extern "js" fn AuthenticatorAttestationResponseJSON::from_js_ffi(value : JsValue) -> AuthenticatorAttestationResponseJSON =
   #| (v) => ({
   #|   clientDataJSON: v.clientDataJSON,
   #|   authenticatorData: v.authenticatorData,
@@ -502,11 +433,8 @@ extern "js" fn AuthenticatorAttestationResponseJSON::from_js_ffi(
   #|   attestationObject: v.attestationObject
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticatorAttestationResponseJSON::from_js(
-  value : JsValue,
-) -> AuthenticatorAttestationResponseJSON {
+pub fn AuthenticatorAttestationResponseJSON::from_js(value : JsValue) -> AuthenticatorAttestationResponseJSON {
   AuthenticatorAttestationResponseJSON::from_js_ffi(value)
 }
 
@@ -521,29 +449,19 @@ pub(all) struct AuthenticationResponseJSON {
   type_ : String
 }
 
-///|
 /// Create a new AuthenticationResponseJSON
-pub fn AuthenticationResponseJSON::new(
-  rawId~ : Base64URLString,
-  response~ : AuthenticatorAssertionResponseJSON,
-  clientExtensionResults~ : AuthenticationExtensionsClientOutputsJSON,
-) -> AuthenticationResponseJSON {
+pub fn AuthenticationResponseJSON::new(rawId~ : Base64URLString, response~ : AuthenticatorAssertionResponseJSON, clientExtensionResults~ : AuthenticationExtensionsClientOutputsJSON) -> AuthenticationResponseJSON {
   AuthenticationResponseJSON::{
     id: "",
-    rawId,
-    response,
+    rawId: rawId,
+    response: response,
     authenticatorAttachment: None,
-    clientExtensionResults,
+    clientExtensionResults: clientExtensionResults,
     type_: "",
   }
 }
 
-///|
-extern "js" fn AuthenticationResponseJSON::to_js_ffi(
-  self : AuthenticationResponseJSON,
-  convert_response : (AuthenticatorAssertionResponseJSON) -> JsValue,
-  convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationResponseJSON::to_js_ffi(self : AuthenticationResponseJSON, convert_response : (AuthenticatorAssertionResponseJSON) -> JsValue, convert_clientExtensionResults : (AuthenticationExtensionsClientOutputsJSON) -> JsValue) -> JsValue =
   #| (self, convert_response, convert_clientExtensionResults) => ({
   #|   id: self.id,
   #|   rawId: self.rawId,
@@ -553,24 +471,12 @@ extern "js" fn AuthenticationResponseJSON::to_js_ffi(
   #|   type: self.type_
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationResponseJSON::to_js(
-  self : AuthenticationResponseJSON,
-) -> JsValue {
-  AuthenticationResponseJSON::to_js_ffi(
-    self,
-    AuthenticatorAssertionResponseJSON::to_js,
-    AuthenticationExtensionsClientOutputsJSON::to_js,
-  )
+pub fn AuthenticationResponseJSON::to_js(self : AuthenticationResponseJSON) -> JsValue {
+  AuthenticationResponseJSON::to_js_ffi(self, AuthenticatorAssertionResponseJSON::to_js, AuthenticationExtensionsClientOutputsJSON::to_js)
 }
 
-///|
-extern "js" fn AuthenticationResponseJSON::from_js_ffi(
-  value : JsValue,
-  convert_response : (JsValue) -> AuthenticatorAssertionResponseJSON,
-  convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON,
-) -> AuthenticationResponseJSON =
+extern "js" fn AuthenticationResponseJSON::from_js_ffi(value : JsValue, convert_response : (JsValue) -> AuthenticatorAssertionResponseJSON, convert_clientExtensionResults : (JsValue) -> AuthenticationExtensionsClientOutputsJSON) -> AuthenticationResponseJSON =
   #| (v, convert_response, convert_clientExtensionResults) => ({
   #|   id: v.id,
   #|   rawId: v.rawId,
@@ -580,16 +486,9 @@ extern "js" fn AuthenticationResponseJSON::from_js_ffi(
   #|   type_: v.type
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationResponseJSON::from_js(
-  value : JsValue,
-) -> AuthenticationResponseJSON {
-  AuthenticationResponseJSON::from_js_ffi(
-    value,
-    AuthenticatorAssertionResponseJSON::from_js,
-    AuthenticationExtensionsClientOutputsJSON::from_js,
-  )
+pub fn AuthenticationResponseJSON::from_js(value : JsValue) -> AuthenticationResponseJSON {
+  AuthenticationResponseJSON::from_js_ffi(value, AuthenticatorAssertionResponseJSON::from_js, AuthenticationExtensionsClientOutputsJSON::from_js)
 }
 
 ///|
@@ -601,25 +500,17 @@ pub(all) struct AuthenticatorAssertionResponseJSON {
   userHandle : Base64URLString?
 }
 
-///|
 /// Create a new AuthenticatorAssertionResponseJSON
-pub fn AuthenticatorAssertionResponseJSON::new(
-  clientDataJSON~ : Base64URLString,
-  authenticatorData~ : Base64URLString,
-  signature~ : Base64URLString,
-) -> AuthenticatorAssertionResponseJSON {
+pub fn AuthenticatorAssertionResponseJSON::new(clientDataJSON~ : Base64URLString, authenticatorData~ : Base64URLString, signature~ : Base64URLString) -> AuthenticatorAssertionResponseJSON {
   AuthenticatorAssertionResponseJSON::{
-    clientDataJSON,
-    authenticatorData,
-    signature,
+    clientDataJSON: clientDataJSON,
+    authenticatorData: authenticatorData,
+    signature: signature,
     userHandle: None,
   }
 }
 
-///|
-extern "js" fn AuthenticatorAssertionResponseJSON::to_js_ffi(
-  self : AuthenticatorAssertionResponseJSON,
-) -> JsValue =
+extern "js" fn AuthenticatorAssertionResponseJSON::to_js_ffi(self : AuthenticatorAssertionResponseJSON) -> JsValue =
   #| (self) => ({
   #|   clientDataJSON: self.clientDataJSON,
   #|   authenticatorData: self.authenticatorData,
@@ -627,18 +518,12 @@ extern "js" fn AuthenticatorAssertionResponseJSON::to_js_ffi(
   #|   userHandle: self.userHandle
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticatorAssertionResponseJSON::to_js(
-  self : AuthenticatorAssertionResponseJSON,
-) -> JsValue {
+pub fn AuthenticatorAssertionResponseJSON::to_js(self : AuthenticatorAssertionResponseJSON) -> JsValue {
   AuthenticatorAssertionResponseJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticatorAssertionResponseJSON::from_js_ffi(
-  value : JsValue,
-) -> AuthenticatorAssertionResponseJSON =
+extern "js" fn AuthenticatorAssertionResponseJSON::from_js_ffi(value : JsValue) -> AuthenticatorAssertionResponseJSON =
   #| (v) => ({
   #|   clientDataJSON: v.clientDataJSON,
   #|   authenticatorData: v.authenticatorData,
@@ -646,11 +531,8 @@ extern "js" fn AuthenticatorAssertionResponseJSON::from_js_ffi(
   #|   userHandle: v.userHandle
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticatorAssertionResponseJSON::from_js(
-  value : JsValue,
-) -> AuthenticatorAssertionResponseJSON {
+pub fn AuthenticatorAssertionResponseJSON::from_js(value : JsValue) -> AuthenticatorAssertionResponseJSON {
   AuthenticatorAssertionResponseJSON::from_js_ffi(value)
 }
 
@@ -662,9 +544,9 @@ pub(all) struct AuthenticationExtensionsClientOutputsJSON {
   credProps : CredentialPropertiesOutput?
   prf : AuthenticationExtensionsPRFOutputsJSON?
   largeBlob : AuthenticationExtensionsLargeBlobOutputsJSON?
+  remoteClientDataJSON : Bool?
 }
 
-///|
 /// Create a new AuthenticationExtensionsClientOutputsJSON with default values
 pub fn AuthenticationExtensionsClientOutputsJSON::default() -> AuthenticationExtensionsClientOutputsJSON {
   AuthenticationExtensionsClientOutputsJSON::{
@@ -673,96 +555,38 @@ pub fn AuthenticationExtensionsClientOutputsJSON::default() -> AuthenticationExt
     credProps: None,
     prf: None,
     largeBlob: None,
+    remoteClientDataJSON: None,
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsClientOutputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsClientOutputsJSON,
-  convert_credProps : (CredentialPropertiesOutput?) -> JsValue,
-  convert_prf : (AuthenticationExtensionsPRFOutputsJSON?) -> JsValue,
-  convert_largeBlob : (AuthenticationExtensionsLargeBlobOutputsJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsClientOutputsJSON::to_js_ffi(self : AuthenticationExtensionsClientOutputsJSON, convert_credProps : (CredentialPropertiesOutput?) -> JsValue, convert_prf : (AuthenticationExtensionsPRFOutputsJSON?) -> JsValue, convert_largeBlob : (AuthenticationExtensionsLargeBlobOutputsJSON?) -> JsValue) -> JsValue =
   #| (self, convert_credProps, convert_prf, convert_largeBlob) => ({
   #|   appid: (self.appid === -1 ? undefined : self.appid),
   #|   appidExclude: (self.appidExclude === -1 ? undefined : self.appidExclude),
   #|   credProps: convert_credProps(self.credProps),
   #|   prf: convert_prf(self.prf),
-  #|   largeBlob: convert_largeBlob(self.largeBlob)
+  #|   largeBlob: convert_largeBlob(self.largeBlob),
+  #|   remoteClientDataJSON: (self.remoteClientDataJSON === -1 ? undefined : self.remoteClientDataJSON)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsClientOutputsJSON::to_js(
-  self : AuthenticationExtensionsClientOutputsJSON,
-) -> JsValue {
-  AuthenticationExtensionsClientOutputsJSON::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn AuthenticationExtensionsClientOutputsJSON::to_js(self : AuthenticationExtensionsClientOutputsJSON) -> JsValue {
+  AuthenticationExtensionsClientOutputsJSON::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsClientOutputsJSON::from_js_ffi(
-  value : JsValue,
-  convert_credProps : (JsValue) -> CredentialPropertiesOutput?,
-  convert_prf : (JsValue) -> AuthenticationExtensionsPRFOutputsJSON?,
-  convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobOutputsJSON?,
-) -> AuthenticationExtensionsClientOutputsJSON =
+extern "js" fn AuthenticationExtensionsClientOutputsJSON::from_js_ffi(value : JsValue, convert_credProps : (JsValue) -> CredentialPropertiesOutput?, convert_prf : (JsValue) -> AuthenticationExtensionsPRFOutputsJSON?, convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobOutputsJSON?) -> AuthenticationExtensionsClientOutputsJSON =
   #| (v, convert_credProps, convert_prf, convert_largeBlob) => ({
   #|   appid: (v.appid === undefined ? -1 : v.appid),
   #|   appidExclude: (v.appidExclude === undefined ? -1 : v.appidExclude),
   #|   credProps: convert_credProps(v.credProps),
   #|   prf: convert_prf(v.prf),
-  #|   largeBlob: convert_largeBlob(v.largeBlob)
+  #|   largeBlob: convert_largeBlob(v.largeBlob),
+  #|   remoteClientDataJSON: (v.remoteClientDataJSON === undefined ? -1 : v.remoteClientDataJSON)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsClientOutputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsClientOutputsJSON {
-  AuthenticationExtensionsClientOutputsJSON::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(CredentialPropertiesOutput::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsPRFOutputsJSON::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsLargeBlobOutputsJSON::from_js(value))
-      }
-    },
-  )
+pub fn AuthenticationExtensionsClientOutputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsClientOutputsJSON {
+  AuthenticationExtensionsClientOutputsJSON::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(CredentialPropertiesOutput::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFOutputsJSON::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsLargeBlobOutputsJSON::from_js(value)) } })
 }
 
 ///|
@@ -781,17 +605,12 @@ pub(all) struct PublicKeyCredentialCreationOptionsJSON {
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
-///|
 /// Create a new PublicKeyCredentialCreationOptionsJSON
-pub fn PublicKeyCredentialCreationOptionsJSON::new(
-  rp~ : PublicKeyCredentialRpEntity,
-  user~ : PublicKeyCredentialUserEntityJSON,
-  challenge~ : Base64URLString,
-) -> PublicKeyCredentialCreationOptionsJSON {
+pub fn PublicKeyCredentialCreationOptionsJSON::new(rp~ : PublicKeyCredentialRpEntity, user~ : PublicKeyCredentialUserEntityJSON, challenge~ : Base64URLString) -> PublicKeyCredentialCreationOptionsJSON {
   PublicKeyCredentialCreationOptionsJSON::{
-    rp,
-    user,
-    challenge,
+    rp: rp,
+    user: user,
+    challenge: challenge,
     pubKeyCredParams: [],
     timeout: None,
     excludeCredentials: None,
@@ -803,14 +622,7 @@ pub fn PublicKeyCredentialCreationOptionsJSON::new(
   }
 }
 
-///|
-extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
-  self : PublicKeyCredentialCreationOptionsJSON,
-  convert_rp : (PublicKeyCredentialRpEntity) -> JsValue,
-  convert_user : (PublicKeyCredentialUserEntityJSON) -> JsValue,
-  convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue,
-  convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(self : PublicKeyCredentialCreationOptionsJSON, convert_rp : (PublicKeyCredentialRpEntity) -> JsValue, convert_user : (PublicKeyCredentialUserEntityJSON) -> JsValue, convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue, convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue) -> JsValue =
   #| (self, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
   #|   rp: convert_rp(self.rp),
   #|   user: convert_user(self.user),
@@ -825,38 +637,12 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
   #|   extensions: convert_extensions(self.extensions)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialCreationOptionsJSON::to_js(
-  self : PublicKeyCredentialCreationOptionsJSON,
-) -> JsValue {
-  PublicKeyCredentialCreationOptionsJSON::to_js_ffi(
-    self,
-    PublicKeyCredentialRpEntity::to_js,
-    PublicKeyCredentialUserEntityJSON::to_js,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn PublicKeyCredentialCreationOptionsJSON::to_js(self : PublicKeyCredentialCreationOptionsJSON) -> JsValue {
+  PublicKeyCredentialCreationOptionsJSON::to_js_ffi(self, PublicKeyCredentialRpEntity::to_js, PublicKeyCredentialUserEntityJSON::to_js, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
-  value : JsValue,
-  convert_rp : (JsValue) -> PublicKeyCredentialRpEntity,
-  convert_user : (JsValue) -> PublicKeyCredentialUserEntityJSON,
-  convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?,
-  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?,
-) -> PublicKeyCredentialCreationOptionsJSON =
+extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(value : JsValue, convert_rp : (JsValue) -> PublicKeyCredentialRpEntity, convert_user : (JsValue) -> PublicKeyCredentialUserEntityJSON, convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?, convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?) -> PublicKeyCredentialCreationOptionsJSON =
   #| (v, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
   #|   rp: convert_rp(v.rp),
   #|   user: convert_user(v.user),
@@ -871,30 +657,9 @@ extern "js" fn PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
   #|   extensions: convert_extensions(v.extensions)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialCreationOptionsJSON::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialCreationOptionsJSON {
-  PublicKeyCredentialCreationOptionsJSON::from_js_ffi(
-    value,
-    PublicKeyCredentialRpEntity::from_js,
-    PublicKeyCredentialUserEntityJSON::from_js,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticatorSelectionCriteria::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsClientInputsJSON::from_js(value))
-      }
-    },
-  )
+pub fn PublicKeyCredentialCreationOptionsJSON::from_js(value : JsValue) -> PublicKeyCredentialCreationOptionsJSON {
+  PublicKeyCredentialCreationOptionsJSON::from_js_ffi(value, PublicKeyCredentialRpEntity::from_js, PublicKeyCredentialUserEntityJSON::from_js, fn(value) { if value.is_undefined() { None } else { Some(AuthenticatorSelectionCriteria::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsClientInputsJSON::from_js(value)) } })
 }
 
 ///|
@@ -905,47 +670,36 @@ pub(all) struct PublicKeyCredentialUserEntityJSON {
   displayName : String
 }
 
-///|
 /// Create a new PublicKeyCredentialUserEntityJSON
-pub fn PublicKeyCredentialUserEntityJSON::new(
-  id~ : Base64URLString,
-) -> PublicKeyCredentialUserEntityJSON {
-  PublicKeyCredentialUserEntityJSON::{ id, name: "", displayName: "", }
+pub fn PublicKeyCredentialUserEntityJSON::new(id~ : Base64URLString) -> PublicKeyCredentialUserEntityJSON {
+  PublicKeyCredentialUserEntityJSON::{
+    id: id,
+    name: "",
+    displayName: "",
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialUserEntityJSON::to_js_ffi(
-  self : PublicKeyCredentialUserEntityJSON,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialUserEntityJSON::to_js_ffi(self : PublicKeyCredentialUserEntityJSON) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   name: self.name,
   #|   displayName: self.displayName
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialUserEntityJSON::to_js(
-  self : PublicKeyCredentialUserEntityJSON,
-) -> JsValue {
+pub fn PublicKeyCredentialUserEntityJSON::to_js(self : PublicKeyCredentialUserEntityJSON) -> JsValue {
   PublicKeyCredentialUserEntityJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialUserEntityJSON::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialUserEntityJSON =
+extern "js" fn PublicKeyCredentialUserEntityJSON::from_js_ffi(value : JsValue) -> PublicKeyCredentialUserEntityJSON =
   #| (v) => ({
   #|   id: v.id,
   #|   name: v.name,
   #|   displayName: v.displayName
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialUserEntityJSON::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialUserEntityJSON {
+pub fn PublicKeyCredentialUserEntityJSON::from_js(value : JsValue) -> PublicKeyCredentialUserEntityJSON {
   PublicKeyCredentialUserEntityJSON::from_js_ffi(value)
 }
 
@@ -957,47 +711,36 @@ pub(all) struct PublicKeyCredentialDescriptorJSON {
   transports : FixedArray[String]?
 }
 
-///|
 /// Create a new PublicKeyCredentialDescriptorJSON
-pub fn PublicKeyCredentialDescriptorJSON::new(
-  id~ : Base64URLString,
-) -> PublicKeyCredentialDescriptorJSON {
-  PublicKeyCredentialDescriptorJSON::{ type_: "", id, transports: None, }
+pub fn PublicKeyCredentialDescriptorJSON::new(id~ : Base64URLString) -> PublicKeyCredentialDescriptorJSON {
+  PublicKeyCredentialDescriptorJSON::{
+    type_: "",
+    id: id,
+    transports: None,
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialDescriptorJSON::to_js_ffi(
-  self : PublicKeyCredentialDescriptorJSON,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialDescriptorJSON::to_js_ffi(self : PublicKeyCredentialDescriptorJSON) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   id: self.id,
   #|   transports: self.transports
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialDescriptorJSON::to_js(
-  self : PublicKeyCredentialDescriptorJSON,
-) -> JsValue {
+pub fn PublicKeyCredentialDescriptorJSON::to_js(self : PublicKeyCredentialDescriptorJSON) -> JsValue {
   PublicKeyCredentialDescriptorJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialDescriptorJSON::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialDescriptorJSON =
+extern "js" fn PublicKeyCredentialDescriptorJSON::from_js_ffi(value : JsValue) -> PublicKeyCredentialDescriptorJSON =
   #| (v) => ({
   #|   type_: v.type,
   #|   id: v.id,
   #|   transports: v.transports
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialDescriptorJSON::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialDescriptorJSON {
+pub fn PublicKeyCredentialDescriptorJSON::from_js(value : JsValue) -> PublicKeyCredentialDescriptorJSON {
   PublicKeyCredentialDescriptorJSON::from_js_ffi(value)
 }
 
@@ -1009,9 +752,9 @@ pub(all) struct AuthenticationExtensionsClientInputsJSON {
   credProps : Bool?
   prf : AuthenticationExtensionsPRFInputsJSON?
   largeBlob : AuthenticationExtensionsLargeBlobInputsJSON?
+  remoteClientDataJSON : String?
 }
 
-///|
 /// Create a new AuthenticationExtensionsClientInputsJSON with default values
 pub fn AuthenticationExtensionsClientInputsJSON::default() -> AuthenticationExtensionsClientInputsJSON {
   AuthenticationExtensionsClientInputsJSON::{
@@ -1020,81 +763,38 @@ pub fn AuthenticationExtensionsClientInputsJSON::default() -> AuthenticationExte
     credProps: None,
     prf: None,
     largeBlob: None,
+    remoteClientDataJSON: None,
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsClientInputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsClientInputsJSON,
-  convert_prf : (AuthenticationExtensionsPRFInputsJSON?) -> JsValue,
-  convert_largeBlob : (AuthenticationExtensionsLargeBlobInputsJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsClientInputsJSON::to_js_ffi(self : AuthenticationExtensionsClientInputsJSON, convert_prf : (AuthenticationExtensionsPRFInputsJSON?) -> JsValue, convert_largeBlob : (AuthenticationExtensionsLargeBlobInputsJSON?) -> JsValue) -> JsValue =
   #| (self, convert_prf, convert_largeBlob) => ({
   #|   appid: self.appid,
   #|   appidExclude: self.appidExclude,
   #|   credProps: (self.credProps === -1 ? undefined : self.credProps),
   #|   prf: convert_prf(self.prf),
-  #|   largeBlob: convert_largeBlob(self.largeBlob)
+  #|   largeBlob: convert_largeBlob(self.largeBlob),
+  #|   remoteClientDataJSON: self.remoteClientDataJSON
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsClientInputsJSON::to_js(
-  self : AuthenticationExtensionsClientInputsJSON,
-) -> JsValue {
-  AuthenticationExtensionsClientInputsJSON::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn AuthenticationExtensionsClientInputsJSON::to_js(self : AuthenticationExtensionsClientInputsJSON) -> JsValue {
+  AuthenticationExtensionsClientInputsJSON::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsClientInputsJSON::from_js_ffi(
-  value : JsValue,
-  convert_prf : (JsValue) -> AuthenticationExtensionsPRFInputsJSON?,
-  convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobInputsJSON?,
-) -> AuthenticationExtensionsClientInputsJSON =
+extern "js" fn AuthenticationExtensionsClientInputsJSON::from_js_ffi(value : JsValue, convert_prf : (JsValue) -> AuthenticationExtensionsPRFInputsJSON?, convert_largeBlob : (JsValue) -> AuthenticationExtensionsLargeBlobInputsJSON?) -> AuthenticationExtensionsClientInputsJSON =
   #| (v, convert_prf, convert_largeBlob) => ({
   #|   appid: v.appid,
   #|   appidExclude: v.appidExclude,
   #|   credProps: (v.credProps === undefined ? -1 : v.credProps),
   #|   prf: convert_prf(v.prf),
-  #|   largeBlob: convert_largeBlob(v.largeBlob)
+  #|   largeBlob: convert_largeBlob(v.largeBlob),
+  #|   remoteClientDataJSON: v.remoteClientDataJSON
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsClientInputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsClientInputsJSON {
-  AuthenticationExtensionsClientInputsJSON::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsPRFInputsJSON::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsLargeBlobInputsJSON::from_js(value))
-      }
-    },
-  )
+pub fn AuthenticationExtensionsClientInputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsClientInputsJSON {
+  AuthenticationExtensionsClientInputsJSON::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFInputsJSON::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsLargeBlobInputsJSON::from_js(value)) } })
 }
 
 ///|
@@ -1109,13 +809,10 @@ pub(all) struct PublicKeyCredentialRequestOptionsJSON {
   extensions : AuthenticationExtensionsClientInputsJSON?
 }
 
-///|
 /// Create a new PublicKeyCredentialRequestOptionsJSON
-pub fn PublicKeyCredentialRequestOptionsJSON::new(
-  challenge~ : Base64URLString,
-) -> PublicKeyCredentialRequestOptionsJSON {
+pub fn PublicKeyCredentialRequestOptionsJSON::new(challenge~ : Base64URLString) -> PublicKeyCredentialRequestOptionsJSON {
   PublicKeyCredentialRequestOptionsJSON::{
-    challenge,
+    challenge: challenge,
     timeout: None,
     rpId: None,
     allowCredentials: None,
@@ -1125,11 +822,7 @@ pub fn PublicKeyCredentialRequestOptionsJSON::new(
   }
 }
 
-///|
-extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(
-  self : PublicKeyCredentialRequestOptionsJSON,
-  convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(self : PublicKeyCredentialRequestOptionsJSON, convert_extensions : (AuthenticationExtensionsClientInputsJSON?) -> JsValue) -> JsValue =
   #| (self, convert_extensions) => ({
   #|   challenge: self.challenge,
   #|   timeout: self.timeout,
@@ -1140,24 +833,12 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::to_js_ffi(
   #|   extensions: convert_extensions(self.extensions)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialRequestOptionsJSON::to_js(
-  self : PublicKeyCredentialRequestOptionsJSON,
-) -> JsValue {
-  PublicKeyCredentialRequestOptionsJSON::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn PublicKeyCredentialRequestOptionsJSON::to_js(self : PublicKeyCredentialRequestOptionsJSON) -> JsValue {
+  PublicKeyCredentialRequestOptionsJSON::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(
-  value : JsValue,
-  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?,
-) -> PublicKeyCredentialRequestOptionsJSON =
+extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(value : JsValue, convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputsJSON?) -> PublicKeyCredentialRequestOptionsJSON =
   #| (v, convert_extensions) => ({
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
@@ -1168,18 +849,9 @@ extern "js" fn PublicKeyCredentialRequestOptionsJSON::from_js_ffi(
   #|   extensions: convert_extensions(v.extensions)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialRequestOptionsJSON::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialRequestOptionsJSON {
-  PublicKeyCredentialRequestOptionsJSON::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsClientInputsJSON::from_js(value))
-    }
-  })
+pub fn PublicKeyCredentialRequestOptionsJSON::from_js(value : JsValue) -> PublicKeyCredentialRequestOptionsJSON {
+  PublicKeyCredentialRequestOptionsJSON::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsClientInputsJSON::from_js(value)) } })
 }
 
 ///|
@@ -1189,45 +861,33 @@ pub(all) struct UnknownCredentialOptions {
   credentialId : Base64URLString
 }
 
-///|
 /// Create a new UnknownCredentialOptions
-pub fn UnknownCredentialOptions::new(
-  credentialId~ : Base64URLString,
-) -> UnknownCredentialOptions {
-  UnknownCredentialOptions::{ rpId: "", credentialId, }
+pub fn UnknownCredentialOptions::new(credentialId~ : Base64URLString) -> UnknownCredentialOptions {
+  UnknownCredentialOptions::{
+    rpId: "",
+    credentialId: credentialId,
+  }
 }
 
-///|
-extern "js" fn UnknownCredentialOptions::to_js_ffi(
-  self : UnknownCredentialOptions,
-) -> JsValue =
+extern "js" fn UnknownCredentialOptions::to_js_ffi(self : UnknownCredentialOptions) -> JsValue =
   #| (self) => ({
   #|   rpId: self.rpId,
   #|   credentialId: self.credentialId
   #| })
 
-///|
 /// Convert to JsValue
-pub fn UnknownCredentialOptions::to_js(
-  self : UnknownCredentialOptions,
-) -> JsValue {
+pub fn UnknownCredentialOptions::to_js(self : UnknownCredentialOptions) -> JsValue {
   UnknownCredentialOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn UnknownCredentialOptions::from_js_ffi(
-  value : JsValue,
-) -> UnknownCredentialOptions =
+extern "js" fn UnknownCredentialOptions::from_js_ffi(value : JsValue) -> UnknownCredentialOptions =
   #| (v) => ({
   #|   rpId: v.rpId,
   #|   credentialId: v.credentialId
   #| })
 
-///|
 /// Convert from JsValue
-pub fn UnknownCredentialOptions::from_js(
-  value : JsValue,
-) -> UnknownCredentialOptions {
+pub fn UnknownCredentialOptions::from_js(value : JsValue) -> UnknownCredentialOptions {
   UnknownCredentialOptions::from_js_ffi(value)
 }
 
@@ -1239,51 +899,36 @@ pub(all) struct AllAcceptedCredentialsOptions {
   allAcceptedCredentialIds : FixedArray[Base64URLString]
 }
 
-///|
 /// Create a new AllAcceptedCredentialsOptions
-pub fn AllAcceptedCredentialsOptions::new(
-  userId~ : Base64URLString,
-) -> AllAcceptedCredentialsOptions {
+pub fn AllAcceptedCredentialsOptions::new(userId~ : Base64URLString) -> AllAcceptedCredentialsOptions {
   AllAcceptedCredentialsOptions::{
     rpId: "",
-    userId,
+    userId: userId,
     allAcceptedCredentialIds: [],
   }
 }
 
-///|
-extern "js" fn AllAcceptedCredentialsOptions::to_js_ffi(
-  self : AllAcceptedCredentialsOptions,
-) -> JsValue =
+extern "js" fn AllAcceptedCredentialsOptions::to_js_ffi(self : AllAcceptedCredentialsOptions) -> JsValue =
   #| (self) => ({
   #|   rpId: self.rpId,
   #|   userId: self.userId,
   #|   allAcceptedCredentialIds: self.allAcceptedCredentialIds
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AllAcceptedCredentialsOptions::to_js(
-  self : AllAcceptedCredentialsOptions,
-) -> JsValue {
+pub fn AllAcceptedCredentialsOptions::to_js(self : AllAcceptedCredentialsOptions) -> JsValue {
   AllAcceptedCredentialsOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AllAcceptedCredentialsOptions::from_js_ffi(
-  value : JsValue,
-) -> AllAcceptedCredentialsOptions =
+extern "js" fn AllAcceptedCredentialsOptions::from_js_ffi(value : JsValue) -> AllAcceptedCredentialsOptions =
   #| (v) => ({
   #|   rpId: v.rpId,
   #|   userId: v.userId,
   #|   allAcceptedCredentialIds: v.allAcceptedCredentialIds
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AllAcceptedCredentialsOptions::from_js(
-  value : JsValue,
-) -> AllAcceptedCredentialsOptions {
+pub fn AllAcceptedCredentialsOptions::from_js(value : JsValue) -> AllAcceptedCredentialsOptions {
   AllAcceptedCredentialsOptions::from_js_ffi(value)
 }
 
@@ -1296,18 +941,17 @@ pub(all) struct CurrentUserDetailsOptions {
   displayName : String
 }
 
-///|
 /// Create a new CurrentUserDetailsOptions
-pub fn CurrentUserDetailsOptions::new(
-  userId~ : Base64URLString,
-) -> CurrentUserDetailsOptions {
-  CurrentUserDetailsOptions::{ rpId: "", userId, name: "", displayName: "", }
+pub fn CurrentUserDetailsOptions::new(userId~ : Base64URLString) -> CurrentUserDetailsOptions {
+  CurrentUserDetailsOptions::{
+    rpId: "",
+    userId: userId,
+    name: "",
+    displayName: "",
+  }
 }
 
-///|
-extern "js" fn CurrentUserDetailsOptions::to_js_ffi(
-  self : CurrentUserDetailsOptions,
-) -> JsValue =
+extern "js" fn CurrentUserDetailsOptions::to_js_ffi(self : CurrentUserDetailsOptions) -> JsValue =
   #| (self) => ({
   #|   rpId: self.rpId,
   #|   userId: self.userId,
@@ -1315,18 +959,12 @@ extern "js" fn CurrentUserDetailsOptions::to_js_ffi(
   #|   displayName: self.displayName
   #| })
 
-///|
 /// Convert to JsValue
-pub fn CurrentUserDetailsOptions::to_js(
-  self : CurrentUserDetailsOptions,
-) -> JsValue {
+pub fn CurrentUserDetailsOptions::to_js(self : CurrentUserDetailsOptions) -> JsValue {
   CurrentUserDetailsOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CurrentUserDetailsOptions::from_js_ffi(
-  value : JsValue,
-) -> CurrentUserDetailsOptions =
+extern "js" fn CurrentUserDetailsOptions::from_js_ffi(value : JsValue) -> CurrentUserDetailsOptions =
   #| (v) => ({
   #|   rpId: v.rpId,
   #|   userId: v.userId,
@@ -1334,11 +972,8 @@ extern "js" fn CurrentUserDetailsOptions::from_js_ffi(
   #|   displayName: v.displayName
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CurrentUserDetailsOptions::from_js(
-  value : JsValue,
-) -> CurrentUserDetailsOptions {
+pub fn CurrentUserDetailsOptions::from_js(value : JsValue) -> CurrentUserDetailsOptions {
   CurrentUserDetailsOptions::from_js_ffi(value)
 }
 
@@ -1349,45 +984,33 @@ pub(all) struct PublicKeyCredentialParameters {
   alg : COSEAlgorithmIdentifier
 }
 
-///|
 /// Create a new PublicKeyCredentialParameters
-pub fn PublicKeyCredentialParameters::new(
-  alg~ : COSEAlgorithmIdentifier,
-) -> PublicKeyCredentialParameters {
-  PublicKeyCredentialParameters::{ type_: "", alg, }
+pub fn PublicKeyCredentialParameters::new(alg~ : COSEAlgorithmIdentifier) -> PublicKeyCredentialParameters {
+  PublicKeyCredentialParameters::{
+    type_: "",
+    alg: alg,
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialParameters::to_js_ffi(
-  self : PublicKeyCredentialParameters,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialParameters::to_js_ffi(self : PublicKeyCredentialParameters) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   alg: self.alg
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialParameters::to_js(
-  self : PublicKeyCredentialParameters,
-) -> JsValue {
+pub fn PublicKeyCredentialParameters::to_js(self : PublicKeyCredentialParameters) -> JsValue {
   PublicKeyCredentialParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialParameters::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialParameters =
+extern "js" fn PublicKeyCredentialParameters::from_js_ffi(value : JsValue) -> PublicKeyCredentialParameters =
   #| (v) => ({
   #|   type_: v.type,
   #|   alg: v.alg
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialParameters::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialParameters {
+pub fn PublicKeyCredentialParameters::from_js(value : JsValue) -> PublicKeyCredentialParameters {
   PublicKeyCredentialParameters::from_js_ffi(value)
 }
 
@@ -1407,17 +1030,12 @@ pub(all) struct PublicKeyCredentialCreationOptions {
   extensions : AuthenticationExtensionsClientInputs?
 }
 
-///|
 /// Create a new PublicKeyCredentialCreationOptions
-pub fn PublicKeyCredentialCreationOptions::new(
-  rp~ : PublicKeyCredentialRpEntity,
-  user~ : PublicKeyCredentialUserEntity,
-  challenge~ : BufferSource,
-) -> PublicKeyCredentialCreationOptions {
+pub fn PublicKeyCredentialCreationOptions::new(rp~ : PublicKeyCredentialRpEntity, user~ : PublicKeyCredentialUserEntity, challenge~ : BufferSource) -> PublicKeyCredentialCreationOptions {
   PublicKeyCredentialCreationOptions::{
-    rp,
-    user,
-    challenge,
+    rp: rp,
+    user: user,
+    challenge: challenge,
     pubKeyCredParams: [],
     timeout: None,
     excludeCredentials: None,
@@ -1429,14 +1047,7 @@ pub fn PublicKeyCredentialCreationOptions::new(
   }
 }
 
-///|
-extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
-  self : PublicKeyCredentialCreationOptions,
-  convert_rp : (PublicKeyCredentialRpEntity) -> JsValue,
-  convert_user : (PublicKeyCredentialUserEntity) -> JsValue,
-  convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue,
-  convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(self : PublicKeyCredentialCreationOptions, convert_rp : (PublicKeyCredentialRpEntity) -> JsValue, convert_user : (PublicKeyCredentialUserEntity) -> JsValue, convert_authenticatorSelection : (AuthenticatorSelectionCriteria?) -> JsValue, convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue) -> JsValue =
   #| (self, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
   #|   rp: convert_rp(self.rp),
   #|   user: convert_user(self.user),
@@ -1451,38 +1062,12 @@ extern "js" fn PublicKeyCredentialCreationOptions::to_js_ffi(
   #|   extensions: convert_extensions(self.extensions)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialCreationOptions::to_js(
-  self : PublicKeyCredentialCreationOptions,
-) -> JsValue {
-  PublicKeyCredentialCreationOptions::to_js_ffi(
-    self,
-    PublicKeyCredentialRpEntity::to_js,
-    PublicKeyCredentialUserEntity::to_js,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn PublicKeyCredentialCreationOptions::to_js(self : PublicKeyCredentialCreationOptions) -> JsValue {
+  PublicKeyCredentialCreationOptions::to_js_ffi(self, PublicKeyCredentialRpEntity::to_js, PublicKeyCredentialUserEntity::to_js, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(
-  value : JsValue,
-  convert_rp : (JsValue) -> PublicKeyCredentialRpEntity,
-  convert_user : (JsValue) -> PublicKeyCredentialUserEntity,
-  convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?,
-  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?,
-) -> PublicKeyCredentialCreationOptions =
+extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(value : JsValue, convert_rp : (JsValue) -> PublicKeyCredentialRpEntity, convert_user : (JsValue) -> PublicKeyCredentialUserEntity, convert_authenticatorSelection : (JsValue) -> AuthenticatorSelectionCriteria?, convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?) -> PublicKeyCredentialCreationOptions =
   #| (v, convert_rp, convert_user, convert_authenticatorSelection, convert_extensions) => ({
   #|   rp: convert_rp(v.rp),
   #|   user: convert_user(v.user),
@@ -1497,30 +1082,9 @@ extern "js" fn PublicKeyCredentialCreationOptions::from_js_ffi(
   #|   extensions: convert_extensions(v.extensions)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialCreationOptions::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialCreationOptions {
-  PublicKeyCredentialCreationOptions::from_js_ffi(
-    value,
-    PublicKeyCredentialRpEntity::from_js,
-    PublicKeyCredentialUserEntity::from_js,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticatorSelectionCriteria::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AuthenticationExtensionsClientInputs::from_js(value))
-      }
-    },
-  )
+pub fn PublicKeyCredentialCreationOptions::from_js(value : JsValue) -> PublicKeyCredentialCreationOptions {
+  PublicKeyCredentialCreationOptions::from_js_ffi(value, PublicKeyCredentialRpEntity::from_js, PublicKeyCredentialUserEntity::from_js, fn(value) { if value.is_undefined() { None } else { Some(AuthenticatorSelectionCriteria::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsClientInputs::from_js(value)) } })
 }
 
 ///|
@@ -1529,41 +1093,30 @@ pub(all) struct PublicKeyCredentialEntity {
   name : String
 }
 
-///|
 /// Create a new PublicKeyCredentialEntity with default values
 pub fn PublicKeyCredentialEntity::default() -> PublicKeyCredentialEntity {
-  PublicKeyCredentialEntity::{ name: "", }
+  PublicKeyCredentialEntity::{
+    name: "",
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialEntity::to_js_ffi(
-  self : PublicKeyCredentialEntity,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialEntity::to_js_ffi(self : PublicKeyCredentialEntity) -> JsValue =
   #| (self) => ({
   #|   name: self.name
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialEntity::to_js(
-  self : PublicKeyCredentialEntity,
-) -> JsValue {
+pub fn PublicKeyCredentialEntity::to_js(self : PublicKeyCredentialEntity) -> JsValue {
   PublicKeyCredentialEntity::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialEntity::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialEntity =
+extern "js" fn PublicKeyCredentialEntity::from_js_ffi(value : JsValue) -> PublicKeyCredentialEntity =
   #| (v) => ({
   #|   name: v.name
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialEntity::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialEntity {
+pub fn PublicKeyCredentialEntity::from_js(value : JsValue) -> PublicKeyCredentialEntity {
   PublicKeyCredentialEntity::from_js_ffi(value)
 }
 
@@ -1574,43 +1127,33 @@ pub(all) struct PublicKeyCredentialRpEntity {
   id : String?
 }
 
-///|
 /// Create a new PublicKeyCredentialRpEntity with default values
 pub fn PublicKeyCredentialRpEntity::default() -> PublicKeyCredentialRpEntity {
-  PublicKeyCredentialRpEntity::{ name: "", id: None, }
+  PublicKeyCredentialRpEntity::{
+    name: "",
+    id: None,
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialRpEntity::to_js_ffi(
-  self : PublicKeyCredentialRpEntity,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialRpEntity::to_js_ffi(self : PublicKeyCredentialRpEntity) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   id: self.id
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialRpEntity::to_js(
-  self : PublicKeyCredentialRpEntity,
-) -> JsValue {
+pub fn PublicKeyCredentialRpEntity::to_js(self : PublicKeyCredentialRpEntity) -> JsValue {
   PublicKeyCredentialRpEntity::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialRpEntity::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialRpEntity =
+extern "js" fn PublicKeyCredentialRpEntity::from_js_ffi(value : JsValue) -> PublicKeyCredentialRpEntity =
   #| (v) => ({
   #|   name: v.name,
   #|   id: v.id
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialRpEntity::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialRpEntity {
+pub fn PublicKeyCredentialRpEntity::from_js(value : JsValue) -> PublicKeyCredentialRpEntity {
   PublicKeyCredentialRpEntity::from_js_ffi(value)
 }
 
@@ -1622,47 +1165,36 @@ pub(all) struct PublicKeyCredentialUserEntity {
   displayName : String
 }
 
-///|
 /// Create a new PublicKeyCredentialUserEntity
-pub fn PublicKeyCredentialUserEntity::new(
-  id~ : BufferSource,
-) -> PublicKeyCredentialUserEntity {
-  PublicKeyCredentialUserEntity::{ name: "", id, displayName: "", }
+pub fn PublicKeyCredentialUserEntity::new(id~ : BufferSource) -> PublicKeyCredentialUserEntity {
+  PublicKeyCredentialUserEntity::{
+    name: "",
+    id: id,
+    displayName: "",
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialUserEntity::to_js_ffi(
-  self : PublicKeyCredentialUserEntity,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialUserEntity::to_js_ffi(self : PublicKeyCredentialUserEntity) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   id: self.id,
   #|   displayName: self.displayName
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialUserEntity::to_js(
-  self : PublicKeyCredentialUserEntity,
-) -> JsValue {
+pub fn PublicKeyCredentialUserEntity::to_js(self : PublicKeyCredentialUserEntity) -> JsValue {
   PublicKeyCredentialUserEntity::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialUserEntity::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialUserEntity =
+extern "js" fn PublicKeyCredentialUserEntity::from_js_ffi(value : JsValue) -> PublicKeyCredentialUserEntity =
   #| (v) => ({
   #|   name: v.name,
   #|   id: v.id,
   #|   displayName: v.displayName
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialUserEntity::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialUserEntity {
+pub fn PublicKeyCredentialUserEntity::from_js(value : JsValue) -> PublicKeyCredentialUserEntity {
   PublicKeyCredentialUserEntity::from_js_ffi(value)
 }
 
@@ -1675,7 +1207,6 @@ pub(all) struct AuthenticatorSelectionCriteria {
   userVerification : String?
 }
 
-///|
 /// Create a new AuthenticatorSelectionCriteria with default values
 pub fn AuthenticatorSelectionCriteria::default() -> AuthenticatorSelectionCriteria {
   AuthenticatorSelectionCriteria::{
@@ -1686,10 +1217,7 @@ pub fn AuthenticatorSelectionCriteria::default() -> AuthenticatorSelectionCriter
   }
 }
 
-///|
-extern "js" fn AuthenticatorSelectionCriteria::to_js_ffi(
-  self : AuthenticatorSelectionCriteria,
-) -> JsValue =
+extern "js" fn AuthenticatorSelectionCriteria::to_js_ffi(self : AuthenticatorSelectionCriteria) -> JsValue =
   #| (self) => ({
   #|   authenticatorAttachment: self.authenticatorAttachment,
   #|   residentKey: self.residentKey,
@@ -1697,18 +1225,12 @@ extern "js" fn AuthenticatorSelectionCriteria::to_js_ffi(
   #|   userVerification: self.userVerification
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticatorSelectionCriteria::to_js(
-  self : AuthenticatorSelectionCriteria,
-) -> JsValue {
+pub fn AuthenticatorSelectionCriteria::to_js(self : AuthenticatorSelectionCriteria) -> JsValue {
   AuthenticatorSelectionCriteria::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticatorSelectionCriteria::from_js_ffi(
-  value : JsValue,
-) -> AuthenticatorSelectionCriteria =
+extern "js" fn AuthenticatorSelectionCriteria::from_js_ffi(value : JsValue) -> AuthenticatorSelectionCriteria =
   #| (v) => ({
   #|   authenticatorAttachment: v.authenticatorAttachment,
   #|   residentKey: v.residentKey,
@@ -1716,11 +1238,8 @@ extern "js" fn AuthenticatorSelectionCriteria::from_js_ffi(
   #|   userVerification: v.userVerification
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticatorSelectionCriteria::from_js(
-  value : JsValue,
-) -> AuthenticatorSelectionCriteria {
+pub fn AuthenticatorSelectionCriteria::from_js(value : JsValue) -> AuthenticatorSelectionCriteria {
   AuthenticatorSelectionCriteria::from_js_ffi(value)
 }
 
@@ -1736,13 +1255,10 @@ pub(all) struct PublicKeyCredentialRequestOptions {
   extensions : AuthenticationExtensionsClientInputs?
 }
 
-///|
 /// Create a new PublicKeyCredentialRequestOptions
-pub fn PublicKeyCredentialRequestOptions::new(
-  challenge~ : BufferSource,
-) -> PublicKeyCredentialRequestOptions {
+pub fn PublicKeyCredentialRequestOptions::new(challenge~ : BufferSource) -> PublicKeyCredentialRequestOptions {
   PublicKeyCredentialRequestOptions::{
-    challenge,
+    challenge: challenge,
     timeout: None,
     rpId: None,
     allowCredentials: None,
@@ -1752,11 +1268,7 @@ pub fn PublicKeyCredentialRequestOptions::new(
   }
 }
 
-///|
-extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
-  self : PublicKeyCredentialRequestOptions,
-  convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(self : PublicKeyCredentialRequestOptions, convert_extensions : (AuthenticationExtensionsClientInputs?) -> JsValue) -> JsValue =
   #| (self, convert_extensions) => ({
   #|   challenge: self.challenge,
   #|   timeout: self.timeout,
@@ -1767,24 +1279,12 @@ extern "js" fn PublicKeyCredentialRequestOptions::to_js_ffi(
   #|   extensions: convert_extensions(self.extensions)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialRequestOptions::to_js(
-  self : PublicKeyCredentialRequestOptions,
-) -> JsValue {
-  PublicKeyCredentialRequestOptions::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn PublicKeyCredentialRequestOptions::to_js(self : PublicKeyCredentialRequestOptions) -> JsValue {
+  PublicKeyCredentialRequestOptions::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(
-  value : JsValue,
-  convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?,
-) -> PublicKeyCredentialRequestOptions =
+extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(value : JsValue, convert_extensions : (JsValue) -> AuthenticationExtensionsClientInputs?) -> PublicKeyCredentialRequestOptions =
   #| (v, convert_extensions) => ({
   #|   challenge: v.challenge,
   #|   timeout: v.timeout,
@@ -1795,18 +1295,9 @@ extern "js" fn PublicKeyCredentialRequestOptions::from_js_ffi(
   #|   extensions: convert_extensions(v.extensions)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialRequestOptions::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialRequestOptions {
-  PublicKeyCredentialRequestOptions::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsClientInputs::from_js(value))
-    }
-  })
+pub fn PublicKeyCredentialRequestOptions::from_js(value : JsValue) -> PublicKeyCredentialRequestOptions {
+  PublicKeyCredentialRequestOptions::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsClientInputs::from_js(value)) } })
 }
 
 ///|
@@ -1819,7 +1310,6 @@ pub(all) struct CollectedClientData {
   topOrigin : String?
 }
 
-///|
 /// Create a new CollectedClientData with default values
 pub fn CollectedClientData::default() -> CollectedClientData {
   CollectedClientData::{
@@ -1831,10 +1321,7 @@ pub fn CollectedClientData::default() -> CollectedClientData {
   }
 }
 
-///|
-extern "js" fn CollectedClientData::to_js_ffi(
-  self : CollectedClientData,
-) -> JsValue =
+extern "js" fn CollectedClientData::to_js_ffi(self : CollectedClientData) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   challenge: self.challenge,
@@ -1843,16 +1330,12 @@ extern "js" fn CollectedClientData::to_js_ffi(
   #|   topOrigin: self.topOrigin
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CollectedClientData::to_js(self : CollectedClientData) -> JsValue {
   CollectedClientData::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CollectedClientData::from_js_ffi(
-  value : JsValue,
-) -> CollectedClientData =
+extern "js" fn CollectedClientData::from_js_ffi(value : JsValue) -> CollectedClientData =
   #| (v) => ({
   #|   type_: v.type,
   #|   challenge: v.challenge,
@@ -1861,7 +1344,6 @@ extern "js" fn CollectedClientData::from_js_ffi(
   #|   topOrigin: v.topOrigin
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CollectedClientData::from_js(value : JsValue) -> CollectedClientData {
   CollectedClientData::from_js_ffi(value)
@@ -1874,33 +1356,31 @@ pub(all) struct TokenBinding {
   id : String?
 }
 
-///|
 /// Create a new TokenBinding with default values
 pub fn TokenBinding::default() -> TokenBinding {
-  TokenBinding::{ status: "", id: None, }
+  TokenBinding::{
+    status: "",
+    id: None,
+  }
 }
 
-///|
 extern "js" fn TokenBinding::to_js_ffi(self : TokenBinding) -> JsValue =
   #| (self) => ({
   #|   status: self.status,
   #|   id: self.id
   #| })
 
-///|
 /// Convert to JsValue
 pub fn TokenBinding::to_js(self : TokenBinding) -> JsValue {
   TokenBinding::to_js_ffi(self)
 }
 
-///|
 extern "js" fn TokenBinding::from_js_ffi(value : JsValue) -> TokenBinding =
   #| (v) => ({
   #|   status: v.status,
   #|   id: v.id
   #| })
 
-///|
 /// Convert from JsValue
 pub fn TokenBinding::from_js(value : JsValue) -> TokenBinding {
   TokenBinding::from_js_ffi(value)
@@ -1914,47 +1394,36 @@ pub(all) struct PublicKeyCredentialDescriptor {
   transports : FixedArray[String]?
 }
 
-///|
 /// Create a new PublicKeyCredentialDescriptor
-pub fn PublicKeyCredentialDescriptor::new(
-  id~ : BufferSource,
-) -> PublicKeyCredentialDescriptor {
-  PublicKeyCredentialDescriptor::{ type_: "", id, transports: None, }
+pub fn PublicKeyCredentialDescriptor::new(id~ : BufferSource) -> PublicKeyCredentialDescriptor {
+  PublicKeyCredentialDescriptor::{
+    type_: "",
+    id: id,
+    transports: None,
+  }
 }
 
-///|
-extern "js" fn PublicKeyCredentialDescriptor::to_js_ffi(
-  self : PublicKeyCredentialDescriptor,
-) -> JsValue =
+extern "js" fn PublicKeyCredentialDescriptor::to_js_ffi(self : PublicKeyCredentialDescriptor) -> JsValue =
   #| (self) => ({
   #|   type: self.type_,
   #|   id: self.id,
   #|   transports: self.transports
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PublicKeyCredentialDescriptor::to_js(
-  self : PublicKeyCredentialDescriptor,
-) -> JsValue {
+pub fn PublicKeyCredentialDescriptor::to_js(self : PublicKeyCredentialDescriptor) -> JsValue {
   PublicKeyCredentialDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PublicKeyCredentialDescriptor::from_js_ffi(
-  value : JsValue,
-) -> PublicKeyCredentialDescriptor =
+extern "js" fn PublicKeyCredentialDescriptor::from_js_ffi(value : JsValue) -> PublicKeyCredentialDescriptor =
   #| (v) => ({
   #|   type_: v.type,
   #|   id: v.id,
   #|   transports: v.transports
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PublicKeyCredentialDescriptor::from_js(
-  value : JsValue,
-) -> PublicKeyCredentialDescriptor {
+pub fn PublicKeyCredentialDescriptor::from_js(value : JsValue) -> PublicKeyCredentialDescriptor {
   PublicKeyCredentialDescriptor::from_js_ffi(value)
 }
 
@@ -1964,41 +1433,30 @@ pub(all) struct CredentialPropertiesOutput {
   rk : Bool?
 }
 
-///|
 /// Create a new CredentialPropertiesOutput with default values
 pub fn CredentialPropertiesOutput::default() -> CredentialPropertiesOutput {
-  CredentialPropertiesOutput::{ rk: None, }
+  CredentialPropertiesOutput::{
+    rk: None,
+  }
 }
 
-///|
-extern "js" fn CredentialPropertiesOutput::to_js_ffi(
-  self : CredentialPropertiesOutput,
-) -> JsValue =
+extern "js" fn CredentialPropertiesOutput::to_js_ffi(self : CredentialPropertiesOutput) -> JsValue =
   #| (self) => ({
   #|   rk: (self.rk === -1 ? undefined : self.rk)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn CredentialPropertiesOutput::to_js(
-  self : CredentialPropertiesOutput,
-) -> JsValue {
+pub fn CredentialPropertiesOutput::to_js(self : CredentialPropertiesOutput) -> JsValue {
   CredentialPropertiesOutput::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CredentialPropertiesOutput::from_js_ffi(
-  value : JsValue,
-) -> CredentialPropertiesOutput =
+extern "js" fn CredentialPropertiesOutput::from_js_ffi(value : JsValue) -> CredentialPropertiesOutput =
   #| (v) => ({
   #|   rk: (v.rk === undefined ? -1 : v.rk)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CredentialPropertiesOutput::from_js(
-  value : JsValue,
-) -> CredentialPropertiesOutput {
+pub fn CredentialPropertiesOutput::from_js(value : JsValue) -> CredentialPropertiesOutput {
   CredentialPropertiesOutput::from_js_ffi(value)
 }
 
@@ -2009,45 +1467,33 @@ pub(all) struct AuthenticationExtensionsPRFValues {
   second : BufferSource?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFValues
-pub fn AuthenticationExtensionsPRFValues::new(
-  first~ : BufferSource,
-) -> AuthenticationExtensionsPRFValues {
-  AuthenticationExtensionsPRFValues::{ first, second: None, }
+pub fn AuthenticationExtensionsPRFValues::new(first~ : BufferSource) -> AuthenticationExtensionsPRFValues {
+  AuthenticationExtensionsPRFValues::{
+    first: first,
+    second: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFValues::to_js_ffi(
-  self : AuthenticationExtensionsPRFValues,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFValues::to_js_ffi(self : AuthenticationExtensionsPRFValues) -> JsValue =
   #| (self) => ({
   #|   first: self.first,
   #|   second: ((() => { const v = self.second; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFValues::to_js(
-  self : AuthenticationExtensionsPRFValues,
-) -> JsValue {
+pub fn AuthenticationExtensionsPRFValues::to_js(self : AuthenticationExtensionsPRFValues) -> JsValue {
   AuthenticationExtensionsPRFValues::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFValues::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFValues =
+extern "js" fn AuthenticationExtensionsPRFValues::from_js_ffi(value : JsValue) -> AuthenticationExtensionsPRFValues =
   #| (v) => ({
   #|   first: v.first,
   #|   second: (v.second === undefined ? { $tag: 0 } : { $tag: 1, _0: v.second })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFValues::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFValues {
+pub fn AuthenticationExtensionsPRFValues::from_js(value : JsValue) -> AuthenticationExtensionsPRFValues {
   AuthenticationExtensionsPRFValues::from_js_ffi(value)
 }
 
@@ -2058,45 +1504,33 @@ pub(all) struct AuthenticationExtensionsPRFValuesJSON {
   second : Base64URLString?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFValuesJSON
-pub fn AuthenticationExtensionsPRFValuesJSON::new(
-  first~ : Base64URLString,
-) -> AuthenticationExtensionsPRFValuesJSON {
-  AuthenticationExtensionsPRFValuesJSON::{ first, second: None, }
+pub fn AuthenticationExtensionsPRFValuesJSON::new(first~ : Base64URLString) -> AuthenticationExtensionsPRFValuesJSON {
+  AuthenticationExtensionsPRFValuesJSON::{
+    first: first,
+    second: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFValuesJSON::to_js_ffi(
-  self : AuthenticationExtensionsPRFValuesJSON,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFValuesJSON::to_js_ffi(self : AuthenticationExtensionsPRFValuesJSON) -> JsValue =
   #| (self) => ({
   #|   first: self.first,
   #|   second: self.second
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFValuesJSON::to_js(
-  self : AuthenticationExtensionsPRFValuesJSON,
-) -> JsValue {
+pub fn AuthenticationExtensionsPRFValuesJSON::to_js(self : AuthenticationExtensionsPRFValuesJSON) -> JsValue {
   AuthenticationExtensionsPRFValuesJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFValuesJSON::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFValuesJSON =
+extern "js" fn AuthenticationExtensionsPRFValuesJSON::from_js_ffi(value : JsValue) -> AuthenticationExtensionsPRFValuesJSON =
   #| (v) => ({
   #|   first: v.first,
   #|   second: v.second
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFValuesJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFValuesJSON {
+pub fn AuthenticationExtensionsPRFValuesJSON::from_js(value : JsValue) -> AuthenticationExtensionsPRFValuesJSON {
   AuthenticationExtensionsPRFValuesJSON::from_js_ffi(value)
 }
 
@@ -2107,57 +1541,34 @@ pub(all) struct AuthenticationExtensionsPRFInputs {
   evalByCredential : JsValue?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFInputs with default values
 pub fn AuthenticationExtensionsPRFInputs::default() -> AuthenticationExtensionsPRFInputs {
-  AuthenticationExtensionsPRFInputs::{ eval: None, evalByCredential: None, }
+  AuthenticationExtensionsPRFInputs::{
+    eval: None,
+    evalByCredential: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFInputs::to_js_ffi(
-  self : AuthenticationExtensionsPRFInputs,
-  convert_eval : (AuthenticationExtensionsPRFValues?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFInputs::to_js_ffi(self : AuthenticationExtensionsPRFInputs, convert_eval : (AuthenticationExtensionsPRFValues?) -> JsValue) -> JsValue =
   #| (self, convert_eval) => ({
   #|   eval: convert_eval(self.eval),
   #|   evalByCredential: ((() => { const v = self.evalByCredential; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFInputs::to_js(
-  self : AuthenticationExtensionsPRFInputs,
-) -> JsValue {
-  AuthenticationExtensionsPRFInputs::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn AuthenticationExtensionsPRFInputs::to_js(self : AuthenticationExtensionsPRFInputs) -> JsValue {
+  AuthenticationExtensionsPRFInputs::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFInputs::from_js_ffi(
-  value : JsValue,
-  convert_eval : (JsValue) -> AuthenticationExtensionsPRFValues?,
-) -> AuthenticationExtensionsPRFInputs =
+extern "js" fn AuthenticationExtensionsPRFInputs::from_js_ffi(value : JsValue, convert_eval : (JsValue) -> AuthenticationExtensionsPRFValues?) -> AuthenticationExtensionsPRFInputs =
   #| (v, convert_eval) => ({
   #|   eval: convert_eval(v.eval),
   #|   evalByCredential: (v.evalByCredential === undefined ? { $tag: 0 } : { $tag: 1, _0: v.evalByCredential })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFInputs::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFInputs {
-  AuthenticationExtensionsPRFInputs::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsPRFValues::from_js(value))
-    }
-  })
+pub fn AuthenticationExtensionsPRFInputs::from_js(value : JsValue) -> AuthenticationExtensionsPRFInputs {
+  AuthenticationExtensionsPRFInputs::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFValues::from_js(value)) } })
 }
 
 ///|
@@ -2167,57 +1578,34 @@ pub(all) struct AuthenticationExtensionsPRFInputsJSON {
   evalByCredential : JsValue?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFInputsJSON with default values
 pub fn AuthenticationExtensionsPRFInputsJSON::default() -> AuthenticationExtensionsPRFInputsJSON {
-  AuthenticationExtensionsPRFInputsJSON::{ eval: None, evalByCredential: None, }
+  AuthenticationExtensionsPRFInputsJSON::{
+    eval: None,
+    evalByCredential: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFInputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsPRFInputsJSON,
-  convert_eval : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFInputsJSON::to_js_ffi(self : AuthenticationExtensionsPRFInputsJSON, convert_eval : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue) -> JsValue =
   #| (self, convert_eval) => ({
   #|   eval: convert_eval(self.eval),
   #|   evalByCredential: ((() => { const v = self.evalByCredential; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFInputsJSON::to_js(
-  self : AuthenticationExtensionsPRFInputsJSON,
-) -> JsValue {
-  AuthenticationExtensionsPRFInputsJSON::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn AuthenticationExtensionsPRFInputsJSON::to_js(self : AuthenticationExtensionsPRFInputsJSON) -> JsValue {
+  AuthenticationExtensionsPRFInputsJSON::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFInputsJSON::from_js_ffi(
-  value : JsValue,
-  convert_eval : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?,
-) -> AuthenticationExtensionsPRFInputsJSON =
+extern "js" fn AuthenticationExtensionsPRFInputsJSON::from_js_ffi(value : JsValue, convert_eval : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?) -> AuthenticationExtensionsPRFInputsJSON =
   #| (v, convert_eval) => ({
   #|   eval: convert_eval(v.eval),
   #|   evalByCredential: (v.evalByCredential === undefined ? { $tag: 0 } : { $tag: 1, _0: v.evalByCredential })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFInputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFInputsJSON {
-  AuthenticationExtensionsPRFInputsJSON::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsPRFValuesJSON::from_js(value))
-    }
-  })
+pub fn AuthenticationExtensionsPRFInputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsPRFInputsJSON {
+  AuthenticationExtensionsPRFInputsJSON::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFValuesJSON::from_js(value)) } })
 }
 
 ///|
@@ -2227,57 +1615,34 @@ pub(all) struct AuthenticationExtensionsPRFOutputs {
   results : AuthenticationExtensionsPRFValues?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFOutputs with default values
 pub fn AuthenticationExtensionsPRFOutputs::default() -> AuthenticationExtensionsPRFOutputs {
-  AuthenticationExtensionsPRFOutputs::{ enabled: None, results: None, }
+  AuthenticationExtensionsPRFOutputs::{
+    enabled: None,
+    results: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFOutputs::to_js_ffi(
-  self : AuthenticationExtensionsPRFOutputs,
-  convert_results : (AuthenticationExtensionsPRFValues?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFOutputs::to_js_ffi(self : AuthenticationExtensionsPRFOutputs, convert_results : (AuthenticationExtensionsPRFValues?) -> JsValue) -> JsValue =
   #| (self, convert_results) => ({
   #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
   #|   results: convert_results(self.results)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFOutputs::to_js(
-  self : AuthenticationExtensionsPRFOutputs,
-) -> JsValue {
-  AuthenticationExtensionsPRFOutputs::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn AuthenticationExtensionsPRFOutputs::to_js(self : AuthenticationExtensionsPRFOutputs) -> JsValue {
+  AuthenticationExtensionsPRFOutputs::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFOutputs::from_js_ffi(
-  value : JsValue,
-  convert_results : (JsValue) -> AuthenticationExtensionsPRFValues?,
-) -> AuthenticationExtensionsPRFOutputs =
+extern "js" fn AuthenticationExtensionsPRFOutputs::from_js_ffi(value : JsValue, convert_results : (JsValue) -> AuthenticationExtensionsPRFValues?) -> AuthenticationExtensionsPRFOutputs =
   #| (v, convert_results) => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
   #|   results: convert_results(v.results)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFOutputs::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFOutputs {
-  AuthenticationExtensionsPRFOutputs::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsPRFValues::from_js(value))
-    }
-  })
+pub fn AuthenticationExtensionsPRFOutputs::from_js(value : JsValue) -> AuthenticationExtensionsPRFOutputs {
+  AuthenticationExtensionsPRFOutputs::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFValues::from_js(value)) } })
 }
 
 ///|
@@ -2287,57 +1652,34 @@ pub(all) struct AuthenticationExtensionsPRFOutputsJSON {
   results : AuthenticationExtensionsPRFValuesJSON?
 }
 
-///|
 /// Create a new AuthenticationExtensionsPRFOutputsJSON with default values
 pub fn AuthenticationExtensionsPRFOutputsJSON::default() -> AuthenticationExtensionsPRFOutputsJSON {
-  AuthenticationExtensionsPRFOutputsJSON::{ enabled: None, results: None, }
+  AuthenticationExtensionsPRFOutputsJSON::{
+    enabled: None,
+    results: None,
+  }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsPRFOutputsJSON,
-  convert_results : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(self : AuthenticationExtensionsPRFOutputsJSON, convert_results : (AuthenticationExtensionsPRFValuesJSON?) -> JsValue) -> JsValue =
   #| (self, convert_results) => ({
   #|   enabled: (self.enabled === -1 ? undefined : self.enabled),
   #|   results: convert_results(self.results)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsPRFOutputsJSON::to_js(
-  self : AuthenticationExtensionsPRFOutputsJSON,
-) -> JsValue {
-  AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn AuthenticationExtensionsPRFOutputsJSON::to_js(self : AuthenticationExtensionsPRFOutputsJSON) -> JsValue {
+  AuthenticationExtensionsPRFOutputsJSON::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(
-  value : JsValue,
-  convert_results : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?,
-) -> AuthenticationExtensionsPRFOutputsJSON =
+extern "js" fn AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(value : JsValue, convert_results : (JsValue) -> AuthenticationExtensionsPRFValuesJSON?) -> AuthenticationExtensionsPRFOutputsJSON =
   #| (v, convert_results) => ({
   #|   enabled: (v.enabled === undefined ? -1 : v.enabled),
   #|   results: convert_results(v.results)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsPRFOutputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsPRFOutputsJSON {
-  AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(AuthenticationExtensionsPRFValuesJSON::from_js(value))
-    }
-  })
+pub fn AuthenticationExtensionsPRFOutputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsPRFOutputsJSON {
+  AuthenticationExtensionsPRFOutputsJSON::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AuthenticationExtensionsPRFValuesJSON::from_js(value)) } })
 }
 
 ///|
@@ -2348,7 +1690,6 @@ pub(all) struct AuthenticationExtensionsLargeBlobInputs {
   write : BufferSource?
 }
 
-///|
 /// Create a new AuthenticationExtensionsLargeBlobInputs with default values
 pub fn AuthenticationExtensionsLargeBlobInputs::default() -> AuthenticationExtensionsLargeBlobInputs {
   AuthenticationExtensionsLargeBlobInputs::{
@@ -2358,39 +1699,27 @@ pub fn AuthenticationExtensionsLargeBlobInputs::default() -> AuthenticationExten
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobInputs::to_js_ffi(
-  self : AuthenticationExtensionsLargeBlobInputs,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsLargeBlobInputs::to_js_ffi(self : AuthenticationExtensionsLargeBlobInputs) -> JsValue =
   #| (self) => ({
   #|   support: self.support,
   #|   read: (self.read === -1 ? undefined : self.read),
   #|   write: ((() => { const v = self.write; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsLargeBlobInputs::to_js(
-  self : AuthenticationExtensionsLargeBlobInputs,
-) -> JsValue {
+pub fn AuthenticationExtensionsLargeBlobInputs::to_js(self : AuthenticationExtensionsLargeBlobInputs) -> JsValue {
   AuthenticationExtensionsLargeBlobInputs::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobInputs::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobInputs =
+extern "js" fn AuthenticationExtensionsLargeBlobInputs::from_js_ffi(value : JsValue) -> AuthenticationExtensionsLargeBlobInputs =
   #| (v) => ({
   #|   support: v.support,
   #|   read: (v.read === undefined ? -1 : v.read),
   #|   write: (v.write === undefined ? { $tag: 0 } : { $tag: 1, _0: v.write })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsLargeBlobInputs::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobInputs {
+pub fn AuthenticationExtensionsLargeBlobInputs::from_js(value : JsValue) -> AuthenticationExtensionsLargeBlobInputs {
   AuthenticationExtensionsLargeBlobInputs::from_js_ffi(value)
 }
 
@@ -2402,7 +1731,6 @@ pub(all) struct AuthenticationExtensionsLargeBlobInputsJSON {
   write : Base64URLString?
 }
 
-///|
 /// Create a new AuthenticationExtensionsLargeBlobInputsJSON with default values
 pub fn AuthenticationExtensionsLargeBlobInputsJSON::default() -> AuthenticationExtensionsLargeBlobInputsJSON {
   AuthenticationExtensionsLargeBlobInputsJSON::{
@@ -2412,39 +1740,27 @@ pub fn AuthenticationExtensionsLargeBlobInputsJSON::default() -> AuthenticationE
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsLargeBlobInputsJSON,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::to_js_ffi(self : AuthenticationExtensionsLargeBlobInputsJSON) -> JsValue =
   #| (self) => ({
   #|   support: self.support,
   #|   read: (self.read === -1 ? undefined : self.read),
   #|   write: self.write
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsLargeBlobInputsJSON::to_js(
-  self : AuthenticationExtensionsLargeBlobInputsJSON,
-) -> JsValue {
+pub fn AuthenticationExtensionsLargeBlobInputsJSON::to_js(self : AuthenticationExtensionsLargeBlobInputsJSON) -> JsValue {
   AuthenticationExtensionsLargeBlobInputsJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobInputsJSON =
+extern "js" fn AuthenticationExtensionsLargeBlobInputsJSON::from_js_ffi(value : JsValue) -> AuthenticationExtensionsLargeBlobInputsJSON =
   #| (v) => ({
   #|   support: v.support,
   #|   read: (v.read === undefined ? -1 : v.read),
   #|   write: v.write
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsLargeBlobInputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobInputsJSON {
+pub fn AuthenticationExtensionsLargeBlobInputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsLargeBlobInputsJSON {
   AuthenticationExtensionsLargeBlobInputsJSON::from_js_ffi(value)
 }
 
@@ -2456,7 +1772,6 @@ pub(all) struct AuthenticationExtensionsLargeBlobOutputs {
   written : Bool?
 }
 
-///|
 /// Create a new AuthenticationExtensionsLargeBlobOutputs with default values
 pub fn AuthenticationExtensionsLargeBlobOutputs::default() -> AuthenticationExtensionsLargeBlobOutputs {
   AuthenticationExtensionsLargeBlobOutputs::{
@@ -2466,39 +1781,27 @@ pub fn AuthenticationExtensionsLargeBlobOutputs::default() -> AuthenticationExte
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobOutputs::to_js_ffi(
-  self : AuthenticationExtensionsLargeBlobOutputs,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsLargeBlobOutputs::to_js_ffi(self : AuthenticationExtensionsLargeBlobOutputs) -> JsValue =
   #| (self) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
   #|   blob: ((() => { const v = self.blob; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   written: (self.written === -1 ? undefined : self.written)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsLargeBlobOutputs::to_js(
-  self : AuthenticationExtensionsLargeBlobOutputs,
-) -> JsValue {
+pub fn AuthenticationExtensionsLargeBlobOutputs::to_js(self : AuthenticationExtensionsLargeBlobOutputs) -> JsValue {
   AuthenticationExtensionsLargeBlobOutputs::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobOutputs::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobOutputs =
+extern "js" fn AuthenticationExtensionsLargeBlobOutputs::from_js_ffi(value : JsValue) -> AuthenticationExtensionsLargeBlobOutputs =
   #| (v) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   blob: (v.blob === undefined ? { $tag: 0 } : { $tag: 1, _0: v.blob }),
   #|   written: (v.written === undefined ? -1 : v.written)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsLargeBlobOutputs::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobOutputs {
+pub fn AuthenticationExtensionsLargeBlobOutputs::from_js(value : JsValue) -> AuthenticationExtensionsLargeBlobOutputs {
   AuthenticationExtensionsLargeBlobOutputs::from_js_ffi(value)
 }
 
@@ -2510,7 +1813,6 @@ pub(all) struct AuthenticationExtensionsLargeBlobOutputsJSON {
   written : Bool?
 }
 
-///|
 /// Create a new AuthenticationExtensionsLargeBlobOutputsJSON with default values
 pub fn AuthenticationExtensionsLargeBlobOutputsJSON::default() -> AuthenticationExtensionsLargeBlobOutputsJSON {
   AuthenticationExtensionsLargeBlobOutputsJSON::{
@@ -2520,39 +1822,27 @@ pub fn AuthenticationExtensionsLargeBlobOutputsJSON::default() -> Authentication
   }
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::to_js_ffi(
-  self : AuthenticationExtensionsLargeBlobOutputsJSON,
-) -> JsValue =
+extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::to_js_ffi(self : AuthenticationExtensionsLargeBlobOutputsJSON) -> JsValue =
   #| (self) => ({
   #|   supported: (self.supported === -1 ? undefined : self.supported),
   #|   blob: self.blob,
   #|   written: (self.written === -1 ? undefined : self.written)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn AuthenticationExtensionsLargeBlobOutputsJSON::to_js(
-  self : AuthenticationExtensionsLargeBlobOutputsJSON,
-) -> JsValue {
+pub fn AuthenticationExtensionsLargeBlobOutputsJSON::to_js(self : AuthenticationExtensionsLargeBlobOutputsJSON) -> JsValue {
   AuthenticationExtensionsLargeBlobOutputsJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js_ffi(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobOutputsJSON =
+extern "js" fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js_ffi(value : JsValue) -> AuthenticationExtensionsLargeBlobOutputsJSON =
   #| (v) => ({
   #|   supported: (v.supported === undefined ? -1 : v.supported),
   #|   blob: v.blob,
   #|   written: (v.written === undefined ? -1 : v.written)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js(
-  value : JsValue,
-) -> AuthenticationExtensionsLargeBlobOutputsJSON {
+pub fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js(value : JsValue) -> AuthenticationExtensionsLargeBlobOutputsJSON {
   AuthenticationExtensionsLargeBlobOutputsJSON::from_js_ffi(value)
 }
 
@@ -2560,44 +1850,26 @@ pub fn AuthenticationExtensionsLargeBlobOutputsJSON::from_js(
 /// PublicKeyCredential interface
 pub type PublicKeyCredential
 
-///|
-pub extern "js" fn PublicKeyCredential::to_js_value(
-  self : PublicKeyCredential,
-) -> JsValue =
+pub extern "js" fn PublicKeyCredential::to_js_value(self : PublicKeyCredential) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PublicKeyCredential (unchecked)
-pub extern "js" fn PublicKeyCredential::from_js_value(
-  v : JsValue,
-) -> PublicKeyCredential =
+pub extern "js" fn PublicKeyCredential::from_js_value(v : JsValue) -> PublicKeyCredential =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PublicKeyCredential (checked with instanceof)
-pub extern "js" fn PublicKeyCredential::from_js_value_opt(
-  v : JsValue,
-) -> PublicKeyCredential? =
+pub extern "js" fn PublicKeyCredential::from_js_value_opt(v : JsValue) -> PublicKeyCredential? =
   #| (v) => (v instanceof PublicKeyCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PublicKeyCredential (checked with instanceof)
-pub extern "js" fn JsValue::as_public_key_credential(
-  self : JsValue,
-) -> PublicKeyCredential? =
+pub extern "js" fn JsValue::as_public_key_credential(self : JsValue) -> PublicKeyCredential? =
   #| (self) => (self instanceof PublicKeyCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PublicKeyCredential (unchecked)
-pub extern "js" fn JsValue::to_public_key_credential(
-  self : JsValue,
-) -> PublicKeyCredential =
+pub extern "js" fn JsValue::to_public_key_credential(self : JsValue) -> PublicKeyCredential =
   #| (self) => self
 
-///|
-pub extern "js" fn PublicKeyCredential::to_credential(
-  self : PublicKeyCredential,
-) -> Credential =
+pub extern "js" fn PublicKeyCredential::to_credential(self : PublicKeyCredential) -> Credential =
   #| (self) => self
 
 ///|
@@ -2607,12 +1879,16 @@ pub(all) enum PublicKeyCredentialGetClientExtensionResultsError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PublicKeyCredentialGetClientExtensionResultsError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsConditionalMediationAvailableError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend PublicKeyCredentialIsConditionalMediationAvailableError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -2621,6 +1897,8 @@ pub(all) enum PublicKeyCredentialToJSONError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PublicKeyCredentialToJSONError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError {
@@ -2628,12 +1906,16 @@ pub(all) enum PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableEr
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialGetClientCapabilitiesError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend PublicKeyCredentialGetClientCapabilitiesError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -2643,6 +1925,8 @@ pub(all) enum PublicKeyCredentialParseCreationOptionsFromJSONError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PublicKeyCredentialParseCreationOptionsFromJSONError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialParseRequestOptionsFromJSONError {
@@ -2650,6 +1934,8 @@ pub(all) enum PublicKeyCredentialParseRequestOptionsFromJSONError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend PublicKeyCredentialParseRequestOptionsFromJSONError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -2659,6 +1945,8 @@ pub(all) enum PublicKeyCredentialSignalUnknownCredentialError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PublicKeyCredentialSignalUnknownCredentialError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PublicKeyCredentialSignalAllAcceptedCredentialsError {
@@ -2666,6 +1954,8 @@ pub(all) enum PublicKeyCredentialSignalAllAcceptedCredentialsError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend PublicKeyCredentialSignalAllAcceptedCredentialsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -2675,137 +1965,64 @@ pub(all) enum PublicKeyCredentialSignalCurrentUserDetailsError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn PublicKeyCredential::get_raw_id(
-  self : PublicKeyCredential,
-) -> ArrayBuffer =
+pub extend PublicKeyCredentialSignalCurrentUserDetailsError with @debug.Debug::{to_repr}
+
+pub extern "js" fn PublicKeyCredential::get_raw_id(self : PublicKeyCredential) -> ArrayBuffer =
   #| (self) => self.rawId
 
-///|
-pub extern "js" fn PublicKeyCredential::get_response(
-  self : PublicKeyCredential,
-) -> AuthenticatorResponse =
+pub extern "js" fn PublicKeyCredential::get_response(self : PublicKeyCredential) -> AuthenticatorResponse =
   #| (self) => self.response
 
-///|
-pub extern "js" fn PublicKeyCredential::get_authenticator_attachment(
-  self : PublicKeyCredential,
-) -> String? =
+pub extern "js" fn PublicKeyCredential::get_authenticator_attachment(self : PublicKeyCredential) -> String? =
   #| (self) => (self.authenticatorAttachment) ?? undefined
 
-///|
-pub extern "js" fn PublicKeyCredential::get_client_extension_results(
-  self : PublicKeyCredential,
-) -> Result[
-  AuthenticationExtensionsClientOutputs,
-  PublicKeyCredentialGetClientExtensionResultsError,
-] =
+pub extern "js" fn PublicKeyCredential::get_client_extension_results(self : PublicKeyCredential) -> Result[AuthenticationExtensionsClientOutputs, PublicKeyCredentialGetClientExtensionResultsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getClientExtensionResults() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> Promise[
-  Result[Bool, PublicKeyCredentialIsConditionalMediationAvailableError],
-] =
+pub extern "js" fn PublicKeyCredential::is_conditional_mediation_available() -> Promise[Result[Bool, PublicKeyCredentialIsConditionalMediationAvailableError]] =
   #| () => PublicKeyCredential.isConditionalMediationAvailable().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn PublicKeyCredential::to_json(
-  self : PublicKeyCredential,
-) -> Result[PublicKeyCredentialJSON, PublicKeyCredentialToJSONError] =
+pub extern "js" fn PublicKeyCredential::to_json(self : PublicKeyCredential) -> Result[PublicKeyCredentialJSON, PublicKeyCredentialToJSONError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.toJSON() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn PublicKeyCredential::is_user_verifying_platform_authenticator_available() -> Promise[
-  Result[
-    Bool,
-    PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError,
-  ],
-] =
+pub extern "js" fn PublicKeyCredential::is_user_verifying_platform_authenticator_available() -> Promise[Result[Bool, PublicKeyCredentialIsUserVerifyingPlatformAuthenticatorAvailableError]] =
   #| () => PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[
-  Result[
-    PublicKeyCredentialClientCapabilities,
-    PublicKeyCredentialGetClientCapabilitiesError,
-  ],
-] =
+pub extern "js" fn PublicKeyCredential::get_client_capabilities() -> Promise[Result[PublicKeyCredentialClientCapabilities, PublicKeyCredentialGetClientCapabilitiesError]] =
   #| () => PublicKeyCredential.getClientCapabilities().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn PublicKeyCredential::parse_creation_options_from_json_ffi(
-  options : JsValue,
-) -> Result[
-  PublicKeyCredentialCreationOptions,
-  PublicKeyCredentialParseCreationOptionsFromJSONError,
-] =
+extern "js" fn PublicKeyCredential::parse_creation_options_from_json_ffi(options : JsValue) -> Result[PublicKeyCredentialCreationOptions, PublicKeyCredentialParseCreationOptionsFromJSONError] =
   #| (options) => (() => { try { return { $tag: 1, _0: PublicKeyCredential.parseCreationOptionsFromJSON(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn PublicKeyCredential::parse_creation_options_from_json(
-  options : PublicKeyCredentialCreationOptionsJSON,
-) -> Result[
-  PublicKeyCredentialCreationOptions,
-  PublicKeyCredentialParseCreationOptionsFromJSONError,
-] {
+pub fn PublicKeyCredential::parse_creation_options_from_json(options : PublicKeyCredentialCreationOptionsJSON) -> Result[PublicKeyCredentialCreationOptions, PublicKeyCredentialParseCreationOptionsFromJSONError] {
   PublicKeyCredential::parse_creation_options_from_json_ffi(options.to_js())
 }
 
-///|
-extern "js" fn PublicKeyCredential::parse_request_options_from_json_ffi(
-  options : JsValue,
-) -> Result[
-  PublicKeyCredentialRequestOptions,
-  PublicKeyCredentialParseRequestOptionsFromJSONError,
-] =
+extern "js" fn PublicKeyCredential::parse_request_options_from_json_ffi(options : JsValue) -> Result[PublicKeyCredentialRequestOptions, PublicKeyCredentialParseRequestOptionsFromJSONError] =
   #| (options) => (() => { try { return { $tag: 1, _0: PublicKeyCredential.parseRequestOptionsFromJSON(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'EncodingError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn PublicKeyCredential::parse_request_options_from_json(
-  options : PublicKeyCredentialRequestOptionsJSON,
-) -> Result[
-  PublicKeyCredentialRequestOptions,
-  PublicKeyCredentialParseRequestOptionsFromJSONError,
-] {
+pub fn PublicKeyCredential::parse_request_options_from_json(options : PublicKeyCredentialRequestOptionsJSON) -> Result[PublicKeyCredentialRequestOptions, PublicKeyCredentialParseRequestOptionsFromJSONError] {
   PublicKeyCredential::parse_request_options_from_json_ffi(options.to_js())
 }
 
-///|
-extern "js" fn PublicKeyCredential::signal_unknown_credential_ffi(
-  options : JsValue,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalUnknownCredentialError]] =
+extern "js" fn PublicKeyCredential::signal_unknown_credential_ffi(options : JsValue) -> Promise[Result[Unit, PublicKeyCredentialSignalUnknownCredentialError]] =
   #| (options) => PublicKeyCredential.signalUnknownCredential(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn PublicKeyCredential::signal_unknown_credential(
-  options : UnknownCredentialOptions,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalUnknownCredentialError]] {
+pub fn PublicKeyCredential::signal_unknown_credential(options : UnknownCredentialOptions) -> Promise[Result[Unit, PublicKeyCredentialSignalUnknownCredentialError]] {
   PublicKeyCredential::signal_unknown_credential_ffi(options.to_js())
 }
 
-///|
-extern "js" fn PublicKeyCredential::signal_all_accepted_credentials_ffi(
-  options : JsValue,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalAllAcceptedCredentialsError]] =
+extern "js" fn PublicKeyCredential::signal_all_accepted_credentials_ffi(options : JsValue) -> Promise[Result[Unit, PublicKeyCredentialSignalAllAcceptedCredentialsError]] =
   #| (options) => PublicKeyCredential.signalAllAcceptedCredentials(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn PublicKeyCredential::signal_all_accepted_credentials(
-  options : AllAcceptedCredentialsOptions,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalAllAcceptedCredentialsError]] {
+pub fn PublicKeyCredential::signal_all_accepted_credentials(options : AllAcceptedCredentialsOptions) -> Promise[Result[Unit, PublicKeyCredentialSignalAllAcceptedCredentialsError]] {
   PublicKeyCredential::signal_all_accepted_credentials_ffi(options.to_js())
 }
 
-///|
-extern "js" fn PublicKeyCredential::signal_current_user_details_ffi(
-  options : JsValue,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalCurrentUserDetailsError]] =
+extern "js" fn PublicKeyCredential::signal_current_user_details_ffi(options : JsValue) -> Promise[Result[Unit, PublicKeyCredentialSignalCurrentUserDetailsError]] =
   #| (options) => PublicKeyCredential.signalCurrentUserDetails(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn PublicKeyCredential::signal_current_user_details(
-  options : CurrentUserDetailsOptions,
-) -> Promise[Result[Unit, PublicKeyCredentialSignalCurrentUserDetailsError]] {
+pub fn PublicKeyCredential::signal_current_user_details(options : CurrentUserDetailsOptions) -> Promise[Result[Unit, PublicKeyCredentialSignalCurrentUserDetailsError]] {
   PublicKeyCredential::signal_current_user_details_ffi(options.to_js())
 }
 
@@ -2813,190 +2030,106 @@ pub fn PublicKeyCredential::signal_current_user_details(
 /// AuthenticatorResponse interface
 pub type AuthenticatorResponse
 
-///|
-pub extern "js" fn AuthenticatorResponse::to_js_value(
-  self : AuthenticatorResponse,
-) -> JsValue =
+pub extern "js" fn AuthenticatorResponse::to_js_value(self : AuthenticatorResponse) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to AuthenticatorResponse (unchecked)
-pub extern "js" fn AuthenticatorResponse::from_js_value(
-  v : JsValue,
-) -> AuthenticatorResponse =
+pub extern "js" fn AuthenticatorResponse::from_js_value(v : JsValue) -> AuthenticatorResponse =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to AuthenticatorResponse (checked with instanceof)
-pub extern "js" fn AuthenticatorResponse::from_js_value_opt(
-  v : JsValue,
-) -> AuthenticatorResponse? =
+pub extern "js" fn AuthenticatorResponse::from_js_value_opt(v : JsValue) -> AuthenticatorResponse? =
   #| (v) => (v instanceof AuthenticatorResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to AuthenticatorResponse (checked with instanceof)
-pub extern "js" fn JsValue::as_authenticator_response(
-  self : JsValue,
-) -> AuthenticatorResponse? =
+pub extern "js" fn JsValue::as_authenticator_response(self : JsValue) -> AuthenticatorResponse? =
   #| (self) => (self instanceof AuthenticatorResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to AuthenticatorResponse (unchecked)
-pub extern "js" fn JsValue::to_authenticator_response(
-  self : JsValue,
-) -> AuthenticatorResponse =
+pub extern "js" fn JsValue::to_authenticator_response(self : JsValue) -> AuthenticatorResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn AuthenticatorResponse::as_authenticator_attestation_response(
-  self : AuthenticatorResponse,
-) -> AuthenticatorAttestationResponse? =
+pub extern "js" fn AuthenticatorResponse::as_authenticator_attestation_response(self : AuthenticatorResponse) -> AuthenticatorAttestationResponse? =
   #| (self) => (self instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn AuthenticatorResponse::as_authenticator_assertion_response(
-  self : AuthenticatorResponse,
-) -> AuthenticatorAssertionResponse? =
+pub extern "js" fn AuthenticatorResponse::as_authenticator_assertion_response(self : AuthenticatorResponse) -> AuthenticatorAssertionResponse? =
   #| (self) => (self instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn AuthenticatorResponse::get_client_data_json(
-  self : AuthenticatorResponse,
-) -> ArrayBuffer =
+pub extern "js" fn AuthenticatorResponse::get_client_data_json(self : AuthenticatorResponse) -> ArrayBuffer =
   #| (self) => self.clientDataJSON
 
 ///|
 /// AuthenticatorAttestationResponse interface
 pub type AuthenticatorAttestationResponse
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::to_js_value(
-  self : AuthenticatorAttestationResponse,
-) -> JsValue =
+pub extern "js" fn AuthenticatorAttestationResponse::to_js_value(self : AuthenticatorAttestationResponse) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to AuthenticatorAttestationResponse (unchecked)
-pub extern "js" fn AuthenticatorAttestationResponse::from_js_value(
-  v : JsValue,
-) -> AuthenticatorAttestationResponse =
+pub extern "js" fn AuthenticatorAttestationResponse::from_js_value(v : JsValue) -> AuthenticatorAttestationResponse =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to AuthenticatorAttestationResponse (checked with instanceof)
-pub extern "js" fn AuthenticatorAttestationResponse::from_js_value_opt(
-  v : JsValue,
-) -> AuthenticatorAttestationResponse? =
+pub extern "js" fn AuthenticatorAttestationResponse::from_js_value_opt(v : JsValue) -> AuthenticatorAttestationResponse? =
   #| (v) => (v instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to AuthenticatorAttestationResponse (checked with instanceof)
-pub extern "js" fn JsValue::as_authenticator_attestation_response(
-  self : JsValue,
-) -> AuthenticatorAttestationResponse? =
+pub extern "js" fn JsValue::as_authenticator_attestation_response(self : JsValue) -> AuthenticatorAttestationResponse? =
   #| (self) => (self instanceof AuthenticatorAttestationResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to AuthenticatorAttestationResponse (unchecked)
-pub extern "js" fn JsValue::to_authenticator_attestation_response(
-  self : JsValue,
-) -> AuthenticatorAttestationResponse =
+pub extern "js" fn JsValue::to_authenticator_attestation_response(self : JsValue) -> AuthenticatorAttestationResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::to_authenticator_response(
-  self : AuthenticatorAttestationResponse,
-) -> AuthenticatorResponse =
+pub extern "js" fn AuthenticatorAttestationResponse::to_authenticator_response(self : AuthenticatorAttestationResponse) -> AuthenticatorResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_attestation_object(
-  self : AuthenticatorAttestationResponse,
-) -> ArrayBuffer =
+pub extern "js" fn AuthenticatorAttestationResponse::get_attestation_object(self : AuthenticatorAttestationResponse) -> ArrayBuffer =
   #| (self) => self.attestationObject
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_transports(
-  self : AuthenticatorAttestationResponse,
-) -> FixedArray[String] =
+pub extern "js" fn AuthenticatorAttestationResponse::get_transports(self : AuthenticatorAttestationResponse) -> FixedArray[String] =
   #| (self) => self.getTransports()
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_authenticator_data(
-  self : AuthenticatorAttestationResponse,
-) -> ArrayBuffer =
+pub extern "js" fn AuthenticatorAttestationResponse::get_authenticator_data(self : AuthenticatorAttestationResponse) -> ArrayBuffer =
   #| (self) => self.getAuthenticatorData()
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_public_key(
-  self : AuthenticatorAttestationResponse,
-) -> ArrayBuffer? =
+pub extern "js" fn AuthenticatorAttestationResponse::get_public_key(self : AuthenticatorAttestationResponse) -> ArrayBuffer? =
   #| (self) => (() => { const v = self.getPublicKey(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn AuthenticatorAttestationResponse::get_public_key_algorithm(
-  self : AuthenticatorAttestationResponse,
-) -> COSEAlgorithmIdentifier =
+pub extern "js" fn AuthenticatorAttestationResponse::get_public_key_algorithm(self : AuthenticatorAttestationResponse) -> COSEAlgorithmIdentifier =
   #| (self) => self.getPublicKeyAlgorithm()
 
 ///|
 /// AuthenticatorAssertionResponse interface
 pub type AuthenticatorAssertionResponse
 
-///|
-pub extern "js" fn AuthenticatorAssertionResponse::to_js_value(
-  self : AuthenticatorAssertionResponse,
-) -> JsValue =
+pub extern "js" fn AuthenticatorAssertionResponse::to_js_value(self : AuthenticatorAssertionResponse) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to AuthenticatorAssertionResponse (unchecked)
-pub extern "js" fn AuthenticatorAssertionResponse::from_js_value(
-  v : JsValue,
-) -> AuthenticatorAssertionResponse =
+pub extern "js" fn AuthenticatorAssertionResponse::from_js_value(v : JsValue) -> AuthenticatorAssertionResponse =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to AuthenticatorAssertionResponse (checked with instanceof)
-pub extern "js" fn AuthenticatorAssertionResponse::from_js_value_opt(
-  v : JsValue,
-) -> AuthenticatorAssertionResponse? =
+pub extern "js" fn AuthenticatorAssertionResponse::from_js_value_opt(v : JsValue) -> AuthenticatorAssertionResponse? =
   #| (v) => (v instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to AuthenticatorAssertionResponse (checked with instanceof)
-pub extern "js" fn JsValue::as_authenticator_assertion_response(
-  self : JsValue,
-) -> AuthenticatorAssertionResponse? =
+pub extern "js" fn JsValue::as_authenticator_assertion_response(self : JsValue) -> AuthenticatorAssertionResponse? =
   #| (self) => (self instanceof AuthenticatorAssertionResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to AuthenticatorAssertionResponse (unchecked)
-pub extern "js" fn JsValue::to_authenticator_assertion_response(
-  self : JsValue,
-) -> AuthenticatorAssertionResponse =
+pub extern "js" fn JsValue::to_authenticator_assertion_response(self : JsValue) -> AuthenticatorAssertionResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn AuthenticatorAssertionResponse::to_authenticator_response(
-  self : AuthenticatorAssertionResponse,
-) -> AuthenticatorResponse =
+pub extern "js" fn AuthenticatorAssertionResponse::to_authenticator_response(self : AuthenticatorAssertionResponse) -> AuthenticatorResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn AuthenticatorAssertionResponse::get_authenticator_data(
-  self : AuthenticatorAssertionResponse,
-) -> ArrayBuffer =
+pub extern "js" fn AuthenticatorAssertionResponse::get_authenticator_data(self : AuthenticatorAssertionResponse) -> ArrayBuffer =
   #| (self) => self.authenticatorData
 
-///|
-pub extern "js" fn AuthenticatorAssertionResponse::get_signature(
-  self : AuthenticatorAssertionResponse,
-) -> ArrayBuffer =
+pub extern "js" fn AuthenticatorAssertionResponse::get_signature(self : AuthenticatorAssertionResponse) -> ArrayBuffer =
   #| (self) => self.signature
 
-///|
-pub extern "js" fn AuthenticatorAssertionResponse::get_user_handle(
-  self : AuthenticatorAssertionResponse,
-) -> ArrayBuffer? =
+pub extern "js" fn AuthenticatorAssertionResponse::get_user_handle(self : AuthenticatorAssertionResponse) -> ArrayBuffer? =
   #| (self) => (() => { const v = self.userHandle; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

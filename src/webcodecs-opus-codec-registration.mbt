@@ -8,7 +8,9 @@ pub(all) enum OpusBitstreamFormat {
   Ogg
 } derive(Eq, Debug)
 
-///|
+pub extend OpusBitstreamFormat with Eq::{equal, not_equal}
+pub extend OpusBitstreamFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OpusBitstreamFormat::to_string(self : OpusBitstreamFormat) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn OpusBitstreamFormat::to_string(self : OpusBitstreamFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OpusBitstreamFormat::from_string(s : String) -> OpusBitstreamFormat? {
   match s {
@@ -35,7 +36,9 @@ pub(all) enum OpusSignal {
   Voice
 } derive(Eq, Debug)
 
-///|
+pub extend OpusSignal with Eq::{equal, not_equal}
+pub extend OpusSignal with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OpusSignal::to_string(self : OpusSignal) -> String {
   match self {
@@ -45,7 +48,6 @@ pub fn OpusSignal::to_string(self : OpusSignal) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OpusSignal::from_string(s : String) -> OpusSignal? {
   match s {
@@ -64,7 +66,9 @@ pub(all) enum OpusApplication {
   Lowdelay
 } derive(Eq, Debug)
 
-///|
+pub extend OpusApplication with Eq::{equal, not_equal}
+pub extend OpusApplication with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OpusApplication::to_string(self : OpusApplication) -> String {
   match self {
@@ -74,7 +78,6 @@ pub fn OpusApplication::to_string(self : OpusApplication) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OpusApplication::from_string(s : String) -> OpusApplication? {
   match s {
@@ -98,7 +101,6 @@ pub(all) struct OpusEncoderConfig {
   usedtx : Bool?
 }
 
-///|
 /// Create a new OpusEncoderConfig with default values
 pub fn OpusEncoderConfig::default() -> OpusEncoderConfig {
   OpusEncoderConfig::{
@@ -113,10 +115,7 @@ pub fn OpusEncoderConfig::default() -> OpusEncoderConfig {
   }
 }
 
-///|
-extern "js" fn OpusEncoderConfig::to_js_ffi(
-  self : OpusEncoderConfig,
-) -> JsValue =
+extern "js" fn OpusEncoderConfig::to_js_ffi(self : OpusEncoderConfig) -> JsValue =
   #| (self) => ({
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['opus', 'ogg'][v]; })()),
   #|   signal: ((() => { const v = self.signal; if (v === undefined) return undefined; return ['auto', 'music', 'voice'][v]; })()),
@@ -128,16 +127,12 @@ extern "js" fn OpusEncoderConfig::to_js_ffi(
   #|   usedtx: (self.usedtx === -1 ? undefined : self.usedtx)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn OpusEncoderConfig::to_js(self : OpusEncoderConfig) -> JsValue {
   OpusEncoderConfig::to_js_ffi(self)
 }
 
-///|
-extern "js" fn OpusEncoderConfig::from_js_ffi(
-  value : JsValue,
-) -> OpusEncoderConfig =
+extern "js" fn OpusEncoderConfig::from_js_ffi(value : JsValue) -> OpusEncoderConfig =
   #| (v) => ({
   #|   format: (v.format === undefined ? undefined : ['opus', 'ogg'].indexOf(v.format)),
   #|   signal: (v.signal === undefined ? undefined : ['auto', 'music', 'voice'].indexOf(v.signal)),
@@ -149,7 +144,6 @@ extern "js" fn OpusEncoderConfig::from_js_ffi(
   #|   usedtx: (v.usedtx === undefined ? -1 : v.usedtx)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn OpusEncoderConfig::from_js(value : JsValue) -> OpusEncoderConfig {
   OpusEncoderConfig::from_js_ffi(value)
@@ -157,22 +151,12 @@ pub fn OpusEncoderConfig::from_js(value : JsValue) -> OpusEncoderConfig {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn OpusEncoderConfig::to_js_checked(
-  self : OpusEncoderConfig,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn OpusEncoderConfig::to_js_checked(self : OpusEncoderConfig) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_OpusEncoderConfig(
-  convert : () -> OpusEncoderConfig,
-) -> Result[OpusEncoderConfig, JsError] =
+extern "js" fn try_dictionary_OpusEncoderConfig(convert : () -> OpusEncoderConfig) -> Result[OpusEncoderConfig, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn OpusEncoderConfig::from_js_checked(
-  value : JsValue,
-) -> Result[OpusEncoderConfig, JsError] {
-  try_dictionary_OpusEncoderConfig(() => OpusEncoderConfig::from_js(value))
-}
+pub fn OpusEncoderConfig::from_js_checked(value : JsValue) -> Result[OpusEncoderConfig, JsError] { try_dictionary_OpusEncoderConfig(() => OpusEncoderConfig::from_js(value)) }

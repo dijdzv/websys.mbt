@@ -10,11 +10,11 @@ pub(all) enum IdentityCredentialRequestOptionsContext {
   Continue
 } derive(Eq, Debug)
 
-///|
+pub extend IdentityCredentialRequestOptionsContext with Eq::{equal, not_equal}
+pub extend IdentityCredentialRequestOptionsContext with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn IdentityCredentialRequestOptionsContext::to_string(
-  self : IdentityCredentialRequestOptionsContext,
-) -> String {
+pub fn IdentityCredentialRequestOptionsContext::to_string(self : IdentityCredentialRequestOptionsContext) -> String {
   match self {
     IdentityCredentialRequestOptionsContext::Signin => "signin"
     IdentityCredentialRequestOptionsContext::Signup => "signup"
@@ -23,11 +23,8 @@ pub fn IdentityCredentialRequestOptionsContext::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn IdentityCredentialRequestOptionsContext::from_string(
-  s : String,
-) -> IdentityCredentialRequestOptionsContext? {
+pub fn IdentityCredentialRequestOptionsContext::from_string(s : String) -> IdentityCredentialRequestOptionsContext? {
   match s {
     "signin" => Some(IdentityCredentialRequestOptionsContext::Signin)
     "signup" => Some(IdentityCredentialRequestOptionsContext::Signup)
@@ -44,22 +41,19 @@ pub(all) enum IdentityCredentialRequestOptionsMode {
   Passive
 } derive(Eq, Debug)
 
-///|
+pub extend IdentityCredentialRequestOptionsMode with Eq::{equal, not_equal}
+pub extend IdentityCredentialRequestOptionsMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn IdentityCredentialRequestOptionsMode::to_string(
-  self : IdentityCredentialRequestOptionsMode,
-) -> String {
+pub fn IdentityCredentialRequestOptionsMode::to_string(self : IdentityCredentialRequestOptionsMode) -> String {
   match self {
     IdentityCredentialRequestOptionsMode::Active => "active"
     IdentityCredentialRequestOptionsMode::Passive => "passive"
   }
 }
 
-///|
 /// Parse from string value
-pub fn IdentityCredentialRequestOptionsMode::from_string(
-  s : String,
-) -> IdentityCredentialRequestOptionsMode? {
+pub fn IdentityCredentialRequestOptionsMode::from_string(s : String) -> IdentityCredentialRequestOptionsMode? {
   match s {
     "active" => Some(IdentityCredentialRequestOptionsMode::Active)
     "passive" => Some(IdentityCredentialRequestOptionsMode::Passive)
@@ -75,7 +69,6 @@ pub(all) struct IdentityCredentialDisconnectOptions {
   accountHint : String
 }
 
-///|
 /// Create a new IdentityCredentialDisconnectOptions with default values
 pub fn IdentityCredentialDisconnectOptions::default() -> IdentityCredentialDisconnectOptions {
   IdentityCredentialDisconnectOptions::{
@@ -85,39 +78,27 @@ pub fn IdentityCredentialDisconnectOptions::default() -> IdentityCredentialDisco
   }
 }
 
-///|
-extern "js" fn IdentityCredentialDisconnectOptions::to_js_ffi(
-  self : IdentityCredentialDisconnectOptions,
-) -> JsValue =
+extern "js" fn IdentityCredentialDisconnectOptions::to_js_ffi(self : IdentityCredentialDisconnectOptions) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId,
   #|   accountHint: self.accountHint
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityCredentialDisconnectOptions::to_js(
-  self : IdentityCredentialDisconnectOptions,
-) -> JsValue {
+pub fn IdentityCredentialDisconnectOptions::to_js(self : IdentityCredentialDisconnectOptions) -> JsValue {
   IdentityCredentialDisconnectOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityCredentialDisconnectOptions::from_js_ffi(
-  value : JsValue,
-) -> IdentityCredentialDisconnectOptions =
+extern "js" fn IdentityCredentialDisconnectOptions::from_js_ffi(value : JsValue) -> IdentityCredentialDisconnectOptions =
   #| (v) => ({
   #|   configURL: v.configURL,
   #|   clientId: v.clientId,
   #|   accountHint: v.accountHint
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityCredentialDisconnectOptions::from_js(
-  value : JsValue,
-) -> IdentityCredentialDisconnectOptions {
+pub fn IdentityCredentialDisconnectOptions::from_js(value : JsValue) -> IdentityCredentialDisconnectOptions {
   IdentityCredentialDisconnectOptions::from_js_ffi(value)
 }
 
@@ -127,35 +108,28 @@ pub(all) struct DisconnectedAccount {
   account_id : String
 }
 
-///|
 /// Create a new DisconnectedAccount with default values
 pub fn DisconnectedAccount::default() -> DisconnectedAccount {
-  DisconnectedAccount::{ account_id: "", }
+  DisconnectedAccount::{
+    account_id: "",
+  }
 }
 
-///|
-extern "js" fn DisconnectedAccount::to_js_ffi(
-  self : DisconnectedAccount,
-) -> JsValue =
+extern "js" fn DisconnectedAccount::to_js_ffi(self : DisconnectedAccount) -> JsValue =
   #| (self) => ({
   #|   account_id: self.account_id
   #| })
 
-///|
 /// Convert to JsValue
 pub fn DisconnectedAccount::to_js(self : DisconnectedAccount) -> JsValue {
   DisconnectedAccount::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DisconnectedAccount::from_js_ffi(
-  value : JsValue,
-) -> DisconnectedAccount =
+extern "js" fn DisconnectedAccount::from_js_ffi(value : JsValue) -> DisconnectedAccount =
   #| (v) => ({
   #|   account_id: v.account_id
   #| })
 
-///|
 /// Convert from JsValue
 pub fn DisconnectedAccount::from_js(value : JsValue) -> DisconnectedAccount {
   DisconnectedAccount::from_js_ffi(value)
@@ -168,43 +142,33 @@ pub(all) struct IdentityCredentialErrorInit {
   url : String?
 }
 
-///|
 /// Create a new IdentityCredentialErrorInit with default values
 pub fn IdentityCredentialErrorInit::default() -> IdentityCredentialErrorInit {
-  IdentityCredentialErrorInit::{ error: None, url: None, }
+  IdentityCredentialErrorInit::{
+    error: None,
+    url: None,
+  }
 }
 
-///|
-extern "js" fn IdentityCredentialErrorInit::to_js_ffi(
-  self : IdentityCredentialErrorInit,
-) -> JsValue =
+extern "js" fn IdentityCredentialErrorInit::to_js_ffi(self : IdentityCredentialErrorInit) -> JsValue =
   #| (self) => ({
   #|   error: self.error,
   #|   url: self.url
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityCredentialErrorInit::to_js(
-  self : IdentityCredentialErrorInit,
-) -> JsValue {
+pub fn IdentityCredentialErrorInit::to_js(self : IdentityCredentialErrorInit) -> JsValue {
   IdentityCredentialErrorInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityCredentialErrorInit::from_js_ffi(
-  value : JsValue,
-) -> IdentityCredentialErrorInit =
+extern "js" fn IdentityCredentialErrorInit::from_js_ffi(value : JsValue) -> IdentityCredentialErrorInit =
   #| (v) => ({
   #|   error: v.error,
   #|   url: v.url
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityCredentialErrorInit::from_js(
-  value : JsValue,
-) -> IdentityCredentialErrorInit {
+pub fn IdentityCredentialErrorInit::from_js(value : JsValue) -> IdentityCredentialErrorInit {
   IdentityCredentialErrorInit::from_js_ffi(value)
 }
 
@@ -216,7 +180,6 @@ pub(all) struct IdentityCredentialRequestOptions {
   mode : IdentityCredentialRequestOptionsMode?
 }
 
-///|
 /// Create a new IdentityCredentialRequestOptions with default values
 pub fn IdentityCredentialRequestOptions::default() -> IdentityCredentialRequestOptions {
   IdentityCredentialRequestOptions::{
@@ -226,39 +189,27 @@ pub fn IdentityCredentialRequestOptions::default() -> IdentityCredentialRequestO
   }
 }
 
-///|
-extern "js" fn IdentityCredentialRequestOptions::to_js_ffi(
-  self : IdentityCredentialRequestOptions,
-) -> JsValue =
+extern "js" fn IdentityCredentialRequestOptions::to_js_ffi(self : IdentityCredentialRequestOptions) -> JsValue =
   #| (self) => ({
   #|   providers: self.providers,
   #|   context: ((() => { const v = self.context; if (v === undefined) return undefined; return ['signin', 'signup', 'use', 'continue'][v]; })()),
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['active', 'passive'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityCredentialRequestOptions::to_js(
-  self : IdentityCredentialRequestOptions,
-) -> JsValue {
+pub fn IdentityCredentialRequestOptions::to_js(self : IdentityCredentialRequestOptions) -> JsValue {
   IdentityCredentialRequestOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityCredentialRequestOptions::from_js_ffi(
-  value : JsValue,
-) -> IdentityCredentialRequestOptions =
+extern "js" fn IdentityCredentialRequestOptions::from_js_ffi(value : JsValue) -> IdentityCredentialRequestOptions =
   #| (v) => ({
   #|   providers: v.providers,
   #|   context: (v.context === undefined ? undefined : ['signin', 'signup', 'use', 'continue'].indexOf(v.context)),
   #|   mode: (v.mode === undefined ? undefined : ['active', 'passive'].indexOf(v.mode))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityCredentialRequestOptions::from_js(
-  value : JsValue,
-) -> IdentityCredentialRequestOptions {
+pub fn IdentityCredentialRequestOptions::from_js(value : JsValue) -> IdentityCredentialRequestOptions {
   IdentityCredentialRequestOptions::from_js_ffi(value)
 }
 
@@ -269,41 +220,33 @@ pub(all) struct IdentityProviderConfig {
   clientId : String
 }
 
-///|
 /// Create a new IdentityProviderConfig with default values
 pub fn IdentityProviderConfig::default() -> IdentityProviderConfig {
-  IdentityProviderConfig::{ configURL: "", clientId: "", }
+  IdentityProviderConfig::{
+    configURL: "",
+    clientId: "",
+  }
 }
 
-///|
-extern "js" fn IdentityProviderConfig::to_js_ffi(
-  self : IdentityProviderConfig,
-) -> JsValue =
+extern "js" fn IdentityProviderConfig::to_js_ffi(self : IdentityProviderConfig) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IdentityProviderConfig::to_js(self : IdentityProviderConfig) -> JsValue {
   IdentityProviderConfig::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderConfig::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderConfig =
+extern "js" fn IdentityProviderConfig::from_js_ffi(value : JsValue) -> IdentityProviderConfig =
   #| (v) => ({
   #|   configURL: v.configURL,
   #|   clientId: v.clientId
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderConfig::from_js(
-  value : JsValue,
-) -> IdentityProviderConfig {
+pub fn IdentityProviderConfig::from_js(value : JsValue) -> IdentityProviderConfig {
   IdentityProviderConfig::from_js_ffi(value)
 }
 
@@ -318,7 +261,6 @@ pub(all) struct IdentityProviderRequestOptions {
   params : JsValue?
 }
 
-///|
 /// Create a new IdentityProviderRequestOptions with default values
 pub fn IdentityProviderRequestOptions::default() -> IdentityProviderRequestOptions {
   IdentityProviderRequestOptions::{
@@ -331,10 +273,7 @@ pub fn IdentityProviderRequestOptions::default() -> IdentityProviderRequestOptio
   }
 }
 
-///|
-extern "js" fn IdentityProviderRequestOptions::to_js_ffi(
-  self : IdentityProviderRequestOptions,
-) -> JsValue =
+extern "js" fn IdentityProviderRequestOptions::to_js_ffi(self : IdentityProviderRequestOptions) -> JsValue =
   #| (self) => ({
   #|   configURL: self.configURL,
   #|   clientId: self.clientId,
@@ -344,18 +283,12 @@ extern "js" fn IdentityProviderRequestOptions::to_js_ffi(
   #|   params: ((() => { const v = self.params; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderRequestOptions::to_js(
-  self : IdentityProviderRequestOptions,
-) -> JsValue {
+pub fn IdentityProviderRequestOptions::to_js(self : IdentityProviderRequestOptions) -> JsValue {
   IdentityProviderRequestOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderRequestOptions::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderRequestOptions =
+extern "js" fn IdentityProviderRequestOptions::from_js_ffi(value : JsValue) -> IdentityProviderRequestOptions =
   #| (v) => ({
   #|   configURL: v.configURL,
   #|   clientId: v.clientId,
@@ -365,11 +298,8 @@ extern "js" fn IdentityProviderRequestOptions::from_js_ffi(
   #|   params: (v.params === undefined ? { $tag: 0 } : { $tag: 1, _0: v.params })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderRequestOptions::from_js(
-  value : JsValue,
-) -> IdentityProviderRequestOptions {
+pub fn IdentityProviderRequestOptions::from_js(value : JsValue) -> IdentityProviderRequestOptions {
   IdentityProviderRequestOptions::from_js_ffi(value)
 }
 
@@ -381,7 +311,6 @@ pub(all) struct IdentityProviderWellKnown {
   login_url : String?
 }
 
-///|
 /// Create a new IdentityProviderWellKnown with default values
 pub fn IdentityProviderWellKnown::default() -> IdentityProviderWellKnown {
   IdentityProviderWellKnown::{
@@ -391,39 +320,27 @@ pub fn IdentityProviderWellKnown::default() -> IdentityProviderWellKnown {
   }
 }
 
-///|
-extern "js" fn IdentityProviderWellKnown::to_js_ffi(
-  self : IdentityProviderWellKnown,
-) -> JsValue =
+extern "js" fn IdentityProviderWellKnown::to_js_ffi(self : IdentityProviderWellKnown) -> JsValue =
   #| (self) => ({
   #|   provider_urls: self.provider_urls,
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   login_url: self.login_url
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderWellKnown::to_js(
-  self : IdentityProviderWellKnown,
-) -> JsValue {
+pub fn IdentityProviderWellKnown::to_js(self : IdentityProviderWellKnown) -> JsValue {
   IdentityProviderWellKnown::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderWellKnown::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderWellKnown =
+extern "js" fn IdentityProviderWellKnown::from_js_ffi(value : JsValue) -> IdentityProviderWellKnown =
   #| (v) => ({
   #|   provider_urls: v.provider_urls,
   #|   accounts_endpoint: v.accounts_endpoint,
   #|   login_url: v.login_url
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderWellKnown::from_js(
-  value : JsValue,
-) -> IdentityProviderWellKnown {
+pub fn IdentityProviderWellKnown::from_js(value : JsValue) -> IdentityProviderWellKnown {
   IdentityProviderWellKnown::from_js_ffi(value)
 }
 
@@ -434,37 +351,31 @@ pub(all) struct IdentityProviderIcon {
   size : Int?
 }
 
-///|
 /// Create a new IdentityProviderIcon with default values
 pub fn IdentityProviderIcon::default() -> IdentityProviderIcon {
-  IdentityProviderIcon::{ url: "", size: None, }
+  IdentityProviderIcon::{
+    url: "",
+    size: None,
+  }
 }
 
-///|
-extern "js" fn IdentityProviderIcon::to_js_ffi(
-  self : IdentityProviderIcon,
-) -> JsValue =
+extern "js" fn IdentityProviderIcon::to_js_ffi(self : IdentityProviderIcon) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
   #|   size: self.size
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IdentityProviderIcon::to_js(self : IdentityProviderIcon) -> JsValue {
   IdentityProviderIcon::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderIcon::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderIcon =
+extern "js" fn IdentityProviderIcon::from_js_ffi(value : JsValue) -> IdentityProviderIcon =
   #| (v) => ({
   #|   url: v.url,
   #|   size: v.size
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IdentityProviderIcon::from_js(value : JsValue) -> IdentityProviderIcon {
   IdentityProviderIcon::from_js_ffi(value)
@@ -479,7 +390,6 @@ pub(all) struct IdentityProviderBranding {
   name : String?
 }
 
-///|
 /// Create a new IdentityProviderBranding with default values
 pub fn IdentityProviderBranding::default() -> IdentityProviderBranding {
   IdentityProviderBranding::{
@@ -490,10 +400,7 @@ pub fn IdentityProviderBranding::default() -> IdentityProviderBranding {
   }
 }
 
-///|
-extern "js" fn IdentityProviderBranding::to_js_ffi(
-  self : IdentityProviderBranding,
-) -> JsValue =
+extern "js" fn IdentityProviderBranding::to_js_ffi(self : IdentityProviderBranding) -> JsValue =
   #| (self) => ({
   #|   background_color: self.background_color,
   #|   color: self.color,
@@ -501,18 +408,12 @@ extern "js" fn IdentityProviderBranding::to_js_ffi(
   #|   name: self.name
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderBranding::to_js(
-  self : IdentityProviderBranding,
-) -> JsValue {
+pub fn IdentityProviderBranding::to_js(self : IdentityProviderBranding) -> JsValue {
   IdentityProviderBranding::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderBranding::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderBranding =
+extern "js" fn IdentityProviderBranding::from_js_ffi(value : JsValue) -> IdentityProviderBranding =
   #| (v) => ({
   #|   background_color: v.background_color,
   #|   color: v.color,
@@ -520,11 +421,8 @@ extern "js" fn IdentityProviderBranding::from_js_ffi(
   #|   name: v.name
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderBranding::from_js(
-  value : JsValue,
-) -> IdentityProviderBranding {
+pub fn IdentityProviderBranding::from_js(value : JsValue) -> IdentityProviderBranding {
   IdentityProviderBranding::from_js_ffi(value)
 }
 
@@ -541,7 +439,6 @@ pub(all) struct IdentityProviderAPIConfig {
   account_label : String?
 }
 
-///|
 /// Create a new IdentityProviderAPIConfig with default values
 pub fn IdentityProviderAPIConfig::default() -> IdentityProviderAPIConfig {
   IdentityProviderAPIConfig::{
@@ -556,11 +453,7 @@ pub fn IdentityProviderAPIConfig::default() -> IdentityProviderAPIConfig {
   }
 }
 
-///|
-extern "js" fn IdentityProviderAPIConfig::to_js_ffi(
-  self : IdentityProviderAPIConfig,
-  convert_branding : (IdentityProviderBranding?) -> JsValue,
-) -> JsValue =
+extern "js" fn IdentityProviderAPIConfig::to_js_ffi(self : IdentityProviderAPIConfig, convert_branding : (IdentityProviderBranding?) -> JsValue) -> JsValue =
   #| (self, convert_branding) => ({
   #|   accounts_endpoint: self.accounts_endpoint,
   #|   client_metadata_endpoint: self.client_metadata_endpoint,
@@ -572,24 +465,12 @@ extern "js" fn IdentityProviderAPIConfig::to_js_ffi(
   #|   account_label: self.account_label
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderAPIConfig::to_js(
-  self : IdentityProviderAPIConfig,
-) -> JsValue {
-  IdentityProviderAPIConfig::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn IdentityProviderAPIConfig::to_js(self : IdentityProviderAPIConfig) -> JsValue {
+  IdentityProviderAPIConfig::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn IdentityProviderAPIConfig::from_js_ffi(
-  value : JsValue,
-  convert_branding : (JsValue) -> IdentityProviderBranding?,
-) -> IdentityProviderAPIConfig =
+extern "js" fn IdentityProviderAPIConfig::from_js_ffi(value : JsValue, convert_branding : (JsValue) -> IdentityProviderBranding?) -> IdentityProviderAPIConfig =
   #| (v, convert_branding) => ({
   #|   accounts_endpoint: v.accounts_endpoint,
   #|   client_metadata_endpoint: v.client_metadata_endpoint,
@@ -601,18 +482,9 @@ extern "js" fn IdentityProviderAPIConfig::from_js_ffi(
   #|   account_label: v.account_label
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderAPIConfig::from_js(
-  value : JsValue,
-) -> IdentityProviderAPIConfig {
-  IdentityProviderAPIConfig::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(IdentityProviderBranding::from_js(value))
-    }
-  })
+pub fn IdentityProviderAPIConfig::from_js(value : JsValue) -> IdentityProviderAPIConfig {
+  IdentityProviderAPIConfig::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(IdentityProviderBranding::from_js(value)) } })
 }
 
 ///|
@@ -631,7 +503,6 @@ pub(all) struct IdentityProviderAccount {
   label_hints : FixedArray[String]?
 }
 
-///|
 /// Create a new IdentityProviderAccount with default values
 pub fn IdentityProviderAccount::default() -> IdentityProviderAccount {
   IdentityProviderAccount::{
@@ -649,10 +520,7 @@ pub fn IdentityProviderAccount::default() -> IdentityProviderAccount {
   }
 }
 
-///|
-extern "js" fn IdentityProviderAccount::to_js_ffi(
-  self : IdentityProviderAccount,
-) -> JsValue =
+extern "js" fn IdentityProviderAccount::to_js_ffi(self : IdentityProviderAccount) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   name: self.name,
@@ -667,18 +535,12 @@ extern "js" fn IdentityProviderAccount::to_js_ffi(
   #|   label_hints: self.label_hints
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderAccount::to_js(
-  self : IdentityProviderAccount,
-) -> JsValue {
+pub fn IdentityProviderAccount::to_js(self : IdentityProviderAccount) -> JsValue {
   IdentityProviderAccount::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderAccount::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderAccount =
+extern "js" fn IdentityProviderAccount::from_js_ffi(value : JsValue) -> IdentityProviderAccount =
   #| (v) => ({
   #|   id: v.id,
   #|   name: v.name,
@@ -693,11 +555,8 @@ extern "js" fn IdentityProviderAccount::from_js_ffi(
   #|   label_hints: v.label_hints
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderAccount::from_js(
-  value : JsValue,
-) -> IdentityProviderAccount {
+pub fn IdentityProviderAccount::from_js(value : JsValue) -> IdentityProviderAccount {
   IdentityProviderAccount::from_js_ffi(value)
 }
 
@@ -707,41 +566,30 @@ pub(all) struct IdentityProviderAccountList {
   accounts : FixedArray[IdentityProviderAccount]?
 }
 
-///|
 /// Create a new IdentityProviderAccountList with default values
 pub fn IdentityProviderAccountList::default() -> IdentityProviderAccountList {
-  IdentityProviderAccountList::{ accounts: None, }
+  IdentityProviderAccountList::{
+    accounts: None,
+  }
 }
 
-///|
-extern "js" fn IdentityProviderAccountList::to_js_ffi(
-  self : IdentityProviderAccountList,
-) -> JsValue =
+extern "js" fn IdentityProviderAccountList::to_js_ffi(self : IdentityProviderAccountList) -> JsValue =
   #| (self) => ({
   #|   accounts: self.accounts
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderAccountList::to_js(
-  self : IdentityProviderAccountList,
-) -> JsValue {
+pub fn IdentityProviderAccountList::to_js(self : IdentityProviderAccountList) -> JsValue {
   IdentityProviderAccountList::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderAccountList::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderAccountList =
+extern "js" fn IdentityProviderAccountList::from_js_ffi(value : JsValue) -> IdentityProviderAccountList =
   #| (v) => ({
   #|   accounts: v.accounts
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderAccountList::from_js(
-  value : JsValue,
-) -> IdentityProviderAccountList {
+pub fn IdentityProviderAccountList::from_js(value : JsValue) -> IdentityProviderAccountList {
   IdentityProviderAccountList::from_js_ffi(value)
 }
 
@@ -753,59 +601,37 @@ pub(all) struct IdentityAssertionResponse {
   error : IdentityCredentialErrorInit?
 }
 
-///|
 /// Create a new IdentityAssertionResponse with default values
 pub fn IdentityAssertionResponse::default() -> IdentityAssertionResponse {
-  IdentityAssertionResponse::{ token: None, continue_on: None, error: None, }
+  IdentityAssertionResponse::{
+    token: None,
+    continue_on: None,
+    error: None,
+  }
 }
 
-///|
-extern "js" fn IdentityAssertionResponse::to_js_ffi(
-  self : IdentityAssertionResponse,
-  convert_error : (IdentityCredentialErrorInit?) -> JsValue,
-) -> JsValue =
+extern "js" fn IdentityAssertionResponse::to_js_ffi(self : IdentityAssertionResponse, convert_error : (IdentityCredentialErrorInit?) -> JsValue) -> JsValue =
   #| (self, convert_error) => ({
   #|   token: ((() => { const v = self.token; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   continue_on: self.continue_on,
   #|   error: convert_error(self.error)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityAssertionResponse::to_js(
-  self : IdentityAssertionResponse,
-) -> JsValue {
-  IdentityAssertionResponse::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn IdentityAssertionResponse::to_js(self : IdentityAssertionResponse) -> JsValue {
+  IdentityAssertionResponse::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn IdentityAssertionResponse::from_js_ffi(
-  value : JsValue,
-  convert_error : (JsValue) -> IdentityCredentialErrorInit?,
-) -> IdentityAssertionResponse =
+extern "js" fn IdentityAssertionResponse::from_js_ffi(value : JsValue, convert_error : (JsValue) -> IdentityCredentialErrorInit?) -> IdentityAssertionResponse =
   #| (v, convert_error) => ({
   #|   token: (v.token === undefined ? { $tag: 0 } : { $tag: 1, _0: v.token }),
   #|   continue_on: v.continue_on,
   #|   error: convert_error(v.error)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityAssertionResponse::from_js(
-  value : JsValue,
-) -> IdentityAssertionResponse {
-  IdentityAssertionResponse::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(IdentityCredentialErrorInit::from_js(value))
-    }
-  })
+pub fn IdentityAssertionResponse::from_js(value : JsValue) -> IdentityAssertionResponse {
+  IdentityAssertionResponse::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(IdentityCredentialErrorInit::from_js(value)) } })
 }
 
 ///|
@@ -816,7 +642,6 @@ pub(all) struct IdentityProviderClientMetadata {
   client_is_third_party_to_top_frame_origin : Bool?
 }
 
-///|
 /// Create a new IdentityProviderClientMetadata with default values
 pub fn IdentityProviderClientMetadata::default() -> IdentityProviderClientMetadata {
   IdentityProviderClientMetadata::{
@@ -826,39 +651,27 @@ pub fn IdentityProviderClientMetadata::default() -> IdentityProviderClientMetada
   }
 }
 
-///|
-extern "js" fn IdentityProviderClientMetadata::to_js_ffi(
-  self : IdentityProviderClientMetadata,
-) -> JsValue =
+extern "js" fn IdentityProviderClientMetadata::to_js_ffi(self : IdentityProviderClientMetadata) -> JsValue =
   #| (self) => ({
   #|   privacy_policy_url: self.privacy_policy_url,
   #|   terms_of_service_url: self.terms_of_service_url,
   #|   client_is_third_party_to_top_frame_origin: (self.client_is_third_party_to_top_frame_origin === -1 ? undefined : self.client_is_third_party_to_top_frame_origin)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IdentityProviderClientMetadata::to_js(
-  self : IdentityProviderClientMetadata,
-) -> JsValue {
+pub fn IdentityProviderClientMetadata::to_js(self : IdentityProviderClientMetadata) -> JsValue {
   IdentityProviderClientMetadata::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityProviderClientMetadata::from_js_ffi(
-  value : JsValue,
-) -> IdentityProviderClientMetadata =
+extern "js" fn IdentityProviderClientMetadata::from_js_ffi(value : JsValue) -> IdentityProviderClientMetadata =
   #| (v) => ({
   #|   privacy_policy_url: v.privacy_policy_url,
   #|   terms_of_service_url: v.terms_of_service_url,
   #|   client_is_third_party_to_top_frame_origin: (v.client_is_third_party_to_top_frame_origin === undefined ? -1 : v.client_is_third_party_to_top_frame_origin)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityProviderClientMetadata::from_js(
-  value : JsValue,
-) -> IdentityProviderClientMetadata {
+pub fn IdentityProviderClientMetadata::from_js(value : JsValue) -> IdentityProviderClientMetadata {
   IdentityProviderClientMetadata::from_js_ffi(value)
 }
 
@@ -871,13 +684,16 @@ pub(all) struct IdentityUserInfo {
   picture : String?
 }
 
-///|
 /// Create a new IdentityUserInfo with default values
 pub fn IdentityUserInfo::default() -> IdentityUserInfo {
-  IdentityUserInfo::{ email: None, name: None, givenName: None, picture: None, }
+  IdentityUserInfo::{
+    email: None,
+    name: None,
+    givenName: None,
+    picture: None,
+  }
 }
 
-///|
 extern "js" fn IdentityUserInfo::to_js_ffi(self : IdentityUserInfo) -> JsValue =
   #| (self) => ({
   #|   email: self.email,
@@ -886,16 +702,12 @@ extern "js" fn IdentityUserInfo::to_js_ffi(self : IdentityUserInfo) -> JsValue =
   #|   picture: self.picture
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IdentityUserInfo::to_js(self : IdentityUserInfo) -> JsValue {
   IdentityUserInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityUserInfo::from_js_ffi(
-  value : JsValue,
-) -> IdentityUserInfo =
+extern "js" fn IdentityUserInfo::from_js_ffi(value : JsValue) -> IdentityUserInfo =
   #| (v) => ({
   #|   email: v.email,
   #|   name: v.name,
@@ -903,7 +715,6 @@ extern "js" fn IdentityUserInfo::from_js_ffi(
   #|   picture: v.picture
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IdentityUserInfo::from_js(value : JsValue) -> IdentityUserInfo {
   IdentityUserInfo::from_js_ffi(value)
@@ -915,39 +726,30 @@ pub(all) struct IdentityResolveOptions {
   accountId : String?
 }
 
-///|
 /// Create a new IdentityResolveOptions with default values
 pub fn IdentityResolveOptions::default() -> IdentityResolveOptions {
-  IdentityResolveOptions::{ accountId: None, }
+  IdentityResolveOptions::{
+    accountId: None,
+  }
 }
 
-///|
-extern "js" fn IdentityResolveOptions::to_js_ffi(
-  self : IdentityResolveOptions,
-) -> JsValue =
+extern "js" fn IdentityResolveOptions::to_js_ffi(self : IdentityResolveOptions) -> JsValue =
   #| (self) => ({
   #|   accountId: self.accountId
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IdentityResolveOptions::to_js(self : IdentityResolveOptions) -> JsValue {
   IdentityResolveOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IdentityResolveOptions::from_js_ffi(
-  value : JsValue,
-) -> IdentityResolveOptions =
+extern "js" fn IdentityResolveOptions::from_js_ffi(value : JsValue) -> IdentityResolveOptions =
   #| (v) => ({
   #|   accountId: v.accountId
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IdentityResolveOptions::from_js(
-  value : JsValue,
-) -> IdentityResolveOptions {
+pub fn IdentityResolveOptions::from_js(value : JsValue) -> IdentityResolveOptions {
   IdentityResolveOptions::from_js_ffi(value)
 }
 
@@ -955,44 +757,26 @@ pub fn IdentityResolveOptions::from_js(
 /// IdentityCredential interface
 pub type IdentityCredential
 
-///|
-pub extern "js" fn IdentityCredential::to_js_value(
-  self : IdentityCredential,
-) -> JsValue =
+pub extern "js" fn IdentityCredential::to_js_value(self : IdentityCredential) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IdentityCredential (unchecked)
-pub extern "js" fn IdentityCredential::from_js_value(
-  v : JsValue,
-) -> IdentityCredential =
+pub extern "js" fn IdentityCredential::from_js_value(v : JsValue) -> IdentityCredential =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IdentityCredential (checked with instanceof)
-pub extern "js" fn IdentityCredential::from_js_value_opt(
-  v : JsValue,
-) -> IdentityCredential? =
+pub extern "js" fn IdentityCredential::from_js_value_opt(v : JsValue) -> IdentityCredential? =
   #| (v) => (v instanceof IdentityCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IdentityCredential (checked with instanceof)
-pub extern "js" fn JsValue::as_identity_credential(
-  self : JsValue,
-) -> IdentityCredential? =
+pub extern "js" fn JsValue::as_identity_credential(self : JsValue) -> IdentityCredential? =
   #| (self) => (self instanceof IdentityCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IdentityCredential (unchecked)
-pub extern "js" fn JsValue::to_identity_credential(
-  self : JsValue,
-) -> IdentityCredential =
+pub extern "js" fn JsValue::to_identity_credential(self : JsValue) -> IdentityCredential =
   #| (self) => self
 
-///|
-pub extern "js" fn IdentityCredential::to_credential(
-  self : IdentityCredential,
-) -> Credential =
+pub extern "js" fn IdentityCredential::to_credential(self : IdentityCredential) -> Credential =
   #| (self) => self
 
 ///|
@@ -1004,148 +788,87 @@ pub(all) enum IdentityCredentialDisconnectError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn IdentityCredential::disconnect_ffi(
-  options : JsValue,
-) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] =
+pub extend IdentityCredentialDisconnectError with @debug.Debug::{to_repr}
+
+extern "js" fn IdentityCredential::disconnect_ffi(options : JsValue) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] =
   #| (options) => IdentityCredential.disconnect(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn IdentityCredential::disconnect(
-  options : IdentityCredentialDisconnectOptions,
-) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] {
+pub fn IdentityCredential::disconnect(options : IdentityCredentialDisconnectOptions) -> Promise[Result[Unit, IdentityCredentialDisconnectError]] {
   IdentityCredential::disconnect_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn IdentityCredential::get_token(
-  self : IdentityCredential,
-) -> JsValue =
+pub extern "js" fn IdentityCredential::get_token(self : IdentityCredential) -> JsValue =
   #| (self) => self.token
 
-///|
-pub extern "js" fn IdentityCredential::get_is_auto_selected(
-  self : IdentityCredential,
-) -> Bool =
+pub extern "js" fn IdentityCredential::get_is_auto_selected(self : IdentityCredential) -> Bool =
   #| (self) => self.isAutoSelected
 
-///|
-pub extern "js" fn IdentityCredential::get_config_url(
-  self : IdentityCredential,
-) -> String =
+pub extern "js" fn IdentityCredential::get_config_url(self : IdentityCredential) -> String =
   #| (self) => self.configURL
 
 ///|
 /// IdentityCredentialError interface
 pub type IdentityCredentialError
 
-///|
-pub extern "js" fn IdentityCredentialError::to_js_value(
-  self : IdentityCredentialError,
-) -> JsValue =
+pub extern "js" fn IdentityCredentialError::to_js_value(self : IdentityCredentialError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IdentityCredentialError (unchecked)
-pub extern "js" fn IdentityCredentialError::from_js_value(
-  v : JsValue,
-) -> IdentityCredentialError =
+pub extern "js" fn IdentityCredentialError::from_js_value(v : JsValue) -> IdentityCredentialError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IdentityCredentialError (checked with instanceof)
-pub extern "js" fn IdentityCredentialError::from_js_value_opt(
-  v : JsValue,
-) -> IdentityCredentialError? =
+pub extern "js" fn IdentityCredentialError::from_js_value_opt(v : JsValue) -> IdentityCredentialError? =
   #| (v) => (v instanceof IdentityCredentialError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IdentityCredentialError (checked with instanceof)
-pub extern "js" fn JsValue::as_identity_credential_error(
-  self : JsValue,
-) -> IdentityCredentialError? =
+pub extern "js" fn JsValue::as_identity_credential_error(self : JsValue) -> IdentityCredentialError? =
   #| (self) => (self instanceof IdentityCredentialError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IdentityCredentialError (unchecked)
-pub extern "js" fn JsValue::to_identity_credential_error(
-  self : JsValue,
-) -> IdentityCredentialError =
+pub extern "js" fn JsValue::to_identity_credential_error(self : JsValue) -> IdentityCredentialError =
   #| (self) => self
 
-///|
-pub extern "js" fn IdentityCredentialError::to_dom_exception(
-  self : IdentityCredentialError,
-) -> DOMException =
+pub extern "js" fn IdentityCredentialError::to_dom_exception(self : IdentityCredentialError) -> DOMException =
   #| (self) => self
 
-///|
 pub extern "js" fn IdentityCredentialError::new() -> IdentityCredentialError =
   #| () => new IdentityCredentialError()
 
-///|
-extern "js" fn IdentityCredentialError::new_with_options_ffi(
-  message : String,
-  options : JsValue,
-) -> IdentityCredentialError =
+extern "js" fn IdentityCredentialError::new_with_options_ffi(message : String, options : JsValue) -> IdentityCredentialError =
   #| (message, options) => new IdentityCredentialError(message, options)
 
-///|
-pub fn IdentityCredentialError::new_with_options(
-  message : String,
-  options : IdentityCredentialErrorInit,
-) -> IdentityCredentialError {
+pub fn IdentityCredentialError::new_with_options(message : String, options : IdentityCredentialErrorInit) -> IdentityCredentialError {
   IdentityCredentialError::new_with_options_ffi(message, options.to_js())
 }
 
-///|
-pub extern "js" fn IdentityCredentialError::get_error(
-  self : IdentityCredentialError,
-) -> String =
+pub extern "js" fn IdentityCredentialError::get_error(self : IdentityCredentialError) -> String =
   #| (self) => self.error
 
-///|
-pub extern "js" fn IdentityCredentialError::get_url(
-  self : IdentityCredentialError,
-) -> String =
+pub extern "js" fn IdentityCredentialError::get_url(self : IdentityCredentialError) -> String =
   #| (self) => self.url
 
 ///|
 /// IdentityProvider interface
 pub type IdentityProvider
 
-///|
-pub extern "js" fn IdentityProvider::to_js_value(
-  self : IdentityProvider,
-) -> JsValue =
+pub extern "js" fn IdentityProvider::to_js_value(self : IdentityProvider) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IdentityProvider (unchecked)
-pub extern "js" fn IdentityProvider::from_js_value(
-  v : JsValue,
-) -> IdentityProvider =
+pub extern "js" fn IdentityProvider::from_js_value(v : JsValue) -> IdentityProvider =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IdentityProvider (checked with instanceof)
-pub extern "js" fn IdentityProvider::from_js_value_opt(
-  v : JsValue,
-) -> IdentityProvider? =
+pub extern "js" fn IdentityProvider::from_js_value_opt(v : JsValue) -> IdentityProvider? =
   #| (v) => (v instanceof IdentityProvider) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IdentityProvider (checked with instanceof)
-pub extern "js" fn JsValue::as_identity_provider(
-  self : JsValue,
-) -> IdentityProvider? =
+pub extern "js" fn JsValue::as_identity_provider(self : JsValue) -> IdentityProvider? =
   #| (self) => (self instanceof IdentityProvider) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IdentityProvider (unchecked)
-pub extern "js" fn JsValue::to_identity_provider(
-  self : JsValue,
-) -> IdentityProvider =
+pub extern "js" fn JsValue::to_identity_provider(self : JsValue) -> IdentityProvider =
   #| (self) => self
 
 ///|
@@ -1157,42 +880,24 @@ pub(all) enum IdentityProviderGetUserInfoError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IdentityProviderGetUserInfoError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IdentityProvider::close() -> Unit =
   #| () => IdentityProvider.close()
 
-///|
 pub extern "js" fn IdentityProvider::resolve(token : JsValue) -> Promise[Unit] =
   #| (token) => IdentityProvider.resolve(token)
 
-///|
-extern "js" fn IdentityProvider::resolve_with_options_ffi(
-  token : JsValue,
-  options : JsValue,
-) -> Promise[Unit] =
+extern "js" fn IdentityProvider::resolve_with_options_ffi(token : JsValue, options : JsValue) -> Promise[Unit] =
   #| (token, options) => IdentityProvider.resolve(token, options)
 
-///|
-pub fn IdentityProvider::resolve_with_options(
-  token : JsValue,
-  options : IdentityResolveOptions,
-) -> Promise[Unit] {
+pub fn IdentityProvider::resolve_with_options(token : JsValue, options : IdentityResolveOptions) -> Promise[Unit] {
   IdentityProvider::resolve_with_options_ffi(token, options.to_js())
 }
 
-///|
-extern "js" fn IdentityProvider::get_user_info_ffi(
-  config : JsValue,
-) -> Promise[
-  Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError],
-] =
+extern "js" fn IdentityProvider::get_user_info_ffi(config : JsValue) -> Promise[Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError]] =
   #| (config) => IdentityProvider.getUserInfo(config).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn IdentityProvider::get_user_info(
-  config : IdentityProviderConfig,
-) -> Promise[
-  Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError],
-] {
+pub fn IdentityProvider::get_user_info(config : IdentityProviderConfig) -> Promise[Result[FixedArray[IdentityUserInfo], IdentityProviderGetUserInfoError]] {
   IdentityProvider::get_user_info_ffi(config.to_js())
 }

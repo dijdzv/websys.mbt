@@ -8,22 +8,19 @@ pub(all) enum GyroscopeLocalCoordinateSystem {
   Screen
 } derive(Eq, Debug)
 
-///|
+pub extend GyroscopeLocalCoordinateSystem with Eq::{equal, not_equal}
+pub extend GyroscopeLocalCoordinateSystem with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GyroscopeLocalCoordinateSystem::to_string(
-  self : GyroscopeLocalCoordinateSystem,
-) -> String {
+pub fn GyroscopeLocalCoordinateSystem::to_string(self : GyroscopeLocalCoordinateSystem) -> String {
   match self {
     GyroscopeLocalCoordinateSystem::Device => "device"
     GyroscopeLocalCoordinateSystem::Screen => "screen"
   }
 }
 
-///|
 /// Parse from string value
-pub fn GyroscopeLocalCoordinateSystem::from_string(
-  s : String,
-) -> GyroscopeLocalCoordinateSystem? {
+pub fn GyroscopeLocalCoordinateSystem::from_string(s : String) -> GyroscopeLocalCoordinateSystem? {
   match s {
     "device" => Some(GyroscopeLocalCoordinateSystem::Device)
     "screen" => Some(GyroscopeLocalCoordinateSystem::Screen)
@@ -37,39 +34,30 @@ pub(all) struct GyroscopeSensorOptions {
   referenceFrame : GyroscopeLocalCoordinateSystem?
 }
 
-///|
 /// Create a new GyroscopeSensorOptions with default values
 pub fn GyroscopeSensorOptions::default() -> GyroscopeSensorOptions {
-  GyroscopeSensorOptions::{ referenceFrame: None, }
+  GyroscopeSensorOptions::{
+    referenceFrame: None,
+  }
 }
 
-///|
-extern "js" fn GyroscopeSensorOptions::to_js_ffi(
-  self : GyroscopeSensorOptions,
-) -> JsValue =
+extern "js" fn GyroscopeSensorOptions::to_js_ffi(self : GyroscopeSensorOptions) -> JsValue =
   #| (self) => ({
   #|   referenceFrame: ((() => { const v = self.referenceFrame; if (v === undefined) return undefined; return ['device', 'screen'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GyroscopeSensorOptions::to_js(self : GyroscopeSensorOptions) -> JsValue {
   GyroscopeSensorOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GyroscopeSensorOptions::from_js_ffi(
-  value : JsValue,
-) -> GyroscopeSensorOptions =
+extern "js" fn GyroscopeSensorOptions::from_js_ffi(value : JsValue) -> GyroscopeSensorOptions =
   #| (v) => ({
   #|   referenceFrame: (v.referenceFrame === undefined ? undefined : ['device', 'screen'].indexOf(v.referenceFrame))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GyroscopeSensorOptions::from_js(
-  value : JsValue,
-) -> GyroscopeSensorOptions {
+pub fn GyroscopeSensorOptions::from_js(value : JsValue) -> GyroscopeSensorOptions {
   GyroscopeSensorOptions::from_js_ffi(value)
 }
 
@@ -77,35 +65,28 @@ pub fn GyroscopeSensorOptions::from_js(
 /// Gyroscope interface
 pub type Gyroscope
 
-///|
 pub extern "js" fn Gyroscope::to_js_value(self : Gyroscope) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Gyroscope (unchecked)
 pub extern "js" fn Gyroscope::from_js_value(v : JsValue) -> Gyroscope =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Gyroscope (checked with instanceof)
 pub extern "js" fn Gyroscope::from_js_value_opt(v : JsValue) -> Gyroscope? =
   #| (v) => (v instanceof Gyroscope) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Gyroscope (checked with instanceof)
 pub extern "js" fn JsValue::as_gyroscope(self : JsValue) -> Gyroscope? =
   #| (self) => (self instanceof Gyroscope) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Gyroscope (unchecked)
 pub extern "js" fn JsValue::to_gyroscope(self : JsValue) -> Gyroscope =
   #| (self) => self
 
-///|
 pub extern "js" fn Gyroscope::to_sensor(self : Gyroscope) -> Sensor =
   #| (self) => self
 
-///|
 pub extern "js" fn Gyroscope::to_event_target(self : Gyroscope) -> EventTarget =
   #| (self) => self
 
@@ -116,34 +97,23 @@ pub(all) enum GyroscopeConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Gyroscope::new() -> Result[
-  Gyroscope,
-  GyroscopeConstructorError,
-] =
+pub extend GyroscopeConstructorError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Gyroscope::new() -> Result[Gyroscope, GyroscopeConstructorError] =
   #| () => (() => { try { return { $tag: 1, _0: new Gyroscope() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Gyroscope::new_with_sensor_options_ffi(
-  sensor_options : JsValue,
-) -> Result[Gyroscope, GyroscopeConstructorError] =
+extern "js" fn Gyroscope::new_with_sensor_options_ffi(sensor_options : JsValue) -> Result[Gyroscope, GyroscopeConstructorError] =
   #| (sensor_options) => (() => { try { return { $tag: 1, _0: new Gyroscope(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn Gyroscope::new_with_sensor_options(
-  sensor_options : GyroscopeSensorOptions,
-) -> Result[Gyroscope, GyroscopeConstructorError] {
+pub fn Gyroscope::new_with_sensor_options(sensor_options : GyroscopeSensorOptions) -> Result[Gyroscope, GyroscopeConstructorError] {
   Gyroscope::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 
-///|
 pub extern "js" fn Gyroscope::get_x(self : Gyroscope) -> Double? =
   #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Gyroscope::get_y(self : Gyroscope) -> Double? =
   #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Gyroscope::get_z(self : Gyroscope) -> Double? =
   #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

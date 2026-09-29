@@ -9,7 +9,9 @@ pub(all) enum MediaDecodingType {
   Webrtc
 } derive(Eq, Debug)
 
-///|
+pub extend MediaDecodingType with Eq::{equal, not_equal}
+pub extend MediaDecodingType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn MediaDecodingType::to_string(self : MediaDecodingType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn MediaDecodingType::from_string(s : String) -> MediaDecodingType? {
   match s {
@@ -37,7 +38,9 @@ pub(all) enum MediaEncodingType {
   Webrtc
 } derive(Eq, Debug)
 
-///|
+pub extend MediaEncodingType with Eq::{equal, not_equal}
+pub extend MediaEncodingType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
   match self {
@@ -46,7 +49,6 @@ pub fn MediaEncodingType::to_string(self : MediaEncodingType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn MediaEncodingType::from_string(s : String) -> MediaEncodingType? {
   match s {
@@ -64,7 +66,9 @@ pub(all) enum HdrMetadataType {
   SmpteSt209440
 } derive(Eq, Debug)
 
-///|
+pub extend HdrMetadataType with Eq::{equal, not_equal}
+pub extend HdrMetadataType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
   match self {
@@ -74,7 +78,6 @@ pub fn HdrMetadataType::to_string(self : HdrMetadataType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn HdrMetadataType::from_string(s : String) -> HdrMetadataType? {
   match s {
@@ -93,7 +96,9 @@ pub(all) enum ColorGamut {
   Rec2020
 } derive(Eq, Debug)
 
-///|
+pub extend ColorGamut with Eq::{equal, not_equal}
+pub extend ColorGamut with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ColorGamut::to_string(self : ColorGamut) -> String {
   match self {
@@ -103,7 +108,6 @@ pub fn ColorGamut::to_string(self : ColorGamut) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ColorGamut::from_string(s : String) -> ColorGamut? {
   match s {
@@ -122,7 +126,9 @@ pub(all) enum TransferFunction {
   Hlg
 } derive(Eq, Debug)
 
-///|
+pub extend TransferFunction with Eq::{equal, not_equal}
+pub extend TransferFunction with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn TransferFunction::to_string(self : TransferFunction) -> String {
   match self {
@@ -132,7 +138,6 @@ pub fn TransferFunction::to_string(self : TransferFunction) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn TransferFunction::from_string(s : String) -> TransferFunction? {
   match s {
@@ -150,74 +155,34 @@ pub(all) struct MediaConfiguration {
   audio : AudioConfiguration?
 }
 
-///|
 /// Create a new MediaConfiguration with default values
 pub fn MediaConfiguration::default() -> MediaConfiguration {
-  MediaConfiguration::{ video: None, audio: None, }
+  MediaConfiguration::{
+    video: None,
+    audio: None,
+  }
 }
 
-///|
-extern "js" fn MediaConfiguration::to_js_ffi(
-  self : MediaConfiguration,
-  convert_video : (VideoConfiguration?) -> JsValue,
-  convert_audio : (AudioConfiguration?) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaConfiguration::to_js_ffi(self : MediaConfiguration, convert_video : (VideoConfiguration?) -> JsValue, convert_audio : (AudioConfiguration?) -> JsValue) -> JsValue =
   #| (self, convert_video, convert_audio) => ({
   #|   video: convert_video(self.video),
   #|   audio: convert_audio(self.audio)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaConfiguration::to_js(self : MediaConfiguration) -> JsValue {
-  MediaConfiguration::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  MediaConfiguration::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn MediaConfiguration::from_js_ffi(
-  value : JsValue,
-  convert_video : (JsValue) -> VideoConfiguration?,
-  convert_audio : (JsValue) -> AudioConfiguration?,
-) -> MediaConfiguration =
+extern "js" fn MediaConfiguration::from_js_ffi(value : JsValue, convert_video : (JsValue) -> VideoConfiguration?, convert_audio : (JsValue) -> AudioConfiguration?) -> MediaConfiguration =
   #| (v, convert_video, convert_audio) => ({
   #|   video: convert_video(v.video),
   #|   audio: convert_audio(v.audio)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn MediaConfiguration::from_js(value : JsValue) -> MediaConfiguration {
-  MediaConfiguration::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(VideoConfiguration::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AudioConfiguration::from_js(value))
-      }
-    },
-  )
+  MediaConfiguration::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(VideoConfiguration::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AudioConfiguration::from_js(value)) } })
 }
 
 ///|
@@ -229,26 +194,17 @@ pub(all) struct MediaDecodingConfiguration {
   keySystemConfiguration : MediaCapabilitiesKeySystemConfiguration?
 }
 
-///|
 /// Create a new MediaDecodingConfiguration
-pub fn MediaDecodingConfiguration::new(
-  type_~ : MediaDecodingType,
-) -> MediaDecodingConfiguration {
+pub fn MediaDecodingConfiguration::new(type_~ : MediaDecodingType) -> MediaDecodingConfiguration {
   MediaDecodingConfiguration::{
     video: None,
     audio: None,
-    type_,
+    type_: type_,
     keySystemConfiguration: None,
   }
 }
 
-///|
-extern "js" fn MediaDecodingConfiguration::to_js_ffi(
-  self : MediaDecodingConfiguration,
-  convert_video : (VideoConfiguration?) -> JsValue,
-  convert_audio : (AudioConfiguration?) -> JsValue,
-  convert_keySystemConfiguration : (MediaCapabilitiesKeySystemConfiguration?) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaDecodingConfiguration::to_js_ffi(self : MediaDecodingConfiguration, convert_video : (VideoConfiguration?) -> JsValue, convert_audio : (AudioConfiguration?) -> JsValue, convert_keySystemConfiguration : (MediaCapabilitiesKeySystemConfiguration?) -> JsValue) -> JsValue =
   #| (self, convert_video, convert_audio, convert_keySystemConfiguration) => ({
   #|   video: convert_video(self.video),
   #|   audio: convert_audio(self.audio),
@@ -256,41 +212,12 @@ extern "js" fn MediaDecodingConfiguration::to_js_ffi(
   #|   keySystemConfiguration: convert_keySystemConfiguration(self.keySystemConfiguration)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaDecodingConfiguration::to_js(
-  self : MediaDecodingConfiguration,
-) -> JsValue {
-  MediaDecodingConfiguration::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn MediaDecodingConfiguration::to_js(self : MediaDecodingConfiguration) -> JsValue {
+  MediaDecodingConfiguration::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn MediaDecodingConfiguration::from_js_ffi(
-  value : JsValue,
-  convert_video : (JsValue) -> VideoConfiguration?,
-  convert_audio : (JsValue) -> AudioConfiguration?,
-  convert_keySystemConfiguration : (JsValue) -> MediaCapabilitiesKeySystemConfiguration?,
-) -> MediaDecodingConfiguration =
+extern "js" fn MediaDecodingConfiguration::from_js_ffi(value : JsValue, convert_video : (JsValue) -> VideoConfiguration?, convert_audio : (JsValue) -> AudioConfiguration?, convert_keySystemConfiguration : (JsValue) -> MediaCapabilitiesKeySystemConfiguration?) -> MediaDecodingConfiguration =
   #| (v, convert_video, convert_audio, convert_keySystemConfiguration) => ({
   #|   video: convert_video(v.video),
   #|   audio: convert_audio(v.audio),
@@ -298,35 +225,9 @@ extern "js" fn MediaDecodingConfiguration::from_js_ffi(
   #|   keySystemConfiguration: convert_keySystemConfiguration(v.keySystemConfiguration)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaDecodingConfiguration::from_js(
-  value : JsValue,
-) -> MediaDecodingConfiguration {
-  MediaDecodingConfiguration::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(VideoConfiguration::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AudioConfiguration::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaCapabilitiesKeySystemConfiguration::from_js(value))
-      }
-    },
-  )
+pub fn MediaDecodingConfiguration::from_js(value : JsValue) -> MediaDecodingConfiguration {
+  MediaDecodingConfiguration::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(VideoConfiguration::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AudioConfiguration::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaCapabilitiesKeySystemConfiguration::from_js(value)) } })
 }
 
 ///|
@@ -337,82 +238,37 @@ pub(all) struct MediaEncodingConfiguration {
   type_ : MediaEncodingType
 }
 
-///|
 /// Create a new MediaEncodingConfiguration
-pub fn MediaEncodingConfiguration::new(
-  type_~ : MediaEncodingType,
-) -> MediaEncodingConfiguration {
-  MediaEncodingConfiguration::{ video: None, audio: None, type_, }
+pub fn MediaEncodingConfiguration::new(type_~ : MediaEncodingType) -> MediaEncodingConfiguration {
+  MediaEncodingConfiguration::{
+    video: None,
+    audio: None,
+    type_: type_,
+  }
 }
 
-///|
-extern "js" fn MediaEncodingConfiguration::to_js_ffi(
-  self : MediaEncodingConfiguration,
-  convert_video : (VideoConfiguration?) -> JsValue,
-  convert_audio : (AudioConfiguration?) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaEncodingConfiguration::to_js_ffi(self : MediaEncodingConfiguration, convert_video : (VideoConfiguration?) -> JsValue, convert_audio : (AudioConfiguration?) -> JsValue) -> JsValue =
   #| (self, convert_video, convert_audio) => ({
   #|   video: convert_video(self.video),
   #|   audio: convert_audio(self.audio),
   #|   type: ['record', 'webrtc'][self.type_]
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaEncodingConfiguration::to_js(
-  self : MediaEncodingConfiguration,
-) -> JsValue {
-  MediaEncodingConfiguration::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn MediaEncodingConfiguration::to_js(self : MediaEncodingConfiguration) -> JsValue {
+  MediaEncodingConfiguration::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn MediaEncodingConfiguration::from_js_ffi(
-  value : JsValue,
-  convert_video : (JsValue) -> VideoConfiguration?,
-  convert_audio : (JsValue) -> AudioConfiguration?,
-) -> MediaEncodingConfiguration =
+extern "js" fn MediaEncodingConfiguration::from_js_ffi(value : JsValue, convert_video : (JsValue) -> VideoConfiguration?, convert_audio : (JsValue) -> AudioConfiguration?) -> MediaEncodingConfiguration =
   #| (v, convert_video, convert_audio) => ({
   #|   video: convert_video(v.video),
   #|   audio: convert_audio(v.audio),
   #|   type_: ['record', 'webrtc'].indexOf(v.type)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaEncodingConfiguration::from_js(
-  value : JsValue,
-) -> MediaEncodingConfiguration {
-  MediaEncodingConfiguration::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(VideoConfiguration::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AudioConfiguration::from_js(value))
-      }
-    },
-  )
+pub fn MediaEncodingConfiguration::from_js(value : JsValue) -> MediaEncodingConfiguration {
+  MediaEncodingConfiguration::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(VideoConfiguration::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AudioConfiguration::from_js(value)) } })
 }
 
 ///|
@@ -431,7 +287,6 @@ pub(all) struct VideoConfiguration {
   spatialScalability : Bool?
 }
 
-///|
 /// Create a new VideoConfiguration with default values
 pub fn VideoConfiguration::default() -> VideoConfiguration {
   VideoConfiguration::{
@@ -449,10 +304,7 @@ pub fn VideoConfiguration::default() -> VideoConfiguration {
   }
 }
 
-///|
-extern "js" fn VideoConfiguration::to_js_ffi(
-  self : VideoConfiguration,
-) -> JsValue =
+extern "js" fn VideoConfiguration::to_js_ffi(self : VideoConfiguration) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   width: self.width,
@@ -467,16 +319,12 @@ extern "js" fn VideoConfiguration::to_js_ffi(
   #|   spatialScalability: (self.spatialScalability === -1 ? undefined : self.spatialScalability)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn VideoConfiguration::to_js(self : VideoConfiguration) -> JsValue {
   VideoConfiguration::to_js_ffi(self)
 }
 
-///|
-extern "js" fn VideoConfiguration::from_js_ffi(
-  value : JsValue,
-) -> VideoConfiguration =
+extern "js" fn VideoConfiguration::from_js_ffi(value : JsValue) -> VideoConfiguration =
   #| (v) => ({
   #|   contentType: v.contentType,
   #|   width: v.width,
@@ -491,7 +339,6 @@ extern "js" fn VideoConfiguration::from_js_ffi(
   #|   spatialScalability: (v.spatialScalability === undefined ? -1 : v.spatialScalability)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn VideoConfiguration::from_js(value : JsValue) -> VideoConfiguration {
   VideoConfiguration::from_js_ffi(value)
@@ -499,25 +346,15 @@ pub fn VideoConfiguration::from_js(value : JsValue) -> VideoConfiguration {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn VideoConfiguration::to_js_checked(
-  self : VideoConfiguration,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn VideoConfiguration::to_js_checked(self : VideoConfiguration) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_VideoConfiguration(
-  convert : () -> VideoConfiguration,
-) -> Result[VideoConfiguration, JsError] =
+extern "js" fn try_dictionary_VideoConfiguration(convert : () -> VideoConfiguration) -> Result[VideoConfiguration, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn VideoConfiguration::from_js_checked(
-  value : JsValue,
-) -> Result[VideoConfiguration, JsError] {
-  try_dictionary_VideoConfiguration(() => VideoConfiguration::from_js(value))
-}
+pub fn VideoConfiguration::from_js_checked(value : JsValue) -> Result[VideoConfiguration, JsError] { try_dictionary_VideoConfiguration(() => VideoConfiguration::from_js(value)) }
 
 ///|
 /// AudioConfiguration dictionary
@@ -529,7 +366,6 @@ pub(all) struct AudioConfiguration {
   spatialRendering : Bool?
 }
 
-///|
 /// Create a new AudioConfiguration with default values
 pub fn AudioConfiguration::default() -> AudioConfiguration {
   AudioConfiguration::{
@@ -541,10 +377,7 @@ pub fn AudioConfiguration::default() -> AudioConfiguration {
   }
 }
 
-///|
-extern "js" fn AudioConfiguration::to_js_ffi(
-  self : AudioConfiguration,
-) -> JsValue =
+extern "js" fn AudioConfiguration::to_js_ffi(self : AudioConfiguration) -> JsValue =
   #| (self) => ({
   #|   contentType: self.contentType,
   #|   channels: self.channels,
@@ -553,16 +386,12 @@ extern "js" fn AudioConfiguration::to_js_ffi(
   #|   spatialRendering: (self.spatialRendering === -1 ? undefined : self.spatialRendering)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn AudioConfiguration::to_js(self : AudioConfiguration) -> JsValue {
   AudioConfiguration::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AudioConfiguration::from_js_ffi(
-  value : JsValue,
-) -> AudioConfiguration =
+extern "js" fn AudioConfiguration::from_js_ffi(value : JsValue) -> AudioConfiguration =
   #| (v) => ({
   #|   contentType: v.contentType,
   #|   channels: v.channels,
@@ -571,7 +400,6 @@ extern "js" fn AudioConfiguration::from_js_ffi(
   #|   spatialRendering: (v.spatialRendering === undefined ? -1 : v.spatialRendering)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn AudioConfiguration::from_js(value : JsValue) -> AudioConfiguration {
   AudioConfiguration::from_js_ffi(value)
@@ -579,25 +407,15 @@ pub fn AudioConfiguration::from_js(value : JsValue) -> AudioConfiguration {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn AudioConfiguration::to_js_checked(
-  self : AudioConfiguration,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn AudioConfiguration::to_js_checked(self : AudioConfiguration) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_AudioConfiguration(
-  convert : () -> AudioConfiguration,
-) -> Result[AudioConfiguration, JsError] =
+extern "js" fn try_dictionary_AudioConfiguration(convert : () -> AudioConfiguration) -> Result[AudioConfiguration, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn AudioConfiguration::from_js_checked(
-  value : JsValue,
-) -> Result[AudioConfiguration, JsError] {
-  try_dictionary_AudioConfiguration(() => AudioConfiguration::from_js(value))
-}
+pub fn AudioConfiguration::from_js_checked(value : JsValue) -> Result[AudioConfiguration, JsError] { try_dictionary_AudioConfiguration(() => AudioConfiguration::from_js(value)) }
 
 ///|
 /// MediaCapabilitiesKeySystemConfiguration dictionary
@@ -611,7 +429,6 @@ pub(all) struct MediaCapabilitiesKeySystemConfiguration {
   video : KeySystemTrackConfiguration?
 }
 
-///|
 /// Create a new MediaCapabilitiesKeySystemConfiguration with default values
 pub fn MediaCapabilitiesKeySystemConfiguration::default() -> MediaCapabilitiesKeySystemConfiguration {
   MediaCapabilitiesKeySystemConfiguration::{
@@ -625,12 +442,7 @@ pub fn MediaCapabilitiesKeySystemConfiguration::default() -> MediaCapabilitiesKe
   }
 }
 
-///|
-extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
-  self : MediaCapabilitiesKeySystemConfiguration,
-  convert_audio : (KeySystemTrackConfiguration?) -> JsValue,
-  convert_video : (KeySystemTrackConfiguration?) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(self : MediaCapabilitiesKeySystemConfiguration, convert_audio : (KeySystemTrackConfiguration?) -> JsValue, convert_video : (KeySystemTrackConfiguration?) -> JsValue) -> JsValue =
   #| (self, convert_audio, convert_video) => ({
   #|   keySystem: self.keySystem,
   #|   initDataType: self.initDataType,
@@ -641,34 +453,12 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
   #|   video: convert_video(self.video)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaCapabilitiesKeySystemConfiguration::to_js(
-  self : MediaCapabilitiesKeySystemConfiguration,
-) -> JsValue {
-  MediaCapabilitiesKeySystemConfiguration::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn MediaCapabilitiesKeySystemConfiguration::to_js(self : MediaCapabilitiesKeySystemConfiguration) -> JsValue {
+  MediaCapabilitiesKeySystemConfiguration::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
-  value : JsValue,
-  convert_audio : (JsValue) -> KeySystemTrackConfiguration?,
-  convert_video : (JsValue) -> KeySystemTrackConfiguration?,
-) -> MediaCapabilitiesKeySystemConfiguration =
+extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(value : JsValue, convert_audio : (JsValue) -> KeySystemTrackConfiguration?, convert_video : (JsValue) -> KeySystemTrackConfiguration?) -> MediaCapabilitiesKeySystemConfiguration =
   #| (v, convert_audio, convert_video) => ({
   #|   keySystem: v.keySystem,
   #|   initDataType: v.initDataType,
@@ -679,28 +469,9 @@ extern "js" fn MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
   #|   video: convert_video(v.video)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaCapabilitiesKeySystemConfiguration::from_js(
-  value : JsValue,
-) -> MediaCapabilitiesKeySystemConfiguration {
-  MediaCapabilitiesKeySystemConfiguration::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(KeySystemTrackConfiguration::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(KeySystemTrackConfiguration::from_js(value))
-      }
-    },
-  )
+pub fn MediaCapabilitiesKeySystemConfiguration::from_js(value : JsValue) -> MediaCapabilitiesKeySystemConfiguration {
+  MediaCapabilitiesKeySystemConfiguration::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(KeySystemTrackConfiguration::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(KeySystemTrackConfiguration::from_js(value)) } })
 }
 
 ///|
@@ -710,7 +481,6 @@ pub(all) struct KeySystemTrackConfiguration {
   encryptionScheme : Nullable[String]
 }
 
-///|
 /// Create a new KeySystemTrackConfiguration with default values
 pub fn KeySystemTrackConfiguration::default() -> KeySystemTrackConfiguration {
   KeySystemTrackConfiguration::{
@@ -719,37 +489,25 @@ pub fn KeySystemTrackConfiguration::default() -> KeySystemTrackConfiguration {
   }
 }
 
-///|
-extern "js" fn KeySystemTrackConfiguration::to_js_ffi(
-  self : KeySystemTrackConfiguration,
-) -> JsValue =
+extern "js" fn KeySystemTrackConfiguration::to_js_ffi(self : KeySystemTrackConfiguration) -> JsValue =
   #| (self) => ({
   #|   robustness: self.robustness,
   #|   encryptionScheme: ((() => { const v = self.encryptionScheme; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn KeySystemTrackConfiguration::to_js(
-  self : KeySystemTrackConfiguration,
-) -> JsValue {
+pub fn KeySystemTrackConfiguration::to_js(self : KeySystemTrackConfiguration) -> JsValue {
   KeySystemTrackConfiguration::to_js_ffi(self)
 }
 
-///|
-extern "js" fn KeySystemTrackConfiguration::from_js_ffi(
-  value : JsValue,
-) -> KeySystemTrackConfiguration =
+extern "js" fn KeySystemTrackConfiguration::from_js_ffi(value : JsValue) -> KeySystemTrackConfiguration =
   #| (v) => ({
   #|   robustness: v.robustness,
   #|   encryptionScheme: (v.encryptionScheme === undefined ? { $tag: 0 } : v.encryptionScheme === null ? { $tag: 1 } : { $tag: 2, _0: v.encryptionScheme })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn KeySystemTrackConfiguration::from_js(
-  value : JsValue,
-) -> KeySystemTrackConfiguration {
+pub fn KeySystemTrackConfiguration::from_js(value : JsValue) -> KeySystemTrackConfiguration {
   KeySystemTrackConfiguration::from_js_ffi(value)
 }
 
@@ -761,7 +519,6 @@ pub(all) struct MediaCapabilitiesInfo {
   powerEfficient : Bool
 }
 
-///|
 /// Create a new MediaCapabilitiesInfo with default values
 pub fn MediaCapabilitiesInfo::default() -> MediaCapabilitiesInfo {
   MediaCapabilitiesInfo::{
@@ -771,33 +528,25 @@ pub fn MediaCapabilitiesInfo::default() -> MediaCapabilitiesInfo {
   }
 }
 
-///|
-extern "js" fn MediaCapabilitiesInfo::to_js_ffi(
-  self : MediaCapabilitiesInfo,
-) -> JsValue =
+extern "js" fn MediaCapabilitiesInfo::to_js_ffi(self : MediaCapabilitiesInfo) -> JsValue =
   #| (self) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
   #|   powerEfficient: self.powerEfficient
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaCapabilitiesInfo::to_js(self : MediaCapabilitiesInfo) -> JsValue {
   MediaCapabilitiesInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaCapabilitiesInfo::from_js_ffi(
-  value : JsValue,
-) -> MediaCapabilitiesInfo =
+extern "js" fn MediaCapabilitiesInfo::from_js_ffi(value : JsValue) -> MediaCapabilitiesInfo =
   #| (v) => ({
   #|   supported: v.supported,
   #|   smooth: v.smooth,
   #|   powerEfficient: v.powerEfficient
   #| })
 
-///|
 /// Convert from JsValue
 pub fn MediaCapabilitiesInfo::from_js(value : JsValue) -> MediaCapabilitiesInfo {
   MediaCapabilitiesInfo::from_js_ffi(value)
@@ -813,25 +562,18 @@ pub(all) struct MediaCapabilitiesDecodingInfo {
   configuration : MediaDecodingConfiguration
 }
 
-///|
 /// Create a new MediaCapabilitiesDecodingInfo
-pub fn MediaCapabilitiesDecodingInfo::new(
-  configuration~ : MediaDecodingConfiguration,
-) -> MediaCapabilitiesDecodingInfo {
+pub fn MediaCapabilitiesDecodingInfo::new(configuration~ : MediaDecodingConfiguration) -> MediaCapabilitiesDecodingInfo {
   MediaCapabilitiesDecodingInfo::{
     supported: false,
     smooth: false,
     powerEfficient: false,
     keySystemAccess: None,
-    configuration,
+    configuration: configuration,
   }
 }
 
-///|
-extern "js" fn MediaCapabilitiesDecodingInfo::to_js_ffi(
-  self : MediaCapabilitiesDecodingInfo,
-  convert_configuration : (MediaDecodingConfiguration) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaCapabilitiesDecodingInfo::to_js_ffi(self : MediaCapabilitiesDecodingInfo, convert_configuration : (MediaDecodingConfiguration) -> JsValue) -> JsValue =
   #| (self, convert_configuration) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
@@ -840,22 +582,12 @@ extern "js" fn MediaCapabilitiesDecodingInfo::to_js_ffi(
   #|   configuration: convert_configuration(self.configuration)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaCapabilitiesDecodingInfo::to_js(
-  self : MediaCapabilitiesDecodingInfo,
-) -> JsValue {
-  MediaCapabilitiesDecodingInfo::to_js_ffi(
-    self,
-    MediaDecodingConfiguration::to_js,
-  )
+pub fn MediaCapabilitiesDecodingInfo::to_js(self : MediaCapabilitiesDecodingInfo) -> JsValue {
+  MediaCapabilitiesDecodingInfo::to_js_ffi(self, MediaDecodingConfiguration::to_js)
 }
 
-///|
-extern "js" fn MediaCapabilitiesDecodingInfo::from_js_ffi(
-  value : JsValue,
-  convert_configuration : (JsValue) -> MediaDecodingConfiguration,
-) -> MediaCapabilitiesDecodingInfo =
+extern "js" fn MediaCapabilitiesDecodingInfo::from_js_ffi(value : JsValue, convert_configuration : (JsValue) -> MediaDecodingConfiguration) -> MediaCapabilitiesDecodingInfo =
   #| (v, convert_configuration) => ({
   #|   supported: v.supported,
   #|   smooth: v.smooth,
@@ -864,15 +596,9 @@ extern "js" fn MediaCapabilitiesDecodingInfo::from_js_ffi(
   #|   configuration: convert_configuration(v.configuration)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaCapabilitiesDecodingInfo::from_js(
-  value : JsValue,
-) -> MediaCapabilitiesDecodingInfo {
-  MediaCapabilitiesDecodingInfo::from_js_ffi(
-    value,
-    MediaDecodingConfiguration::from_js,
-  )
+pub fn MediaCapabilitiesDecodingInfo::from_js(value : JsValue) -> MediaCapabilitiesDecodingInfo {
+  MediaCapabilitiesDecodingInfo::from_js_ffi(value, MediaDecodingConfiguration::from_js)
 }
 
 ///|
@@ -884,24 +610,17 @@ pub(all) struct MediaCapabilitiesEncodingInfo {
   configuration : MediaEncodingConfiguration
 }
 
-///|
 /// Create a new MediaCapabilitiesEncodingInfo
-pub fn MediaCapabilitiesEncodingInfo::new(
-  configuration~ : MediaEncodingConfiguration,
-) -> MediaCapabilitiesEncodingInfo {
+pub fn MediaCapabilitiesEncodingInfo::new(configuration~ : MediaEncodingConfiguration) -> MediaCapabilitiesEncodingInfo {
   MediaCapabilitiesEncodingInfo::{
     supported: false,
     smooth: false,
     powerEfficient: false,
-    configuration,
+    configuration: configuration,
   }
 }
 
-///|
-extern "js" fn MediaCapabilitiesEncodingInfo::to_js_ffi(
-  self : MediaCapabilitiesEncodingInfo,
-  convert_configuration : (MediaEncodingConfiguration) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaCapabilitiesEncodingInfo::to_js_ffi(self : MediaCapabilitiesEncodingInfo, convert_configuration : (MediaEncodingConfiguration) -> JsValue) -> JsValue =
   #| (self, convert_configuration) => ({
   #|   supported: self.supported,
   #|   smooth: self.smooth,
@@ -909,22 +628,12 @@ extern "js" fn MediaCapabilitiesEncodingInfo::to_js_ffi(
   #|   configuration: convert_configuration(self.configuration)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaCapabilitiesEncodingInfo::to_js(
-  self : MediaCapabilitiesEncodingInfo,
-) -> JsValue {
-  MediaCapabilitiesEncodingInfo::to_js_ffi(
-    self,
-    MediaEncodingConfiguration::to_js,
-  )
+pub fn MediaCapabilitiesEncodingInfo::to_js(self : MediaCapabilitiesEncodingInfo) -> JsValue {
+  MediaCapabilitiesEncodingInfo::to_js_ffi(self, MediaEncodingConfiguration::to_js)
 }
 
-///|
-extern "js" fn MediaCapabilitiesEncodingInfo::from_js_ffi(
-  value : JsValue,
-  convert_configuration : (JsValue) -> MediaEncodingConfiguration,
-) -> MediaCapabilitiesEncodingInfo =
+extern "js" fn MediaCapabilitiesEncodingInfo::from_js_ffi(value : JsValue, convert_configuration : (JsValue) -> MediaEncodingConfiguration) -> MediaCapabilitiesEncodingInfo =
   #| (v, convert_configuration) => ({
   #|   supported: v.supported,
   #|   smooth: v.smooth,
@@ -932,53 +641,32 @@ extern "js" fn MediaCapabilitiesEncodingInfo::from_js_ffi(
   #|   configuration: convert_configuration(v.configuration)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaCapabilitiesEncodingInfo::from_js(
-  value : JsValue,
-) -> MediaCapabilitiesEncodingInfo {
-  MediaCapabilitiesEncodingInfo::from_js_ffi(
-    value,
-    MediaEncodingConfiguration::from_js,
-  )
+pub fn MediaCapabilitiesEncodingInfo::from_js(value : JsValue) -> MediaCapabilitiesEncodingInfo {
+  MediaCapabilitiesEncodingInfo::from_js_ffi(value, MediaEncodingConfiguration::from_js)
 }
 
 ///|
 /// MediaCapabilities interface
 pub type MediaCapabilities
 
-///|
-pub extern "js" fn MediaCapabilities::to_js_value(
-  self : MediaCapabilities,
-) -> JsValue =
+pub extern "js" fn MediaCapabilities::to_js_value(self : MediaCapabilities) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaCapabilities (unchecked)
-pub extern "js" fn MediaCapabilities::from_js_value(
-  v : JsValue,
-) -> MediaCapabilities =
+pub extern "js" fn MediaCapabilities::from_js_value(v : JsValue) -> MediaCapabilities =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaCapabilities (checked with instanceof)
-pub extern "js" fn MediaCapabilities::from_js_value_opt(
-  v : JsValue,
-) -> MediaCapabilities? =
+pub extern "js" fn MediaCapabilities::from_js_value_opt(v : JsValue) -> MediaCapabilities? =
   #| (v) => (v instanceof MediaCapabilities) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaCapabilities (checked with instanceof)
-pub extern "js" fn JsValue::as_media_capabilities(
-  self : JsValue,
-) -> MediaCapabilities? =
+pub extern "js" fn JsValue::as_media_capabilities(self : JsValue) -> MediaCapabilities? =
   #| (self) => (self instanceof MediaCapabilities) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaCapabilities (unchecked)
-pub extern "js" fn JsValue::to_media_capabilities(
-  self : JsValue,
-) -> MediaCapabilities =
+pub extern "js" fn JsValue::to_media_capabilities(self : JsValue) -> MediaCapabilities =
   #| (self) => self
 
 ///|
@@ -990,6 +678,8 @@ pub(all) enum MediaCapabilitiesDecodingInfoError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend MediaCapabilitiesDecodingInfoError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum MediaCapabilitiesEncodingInfoError {
@@ -997,45 +687,23 @@ pub(all) enum MediaCapabilitiesEncodingInfoError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn MediaCapabilities::decoding_info_ffi(
-  self : MediaCapabilities,
-  configuration : JsValue,
-) -> Promise[
-  Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError],
-] =
+pub extend MediaCapabilitiesEncodingInfoError with @debug.Debug::{to_repr}
+
+extern "js" fn MediaCapabilities::decoding_info_ffi(self : MediaCapabilities, configuration : JsValue) -> Promise[Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError]] =
   #| (self, configuration) => self.decodingInfo(configuration).then(v => ({
   #|   keySystemAccess: v.keySystemAccess,
   #|   configuration: v.configuration
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn MediaCapabilities::decoding_info(
-  self : MediaCapabilities,
-  configuration : MediaDecodingConfiguration,
-) -> Promise[
-  Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError],
-] {
+pub fn MediaCapabilities::decoding_info(self : MediaCapabilities, configuration : MediaDecodingConfiguration) -> Promise[Result[MediaCapabilitiesDecodingInfo, MediaCapabilitiesDecodingInfoError]] {
   MediaCapabilities::decoding_info_ffi(self, configuration.to_js())
 }
 
-///|
-extern "js" fn MediaCapabilities::encoding_info_ffi(
-  self : MediaCapabilities,
-  configuration : JsValue,
-) -> Promise[
-  Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError],
-] =
+extern "js" fn MediaCapabilities::encoding_info_ffi(self : MediaCapabilities, configuration : JsValue) -> Promise[Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError]] =
   #| (self, configuration) => self.encodingInfo(configuration).then(v => ({
   #|   configuration: v.configuration
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn MediaCapabilities::encoding_info(
-  self : MediaCapabilities,
-  configuration : MediaEncodingConfiguration,
-) -> Promise[
-  Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError],
-] {
+pub fn MediaCapabilities::encoding_info(self : MediaCapabilities, configuration : MediaEncodingConfiguration) -> Promise[Result[MediaCapabilitiesEncodingInfo, MediaCapabilitiesEncodingInfoError]] {
   MediaCapabilities::encoding_info_ffi(self, configuration.to_js())
 }

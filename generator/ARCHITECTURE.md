@@ -47,6 +47,14 @@ identity and error propagation. A missing WasmGC adapter is an upstream design
 question, not proof that a library is broken or unmaintained. Upstream work must
 include a minimal reproduction and a clearly delimited public API proposal.
 
+The 2026-09-30 dependency update uses official async 0.22.4, commit
+`00aa493c5a674988dc0f4dc3f9bf0a0e654427ac`, with MoonBit
+`0.10.14+7d59c7ec9`. Upstream still selects an unimplemented event loop for
+WasmGC. The maintained experimental adapter reuses that release's coroutine
+and event-loop code; its separate JS/WasmGC consumer passes 218 cases, including
+cancellation, late settlement and callback reclamation. This does not establish
+full generated API coverage or remove the adapter's host preconditions.
+
 ### Selected dependency boundary
 
 Do not introduce a mandatory general-purpose JS value library at this stage.

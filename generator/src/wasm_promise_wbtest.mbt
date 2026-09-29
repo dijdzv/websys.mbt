@@ -70,7 +70,7 @@ test "Promise methods decode after waiting and preserve operation rejection" {
   assert_true(host.contains("Number.isInteger(value)"))
   assert_true(
     wasm_module_manifest("owner/package", promises=true).contains(
-      "moonbitlang/async@0.22.1",
+      "moonbitlang/async@0.22.4",
     ),
   )
 }

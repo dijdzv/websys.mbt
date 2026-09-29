@@ -9,11 +9,11 @@ pub(all) enum NotificationPermission {
   Granted
 } derive(Eq, Debug)
 
-///|
+pub extend NotificationPermission with Eq::{equal, not_equal}
+pub extend NotificationPermission with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn NotificationPermission::to_string(
-  self : NotificationPermission,
-) -> String {
+pub fn NotificationPermission::to_string(self : NotificationPermission) -> String {
   match self {
     NotificationPermission::Default => "default"
     NotificationPermission::Denied => "denied"
@@ -21,11 +21,8 @@ pub fn NotificationPermission::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn NotificationPermission::from_string(
-  s : String,
-) -> NotificationPermission? {
+pub fn NotificationPermission::from_string(s : String) -> NotificationPermission? {
   match s {
     "default" => Some(NotificationPermission::Default)
     "denied" => Some(NotificationPermission::Denied)
@@ -42,7 +39,9 @@ pub(all) enum NotificationDirection {
   Rtl
 } derive(Eq, Debug)
 
-///|
+pub extend NotificationDirection with Eq::{equal, not_equal}
+pub extend NotificationDirection with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn NotificationDirection::to_string(self : NotificationDirection) -> String {
   match self {
@@ -52,7 +51,6 @@ pub fn NotificationDirection::to_string(self : NotificationDirection) -> String 
   }
 }
 
-///|
 /// Parse from string value
 pub fn NotificationDirection::from_string(s : String) -> NotificationDirection? {
   match s {
@@ -63,15 +61,11 @@ pub fn NotificationDirection::from_string(s : String) -> NotificationDirection? 
   }
 }
 
-///|
 /// NotificationPermissionCallback callback interface
 pub type NotificationPermissionCallback
 
-///|
 /// Create NotificationPermissionCallback from a MoonBit function
-pub extern "js" fn NotificationPermissionCallback::from_fn(
-  handler : (NotificationPermission) -> Unit,
-) -> NotificationPermissionCallback =
+pub extern "js" fn NotificationPermissionCallback::from_fn(handler : (NotificationPermission) -> Unit) -> NotificationPermissionCallback =
   #| (handler) => (a0) => handler(a0)
 
 ///|
@@ -94,7 +88,6 @@ pub(all) struct NotificationOptions {
   actions : FixedArray[NotificationAction]?
 }
 
-///|
 /// Create a new NotificationOptions with default values
 pub fn NotificationOptions::default() -> NotificationOptions {
   NotificationOptions::{
@@ -116,10 +109,7 @@ pub fn NotificationOptions::default() -> NotificationOptions {
   }
 }
 
-///|
-extern "js" fn NotificationOptions::to_js_ffi(
-  self : NotificationOptions,
-) -> JsValue =
+extern "js" fn NotificationOptions::to_js_ffi(self : NotificationOptions) -> JsValue =
   #| (self) => ({
   #|   dir: ((() => { const v = self.dir; if (v === undefined) return undefined; return ['auto', 'ltr', 'rtl'][v]; })()),
   #|   lang: self.lang,
@@ -138,16 +128,12 @@ extern "js" fn NotificationOptions::to_js_ffi(
   #|   actions: self.actions
   #| })
 
-///|
 /// Convert to JsValue
 pub fn NotificationOptions::to_js(self : NotificationOptions) -> JsValue {
   NotificationOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn NotificationOptions::from_js_ffi(
-  value : JsValue,
-) -> NotificationOptions =
+extern "js" fn NotificationOptions::from_js_ffi(value : JsValue) -> NotificationOptions =
   #| (v) => ({
   #|   dir: (v.dir === undefined ? undefined : ['auto', 'ltr', 'rtl'].indexOf(v.dir)),
   #|   lang: v.lang,
@@ -166,7 +152,6 @@ extern "js" fn NotificationOptions::from_js_ffi(
   #|   actions: v.actions
   #| })
 
-///|
 /// Convert from JsValue
 pub fn NotificationOptions::from_js(value : JsValue) -> NotificationOptions {
   NotificationOptions::from_js_ffi(value)
@@ -174,25 +159,15 @@ pub fn NotificationOptions::from_js(value : JsValue) -> NotificationOptions {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn NotificationOptions::to_js_checked(
-  self : NotificationOptions,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn NotificationOptions::to_js_checked(self : NotificationOptions) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_NotificationOptions(
-  convert : () -> NotificationOptions,
-) -> Result[NotificationOptions, JsError] =
+extern "js" fn try_dictionary_NotificationOptions(convert : () -> NotificationOptions) -> Result[NotificationOptions, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn NotificationOptions::from_js_checked(
-  value : JsValue,
-) -> Result[NotificationOptions, JsError] {
-  try_dictionary_NotificationOptions(() => NotificationOptions::from_js(value))
-}
+pub fn NotificationOptions::from_js_checked(value : JsValue) -> Result[NotificationOptions, JsError] { try_dictionary_NotificationOptions(() => NotificationOptions::from_js(value)) }
 
 ///|
 /// NotificationAction dictionary
@@ -203,16 +178,17 @@ pub(all) struct NotificationAction {
   icon : String?
 }
 
-///|
 /// Create a new NotificationAction with default values
 pub fn NotificationAction::default() -> NotificationAction {
-  NotificationAction::{ action: "", title: "", navigate: None, icon: None, }
+  NotificationAction::{
+    action: "",
+    title: "",
+    navigate: None,
+    icon: None,
+  }
 }
 
-///|
-extern "js" fn NotificationAction::to_js_ffi(
-  self : NotificationAction,
-) -> JsValue =
+extern "js" fn NotificationAction::to_js_ffi(self : NotificationAction) -> JsValue =
   #| (self) => ({
   #|   action: self.action,
   #|   title: self.title,
@@ -220,16 +196,12 @@ extern "js" fn NotificationAction::to_js_ffi(
   #|   icon: self.icon
   #| })
 
-///|
 /// Convert to JsValue
 pub fn NotificationAction::to_js(self : NotificationAction) -> JsValue {
   NotificationAction::to_js_ffi(self)
 }
 
-///|
-extern "js" fn NotificationAction::from_js_ffi(
-  value : JsValue,
-) -> NotificationAction =
+extern "js" fn NotificationAction::from_js_ffi(value : JsValue) -> NotificationAction =
   #| (v) => ({
   #|   action: v.action,
   #|   title: v.title,
@@ -237,7 +209,6 @@ extern "js" fn NotificationAction::from_js_ffi(
   #|   icon: v.icon
   #| })
 
-///|
 /// Convert from JsValue
 pub fn NotificationAction::from_js(value : JsValue) -> NotificationAction {
   NotificationAction::from_js_ffi(value)
@@ -249,39 +220,30 @@ pub(all) struct GetNotificationOptions {
   tag : String?
 }
 
-///|
 /// Create a new GetNotificationOptions with default values
 pub fn GetNotificationOptions::default() -> GetNotificationOptions {
-  GetNotificationOptions::{ tag: None, }
+  GetNotificationOptions::{
+    tag: None,
+  }
 }
 
-///|
-extern "js" fn GetNotificationOptions::to_js_ffi(
-  self : GetNotificationOptions,
-) -> JsValue =
+extern "js" fn GetNotificationOptions::to_js_ffi(self : GetNotificationOptions) -> JsValue =
   #| (self) => ({
   #|   tag: self.tag
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GetNotificationOptions::to_js(self : GetNotificationOptions) -> JsValue {
   GetNotificationOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GetNotificationOptions::from_js_ffi(
-  value : JsValue,
-) -> GetNotificationOptions =
+extern "js" fn GetNotificationOptions::from_js_ffi(value : JsValue) -> GetNotificationOptions =
   #| (v) => ({
   #|   tag: v.tag
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GetNotificationOptions::from_js(
-  value : JsValue,
-) -> GetNotificationOptions {
+pub fn GetNotificationOptions::from_js(value : JsValue) -> GetNotificationOptions {
   GetNotificationOptions::from_js_ffi(value)
 }
 
@@ -292,39 +254,31 @@ pub(all) struct NotificationEventInit {
   action : String?
 }
 
-///|
 /// Create a new NotificationEventInit
-pub fn NotificationEventInit::new(
-  notification~ : Notification,
-) -> NotificationEventInit {
-  NotificationEventInit::{ notification, action: None, }
+pub fn NotificationEventInit::new(notification~ : Notification) -> NotificationEventInit {
+  NotificationEventInit::{
+    notification: notification,
+    action: None,
+  }
 }
 
-///|
-extern "js" fn NotificationEventInit::to_js_ffi(
-  self : NotificationEventInit,
-) -> JsValue =
+extern "js" fn NotificationEventInit::to_js_ffi(self : NotificationEventInit) -> JsValue =
   #| (self) => ({
   #|   notification: self.notification,
   #|   action: self.action
   #| })
 
-///|
 /// Convert to JsValue
 pub fn NotificationEventInit::to_js(self : NotificationEventInit) -> JsValue {
   NotificationEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn NotificationEventInit::from_js_ffi(
-  value : JsValue,
-) -> NotificationEventInit =
+extern "js" fn NotificationEventInit::from_js_ffi(value : JsValue) -> NotificationEventInit =
   #| (v) => ({
   #|   notification: v.notification,
   #|   action: v.action
   #| })
 
-///|
 /// Convert from JsValue
 pub fn NotificationEventInit::from_js(value : JsValue) -> NotificationEventInit {
   NotificationEventInit::from_js_ffi(value)
@@ -334,36 +288,26 @@ pub fn NotificationEventInit::from_js(value : JsValue) -> NotificationEventInit 
 /// Notification interface
 pub type Notification
 
-///|
 pub extern "js" fn Notification::to_js_value(self : Notification) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Notification (unchecked)
 pub extern "js" fn Notification::from_js_value(v : JsValue) -> Notification =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Notification (checked with instanceof)
-pub extern "js" fn Notification::from_js_value_opt(
-  v : JsValue,
-) -> Notification? =
+pub extern "js" fn Notification::from_js_value_opt(v : JsValue) -> Notification? =
   #| (v) => (v instanceof Notification) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Notification (checked with instanceof)
 pub extern "js" fn JsValue::as_notification(self : JsValue) -> Notification? =
   #| (self) => (self instanceof Notification) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Notification (unchecked)
 pub extern "js" fn JsValue::to_notification(self : JsValue) -> Notification =
   #| (self) => self
 
-///|
-pub extern "js" fn Notification::to_event_target(
-  self : Notification,
-) -> EventTarget =
+pub extern "js" fn Notification::to_event_target(self : Notification) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -374,168 +318,102 @@ pub(all) enum NotificationConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Notification::new(
-  title : String,
-) -> Result[Notification, NotificationConstructorError] =
+pub extend NotificationConstructorError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Notification::new(title : String) -> Result[Notification, NotificationConstructorError] =
   #| (title) => (() => { try { return { $tag: 1, _0: new Notification(title) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Notification::new_with_options_ffi(
-  title : String,
-  options : JsValue,
-) -> Result[Notification, NotificationConstructorError] =
+extern "js" fn Notification::new_with_options_ffi(title : String, options : JsValue) -> Result[Notification, NotificationConstructorError] =
   #| (title, options) => (() => { try { return { $tag: 1, _0: new Notification(title, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'DataCloneError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn Notification::new_with_options(
-  title : String,
-  options : NotificationOptions,
-) -> Result[Notification, NotificationConstructorError] {
+pub fn Notification::new_with_options(title : String, options : NotificationOptions) -> Result[Notification, NotificationConstructorError] {
   Notification::new_with_options_ffi(title, options.to_js())
 }
 
-///|
-pub extern "js" fn Notification::get_permission(
-  self : Notification,
-) -> NotificationPermission =
+pub extern "js" fn Notification::get_permission(self : Notification) -> NotificationPermission =
   #| (self) => ['default', 'denied', 'granted'].indexOf(self.permission)
 
-///|
-pub extern "js" fn Notification::request_permission() -> Promise[
-  NotificationPermission,
-] =
+pub extern "js" fn Notification::request_permission() -> Promise[NotificationPermission] =
   #| () => Notification.requestPermission()
 
-///|
-pub extern "js" fn Notification::request_permission_with_deprecated_callback(
-  deprecated_callback : NotificationPermissionCallback,
-) -> Promise[NotificationPermission] =
+pub extern "js" fn Notification::request_permission_with_deprecated_callback(deprecated_callback : NotificationPermissionCallback) -> Promise[NotificationPermission] =
   #| (deprecated_callback) => Notification.requestPermission(deprecated_callback)
 
-///|
 pub extern "js" fn Notification::get_max_actions(self : Notification) -> Int =
   #| (self) => self.maxActions
 
-///|
-pub extern "js" fn Notification::set_onclick(
-  self : Notification,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Notification::set_onclick(self : Notification, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onclick = (e) => handler(e) }
 
-///|
 pub extern "js" fn Notification::clear_onclick(self : Notification) -> Unit =
   #| (self) => { self.onclick = null }
 
-///|
-pub extern "js" fn Notification::set_onshow(
-  self : Notification,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Notification::set_onshow(self : Notification, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onshow = (e) => handler(e) }
 
-///|
 pub extern "js" fn Notification::clear_onshow(self : Notification) -> Unit =
   #| (self) => { self.onshow = null }
 
-///|
-pub extern "js" fn Notification::set_onerror(
-  self : Notification,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Notification::set_onerror(self : Notification, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onerror = (e) => handler(e) }
 
-///|
 pub extern "js" fn Notification::clear_onerror(self : Notification) -> Unit =
   #| (self) => { self.onerror = null }
 
-///|
-pub extern "js" fn Notification::set_onclose(
-  self : Notification,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Notification::set_onclose(self : Notification, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onclose = (e) => handler(e) }
 
-///|
 pub extern "js" fn Notification::clear_onclose(self : Notification) -> Unit =
   #| (self) => { self.onclose = null }
 
-///|
 pub extern "js" fn Notification::get_title(self : Notification) -> String =
   #| (self) => self.title
 
-///|
-pub extern "js" fn Notification::get_dir(
-  self : Notification,
-) -> NotificationDirection =
+pub extern "js" fn Notification::get_dir(self : Notification) -> NotificationDirection =
   #| (self) => ['auto', 'ltr', 'rtl'].indexOf(self.dir)
 
-///|
 pub extern "js" fn Notification::get_lang(self : Notification) -> String =
   #| (self) => self.lang
 
-///|
 pub extern "js" fn Notification::get_body(self : Notification) -> String =
   #| (self) => self.body
 
-///|
 pub extern "js" fn Notification::get_navigate(self : Notification) -> String =
   #| (self) => self.navigate
 
-///|
 pub extern "js" fn Notification::get_tag(self : Notification) -> String =
   #| (self) => self.tag
 
-///|
 pub extern "js" fn Notification::get_image(self : Notification) -> String =
   #| (self) => self.image
 
-///|
 pub extern "js" fn Notification::get_icon(self : Notification) -> String =
   #| (self) => self.icon
 
-///|
 pub extern "js" fn Notification::get_badge(self : Notification) -> String =
   #| (self) => self.badge
 
-///|
-pub extern "js" fn Notification::get_vibrate(
-  self : Notification,
-) -> FixedArray[Int] =
+pub extern "js" fn Notification::get_vibrate(self : Notification) -> FixedArray[Int] =
   #| (self) => self.vibrate
 
-///|
-pub extern "js" fn Notification::get_timestamp(
-  self : Notification,
-) -> EpochTimeStamp =
+pub extern "js" fn Notification::get_timestamp(self : Notification) -> EpochTimeStamp =
   #| (self) => self.timestamp
 
-///|
 pub extern "js" fn Notification::get_renotify(self : Notification) -> Bool =
   #| (self) => self.renotify
 
-///|
 pub extern "js" fn Notification::get_silent(self : Notification) -> Bool? =
   #| (self) => (self.silent) ?? undefined
 
-///|
-pub extern "js" fn Notification::get_require_interaction(
-  self : Notification,
-) -> Bool =
+pub extern "js" fn Notification::get_require_interaction(self : Notification) -> Bool =
   #| (self) => self.requireInteraction
 
-///|
 pub extern "js" fn Notification::get_data(self : Notification) -> JsValue =
   #| (self) => self.data
 
-///|
-pub extern "js" fn Notification::get_actions(
-  self : Notification,
-) -> FixedArray[NotificationAction] =
+pub extern "js" fn Notification::get_actions(self : Notification) -> FixedArray[NotificationAction] =
   #| (self) => self.actions
 
-///|
 pub extern "js" fn Notification::close(self : Notification) -> Unit =
   #| (self) => self.close()
 
@@ -543,75 +421,40 @@ pub extern "js" fn Notification::close(self : Notification) -> Unit =
 /// NotificationEvent interface
 pub type NotificationEvent
 
-///|
-pub extern "js" fn NotificationEvent::to_js_value(
-  self : NotificationEvent,
-) -> JsValue =
+pub extern "js" fn NotificationEvent::to_js_value(self : NotificationEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to NotificationEvent (unchecked)
-pub extern "js" fn NotificationEvent::from_js_value(
-  v : JsValue,
-) -> NotificationEvent =
+pub extern "js" fn NotificationEvent::from_js_value(v : JsValue) -> NotificationEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to NotificationEvent (checked with instanceof)
-pub extern "js" fn NotificationEvent::from_js_value_opt(
-  v : JsValue,
-) -> NotificationEvent? =
+pub extern "js" fn NotificationEvent::from_js_value_opt(v : JsValue) -> NotificationEvent? =
   #| (v) => (v instanceof NotificationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to NotificationEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_notification_event(
-  self : JsValue,
-) -> NotificationEvent? =
+pub extern "js" fn JsValue::as_notification_event(self : JsValue) -> NotificationEvent? =
   #| (self) => (self instanceof NotificationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to NotificationEvent (unchecked)
-pub extern "js" fn JsValue::to_notification_event(
-  self : JsValue,
-) -> NotificationEvent =
+pub extern "js" fn JsValue::to_notification_event(self : JsValue) -> NotificationEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn NotificationEvent::to_extendable_event(
-  self : NotificationEvent,
-) -> ExtendableEvent =
+pub extern "js" fn NotificationEvent::to_extendable_event(self : NotificationEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn NotificationEvent::to_event(
-  self : NotificationEvent,
-) -> Event =
+pub extern "js" fn NotificationEvent::to_event(self : NotificationEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn NotificationEvent::new_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> NotificationEvent =
+extern "js" fn NotificationEvent::new_ffi(type_ : String, event_init_dict : JsValue) -> NotificationEvent =
   #| (type_, event_init_dict) => new NotificationEvent(type_, event_init_dict)
 
-///|
-pub fn NotificationEvent::new(
-  type_ : String,
-  event_init_dict : NotificationEventInit,
-) -> NotificationEvent {
+pub fn NotificationEvent::new(type_ : String, event_init_dict : NotificationEventInit) -> NotificationEvent {
   NotificationEvent::new_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn NotificationEvent::get_notification(
-  self : NotificationEvent,
-) -> Notification =
+pub extern "js" fn NotificationEvent::get_notification(self : NotificationEvent) -> Notification =
   #| (self) => self.notification
 
-///|
-pub extern "js" fn NotificationEvent::get_action(
-  self : NotificationEvent,
-) -> String =
+pub extern "js" fn NotificationEvent::get_action(self : NotificationEvent) -> String =
   #| (self) => self.action

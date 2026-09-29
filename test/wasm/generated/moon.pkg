@@ -1,1 +1,2 @@
+import { }
 supported_targets = "wasm-gc"

@@ -5,36 +5,23 @@
 /// HeadersInit typedef
 pub type HeadersInit
 
-///|
 pub extern "js" fn HeadersInit::to_js_value(self : HeadersInit) -> JsValue =
   #| (self) => self
 
-///|
 /// Create HeadersInit from FixedArray[FixedArray[String]]
-pub extern "js" fn HeadersInit::from_array_of_array_of_string(
-  v : FixedArray[FixedArray[String]],
-) -> HeadersInit =
+pub extern "js" fn HeadersInit::from_array_of_array_of_string(v : FixedArray[FixedArray[String]]) -> HeadersInit =
   #| (v) => v
 
-///|
 /// Check if this HeadersInit is FixedArray[FixedArray[String]]
-pub extern "js" fn HeadersInit::is_array_of_array_of_string(
-  self : HeadersInit,
-) -> Bool =
+pub extern "js" fn HeadersInit::is_array_of_array_of_string(self : HeadersInit) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Try to get HeadersInit as FixedArray[FixedArray[String]]
-pub extern "js" fn HeadersInit::as_array_of_array_of_string(
-  self : HeadersInit,
-) -> FixedArray[FixedArray[String]]? =
+pub extern "js" fn HeadersInit::as_array_of_array_of_string(self : HeadersInit) -> FixedArray[FixedArray[String]]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
-///|
 /// Flatten Option[HeadersInit] to FixedArray[FixedArray[String]]?
-pub fn HeadersInit::bind_as_array_of_array_of_string(
-  value : HeadersInit?,
-) -> FixedArray[FixedArray[String]]? {
+pub fn HeadersInit::bind_as_array_of_array_of_string(value : HeadersInit?) -> FixedArray[FixedArray[String]]? {
   match value {
     Some(v) => v.as_array_of_array_of_string()
     None => None
@@ -45,166 +32,103 @@ pub fn HeadersInit::bind_as_array_of_array_of_string(
 /// XMLHttpRequestBodyInit typedef
 pub type XMLHttpRequestBodyInit
 
-///|
-pub extern "js" fn XMLHttpRequestBodyInit::to_js_value(
-  self : XMLHttpRequestBodyInit,
-) -> JsValue =
+pub extern "js" fn XMLHttpRequestBodyInit::to_js_value(self : XMLHttpRequestBodyInit) -> JsValue =
   #| (self) => self
 
-///|
 /// Create XMLHttpRequestBodyInit from Blob
-pub extern "js" fn XMLHttpRequestBodyInit::from_blob(
-  v : Blob,
-) -> XMLHttpRequestBodyInit =
+pub extern "js" fn XMLHttpRequestBodyInit::from_blob(v : Blob) -> XMLHttpRequestBodyInit =
   #| (v) => v
 
-///|
 /// Create XMLHttpRequestBodyInit from BufferSource
-pub extern "js" fn XMLHttpRequestBodyInit::from_buffer_source(
-  v : BufferSource,
-) -> XMLHttpRequestBodyInit =
+pub extern "js" fn XMLHttpRequestBodyInit::from_buffer_source(v : BufferSource) -> XMLHttpRequestBodyInit =
   #| (v) => v
 
-///|
 /// Create XMLHttpRequestBodyInit from FormData
-pub extern "js" fn XMLHttpRequestBodyInit::from_form_data(
-  v : FormData,
-) -> XMLHttpRequestBodyInit =
+pub extern "js" fn XMLHttpRequestBodyInit::from_form_data(v : FormData) -> XMLHttpRequestBodyInit =
   #| (v) => v
 
-///|
 /// Create XMLHttpRequestBodyInit from URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::from_url_search_params(
-  v : URLSearchParams,
-) -> XMLHttpRequestBodyInit =
+pub extern "js" fn XMLHttpRequestBodyInit::from_url_search_params(v : URLSearchParams) -> XMLHttpRequestBodyInit =
   #| (v) => v
 
-///|
 /// Create XMLHttpRequestBodyInit from String
-pub extern "js" fn XMLHttpRequestBodyInit::from_string(
-  v : String,
-) -> XMLHttpRequestBodyInit =
+pub extern "js" fn XMLHttpRequestBodyInit::from_string(v : String) -> XMLHttpRequestBodyInit =
   #| (v) => v
 
-///|
 /// Check if this XMLHttpRequestBodyInit is Blob
-pub extern "js" fn XMLHttpRequestBodyInit::is_blob(
-  self : XMLHttpRequestBodyInit,
-) -> Bool =
+pub extern "js" fn XMLHttpRequestBodyInit::is_blob(self : XMLHttpRequestBodyInit) -> Bool =
   #| (self) => self instanceof Blob
 
-///|
 /// Check if this XMLHttpRequestBodyInit is BufferSource
-pub extern "js" fn XMLHttpRequestBodyInit::is_buffer_source(
-  self : XMLHttpRequestBodyInit,
-) -> Bool =
-  #| (self) => self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer
+pub extern "js" fn XMLHttpRequestBodyInit::is_buffer_source(self : XMLHttpRequestBodyInit) -> Bool =
+  #| (self) => self instanceof ArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView
 
-///|
 /// Check if this XMLHttpRequestBodyInit is FormData
-pub extern "js" fn XMLHttpRequestBodyInit::is_form_data(
-  self : XMLHttpRequestBodyInit,
-) -> Bool =
+pub extern "js" fn XMLHttpRequestBodyInit::is_form_data(self : XMLHttpRequestBodyInit) -> Bool =
   #| (self) => self instanceof FormData
 
-///|
 /// Check if this XMLHttpRequestBodyInit is URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::is_url_search_params(
-  self : XMLHttpRequestBodyInit,
-) -> Bool =
+pub extern "js" fn XMLHttpRequestBodyInit::is_url_search_params(self : XMLHttpRequestBodyInit) -> Bool =
   #| (self) => self instanceof URLSearchParams
 
-///|
 /// Check if this XMLHttpRequestBodyInit is String
-pub extern "js" fn XMLHttpRequestBodyInit::is_string(
-  self : XMLHttpRequestBodyInit,
-) -> Bool =
+pub extern "js" fn XMLHttpRequestBodyInit::is_string(self : XMLHttpRequestBodyInit) -> Bool =
   #| (self) => typeof self === 'string'
 
-///|
 /// Try to get XMLHttpRequestBodyInit as Blob
-pub extern "js" fn XMLHttpRequestBodyInit::as_blob(
-  self : XMLHttpRequestBodyInit,
-) -> Blob? =
+pub extern "js" fn XMLHttpRequestBodyInit::as_blob(self : XMLHttpRequestBodyInit) -> Blob? =
   #| (self) => (self instanceof Blob) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get XMLHttpRequestBodyInit as BufferSource
-pub extern "js" fn XMLHttpRequestBodyInit::as_buffer_source(
-  self : XMLHttpRequestBodyInit,
-) -> BufferSource? =
-  #| (self) => (self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn XMLHttpRequestBodyInit::as_buffer_source(self : XMLHttpRequestBodyInit) -> BufferSource? =
+  #| (self) => (self instanceof ArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get XMLHttpRequestBodyInit as FormData
-pub extern "js" fn XMLHttpRequestBodyInit::as_form_data(
-  self : XMLHttpRequestBodyInit,
-) -> FormData? =
+pub extern "js" fn XMLHttpRequestBodyInit::as_form_data(self : XMLHttpRequestBodyInit) -> FormData? =
   #| (self) => (self instanceof FormData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get XMLHttpRequestBodyInit as URLSearchParams
-pub extern "js" fn XMLHttpRequestBodyInit::as_url_search_params(
-  self : XMLHttpRequestBodyInit,
-) -> URLSearchParams? =
+pub extern "js" fn XMLHttpRequestBodyInit::as_url_search_params(self : XMLHttpRequestBodyInit) -> URLSearchParams? =
   #| (self) => (self instanceof URLSearchParams) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get XMLHttpRequestBodyInit as String
-pub extern "js" fn XMLHttpRequestBodyInit::as_string(
-  self : XMLHttpRequestBodyInit,
-) -> String? =
+pub extern "js" fn XMLHttpRequestBodyInit::as_string(self : XMLHttpRequestBodyInit) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
-///|
 /// Flatten Option[XMLHttpRequestBodyInit] to Blob?
-pub fn XMLHttpRequestBodyInit::bind_as_blob(
-  value : XMLHttpRequestBodyInit?,
-) -> Blob? {
+pub fn XMLHttpRequestBodyInit::bind_as_blob(value : XMLHttpRequestBodyInit?) -> Blob? {
   match value {
     Some(v) => v.as_blob()
     None => None
   }
 }
 
-///|
 /// Flatten Option[XMLHttpRequestBodyInit] to BufferSource?
-pub fn XMLHttpRequestBodyInit::bind_as_buffer_source(
-  value : XMLHttpRequestBodyInit?,
-) -> BufferSource? {
+pub fn XMLHttpRequestBodyInit::bind_as_buffer_source(value : XMLHttpRequestBodyInit?) -> BufferSource? {
   match value {
     Some(v) => v.as_buffer_source()
     None => None
   }
 }
 
-///|
 /// Flatten Option[XMLHttpRequestBodyInit] to FormData?
-pub fn XMLHttpRequestBodyInit::bind_as_form_data(
-  value : XMLHttpRequestBodyInit?,
-) -> FormData? {
+pub fn XMLHttpRequestBodyInit::bind_as_form_data(value : XMLHttpRequestBodyInit?) -> FormData? {
   match value {
     Some(v) => v.as_form_data()
     None => None
   }
 }
 
-///|
 /// Flatten Option[XMLHttpRequestBodyInit] to URLSearchParams?
-pub fn XMLHttpRequestBodyInit::bind_as_url_search_params(
-  value : XMLHttpRequestBodyInit?,
-) -> URLSearchParams? {
+pub fn XMLHttpRequestBodyInit::bind_as_url_search_params(value : XMLHttpRequestBodyInit?) -> URLSearchParams? {
   match value {
     Some(v) => v.as_url_search_params()
     None => None
   }
 }
 
-///|
 /// Flatten Option[XMLHttpRequestBodyInit] to String?
-pub fn XMLHttpRequestBodyInit::bind_as_string(
-  value : XMLHttpRequestBodyInit?,
-) -> String? {
+pub fn XMLHttpRequestBodyInit::bind_as_string(value : XMLHttpRequestBodyInit?) -> String? {
   match value {
     Some(v) => v.as_string()
     None => None
@@ -215,51 +139,33 @@ pub fn XMLHttpRequestBodyInit::bind_as_string(
 /// BodyInit typedef
 pub type BodyInit
 
-///|
 pub extern "js" fn BodyInit::to_js_value(self : BodyInit) -> JsValue =
   #| (self) => self
 
-///|
 /// Create BodyInit from ReadableStream
-pub extern "js" fn BodyInit::from_readable_stream(
-  v : ReadableStream,
-) -> BodyInit =
+pub extern "js" fn BodyInit::from_readable_stream(v : ReadableStream) -> BodyInit =
   #| (v) => v
 
-///|
 /// Create BodyInit from XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::from_xml_http_request_body_init(
-  v : XMLHttpRequestBodyInit,
-) -> BodyInit =
+pub extern "js" fn BodyInit::from_xml_http_request_body_init(v : XMLHttpRequestBodyInit) -> BodyInit =
   #| (v) => v
 
-///|
 /// Check if this BodyInit is ReadableStream
 pub extern "js" fn BodyInit::is_readable_stream(self : BodyInit) -> Bool =
   #| (self) => self instanceof ReadableStream
 
-///|
 /// Check if this BodyInit is XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::is_xml_http_request_body_init(
-  self : BodyInit,
-) -> Bool =
-  #| (self) => self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
+pub extern "js" fn BodyInit::is_xml_http_request_body_init(self : BodyInit) -> Bool =
+  #| (self) => self instanceof Blob || self instanceof ArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string'
 
-///|
 /// Try to get BodyInit as ReadableStream
-pub extern "js" fn BodyInit::as_readable_stream(
-  self : BodyInit,
-) -> ReadableStream? =
+pub extern "js" fn BodyInit::as_readable_stream(self : BodyInit) -> ReadableStream? =
   #| (self) => (self instanceof ReadableStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get BodyInit as XMLHttpRequestBodyInit
-pub extern "js" fn BodyInit::as_xml_http_request_body_init(
-  self : BodyInit,
-) -> XMLHttpRequestBodyInit? =
-  #| (self) => (self instanceof Blob || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof ArrayBuffer || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
+pub extern "js" fn BodyInit::as_xml_http_request_body_init(self : BodyInit) -> XMLHttpRequestBodyInit? =
+  #| (self) => (self instanceof Blob || self instanceof ArrayBuffer || self instanceof Int8Array || self instanceof Int16Array || self instanceof Int32Array || self instanceof Uint8Array || self instanceof Uint16Array || self instanceof Uint32Array || self instanceof Uint8ClampedArray || self instanceof BigInt64Array || self instanceof BigUint64Array || self instanceof Float16Array || self instanceof Float32Array || self instanceof Float64Array || self instanceof DataView || self instanceof FormData || self instanceof URLSearchParams || typeof self === 'string') ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Flatten Option[BodyInit] to ReadableStream?
 pub fn BodyInit::bind_as_readable_stream(value : BodyInit?) -> ReadableStream? {
   match value {
@@ -268,11 +174,8 @@ pub fn BodyInit::bind_as_readable_stream(value : BodyInit?) -> ReadableStream? {
   }
 }
 
-///|
 /// Flatten Option[BodyInit] to XMLHttpRequestBodyInit?
-pub fn BodyInit::bind_as_xml_http_request_body_init(
-  value : BodyInit?,
-) -> XMLHttpRequestBodyInit? {
+pub fn BodyInit::bind_as_xml_http_request_body_init(value : BodyInit?) -> XMLHttpRequestBodyInit? {
   match value {
     Some(v) => v.as_xml_http_request_body_init()
     None => None
@@ -283,41 +186,33 @@ pub fn BodyInit::bind_as_xml_http_request_body_init(
 /// RequestInfo typedef
 pub type RequestInfo
 
-///|
 pub extern "js" fn RequestInfo::to_js_value(self : RequestInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Create RequestInfo from Request
 pub extern "js" fn RequestInfo::from_request(v : Request) -> RequestInfo =
   #| (v) => v
 
-///|
 /// Create RequestInfo from String
 pub extern "js" fn RequestInfo::from_string(v : String) -> RequestInfo =
   #| (v) => v
 
-///|
 /// Check if this RequestInfo is Request
 pub extern "js" fn RequestInfo::is_request(self : RequestInfo) -> Bool =
   #| (self) => self instanceof Request
 
-///|
 /// Check if this RequestInfo is String
 pub extern "js" fn RequestInfo::is_string(self : RequestInfo) -> Bool =
   #| (self) => typeof self === 'string'
 
-///|
 /// Try to get RequestInfo as Request
 pub extern "js" fn RequestInfo::as_request(self : RequestInfo) -> Request? =
   #| (self) => (self instanceof Request) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get RequestInfo as String
 pub extern "js" fn RequestInfo::as_string(self : RequestInfo) -> String? =
   #| (self) => (typeof self === 'string') ? self : undefined
 
-///|
 /// Flatten Option[RequestInfo] to Request?
 pub fn RequestInfo::bind_as_request(value : RequestInfo?) -> Request? {
   match value {
@@ -326,7 +221,6 @@ pub fn RequestInfo::bind_as_request(value : RequestInfo?) -> Request? {
   }
 }
 
-///|
 /// Flatten Option[RequestInfo] to String?
 pub fn RequestInfo::bind_as_string(value : RequestInfo?) -> String? {
   match value {
@@ -355,13 +249,16 @@ pub(all) enum RequestDestination {
   Script
   Sharedworker
   Style
+  Text
   Track
   Video
   Worker
   Xslt
 } derive(Eq, Debug)
 
-///|
+pub extend RequestDestination with Eq::{equal, not_equal}
+pub extend RequestDestination with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestDestination::to_string(self : RequestDestination) -> String {
   match self {
@@ -382,6 +279,7 @@ pub fn RequestDestination::to_string(self : RequestDestination) -> String {
     RequestDestination::Script => "script"
     RequestDestination::Sharedworker => "sharedworker"
     RequestDestination::Style => "style"
+    RequestDestination::Text => "text"
     RequestDestination::Track => "track"
     RequestDestination::Video => "video"
     RequestDestination::Worker => "worker"
@@ -389,7 +287,6 @@ pub fn RequestDestination::to_string(self : RequestDestination) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestDestination::from_string(s : String) -> RequestDestination? {
   match s {
@@ -410,6 +307,7 @@ pub fn RequestDestination::from_string(s : String) -> RequestDestination? {
     "script" => Some(RequestDestination::Script)
     "sharedworker" => Some(RequestDestination::Sharedworker)
     "style" => Some(RequestDestination::Style)
+    "text" => Some(RequestDestination::Text)
     "track" => Some(RequestDestination::Track)
     "video" => Some(RequestDestination::Video)
     "worker" => Some(RequestDestination::Worker)
@@ -427,7 +325,9 @@ pub(all) enum RequestMode {
   Cors
 } derive(Eq, Debug)
 
-///|
+pub extend RequestMode with Eq::{equal, not_equal}
+pub extend RequestMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestMode::to_string(self : RequestMode) -> String {
   match self {
@@ -438,7 +338,6 @@ pub fn RequestMode::to_string(self : RequestMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestMode::from_string(s : String) -> RequestMode? {
   match s {
@@ -458,7 +357,9 @@ pub(all) enum RequestCredentials {
   Include
 } derive(Eq, Debug)
 
-///|
+pub extend RequestCredentials with Eq::{equal, not_equal}
+pub extend RequestCredentials with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
   match self {
@@ -468,7 +369,6 @@ pub fn RequestCredentials::to_string(self : RequestCredentials) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestCredentials::from_string(s : String) -> RequestCredentials? {
   match s {
@@ -490,7 +390,9 @@ pub(all) enum RequestCache {
   OnlyIfCached
 } derive(Eq, Debug)
 
-///|
+pub extend RequestCache with Eq::{equal, not_equal}
+pub extend RequestCache with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestCache::to_string(self : RequestCache) -> String {
   match self {
@@ -503,7 +405,6 @@ pub fn RequestCache::to_string(self : RequestCache) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestCache::from_string(s : String) -> RequestCache? {
   match s {
@@ -525,7 +426,9 @@ pub(all) enum RequestRedirect {
   Manual
 } derive(Eq, Debug)
 
-///|
+pub extend RequestRedirect with Eq::{equal, not_equal}
+pub extend RequestRedirect with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
   match self {
@@ -535,7 +438,6 @@ pub fn RequestRedirect::to_string(self : RequestRedirect) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestRedirect::from_string(s : String) -> RequestRedirect? {
   match s {
@@ -552,7 +454,9 @@ pub(all) enum RequestDuplex {
   Half
 } derive(Eq, Debug)
 
-///|
+pub extend RequestDuplex with Eq::{equal, not_equal}
+pub extend RequestDuplex with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
   match self {
@@ -560,7 +464,6 @@ pub fn RequestDuplex::to_string(self : RequestDuplex) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestDuplex::from_string(s : String) -> RequestDuplex? {
   match s {
@@ -577,7 +480,9 @@ pub(all) enum RequestPriority {
   Auto
 } derive(Eq, Debug)
 
-///|
+pub extend RequestPriority with Eq::{equal, not_equal}
+pub extend RequestPriority with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RequestPriority::to_string(self : RequestPriority) -> String {
   match self {
@@ -587,7 +492,6 @@ pub fn RequestPriority::to_string(self : RequestPriority) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RequestPriority::from_string(s : String) -> RequestPriority? {
   match s {
@@ -609,7 +513,9 @@ pub(all) enum ResponseType {
   Opaqueredirect
 } derive(Eq, Debug)
 
-///|
+pub extend ResponseType with Eq::{equal, not_equal}
+pub extend ResponseType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ResponseType::to_string(self : ResponseType) -> String {
   match self {
@@ -622,7 +528,6 @@ pub fn ResponseType::to_string(self : ResponseType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ResponseType::from_string(s : String) -> ResponseType? {
   match s {
@@ -637,6 +542,103 @@ pub fn ResponseType::from_string(s : String) -> ResponseType? {
 }
 
 ///|
+/// RequestInit dictionary
+pub(all) struct RequestInit {
+  method_ : String?
+  headers : HeadersInit?
+  body : Nullable[BodyInit]
+  referrer : String?
+  referrerPolicy : ReferrerPolicy?
+  mode : RequestMode?
+  credentials : RequestCredentials?
+  cache : RequestCache?
+  redirect : RequestRedirect?
+  integrity : String?
+  keepalive : Bool?
+  signal : Nullable[AbortSignal]
+  duplex : RequestDuplex?
+  priority : RequestPriority?
+  window : JsValue?
+  targetAddressSpace : IPAddressSpace?
+  privateToken : PrivateToken?
+}
+
+/// Create a new RequestInit with default values
+pub fn RequestInit::default() -> RequestInit {
+  RequestInit::{
+    method_: None,
+    headers: None,
+    body: Nullable::Undefined,
+    referrer: None,
+    referrerPolicy: None,
+    mode: None,
+    credentials: None,
+    cache: None,
+    redirect: None,
+    integrity: None,
+    keepalive: None,
+    signal: Nullable::Undefined,
+    duplex: None,
+    priority: None,
+    window: None,
+    targetAddressSpace: None,
+    privateToken: None,
+  }
+}
+
+extern "js" fn RequestInit::to_js_ffi(self : RequestInit, convert_privateToken : (PrivateToken?) -> JsValue) -> JsValue =
+  #| (self, convert_privateToken) => ({
+  #|   method: self.method_,
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   referrer: self.referrer,
+  #|   referrerPolicy: ((() => { const v = self.referrerPolicy; if (v === undefined) return undefined; return ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'][v]; })()),
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
+  #|   credentials: ((() => { const v = self.credentials; if (v === undefined) return undefined; return ['omit', 'same-origin', 'include'][v]; })()),
+  #|   cache: ((() => { const v = self.cache; if (v === undefined) return undefined; return ['default', 'no-store', 'reload', 'no-cache', 'force-cache', 'only-if-cached'][v]; })()),
+  #|   redirect: ((() => { const v = self.redirect; if (v === undefined) return undefined; return ['follow', 'error', 'manual'][v]; })()),
+  #|   integrity: self.integrity,
+  #|   keepalive: (self.keepalive === -1 ? undefined : self.keepalive),
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   duplex: ((() => { const v = self.duplex; if (v === undefined) return undefined; return ['half'][v]; })()),
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['high', 'low', 'auto'][v]; })()),
+  #|   window: ((() => { const v = self.window; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   targetAddressSpace: ((() => { const v = self.targetAddressSpace; if (v === undefined) return undefined; return ['public', 'local', 'loopback'][v]; })()),
+  #|   privateToken: convert_privateToken(self.privateToken)
+  #| })
+
+/// Convert to JsValue
+pub fn RequestInit::to_js(self : RequestInit) -> JsValue {
+  RequestInit::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
+}
+
+extern "js" fn RequestInit::from_js_ffi(value : JsValue, convert_privateToken : (JsValue) -> PrivateToken?) -> RequestInit =
+  #| (v, convert_privateToken) => ({
+  #|   method_: v.method,
+  #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers }),
+  #|   body: (v.body === undefined ? { $tag: 0 } : v.body === null ? { $tag: 1 } : { $tag: 2, _0: v.body }),
+  #|   referrer: v.referrer,
+  #|   referrerPolicy: (v.referrerPolicy === undefined ? undefined : ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'].indexOf(v.referrerPolicy)),
+  #|   mode: (v.mode === undefined ? undefined : ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(v.mode)),
+  #|   credentials: (v.credentials === undefined ? undefined : ['omit', 'same-origin', 'include'].indexOf(v.credentials)),
+  #|   cache: (v.cache === undefined ? undefined : ['default', 'no-store', 'reload', 'no-cache', 'force-cache', 'only-if-cached'].indexOf(v.cache)),
+  #|   redirect: (v.redirect === undefined ? undefined : ['follow', 'error', 'manual'].indexOf(v.redirect)),
+  #|   integrity: v.integrity,
+  #|   keepalive: (v.keepalive === undefined ? -1 : v.keepalive),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal }),
+  #|   duplex: (v.duplex === undefined ? undefined : ['half'].indexOf(v.duplex)),
+  #|   priority: (v.priority === undefined ? undefined : ['high', 'low', 'auto'].indexOf(v.priority)),
+  #|   window: (v.window === undefined ? { $tag: 0 } : { $tag: 1, _0: v.window }),
+  #|   targetAddressSpace: (v.targetAddressSpace === undefined ? undefined : ['public', 'local', 'loopback'].indexOf(v.targetAddressSpace)),
+  #|   privateToken: convert_privateToken(v.privateToken)
+  #| })
+
+/// Convert from JsValue
+pub fn RequestInit::from_js(value : JsValue) -> RequestInit {
+  RequestInit::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(PrivateToken::from_js(value)) } })
+}
+
+///|
 /// ResponseInit dictionary
 pub(all) struct ResponseInit {
   status : Int?
@@ -644,13 +646,15 @@ pub(all) struct ResponseInit {
   headers : HeadersInit?
 }
 
-///|
 /// Create a new ResponseInit with default values
 pub fn ResponseInit::default() -> ResponseInit {
-  ResponseInit::{ status: None, statusText: None, headers: None, }
+  ResponseInit::{
+    status: None,
+    statusText: None,
+    headers: None,
+  }
 }
 
-///|
 extern "js" fn ResponseInit::to_js_ffi(self : ResponseInit) -> JsValue =
   #| (self) => ({
   #|   status: self.status,
@@ -658,13 +662,11 @@ extern "js" fn ResponseInit::to_js_ffi(self : ResponseInit) -> JsValue =
   #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ResponseInit::to_js(self : ResponseInit) -> JsValue {
   ResponseInit::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ResponseInit::from_js_ffi(value : JsValue) -> ResponseInit =
   #| (v) => ({
   #|   status: v.status,
@@ -672,7 +674,6 @@ extern "js" fn ResponseInit::from_js_ffi(value : JsValue) -> ResponseInit =
   #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ResponseInit::from_js(value : JsValue) -> ResponseInit {
   ResponseInit::from_js_ffi(value)
@@ -681,162 +682,185 @@ pub fn ResponseInit::from_js(value : JsValue) -> ResponseInit {
 ///|
 /// DeferredRequestInit dictionary
 pub(all) struct DeferredRequestInit {
+  method_ : String?
+  headers : HeadersInit?
+  body : Nullable[BodyInit]
+  referrer : String?
+  referrerPolicy : ReferrerPolicy?
+  mode : RequestMode?
+  credentials : RequestCredentials?
+  cache : RequestCache?
+  redirect : RequestRedirect?
+  integrity : String?
+  keepalive : Bool?
+  signal : Nullable[AbortSignal]
+  duplex : RequestDuplex?
+  priority : RequestPriority?
+  window : JsValue?
+  targetAddressSpace : IPAddressSpace?
+  privateToken : PrivateToken?
   activateAfter : DOMHighResTimeStamp?
 }
 
-///|
 /// Create a new DeferredRequestInit with default values
 pub fn DeferredRequestInit::default() -> DeferredRequestInit {
-  DeferredRequestInit::{ activateAfter: None, }
+  DeferredRequestInit::{
+    method_: None,
+    headers: None,
+    body: Nullable::Undefined,
+    referrer: None,
+    referrerPolicy: None,
+    mode: None,
+    credentials: None,
+    cache: None,
+    redirect: None,
+    integrity: None,
+    keepalive: None,
+    signal: Nullable::Undefined,
+    duplex: None,
+    priority: None,
+    window: None,
+    targetAddressSpace: None,
+    privateToken: None,
+    activateAfter: None,
+  }
 }
 
-///|
-extern "js" fn DeferredRequestInit::to_js_ffi(
-  self : DeferredRequestInit,
-) -> JsValue =
-  #| (self) => ({
+extern "js" fn DeferredRequestInit::to_js_ffi(self : DeferredRequestInit, convert_privateToken : (PrivateToken?) -> JsValue) -> JsValue =
+  #| (self, convert_privateToken) => ({
+  #|   method: self.method_,
+  #|   headers: ((() => { const v = self.headers; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   body: ((() => { const v = self.body; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   referrer: self.referrer,
+  #|   referrerPolicy: ((() => { const v = self.referrerPolicy; if (v === undefined) return undefined; return ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'][v]; })()),
+  #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['navigate', 'same-origin', 'no-cors', 'cors'][v]; })()),
+  #|   credentials: ((() => { const v = self.credentials; if (v === undefined) return undefined; return ['omit', 'same-origin', 'include'][v]; })()),
+  #|   cache: ((() => { const v = self.cache; if (v === undefined) return undefined; return ['default', 'no-store', 'reload', 'no-cache', 'force-cache', 'only-if-cached'][v]; })()),
+  #|   redirect: ((() => { const v = self.redirect; if (v === undefined) return undefined; return ['follow', 'error', 'manual'][v]; })()),
+  #|   integrity: self.integrity,
+  #|   keepalive: (self.keepalive === -1 ? undefined : self.keepalive),
+  #|   signal: ((() => { const v = self.signal; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
+  #|   duplex: ((() => { const v = self.duplex; if (v === undefined) return undefined; return ['half'][v]; })()),
+  #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['high', 'low', 'auto'][v]; })()),
+  #|   window: ((() => { const v = self.window; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   targetAddressSpace: ((() => { const v = self.targetAddressSpace; if (v === undefined) return undefined; return ['public', 'local', 'loopback'][v]; })()),
+  #|   privateToken: convert_privateToken(self.privateToken),
   #|   activateAfter: ((() => { const v = self.activateAfter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn DeferredRequestInit::to_js(self : DeferredRequestInit) -> JsValue {
-  DeferredRequestInit::to_js_ffi(self)
+  DeferredRequestInit::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn DeferredRequestInit::from_js_ffi(
-  value : JsValue,
-) -> DeferredRequestInit =
-  #| (v) => ({
+extern "js" fn DeferredRequestInit::from_js_ffi(value : JsValue, convert_privateToken : (JsValue) -> PrivateToken?) -> DeferredRequestInit =
+  #| (v, convert_privateToken) => ({
+  #|   method_: v.method,
+  #|   headers: (v.headers === undefined ? { $tag: 0 } : { $tag: 1, _0: v.headers }),
+  #|   body: (v.body === undefined ? { $tag: 0 } : v.body === null ? { $tag: 1 } : { $tag: 2, _0: v.body }),
+  #|   referrer: v.referrer,
+  #|   referrerPolicy: (v.referrerPolicy === undefined ? undefined : ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'].indexOf(v.referrerPolicy)),
+  #|   mode: (v.mode === undefined ? undefined : ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(v.mode)),
+  #|   credentials: (v.credentials === undefined ? undefined : ['omit', 'same-origin', 'include'].indexOf(v.credentials)),
+  #|   cache: (v.cache === undefined ? undefined : ['default', 'no-store', 'reload', 'no-cache', 'force-cache', 'only-if-cached'].indexOf(v.cache)),
+  #|   redirect: (v.redirect === undefined ? undefined : ['follow', 'error', 'manual'].indexOf(v.redirect)),
+  #|   integrity: v.integrity,
+  #|   keepalive: (v.keepalive === undefined ? -1 : v.keepalive),
+  #|   signal: (v.signal === undefined ? { $tag: 0 } : v.signal === null ? { $tag: 1 } : { $tag: 2, _0: v.signal }),
+  #|   duplex: (v.duplex === undefined ? undefined : ['half'].indexOf(v.duplex)),
+  #|   priority: (v.priority === undefined ? undefined : ['high', 'low', 'auto'].indexOf(v.priority)),
+  #|   window: (v.window === undefined ? { $tag: 0 } : { $tag: 1, _0: v.window }),
+  #|   targetAddressSpace: (v.targetAddressSpace === undefined ? undefined : ['public', 'local', 'loopback'].indexOf(v.targetAddressSpace)),
+  #|   privateToken: convert_privateToken(v.privateToken),
   #|   activateAfter: (v.activateAfter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.activateAfter })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn DeferredRequestInit::from_js(value : JsValue) -> DeferredRequestInit {
-  DeferredRequestInit::from_js_ffi(value)
+  DeferredRequestInit::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(PrivateToken::from_js(value)) } })
 }
 
 ///|
 /// Headers interface
 pub type Headers
 
-///|
 pub extern "js" fn Headers::to_js_value(self : Headers) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Headers (unchecked)
 pub extern "js" fn Headers::from_js_value(v : JsValue) -> Headers =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Headers (checked with instanceof)
 pub extern "js" fn Headers::from_js_value_opt(v : JsValue) -> Headers? =
   #| (v) => (v instanceof Headers) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Headers (checked with instanceof)
 pub extern "js" fn JsValue::as_headers(self : JsValue) -> Headers? =
   #| (self) => (self instanceof Headers) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Headers (unchecked)
 pub extern "js" fn JsValue::to_headers(self : JsValue) -> Headers =
   #| (self) => self
 
-///|
 pub extern "js" fn Headers::new() -> Headers =
   #| () => new Headers()
 
-///|
 pub extern "js" fn Headers::new_with_init(init_ : HeadersInit) -> Headers =
   #| (init_) => new Headers(init_)
 
-///|
-pub extern "js" fn Headers::append(
-  self : Headers,
-  name : String,
-  value : String,
-) -> Unit =
+pub extern "js" fn Headers::append(self : Headers, name : String, value : String) -> Unit =
   #| (self, name, value) => self.append(name, value)
 
-///|
 pub extern "js" fn Headers::delete(self : Headers, name : String) -> Unit =
   #| (self, name) => self.delete(name)
 
-///|
 pub extern "js" fn Headers::get(self : Headers, name : String) -> String? =
   #| (self, name) => (self.get(name)) ?? undefined
 
-///|
-pub extern "js" fn Headers::get_set_cookie(
-  self : Headers,
-) -> FixedArray[String] =
+pub extern "js" fn Headers::get_set_cookie(self : Headers) -> FixedArray[String] =
   #| (self) => self.getSetCookie()
 
-///|
 pub extern "js" fn Headers::has(self : Headers, name : String) -> Bool =
   #| (self, name) => self.has(name)
 
-///|
-pub extern "js" fn Headers::set(
-  self : Headers,
-  name : String,
-  value : String,
-) -> Unit =
+pub extern "js" fn Headers::set(self : Headers, name : String, value : String) -> Unit =
   #| (self, name, value) => self.set(name, value)
 
-///|
 pub extern "js" fn Headers::keys(self : Headers) -> JsValue =
   #| (self) => self.keys()
 
-///|
 pub extern "js" fn Headers::values(self : Headers) -> JsValue =
   #| (self) => self.values()
 
-///|
 pub extern "js" fn Headers::entries(self : Headers) -> JsValue =
   #| (self) => self.entries()
 
-///|
-pub extern "js" fn Headers::for_each(
-  self : Headers,
-  callback : JsValue,
-) -> Unit =
+pub extern "js" fn Headers::for_each(self : Headers, callback : JsValue) -> Unit =
   #| (self, callback) => { self.forEach(callback) }
 
-///|
-pub extern "js" fn Headers::new_with_array_of_array_of_string(
-  init_ : FixedArray[FixedArray[String]],
-) -> Headers =
+pub extern "js" fn Headers::new_with_array_of_array_of_string(init_ : FixedArray[FixedArray[String]]) -> Headers =
   #| (init_) => new Headers(init_)
 
 ///|
 /// Request interface
 pub type Request
 
-///|
 pub extern "js" fn Request::to_js_value(self : Request) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Request (unchecked)
 pub extern "js" fn Request::from_js_value(v : JsValue) -> Request =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Request (checked with instanceof)
 pub extern "js" fn Request::from_js_value_opt(v : JsValue) -> Request? =
   #| (v) => (v instanceof Request) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Request (checked with instanceof)
 pub extern "js" fn JsValue::as_request(self : JsValue) -> Request? =
   #| (self) => (self instanceof Request) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Request (unchecked)
 pub extern "js" fn JsValue::to_request(self : JsValue) -> Request =
   #| (self) => self
@@ -849,6 +873,8 @@ pub(all) enum RequestConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend RequestConstructorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestArrayBufferError {
@@ -857,12 +883,16 @@ pub(all) enum RequestArrayBufferError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend RequestArrayBufferError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestBlobError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend RequestBlobError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -872,12 +902,16 @@ pub(all) enum RequestBytesError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend RequestBytesError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestFormDataError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend RequestFormDataError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -887,6 +921,8 @@ pub(all) enum RequestJsonError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend RequestJsonError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum RequestTextError {
@@ -894,178 +930,118 @@ pub(all) enum RequestTextError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend RequestTextError with @debug.Debug::{to_repr}
+
 ///|
-pub extern "js" fn Request::new(
-  input : RequestInfo,
-) -> Result[Request, RequestConstructorError] =
+/// Error type for throwing methods
+pub(all) enum RequestTextStreamError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend RequestTextStreamError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Request::new(input : RequestInfo) -> Result[Request, RequestConstructorError] =
   #| (input) => (() => { try { return { $tag: 1, _0: new Request(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Request::new_with_init_ffi(
-  input : RequestInfo,
-  init_ : JsValue,
-) -> Result[Request, RequestConstructorError] =
+extern "js" fn Request::new_with_init_ffi(input : RequestInfo, init_ : JsValue) -> Result[Request, RequestConstructorError] =
   #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn Request::new_with_init(
-  input : RequestInfo,
-  init_ : RequestInit,
-) -> Result[Request, RequestConstructorError] {
+pub fn Request::new_with_init(input : RequestInfo, init_ : RequestInit) -> Result[Request, RequestConstructorError] {
   Request::new_with_init_ffi(input, init_.to_js())
 }
 
-///|
 pub extern "js" fn Request::get_method(self : Request) -> String =
   #| (self) => self.method
 
-///|
 pub extern "js" fn Request::get_url(self : Request) -> String =
   #| (self) => self.url
 
-///|
 pub extern "js" fn Request::get_headers(self : Request) -> Headers =
   #| (self) => self.headers
 
-///|
-pub extern "js" fn Request::get_destination(
-  self : Request,
-) -> RequestDestination =
-  #| (self) => ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'track', 'video', 'worker', 'xslt'].indexOf(self.destination)
+pub extern "js" fn Request::get_destination(self : Request) -> RequestDestination =
+  #| (self) => ['', 'audio', 'audioworklet', 'document', 'embed', 'font', 'frame', 'iframe', 'image', 'json', 'manifest', 'object', 'paintworklet', 'report', 'script', 'sharedworker', 'style', 'text', 'track', 'video', 'worker', 'xslt'].indexOf(self.destination)
 
-///|
 pub extern "js" fn Request::get_referrer(self : Request) -> String =
   #| (self) => self.referrer
 
-///|
-pub extern "js" fn Request::get_referrer_policy(
-  self : Request,
-) -> ReferrerPolicy =
+pub extern "js" fn Request::get_referrer_policy(self : Request) -> ReferrerPolicy =
   #| (self) => ['', 'no-referrer', 'no-referrer-when-downgrade', 'same-origin', 'origin', 'strict-origin', 'origin-when-cross-origin', 'strict-origin-when-cross-origin', 'unsafe-url'].indexOf(self.referrerPolicy)
 
-///|
 pub extern "js" fn Request::get_mode(self : Request) -> RequestMode =
   #| (self) => ['navigate', 'same-origin', 'no-cors', 'cors'].indexOf(self.mode)
 
-///|
-pub extern "js" fn Request::get_credentials(
-  self : Request,
-) -> RequestCredentials =
+pub extern "js" fn Request::get_credentials(self : Request) -> RequestCredentials =
   #| (self) => ['omit', 'same-origin', 'include'].indexOf(self.credentials)
 
-///|
 pub extern "js" fn Request::get_cache(self : Request) -> RequestCache =
   #| (self) => ['default', 'no-store', 'reload', 'no-cache', 'force-cache', 'only-if-cached'].indexOf(self.cache)
 
-///|
 pub extern "js" fn Request::get_redirect(self : Request) -> RequestRedirect =
   #| (self) => ['follow', 'error', 'manual'].indexOf(self.redirect)
 
-///|
 pub extern "js" fn Request::get_integrity(self : Request) -> String =
   #| (self) => self.integrity
 
-///|
 pub extern "js" fn Request::get_keepalive(self : Request) -> Bool =
   #| (self) => self.keepalive
 
-///|
 pub extern "js" fn Request::get_is_reload_navigation(self : Request) -> Bool =
   #| (self) => self.isReloadNavigation
 
-///|
 pub extern "js" fn Request::get_is_history_navigation(self : Request) -> Bool =
   #| (self) => self.isHistoryNavigation
 
-///|
 pub extern "js" fn Request::get_signal(self : Request) -> AbortSignal =
   #| (self) => self.signal
 
-///|
 pub extern "js" fn Request::get_duplex(self : Request) -> RequestDuplex =
   #| (self) => ['half'].indexOf(self.duplex)
 
-///|
 pub extern "js" fn Request::clone(self : Request) -> Request =
   #| (self) => self.clone()
 
-///|
-pub extern "js" fn Request::get_target_address_space(
-  self : Request,
-) -> IPAddressSpace =
+pub extern "js" fn Request::get_target_address_space(self : Request) -> IPAddressSpace =
   #| (self) => ['public', 'local', 'loopback'].indexOf(self.targetAddressSpace)
 
-///|
 pub extern "js" fn Request::get_body(self : Request) -> ReadableStream? =
   #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Request::get_body_used(self : Request) -> Bool =
   #| (self) => self.bodyUsed
 
-///|
-pub extern "js" fn Request::array_buffer(
-  self : Request,
-) -> Promise[Result[ArrayBuffer, RequestArrayBufferError]] =
+pub extern "js" fn Request::array_buffer(self : Request) -> Promise[Result[ArrayBuffer, RequestArrayBufferError]] =
   #| (self) => self.arrayBuffer().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Request::blob(
-  self : Request,
-) -> Promise[Result[Blob, RequestBlobError]] =
+pub extern "js" fn Request::blob(self : Request) -> Promise[Result[Blob, RequestBlobError]] =
   #| (self) => self.blob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Request::bytes(
-  self : Request,
-) -> Promise[Result[Uint8Array, RequestBytesError]] =
+pub extern "js" fn Request::bytes(self : Request) -> Promise[Result[Uint8Array, RequestBytesError]] =
   #| (self) => self.bytes().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Request::form_data(
-  self : Request,
-) -> Promise[Result[FormData, RequestFormDataError]] =
+pub extern "js" fn Request::form_data(self : Request) -> Promise[Result[FormData, RequestFormDataError]] =
   #| (self) => self.formData().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Request::json(
-  self : Request,
-) -> Promise[Result[JsValue, RequestJsonError]] =
+pub extern "js" fn Request::json(self : Request) -> Promise[Result[JsValue, RequestJsonError]] =
   #| (self) => self.json().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Request::text(
-  self : Request,
-) -> Promise[Result[String, RequestTextError]] =
+pub extern "js" fn Request::text(self : Request) -> Promise[Result[String, RequestTextError]] =
   #| (self) => self.text().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn Request::new_with_request_ffi(
-  input : Request,
-  init_ : JsValue,
-) -> Result[Request, RequestConstructorError] =
+pub extern "js" fn Request::text_stream(self : Request) -> Result[ReadableStream, RequestTextStreamError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.textStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
+
+extern "js" fn Request::new_with_request_ffi(input : Request, init_ : JsValue) -> Result[Request, RequestConstructorError] =
   #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn Request::new_with_request(
-  input : Request,
-  init_ : RequestInit,
-) -> Result[Request, RequestConstructorError] {
+pub fn Request::new_with_request(input : Request, init_ : RequestInit) -> Result[Request, RequestConstructorError] {
   Request::new_with_request_ffi(input, init_.to_js())
 }
-
-///|
-extern "js" fn Request::new_with_string_ffi(
-  input : String,
-  init_ : JsValue,
-) -> Result[Request, RequestConstructorError] =
+extern "js" fn Request::new_with_string_ffi(input : String, init_ : JsValue) -> Result[Request, RequestConstructorError] =
   #| (input, init_) => (() => { try { return { $tag: 1, _0: new Request(input, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn Request::new_with_string(
-  input : String,
-  init_ : RequestInit,
-) -> Result[Request, RequestConstructorError] {
+pub fn Request::new_with_string(input : String, init_ : RequestInit) -> Result[Request, RequestConstructorError] {
   Request::new_with_string_ffi(input, init_.to_js())
 }
 
@@ -1073,26 +1049,21 @@ pub fn Request::new_with_string(
 /// Response interface
 pub type Response
 
-///|
 pub extern "js" fn Response::to_js_value(self : Response) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Response (unchecked)
 pub extern "js" fn Response::from_js_value(v : JsValue) -> Response =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Response (checked with instanceof)
 pub extern "js" fn Response::from_js_value_opt(v : JsValue) -> Response? =
   #| (v) => (v instanceof Response) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Response (checked with instanceof)
 pub extern "js" fn JsValue::as_response(self : JsValue) -> Response? =
   #| (self) => (self instanceof Response) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Response (unchecked)
 pub extern "js" fn JsValue::to_response(self : JsValue) -> Response =
   #| (self) => self
@@ -1105,12 +1076,16 @@ pub(all) enum ResponseRedirectError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ResponseRedirectError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseJsonError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend ResponseJsonError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1120,12 +1095,16 @@ pub(all) enum ResponseArrayBufferError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ResponseArrayBufferError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseBlobError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend ResponseBlobError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1135,12 +1114,16 @@ pub(all) enum ResponseBytesError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ResponseBytesError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ResponseFormDataError {
   TypeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend ResponseFormDataError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1149,173 +1132,116 @@ pub(all) enum ResponseTextError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ResponseTextError with @debug.Debug::{to_repr}
+
 ///|
+/// Error type for throwing methods
+pub(all) enum ResponseTextStreamError {
+  TypeError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend ResponseTextStreamError with @debug.Debug::{to_repr}
+
 pub extern "js" fn Response::new() -> Response =
   #| () => new Response()
 
-///|
-extern "js" fn Response::new_with_init_ffi(
-  body : BodyInit?,
-  init_ : JsValue,
-) -> Response =
+extern "js" fn Response::new_with_init_ffi(body : BodyInit?, init_ : JsValue) -> Response =
   #| (body, init_) => new Response((body.$tag === 1 ? body._0 : null), init_)
 
-///|
-pub fn Response::new_with_init(
-  body : BodyInit?,
-  init_ : ResponseInit,
-) -> Response {
+pub fn Response::new_with_init(body : BodyInit?, init_ : ResponseInit) -> Response {
   Response::new_with_init_ffi(body, init_.to_js())
 }
 
-///|
 pub extern "js" fn Response::error() -> Response =
   #| () => Response.error()
 
-///|
-pub extern "js" fn Response::redirect(
-  url : String,
-) -> Result[Response, ResponseRedirectError] =
+pub extern "js" fn Response::redirect(url : String) -> Result[Response, ResponseRedirectError] =
   #| (url) => (() => { try { return { $tag: 1, _0: Response.redirect(url) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn Response::redirect_with_status(
-  url : String,
-  status : Int,
-) -> Result[Response, ResponseRedirectError] =
+pub extern "js" fn Response::redirect_with_status(url : String, status : Int) -> Result[Response, ResponseRedirectError] =
   #| (url, status) => (() => { try { return { $tag: 1, _0: Response.redirect(url, status) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn Response::json(
-  data : JsValue,
-) -> Result[Response, ResponseJsonError] =
+pub extern "js" fn Response::json(data : JsValue) -> Result[Response, ResponseJsonError] =
   #| (data) => (() => { try { return { $tag: 1, _0: Response.json(data) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Response::json_with_init_ffi(
-  data : JsValue,
-  init_ : JsValue,
-) -> Result[Response, ResponseJsonError] =
+extern "js" fn Response::json_with_init_ffi(data : JsValue, init_ : JsValue) -> Result[Response, ResponseJsonError] =
   #| (data, init_) => (() => { try { return { $tag: 1, _0: Response.json(data, init_) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn Response::json_with_init(
-  data : JsValue,
-  init_ : ResponseInit,
-) -> Result[Response, ResponseJsonError] {
+pub fn Response::json_with_init(data : JsValue, init_ : ResponseInit) -> Result[Response, ResponseJsonError] {
   Response::json_with_init_ffi(data, init_.to_js())
 }
 
-///|
 pub extern "js" fn Response::get_type(self : Response) -> ResponseType =
   #| (self) => ['basic', 'cors', 'default', 'error', 'opaque', 'opaqueredirect'].indexOf(self.type)
 
-///|
 pub extern "js" fn Response::get_url(self : Response) -> String =
   #| (self) => self.url
 
-///|
 pub extern "js" fn Response::get_redirected(self : Response) -> Bool =
   #| (self) => self.redirected
 
-///|
 pub extern "js" fn Response::get_status(self : Response) -> Int =
   #| (self) => self.status
 
-///|
 pub extern "js" fn Response::get_ok(self : Response) -> Bool =
   #| (self) => self.ok
 
-///|
 pub extern "js" fn Response::get_status_text(self : Response) -> String =
   #| (self) => self.statusText
 
-///|
 pub extern "js" fn Response::get_headers(self : Response) -> Headers =
   #| (self) => self.headers
 
-///|
 pub extern "js" fn Response::clone(self : Response) -> Response =
   #| (self) => self.clone()
 
-///|
 pub extern "js" fn Response::get_body(self : Response) -> ReadableStream? =
   #| (self) => (() => { const v = self.body; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Response::get_body_used(self : Response) -> Bool =
   #| (self) => self.bodyUsed
 
-///|
-pub extern "js" fn Response::array_buffer(
-  self : Response,
-) -> Promise[Result[ArrayBuffer, ResponseArrayBufferError]] =
+pub extern "js" fn Response::array_buffer(self : Response) -> Promise[Result[ArrayBuffer, ResponseArrayBufferError]] =
   #| (self) => self.arrayBuffer().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Response::blob(
-  self : Response,
-) -> Promise[Result[Blob, ResponseBlobError]] =
+pub extern "js" fn Response::blob(self : Response) -> Promise[Result[Blob, ResponseBlobError]] =
   #| (self) => self.blob().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Response::bytes(
-  self : Response,
-) -> Promise[Result[Uint8Array, ResponseBytesError]] =
+pub extern "js" fn Response::bytes(self : Response) -> Promise[Result[Uint8Array, ResponseBytesError]] =
   #| (self) => self.bytes().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'RangeError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Response::form_data(
-  self : Response,
-) -> Promise[Result[FormData, ResponseFormDataError]] =
+pub extern "js" fn Response::form_data(self : Response) -> Promise[Result[FormData, ResponseFormDataError]] =
   #| (self) => self.formData().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Response::text(
-  self : Response,
-) -> Promise[Result[String, ResponseTextError]] =
+pub extern "js" fn Response::text(self : Response) -> Promise[Result[String, ResponseTextError]] =
   #| (self) => self.text().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
+
+pub extern "js" fn Response::text_stream(self : Response) -> Result[ReadableStream, ResponseTextStreamError] =
+  #| (self) => (() => { try { return { $tag: 1, _0: self.textStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// FetchLaterResult interface
 pub type FetchLaterResult
 
-///|
-pub extern "js" fn FetchLaterResult::to_js_value(
-  self : FetchLaterResult,
-) -> JsValue =
+pub extern "js" fn FetchLaterResult::to_js_value(self : FetchLaterResult) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to FetchLaterResult (unchecked)
-pub extern "js" fn FetchLaterResult::from_js_value(
-  v : JsValue,
-) -> FetchLaterResult =
+pub extern "js" fn FetchLaterResult::from_js_value(v : JsValue) -> FetchLaterResult =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to FetchLaterResult (checked with instanceof)
-pub extern "js" fn FetchLaterResult::from_js_value_opt(
-  v : JsValue,
-) -> FetchLaterResult? =
+pub extern "js" fn FetchLaterResult::from_js_value_opt(v : JsValue) -> FetchLaterResult? =
   #| (v) => (v instanceof FetchLaterResult) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to FetchLaterResult (checked with instanceof)
-pub extern "js" fn JsValue::as_fetch_later_result(
-  self : JsValue,
-) -> FetchLaterResult? =
+pub extern "js" fn JsValue::as_fetch_later_result(self : JsValue) -> FetchLaterResult? =
   #| (self) => (self instanceof FetchLaterResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to FetchLaterResult (unchecked)
-pub extern "js" fn JsValue::to_fetch_later_result(
-  self : JsValue,
-) -> FetchLaterResult =
+pub extern "js" fn JsValue::to_fetch_later_result(self : JsValue) -> FetchLaterResult =
   #| (self) => self
 
-///|
-pub extern "js" fn FetchLaterResult::get_activated(
-  self : FetchLaterResult,
-) -> Bool =
+pub extern "js" fn FetchLaterResult::get_activated(self : FetchLaterResult) -> Bool =
   #| (self) => self.activated

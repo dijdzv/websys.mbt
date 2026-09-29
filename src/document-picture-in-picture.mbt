@@ -10,7 +10,6 @@ pub(all) struct DocumentPictureInPictureOptions {
   preferInitialWindowPlacement : Bool?
 }
 
-///|
 /// Create a new DocumentPictureInPictureOptions with default values
 pub fn DocumentPictureInPictureOptions::default() -> DocumentPictureInPictureOptions {
   DocumentPictureInPictureOptions::{
@@ -21,10 +20,7 @@ pub fn DocumentPictureInPictureOptions::default() -> DocumentPictureInPictureOpt
   }
 }
 
-///|
-extern "js" fn DocumentPictureInPictureOptions::to_js_ffi(
-  self : DocumentPictureInPictureOptions,
-) -> JsValue =
+extern "js" fn DocumentPictureInPictureOptions::to_js_ffi(self : DocumentPictureInPictureOptions) -> JsValue =
   #| (self) => ({
   #|   width: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.width),
   #|   height: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.height),
@@ -32,18 +28,12 @@ extern "js" fn DocumentPictureInPictureOptions::to_js_ffi(
   #|   preferInitialWindowPlacement: (self.preferInitialWindowPlacement === -1 ? undefined : self.preferInitialWindowPlacement)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DocumentPictureInPictureOptions::to_js(
-  self : DocumentPictureInPictureOptions,
-) -> JsValue {
+pub fn DocumentPictureInPictureOptions::to_js(self : DocumentPictureInPictureOptions) -> JsValue {
   DocumentPictureInPictureOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(
-  value : JsValue,
-) -> DocumentPictureInPictureOptions =
+extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(value : JsValue) -> DocumentPictureInPictureOptions =
   #| (v) => ({
   #|   width: (v.width === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.width)),
   #|   height: (v.height === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.height)),
@@ -51,37 +41,22 @@ extern "js" fn DocumentPictureInPictureOptions::from_js_ffi(
   #|   preferInitialWindowPlacement: (v.preferInitialWindowPlacement === undefined ? -1 : v.preferInitialWindowPlacement)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DocumentPictureInPictureOptions::from_js(
-  value : JsValue,
-) -> DocumentPictureInPictureOptions {
+pub fn DocumentPictureInPictureOptions::from_js(value : JsValue) -> DocumentPictureInPictureOptions {
   DocumentPictureInPictureOptions::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn DocumentPictureInPictureOptions::to_js_checked(
-  self : DocumentPictureInPictureOptions,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn DocumentPictureInPictureOptions::to_js_checked(self : DocumentPictureInPictureOptions) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_DocumentPictureInPictureOptions(
-  convert : () -> DocumentPictureInPictureOptions,
-) -> Result[DocumentPictureInPictureOptions, JsError] =
+extern "js" fn try_dictionary_DocumentPictureInPictureOptions(convert : () -> DocumentPictureInPictureOptions) -> Result[DocumentPictureInPictureOptions, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn DocumentPictureInPictureOptions::from_js_checked(
-  value : JsValue,
-) -> Result[DocumentPictureInPictureOptions, JsError] {
-  try_dictionary_DocumentPictureInPictureOptions(() => {
-    DocumentPictureInPictureOptions::from_js(value)
-  })
-}
+pub fn DocumentPictureInPictureOptions::from_js_checked(value : JsValue) -> Result[DocumentPictureInPictureOptions, JsError] { try_dictionary_DocumentPictureInPictureOptions(() => DocumentPictureInPictureOptions::from_js(value)) }
 
 ///|
 /// DocumentPictureInPictureEventInit dictionary
@@ -89,43 +64,30 @@ pub(all) struct DocumentPictureInPictureEventInit {
   window : Window
 }
 
-///|
 /// Create a new DocumentPictureInPictureEventInit
-pub fn DocumentPictureInPictureEventInit::new(
-  window~ : Window,
-) -> DocumentPictureInPictureEventInit {
-  DocumentPictureInPictureEventInit::{ window, }
+pub fn DocumentPictureInPictureEventInit::new(window~ : Window) -> DocumentPictureInPictureEventInit {
+  DocumentPictureInPictureEventInit::{
+    window: window,
+  }
 }
 
-///|
-extern "js" fn DocumentPictureInPictureEventInit::to_js_ffi(
-  self : DocumentPictureInPictureEventInit,
-) -> JsValue =
+extern "js" fn DocumentPictureInPictureEventInit::to_js_ffi(self : DocumentPictureInPictureEventInit) -> JsValue =
   #| (self) => ({
   #|   window: self.window
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DocumentPictureInPictureEventInit::to_js(
-  self : DocumentPictureInPictureEventInit,
-) -> JsValue {
+pub fn DocumentPictureInPictureEventInit::to_js(self : DocumentPictureInPictureEventInit) -> JsValue {
   DocumentPictureInPictureEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DocumentPictureInPictureEventInit::from_js_ffi(
-  value : JsValue,
-) -> DocumentPictureInPictureEventInit =
+extern "js" fn DocumentPictureInPictureEventInit::from_js_ffi(value : JsValue) -> DocumentPictureInPictureEventInit =
   #| (v) => ({
   #|   window: v.window
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DocumentPictureInPictureEventInit::from_js(
-  value : JsValue,
-) -> DocumentPictureInPictureEventInit {
+pub fn DocumentPictureInPictureEventInit::from_js(value : JsValue) -> DocumentPictureInPictureEventInit {
   DocumentPictureInPictureEventInit::from_js_ffi(value)
 }
 
@@ -133,44 +95,26 @@ pub fn DocumentPictureInPictureEventInit::from_js(
 /// DocumentPictureInPicture interface
 pub type DocumentPictureInPicture
 
-///|
-pub extern "js" fn DocumentPictureInPicture::to_js_value(
-  self : DocumentPictureInPicture,
-) -> JsValue =
+pub extern "js" fn DocumentPictureInPicture::to_js_value(self : DocumentPictureInPicture) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DocumentPictureInPicture (unchecked)
-pub extern "js" fn DocumentPictureInPicture::from_js_value(
-  v : JsValue,
-) -> DocumentPictureInPicture =
+pub extern "js" fn DocumentPictureInPicture::from_js_value(v : JsValue) -> DocumentPictureInPicture =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DocumentPictureInPicture (checked with instanceof)
-pub extern "js" fn DocumentPictureInPicture::from_js_value_opt(
-  v : JsValue,
-) -> DocumentPictureInPicture? =
+pub extern "js" fn DocumentPictureInPicture::from_js_value_opt(v : JsValue) -> DocumentPictureInPicture? =
   #| (v) => (v instanceof DocumentPictureInPicture) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DocumentPictureInPicture (checked with instanceof)
-pub extern "js" fn JsValue::as_document_picture_in_picture(
-  self : JsValue,
-) -> DocumentPictureInPicture? =
+pub extern "js" fn JsValue::as_document_picture_in_picture(self : JsValue) -> DocumentPictureInPicture? =
   #| (self) => (self instanceof DocumentPictureInPicture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DocumentPictureInPicture (unchecked)
-pub extern "js" fn JsValue::to_document_picture_in_picture(
-  self : JsValue,
-) -> DocumentPictureInPicture =
+pub extern "js" fn JsValue::to_document_picture_in_picture(self : JsValue) -> DocumentPictureInPicture =
   #| (self) => self
 
-///|
-pub extern "js" fn DocumentPictureInPicture::to_event_target(
-  self : DocumentPictureInPicture,
-) -> EventTarget =
+pub extern "js" fn DocumentPictureInPicture::to_event_target(self : DocumentPictureInPicture) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -182,110 +126,59 @@ pub(all) enum DocumentPictureInPictureRequestWindowError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn DocumentPictureInPicture::request_window(
-  self : DocumentPictureInPicture,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
+pub extend DocumentPictureInPictureRequestWindowError with @debug.Debug::{to_repr}
+
+pub extern "js" fn DocumentPictureInPicture::request_window(self : DocumentPictureInPicture) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
   #| (self) => self.requestWindow().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn DocumentPictureInPicture::request_window_with_options_ffi(
-  self : DocumentPictureInPicture,
-  options : JsValue,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
+extern "js" fn DocumentPictureInPicture::request_window_with_options_ffi(self : DocumentPictureInPicture, options : JsValue) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] =
   #| (self, options) => self.requestWindow(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn DocumentPictureInPicture::request_window_with_options(
-  self : DocumentPictureInPicture,
-  options : DocumentPictureInPictureOptions,
-) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] {
-  DocumentPictureInPicture::request_window_with_options_ffi(
-    self,
-    options.to_js(),
-  )
+pub fn DocumentPictureInPicture::request_window_with_options(self : DocumentPictureInPicture, options : DocumentPictureInPictureOptions) -> Promise[Result[Window, DocumentPictureInPictureRequestWindowError]] {
+  DocumentPictureInPicture::request_window_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn DocumentPictureInPicture::get_window(
-  self : DocumentPictureInPicture,
-) -> Window =
+pub extern "js" fn DocumentPictureInPicture::get_window(self : DocumentPictureInPicture) -> Window =
   #| (self) => self.window
 
-///|
-pub extern "js" fn DocumentPictureInPicture::set_onenter(
-  self : DocumentPictureInPicture,
-  handler : (DocumentPictureInPictureEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn DocumentPictureInPicture::set_onenter(self : DocumentPictureInPicture, handler : (DocumentPictureInPictureEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onenter = (e) => handler(e) }
 
-///|
-pub extern "js" fn DocumentPictureInPicture::clear_onenter(
-  self : DocumentPictureInPicture,
-) -> Unit =
+pub extern "js" fn DocumentPictureInPicture::clear_onenter(self : DocumentPictureInPicture) -> Unit =
   #| (self) => { self.onenter = null }
 
 ///|
 /// DocumentPictureInPictureEvent interface
 pub type DocumentPictureInPictureEvent
 
-///|
-pub extern "js" fn DocumentPictureInPictureEvent::to_js_value(
-  self : DocumentPictureInPictureEvent,
-) -> JsValue =
+pub extern "js" fn DocumentPictureInPictureEvent::to_js_value(self : DocumentPictureInPictureEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DocumentPictureInPictureEvent (unchecked)
-pub extern "js" fn DocumentPictureInPictureEvent::from_js_value(
-  v : JsValue,
-) -> DocumentPictureInPictureEvent =
+pub extern "js" fn DocumentPictureInPictureEvent::from_js_value(v : JsValue) -> DocumentPictureInPictureEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DocumentPictureInPictureEvent (checked with instanceof)
-pub extern "js" fn DocumentPictureInPictureEvent::from_js_value_opt(
-  v : JsValue,
-) -> DocumentPictureInPictureEvent? =
+pub extern "js" fn DocumentPictureInPictureEvent::from_js_value_opt(v : JsValue) -> DocumentPictureInPictureEvent? =
   #| (v) => (v instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DocumentPictureInPictureEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_document_picture_in_picture_event(
-  self : JsValue,
-) -> DocumentPictureInPictureEvent? =
+pub extern "js" fn JsValue::as_document_picture_in_picture_event(self : JsValue) -> DocumentPictureInPictureEvent? =
   #| (self) => (self instanceof DocumentPictureInPictureEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DocumentPictureInPictureEvent (unchecked)
-pub extern "js" fn JsValue::to_document_picture_in_picture_event(
-  self : JsValue,
-) -> DocumentPictureInPictureEvent =
+pub extern "js" fn JsValue::to_document_picture_in_picture_event(self : JsValue) -> DocumentPictureInPictureEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn DocumentPictureInPictureEvent::to_event(
-  self : DocumentPictureInPictureEvent,
-) -> Event =
+pub extern "js" fn DocumentPictureInPictureEvent::to_event(self : DocumentPictureInPictureEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn DocumentPictureInPictureEvent::new_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> DocumentPictureInPictureEvent =
+extern "js" fn DocumentPictureInPictureEvent::new_ffi(type_ : String, event_init_dict : JsValue) -> DocumentPictureInPictureEvent =
   #| (type_, event_init_dict) => new DocumentPictureInPictureEvent(type_, event_init_dict)
 
-///|
-pub fn DocumentPictureInPictureEvent::new(
-  type_ : String,
-  event_init_dict : DocumentPictureInPictureEventInit,
-) -> DocumentPictureInPictureEvent {
+pub fn DocumentPictureInPictureEvent::new(type_ : String, event_init_dict : DocumentPictureInPictureEventInit) -> DocumentPictureInPictureEvent {
   DocumentPictureInPictureEvent::new_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn DocumentPictureInPictureEvent::get_window(
-  self : DocumentPictureInPictureEvent,
-) -> Window =
+pub extern "js" fn DocumentPictureInPictureEvent::get_window(self : DocumentPictureInPictureEvent) -> Window =
   #| (self) => self.window

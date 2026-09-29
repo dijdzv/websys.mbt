@@ -9,7 +9,9 @@ pub(all) enum BackgroundFetchResult {
   Failure
 } derive(Eq, Debug)
 
-///|
+pub extend BackgroundFetchResult with Eq::{equal, not_equal}
+pub extend BackgroundFetchResult with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn BackgroundFetchResult::to_string(self : BackgroundFetchResult) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn BackgroundFetchResult::to_string(self : BackgroundFetchResult) -> String 
   }
 }
 
-///|
 /// Parse from string value
 pub fn BackgroundFetchResult::from_string(s : String) -> BackgroundFetchResult? {
   match s {
@@ -41,35 +42,30 @@ pub(all) enum BackgroundFetchFailureReason {
   DownloadTotalExceeded
 } derive(Eq, Debug)
 
-///|
+pub extend BackgroundFetchFailureReason with Eq::{equal, not_equal}
+pub extend BackgroundFetchFailureReason with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn BackgroundFetchFailureReason::to_string(
-  self : BackgroundFetchFailureReason,
-) -> String {
+pub fn BackgroundFetchFailureReason::to_string(self : BackgroundFetchFailureReason) -> String {
   match self {
     BackgroundFetchFailureReason::Empty => ""
     BackgroundFetchFailureReason::Aborted => "aborted"
     BackgroundFetchFailureReason::BadStatus => "bad-status"
     BackgroundFetchFailureReason::FetchError => "fetch-error"
     BackgroundFetchFailureReason::QuotaExceeded => "quota-exceeded"
-    BackgroundFetchFailureReason::DownloadTotalExceeded =>
-      "download-total-exceeded"
+    BackgroundFetchFailureReason::DownloadTotalExceeded => "download-total-exceeded"
   }
 }
 
-///|
 /// Parse from string value
-pub fn BackgroundFetchFailureReason::from_string(
-  s : String,
-) -> BackgroundFetchFailureReason? {
+pub fn BackgroundFetchFailureReason::from_string(s : String) -> BackgroundFetchFailureReason? {
   match s {
     "" => Some(BackgroundFetchFailureReason::Empty)
     "aborted" => Some(BackgroundFetchFailureReason::Aborted)
     "bad-status" => Some(BackgroundFetchFailureReason::BadStatus)
     "fetch-error" => Some(BackgroundFetchFailureReason::FetchError)
     "quota-exceeded" => Some(BackgroundFetchFailureReason::QuotaExceeded)
-    "download-total-exceeded" =>
-      Some(BackgroundFetchFailureReason::DownloadTotalExceeded)
+    "download-total-exceeded" => Some(BackgroundFetchFailureReason::DownloadTotalExceeded)
     _ => None
   }
 }
@@ -81,43 +77,33 @@ pub(all) struct BackgroundFetchUIOptions {
   title : String?
 }
 
-///|
 /// Create a new BackgroundFetchUIOptions with default values
 pub fn BackgroundFetchUIOptions::default() -> BackgroundFetchUIOptions {
-  BackgroundFetchUIOptions::{ icons: None, title: None, }
+  BackgroundFetchUIOptions::{
+    icons: None,
+    title: None,
+  }
 }
 
-///|
-extern "js" fn BackgroundFetchUIOptions::to_js_ffi(
-  self : BackgroundFetchUIOptions,
-) -> JsValue =
+extern "js" fn BackgroundFetchUIOptions::to_js_ffi(self : BackgroundFetchUIOptions) -> JsValue =
   #| (self) => ({
   #|   icons: self.icons,
   #|   title: self.title
   #| })
 
-///|
 /// Convert to JsValue
-pub fn BackgroundFetchUIOptions::to_js(
-  self : BackgroundFetchUIOptions,
-) -> JsValue {
+pub fn BackgroundFetchUIOptions::to_js(self : BackgroundFetchUIOptions) -> JsValue {
   BackgroundFetchUIOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn BackgroundFetchUIOptions::from_js_ffi(
-  value : JsValue,
-) -> BackgroundFetchUIOptions =
+extern "js" fn BackgroundFetchUIOptions::from_js_ffi(value : JsValue) -> BackgroundFetchUIOptions =
   #| (v) => ({
   #|   icons: v.icons,
   #|   title: v.title
   #| })
 
-///|
 /// Convert from JsValue
-pub fn BackgroundFetchUIOptions::from_js(
-  value : JsValue,
-) -> BackgroundFetchUIOptions {
+pub fn BackgroundFetchUIOptions::from_js(value : JsValue) -> BackgroundFetchUIOptions {
   BackgroundFetchUIOptions::from_js_ffi(value)
 }
 
@@ -129,69 +115,50 @@ pub(all) struct BackgroundFetchOptions {
   downloadTotal : Int64?
 }
 
-///|
 /// Create a new BackgroundFetchOptions with default values
 pub fn BackgroundFetchOptions::default() -> BackgroundFetchOptions {
-  BackgroundFetchOptions::{ icons: None, title: None, downloadTotal: None, }
+  BackgroundFetchOptions::{
+    icons: None,
+    title: None,
+    downloadTotal: None,
+  }
 }
 
-///|
-extern "js" fn BackgroundFetchOptions::to_js_ffi(
-  self : BackgroundFetchOptions,
-) -> JsValue =
+extern "js" fn BackgroundFetchOptions::to_js_ffi(self : BackgroundFetchOptions) -> JsValue =
   #| (self) => ({
   #|   icons: self.icons,
   #|   title: self.title,
   #|   downloadTotal: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.downloadTotal)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn BackgroundFetchOptions::to_js(self : BackgroundFetchOptions) -> JsValue {
   BackgroundFetchOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn BackgroundFetchOptions::from_js_ffi(
-  value : JsValue,
-) -> BackgroundFetchOptions =
+extern "js" fn BackgroundFetchOptions::from_js_ffi(value : JsValue) -> BackgroundFetchOptions =
   #| (v) => ({
   #|   icons: v.icons,
   #|   title: v.title,
   #|   downloadTotal: (v.downloadTotal === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.downloadTotal))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn BackgroundFetchOptions::from_js(
-  value : JsValue,
-) -> BackgroundFetchOptions {
+pub fn BackgroundFetchOptions::from_js(value : JsValue) -> BackgroundFetchOptions {
   BackgroundFetchOptions::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn BackgroundFetchOptions::to_js_checked(
-  self : BackgroundFetchOptions,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn BackgroundFetchOptions::to_js_checked(self : BackgroundFetchOptions) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_BackgroundFetchOptions(
-  convert : () -> BackgroundFetchOptions,
-) -> Result[BackgroundFetchOptions, JsError] =
+extern "js" fn try_dictionary_BackgroundFetchOptions(convert : () -> BackgroundFetchOptions) -> Result[BackgroundFetchOptions, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn BackgroundFetchOptions::from_js_checked(
-  value : JsValue,
-) -> Result[BackgroundFetchOptions, JsError] {
-  try_dictionary_BackgroundFetchOptions(() => {
-    BackgroundFetchOptions::from_js(value)
-  })
-}
+pub fn BackgroundFetchOptions::from_js_checked(value : JsValue) -> Result[BackgroundFetchOptions, JsError] { try_dictionary_BackgroundFetchOptions(() => BackgroundFetchOptions::from_js(value)) }
 
 ///|
 /// BackgroundFetchEventInit dictionary
@@ -199,43 +166,30 @@ pub(all) struct BackgroundFetchEventInit {
   registration : BackgroundFetchRegistration
 }
 
-///|
 /// Create a new BackgroundFetchEventInit
-pub fn BackgroundFetchEventInit::new(
-  registration~ : BackgroundFetchRegistration,
-) -> BackgroundFetchEventInit {
-  BackgroundFetchEventInit::{ registration, }
+pub fn BackgroundFetchEventInit::new(registration~ : BackgroundFetchRegistration) -> BackgroundFetchEventInit {
+  BackgroundFetchEventInit::{
+    registration: registration,
+  }
 }
 
-///|
-extern "js" fn BackgroundFetchEventInit::to_js_ffi(
-  self : BackgroundFetchEventInit,
-) -> JsValue =
+extern "js" fn BackgroundFetchEventInit::to_js_ffi(self : BackgroundFetchEventInit) -> JsValue =
   #| (self) => ({
   #|   registration: self.registration
   #| })
 
-///|
 /// Convert to JsValue
-pub fn BackgroundFetchEventInit::to_js(
-  self : BackgroundFetchEventInit,
-) -> JsValue {
+pub fn BackgroundFetchEventInit::to_js(self : BackgroundFetchEventInit) -> JsValue {
   BackgroundFetchEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn BackgroundFetchEventInit::from_js_ffi(
-  value : JsValue,
-) -> BackgroundFetchEventInit =
+extern "js" fn BackgroundFetchEventInit::from_js_ffi(value : JsValue) -> BackgroundFetchEventInit =
   #| (v) => ({
   #|   registration: v.registration
   #| })
 
-///|
 /// Convert from JsValue
-pub fn BackgroundFetchEventInit::from_js(
-  value : JsValue,
-) -> BackgroundFetchEventInit {
+pub fn BackgroundFetchEventInit::from_js(value : JsValue) -> BackgroundFetchEventInit {
   BackgroundFetchEventInit::from_js_ffi(value)
 }
 
@@ -243,38 +197,23 @@ pub fn BackgroundFetchEventInit::from_js(
 /// BackgroundFetchManager interface
 pub type BackgroundFetchManager
 
-///|
-pub extern "js" fn BackgroundFetchManager::to_js_value(
-  self : BackgroundFetchManager,
-) -> JsValue =
+pub extern "js" fn BackgroundFetchManager::to_js_value(self : BackgroundFetchManager) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to BackgroundFetchManager (unchecked)
-pub extern "js" fn BackgroundFetchManager::from_js_value(
-  v : JsValue,
-) -> BackgroundFetchManager =
+pub extern "js" fn BackgroundFetchManager::from_js_value(v : JsValue) -> BackgroundFetchManager =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to BackgroundFetchManager (checked with instanceof)
-pub extern "js" fn BackgroundFetchManager::from_js_value_opt(
-  v : JsValue,
-) -> BackgroundFetchManager? =
+pub extern "js" fn BackgroundFetchManager::from_js_value_opt(v : JsValue) -> BackgroundFetchManager? =
   #| (v) => (v instanceof BackgroundFetchManager) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to BackgroundFetchManager (checked with instanceof)
-pub extern "js" fn JsValue::as_background_fetch_manager(
-  self : JsValue,
-) -> BackgroundFetchManager? =
+pub extern "js" fn JsValue::as_background_fetch_manager(self : JsValue) -> BackgroundFetchManager? =
   #| (self) => (self instanceof BackgroundFetchManager) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to BackgroundFetchManager (unchecked)
-pub extern "js" fn JsValue::to_background_fetch_manager(
-  self : JsValue,
-) -> BackgroundFetchManager =
+pub extern "js" fn JsValue::to_background_fetch_manager(self : JsValue) -> BackgroundFetchManager =
   #| (self) => self
 
 ///|
@@ -287,99 +226,48 @@ pub(all) enum BackgroundFetchManagerFetchError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn BackgroundFetchManager::fetch(
-  self : BackgroundFetchManager,
-  id : String,
-  requests : RequestInfoOrArrayOfRequestInfo,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] =
+pub extend BackgroundFetchManagerFetchError with @debug.Debug::{to_repr}
+
+pub extern "js" fn BackgroundFetchManager::fetch(self : BackgroundFetchManager, id : String, requests : RequestInfoOrArrayOfRequestInfo) -> Promise[Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError]] =
   #| (self, id, requests) => self.fetch(id, requests).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-extern "js" fn BackgroundFetchManager::fetch_with_options_ffi(
-  self : BackgroundFetchManager,
-  id : String,
-  requests : RequestInfoOrArrayOfRequestInfo,
-  options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] =
+extern "js" fn BackgroundFetchManager::fetch_with_options_ffi(self : BackgroundFetchManager, id : String, requests : RequestInfoOrArrayOfRequestInfo, options : JsValue) -> Promise[Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError]] =
   #| (self, id, requests, options) => self.fetch(id, requests, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'AbortError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'QuotaExceededError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchManager::fetch_with_options(
-  self : BackgroundFetchManager,
-  id : String,
-  requests : RequestInfoOrArrayOfRequestInfo,
-  options : BackgroundFetchOptions,
-) -> Promise[
-  Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError],
-] {
-  BackgroundFetchManager::fetch_with_options_ffi(
-    self,
-    id,
-    requests,
-    options.to_js(),
-  )
+pub fn BackgroundFetchManager::fetch_with_options(self : BackgroundFetchManager, id : String, requests : RequestInfoOrArrayOfRequestInfo, options : BackgroundFetchOptions) -> Promise[Result[BackgroundFetchRegistration, BackgroundFetchManagerFetchError]] {
+  BackgroundFetchManager::fetch_with_options_ffi(self, id, requests, options.to_js())
 }
 
-///|
-pub extern "js" fn BackgroundFetchManager::get(
-  self : BackgroundFetchManager,
-  id : String,
-) -> Promise[BackgroundFetchRegistration?] =
+pub extern "js" fn BackgroundFetchManager::get(self : BackgroundFetchManager, id : String) -> Promise[BackgroundFetchRegistration?] =
   #| (self, id) => self.get(id).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
-///|
-pub extern "js" fn BackgroundFetchManager::get_ids(
-  self : BackgroundFetchManager,
-) -> Promise[FixedArray[String]] =
+pub extern "js" fn BackgroundFetchManager::get_ids(self : BackgroundFetchManager) -> Promise[FixedArray[String]] =
   #| (self) => self.getIds()
 
 ///|
 /// BackgroundFetchRegistration interface
 pub type BackgroundFetchRegistration
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::to_js_value(
-  self : BackgroundFetchRegistration,
-) -> JsValue =
+pub extern "js" fn BackgroundFetchRegistration::to_js_value(self : BackgroundFetchRegistration) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to BackgroundFetchRegistration (unchecked)
-pub extern "js" fn BackgroundFetchRegistration::from_js_value(
-  v : JsValue,
-) -> BackgroundFetchRegistration =
+pub extern "js" fn BackgroundFetchRegistration::from_js_value(v : JsValue) -> BackgroundFetchRegistration =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to BackgroundFetchRegistration (checked with instanceof)
-pub extern "js" fn BackgroundFetchRegistration::from_js_value_opt(
-  v : JsValue,
-) -> BackgroundFetchRegistration? =
+pub extern "js" fn BackgroundFetchRegistration::from_js_value_opt(v : JsValue) -> BackgroundFetchRegistration? =
   #| (v) => (v instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to BackgroundFetchRegistration (checked with instanceof)
-pub extern "js" fn JsValue::as_background_fetch_registration(
-  self : JsValue,
-) -> BackgroundFetchRegistration? =
+pub extern "js" fn JsValue::as_background_fetch_registration(self : JsValue) -> BackgroundFetchRegistration? =
   #| (self) => (self instanceof BackgroundFetchRegistration) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to BackgroundFetchRegistration (unchecked)
-pub extern "js" fn JsValue::to_background_fetch_registration(
-  self : JsValue,
-) -> BackgroundFetchRegistration =
+pub extern "js" fn JsValue::to_background_fetch_registration(self : JsValue) -> BackgroundFetchRegistration =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::to_event_target(
-  self : BackgroundFetchRegistration,
-) -> EventTarget =
+pub extern "js" fn BackgroundFetchRegistration::to_event_target(self : BackgroundFetchRegistration) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -389,6 +277,8 @@ pub(all) enum BackgroundFetchRegistrationMatchError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend BackgroundFetchRegistrationMatchError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum BackgroundFetchRegistrationMatchAllError {
@@ -396,442 +286,187 @@ pub(all) enum BackgroundFetchRegistrationMatchAllError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_id(
-  self : BackgroundFetchRegistration,
-) -> String =
+pub extend BackgroundFetchRegistrationMatchAllError with @debug.Debug::{to_repr}
+
+pub extern "js" fn BackgroundFetchRegistration::get_id(self : BackgroundFetchRegistration) -> String =
   #| (self) => self.id
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_upload_total(
-  self : BackgroundFetchRegistration,
-) -> Int64 =
+pub extern "js" fn BackgroundFetchRegistration::get_upload_total(self : BackgroundFetchRegistration) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.uploadTotal))
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_uploaded(
-  self : BackgroundFetchRegistration,
-) -> Int64 =
+pub extern "js" fn BackgroundFetchRegistration::get_uploaded(self : BackgroundFetchRegistration) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.uploaded))
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_download_total(
-  self : BackgroundFetchRegistration,
-) -> Int64 =
+pub extern "js" fn BackgroundFetchRegistration::get_download_total(self : BackgroundFetchRegistration) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.downloadTotal))
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_downloaded(
-  self : BackgroundFetchRegistration,
-) -> Int64 =
+pub extern "js" fn BackgroundFetchRegistration::get_downloaded(self : BackgroundFetchRegistration) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.downloaded))
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_result(
-  self : BackgroundFetchRegistration,
-) -> BackgroundFetchResult =
+pub extern "js" fn BackgroundFetchRegistration::get_result(self : BackgroundFetchRegistration) -> BackgroundFetchResult =
   #| (self) => ['', 'success', 'failure'].indexOf(self.result)
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_failure_reason(
-  self : BackgroundFetchRegistration,
-) -> BackgroundFetchFailureReason =
+pub extern "js" fn BackgroundFetchRegistration::get_failure_reason(self : BackgroundFetchRegistration) -> BackgroundFetchFailureReason =
   #| (self) => ['', 'aborted', 'bad-status', 'fetch-error', 'quota-exceeded', 'download-total-exceeded'].indexOf(self.failureReason)
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::get_records_available(
-  self : BackgroundFetchRegistration,
-) -> Bool =
+pub extern "js" fn BackgroundFetchRegistration::get_records_available(self : BackgroundFetchRegistration) -> Bool =
   #| (self) => self.recordsAvailable
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::set_onprogress(
-  self : BackgroundFetchRegistration,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn BackgroundFetchRegistration::set_onprogress(self : BackgroundFetchRegistration, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onprogress = (e) => handler(e) }
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::clear_onprogress(
-  self : BackgroundFetchRegistration,
-) -> Unit =
+pub extern "js" fn BackgroundFetchRegistration::clear_onprogress(self : BackgroundFetchRegistration) -> Unit =
   #| (self) => { self.onprogress = null }
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::abort(
-  self : BackgroundFetchRegistration,
-) -> Promise[Bool] =
+pub extern "js" fn BackgroundFetchRegistration::abort(self : BackgroundFetchRegistration) -> Promise[Bool] =
   #| (self) => self.abort()
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::match_(
-  self : BackgroundFetchRegistration,
-  request : RequestInfo,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
+pub extern "js" fn BackgroundFetchRegistration::match_(self : BackgroundFetchRegistration, request : RequestInfo) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] =
   #| (self, request) => self.match(request).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn BackgroundFetchRegistration::match__with_options_ffi(
-  self : BackgroundFetchRegistration,
-  request : RequestInfo,
-  options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
+extern "js" fn BackgroundFetchRegistration::match__with_options_ffi(self : BackgroundFetchRegistration, request : RequestInfo, options : JsValue) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] =
   #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match__with_options(
-  self : BackgroundFetchRegistration,
-  request : RequestInfo,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] {
-  BackgroundFetchRegistration::match__with_options_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match__with_options(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] {
+  BackgroundFetchRegistration::match__with_options_ffi(self, request, options.to_js())
 }
 
-///|
-pub extern "js" fn BackgroundFetchRegistration::match_all(
-  self : BackgroundFetchRegistration,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] =
+pub extern "js" fn BackgroundFetchRegistration::match_all(self : BackgroundFetchRegistration) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] =
   #| (self) => self.matchAll().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn BackgroundFetchRegistration::match_all_with_options_ffi(
-  self : BackgroundFetchRegistration,
-  request : RequestInfo,
-  options : JsValue,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] =
+extern "js" fn BackgroundFetchRegistration::match_all_with_options_ffi(self : BackgroundFetchRegistration, request : RequestInfo, options : JsValue) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] =
   #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match_all_with_options(
-  self : BackgroundFetchRegistration,
-  request : RequestInfo,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] {
-  BackgroundFetchRegistration::match_all_with_options_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match_all_with_options(self : BackgroundFetchRegistration, request : RequestInfo, options : CacheQueryOptions) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] {
+  BackgroundFetchRegistration::match_all_with_options_ffi(self, request, options.to_js())
 }
 
-///|
-extern "js" fn BackgroundFetchRegistration::match__with_request_ffi(
-  self : BackgroundFetchRegistration,
-  request : Request,
-  options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
+extern "js" fn BackgroundFetchRegistration::match__with_request_ffi(self : BackgroundFetchRegistration, request : Request, options : JsValue) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] =
   #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match__with_request(
-  self : BackgroundFetchRegistration,
-  request : Request,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] {
-  BackgroundFetchRegistration::match__with_request_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match__with_request(self : BackgroundFetchRegistration, request : Request, options : CacheQueryOptions) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] {
+  BackgroundFetchRegistration::match__with_request_ffi(self, request, options.to_js())
 }
-
-///|
-extern "js" fn BackgroundFetchRegistration::match__with_string_ffi(
-  self : BackgroundFetchRegistration,
-  request : String,
-  options : JsValue,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] =
+extern "js" fn BackgroundFetchRegistration::match__with_string_ffi(self : BackgroundFetchRegistration, request : String, options : JsValue) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] =
   #| (self, request, options) => self.match(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match__with_string(
-  self : BackgroundFetchRegistration,
-  request : String,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError],
-] {
-  BackgroundFetchRegistration::match__with_string_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match__with_string(self : BackgroundFetchRegistration, request : String, options : CacheQueryOptions) -> Promise[Result[BackgroundFetchRecord, BackgroundFetchRegistrationMatchError]] {
+  BackgroundFetchRegistration::match__with_string_ffi(self, request, options.to_js())
 }
-
-///|
-extern "js" fn BackgroundFetchRegistration::match_all_with_request_ffi(
-  self : BackgroundFetchRegistration,
-  request : Request,
-  options : JsValue,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] =
+extern "js" fn BackgroundFetchRegistration::match_all_with_request_ffi(self : BackgroundFetchRegistration, request : Request, options : JsValue) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] =
   #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match_all_with_request(
-  self : BackgroundFetchRegistration,
-  request : Request,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] {
-  BackgroundFetchRegistration::match_all_with_request_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match_all_with_request(self : BackgroundFetchRegistration, request : Request, options : CacheQueryOptions) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] {
+  BackgroundFetchRegistration::match_all_with_request_ffi(self, request, options.to_js())
 }
-
-///|
-extern "js" fn BackgroundFetchRegistration::match_all_with_string_ffi(
-  self : BackgroundFetchRegistration,
-  request : String,
-  options : JsValue,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] =
+extern "js" fn BackgroundFetchRegistration::match_all_with_string_ffi(self : BackgroundFetchRegistration, request : String, options : JsValue) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] =
   #| (self, request, options) => self.matchAll(request, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchRegistration::match_all_with_string(
-  self : BackgroundFetchRegistration,
-  request : String,
-  options : CacheQueryOptions,
-) -> Promise[
-  Result[
-    FixedArray[BackgroundFetchRecord],
-    BackgroundFetchRegistrationMatchAllError,
-  ],
-] {
-  BackgroundFetchRegistration::match_all_with_string_ffi(
-    self,
-    request,
-    options.to_js(),
-  )
+pub fn BackgroundFetchRegistration::match_all_with_string(self : BackgroundFetchRegistration, request : String, options : CacheQueryOptions) -> Promise[Result[FixedArray[BackgroundFetchRecord], BackgroundFetchRegistrationMatchAllError]] {
+  BackgroundFetchRegistration::match_all_with_string_ffi(self, request, options.to_js())
 }
 
 ///|
 /// BackgroundFetchRecord interface
 pub type BackgroundFetchRecord
 
-///|
-pub extern "js" fn BackgroundFetchRecord::to_js_value(
-  self : BackgroundFetchRecord,
-) -> JsValue =
+pub extern "js" fn BackgroundFetchRecord::to_js_value(self : BackgroundFetchRecord) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to BackgroundFetchRecord (unchecked)
-pub extern "js" fn BackgroundFetchRecord::from_js_value(
-  v : JsValue,
-) -> BackgroundFetchRecord =
+pub extern "js" fn BackgroundFetchRecord::from_js_value(v : JsValue) -> BackgroundFetchRecord =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to BackgroundFetchRecord (checked with instanceof)
-pub extern "js" fn BackgroundFetchRecord::from_js_value_opt(
-  v : JsValue,
-) -> BackgroundFetchRecord? =
+pub extern "js" fn BackgroundFetchRecord::from_js_value_opt(v : JsValue) -> BackgroundFetchRecord? =
   #| (v) => (v instanceof BackgroundFetchRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to BackgroundFetchRecord (checked with instanceof)
-pub extern "js" fn JsValue::as_background_fetch_record(
-  self : JsValue,
-) -> BackgroundFetchRecord? =
+pub extern "js" fn JsValue::as_background_fetch_record(self : JsValue) -> BackgroundFetchRecord? =
   #| (self) => (self instanceof BackgroundFetchRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to BackgroundFetchRecord (unchecked)
-pub extern "js" fn JsValue::to_background_fetch_record(
-  self : JsValue,
-) -> BackgroundFetchRecord =
+pub extern "js" fn JsValue::to_background_fetch_record(self : JsValue) -> BackgroundFetchRecord =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchRecord::get_request(
-  self : BackgroundFetchRecord,
-) -> Request =
+pub extern "js" fn BackgroundFetchRecord::get_request(self : BackgroundFetchRecord) -> Request =
   #| (self) => self.request
 
-///|
-pub extern "js" fn BackgroundFetchRecord::get_response_ready(
-  self : BackgroundFetchRecord,
-) -> Promise[Response] =
+pub extern "js" fn BackgroundFetchRecord::get_response_ready(self : BackgroundFetchRecord) -> Promise[Response] =
   #| (self) => self.responseReady
 
 ///|
 /// BackgroundFetchEvent interface
 pub type BackgroundFetchEvent
 
-///|
-pub extern "js" fn BackgroundFetchEvent::to_js_value(
-  self : BackgroundFetchEvent,
-) -> JsValue =
+pub extern "js" fn BackgroundFetchEvent::to_js_value(self : BackgroundFetchEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to BackgroundFetchEvent (unchecked)
-pub extern "js" fn BackgroundFetchEvent::from_js_value(
-  v : JsValue,
-) -> BackgroundFetchEvent =
+pub extern "js" fn BackgroundFetchEvent::from_js_value(v : JsValue) -> BackgroundFetchEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to BackgroundFetchEvent (checked with instanceof)
-pub extern "js" fn BackgroundFetchEvent::from_js_value_opt(
-  v : JsValue,
-) -> BackgroundFetchEvent? =
+pub extern "js" fn BackgroundFetchEvent::from_js_value_opt(v : JsValue) -> BackgroundFetchEvent? =
   #| (v) => (v instanceof BackgroundFetchEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to BackgroundFetchEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_background_fetch_event(
-  self : JsValue,
-) -> BackgroundFetchEvent? =
+pub extern "js" fn JsValue::as_background_fetch_event(self : JsValue) -> BackgroundFetchEvent? =
   #| (self) => (self instanceof BackgroundFetchEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to BackgroundFetchEvent (unchecked)
-pub extern "js" fn JsValue::to_background_fetch_event(
-  self : JsValue,
-) -> BackgroundFetchEvent =
+pub extern "js" fn JsValue::to_background_fetch_event(self : JsValue) -> BackgroundFetchEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchEvent::to_extendable_event(
-  self : BackgroundFetchEvent,
-) -> ExtendableEvent =
+pub extern "js" fn BackgroundFetchEvent::to_extendable_event(self : BackgroundFetchEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchEvent::to_event(
-  self : BackgroundFetchEvent,
-) -> Event =
+pub extern "js" fn BackgroundFetchEvent::to_event(self : BackgroundFetchEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchEvent::as_background_fetch_update_ui_event(
-  self : BackgroundFetchEvent,
-) -> BackgroundFetchUpdateUIEvent? =
+pub extern "js" fn BackgroundFetchEvent::as_background_fetch_update_ui_event(self : BackgroundFetchEvent) -> BackgroundFetchUpdateUIEvent? =
   #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-extern "js" fn BackgroundFetchEvent::new_ffi(
-  type_ : String,
-  init_ : JsValue,
-) -> BackgroundFetchEvent =
+extern "js" fn BackgroundFetchEvent::new_ffi(type_ : String, init_ : JsValue) -> BackgroundFetchEvent =
   #| (type_, init_) => new BackgroundFetchEvent(type_, init_)
 
-///|
-pub fn BackgroundFetchEvent::new(
-  type_ : String,
-  init_ : BackgroundFetchEventInit,
-) -> BackgroundFetchEvent {
+pub fn BackgroundFetchEvent::new(type_ : String, init_ : BackgroundFetchEventInit) -> BackgroundFetchEvent {
   BackgroundFetchEvent::new_ffi(type_, init_.to_js())
 }
 
-///|
-pub extern "js" fn BackgroundFetchEvent::get_registration(
-  self : BackgroundFetchEvent,
-) -> BackgroundFetchRegistration =
+pub extern "js" fn BackgroundFetchEvent::get_registration(self : BackgroundFetchEvent) -> BackgroundFetchRegistration =
   #| (self) => self.registration
 
 ///|
 /// BackgroundFetchUpdateUIEvent interface
 pub type BackgroundFetchUpdateUIEvent
 
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::to_js_value(
-  self : BackgroundFetchUpdateUIEvent,
-) -> JsValue =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_js_value(self : BackgroundFetchUpdateUIEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to BackgroundFetchUpdateUIEvent (unchecked)
-pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value(
-  v : JsValue,
-) -> BackgroundFetchUpdateUIEvent =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value(v : JsValue) -> BackgroundFetchUpdateUIEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to BackgroundFetchUpdateUIEvent (checked with instanceof)
-pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value_opt(
-  v : JsValue,
-) -> BackgroundFetchUpdateUIEvent? =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::from_js_value_opt(v : JsValue) -> BackgroundFetchUpdateUIEvent? =
   #| (v) => (v instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to BackgroundFetchUpdateUIEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_background_fetch_update_ui_event(
-  self : JsValue,
-) -> BackgroundFetchUpdateUIEvent? =
+pub extern "js" fn JsValue::as_background_fetch_update_ui_event(self : JsValue) -> BackgroundFetchUpdateUIEvent? =
   #| (self) => (self instanceof BackgroundFetchUpdateUIEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to BackgroundFetchUpdateUIEvent (unchecked)
-pub extern "js" fn JsValue::to_background_fetch_update_ui_event(
-  self : JsValue,
-) -> BackgroundFetchUpdateUIEvent =
+pub extern "js" fn JsValue::to_background_fetch_update_ui_event(self : JsValue) -> BackgroundFetchUpdateUIEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::to_background_fetch_event(
-  self : BackgroundFetchUpdateUIEvent,
-) -> BackgroundFetchEvent =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_background_fetch_event(self : BackgroundFetchUpdateUIEvent) -> BackgroundFetchEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::to_extendable_event(
-  self : BackgroundFetchUpdateUIEvent,
-) -> ExtendableEvent =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_extendable_event(self : BackgroundFetchUpdateUIEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::to_event(
-  self : BackgroundFetchUpdateUIEvent,
-) -> Event =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::to_event(self : BackgroundFetchUpdateUIEvent) -> Event =
   #| (self) => self
 
 ///|
@@ -841,41 +476,21 @@ pub(all) enum BackgroundFetchUpdateUIEventUpdateUIError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn BackgroundFetchUpdateUIEvent::new_ffi(
-  type_ : String,
-  init_ : JsValue,
-) -> BackgroundFetchUpdateUIEvent =
+pub extend BackgroundFetchUpdateUIEventUpdateUIError with @debug.Debug::{to_repr}
+
+extern "js" fn BackgroundFetchUpdateUIEvent::new_ffi(type_ : String, init_ : JsValue) -> BackgroundFetchUpdateUIEvent =
   #| (type_, init_) => new BackgroundFetchUpdateUIEvent(type_, init_)
 
-///|
-pub fn BackgroundFetchUpdateUIEvent::new(
-  type_ : String,
-  init_ : BackgroundFetchEventInit,
-) -> BackgroundFetchUpdateUIEvent {
+pub fn BackgroundFetchUpdateUIEvent::new(type_ : String, init_ : BackgroundFetchEventInit) -> BackgroundFetchUpdateUIEvent {
   BackgroundFetchUpdateUIEvent::new_ffi(type_, init_.to_js())
 }
 
-///|
-pub extern "js" fn BackgroundFetchUpdateUIEvent::update_ui(
-  self : BackgroundFetchUpdateUIEvent,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
+pub extern "js" fn BackgroundFetchUpdateUIEvent::update_ui(self : BackgroundFetchUpdateUIEvent) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
   #| (self) => self.updateUI().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(
-  self : BackgroundFetchUpdateUIEvent,
-  options : JsValue,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
+extern "js" fn BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(self : BackgroundFetchUpdateUIEvent, options : JsValue) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] =
   #| (self, options) => self.updateUI(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn BackgroundFetchUpdateUIEvent::update_ui_with_options(
-  self : BackgroundFetchUpdateUIEvent,
-  options : BackgroundFetchUIOptions,
-) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] {
-  BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(
-    self,
-    options.to_js(),
-  )
+pub fn BackgroundFetchUpdateUIEvent::update_ui_with_options(self : BackgroundFetchUpdateUIEvent, options : BackgroundFetchUIOptions) -> Promise[Result[Unit, BackgroundFetchUpdateUIEventUpdateUIError]] {
+  BackgroundFetchUpdateUIEvent::update_ui_with_options_ffi(self, options.to_js())
 }

@@ -9,7 +9,9 @@ pub(all) enum PaymentShippingType {
   Pickup
 } derive(Eq, Debug)
 
-///|
+pub extend PaymentShippingType with Eq::{equal, not_equal}
+pub extend PaymentShippingType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PaymentShippingType::to_string(self : PaymentShippingType) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn PaymentShippingType::to_string(self : PaymentShippingType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PaymentShippingType::from_string(s : String) -> PaymentShippingType? {
   match s {
@@ -38,7 +39,9 @@ pub(all) enum PaymentComplete {
   Unknown
 } derive(Eq, Debug)
 
-///|
+pub extend PaymentComplete with Eq::{equal, not_equal}
+pub extend PaymentComplete with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PaymentComplete::to_string(self : PaymentComplete) -> String {
   match self {
@@ -48,7 +51,6 @@ pub fn PaymentComplete::to_string(self : PaymentComplete) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PaymentComplete::from_string(s : String) -> PaymentComplete? {
   match s {
@@ -66,37 +68,31 @@ pub(all) struct PaymentMethodData {
   data : JsValue?
 }
 
-///|
 /// Create a new PaymentMethodData with default values
 pub fn PaymentMethodData::default() -> PaymentMethodData {
-  PaymentMethodData::{ supportedMethods: "", data: None, }
+  PaymentMethodData::{
+    supportedMethods: "",
+    data: None,
+  }
 }
 
-///|
-extern "js" fn PaymentMethodData::to_js_ffi(
-  self : PaymentMethodData,
-) -> JsValue =
+extern "js" fn PaymentMethodData::to_js_ffi(self : PaymentMethodData) -> JsValue =
   #| (self) => ({
   #|   supportedMethods: self.supportedMethods,
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentMethodData::to_js(self : PaymentMethodData) -> JsValue {
   PaymentMethodData::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentMethodData::from_js_ffi(
-  value : JsValue,
-) -> PaymentMethodData =
+extern "js" fn PaymentMethodData::from_js_ffi(value : JsValue) -> PaymentMethodData =
   #| (v) => ({
   #|   supportedMethods: v.supportedMethods,
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentMethodData::from_js(value : JsValue) -> PaymentMethodData {
   PaymentMethodData::from_js_ffi(value)
@@ -109,37 +105,31 @@ pub(all) struct PaymentCurrencyAmount {
   value : String
 }
 
-///|
 /// Create a new PaymentCurrencyAmount with default values
 pub fn PaymentCurrencyAmount::default() -> PaymentCurrencyAmount {
-  PaymentCurrencyAmount::{ currency: "", value: "", }
+  PaymentCurrencyAmount::{
+    currency: "",
+    value: "",
+  }
 }
 
-///|
-extern "js" fn PaymentCurrencyAmount::to_js_ffi(
-  self : PaymentCurrencyAmount,
-) -> JsValue =
+extern "js" fn PaymentCurrencyAmount::to_js_ffi(self : PaymentCurrencyAmount) -> JsValue =
   #| (self) => ({
   #|   currency: self.currency,
   #|   value: self.value
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentCurrencyAmount::to_js(self : PaymentCurrencyAmount) -> JsValue {
   PaymentCurrencyAmount::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentCurrencyAmount::from_js_ffi(
-  value : JsValue,
-) -> PaymentCurrencyAmount =
+extern "js" fn PaymentCurrencyAmount::from_js_ffi(value : JsValue) -> PaymentCurrencyAmount =
   #| (v) => ({
   #|   currency: v.currency,
   #|   value: v.value
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentCurrencyAmount::from_js(value : JsValue) -> PaymentCurrencyAmount {
   PaymentCurrencyAmount::from_js_ffi(value)
@@ -153,7 +143,6 @@ pub(all) struct PaymentDetailsBase {
   modifiers : FixedArray[PaymentDetailsModifier]?
 }
 
-///|
 /// Create a new PaymentDetailsBase with default values
 pub fn PaymentDetailsBase::default() -> PaymentDetailsBase {
   PaymentDetailsBase::{
@@ -163,33 +152,25 @@ pub fn PaymentDetailsBase::default() -> PaymentDetailsBase {
   }
 }
 
-///|
-extern "js" fn PaymentDetailsBase::to_js_ffi(
-  self : PaymentDetailsBase,
-) -> JsValue =
+extern "js" fn PaymentDetailsBase::to_js_ffi(self : PaymentDetailsBase) -> JsValue =
   #| (self) => ({
   #|   displayItems: self.displayItems,
   #|   shippingOptions: self.shippingOptions,
   #|   modifiers: self.modifiers
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentDetailsBase::to_js(self : PaymentDetailsBase) -> JsValue {
   PaymentDetailsBase::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentDetailsBase::from_js_ffi(
-  value : JsValue,
-) -> PaymentDetailsBase =
+extern "js" fn PaymentDetailsBase::from_js_ffi(value : JsValue) -> PaymentDetailsBase =
   #| (v) => ({
   #|   displayItems: v.displayItems,
   #|   shippingOptions: v.shippingOptions,
   #|   modifiers: v.modifiers
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentDetailsBase::from_js(value : JsValue) -> PaymentDetailsBase {
   PaymentDetailsBase::from_js_ffi(value)
@@ -205,7 +186,6 @@ pub(all) struct PaymentDetailsInit {
   total : PaymentItem
 }
 
-///|
 /// Create a new PaymentDetailsInit
 pub fn PaymentDetailsInit::new(total~ : PaymentItem) -> PaymentDetailsInit {
   PaymentDetailsInit::{
@@ -213,15 +193,11 @@ pub fn PaymentDetailsInit::new(total~ : PaymentItem) -> PaymentDetailsInit {
     shippingOptions: None,
     modifiers: None,
     id: None,
-    total,
+    total: total,
   }
 }
 
-///|
-extern "js" fn PaymentDetailsInit::to_js_ffi(
-  self : PaymentDetailsInit,
-  convert_total : (PaymentItem) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentDetailsInit::to_js_ffi(self : PaymentDetailsInit, convert_total : (PaymentItem) -> JsValue) -> JsValue =
   #| (self, convert_total) => ({
   #|   displayItems: self.displayItems,
   #|   shippingOptions: self.shippingOptions,
@@ -230,17 +206,12 @@ extern "js" fn PaymentDetailsInit::to_js_ffi(
   #|   total: convert_total(self.total)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentDetailsInit::to_js(self : PaymentDetailsInit) -> JsValue {
   PaymentDetailsInit::to_js_ffi(self, PaymentItem::to_js)
 }
 
-///|
-extern "js" fn PaymentDetailsInit::from_js_ffi(
-  value : JsValue,
-  convert_total : (JsValue) -> PaymentItem,
-) -> PaymentDetailsInit =
+extern "js" fn PaymentDetailsInit::from_js_ffi(value : JsValue, convert_total : (JsValue) -> PaymentItem) -> PaymentDetailsInit =
   #| (v, convert_total) => ({
   #|   displayItems: v.displayItems,
   #|   shippingOptions: v.shippingOptions,
@@ -249,7 +220,6 @@ extern "js" fn PaymentDetailsInit::from_js_ffi(
   #|   total: convert_total(v.total)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentDetailsInit::from_js(value : JsValue) -> PaymentDetailsInit {
   PaymentDetailsInit::from_js_ffi(value, PaymentItem::from_js)
@@ -268,7 +238,6 @@ pub(all) struct PaymentDetailsUpdate {
   paymentMethodErrors : JsValue?
 }
 
-///|
 /// Create a new PaymentDetailsUpdate with default values
 pub fn PaymentDetailsUpdate::default() -> PaymentDetailsUpdate {
   PaymentDetailsUpdate::{
@@ -283,13 +252,7 @@ pub fn PaymentDetailsUpdate::default() -> PaymentDetailsUpdate {
   }
 }
 
-///|
-extern "js" fn PaymentDetailsUpdate::to_js_ffi(
-  self : PaymentDetailsUpdate,
-  convert_total : (PaymentItem?) -> JsValue,
-  convert_shippingAddressErrors : (AddressErrors?) -> JsValue,
-  convert_payerErrors : (PayerErrors?) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentDetailsUpdate::to_js_ffi(self : PaymentDetailsUpdate, convert_total : (PaymentItem?) -> JsValue, convert_shippingAddressErrors : (AddressErrors?) -> JsValue, convert_payerErrors : (PayerErrors?) -> JsValue) -> JsValue =
   #| (self, convert_total, convert_shippingAddressErrors, convert_payerErrors) => ({
   #|   displayItems: self.displayItems,
   #|   shippingOptions: self.shippingOptions,
@@ -301,39 +264,12 @@ extern "js" fn PaymentDetailsUpdate::to_js_ffi(
   #|   paymentMethodErrors: ((() => { const v = self.paymentMethodErrors; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentDetailsUpdate::to_js(self : PaymentDetailsUpdate) -> JsValue {
-  PaymentDetailsUpdate::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  PaymentDetailsUpdate::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PaymentDetailsUpdate::from_js_ffi(
-  value : JsValue,
-  convert_total : (JsValue) -> PaymentItem?,
-  convert_shippingAddressErrors : (JsValue) -> AddressErrors?,
-  convert_payerErrors : (JsValue) -> PayerErrors?,
-) -> PaymentDetailsUpdate =
+extern "js" fn PaymentDetailsUpdate::from_js_ffi(value : JsValue, convert_total : (JsValue) -> PaymentItem?, convert_shippingAddressErrors : (JsValue) -> AddressErrors?, convert_payerErrors : (JsValue) -> PayerErrors?) -> PaymentDetailsUpdate =
   #| (v, convert_total, convert_shippingAddressErrors, convert_payerErrors) => ({
   #|   displayItems: v.displayItems,
   #|   shippingOptions: v.shippingOptions,
@@ -345,33 +281,9 @@ extern "js" fn PaymentDetailsUpdate::from_js_ffi(
   #|   paymentMethodErrors: (v.paymentMethodErrors === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentMethodErrors })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentDetailsUpdate::from_js(value : JsValue) -> PaymentDetailsUpdate {
-  PaymentDetailsUpdate::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(PaymentItem::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AddressErrors::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(PayerErrors::from_js(value))
-      }
-    },
-  )
+  PaymentDetailsUpdate::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(PaymentItem::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AddressErrors::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(PayerErrors::from_js(value)) } })
 }
 
 ///|
@@ -383,7 +295,6 @@ pub(all) struct PaymentDetailsModifier {
   data : JsValue?
 }
 
-///|
 /// Create a new PaymentDetailsModifier with default values
 pub fn PaymentDetailsModifier::default() -> PaymentDetailsModifier {
   PaymentDetailsModifier::{
@@ -394,11 +305,7 @@ pub fn PaymentDetailsModifier::default() -> PaymentDetailsModifier {
   }
 }
 
-///|
-extern "js" fn PaymentDetailsModifier::to_js_ffi(
-  self : PaymentDetailsModifier,
-  convert_total : (PaymentItem?) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentDetailsModifier::to_js_ffi(self : PaymentDetailsModifier, convert_total : (PaymentItem?) -> JsValue) -> JsValue =
   #| (self, convert_total) => ({
   #|   supportedMethods: self.supportedMethods,
   #|   total: convert_total(self.total),
@@ -406,22 +313,12 @@ extern "js" fn PaymentDetailsModifier::to_js_ffi(
   #|   data: ((() => { const v = self.data; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentDetailsModifier::to_js(self : PaymentDetailsModifier) -> JsValue {
-  PaymentDetailsModifier::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+  PaymentDetailsModifier::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PaymentDetailsModifier::from_js_ffi(
-  value : JsValue,
-  convert_total : (JsValue) -> PaymentItem?,
-) -> PaymentDetailsModifier =
+extern "js" fn PaymentDetailsModifier::from_js_ffi(value : JsValue, convert_total : (JsValue) -> PaymentItem?) -> PaymentDetailsModifier =
   #| (v, convert_total) => ({
   #|   supportedMethods: v.supportedMethods,
   #|   total: convert_total(v.total),
@@ -429,18 +326,9 @@ extern "js" fn PaymentDetailsModifier::from_js_ffi(
   #|   data: (v.data === undefined ? { $tag: 0 } : { $tag: 1, _0: v.data })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PaymentDetailsModifier::from_js(
-  value : JsValue,
-) -> PaymentDetailsModifier {
-  PaymentDetailsModifier::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(PaymentItem::from_js(value))
-    }
-  })
+pub fn PaymentDetailsModifier::from_js(value : JsValue) -> PaymentDetailsModifier {
+  PaymentDetailsModifier::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(PaymentItem::from_js(value)) } })
 }
 
 ///|
@@ -454,7 +342,6 @@ pub(all) struct PaymentOptions {
   shippingType : PaymentShippingType?
 }
 
-///|
 /// Create a new PaymentOptions with default values
 pub fn PaymentOptions::default() -> PaymentOptions {
   PaymentOptions::{
@@ -467,7 +354,6 @@ pub fn PaymentOptions::default() -> PaymentOptions {
   }
 }
 
-///|
 extern "js" fn PaymentOptions::to_js_ffi(self : PaymentOptions) -> JsValue =
   #| (self) => ({
   #|   requestPayerName: (self.requestPayerName === -1 ? undefined : self.requestPayerName),
@@ -478,13 +364,11 @@ extern "js" fn PaymentOptions::to_js_ffi(self : PaymentOptions) -> JsValue =
   #|   shippingType: ((() => { const v = self.shippingType; if (v === undefined) return undefined; return ['shipping', 'delivery', 'pickup'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentOptions::to_js(self : PaymentOptions) -> JsValue {
   PaymentOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn PaymentOptions::from_js_ffi(value : JsValue) -> PaymentOptions =
   #| (v) => ({
   #|   requestPayerName: (v.requestPayerName === undefined ? -1 : v.requestPayerName),
@@ -495,7 +379,6 @@ extern "js" fn PaymentOptions::from_js_ffi(value : JsValue) -> PaymentOptions =
   #|   shippingType: (v.shippingType === undefined ? undefined : ['shipping', 'delivery', 'pickup'].indexOf(v.shippingType))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentOptions::from_js(value : JsValue) -> PaymentOptions {
   PaymentOptions::from_js_ffi(value)
@@ -509,41 +392,34 @@ pub(all) struct PaymentItem {
   pending : Bool?
 }
 
-///|
 /// Create a new PaymentItem
 pub fn PaymentItem::new(amount~ : PaymentCurrencyAmount) -> PaymentItem {
-  PaymentItem::{ label: "", amount, pending: None, }
+  PaymentItem::{
+    label: "",
+    amount: amount,
+    pending: None,
+  }
 }
 
-///|
-extern "js" fn PaymentItem::to_js_ffi(
-  self : PaymentItem,
-  convert_amount : (PaymentCurrencyAmount) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentItem::to_js_ffi(self : PaymentItem, convert_amount : (PaymentCurrencyAmount) -> JsValue) -> JsValue =
   #| (self, convert_amount) => ({
   #|   label: self.label,
   #|   amount: convert_amount(self.amount),
   #|   pending: (self.pending === -1 ? undefined : self.pending)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentItem::to_js(self : PaymentItem) -> JsValue {
   PaymentItem::to_js_ffi(self, PaymentCurrencyAmount::to_js)
 }
 
-///|
-extern "js" fn PaymentItem::from_js_ffi(
-  value : JsValue,
-  convert_amount : (JsValue) -> PaymentCurrencyAmount,
-) -> PaymentItem =
+extern "js" fn PaymentItem::from_js_ffi(value : JsValue, convert_amount : (JsValue) -> PaymentCurrencyAmount) -> PaymentItem =
   #| (v, convert_amount) => ({
   #|   label: v.label,
   #|   amount: convert_amount(v.amount),
   #|   pending: (v.pending === undefined ? -1 : v.pending)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentItem::from_js(value : JsValue) -> PaymentItem {
   PaymentItem::from_js_ffi(value, PaymentCurrencyAmount::from_js)
@@ -555,39 +431,30 @@ pub(all) struct PaymentCompleteDetails {
   data : Nullable[JsValue]
 }
 
-///|
 /// Create a new PaymentCompleteDetails with default values
 pub fn PaymentCompleteDetails::default() -> PaymentCompleteDetails {
-  PaymentCompleteDetails::{ data: Nullable::Undefined, }
+  PaymentCompleteDetails::{
+    data: Nullable::Undefined,
+  }
 }
 
-///|
-extern "js" fn PaymentCompleteDetails::to_js_ffi(
-  self : PaymentCompleteDetails,
-) -> JsValue =
+extern "js" fn PaymentCompleteDetails::to_js_ffi(self : PaymentCompleteDetails) -> JsValue =
   #| (self) => ({
   #|   data: ((() => { const v = self.data; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentCompleteDetails::to_js(self : PaymentCompleteDetails) -> JsValue {
   PaymentCompleteDetails::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentCompleteDetails::from_js_ffi(
-  value : JsValue,
-) -> PaymentCompleteDetails =
+extern "js" fn PaymentCompleteDetails::from_js_ffi(value : JsValue) -> PaymentCompleteDetails =
   #| (v) => ({
   #|   data: (v.data === undefined ? { $tag: 0 } : v.data === null ? { $tag: 1 } : { $tag: 2, _0: v.data })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PaymentCompleteDetails::from_js(
-  value : JsValue,
-) -> PaymentCompleteDetails {
+pub fn PaymentCompleteDetails::from_js(value : JsValue) -> PaymentCompleteDetails {
   PaymentCompleteDetails::from_js_ffi(value)
 }
 
@@ -600,19 +467,17 @@ pub(all) struct PaymentShippingOption {
   selected : Bool?
 }
 
-///|
 /// Create a new PaymentShippingOption
-pub fn PaymentShippingOption::new(
-  amount~ : PaymentCurrencyAmount,
-) -> PaymentShippingOption {
-  PaymentShippingOption::{ id: "", label: "", amount, selected: None, }
+pub fn PaymentShippingOption::new(amount~ : PaymentCurrencyAmount) -> PaymentShippingOption {
+  PaymentShippingOption::{
+    id: "",
+    label: "",
+    amount: amount,
+    selected: None,
+  }
 }
 
-///|
-extern "js" fn PaymentShippingOption::to_js_ffi(
-  self : PaymentShippingOption,
-  convert_amount : (PaymentCurrencyAmount) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentShippingOption::to_js_ffi(self : PaymentShippingOption, convert_amount : (PaymentCurrencyAmount) -> JsValue) -> JsValue =
   #| (self, convert_amount) => ({
   #|   id: self.id,
   #|   label: self.label,
@@ -620,17 +485,12 @@ extern "js" fn PaymentShippingOption::to_js_ffi(
   #|   selected: (self.selected === -1 ? undefined : self.selected)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PaymentShippingOption::to_js(self : PaymentShippingOption) -> JsValue {
   PaymentShippingOption::to_js_ffi(self, PaymentCurrencyAmount::to_js)
 }
 
-///|
-extern "js" fn PaymentShippingOption::from_js_ffi(
-  value : JsValue,
-  convert_amount : (JsValue) -> PaymentCurrencyAmount,
-) -> PaymentShippingOption =
+extern "js" fn PaymentShippingOption::from_js_ffi(value : JsValue, convert_amount : (JsValue) -> PaymentCurrencyAmount) -> PaymentShippingOption =
   #| (v, convert_amount) => ({
   #|   id: v.id,
   #|   label: v.label,
@@ -638,7 +498,6 @@ extern "js" fn PaymentShippingOption::from_js_ffi(
   #|   selected: (v.selected === undefined ? -1 : v.selected)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PaymentShippingOption::from_js(value : JsValue) -> PaymentShippingOption {
   PaymentShippingOption::from_js_ffi(value, PaymentCurrencyAmount::from_js)
@@ -653,7 +512,6 @@ pub(all) struct PaymentValidationErrors {
   paymentMethod : JsValue?
 }
 
-///|
 /// Create a new PaymentValidationErrors with default values
 pub fn PaymentValidationErrors::default() -> PaymentValidationErrors {
   PaymentValidationErrors::{
@@ -664,12 +522,7 @@ pub fn PaymentValidationErrors::default() -> PaymentValidationErrors {
   }
 }
 
-///|
-extern "js" fn PaymentValidationErrors::to_js_ffi(
-  self : PaymentValidationErrors,
-  convert_payer : (PayerErrors?) -> JsValue,
-  convert_shippingAddress : (AddressErrors?) -> JsValue,
-) -> JsValue =
+extern "js" fn PaymentValidationErrors::to_js_ffi(self : PaymentValidationErrors, convert_payer : (PayerErrors?) -> JsValue, convert_shippingAddress : (AddressErrors?) -> JsValue) -> JsValue =
   #| (self, convert_payer, convert_shippingAddress) => ({
   #|   payer: convert_payer(self.payer),
   #|   shippingAddress: convert_shippingAddress(self.shippingAddress),
@@ -677,34 +530,12 @@ extern "js" fn PaymentValidationErrors::to_js_ffi(
   #|   paymentMethod: ((() => { const v = self.paymentMethod; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PaymentValidationErrors::to_js(
-  self : PaymentValidationErrors,
-) -> JsValue {
-  PaymentValidationErrors::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn PaymentValidationErrors::to_js(self : PaymentValidationErrors) -> JsValue {
+  PaymentValidationErrors::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PaymentValidationErrors::from_js_ffi(
-  value : JsValue,
-  convert_payer : (JsValue) -> PayerErrors?,
-  convert_shippingAddress : (JsValue) -> AddressErrors?,
-) -> PaymentValidationErrors =
+extern "js" fn PaymentValidationErrors::from_js_ffi(value : JsValue, convert_payer : (JsValue) -> PayerErrors?, convert_shippingAddress : (JsValue) -> AddressErrors?) -> PaymentValidationErrors =
   #| (v, convert_payer, convert_shippingAddress) => ({
   #|   payer: convert_payer(v.payer),
   #|   shippingAddress: convert_shippingAddress(v.shippingAddress),
@@ -712,28 +543,9 @@ extern "js" fn PaymentValidationErrors::from_js_ffi(
   #|   paymentMethod: (v.paymentMethod === undefined ? { $tag: 0 } : { $tag: 1, _0: v.paymentMethod })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PaymentValidationErrors::from_js(
-  value : JsValue,
-) -> PaymentValidationErrors {
-  PaymentValidationErrors::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(PayerErrors::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AddressErrors::from_js(value))
-      }
-    },
-  )
+pub fn PaymentValidationErrors::from_js(value : JsValue) -> PaymentValidationErrors {
+  PaymentValidationErrors::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(PayerErrors::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(AddressErrors::from_js(value)) } })
 }
 
 ///|
@@ -744,13 +556,15 @@ pub(all) struct PayerErrors {
   phone : String?
 }
 
-///|
 /// Create a new PayerErrors with default values
 pub fn PayerErrors::default() -> PayerErrors {
-  PayerErrors::{ email: None, name: None, phone: None, }
+  PayerErrors::{
+    email: None,
+    name: None,
+    phone: None,
+  }
 }
 
-///|
 extern "js" fn PayerErrors::to_js_ffi(self : PayerErrors) -> JsValue =
   #| (self) => ({
   #|   email: self.email,
@@ -758,13 +572,11 @@ extern "js" fn PayerErrors::to_js_ffi(self : PayerErrors) -> JsValue =
   #|   phone: self.phone
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PayerErrors::to_js(self : PayerErrors) -> JsValue {
   PayerErrors::to_js_ffi(self)
 }
 
-///|
 extern "js" fn PayerErrors::from_js_ffi(value : JsValue) -> PayerErrors =
   #| (v) => ({
   #|   email: v.email,
@@ -772,7 +584,6 @@ extern "js" fn PayerErrors::from_js_ffi(value : JsValue) -> PayerErrors =
   #|   phone: v.phone
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PayerErrors::from_js(value : JsValue) -> PayerErrors {
   PayerErrors::from_js_ffi(value)
@@ -793,7 +604,6 @@ pub(all) struct AddressErrors {
   sortingCode : String?
 }
 
-///|
 /// Create a new AddressErrors with default values
 pub fn AddressErrors::default() -> AddressErrors {
   AddressErrors::{
@@ -810,7 +620,6 @@ pub fn AddressErrors::default() -> AddressErrors {
   }
 }
 
-///|
 extern "js" fn AddressErrors::to_js_ffi(self : AddressErrors) -> JsValue =
   #| (self) => ({
   #|   addressLine: self.addressLine,
@@ -825,13 +634,11 @@ extern "js" fn AddressErrors::to_js_ffi(self : AddressErrors) -> JsValue =
   #|   sortingCode: self.sortingCode
   #| })
 
-///|
 /// Convert to JsValue
 pub fn AddressErrors::to_js(self : AddressErrors) -> JsValue {
   AddressErrors::to_js_ffi(self)
 }
 
-///|
 extern "js" fn AddressErrors::from_js_ffi(value : JsValue) -> AddressErrors =
   #| (v) => ({
   #|   addressLine: v.addressLine,
@@ -846,7 +653,6 @@ extern "js" fn AddressErrors::from_js_ffi(value : JsValue) -> AddressErrors =
   #|   sortingCode: v.sortingCode
   #| })
 
-///|
 /// Convert from JsValue
 pub fn AddressErrors::from_js(value : JsValue) -> AddressErrors {
   AddressErrors::from_js_ffi(value)
@@ -859,7 +665,6 @@ pub(all) struct PaymentMethodChangeEventInit {
   methodDetails : Nullable[JsValue]
 }
 
-///|
 /// Create a new PaymentMethodChangeEventInit with default values
 pub fn PaymentMethodChangeEventInit::default() -> PaymentMethodChangeEventInit {
   PaymentMethodChangeEventInit::{
@@ -868,77 +673,54 @@ pub fn PaymentMethodChangeEventInit::default() -> PaymentMethodChangeEventInit {
   }
 }
 
-///|
-extern "js" fn PaymentMethodChangeEventInit::to_js_ffi(
-  self : PaymentMethodChangeEventInit,
-) -> JsValue =
+extern "js" fn PaymentMethodChangeEventInit::to_js_ffi(self : PaymentMethodChangeEventInit) -> JsValue =
   #| (self) => ({
   #|   methodName: self.methodName,
   #|   methodDetails: ((() => { const v = self.methodDetails; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PaymentMethodChangeEventInit::to_js(
-  self : PaymentMethodChangeEventInit,
-) -> JsValue {
+pub fn PaymentMethodChangeEventInit::to_js(self : PaymentMethodChangeEventInit) -> JsValue {
   PaymentMethodChangeEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentMethodChangeEventInit::from_js_ffi(
-  value : JsValue,
-) -> PaymentMethodChangeEventInit =
+extern "js" fn PaymentMethodChangeEventInit::from_js_ffi(value : JsValue) -> PaymentMethodChangeEventInit =
   #| (v) => ({
   #|   methodName: v.methodName,
   #|   methodDetails: (v.methodDetails === undefined ? { $tag: 0 } : v.methodDetails === null ? { $tag: 1 } : { $tag: 2, _0: v.methodDetails })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PaymentMethodChangeEventInit::from_js(
-  value : JsValue,
-) -> PaymentMethodChangeEventInit {
+pub fn PaymentMethodChangeEventInit::from_js(value : JsValue) -> PaymentMethodChangeEventInit {
   PaymentMethodChangeEventInit::from_js_ffi(value)
 }
 
 ///|
 /// PaymentRequestUpdateEventInit dictionary
-pub(all) struct PaymentRequestUpdateEventInit {}
-
-///|
-/// Create a new PaymentRequestUpdateEventInit with default values
-pub fn PaymentRequestUpdateEventInit::default() -> PaymentRequestUpdateEventInit {
-  PaymentRequestUpdateEventInit::{ }
+pub(all) struct PaymentRequestUpdateEventInit {
 }
 
-///|
-extern "js" fn PaymentRequestUpdateEventInit::to_js_ffi(
-  self : PaymentRequestUpdateEventInit,
-) -> JsValue =
+/// Create a new PaymentRequestUpdateEventInit with default values
+pub fn PaymentRequestUpdateEventInit::default() -> PaymentRequestUpdateEventInit {
+  PaymentRequestUpdateEventInit::{
+  }
+}
+
+extern "js" fn PaymentRequestUpdateEventInit::to_js_ffi(self : PaymentRequestUpdateEventInit) -> JsValue =
   #| (self) => ({
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PaymentRequestUpdateEventInit::to_js(
-  self : PaymentRequestUpdateEventInit,
-) -> JsValue {
+pub fn PaymentRequestUpdateEventInit::to_js(self : PaymentRequestUpdateEventInit) -> JsValue {
   PaymentRequestUpdateEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PaymentRequestUpdateEventInit::from_js_ffi(
-  value : JsValue,
-) -> PaymentRequestUpdateEventInit =
+extern "js" fn PaymentRequestUpdateEventInit::from_js_ffi(value : JsValue) -> PaymentRequestUpdateEventInit =
   #| (v) => ({
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PaymentRequestUpdateEventInit::from_js(
-  value : JsValue,
-) -> PaymentRequestUpdateEventInit {
+pub fn PaymentRequestUpdateEventInit::from_js(value : JsValue) -> PaymentRequestUpdateEventInit {
   PaymentRequestUpdateEventInit::from_js_ffi(value)
 }
 
@@ -946,42 +728,26 @@ pub fn PaymentRequestUpdateEventInit::from_js(
 /// PaymentRequest interface
 pub type PaymentRequest
 
-///|
-pub extern "js" fn PaymentRequest::to_js_value(
-  self : PaymentRequest,
-) -> JsValue =
+pub extern "js" fn PaymentRequest::to_js_value(self : PaymentRequest) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PaymentRequest (unchecked)
 pub extern "js" fn PaymentRequest::from_js_value(v : JsValue) -> PaymentRequest =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PaymentRequest (checked with instanceof)
-pub extern "js" fn PaymentRequest::from_js_value_opt(
-  v : JsValue,
-) -> PaymentRequest? =
+pub extern "js" fn PaymentRequest::from_js_value_opt(v : JsValue) -> PaymentRequest? =
   #| (v) => (v instanceof PaymentRequest) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PaymentRequest (checked with instanceof)
-pub extern "js" fn JsValue::as_payment_request(
-  self : JsValue,
-) -> PaymentRequest? =
+pub extern "js" fn JsValue::as_payment_request(self : JsValue) -> PaymentRequest? =
   #| (self) => (self instanceof PaymentRequest) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PaymentRequest (unchecked)
-pub extern "js" fn JsValue::to_payment_request(
-  self : JsValue,
-) -> PaymentRequest =
+pub extern "js" fn JsValue::to_payment_request(self : JsValue) -> PaymentRequest =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentRequest::to_event_target(
-  self : PaymentRequest,
-) -> EventTarget =
+pub extern "js" fn PaymentRequest::to_event_target(self : PaymentRequest) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -990,6 +756,8 @@ pub(all) enum PaymentRequestConstructorError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend PaymentRequestConstructorError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1001,176 +769,94 @@ pub(all) enum PaymentRequestShowError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn PaymentRequest::new_ffi(
-  method_data : FixedArray[PaymentMethodData],
-  details : JsValue,
-) -> Result[PaymentRequest, PaymentRequestConstructorError] =
+pub extend PaymentRequestShowError with @debug.Debug::{to_repr}
+
+extern "js" fn PaymentRequest::new_ffi(method_data : FixedArray[PaymentMethodData], details : JsValue) -> Result[PaymentRequest, PaymentRequestConstructorError] =
   #| (method_data, details) => (() => { try { return { $tag: 1, _0: new PaymentRequest(method_data, details) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn PaymentRequest::new(
-  method_data : FixedArray[PaymentMethodData],
-  details : PaymentDetailsInit,
-) -> Result[PaymentRequest, PaymentRequestConstructorError] {
+pub fn PaymentRequest::new(method_data : FixedArray[PaymentMethodData], details : PaymentDetailsInit) -> Result[PaymentRequest, PaymentRequestConstructorError] {
   PaymentRequest::new_ffi(method_data, details.to_js())
 }
 
-///|
-extern "js" fn PaymentRequest::new_with_options_ffi(
-  method_data : FixedArray[PaymentMethodData],
-  details : JsValue,
-  options : JsValue,
-) -> Result[PaymentRequest, PaymentRequestConstructorError] =
+extern "js" fn PaymentRequest::new_with_options_ffi(method_data : FixedArray[PaymentMethodData], details : JsValue, options : JsValue) -> Result[PaymentRequest, PaymentRequestConstructorError] =
   #| (method_data, details, options) => (() => { try { return { $tag: 1, _0: new PaymentRequest(method_data, details, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn PaymentRequest::new_with_options(
-  method_data : FixedArray[PaymentMethodData],
-  details : PaymentDetailsInit,
-  options : PaymentOptions,
-) -> Result[PaymentRequest, PaymentRequestConstructorError] {
-  PaymentRequest::new_with_options_ffi(
-    method_data,
-    details.to_js(),
-    options.to_js(),
-  )
+pub fn PaymentRequest::new_with_options(method_data : FixedArray[PaymentMethodData], details : PaymentDetailsInit, options : PaymentOptions) -> Result[PaymentRequest, PaymentRequestConstructorError] {
+  PaymentRequest::new_with_options_ffi(method_data, details.to_js(), options.to_js())
 }
 
-///|
-pub extern "js" fn PaymentRequest::show(
-  self : PaymentRequest,
-) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
+pub extern "js" fn PaymentRequest::show(self : PaymentRequest) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
   #| (self) => self.show().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-pub extern "js" fn PaymentRequest::show_with_details_promise(
-  self : PaymentRequest,
-  details_promise : Promise[PaymentDetailsUpdate],
-) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
+pub extern "js" fn PaymentRequest::show_with_details_promise(self : PaymentRequest, details_promise : Promise[PaymentDetailsUpdate]) -> Promise[Result[PaymentResponse, PaymentRequestShowError]] =
   #| (self, details_promise) => self.show(details_promise).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-pub extern "js" fn PaymentRequest::abort(
-  self : PaymentRequest,
-) -> Promise[Unit] =
+pub extern "js" fn PaymentRequest::abort(self : PaymentRequest) -> Promise[Unit] =
   #| (self) => self.abort()
 
-///|
-pub extern "js" fn PaymentRequest::can_make_payment(
-  self : PaymentRequest,
-) -> Promise[Bool] =
+pub extern "js" fn PaymentRequest::can_make_payment(self : PaymentRequest) -> Promise[Bool] =
   #| (self) => self.canMakePayment()
 
-///|
 pub extern "js" fn PaymentRequest::get_id(self : PaymentRequest) -> String =
   #| (self) => self.id
 
-///|
-pub extern "js" fn PaymentRequest::get_shipping_address(
-  self : PaymentRequest,
-) -> ContactAddress? =
+pub extern "js" fn PaymentRequest::get_shipping_address(self : PaymentRequest) -> ContactAddress? =
   #| (self) => (() => { const v = self.shippingAddress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn PaymentRequest::get_shipping_option(
-  self : PaymentRequest,
-) -> String? =
+pub extern "js" fn PaymentRequest::get_shipping_option(self : PaymentRequest) -> String? =
   #| (self) => (self.shippingOption) ?? undefined
 
-///|
-pub extern "js" fn PaymentRequest::get_shipping_type(
-  self : PaymentRequest,
-) -> PaymentShippingType? =
+pub extern "js" fn PaymentRequest::get_shipping_type(self : PaymentRequest) -> PaymentShippingType? =
   #| (self) => (() => { const v = self.shippingType; return v == null ? undefined : ['shipping', 'delivery', 'pickup'].indexOf(v); })()
 
-///|
-pub extern "js" fn PaymentRequest::set_onshippingaddresschange(
-  self : PaymentRequest,
-  handler : (PaymentRequestUpdateEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn PaymentRequest::set_onshippingaddresschange(self : PaymentRequest, handler : (PaymentRequestUpdateEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onshippingaddresschange = (e) => handler(e) }
 
-///|
-pub extern "js" fn PaymentRequest::clear_onshippingaddresschange(
-  self : PaymentRequest,
-) -> Unit =
+pub extern "js" fn PaymentRequest::clear_onshippingaddresschange(self : PaymentRequest) -> Unit =
   #| (self) => { self.onshippingaddresschange = null }
 
-///|
-pub extern "js" fn PaymentRequest::set_onshippingoptionchange(
-  self : PaymentRequest,
-  handler : (PaymentRequestUpdateEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn PaymentRequest::set_onshippingoptionchange(self : PaymentRequest, handler : (PaymentRequestUpdateEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onshippingoptionchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn PaymentRequest::clear_onshippingoptionchange(
-  self : PaymentRequest,
-) -> Unit =
+pub extern "js" fn PaymentRequest::clear_onshippingoptionchange(self : PaymentRequest) -> Unit =
   #| (self) => { self.onshippingoptionchange = null }
 
-///|
-pub extern "js" fn PaymentRequest::set_onpaymentmethodchange(
-  self : PaymentRequest,
-  handler : (PaymentMethodChangeEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn PaymentRequest::set_onpaymentmethodchange(self : PaymentRequest, handler : (PaymentMethodChangeEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onpaymentmethodchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn PaymentRequest::clear_onpaymentmethodchange(
-  self : PaymentRequest,
-) -> Unit =
+pub extern "js" fn PaymentRequest::clear_onpaymentmethodchange(self : PaymentRequest) -> Unit =
   #| (self) => { self.onpaymentmethodchange = null }
 
-///|
-pub extern "js" fn PaymentRequest::secure_payment_confirmation_availability() -> Promise[
-  SecurePaymentConfirmationAvailability,
-] =
+pub extern "js" fn PaymentRequest::secure_payment_confirmation_availability() -> Promise[SecurePaymentConfirmationAvailability] =
   #| () => PaymentRequest.securePaymentConfirmationAvailability()
+
+pub extern "js" fn PaymentRequest::get_secure_payment_confirmation_capabilities() -> Promise[SecurePaymentConfirmationCapabilities] =
+  #| () => PaymentRequest.getSecurePaymentConfirmationCapabilities()
 
 ///|
 /// PaymentResponse interface
 pub type PaymentResponse
 
-///|
-pub extern "js" fn PaymentResponse::to_js_value(
-  self : PaymentResponse,
-) -> JsValue =
+pub extern "js" fn PaymentResponse::to_js_value(self : PaymentResponse) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PaymentResponse (unchecked)
-pub extern "js" fn PaymentResponse::from_js_value(
-  v : JsValue,
-) -> PaymentResponse =
+pub extern "js" fn PaymentResponse::from_js_value(v : JsValue) -> PaymentResponse =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PaymentResponse (checked with instanceof)
-pub extern "js" fn PaymentResponse::from_js_value_opt(
-  v : JsValue,
-) -> PaymentResponse? =
+pub extern "js" fn PaymentResponse::from_js_value_opt(v : JsValue) -> PaymentResponse? =
   #| (v) => (v instanceof PaymentResponse) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PaymentResponse (checked with instanceof)
-pub extern "js" fn JsValue::as_payment_response(
-  self : JsValue,
-) -> PaymentResponse? =
+pub extern "js" fn JsValue::as_payment_response(self : JsValue) -> PaymentResponse? =
   #| (self) => (self instanceof PaymentResponse) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PaymentResponse (unchecked)
-pub extern "js" fn JsValue::to_payment_response(
-  self : JsValue,
-) -> PaymentResponse =
+pub extern "js" fn JsValue::to_payment_response(self : JsValue) -> PaymentResponse =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentResponse::to_event_target(
-  self : PaymentResponse,
-) -> EventTarget =
+pub extern "js" fn PaymentResponse::to_event_target(self : PaymentResponse) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -1181,278 +867,144 @@ pub(all) enum PaymentResponseCompleteError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend PaymentResponseCompleteError with @debug.Debug::{to_repr}
+
 pub extern "js" fn PaymentResponse::to_json(self : PaymentResponse) -> JsValue =
   #| (self) => self.toJSON()
 
-///|
-pub extern "js" fn PaymentResponse::get_request_id(
-  self : PaymentResponse,
-) -> String =
+pub extern "js" fn PaymentResponse::get_request_id(self : PaymentResponse) -> String =
   #| (self) => self.requestId
 
-///|
-pub extern "js" fn PaymentResponse::get_method_name(
-  self : PaymentResponse,
-) -> String =
+pub extern "js" fn PaymentResponse::get_method_name(self : PaymentResponse) -> String =
   #| (self) => self.methodName
 
-///|
-pub extern "js" fn PaymentResponse::get_details(
-  self : PaymentResponse,
-) -> JsValue =
+pub extern "js" fn PaymentResponse::get_details(self : PaymentResponse) -> JsValue =
   #| (self) => self.details
 
-///|
-pub extern "js" fn PaymentResponse::get_shipping_address(
-  self : PaymentResponse,
-) -> ContactAddress? =
+pub extern "js" fn PaymentResponse::get_shipping_address(self : PaymentResponse) -> ContactAddress? =
   #| (self) => (() => { const v = self.shippingAddress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn PaymentResponse::get_shipping_option(
-  self : PaymentResponse,
-) -> String? =
+pub extern "js" fn PaymentResponse::get_shipping_option(self : PaymentResponse) -> String? =
   #| (self) => (self.shippingOption) ?? undefined
 
-///|
-pub extern "js" fn PaymentResponse::get_payer_name(
-  self : PaymentResponse,
-) -> String? =
+pub extern "js" fn PaymentResponse::get_payer_name(self : PaymentResponse) -> String? =
   #| (self) => (self.payerName) ?? undefined
 
-///|
-pub extern "js" fn PaymentResponse::get_payer_email(
-  self : PaymentResponse,
-) -> String? =
+pub extern "js" fn PaymentResponse::get_payer_email(self : PaymentResponse) -> String? =
   #| (self) => (self.payerEmail) ?? undefined
 
-///|
-pub extern "js" fn PaymentResponse::get_payer_phone(
-  self : PaymentResponse,
-) -> String? =
+pub extern "js" fn PaymentResponse::get_payer_phone(self : PaymentResponse) -> String? =
   #| (self) => (self.payerPhone) ?? undefined
 
-///|
-pub extern "js" fn PaymentResponse::complete(
-  self : PaymentResponse,
-) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
+pub extern "js" fn PaymentResponse::complete(self : PaymentResponse) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
   #| (self) => self.complete().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn PaymentResponse::complete_with_details_ffi(
-  self : PaymentResponse,
-  result : PaymentComplete,
-  details : JsValue,
-) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
+extern "js" fn PaymentResponse::complete_with_details_ffi(self : PaymentResponse, result : PaymentComplete, details : JsValue) -> Promise[Result[Unit, PaymentResponseCompleteError]] =
   #| (self, result, details) => self.complete(['fail', 'success', 'unknown'][result], details).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn PaymentResponse::complete_with_details(
-  self : PaymentResponse,
-  result : PaymentComplete,
-  details : PaymentCompleteDetails,
-) -> Promise[Result[Unit, PaymentResponseCompleteError]] {
+pub fn PaymentResponse::complete_with_details(self : PaymentResponse, result : PaymentComplete, details : PaymentCompleteDetails) -> Promise[Result[Unit, PaymentResponseCompleteError]] {
   PaymentResponse::complete_with_details_ffi(self, result, details.to_js())
 }
 
-///|
-pub extern "js" fn PaymentResponse::retry(
-  self : PaymentResponse,
-) -> Promise[Unit] =
+pub extern "js" fn PaymentResponse::retry(self : PaymentResponse) -> Promise[Unit] =
   #| (self) => self.retry()
 
-///|
-extern "js" fn PaymentResponse::retry_with_error_fields_ffi(
-  self : PaymentResponse,
-  error_fields : JsValue,
-) -> Promise[Unit] =
+extern "js" fn PaymentResponse::retry_with_error_fields_ffi(self : PaymentResponse, error_fields : JsValue) -> Promise[Unit] =
   #| (self, error_fields) => self.retry(error_fields)
 
-///|
-pub fn PaymentResponse::retry_with_error_fields(
-  self : PaymentResponse,
-  error_fields : PaymentValidationErrors,
-) -> Promise[Unit] {
+pub fn PaymentResponse::retry_with_error_fields(self : PaymentResponse, error_fields : PaymentValidationErrors) -> Promise[Unit] {
   PaymentResponse::retry_with_error_fields_ffi(self, error_fields.to_js())
 }
 
-///|
-pub extern "js" fn PaymentResponse::set_onpayerdetailchange(
-  self : PaymentResponse,
-  handler : (PaymentRequestUpdateEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn PaymentResponse::set_onpayerdetailchange(self : PaymentResponse, handler : (PaymentRequestUpdateEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onpayerdetailchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn PaymentResponse::clear_onpayerdetailchange(
-  self : PaymentResponse,
-) -> Unit =
+pub extern "js" fn PaymentResponse::clear_onpayerdetailchange(self : PaymentResponse) -> Unit =
   #| (self) => { self.onpayerdetailchange = null }
 
 ///|
 /// PaymentMethodChangeEvent interface
 pub type PaymentMethodChangeEvent
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::to_js_value(
-  self : PaymentMethodChangeEvent,
-) -> JsValue =
+pub extern "js" fn PaymentMethodChangeEvent::to_js_value(self : PaymentMethodChangeEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PaymentMethodChangeEvent (unchecked)
-pub extern "js" fn PaymentMethodChangeEvent::from_js_value(
-  v : JsValue,
-) -> PaymentMethodChangeEvent =
+pub extern "js" fn PaymentMethodChangeEvent::from_js_value(v : JsValue) -> PaymentMethodChangeEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PaymentMethodChangeEvent (checked with instanceof)
-pub extern "js" fn PaymentMethodChangeEvent::from_js_value_opt(
-  v : JsValue,
-) -> PaymentMethodChangeEvent? =
+pub extern "js" fn PaymentMethodChangeEvent::from_js_value_opt(v : JsValue) -> PaymentMethodChangeEvent? =
   #| (v) => (v instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PaymentMethodChangeEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_payment_method_change_event(
-  self : JsValue,
-) -> PaymentMethodChangeEvent? =
+pub extern "js" fn JsValue::as_payment_method_change_event(self : JsValue) -> PaymentMethodChangeEvent? =
   #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PaymentMethodChangeEvent (unchecked)
-pub extern "js" fn JsValue::to_payment_method_change_event(
-  self : JsValue,
-) -> PaymentMethodChangeEvent =
+pub extern "js" fn JsValue::to_payment_method_change_event(self : JsValue) -> PaymentMethodChangeEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::to_payment_request_update_event(
-  self : PaymentMethodChangeEvent,
-) -> PaymentRequestUpdateEvent =
+pub extern "js" fn PaymentMethodChangeEvent::to_payment_request_update_event(self : PaymentMethodChangeEvent) -> PaymentRequestUpdateEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::to_event(
-  self : PaymentMethodChangeEvent,
-) -> Event =
+pub extern "js" fn PaymentMethodChangeEvent::to_event(self : PaymentMethodChangeEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::new(
-  type_ : String,
-) -> PaymentMethodChangeEvent =
+pub extern "js" fn PaymentMethodChangeEvent::new(type_ : String) -> PaymentMethodChangeEvent =
   #| (type_) => new PaymentMethodChangeEvent(type_)
 
-///|
-extern "js" fn PaymentMethodChangeEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> PaymentMethodChangeEvent =
+extern "js" fn PaymentMethodChangeEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> PaymentMethodChangeEvent =
   #| (type_, event_init_dict) => new PaymentMethodChangeEvent(type_, event_init_dict)
 
-///|
-pub fn PaymentMethodChangeEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : PaymentMethodChangeEventInit,
-) -> PaymentMethodChangeEvent {
-  PaymentMethodChangeEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn PaymentMethodChangeEvent::new_with_event_init_dict(type_ : String, event_init_dict : PaymentMethodChangeEventInit) -> PaymentMethodChangeEvent {
+  PaymentMethodChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::get_method_name(
-  self : PaymentMethodChangeEvent,
-) -> String =
+pub extern "js" fn PaymentMethodChangeEvent::get_method_name(self : PaymentMethodChangeEvent) -> String =
   #| (self) => self.methodName
 
-///|
-pub extern "js" fn PaymentMethodChangeEvent::get_method_details(
-  self : PaymentMethodChangeEvent,
-) -> JsValue? =
+pub extern "js" fn PaymentMethodChangeEvent::get_method_details(self : PaymentMethodChangeEvent) -> JsValue? =
   #| (self) => (() => { const v = self.methodDetails; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// PaymentRequestUpdateEvent interface
 pub type PaymentRequestUpdateEvent
 
-///|
-pub extern "js" fn PaymentRequestUpdateEvent::to_js_value(
-  self : PaymentRequestUpdateEvent,
-) -> JsValue =
+pub extern "js" fn PaymentRequestUpdateEvent::to_js_value(self : PaymentRequestUpdateEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PaymentRequestUpdateEvent (unchecked)
-pub extern "js" fn PaymentRequestUpdateEvent::from_js_value(
-  v : JsValue,
-) -> PaymentRequestUpdateEvent =
+pub extern "js" fn PaymentRequestUpdateEvent::from_js_value(v : JsValue) -> PaymentRequestUpdateEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PaymentRequestUpdateEvent (checked with instanceof)
-pub extern "js" fn PaymentRequestUpdateEvent::from_js_value_opt(
-  v : JsValue,
-) -> PaymentRequestUpdateEvent? =
+pub extern "js" fn PaymentRequestUpdateEvent::from_js_value_opt(v : JsValue) -> PaymentRequestUpdateEvent? =
   #| (v) => (v instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PaymentRequestUpdateEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_payment_request_update_event(
-  self : JsValue,
-) -> PaymentRequestUpdateEvent? =
+pub extern "js" fn JsValue::as_payment_request_update_event(self : JsValue) -> PaymentRequestUpdateEvent? =
   #| (self) => (self instanceof PaymentRequestUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PaymentRequestUpdateEvent (unchecked)
-pub extern "js" fn JsValue::to_payment_request_update_event(
-  self : JsValue,
-) -> PaymentRequestUpdateEvent =
+pub extern "js" fn JsValue::to_payment_request_update_event(self : JsValue) -> PaymentRequestUpdateEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentRequestUpdateEvent::to_event(
-  self : PaymentRequestUpdateEvent,
-) -> Event =
+pub extern "js" fn PaymentRequestUpdateEvent::to_event(self : PaymentRequestUpdateEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn PaymentRequestUpdateEvent::as_payment_method_change_event(
-  self : PaymentRequestUpdateEvent,
-) -> PaymentMethodChangeEvent? =
+pub extern "js" fn PaymentRequestUpdateEvent::as_payment_method_change_event(self : PaymentRequestUpdateEvent) -> PaymentMethodChangeEvent? =
   #| (self) => (self instanceof PaymentMethodChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn PaymentRequestUpdateEvent::new(
-  type_ : String,
-) -> PaymentRequestUpdateEvent =
+pub extern "js" fn PaymentRequestUpdateEvent::new(type_ : String) -> PaymentRequestUpdateEvent =
   #| (type_) => new PaymentRequestUpdateEvent(type_)
 
-///|
-extern "js" fn PaymentRequestUpdateEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> PaymentRequestUpdateEvent =
+extern "js" fn PaymentRequestUpdateEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> PaymentRequestUpdateEvent =
   #| (type_, event_init_dict) => new PaymentRequestUpdateEvent(type_, event_init_dict)
 
-///|
-pub fn PaymentRequestUpdateEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : PaymentRequestUpdateEventInit,
-) -> PaymentRequestUpdateEvent {
-  PaymentRequestUpdateEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn PaymentRequestUpdateEvent::new_with_event_init_dict(type_ : String, event_init_dict : PaymentRequestUpdateEventInit) -> PaymentRequestUpdateEvent {
+  PaymentRequestUpdateEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn PaymentRequestUpdateEvent::update_with(
-  self : PaymentRequestUpdateEvent,
-  details_promise : Promise[PaymentDetailsUpdate],
-) -> Unit =
+pub extern "js" fn PaymentRequestUpdateEvent::update_with(self : PaymentRequestUpdateEvent, details_promise : Promise[PaymentDetailsUpdate]) -> Unit =
   #| (self, details_promise) => self.updateWith(details_promise)

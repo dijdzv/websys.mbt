@@ -5,86 +5,49 @@
 /// LineAndPositionSetting typedef
 pub type LineAndPositionSetting
 
-///|
-pub extern "js" fn LineAndPositionSetting::to_js_value(
-  self : LineAndPositionSetting,
-) -> JsValue =
+pub extern "js" fn LineAndPositionSetting::to_js_value(self : LineAndPositionSetting) -> JsValue =
   #| (self) => self
 
-///|
 /// Create LineAndPositionSetting from Double
-pub extern "js" fn LineAndPositionSetting::from_double(
-  v : Double,
-) -> LineAndPositionSetting =
+pub extern "js" fn LineAndPositionSetting::from_double(v : Double) -> LineAndPositionSetting =
   #| (v) => v
 
 ///|
-extern "js" fn LineAndPositionSetting::from_auto_keyword_ffi(
-  v : String,
-) -> LineAndPositionSetting =
+extern "js" fn LineAndPositionSetting::from_auto_keyword_ffi(v : String) -> LineAndPositionSetting =
   #| v => v
 
 ///|
-pub fn LineAndPositionSetting::from_auto_keyword(
-  v : AutoKeyword,
-) -> LineAndPositionSetting {
-  LineAndPositionSetting::from_auto_keyword_ffi(v.to_string())
-}
+pub fn LineAndPositionSetting::from_auto_keyword(v : AutoKeyword) -> LineAndPositionSetting { LineAndPositionSetting::from_auto_keyword_ffi(v.to_string()) }
 
-///|
 /// Check if this LineAndPositionSetting is Double
-pub extern "js" fn LineAndPositionSetting::is_double(
-  self : LineAndPositionSetting,
-) -> Bool =
+pub extern "js" fn LineAndPositionSetting::is_double(self : LineAndPositionSetting) -> Bool =
   #| (self) => typeof self === 'number'
 
-///|
 /// Check if this LineAndPositionSetting is AutoKeyword
-pub extern "js" fn LineAndPositionSetting::is_auto_keyword(
-  self : LineAndPositionSetting,
-) -> Bool =
+pub extern "js" fn LineAndPositionSetting::is_auto_keyword(self : LineAndPositionSetting) -> Bool =
   #| (self) => typeof self === 'string'
 
-///|
 /// Try to get LineAndPositionSetting as Double
-pub extern "js" fn LineAndPositionSetting::as_double(
-  self : LineAndPositionSetting,
-) -> Double? =
+pub extern "js" fn LineAndPositionSetting::as_double(self : LineAndPositionSetting) -> Double? =
   #| (self) => (typeof self === 'number') ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-extern "js" fn LineAndPositionSetting::as_auto_keyword_string(
-  self : LineAndPositionSetting,
-) -> String =
+extern "js" fn LineAndPositionSetting::as_auto_keyword_string(self : LineAndPositionSetting) -> String =
   #| self => self
 
 ///|
-pub fn LineAndPositionSetting::as_auto_keyword(
-  self : LineAndPositionSetting,
-) -> AutoKeyword? {
-  if self.is_auto_keyword() {
-    AutoKeyword::from_string(self.as_auto_keyword_string())
-  } else {
-    None
-  }
-}
+pub fn LineAndPositionSetting::as_auto_keyword(self : LineAndPositionSetting) -> AutoKeyword? { if self.is_auto_keyword() { AutoKeyword::from_string(self.as_auto_keyword_string()) } else { None } }
 
-///|
 /// Flatten Option[LineAndPositionSetting] to Double?
-pub fn LineAndPositionSetting::bind_as_double(
-  value : LineAndPositionSetting?,
-) -> Double? {
+pub fn LineAndPositionSetting::bind_as_double(value : LineAndPositionSetting?) -> Double? {
   match value {
     Some(v) => v.as_double()
     None => None
   }
 }
 
-///|
 /// Flatten Option[LineAndPositionSetting] to AutoKeyword?
-pub fn LineAndPositionSetting::bind_as_auto_keyword(
-  value : LineAndPositionSetting?,
-) -> AutoKeyword? {
+pub fn LineAndPositionSetting::bind_as_auto_keyword(value : LineAndPositionSetting?) -> AutoKeyword? {
   match value {
     Some(v) => v.as_auto_keyword()
     None => None
@@ -97,7 +60,9 @@ pub(all) enum AutoKeyword {
   Auto
 } derive(Eq, Debug)
 
-///|
+pub extend AutoKeyword with Eq::{equal, not_equal}
+pub extend AutoKeyword with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AutoKeyword::to_string(self : AutoKeyword) -> String {
   match self {
@@ -105,7 +70,6 @@ pub fn AutoKeyword::to_string(self : AutoKeyword) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AutoKeyword::from_string(s : String) -> AutoKeyword? {
   match s {
@@ -122,7 +86,9 @@ pub(all) enum DirectionSetting {
   Lr
 } derive(Eq, Debug)
 
-///|
+pub extend DirectionSetting with Eq::{equal, not_equal}
+pub extend DirectionSetting with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn DirectionSetting::to_string(self : DirectionSetting) -> String {
   match self {
@@ -132,7 +98,6 @@ pub fn DirectionSetting::to_string(self : DirectionSetting) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn DirectionSetting::from_string(s : String) -> DirectionSetting? {
   match s {
@@ -151,7 +116,9 @@ pub(all) enum LineAlignSetting {
   End
 } derive(Eq, Debug)
 
-///|
+pub extend LineAlignSetting with Eq::{equal, not_equal}
+pub extend LineAlignSetting with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn LineAlignSetting::to_string(self : LineAlignSetting) -> String {
   match self {
@@ -161,7 +128,6 @@ pub fn LineAlignSetting::to_string(self : LineAlignSetting) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn LineAlignSetting::from_string(s : String) -> LineAlignSetting? {
   match s {
@@ -181,7 +147,9 @@ pub(all) enum PositionAlignSetting {
   Auto
 } derive(Eq, Debug)
 
-///|
+pub extend PositionAlignSetting with Eq::{equal, not_equal}
+pub extend PositionAlignSetting with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PositionAlignSetting::to_string(self : PositionAlignSetting) -> String {
   match self {
@@ -192,7 +160,6 @@ pub fn PositionAlignSetting::to_string(self : PositionAlignSetting) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PositionAlignSetting::from_string(s : String) -> PositionAlignSetting? {
   match s {
@@ -214,7 +181,9 @@ pub(all) enum AlignSetting {
   Right
 } derive(Eq, Debug)
 
-///|
+pub extend AlignSetting with Eq::{equal, not_equal}
+pub extend AlignSetting with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AlignSetting::to_string(self : AlignSetting) -> String {
   match self {
@@ -226,7 +195,6 @@ pub fn AlignSetting::to_string(self : AlignSetting) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AlignSetting::from_string(s : String) -> AlignSetting? {
   match s {
@@ -246,7 +214,9 @@ pub(all) enum ScrollSetting {
   Up
 } derive(Eq, Debug)
 
-///|
+pub extend ScrollSetting with Eq::{equal, not_equal}
+pub extend ScrollSetting with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ScrollSetting::to_string(self : ScrollSetting) -> String {
   match self {
@@ -255,7 +225,6 @@ pub fn ScrollSetting::to_string(self : ScrollSetting) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ScrollSetting::from_string(s : String) -> ScrollSetting? {
   match s {
@@ -269,155 +238,94 @@ pub fn ScrollSetting::from_string(s : String) -> ScrollSetting? {
 /// VTTCue interface
 pub type VTTCue
 
-///|
 pub extern "js" fn VTTCue::to_js_value(self : VTTCue) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to VTTCue (unchecked)
 pub extern "js" fn VTTCue::from_js_value(v : JsValue) -> VTTCue =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to VTTCue (checked with instanceof)
 pub extern "js" fn VTTCue::from_js_value_opt(v : JsValue) -> VTTCue? =
   #| (v) => (v instanceof VTTCue) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to VTTCue (checked with instanceof)
 pub extern "js" fn JsValue::as_vtt_cue(self : JsValue) -> VTTCue? =
   #| (self) => (self instanceof VTTCue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to VTTCue (unchecked)
 pub extern "js" fn JsValue::to_vtt_cue(self : JsValue) -> VTTCue =
   #| (self) => self
 
-///|
 pub extern "js" fn VTTCue::to_text_track_cue(self : VTTCue) -> TextTrackCue =
   #| (self) => self
 
-///|
 pub extern "js" fn VTTCue::to_event_target(self : VTTCue) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn VTTCue::new(
-  start_time : Double,
-  end_time : Double,
-  text : String,
-) -> VTTCue =
+pub extern "js" fn VTTCue::new(start_time : Double, end_time : Double, text : String) -> VTTCue =
   #| (start_time, end_time, text) => new VTTCue(start_time, end_time, text)
 
-///|
 pub extern "js" fn VTTCue::get_region(self : VTTCue) -> VTTRegion? =
   #| (self) => (() => { const v = self.region; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn VTTCue::set_region(
-  self : VTTCue,
-  value : VTTRegion?,
-) -> Unit =
+pub extern "js" fn VTTCue::set_region(self : VTTCue, value : VTTRegion?) -> Unit =
   #| (self, value) => { self.region = (value.$tag === 1 ? value._0 : null) }
 
-///|
 pub extern "js" fn VTTCue::get_vertical(self : VTTCue) -> DirectionSetting =
   #| (self) => ['', 'rl', 'lr'].indexOf(self.vertical)
 
-///|
-pub extern "js" fn VTTCue::set_vertical(
-  self : VTTCue,
-  value : DirectionSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_vertical(self : VTTCue, value : DirectionSetting) -> Unit =
   #| (self, value) => { self.vertical = ['', 'rl', 'lr'][value] }
 
-///|
 pub extern "js" fn VTTCue::get_snap_to_lines(self : VTTCue) -> Bool =
   #| (self) => self.snapToLines
 
-///|
-pub extern "js" fn VTTCue::set_snap_to_lines(
-  self : VTTCue,
-  value : Bool,
-) -> Unit =
+pub extern "js" fn VTTCue::set_snap_to_lines(self : VTTCue, value : Bool) -> Unit =
   #| (self, value) => { self.snapToLines = value }
 
-///|
 pub extern "js" fn VTTCue::get_line(self : VTTCue) -> LineAndPositionSetting =
   #| (self) => self.line
 
-///|
-pub extern "js" fn VTTCue::set_line(
-  self : VTTCue,
-  value : LineAndPositionSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_line(self : VTTCue, value : LineAndPositionSetting) -> Unit =
   #| (self, value) => { self.line = value }
 
-///|
 pub extern "js" fn VTTCue::get_line_align(self : VTTCue) -> LineAlignSetting =
   #| (self) => ['start', 'center', 'end'].indexOf(self.lineAlign)
 
-///|
-pub extern "js" fn VTTCue::set_line_align(
-  self : VTTCue,
-  value : LineAlignSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_line_align(self : VTTCue, value : LineAlignSetting) -> Unit =
   #| (self, value) => { self.lineAlign = ['start', 'center', 'end'][value] }
 
-///|
-pub extern "js" fn VTTCue::get_position(
-  self : VTTCue,
-) -> LineAndPositionSetting =
+pub extern "js" fn VTTCue::get_position(self : VTTCue) -> LineAndPositionSetting =
   #| (self) => self.position
 
-///|
-pub extern "js" fn VTTCue::set_position(
-  self : VTTCue,
-  value : LineAndPositionSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_position(self : VTTCue, value : LineAndPositionSetting) -> Unit =
   #| (self, value) => { self.position = value }
 
-///|
-pub extern "js" fn VTTCue::get_position_align(
-  self : VTTCue,
-) -> PositionAlignSetting =
+pub extern "js" fn VTTCue::get_position_align(self : VTTCue) -> PositionAlignSetting =
   #| (self) => ['line-left', 'center', 'line-right', 'auto'].indexOf(self.positionAlign)
 
-///|
-pub extern "js" fn VTTCue::set_position_align(
-  self : VTTCue,
-  value : PositionAlignSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_position_align(self : VTTCue, value : PositionAlignSetting) -> Unit =
   #| (self, value) => { self.positionAlign = ['line-left', 'center', 'line-right', 'auto'][value] }
 
-///|
 pub extern "js" fn VTTCue::get_size(self : VTTCue) -> Double =
   #| (self) => self.size
 
-///|
 pub extern "js" fn VTTCue::set_size(self : VTTCue, value : Double) -> Unit =
   #| (self, value) => { self.size = value }
 
-///|
 pub extern "js" fn VTTCue::get_align(self : VTTCue) -> AlignSetting =
   #| (self) => ['start', 'center', 'end', 'left', 'right'].indexOf(self.align)
 
-///|
-pub extern "js" fn VTTCue::set_align(
-  self : VTTCue,
-  value : AlignSetting,
-) -> Unit =
+pub extern "js" fn VTTCue::set_align(self : VTTCue, value : AlignSetting) -> Unit =
   #| (self, value) => { self.align = ['start', 'center', 'end', 'left', 'right'][value] }
 
-///|
 pub extern "js" fn VTTCue::get_text(self : VTTCue) -> String =
   #| (self) => self.text
 
-///|
 pub extern "js" fn VTTCue::set_text(self : VTTCue, value : String) -> Unit =
   #| (self, value) => { self.text = value }
 
-///|
 pub extern "js" fn VTTCue::get_cue_as_html(self : VTTCue) -> DocumentFragment =
   #| (self) => self.getCueAsHTML()
 
@@ -425,26 +333,21 @@ pub extern "js" fn VTTCue::get_cue_as_html(self : VTTCue) -> DocumentFragment =
 /// VTTRegion interface
 pub type VTTRegion
 
-///|
 pub extern "js" fn VTTRegion::to_js_value(self : VTTRegion) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to VTTRegion (unchecked)
 pub extern "js" fn VTTRegion::from_js_value(v : JsValue) -> VTTRegion =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to VTTRegion (checked with instanceof)
 pub extern "js" fn VTTRegion::from_js_value_opt(v : JsValue) -> VTTRegion? =
   #| (v) => (v instanceof VTTRegion) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to VTTRegion (checked with instanceof)
 pub extern "js" fn JsValue::as_vtt_region(self : JsValue) -> VTTRegion? =
   #| (self) => (self instanceof VTTRegion) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to VTTRegion (unchecked)
 pub extern "js" fn JsValue::to_vtt_region(self : JsValue) -> VTTRegion =
   #| (self) => self
@@ -456,12 +359,16 @@ pub(all) enum VTTRegionSetWidthError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend VTTRegionSetWidthError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum VTTRegionSetRegionAnchorXError {
   IndexSizeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend VTTRegionSetRegionAnchorXError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -470,12 +377,16 @@ pub(all) enum VTTRegionSetRegionAnchorYError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend VTTRegionSetRegionAnchorYError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum VTTRegionSetViewportAnchorXError {
   IndexSizeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend VTTRegionSetViewportAnchorXError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -484,88 +395,55 @@ pub(all) enum VTTRegionSetViewportAnchorYError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend VTTRegionSetViewportAnchorYError with @debug.Debug::{to_repr}
+
 pub extern "js" fn VTTRegion::new() -> VTTRegion =
   #| () => new VTTRegion()
 
-///|
 pub extern "js" fn VTTRegion::get_id(self : VTTRegion) -> String =
   #| (self) => self.id
 
-///|
 pub extern "js" fn VTTRegion::set_id(self : VTTRegion, value : String) -> Unit =
   #| (self, value) => { self.id = value }
 
-///|
 pub extern "js" fn VTTRegion::get_width(self : VTTRegion) -> Double =
   #| (self) => self.width
 
-///|
-pub extern "js" fn VTTRegion::set_width(
-  self : VTTRegion,
-  value : Double,
-) -> Result[Unit, VTTRegionSetWidthError] =
+pub extern "js" fn VTTRegion::set_width(self : VTTRegion, value : Double) -> Result[Unit, VTTRegionSetWidthError] =
   #| (self, value) => (() => { try { self.width = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
 pub extern "js" fn VTTRegion::get_lines(self : VTTRegion) -> Int =
   #| (self) => self.lines
 
-///|
 pub extern "js" fn VTTRegion::set_lines(self : VTTRegion, value : Int) -> Unit =
   #| (self, value) => { self.lines = value }
 
-///|
 pub extern "js" fn VTTRegion::get_region_anchor_x(self : VTTRegion) -> Double =
   #| (self) => self.regionAnchorX
 
-///|
-pub extern "js" fn VTTRegion::set_region_anchor_x(
-  self : VTTRegion,
-  value : Double,
-) -> Result[Unit, VTTRegionSetRegionAnchorXError] =
+pub extern "js" fn VTTRegion::set_region_anchor_x(self : VTTRegion, value : Double) -> Result[Unit, VTTRegionSetRegionAnchorXError] =
   #| (self, value) => (() => { try { self.regionAnchorX = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
 pub extern "js" fn VTTRegion::get_region_anchor_y(self : VTTRegion) -> Double =
   #| (self) => self.regionAnchorY
 
-///|
-pub extern "js" fn VTTRegion::set_region_anchor_y(
-  self : VTTRegion,
-  value : Double,
-) -> Result[Unit, VTTRegionSetRegionAnchorYError] =
+pub extern "js" fn VTTRegion::set_region_anchor_y(self : VTTRegion, value : Double) -> Result[Unit, VTTRegionSetRegionAnchorYError] =
   #| (self, value) => (() => { try { self.regionAnchorY = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
 pub extern "js" fn VTTRegion::get_viewport_anchor_x(self : VTTRegion) -> Double =
   #| (self) => self.viewportAnchorX
 
-///|
-pub extern "js" fn VTTRegion::set_viewport_anchor_x(
-  self : VTTRegion,
-  value : Double,
-) -> Result[Unit, VTTRegionSetViewportAnchorXError] =
+pub extern "js" fn VTTRegion::set_viewport_anchor_x(self : VTTRegion, value : Double) -> Result[Unit, VTTRegionSetViewportAnchorXError] =
   #| (self, value) => (() => { try { self.viewportAnchorX = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
 pub extern "js" fn VTTRegion::get_viewport_anchor_y(self : VTTRegion) -> Double =
   #| (self) => self.viewportAnchorY
 
-///|
-pub extern "js" fn VTTRegion::set_viewport_anchor_y(
-  self : VTTRegion,
-  value : Double,
-) -> Result[Unit, VTTRegionSetViewportAnchorYError] =
+pub extern "js" fn VTTRegion::set_viewport_anchor_y(self : VTTRegion, value : Double) -> Result[Unit, VTTRegionSetViewportAnchorYError] =
   #| (self, value) => (() => { try { self.viewportAnchorY = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
 pub extern "js" fn VTTRegion::get_scroll(self : VTTRegion) -> ScrollSetting =
   #| (self) => ['', 'up'].indexOf(self.scroll)
 
-///|
-pub extern "js" fn VTTRegion::set_scroll(
-  self : VTTRegion,
-  value : ScrollSetting,
-) -> Unit =
+pub extern "js" fn VTTRegion::set_scroll(self : VTTRegion, value : ScrollSetting) -> Unit =
   #| (self, value) => { self.scroll = ['', 'up'][value] }

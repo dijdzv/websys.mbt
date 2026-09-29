@@ -9,7 +9,9 @@ pub(all) enum HighlightType {
   GrammarError
 } derive(Eq, Debug)
 
-///|
+pub extend HighlightType with Eq::{equal, not_equal}
+pub extend HighlightType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn HighlightType::to_string(self : HighlightType) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn HighlightType::to_string(self : HighlightType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn HighlightType::from_string(s : String) -> HighlightType? {
   match s {
@@ -37,37 +38,31 @@ pub(all) struct HighlightHitResult {
   ranges : FixedArray[AbstractRange]?
 }
 
-///|
 /// Create a new HighlightHitResult with default values
 pub fn HighlightHitResult::default() -> HighlightHitResult {
-  HighlightHitResult::{ highlight: None, ranges: None, }
+  HighlightHitResult::{
+    highlight: None,
+    ranges: None,
+  }
 }
 
-///|
-extern "js" fn HighlightHitResult::to_js_ffi(
-  self : HighlightHitResult,
-) -> JsValue =
+extern "js" fn HighlightHitResult::to_js_ffi(self : HighlightHitResult) -> JsValue =
   #| (self) => ({
   #|   highlight: ((() => { const v = self.highlight; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   ranges: self.ranges
   #| })
 
-///|
 /// Convert to JsValue
 pub fn HighlightHitResult::to_js(self : HighlightHitResult) -> JsValue {
   HighlightHitResult::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HighlightHitResult::from_js_ffi(
-  value : JsValue,
-) -> HighlightHitResult =
+extern "js" fn HighlightHitResult::from_js_ffi(value : JsValue) -> HighlightHitResult =
   #| (v) => ({
   #|   highlight: (v.highlight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.highlight }),
   #|   ranges: v.ranges
   #| })
 
-///|
 /// Convert from JsValue
 pub fn HighlightHitResult::from_js(value : JsValue) -> HighlightHitResult {
   HighlightHitResult::from_js_ffi(value)
@@ -79,41 +74,30 @@ pub(all) struct HighlightsFromPointOptions {
   shadowRoots : FixedArray[ShadowRoot]?
 }
 
-///|
 /// Create a new HighlightsFromPointOptions with default values
 pub fn HighlightsFromPointOptions::default() -> HighlightsFromPointOptions {
-  HighlightsFromPointOptions::{ shadowRoots: None, }
+  HighlightsFromPointOptions::{
+    shadowRoots: None,
+  }
 }
 
-///|
-extern "js" fn HighlightsFromPointOptions::to_js_ffi(
-  self : HighlightsFromPointOptions,
-) -> JsValue =
+extern "js" fn HighlightsFromPointOptions::to_js_ffi(self : HighlightsFromPointOptions) -> JsValue =
   #| (self) => ({
   #|   shadowRoots: self.shadowRoots
   #| })
 
-///|
 /// Convert to JsValue
-pub fn HighlightsFromPointOptions::to_js(
-  self : HighlightsFromPointOptions,
-) -> JsValue {
+pub fn HighlightsFromPointOptions::to_js(self : HighlightsFromPointOptions) -> JsValue {
   HighlightsFromPointOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HighlightsFromPointOptions::from_js_ffi(
-  value : JsValue,
-) -> HighlightsFromPointOptions =
+extern "js" fn HighlightsFromPointOptions::from_js_ffi(value : JsValue) -> HighlightsFromPointOptions =
   #| (v) => ({
   #|   shadowRoots: v.shadowRoots
   #| })
 
-///|
 /// Convert from JsValue
-pub fn HighlightsFromPointOptions::from_js(
-  value : JsValue,
-) -> HighlightsFromPointOptions {
+pub fn HighlightsFromPointOptions::from_js(value : JsValue) -> HighlightsFromPointOptions {
   HighlightsFromPointOptions::from_js_ffi(value)
 }
 
@@ -121,180 +105,96 @@ pub fn HighlightsFromPointOptions::from_js(
 /// Highlight interface
 pub type Highlight
 
-///|
 pub extern "js" fn Highlight::to_js_value(self : Highlight) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Highlight (unchecked)
 pub extern "js" fn Highlight::from_js_value(v : JsValue) -> Highlight =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Highlight (checked with instanceof)
 pub extern "js" fn Highlight::from_js_value_opt(v : JsValue) -> Highlight? =
   #| (v) => (v instanceof Highlight) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Highlight (checked with instanceof)
 pub extern "js" fn JsValue::as_highlight(self : JsValue) -> Highlight? =
   #| (self) => (self instanceof Highlight) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Highlight (unchecked)
 pub extern "js" fn JsValue::to_highlight(self : JsValue) -> Highlight =
   #| (self) => self
 
-///|
 pub extern "js" fn Highlight::new(initial_ranges : AbstractRange) -> Highlight =
   #| (initial_ranges) => new Highlight(initial_ranges)
 
-///|
-pub extern "js" fn Highlight::has(
-  self : Highlight,
-  value : AbstractRange,
-) -> Bool =
+pub extern "js" fn Highlight::has(self : Highlight, value : AbstractRange) -> Bool =
   #| (self, value) => self.has(value)
 
-///|
-pub extern "js" fn Highlight::add(
-  self : Highlight,
-  value : AbstractRange,
-) -> Unit =
+pub extern "js" fn Highlight::add(self : Highlight, value : AbstractRange) -> Unit =
   #| (self, value) => { self.add(value) }
 
-///|
-pub extern "js" fn Highlight::delete(
-  self : Highlight,
-  value : AbstractRange,
-) -> Bool =
+pub extern "js" fn Highlight::delete(self : Highlight, value : AbstractRange) -> Bool =
   #| (self, value) => self.delete(value)
 
-///|
 pub extern "js" fn Highlight::clear(self : Highlight) -> Unit =
   #| (self) => { self.clear() }
 
-///|
 pub extern "js" fn Highlight::get_priority(self : Highlight) -> Int =
   #| (self) => self.priority
 
-///|
-pub extern "js" fn Highlight::set_priority(
-  self : Highlight,
-  value : Int,
-) -> Unit =
+pub extern "js" fn Highlight::set_priority(self : Highlight, value : Int) -> Unit =
   #| (self, value) => { self.priority = value }
 
-///|
 pub extern "js" fn Highlight::get_type(self : Highlight) -> HighlightType =
   #| (self) => ['highlight', 'spelling-error', 'grammar-error'].indexOf(self.type)
 
-///|
-pub extern "js" fn Highlight::set_type(
-  self : Highlight,
-  value : HighlightType,
-) -> Unit =
+pub extern "js" fn Highlight::set_type(self : Highlight, value : HighlightType) -> Unit =
   #| (self, value) => { self.type = ['highlight', 'spelling-error', 'grammar-error'][value] }
 
 ///|
 /// HighlightRegistry interface
 pub type HighlightRegistry
 
-///|
-pub extern "js" fn HighlightRegistry::to_js_value(
-  self : HighlightRegistry,
-) -> JsValue =
+pub extern "js" fn HighlightRegistry::to_js_value(self : HighlightRegistry) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to HighlightRegistry (unchecked)
-pub extern "js" fn HighlightRegistry::from_js_value(
-  v : JsValue,
-) -> HighlightRegistry =
+pub extern "js" fn HighlightRegistry::from_js_value(v : JsValue) -> HighlightRegistry =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to HighlightRegistry (checked with instanceof)
-pub extern "js" fn HighlightRegistry::from_js_value_opt(
-  v : JsValue,
-) -> HighlightRegistry? =
+pub extern "js" fn HighlightRegistry::from_js_value_opt(v : JsValue) -> HighlightRegistry? =
   #| (v) => (v instanceof HighlightRegistry) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to HighlightRegistry (checked with instanceof)
-pub extern "js" fn JsValue::as_highlight_registry(
-  self : JsValue,
-) -> HighlightRegistry? =
+pub extern "js" fn JsValue::as_highlight_registry(self : JsValue) -> HighlightRegistry? =
   #| (self) => (self instanceof HighlightRegistry) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to HighlightRegistry (unchecked)
-pub extern "js" fn JsValue::to_highlight_registry(
-  self : JsValue,
-) -> HighlightRegistry =
+pub extern "js" fn JsValue::to_highlight_registry(self : JsValue) -> HighlightRegistry =
   #| (self) => self
 
-///|
-pub extern "js" fn HighlightRegistry::get(
-  self : HighlightRegistry,
-  key : String,
-) -> Highlight? =
+pub extern "js" fn HighlightRegistry::get(self : HighlightRegistry, key : String) -> Highlight? =
   #| (self, key) => self.get(key)
 
-///|
-pub extern "js" fn HighlightRegistry::has(
-  self : HighlightRegistry,
-  key : String,
-) -> Bool =
+pub extern "js" fn HighlightRegistry::has(self : HighlightRegistry, key : String) -> Bool =
   #| (self, key) => self.has(key)
 
-///|
-pub extern "js" fn HighlightRegistry::set(
-  self : HighlightRegistry,
-  key : String,
-  value : Highlight,
-) -> Unit =
+pub extern "js" fn HighlightRegistry::set(self : HighlightRegistry, key : String, value : Highlight) -> Unit =
   #| (self, key, value) => { self.set(key, value) }
 
-///|
-pub extern "js" fn HighlightRegistry::delete(
-  self : HighlightRegistry,
-  key : String,
-) -> Bool =
+pub extern "js" fn HighlightRegistry::delete(self : HighlightRegistry, key : String) -> Bool =
   #| (self, key) => self.delete(key)
 
-///|
 pub extern "js" fn HighlightRegistry::clear(self : HighlightRegistry) -> Unit =
   #| (self) => { self.clear() }
 
-///|
-pub extern "js" fn HighlightRegistry::highlights_from_point(
-  self : HighlightRegistry,
-  x : Double,
-  y : Double,
-) -> FixedArray[HighlightHitResult] =
+pub extern "js" fn HighlightRegistry::highlights_from_point(self : HighlightRegistry, x : Double, y : Double) -> FixedArray[HighlightHitResult] =
   #| (self, x, y) => self.highlightsFromPoint(x, y)
 
-///|
-extern "js" fn HighlightRegistry::highlights_from_point_with_options_ffi(
-  self : HighlightRegistry,
-  x : Double,
-  y : Double,
-  options : JsValue,
-) -> FixedArray[HighlightHitResult] =
+extern "js" fn HighlightRegistry::highlights_from_point_with_options_ffi(self : HighlightRegistry, x : Double, y : Double, options : JsValue) -> FixedArray[HighlightHitResult] =
   #| (self, x, y, options) => self.highlightsFromPoint(x, y, options)
 
-///|
-pub fn HighlightRegistry::highlights_from_point_with_options(
-  self : HighlightRegistry,
-  x : Double,
-  y : Double,
-  options : HighlightsFromPointOptions,
-) -> FixedArray[HighlightHitResult] {
-  HighlightRegistry::highlights_from_point_with_options_ffi(
-    self,
-    x,
-    y,
-    options.to_js(),
-  )
+pub fn HighlightRegistry::highlights_from_point_with_options(self : HighlightRegistry, x : Double, y : Double, options : HighlightsFromPointOptions) -> FixedArray[HighlightHitResult] {
+  HighlightRegistry::highlights_from_point_with_options_ffi(self, x, y, options.to_js())
 }

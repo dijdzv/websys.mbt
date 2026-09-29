@@ -119,6 +119,7 @@ test "typed browser errors expose Debug without deprecated derivation" {
   assert_true(code.contains("derive(Debug)"))
   assert_true(!code.contains("derive(Show)"))
   assert_true(code.contains("OtherError(JsError)"))
+  assert_true(code.contains("pub extend ExampleError with @debug.Debug::{to_repr}"))
 }
 
 ///|

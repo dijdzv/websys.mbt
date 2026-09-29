@@ -10,7 +10,9 @@ pub(all) enum SummarizerType {
   Headline
 } derive(Eq, Debug)
 
-///|
+pub extend SummarizerType with Eq::{equal, not_equal}
+pub extend SummarizerType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn SummarizerType::to_string(self : SummarizerType) -> String {
   match self {
@@ -21,7 +23,6 @@ pub fn SummarizerType::to_string(self : SummarizerType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn SummarizerType::from_string(s : String) -> SummarizerType? {
   match s {
@@ -40,7 +41,9 @@ pub(all) enum SummarizerFormat {
   Markdown
 } derive(Eq, Debug)
 
-///|
+pub extend SummarizerFormat with Eq::{equal, not_equal}
+pub extend SummarizerFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn SummarizerFormat::to_string(self : SummarizerFormat) -> String {
   match self {
@@ -49,7 +52,6 @@ pub fn SummarizerFormat::to_string(self : SummarizerFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn SummarizerFormat::from_string(s : String) -> SummarizerFormat? {
   match s {
@@ -67,7 +69,9 @@ pub(all) enum SummarizerLength {
   Long
 } derive(Eq, Debug)
 
-///|
+pub extend SummarizerLength with Eq::{equal, not_equal}
+pub extend SummarizerLength with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn SummarizerLength::to_string(self : SummarizerLength) -> String {
   match self {
@@ -77,13 +81,42 @@ pub fn SummarizerLength::to_string(self : SummarizerLength) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn SummarizerLength::from_string(s : String) -> SummarizerLength? {
   match s {
     "short" => Some(SummarizerLength::Short)
     "medium" => Some(SummarizerLength::Medium)
     "long" => Some(SummarizerLength::Long)
+    _ => None
+  }
+}
+
+///|
+/// PerformancePreference enum
+pub(all) enum PerformancePreference {
+  Auto
+  Speed
+  Capability
+} derive(Eq, Debug)
+
+pub extend PerformancePreference with Eq::{equal, not_equal}
+pub extend PerformancePreference with @debug.Debug::{to_repr}
+
+/// Convert to string value
+pub fn PerformancePreference::to_string(self : PerformancePreference) -> String {
+  match self {
+    PerformancePreference::Auto => "auto"
+    PerformancePreference::Speed => "speed"
+    PerformancePreference::Capability => "capability"
+  }
+}
+
+/// Parse from string value
+pub fn PerformancePreference::from_string(s : String) -> PerformancePreference? {
+  match s {
+    "auto" => Some(PerformancePreference::Auto)
+    "speed" => Some(PerformancePreference::Speed)
+    "capability" => Some(PerformancePreference::Capability)
     _ => None
   }
 }
@@ -96,7 +129,9 @@ pub(all) enum WriterTone {
   Casual
 } derive(Eq, Debug)
 
-///|
+pub extend WriterTone with Eq::{equal, not_equal}
+pub extend WriterTone with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn WriterTone::to_string(self : WriterTone) -> String {
   match self {
@@ -106,7 +141,6 @@ pub fn WriterTone::to_string(self : WriterTone) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn WriterTone::from_string(s : String) -> WriterTone? {
   match s {
@@ -124,7 +158,9 @@ pub(all) enum WriterFormat {
   Markdown
 } derive(Eq, Debug)
 
-///|
+pub extend WriterFormat with Eq::{equal, not_equal}
+pub extend WriterFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn WriterFormat::to_string(self : WriterFormat) -> String {
   match self {
@@ -133,7 +169,6 @@ pub fn WriterFormat::to_string(self : WriterFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn WriterFormat::from_string(s : String) -> WriterFormat? {
   match s {
@@ -151,7 +186,9 @@ pub(all) enum WriterLength {
   Long
 } derive(Eq, Debug)
 
-///|
+pub extend WriterLength with Eq::{equal, not_equal}
+pub extend WriterLength with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn WriterLength::to_string(self : WriterLength) -> String {
   match self {
@@ -161,7 +198,6 @@ pub fn WriterLength::to_string(self : WriterLength) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn WriterLength::from_string(s : String) -> WriterLength? {
   match s {
@@ -180,7 +216,9 @@ pub(all) enum RewriterTone {
   MoreCasual
 } derive(Eq, Debug)
 
-///|
+pub extend RewriterTone with Eq::{equal, not_equal}
+pub extend RewriterTone with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RewriterTone::to_string(self : RewriterTone) -> String {
   match self {
@@ -190,7 +228,6 @@ pub fn RewriterTone::to_string(self : RewriterTone) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RewriterTone::from_string(s : String) -> RewriterTone? {
   match s {
@@ -209,7 +246,9 @@ pub(all) enum RewriterFormat {
   Markdown
 } derive(Eq, Debug)
 
-///|
+pub extend RewriterFormat with Eq::{equal, not_equal}
+pub extend RewriterFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RewriterFormat::to_string(self : RewriterFormat) -> String {
   match self {
@@ -219,7 +258,6 @@ pub fn RewriterFormat::to_string(self : RewriterFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RewriterFormat::from_string(s : String) -> RewriterFormat? {
   match s {
@@ -238,7 +276,9 @@ pub(all) enum RewriterLength {
   Longer
 } derive(Eq, Debug)
 
-///|
+pub extend RewriterLength with Eq::{equal, not_equal}
+pub extend RewriterLength with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RewriterLength::to_string(self : RewriterLength) -> String {
   match self {
@@ -248,7 +288,6 @@ pub fn RewriterLength::to_string(self : RewriterLength) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RewriterLength::from_string(s : String) -> RewriterLength? {
   match s {
@@ -268,7 +307,9 @@ pub(all) enum Availability {
   Available
 } derive(Eq, Debug)
 
-///|
+pub extend Availability with Eq::{equal, not_equal}
+pub extend Availability with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn Availability::to_string(self : Availability) -> String {
   match self {
@@ -279,7 +320,6 @@ pub fn Availability::to_string(self : Availability) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn Availability::from_string(s : String) -> Availability? {
   match s {
@@ -291,15 +331,11 @@ pub fn Availability::from_string(s : String) -> Availability? {
   }
 }
 
-///|
 /// CreateMonitorCallback callback interface
 pub type CreateMonitorCallback
 
-///|
 /// Create CreateMonitorCallback from a MoonBit function
-pub extern "js" fn CreateMonitorCallback::from_fn(
-  handler : (CreateMonitor) -> Unit,
-) -> CreateMonitorCallback =
+pub extern "js" fn CreateMonitorCallback::from_fn(handler : (CreateMonitor) -> Unit) -> CreateMonitorCallback =
   #| (handler) => (a0) => handler(a0)
 
 ///|
@@ -308,63 +344,54 @@ pub(all) struct SummarizerCreateCoreOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
+  preference : PerformancePreference?
   expectedInputLanguages : FixedArray[String]?
   expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
 }
 
-///|
 /// Create a new SummarizerCreateCoreOptions with default values
 pub fn SummarizerCreateCoreOptions::default() -> SummarizerCreateCoreOptions {
   SummarizerCreateCoreOptions::{
     type_: None,
     format: None,
     length: None,
+    preference: None,
     expectedInputLanguages: None,
     expectedContextLanguages: None,
     outputLanguage: None,
   }
 }
 
-///|
-extern "js" fn SummarizerCreateCoreOptions::to_js_ffi(
-  self : SummarizerCreateCoreOptions,
-) -> JsValue =
+extern "js" fn SummarizerCreateCoreOptions::to_js_ffi(self : SummarizerCreateCoreOptions) -> JsValue =
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
+  #|   preference: ((() => { const v = self.preference; if (v === undefined) return undefined; return ['auto', 'speed', 'capability'][v]; })()),
   #|   expectedInputLanguages: self.expectedInputLanguages,
   #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage
   #| })
 
-///|
 /// Convert to JsValue
-pub fn SummarizerCreateCoreOptions::to_js(
-  self : SummarizerCreateCoreOptions,
-) -> JsValue {
+pub fn SummarizerCreateCoreOptions::to_js(self : SummarizerCreateCoreOptions) -> JsValue {
   SummarizerCreateCoreOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SummarizerCreateCoreOptions::from_js_ffi(
-  value : JsValue,
-) -> SummarizerCreateCoreOptions =
+extern "js" fn SummarizerCreateCoreOptions::from_js_ffi(value : JsValue) -> SummarizerCreateCoreOptions =
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   preference: (v.preference === undefined ? undefined : ['auto', 'speed', 'capability'].indexOf(v.preference)),
   #|   expectedInputLanguages: v.expectedInputLanguages,
   #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage
   #| })
 
-///|
 /// Convert from JsValue
-pub fn SummarizerCreateCoreOptions::from_js(
-  value : JsValue,
-) -> SummarizerCreateCoreOptions {
+pub fn SummarizerCreateCoreOptions::from_js(value : JsValue) -> SummarizerCreateCoreOptions {
   SummarizerCreateCoreOptions::from_js_ffi(value)
 }
 
@@ -374,6 +401,7 @@ pub(all) struct SummarizerCreateOptions {
   type_ : SummarizerType?
   format : SummarizerFormat?
   length : SummarizerLength?
+  preference : PerformancePreference?
   expectedInputLanguages : FixedArray[String]?
   expectedContextLanguages : FixedArray[String]?
   outputLanguage : String?
@@ -382,13 +410,13 @@ pub(all) struct SummarizerCreateOptions {
   sharedContext : String?
 }
 
-///|
 /// Create a new SummarizerCreateOptions with default values
 pub fn SummarizerCreateOptions::default() -> SummarizerCreateOptions {
   SummarizerCreateOptions::{
     type_: None,
     format: None,
     length: None,
+    preference: None,
     expectedInputLanguages: None,
     expectedContextLanguages: None,
     outputLanguage: None,
@@ -398,14 +426,12 @@ pub fn SummarizerCreateOptions::default() -> SummarizerCreateOptions {
   }
 }
 
-///|
-extern "js" fn SummarizerCreateOptions::to_js_ffi(
-  self : SummarizerCreateOptions,
-) -> JsValue =
+extern "js" fn SummarizerCreateOptions::to_js_ffi(self : SummarizerCreateOptions) -> JsValue =
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['tldr', 'teaser', 'key-points', 'headline'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
   #|   length: ((() => { const v = self.length; if (v === undefined) return undefined; return ['short', 'medium', 'long'][v]; })()),
+  #|   preference: ((() => { const v = self.preference; if (v === undefined) return undefined; return ['auto', 'speed', 'capability'][v]; })()),
   #|   expectedInputLanguages: self.expectedInputLanguages,
   #|   expectedContextLanguages: self.expectedContextLanguages,
   #|   outputLanguage: self.outputLanguage,
@@ -414,22 +440,17 @@ extern "js" fn SummarizerCreateOptions::to_js_ffi(
   #|   sharedContext: self.sharedContext
   #| })
 
-///|
 /// Convert to JsValue
-pub fn SummarizerCreateOptions::to_js(
-  self : SummarizerCreateOptions,
-) -> JsValue {
+pub fn SummarizerCreateOptions::to_js(self : SummarizerCreateOptions) -> JsValue {
   SummarizerCreateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SummarizerCreateOptions::from_js_ffi(
-  value : JsValue,
-) -> SummarizerCreateOptions =
+extern "js" fn SummarizerCreateOptions::from_js_ffi(value : JsValue) -> SummarizerCreateOptions =
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['tldr', 'teaser', 'key-points', 'headline'].indexOf(v.type)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
   #|   length: (v.length === undefined ? undefined : ['short', 'medium', 'long'].indexOf(v.length)),
+  #|   preference: (v.preference === undefined ? undefined : ['auto', 'speed', 'capability'].indexOf(v.preference)),
   #|   expectedInputLanguages: v.expectedInputLanguages,
   #|   expectedContextLanguages: v.expectedContextLanguages,
   #|   outputLanguage: v.outputLanguage,
@@ -438,11 +459,8 @@ extern "js" fn SummarizerCreateOptions::from_js_ffi(
   #|   sharedContext: v.sharedContext
   #| })
 
-///|
 /// Convert from JsValue
-pub fn SummarizerCreateOptions::from_js(
-  value : JsValue,
-) -> SummarizerCreateOptions {
+pub fn SummarizerCreateOptions::from_js(value : JsValue) -> SummarizerCreateOptions {
   SummarizerCreateOptions::from_js_ffi(value)
 }
 
@@ -453,43 +471,33 @@ pub(all) struct SummarizerSummarizeOptions {
   context : String?
 }
 
-///|
 /// Create a new SummarizerSummarizeOptions with default values
 pub fn SummarizerSummarizeOptions::default() -> SummarizerSummarizeOptions {
-  SummarizerSummarizeOptions::{ signal: None, context: None, }
+  SummarizerSummarizeOptions::{
+    signal: None,
+    context: None,
+  }
 }
 
-///|
-extern "js" fn SummarizerSummarizeOptions::to_js_ffi(
-  self : SummarizerSummarizeOptions,
-) -> JsValue =
+extern "js" fn SummarizerSummarizeOptions::to_js_ffi(self : SummarizerSummarizeOptions) -> JsValue =
   #| (self) => ({
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   context: self.context
   #| })
 
-///|
 /// Convert to JsValue
-pub fn SummarizerSummarizeOptions::to_js(
-  self : SummarizerSummarizeOptions,
-) -> JsValue {
+pub fn SummarizerSummarizeOptions::to_js(self : SummarizerSummarizeOptions) -> JsValue {
   SummarizerSummarizeOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SummarizerSummarizeOptions::from_js_ffi(
-  value : JsValue,
-) -> SummarizerSummarizeOptions =
+extern "js" fn SummarizerSummarizeOptions::from_js_ffi(value : JsValue) -> SummarizerSummarizeOptions =
   #| (v) => ({
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal }),
   #|   context: v.context
   #| })
 
-///|
 /// Convert from JsValue
-pub fn SummarizerSummarizeOptions::from_js(
-  value : JsValue,
-) -> SummarizerSummarizeOptions {
+pub fn SummarizerSummarizeOptions::from_js(value : JsValue) -> SummarizerSummarizeOptions {
   SummarizerSummarizeOptions::from_js_ffi(value)
 }
 
@@ -504,7 +512,6 @@ pub(all) struct WriterCreateCoreOptions {
   outputLanguage : String?
 }
 
-///|
 /// Create a new WriterCreateCoreOptions with default values
 pub fn WriterCreateCoreOptions::default() -> WriterCreateCoreOptions {
   WriterCreateCoreOptions::{
@@ -517,10 +524,7 @@ pub fn WriterCreateCoreOptions::default() -> WriterCreateCoreOptions {
   }
 }
 
-///|
-extern "js" fn WriterCreateCoreOptions::to_js_ffi(
-  self : WriterCreateCoreOptions,
-) -> JsValue =
+extern "js" fn WriterCreateCoreOptions::to_js_ffi(self : WriterCreateCoreOptions) -> JsValue =
   #| (self) => ({
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
@@ -530,18 +534,12 @@ extern "js" fn WriterCreateCoreOptions::to_js_ffi(
   #|   outputLanguage: self.outputLanguage
   #| })
 
-///|
 /// Convert to JsValue
-pub fn WriterCreateCoreOptions::to_js(
-  self : WriterCreateCoreOptions,
-) -> JsValue {
+pub fn WriterCreateCoreOptions::to_js(self : WriterCreateCoreOptions) -> JsValue {
   WriterCreateCoreOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn WriterCreateCoreOptions::from_js_ffi(
-  value : JsValue,
-) -> WriterCreateCoreOptions =
+extern "js" fn WriterCreateCoreOptions::from_js_ffi(value : JsValue) -> WriterCreateCoreOptions =
   #| (v) => ({
   #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
@@ -551,11 +549,8 @@ extern "js" fn WriterCreateCoreOptions::from_js_ffi(
   #|   outputLanguage: v.outputLanguage
   #| })
 
-///|
 /// Convert from JsValue
-pub fn WriterCreateCoreOptions::from_js(
-  value : JsValue,
-) -> WriterCreateCoreOptions {
+pub fn WriterCreateCoreOptions::from_js(value : JsValue) -> WriterCreateCoreOptions {
   WriterCreateCoreOptions::from_js_ffi(value)
 }
 
@@ -573,7 +568,6 @@ pub(all) struct WriterCreateOptions {
   sharedContext : String?
 }
 
-///|
 /// Create a new WriterCreateOptions with default values
 pub fn WriterCreateOptions::default() -> WriterCreateOptions {
   WriterCreateOptions::{
@@ -589,10 +583,7 @@ pub fn WriterCreateOptions::default() -> WriterCreateOptions {
   }
 }
 
-///|
-extern "js" fn WriterCreateOptions::to_js_ffi(
-  self : WriterCreateOptions,
-) -> JsValue =
+extern "js" fn WriterCreateOptions::to_js_ffi(self : WriterCreateOptions) -> JsValue =
   #| (self) => ({
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['formal', 'neutral', 'casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['plain-text', 'markdown'][v]; })()),
@@ -605,16 +596,12 @@ extern "js" fn WriterCreateOptions::to_js_ffi(
   #|   sharedContext: self.sharedContext
   #| })
 
-///|
 /// Convert to JsValue
 pub fn WriterCreateOptions::to_js(self : WriterCreateOptions) -> JsValue {
   WriterCreateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn WriterCreateOptions::from_js_ffi(
-  value : JsValue,
-) -> WriterCreateOptions =
+extern "js" fn WriterCreateOptions::from_js_ffi(value : JsValue) -> WriterCreateOptions =
   #| (v) => ({
   #|   tone: (v.tone === undefined ? undefined : ['formal', 'neutral', 'casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['plain-text', 'markdown'].indexOf(v.format)),
@@ -627,7 +614,6 @@ extern "js" fn WriterCreateOptions::from_js_ffi(
   #|   sharedContext: v.sharedContext
   #| })
 
-///|
 /// Convert from JsValue
 pub fn WriterCreateOptions::from_js(value : JsValue) -> WriterCreateOptions {
   WriterCreateOptions::from_js_ffi(value)
@@ -640,37 +626,31 @@ pub(all) struct WriterWriteOptions {
   signal : AbortSignal?
 }
 
-///|
 /// Create a new WriterWriteOptions with default values
 pub fn WriterWriteOptions::default() -> WriterWriteOptions {
-  WriterWriteOptions::{ context: None, signal: None, }
+  WriterWriteOptions::{
+    context: None,
+    signal: None,
+  }
 }
 
-///|
-extern "js" fn WriterWriteOptions::to_js_ffi(
-  self : WriterWriteOptions,
-) -> JsValue =
+extern "js" fn WriterWriteOptions::to_js_ffi(self : WriterWriteOptions) -> JsValue =
   #| (self) => ({
   #|   context: self.context,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn WriterWriteOptions::to_js(self : WriterWriteOptions) -> JsValue {
   WriterWriteOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn WriterWriteOptions::from_js_ffi(
-  value : JsValue,
-) -> WriterWriteOptions =
+extern "js" fn WriterWriteOptions::from_js_ffi(value : JsValue) -> WriterWriteOptions =
   #| (v) => ({
   #|   context: v.context,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn WriterWriteOptions::from_js(value : JsValue) -> WriterWriteOptions {
   WriterWriteOptions::from_js_ffi(value)
@@ -687,7 +667,6 @@ pub(all) struct RewriterCreateCoreOptions {
   outputLanguage : String?
 }
 
-///|
 /// Create a new RewriterCreateCoreOptions with default values
 pub fn RewriterCreateCoreOptions::default() -> RewriterCreateCoreOptions {
   RewriterCreateCoreOptions::{
@@ -700,10 +679,7 @@ pub fn RewriterCreateCoreOptions::default() -> RewriterCreateCoreOptions {
   }
 }
 
-///|
-extern "js" fn RewriterCreateCoreOptions::to_js_ffi(
-  self : RewriterCreateCoreOptions,
-) -> JsValue =
+extern "js" fn RewriterCreateCoreOptions::to_js_ffi(self : RewriterCreateCoreOptions) -> JsValue =
   #| (self) => ({
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
@@ -713,18 +689,12 @@ extern "js" fn RewriterCreateCoreOptions::to_js_ffi(
   #|   outputLanguage: self.outputLanguage
   #| })
 
-///|
 /// Convert to JsValue
-pub fn RewriterCreateCoreOptions::to_js(
-  self : RewriterCreateCoreOptions,
-) -> JsValue {
+pub fn RewriterCreateCoreOptions::to_js(self : RewriterCreateCoreOptions) -> JsValue {
   RewriterCreateCoreOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn RewriterCreateCoreOptions::from_js_ffi(
-  value : JsValue,
-) -> RewriterCreateCoreOptions =
+extern "js" fn RewriterCreateCoreOptions::from_js_ffi(value : JsValue) -> RewriterCreateCoreOptions =
   #| (v) => ({
   #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
@@ -734,11 +704,8 @@ extern "js" fn RewriterCreateCoreOptions::from_js_ffi(
   #|   outputLanguage: v.outputLanguage
   #| })
 
-///|
 /// Convert from JsValue
-pub fn RewriterCreateCoreOptions::from_js(
-  value : JsValue,
-) -> RewriterCreateCoreOptions {
+pub fn RewriterCreateCoreOptions::from_js(value : JsValue) -> RewriterCreateCoreOptions {
   RewriterCreateCoreOptions::from_js_ffi(value)
 }
 
@@ -756,7 +723,6 @@ pub(all) struct RewriterCreateOptions {
   sharedContext : String?
 }
 
-///|
 /// Create a new RewriterCreateOptions with default values
 pub fn RewriterCreateOptions::default() -> RewriterCreateOptions {
   RewriterCreateOptions::{
@@ -772,10 +738,7 @@ pub fn RewriterCreateOptions::default() -> RewriterCreateOptions {
   }
 }
 
-///|
-extern "js" fn RewriterCreateOptions::to_js_ffi(
-  self : RewriterCreateOptions,
-) -> JsValue =
+extern "js" fn RewriterCreateOptions::to_js_ffi(self : RewriterCreateOptions) -> JsValue =
   #| (self) => ({
   #|   tone: ((() => { const v = self.tone; if (v === undefined) return undefined; return ['as-is', 'more-formal', 'more-casual'][v]; })()),
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['as-is', 'plain-text', 'markdown'][v]; })()),
@@ -788,16 +751,12 @@ extern "js" fn RewriterCreateOptions::to_js_ffi(
   #|   sharedContext: self.sharedContext
   #| })
 
-///|
 /// Convert to JsValue
 pub fn RewriterCreateOptions::to_js(self : RewriterCreateOptions) -> JsValue {
   RewriterCreateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn RewriterCreateOptions::from_js_ffi(
-  value : JsValue,
-) -> RewriterCreateOptions =
+extern "js" fn RewriterCreateOptions::from_js_ffi(value : JsValue) -> RewriterCreateOptions =
   #| (v) => ({
   #|   tone: (v.tone === undefined ? undefined : ['as-is', 'more-formal', 'more-casual'].indexOf(v.tone)),
   #|   format: (v.format === undefined ? undefined : ['as-is', 'plain-text', 'markdown'].indexOf(v.format)),
@@ -810,7 +769,6 @@ extern "js" fn RewriterCreateOptions::from_js_ffi(
   #|   sharedContext: v.sharedContext
   #| })
 
-///|
 /// Convert from JsValue
 pub fn RewriterCreateOptions::from_js(value : JsValue) -> RewriterCreateOptions {
   RewriterCreateOptions::from_js_ffi(value)
@@ -823,41 +781,33 @@ pub(all) struct RewriterRewriteOptions {
   signal : AbortSignal?
 }
 
-///|
 /// Create a new RewriterRewriteOptions with default values
 pub fn RewriterRewriteOptions::default() -> RewriterRewriteOptions {
-  RewriterRewriteOptions::{ context: None, signal: None, }
+  RewriterRewriteOptions::{
+    context: None,
+    signal: None,
+  }
 }
 
-///|
-extern "js" fn RewriterRewriteOptions::to_js_ffi(
-  self : RewriterRewriteOptions,
-) -> JsValue =
+extern "js" fn RewriterRewriteOptions::to_js_ffi(self : RewriterRewriteOptions) -> JsValue =
   #| (self) => ({
   #|   context: self.context,
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn RewriterRewriteOptions::to_js(self : RewriterRewriteOptions) -> JsValue {
   RewriterRewriteOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn RewriterRewriteOptions::from_js_ffi(
-  value : JsValue,
-) -> RewriterRewriteOptions =
+extern "js" fn RewriterRewriteOptions::from_js_ffi(value : JsValue) -> RewriterRewriteOptions =
   #| (v) => ({
   #|   context: v.context,
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn RewriterRewriteOptions::from_js(
-  value : JsValue,
-) -> RewriterRewriteOptions {
+pub fn RewriterRewriteOptions::from_js(value : JsValue) -> RewriterRewriteOptions {
   RewriterRewriteOptions::from_js_ffi(value)
 }
 
@@ -865,26 +815,21 @@ pub fn RewriterRewriteOptions::from_js(
 /// Summarizer interface
 pub type Summarizer
 
-///|
 pub extern "js" fn Summarizer::to_js_value(self : Summarizer) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Summarizer (unchecked)
 pub extern "js" fn Summarizer::from_js_value(v : JsValue) -> Summarizer =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Summarizer (checked with instanceof)
 pub extern "js" fn Summarizer::from_js_value_opt(v : JsValue) -> Summarizer? =
   #| (v) => (v instanceof Summarizer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Summarizer (checked with instanceof)
 pub extern "js" fn JsValue::as_summarizer(self : JsValue) -> Summarizer? =
   #| (self) => (self instanceof Summarizer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Summarizer (unchecked)
 pub extern "js" fn JsValue::to_summarizer(self : JsValue) -> Summarizer =
   #| (self) => self
@@ -898,6 +843,8 @@ pub(all) enum SummarizerCreateError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SummarizerCreateError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum SummarizerAvailabilityError {
@@ -905,6 +852,8 @@ pub(all) enum SummarizerAvailabilityError {
   NotSupportedError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend SummarizerAvailabilityError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -919,6 +868,8 @@ pub(all) enum SummarizerSummarizeError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SummarizerSummarizeError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum SummarizerSummarizeStreamingError {
@@ -932,6 +883,8 @@ pub(all) enum SummarizerSummarizeStreamingError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SummarizerSummarizeStreamingError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum SummarizerMeasureInputUsageError {
@@ -942,555 +895,343 @@ pub(all) enum SummarizerMeasureInputUsageError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SummarizerMeasureInputUsageError with @debug.Debug::{to_repr}
+
 ///|
-pub extern "js" fn Summarizer::create() -> Promise[
-  Result[Summarizer, SummarizerCreateError],
-] =
+/// Error type for throwing methods
+pub(all) enum SummarizerDestroyError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend SummarizerDestroyError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Summarizer::create() -> Promise[Result[Summarizer, SummarizerCreateError]] =
   #| () => Summarizer.create().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn Summarizer::create_with_options_ffi(
-  options : JsValue,
-) -> Promise[Result[Summarizer, SummarizerCreateError]] =
+extern "js" fn Summarizer::create_with_options_ffi(options : JsValue) -> Promise[Result[Summarizer, SummarizerCreateError]] =
   #| (options) => Summarizer.create(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn Summarizer::create_with_options(
-  options : SummarizerCreateOptions,
-) -> Promise[Result[Summarizer, SummarizerCreateError]] {
+pub fn Summarizer::create_with_options(options : SummarizerCreateOptions) -> Promise[Result[Summarizer, SummarizerCreateError]] {
   Summarizer::create_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn Summarizer::availability() -> Promise[
-  Result[Availability, SummarizerAvailabilityError],
-] =
+pub extern "js" fn Summarizer::availability() -> Promise[Result[Availability, SummarizerAvailabilityError]] =
   #| () => Summarizer.availability().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn Summarizer::availability_with_options_ffi(
-  options : JsValue,
-) -> Promise[Result[Availability, SummarizerAvailabilityError]] =
+extern "js" fn Summarizer::availability_with_options_ffi(options : JsValue) -> Promise[Result[Availability, SummarizerAvailabilityError]] =
   #| (options) => Summarizer.availability(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn Summarizer::availability_with_options(
-  options : SummarizerCreateCoreOptions,
-) -> Promise[Result[Availability, SummarizerAvailabilityError]] {
+pub fn Summarizer::availability_with_options(options : SummarizerCreateCoreOptions) -> Promise[Result[Availability, SummarizerAvailabilityError]] {
   Summarizer::availability_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn Summarizer::summarize(
-  self : Summarizer,
-  input : String,
-) -> Promise[Result[String, SummarizerSummarizeError]] =
+pub extern "js" fn Summarizer::summarize(self : Summarizer, input : String) -> Promise[Result[String, SummarizerSummarizeError]] =
   #| (self, input) => self.summarize(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
-///|
-extern "js" fn Summarizer::summarize_with_options_ffi(
-  self : Summarizer,
-  input : String,
-  options : JsValue,
-) -> Promise[Result[String, SummarizerSummarizeError]] =
+extern "js" fn Summarizer::summarize_with_options_ffi(self : Summarizer, input : String, options : JsValue) -> Promise[Result[String, SummarizerSummarizeError]] =
   #| (self, input, options) => self.summarize(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }))
 
-///|
-pub fn Summarizer::summarize_with_options(
-  self : Summarizer,
-  input : String,
-  options : SummarizerSummarizeOptions,
-) -> Promise[Result[String, SummarizerSummarizeError]] {
+pub fn Summarizer::summarize_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> Promise[Result[String, SummarizerSummarizeError]] {
   Summarizer::summarize_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn Summarizer::summarize_streaming(
-  self : Summarizer,
-  input : String,
-) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
+pub extern "js" fn Summarizer::summarize_streaming(self : Summarizer, input : String) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
   #| (self, input) => (() => { try { return { $tag: 1, _0: self.summarizeStreaming(input) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }; } })()
 
-///|
-extern "js" fn Summarizer::summarize_streaming_with_options_ffi(
-  self : Summarizer,
-  input : String,
-  options : JsValue,
-) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
+extern "js" fn Summarizer::summarize_streaming_with_options_ffi(self : Summarizer, input : String, options : JsValue) -> Result[ReadableStream, SummarizerSummarizeStreamingError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.summarizeStreaming(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'UnknownError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'NotReadableError') return { $tag: 3, _0: e }; if (n === 'InvalidStateError') return { $tag: 4, _0: e }; if (n === 'NotSupportedError') return { $tag: 5, _0: e }; if (n === 'QuotaExceededError') return { $tag: 6, _0: e }; return { $tag: 7, _0: e }; })() }; } })()
 
-///|
-pub fn Summarizer::summarize_streaming_with_options(
-  self : Summarizer,
-  input : String,
-  options : SummarizerSummarizeOptions,
-) -> Result[ReadableStream, SummarizerSummarizeStreamingError] {
+pub fn Summarizer::summarize_streaming_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> Result[ReadableStream, SummarizerSummarizeStreamingError] {
   Summarizer::summarize_streaming_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Summarizer::get_shared_context(self : Summarizer) -> String =
   #| (self) => self.sharedContext
 
-///|
 pub extern "js" fn Summarizer::get_type(self : Summarizer) -> SummarizerType =
   #| (self) => ['tldr', 'teaser', 'key-points', 'headline'].indexOf(self.type)
 
-///|
-pub extern "js" fn Summarizer::get_format(
-  self : Summarizer,
-) -> SummarizerFormat =
+pub extern "js" fn Summarizer::get_format(self : Summarizer) -> SummarizerFormat =
   #| (self) => ['plain-text', 'markdown'].indexOf(self.format)
 
-///|
-pub extern "js" fn Summarizer::get_length(
-  self : Summarizer,
-) -> SummarizerLength =
+pub extern "js" fn Summarizer::get_length(self : Summarizer) -> SummarizerLength =
   #| (self) => ['short', 'medium', 'long'].indexOf(self.length)
 
-///|
-pub extern "js" fn Summarizer::get_expected_input_languages(
-  self : Summarizer,
-) -> FixedArray[String] =
+pub extern "js" fn Summarizer::get_preference(self : Summarizer) -> PerformancePreference =
+  #| (self) => ['auto', 'speed', 'capability'].indexOf(self.preference)
+
+pub extern "js" fn Summarizer::get_expected_input_languages(self : Summarizer) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
-///|
-pub extern "js" fn Summarizer::get_expected_context_languages(
-  self : Summarizer,
-) -> FixedArray[String] =
+pub extern "js" fn Summarizer::get_expected_context_languages(self : Summarizer) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
-///|
-pub extern "js" fn Summarizer::get_output_language(
-  self : Summarizer,
-) -> String? =
+pub extern "js" fn Summarizer::get_output_language(self : Summarizer) -> String? =
   #| (self) => (self.outputLanguage) ?? undefined
 
-///|
-pub extern "js" fn Summarizer::measure_input_usage(
-  self : Summarizer,
-  input : String,
-) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
+pub extern "js" fn Summarizer::measure_input_usage(self : Summarizer, input : String) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
   #| (self, input) => self.measureInputUsage(input).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-extern "js" fn Summarizer::measure_input_usage_with_options_ffi(
-  self : Summarizer,
-  input : String,
-  options : JsValue,
-) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
+extern "js" fn Summarizer::measure_input_usage_with_options_ffi(self : Summarizer, input : String, options : JsValue) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] =
   #| (self, input, options) => self.measureInputUsage(input, options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; if (n === 'NotReadableError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-pub fn Summarizer::measure_input_usage_with_options(
-  self : Summarizer,
-  input : String,
-  options : SummarizerSummarizeOptions,
-) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] {
+pub fn Summarizer::measure_input_usage_with_options(self : Summarizer, input : String, options : SummarizerSummarizeOptions) -> Promise[Result[Double, SummarizerMeasureInputUsageError]] {
   Summarizer::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Summarizer::get_input_quota(self : Summarizer) -> Double =
   #| (self) => self.inputQuota
 
-///|
-pub extern "js" fn Summarizer::destroy(self : Summarizer) -> Unit =
-  #| (self) => self.destroy()
+pub extern "js" fn Summarizer::destroy(self : Summarizer) -> Result[Unit, SummarizerDestroyError] =
+  #| (self) => (() => { try { self.destroy(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// Writer interface
 pub type Writer
 
-///|
 pub extern "js" fn Writer::to_js_value(self : Writer) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Writer (unchecked)
 pub extern "js" fn Writer::from_js_value(v : JsValue) -> Writer =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Writer (checked with instanceof)
 pub extern "js" fn Writer::from_js_value_opt(v : JsValue) -> Writer? =
   #| (v) => (v instanceof Writer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Writer (checked with instanceof)
 pub extern "js" fn JsValue::as_writer(self : JsValue) -> Writer? =
   #| (self) => (self instanceof Writer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Writer (unchecked)
 pub extern "js" fn JsValue::to_writer(self : JsValue) -> Writer =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum WriterDestroyError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend WriterDestroyError with @debug.Debug::{to_repr}
+
 pub extern "js" fn Writer::create() -> Promise[Writer] =
   #| () => Writer.create()
 
-///|
-extern "js" fn Writer::create_with_options_ffi(
-  options : JsValue,
-) -> Promise[Writer] =
+extern "js" fn Writer::create_with_options_ffi(options : JsValue) -> Promise[Writer] =
   #| (options) => Writer.create(options)
 
-///|
-pub fn Writer::create_with_options(
-  options : WriterCreateOptions,
-) -> Promise[Writer] {
+pub fn Writer::create_with_options(options : WriterCreateOptions) -> Promise[Writer] {
   Writer::create_with_options_ffi(options.to_js())
 }
 
-///|
 pub extern "js" fn Writer::availability() -> Promise[Availability] =
   #| () => Writer.availability()
 
-///|
-extern "js" fn Writer::availability_with_options_ffi(
-  options : JsValue,
-) -> Promise[Availability] =
+extern "js" fn Writer::availability_with_options_ffi(options : JsValue) -> Promise[Availability] =
   #| (options) => Writer.availability(options)
 
-///|
-pub fn Writer::availability_with_options(
-  options : WriterCreateCoreOptions,
-) -> Promise[Availability] {
+pub fn Writer::availability_with_options(options : WriterCreateCoreOptions) -> Promise[Availability] {
   Writer::availability_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn Writer::write(
-  self : Writer,
-  input : String,
-) -> Promise[String] =
+pub extern "js" fn Writer::write(self : Writer, input : String) -> Promise[String] =
   #| (self, input) => self.write(input)
 
-///|
-extern "js" fn Writer::write_with_options_ffi(
-  self : Writer,
-  input : String,
-  options : JsValue,
-) -> Promise[String] =
+extern "js" fn Writer::write_with_options_ffi(self : Writer, input : String, options : JsValue) -> Promise[String] =
   #| (self, input, options) => self.write(input, options)
 
-///|
-pub fn Writer::write_with_options(
-  self : Writer,
-  input : String,
-  options : WriterWriteOptions,
-) -> Promise[String] {
+pub fn Writer::write_with_options(self : Writer, input : String, options : WriterWriteOptions) -> Promise[String] {
   Writer::write_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn Writer::write_streaming(
-  self : Writer,
-  input : String,
-) -> ReadableStream =
+pub extern "js" fn Writer::write_streaming(self : Writer, input : String) -> ReadableStream =
   #| (self, input) => self.writeStreaming(input)
 
-///|
-extern "js" fn Writer::write_streaming_with_options_ffi(
-  self : Writer,
-  input : String,
-  options : JsValue,
-) -> ReadableStream =
+extern "js" fn Writer::write_streaming_with_options_ffi(self : Writer, input : String, options : JsValue) -> ReadableStream =
   #| (self, input, options) => self.writeStreaming(input, options)
 
-///|
-pub fn Writer::write_streaming_with_options(
-  self : Writer,
-  input : String,
-  options : WriterWriteOptions,
-) -> ReadableStream {
+pub fn Writer::write_streaming_with_options(self : Writer, input : String, options : WriterWriteOptions) -> ReadableStream {
   Writer::write_streaming_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Writer::get_shared_context(self : Writer) -> String =
   #| (self) => self.sharedContext
 
-///|
 pub extern "js" fn Writer::get_tone(self : Writer) -> WriterTone =
   #| (self) => ['formal', 'neutral', 'casual'].indexOf(self.tone)
 
-///|
 pub extern "js" fn Writer::get_format(self : Writer) -> WriterFormat =
   #| (self) => ['plain-text', 'markdown'].indexOf(self.format)
 
-///|
 pub extern "js" fn Writer::get_length(self : Writer) -> WriterLength =
   #| (self) => ['short', 'medium', 'long'].indexOf(self.length)
 
-///|
-pub extern "js" fn Writer::get_expected_input_languages(
-  self : Writer,
-) -> FixedArray[String] =
+pub extern "js" fn Writer::get_expected_input_languages(self : Writer) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
-///|
-pub extern "js" fn Writer::get_expected_context_languages(
-  self : Writer,
-) -> FixedArray[String] =
+pub extern "js" fn Writer::get_expected_context_languages(self : Writer) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
-///|
 pub extern "js" fn Writer::get_output_language(self : Writer) -> String? =
   #| (self) => (self.outputLanguage) ?? undefined
 
-///|
-pub extern "js" fn Writer::measure_input_usage(
-  self : Writer,
-  input : String,
-) -> Promise[Double] =
+pub extern "js" fn Writer::measure_input_usage(self : Writer, input : String) -> Promise[Double] =
   #| (self, input) => self.measureInputUsage(input)
 
-///|
-extern "js" fn Writer::measure_input_usage_with_options_ffi(
-  self : Writer,
-  input : String,
-  options : JsValue,
-) -> Promise[Double] =
+extern "js" fn Writer::measure_input_usage_with_options_ffi(self : Writer, input : String, options : JsValue) -> Promise[Double] =
   #| (self, input, options) => self.measureInputUsage(input, options)
 
-///|
-pub fn Writer::measure_input_usage_with_options(
-  self : Writer,
-  input : String,
-  options : WriterWriteOptions,
-) -> Promise[Double] {
+pub fn Writer::measure_input_usage_with_options(self : Writer, input : String, options : WriterWriteOptions) -> Promise[Double] {
   Writer::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Writer::get_input_quota(self : Writer) -> Double =
   #| (self) => self.inputQuota
 
-///|
-pub extern "js" fn Writer::destroy(self : Writer) -> Unit =
-  #| (self) => self.destroy()
+pub extern "js" fn Writer::destroy(self : Writer) -> Result[Unit, WriterDestroyError] =
+  #| (self) => (() => { try { self.destroy(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// Rewriter interface
 pub type Rewriter
 
-///|
 pub extern "js" fn Rewriter::to_js_value(self : Rewriter) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Rewriter (unchecked)
 pub extern "js" fn Rewriter::from_js_value(v : JsValue) -> Rewriter =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Rewriter (checked with instanceof)
 pub extern "js" fn Rewriter::from_js_value_opt(v : JsValue) -> Rewriter? =
   #| (v) => (v instanceof Rewriter) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Rewriter (checked with instanceof)
 pub extern "js" fn JsValue::as_rewriter(self : JsValue) -> Rewriter? =
   #| (self) => (self instanceof Rewriter) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Rewriter (unchecked)
 pub extern "js" fn JsValue::to_rewriter(self : JsValue) -> Rewriter =
   #| (self) => self
 
 ///|
+/// Error type for throwing methods
+pub(all) enum RewriterDestroyError {
+  NotAllowedError(JsError)
+  OtherError(JsError)
+} derive(Debug)
+
+pub extend RewriterDestroyError with @debug.Debug::{to_repr}
+
 pub extern "js" fn Rewriter::create() -> Promise[Rewriter] =
   #| () => Rewriter.create()
 
-///|
-extern "js" fn Rewriter::create_with_options_ffi(
-  options : JsValue,
-) -> Promise[Rewriter] =
+extern "js" fn Rewriter::create_with_options_ffi(options : JsValue) -> Promise[Rewriter] =
   #| (options) => Rewriter.create(options)
 
-///|
-pub fn Rewriter::create_with_options(
-  options : RewriterCreateOptions,
-) -> Promise[Rewriter] {
+pub fn Rewriter::create_with_options(options : RewriterCreateOptions) -> Promise[Rewriter] {
   Rewriter::create_with_options_ffi(options.to_js())
 }
 
-///|
 pub extern "js" fn Rewriter::availability() -> Promise[Availability] =
   #| () => Rewriter.availability()
 
-///|
-extern "js" fn Rewriter::availability_with_options_ffi(
-  options : JsValue,
-) -> Promise[Availability] =
+extern "js" fn Rewriter::availability_with_options_ffi(options : JsValue) -> Promise[Availability] =
   #| (options) => Rewriter.availability(options)
 
-///|
-pub fn Rewriter::availability_with_options(
-  options : RewriterCreateCoreOptions,
-) -> Promise[Availability] {
+pub fn Rewriter::availability_with_options(options : RewriterCreateCoreOptions) -> Promise[Availability] {
   Rewriter::availability_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn Rewriter::rewrite(
-  self : Rewriter,
-  input : String,
-) -> Promise[String] =
+pub extern "js" fn Rewriter::rewrite(self : Rewriter, input : String) -> Promise[String] =
   #| (self, input) => self.rewrite(input)
 
-///|
-extern "js" fn Rewriter::rewrite_with_options_ffi(
-  self : Rewriter,
-  input : String,
-  options : JsValue,
-) -> Promise[String] =
+extern "js" fn Rewriter::rewrite_with_options_ffi(self : Rewriter, input : String, options : JsValue) -> Promise[String] =
   #| (self, input, options) => self.rewrite(input, options)
 
-///|
-pub fn Rewriter::rewrite_with_options(
-  self : Rewriter,
-  input : String,
-  options : RewriterRewriteOptions,
-) -> Promise[String] {
+pub fn Rewriter::rewrite_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> Promise[String] {
   Rewriter::rewrite_with_options_ffi(self, input, options.to_js())
 }
 
-///|
-pub extern "js" fn Rewriter::rewrite_streaming(
-  self : Rewriter,
-  input : String,
-) -> ReadableStream =
+pub extern "js" fn Rewriter::rewrite_streaming(self : Rewriter, input : String) -> ReadableStream =
   #| (self, input) => self.rewriteStreaming(input)
 
-///|
-extern "js" fn Rewriter::rewrite_streaming_with_options_ffi(
-  self : Rewriter,
-  input : String,
-  options : JsValue,
-) -> ReadableStream =
+extern "js" fn Rewriter::rewrite_streaming_with_options_ffi(self : Rewriter, input : String, options : JsValue) -> ReadableStream =
   #| (self, input, options) => self.rewriteStreaming(input, options)
 
-///|
-pub fn Rewriter::rewrite_streaming_with_options(
-  self : Rewriter,
-  input : String,
-  options : RewriterRewriteOptions,
-) -> ReadableStream {
+pub fn Rewriter::rewrite_streaming_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> ReadableStream {
   Rewriter::rewrite_streaming_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Rewriter::get_shared_context(self : Rewriter) -> String =
   #| (self) => self.sharedContext
 
-///|
 pub extern "js" fn Rewriter::get_tone(self : Rewriter) -> RewriterTone =
   #| (self) => ['as-is', 'more-formal', 'more-casual'].indexOf(self.tone)
 
-///|
 pub extern "js" fn Rewriter::get_format(self : Rewriter) -> RewriterFormat =
   #| (self) => ['as-is', 'plain-text', 'markdown'].indexOf(self.format)
 
-///|
 pub extern "js" fn Rewriter::get_length(self : Rewriter) -> RewriterLength =
   #| (self) => ['as-is', 'shorter', 'longer'].indexOf(self.length)
 
-///|
-pub extern "js" fn Rewriter::get_expected_input_languages(
-  self : Rewriter,
-) -> FixedArray[String] =
+pub extern "js" fn Rewriter::get_expected_input_languages(self : Rewriter) -> FixedArray[String] =
   #| (self) => self.expectedInputLanguages
 
-///|
-pub extern "js" fn Rewriter::get_expected_context_languages(
-  self : Rewriter,
-) -> FixedArray[String] =
+pub extern "js" fn Rewriter::get_expected_context_languages(self : Rewriter) -> FixedArray[String] =
   #| (self) => self.expectedContextLanguages
 
-///|
 pub extern "js" fn Rewriter::get_output_language(self : Rewriter) -> String? =
   #| (self) => (self.outputLanguage) ?? undefined
 
-///|
-pub extern "js" fn Rewriter::measure_input_usage(
-  self : Rewriter,
-  input : String,
-) -> Promise[Double] =
+pub extern "js" fn Rewriter::measure_input_usage(self : Rewriter, input : String) -> Promise[Double] =
   #| (self, input) => self.measureInputUsage(input)
 
-///|
-extern "js" fn Rewriter::measure_input_usage_with_options_ffi(
-  self : Rewriter,
-  input : String,
-  options : JsValue,
-) -> Promise[Double] =
+extern "js" fn Rewriter::measure_input_usage_with_options_ffi(self : Rewriter, input : String, options : JsValue) -> Promise[Double] =
   #| (self, input, options) => self.measureInputUsage(input, options)
 
-///|
-pub fn Rewriter::measure_input_usage_with_options(
-  self : Rewriter,
-  input : String,
-  options : RewriterRewriteOptions,
-) -> Promise[Double] {
+pub fn Rewriter::measure_input_usage_with_options(self : Rewriter, input : String, options : RewriterRewriteOptions) -> Promise[Double] {
   Rewriter::measure_input_usage_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn Rewriter::get_input_quota(self : Rewriter) -> Double =
   #| (self) => self.inputQuota
 
-///|
-pub extern "js" fn Rewriter::destroy(self : Rewriter) -> Unit =
-  #| (self) => self.destroy()
+pub extern "js" fn Rewriter::destroy(self : Rewriter) -> Result[Unit, RewriterDestroyError] =
+  #| (self) => (() => { try { self.destroy(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// CreateMonitor interface
 pub type CreateMonitor
 
-///|
 pub extern "js" fn CreateMonitor::to_js_value(self : CreateMonitor) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CreateMonitor (unchecked)
 pub extern "js" fn CreateMonitor::from_js_value(v : JsValue) -> CreateMonitor =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CreateMonitor (checked with instanceof)
-pub extern "js" fn CreateMonitor::from_js_value_opt(
-  v : JsValue,
-) -> CreateMonitor? =
+pub extern "js" fn CreateMonitor::from_js_value_opt(v : JsValue) -> CreateMonitor? =
   #| (v) => (v instanceof CreateMonitor) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CreateMonitor (checked with instanceof)
 pub extern "js" fn JsValue::as_create_monitor(self : JsValue) -> CreateMonitor? =
   #| (self) => (self instanceof CreateMonitor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CreateMonitor (unchecked)
 pub extern "js" fn JsValue::to_create_monitor(self : JsValue) -> CreateMonitor =
   #| (self) => self
 
-///|
-pub extern "js" fn CreateMonitor::to_event_target(
-  self : CreateMonitor,
-) -> EventTarget =
+pub extern "js" fn CreateMonitor::to_event_target(self : CreateMonitor) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn CreateMonitor::set_ondownloadprogress(
-  self : CreateMonitor,
-  handler : (ProgressEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn CreateMonitor::set_ondownloadprogress(self : CreateMonitor, handler : (ProgressEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.ondownloadprogress = (e) => handler(e) }
 
-///|
-pub extern "js" fn CreateMonitor::clear_ondownloadprogress(
-  self : CreateMonitor,
-) -> Unit =
+pub extern "js" fn CreateMonitor::clear_ondownloadprogress(self : CreateMonitor) -> Unit =
   #| (self) => { self.ondownloadprogress = null }

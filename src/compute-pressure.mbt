@@ -7,7 +7,9 @@ pub(all) enum PressureSource {
   Cpu
 } derive(Eq, Debug)
 
-///|
+pub extend PressureSource with Eq::{equal, not_equal}
+pub extend PressureSource with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PressureSource::to_string(self : PressureSource) -> String {
   match self {
@@ -15,7 +17,6 @@ pub fn PressureSource::to_string(self : PressureSource) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PressureSource::from_string(s : String) -> PressureSource? {
   match s {
@@ -33,7 +34,9 @@ pub(all) enum PressureState {
   Critical
 } derive(Eq, Debug)
 
-///|
+pub extend PressureState with Eq::{equal, not_equal}
+pub extend PressureState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PressureState::to_string(self : PressureState) -> String {
   match self {
@@ -44,7 +47,6 @@ pub fn PressureState::to_string(self : PressureState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PressureState::from_string(s : String) -> PressureState? {
   match s {
@@ -56,15 +58,11 @@ pub fn PressureState::from_string(s : String) -> PressureState? {
   }
 }
 
-///|
 /// PressureUpdateCallback callback interface
 pub type PressureUpdateCallback
 
-///|
 /// Create PressureUpdateCallback from a MoonBit function
-pub extern "js" fn PressureUpdateCallback::from_fn(
-  handler : (FixedArray[PressureRecord], PressureObserver) -> Unit,
-) -> PressureUpdateCallback =
+pub extern "js" fn PressureUpdateCallback::from_fn(handler : (FixedArray[PressureRecord], PressureObserver) -> Unit) -> PressureUpdateCallback =
   #| (handler) => (a0, a1) => handler(a0, a1)
 
 ///|
@@ -73,41 +71,30 @@ pub(all) struct PressureObserverOptions {
   sampleInterval : Int?
 }
 
-///|
 /// Create a new PressureObserverOptions with default values
 pub fn PressureObserverOptions::default() -> PressureObserverOptions {
-  PressureObserverOptions::{ sampleInterval: None, }
+  PressureObserverOptions::{
+    sampleInterval: None,
+  }
 }
 
-///|
-extern "js" fn PressureObserverOptions::to_js_ffi(
-  self : PressureObserverOptions,
-) -> JsValue =
+extern "js" fn PressureObserverOptions::to_js_ffi(self : PressureObserverOptions) -> JsValue =
   #| (self) => ({
   #|   sampleInterval: self.sampleInterval
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PressureObserverOptions::to_js(
-  self : PressureObserverOptions,
-) -> JsValue {
+pub fn PressureObserverOptions::to_js(self : PressureObserverOptions) -> JsValue {
   PressureObserverOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PressureObserverOptions::from_js_ffi(
-  value : JsValue,
-) -> PressureObserverOptions =
+extern "js" fn PressureObserverOptions::from_js_ffi(value : JsValue) -> PressureObserverOptions =
   #| (v) => ({
   #|   sampleInterval: v.sampleInterval
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PressureObserverOptions::from_js(
-  value : JsValue,
-) -> PressureObserverOptions {
+pub fn PressureObserverOptions::from_js(value : JsValue) -> PressureObserverOptions {
   PressureObserverOptions::from_js_ffi(value)
 }
 
@@ -115,38 +102,23 @@ pub fn PressureObserverOptions::from_js(
 /// PressureObserver interface
 pub type PressureObserver
 
-///|
-pub extern "js" fn PressureObserver::to_js_value(
-  self : PressureObserver,
-) -> JsValue =
+pub extern "js" fn PressureObserver::to_js_value(self : PressureObserver) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PressureObserver (unchecked)
-pub extern "js" fn PressureObserver::from_js_value(
-  v : JsValue,
-) -> PressureObserver =
+pub extern "js" fn PressureObserver::from_js_value(v : JsValue) -> PressureObserver =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PressureObserver (checked with instanceof)
-pub extern "js" fn PressureObserver::from_js_value_opt(
-  v : JsValue,
-) -> PressureObserver? =
+pub extern "js" fn PressureObserver::from_js_value_opt(v : JsValue) -> PressureObserver? =
   #| (v) => (v instanceof PressureObserver) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PressureObserver (checked with instanceof)
-pub extern "js" fn JsValue::as_pressure_observer(
-  self : JsValue,
-) -> PressureObserver? =
+pub extern "js" fn JsValue::as_pressure_observer(self : JsValue) -> PressureObserver? =
   #| (self) => (self instanceof PressureObserver) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PressureObserver (unchecked)
-pub extern "js" fn JsValue::to_pressure_observer(
-  self : JsValue,
-) -> PressureObserver =
+pub extern "js" fn JsValue::to_pressure_observer(self : JsValue) -> PressureObserver =
   #| (self) => self
 
 ///|
@@ -156,6 +128,8 @@ pub(all) enum PressureObserverConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PressureObserverConstructorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PressureObserverObserveError {
@@ -164,115 +138,64 @@ pub(all) enum PressureObserverObserveError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn PressureObserver::new(
-  callback : PressureUpdateCallback,
-) -> Result[PressureObserver, PressureObserverConstructorError] =
+pub extend PressureObserverObserveError with @debug.Debug::{to_repr}
+
+pub extern "js" fn PressureObserver::new(callback : PressureUpdateCallback) -> Result[PressureObserver, PressureObserverConstructorError] =
   #| (callback) => (() => { try { return { $tag: 1, _0: new PressureObserver(callback) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn PressureObserver::observe(
-  self : PressureObserver,
-  source : PressureSource,
-) -> Promise[Result[Unit, PressureObserverObserveError]] =
+pub extern "js" fn PressureObserver::observe(self : PressureObserver, source : PressureSource) -> Promise[Result[Unit, PressureObserverObserveError]] =
   #| (self, source) => self.observe(['cpu'][source]).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn PressureObserver::observe_with_options_ffi(
-  self : PressureObserver,
-  source : PressureSource,
-  options : JsValue,
-) -> Promise[Result[Unit, PressureObserverObserveError]] =
+extern "js" fn PressureObserver::observe_with_options_ffi(self : PressureObserver, source : PressureSource, options : JsValue) -> Promise[Result[Unit, PressureObserverObserveError]] =
   #| (self, source, options) => self.observe(['cpu'][source], options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn PressureObserver::observe_with_options(
-  self : PressureObserver,
-  source : PressureSource,
-  options : PressureObserverOptions,
-) -> Promise[Result[Unit, PressureObserverObserveError]] {
+pub fn PressureObserver::observe_with_options(self : PressureObserver, source : PressureSource, options : PressureObserverOptions) -> Promise[Result[Unit, PressureObserverObserveError]] {
   PressureObserver::observe_with_options_ffi(self, source, options.to_js())
 }
 
-///|
-pub extern "js" fn PressureObserver::unobserve(
-  self : PressureObserver,
-  source : PressureSource,
-) -> Unit =
+pub extern "js" fn PressureObserver::unobserve(self : PressureObserver, source : PressureSource) -> Unit =
   #| (self, source) => self.unobserve(['cpu'][source])
 
-///|
-pub extern "js" fn PressureObserver::disconnect(
-  self : PressureObserver,
-) -> Unit =
+pub extern "js" fn PressureObserver::disconnect(self : PressureObserver) -> Unit =
   #| (self) => self.disconnect()
 
-///|
-pub extern "js" fn PressureObserver::take_records(
-  self : PressureObserver,
-) -> FixedArray[PressureRecord] =
+pub extern "js" fn PressureObserver::take_records(self : PressureObserver) -> FixedArray[PressureRecord] =
   #| (self) => self.takeRecords()
 
-///|
-pub extern "js" fn PressureObserver::get_known_sources(
-  self : PressureObserver,
-) -> FixedArray[PressureSource] =
+pub extern "js" fn PressureObserver::get_known_sources(self : PressureObserver) -> FixedArray[PressureSource] =
   #| (self) => self.knownSources
 
 ///|
 /// PressureRecord interface
 pub type PressureRecord
 
-///|
-pub extern "js" fn PressureRecord::to_js_value(
-  self : PressureRecord,
-) -> JsValue =
+pub extern "js" fn PressureRecord::to_js_value(self : PressureRecord) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PressureRecord (unchecked)
 pub extern "js" fn PressureRecord::from_js_value(v : JsValue) -> PressureRecord =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PressureRecord (checked with instanceof)
-pub extern "js" fn PressureRecord::from_js_value_opt(
-  v : JsValue,
-) -> PressureRecord? =
+pub extern "js" fn PressureRecord::from_js_value_opt(v : JsValue) -> PressureRecord? =
   #| (v) => (v instanceof PressureRecord) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PressureRecord (checked with instanceof)
-pub extern "js" fn JsValue::as_pressure_record(
-  self : JsValue,
-) -> PressureRecord? =
+pub extern "js" fn JsValue::as_pressure_record(self : JsValue) -> PressureRecord? =
   #| (self) => (self instanceof PressureRecord) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PressureRecord (unchecked)
-pub extern "js" fn JsValue::to_pressure_record(
-  self : JsValue,
-) -> PressureRecord =
+pub extern "js" fn JsValue::to_pressure_record(self : JsValue) -> PressureRecord =
   #| (self) => self
 
-///|
-pub extern "js" fn PressureRecord::get_source(
-  self : PressureRecord,
-) -> PressureSource =
+pub extern "js" fn PressureRecord::get_source(self : PressureRecord) -> PressureSource =
   #| (self) => ['cpu'].indexOf(self.source)
 
-///|
-pub extern "js" fn PressureRecord::get_state(
-  self : PressureRecord,
-) -> PressureState =
+pub extern "js" fn PressureRecord::get_state(self : PressureRecord) -> PressureState =
   #| (self) => ['nominal', 'fair', 'serious', 'critical'].indexOf(self.state)
 
-///|
-pub extern "js" fn PressureRecord::get_time(
-  self : PressureRecord,
-) -> DOMHighResTimeStamp =
+pub extern "js" fn PressureRecord::get_time(self : PressureRecord) -> DOMHighResTimeStamp =
   #| (self) => self.time
 
-///|
 pub extern "js" fn PressureRecord::to_json(self : PressureRecord) -> JsValue =
   #| (self) => self.toJSON()

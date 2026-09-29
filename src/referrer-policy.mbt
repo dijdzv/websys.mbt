@@ -15,7 +15,9 @@ pub(all) enum ReferrerPolicy {
   UnsafeUrl
 } derive(Eq, Debug)
 
-///|
+pub extend ReferrerPolicy with Eq::{equal, not_equal}
+pub extend ReferrerPolicy with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
   match self {
@@ -26,26 +28,22 @@ pub fn ReferrerPolicy::to_string(self : ReferrerPolicy) -> String {
     ReferrerPolicy::Origin => "origin"
     ReferrerPolicy::StrictOrigin => "strict-origin"
     ReferrerPolicy::OriginWhenCrossOrigin => "origin-when-cross-origin"
-    ReferrerPolicy::StrictOriginWhenCrossOrigin =>
-      "strict-origin-when-cross-origin"
+    ReferrerPolicy::StrictOriginWhenCrossOrigin => "strict-origin-when-cross-origin"
     ReferrerPolicy::UnsafeUrl => "unsafe-url"
   }
 }
 
-///|
 /// Parse from string value
 pub fn ReferrerPolicy::from_string(s : String) -> ReferrerPolicy? {
   match s {
     "" => Some(ReferrerPolicy::Empty)
     "no-referrer" => Some(ReferrerPolicy::NoReferrer)
-    "no-referrer-when-downgrade" =>
-      Some(ReferrerPolicy::NoReferrerWhenDowngrade)
+    "no-referrer-when-downgrade" => Some(ReferrerPolicy::NoReferrerWhenDowngrade)
     "same-origin" => Some(ReferrerPolicy::SameOrigin)
     "origin" => Some(ReferrerPolicy::Origin)
     "strict-origin" => Some(ReferrerPolicy::StrictOrigin)
     "origin-when-cross-origin" => Some(ReferrerPolicy::OriginWhenCrossOrigin)
-    "strict-origin-when-cross-origin" =>
-      Some(ReferrerPolicy::StrictOriginWhenCrossOrigin)
+    "strict-origin-when-cross-origin" => Some(ReferrerPolicy::StrictOriginWhenCrossOrigin)
     "unsafe-url" => Some(ReferrerPolicy::UnsafeUrl)
     _ => None
   }

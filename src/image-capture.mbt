@@ -5,80 +5,45 @@
 /// ConstrainPoint2D typedef
 pub type ConstrainPoint2D
 
-///|
-pub extern "js" fn ConstrainPoint2D::to_js_value(
-  self : ConstrainPoint2D,
-) -> JsValue =
+pub extern "js" fn ConstrainPoint2D::to_js_value(self : ConstrainPoint2D) -> JsValue =
   #| (self) => self
 
-///|
 /// Create ConstrainPoint2D from FixedArray[Point2D]
-pub extern "js" fn ConstrainPoint2D::from_array_of_point_2d(
-  v : FixedArray[Point2D],
-) -> ConstrainPoint2D =
+pub extern "js" fn ConstrainPoint2D::from_array_of_point_2d(v : FixedArray[Point2D]) -> ConstrainPoint2D =
   #| (v) => v
 
 ///|
-extern "js" fn ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(
-  v : JsValue,
-) -> ConstrainPoint2D =
+extern "js" fn ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(v : JsValue) -> ConstrainPoint2D =
   #| v => v
 
 ///|
-pub fn ConstrainPoint2D::from_constrain_point_2d_parameters(
-  v : ConstrainPoint2DParameters,
-) -> ConstrainPoint2D {
-  ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(v.to_js())
-}
+pub fn ConstrainPoint2D::from_constrain_point_2d_parameters(v : ConstrainPoint2DParameters) -> ConstrainPoint2D { ConstrainPoint2D::from_constrain_point_2d_parameters_ffi(v.to_js()) }
 
-///|
 /// Check if this ConstrainPoint2D is FixedArray[Point2D]
-pub extern "js" fn ConstrainPoint2D::is_array_of_point_2d(
-  self : ConstrainPoint2D,
-) -> Bool =
+pub extern "js" fn ConstrainPoint2D::is_array_of_point_2d(self : ConstrainPoint2D) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this ConstrainPoint2D is ConstrainPoint2DParameters
-pub extern "js" fn ConstrainPoint2D::is_constrain_point_2d_parameters(
-  self : ConstrainPoint2D,
-) -> Bool =
+pub extern "js" fn ConstrainPoint2D::is_constrain_point_2d_parameters(self : ConstrainPoint2D) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get ConstrainPoint2D as FixedArray[Point2D]
-pub extern "js" fn ConstrainPoint2D::as_array_of_point_2d(
-  self : ConstrainPoint2D,
-) -> FixedArray[Point2D]? =
+pub extern "js" fn ConstrainPoint2D::as_array_of_point_2d(self : ConstrainPoint2D) -> FixedArray[Point2D]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn ConstrainPoint2D::as_constrain_point_2d_parameters(
-  self : ConstrainPoint2D,
-) -> ConstrainPoint2DParameters? {
-  if self.is_constrain_point_2d_parameters() {
-    Some(ConstrainPoint2DParameters::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn ConstrainPoint2D::as_constrain_point_2d_parameters(self : ConstrainPoint2D) -> ConstrainPoint2DParameters? { if self.is_constrain_point_2d_parameters() { Some(ConstrainPoint2DParameters::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[ConstrainPoint2D] to FixedArray[Point2D]?
-pub fn ConstrainPoint2D::bind_as_array_of_point_2d(
-  value : ConstrainPoint2D?,
-) -> FixedArray[Point2D]? {
+pub fn ConstrainPoint2D::bind_as_array_of_point_2d(value : ConstrainPoint2D?) -> FixedArray[Point2D]? {
   match value {
     Some(v) => v.as_array_of_point_2d()
     None => None
   }
 }
 
-///|
 /// Flatten Option[ConstrainPoint2D] to ConstrainPoint2DParameters?
-pub fn ConstrainPoint2D::bind_as_constrain_point_2d_parameters(
-  value : ConstrainPoint2D?,
-) -> ConstrainPoint2DParameters? {
+pub fn ConstrainPoint2D::bind_as_constrain_point_2d_parameters(value : ConstrainPoint2D?) -> ConstrainPoint2DParameters? {
   match value {
     Some(v) => v.as_constrain_point_2d_parameters()
     None => None
@@ -93,7 +58,9 @@ pub(all) enum RedEyeReduction {
   Controllable
 } derive(Eq, Debug)
 
-///|
+pub extend RedEyeReduction with Eq::{equal, not_equal}
+pub extend RedEyeReduction with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
   match self {
@@ -103,7 +70,6 @@ pub fn RedEyeReduction::to_string(self : RedEyeReduction) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RedEyeReduction::from_string(s : String) -> RedEyeReduction? {
   match s {
@@ -122,7 +88,9 @@ pub(all) enum FillLightMode {
   Flash
 } derive(Eq, Debug)
 
-///|
+pub extend FillLightMode with Eq::{equal, not_equal}
+pub extend FillLightMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn FillLightMode::to_string(self : FillLightMode) -> String {
   match self {
@@ -132,7 +100,6 @@ pub fn FillLightMode::to_string(self : FillLightMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn FillLightMode::from_string(s : String) -> FillLightMode? {
   match s {
@@ -152,7 +119,9 @@ pub(all) enum MeteringMode {
   Continuous
 } derive(Eq, Debug)
 
-///|
+pub extend MeteringMode with Eq::{equal, not_equal}
+pub extend MeteringMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn MeteringMode::to_string(self : MeteringMode) -> String {
   match self {
@@ -163,7 +132,6 @@ pub fn MeteringMode::to_string(self : MeteringMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn MeteringMode::from_string(s : String) -> MeteringMode? {
   match s {
@@ -184,7 +152,6 @@ pub(all) struct PhotoCapabilities {
   fillLightMode : FixedArray[FillLightMode]?
 }
 
-///|
 /// Create a new PhotoCapabilities with default values
 pub fn PhotoCapabilities::default() -> PhotoCapabilities {
   PhotoCapabilities::{
@@ -195,12 +162,7 @@ pub fn PhotoCapabilities::default() -> PhotoCapabilities {
   }
 }
 
-///|
-extern "js" fn PhotoCapabilities::to_js_ffi(
-  self : PhotoCapabilities,
-  convert_imageHeight : (MediaSettingsRange?) -> JsValue,
-  convert_imageWidth : (MediaSettingsRange?) -> JsValue,
-) -> JsValue =
+extern "js" fn PhotoCapabilities::to_js_ffi(self : PhotoCapabilities, convert_imageHeight : (MediaSettingsRange?) -> JsValue, convert_imageWidth : (MediaSettingsRange?) -> JsValue) -> JsValue =
   #| (self, convert_imageHeight, convert_imageWidth) => ({
   #|   redEyeReduction: ((() => { const v = self.redEyeReduction; if (v === undefined) return undefined; return ['never', 'always', 'controllable'][v]; })()),
   #|   imageHeight: convert_imageHeight(self.imageHeight),
@@ -208,32 +170,12 @@ extern "js" fn PhotoCapabilities::to_js_ffi(
   #|   fillLightMode: self.fillLightMode
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PhotoCapabilities::to_js(self : PhotoCapabilities) -> JsValue {
-  PhotoCapabilities::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  PhotoCapabilities::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn PhotoCapabilities::from_js_ffi(
-  value : JsValue,
-  convert_imageHeight : (JsValue) -> MediaSettingsRange?,
-  convert_imageWidth : (JsValue) -> MediaSettingsRange?,
-) -> PhotoCapabilities =
+extern "js" fn PhotoCapabilities::from_js_ffi(value : JsValue, convert_imageHeight : (JsValue) -> MediaSettingsRange?, convert_imageWidth : (JsValue) -> MediaSettingsRange?) -> PhotoCapabilities =
   #| (v, convert_imageHeight, convert_imageWidth) => ({
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
   #|   imageHeight: convert_imageHeight(v.imageHeight),
@@ -241,26 +183,9 @@ extern "js" fn PhotoCapabilities::from_js_ffi(
   #|   fillLightMode: v.fillLightMode
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PhotoCapabilities::from_js(value : JsValue) -> PhotoCapabilities {
-  PhotoCapabilities::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-  )
+  PhotoCapabilities::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } })
 }
 
 ///|
@@ -272,7 +197,6 @@ pub(all) struct PhotoSettings {
   redEyeReduction : Bool?
 }
 
-///|
 /// Create a new PhotoSettings with default values
 pub fn PhotoSettings::default() -> PhotoSettings {
   PhotoSettings::{
@@ -283,7 +207,6 @@ pub fn PhotoSettings::default() -> PhotoSettings {
   }
 }
 
-///|
 extern "js" fn PhotoSettings::to_js_ffi(self : PhotoSettings) -> JsValue =
   #| (self) => ({
   #|   fillLightMode: ((() => { const v = self.fillLightMode; if (v === undefined) return undefined; return ['auto', 'off', 'flash'][v]; })()),
@@ -292,13 +215,11 @@ extern "js" fn PhotoSettings::to_js_ffi(self : PhotoSettings) -> JsValue =
   #|   redEyeReduction: (self.redEyeReduction === -1 ? undefined : self.redEyeReduction)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PhotoSettings::to_js(self : PhotoSettings) -> JsValue {
   PhotoSettings::to_js_ffi(self)
 }
 
-///|
 extern "js" fn PhotoSettings::from_js_ffi(value : JsValue) -> PhotoSettings =
   #| (v) => ({
   #|   fillLightMode: (v.fillLightMode === undefined ? undefined : ['auto', 'off', 'flash'].indexOf(v.fillLightMode)),
@@ -307,7 +228,6 @@ extern "js" fn PhotoSettings::from_js_ffi(value : JsValue) -> PhotoSettings =
   #|   redEyeReduction: (v.redEyeReduction === undefined ? -1 : v.redEyeReduction)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PhotoSettings::from_js(value : JsValue) -> PhotoSettings {
   PhotoSettings::from_js_ffi(value)
@@ -321,39 +241,34 @@ pub(all) struct MediaSettingsRange {
   step : Double?
 }
 
-///|
 /// Create a new MediaSettingsRange with default values
 pub fn MediaSettingsRange::default() -> MediaSettingsRange {
-  MediaSettingsRange::{ max: None, min: None, step: None, }
+  MediaSettingsRange::{
+    max: None,
+    min: None,
+    step: None,
+  }
 }
 
-///|
-extern "js" fn MediaSettingsRange::to_js_ffi(
-  self : MediaSettingsRange,
-) -> JsValue =
+extern "js" fn MediaSettingsRange::to_js_ffi(self : MediaSettingsRange) -> JsValue =
   #| (self) => ({
   #|   max: ((() => { const v = self.max; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   min: ((() => { const v = self.min; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   step: ((() => { const v = self.step; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaSettingsRange::to_js(self : MediaSettingsRange) -> JsValue {
   MediaSettingsRange::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaSettingsRange::from_js_ffi(
-  value : JsValue,
-) -> MediaSettingsRange =
+extern "js" fn MediaSettingsRange::from_js_ffi(value : JsValue) -> MediaSettingsRange =
   #| (v) => ({
   #|   max: (v.max === undefined ? { $tag: 0 } : { $tag: 1, _0: v.max }),
   #|   min: (v.min === undefined ? { $tag: 0 } : { $tag: 1, _0: v.min }),
   #|   step: (v.step === undefined ? { $tag: 0 } : { $tag: 1, _0: v.step })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn MediaSettingsRange::from_js(value : JsValue) -> MediaSettingsRange {
   MediaSettingsRange::from_js_ffi(value)
@@ -379,6 +294,14 @@ pub(all) struct MediaTrackSupportedConstraints {
   tilt : Bool?
   zoom : Bool?
   torch : Bool?
+  powerEfficient : Bool?
+  powerEfficientPixelFormat : Bool?
+  gestureReactions : Bool?
+  faceFraming : Bool?
+  eyeGazeCorrection : Bool?
+  voiceIsolation : Bool?
+  humanFaceDetectionMode : Bool?
+  backgroundSegmentationMask : Bool?
   width : Bool?
   height : Bool?
   aspectRatio : Bool?
@@ -402,7 +325,6 @@ pub(all) struct MediaTrackSupportedConstraints {
   suppressLocalAudioPlayback : Bool?
 }
 
-///|
 /// Create a new MediaTrackSupportedConstraints with default values
 pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstraints {
   MediaTrackSupportedConstraints::{
@@ -423,6 +345,14 @@ pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstrain
     tilt: None,
     zoom: None,
     torch: None,
+    powerEfficient: None,
+    powerEfficientPixelFormat: None,
+    gestureReactions: None,
+    faceFraming: None,
+    eyeGazeCorrection: None,
+    voiceIsolation: None,
+    humanFaceDetectionMode: None,
+    backgroundSegmentationMask: None,
     width: None,
     height: None,
     aspectRatio: None,
@@ -447,10 +377,7 @@ pub fn MediaTrackSupportedConstraints::default() -> MediaTrackSupportedConstrain
   }
 }
 
-///|
-extern "js" fn MediaTrackSupportedConstraints::to_js_ffi(
-  self : MediaTrackSupportedConstraints,
-) -> JsValue =
+extern "js" fn MediaTrackSupportedConstraints::to_js_ffi(self : MediaTrackSupportedConstraints) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: (self.whiteBalanceMode === -1 ? undefined : self.whiteBalanceMode),
   #|   exposureMode: (self.exposureMode === -1 ? undefined : self.exposureMode),
@@ -469,6 +396,14 @@ extern "js" fn MediaTrackSupportedConstraints::to_js_ffi(
   #|   tilt: (self.tilt === -1 ? undefined : self.tilt),
   #|   zoom: (self.zoom === -1 ? undefined : self.zoom),
   #|   torch: (self.torch === -1 ? undefined : self.torch),
+  #|   powerEfficient: (self.powerEfficient === -1 ? undefined : self.powerEfficient),
+  #|   powerEfficientPixelFormat: (self.powerEfficientPixelFormat === -1 ? undefined : self.powerEfficientPixelFormat),
+  #|   gestureReactions: (self.gestureReactions === -1 ? undefined : self.gestureReactions),
+  #|   faceFraming: (self.faceFraming === -1 ? undefined : self.faceFraming),
+  #|   eyeGazeCorrection: (self.eyeGazeCorrection === -1 ? undefined : self.eyeGazeCorrection),
+  #|   voiceIsolation: (self.voiceIsolation === -1 ? undefined : self.voiceIsolation),
+  #|   humanFaceDetectionMode: (self.humanFaceDetectionMode === -1 ? undefined : self.humanFaceDetectionMode),
+  #|   backgroundSegmentationMask: (self.backgroundSegmentationMask === -1 ? undefined : self.backgroundSegmentationMask),
   #|   width: (self.width === -1 ? undefined : self.width),
   #|   height: (self.height === -1 ? undefined : self.height),
   #|   aspectRatio: (self.aspectRatio === -1 ? undefined : self.aspectRatio),
@@ -492,18 +427,12 @@ extern "js" fn MediaTrackSupportedConstraints::to_js_ffi(
   #|   suppressLocalAudioPlayback: (self.suppressLocalAudioPlayback === -1 ? undefined : self.suppressLocalAudioPlayback)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaTrackSupportedConstraints::to_js(
-  self : MediaTrackSupportedConstraints,
-) -> JsValue {
+pub fn MediaTrackSupportedConstraints::to_js(self : MediaTrackSupportedConstraints) -> JsValue {
   MediaTrackSupportedConstraints::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaTrackSupportedConstraints::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackSupportedConstraints =
+extern "js" fn MediaTrackSupportedConstraints::from_js_ffi(value : JsValue) -> MediaTrackSupportedConstraints =
   #| (v) => ({
   #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? -1 : v.whiteBalanceMode),
   #|   exposureMode: (v.exposureMode === undefined ? -1 : v.exposureMode),
@@ -522,6 +451,14 @@ extern "js" fn MediaTrackSupportedConstraints::from_js_ffi(
   #|   tilt: (v.tilt === undefined ? -1 : v.tilt),
   #|   zoom: (v.zoom === undefined ? -1 : v.zoom),
   #|   torch: (v.torch === undefined ? -1 : v.torch),
+  #|   powerEfficient: (v.powerEfficient === undefined ? -1 : v.powerEfficient),
+  #|   powerEfficientPixelFormat: (v.powerEfficientPixelFormat === undefined ? -1 : v.powerEfficientPixelFormat),
+  #|   gestureReactions: (v.gestureReactions === undefined ? -1 : v.gestureReactions),
+  #|   faceFraming: (v.faceFraming === undefined ? -1 : v.faceFraming),
+  #|   eyeGazeCorrection: (v.eyeGazeCorrection === undefined ? -1 : v.eyeGazeCorrection),
+  #|   voiceIsolation: (v.voiceIsolation === undefined ? -1 : v.voiceIsolation),
+  #|   humanFaceDetectionMode: (v.humanFaceDetectionMode === undefined ? -1 : v.humanFaceDetectionMode),
+  #|   backgroundSegmentationMask: (v.backgroundSegmentationMask === undefined ? -1 : v.backgroundSegmentationMask),
   #|   width: (v.width === undefined ? -1 : v.width),
   #|   height: (v.height === undefined ? -1 : v.height),
   #|   aspectRatio: (v.aspectRatio === undefined ? -1 : v.aspectRatio),
@@ -545,11 +482,8 @@ extern "js" fn MediaTrackSupportedConstraints::from_js_ffi(
   #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? -1 : v.suppressLocalAudioPlayback)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaTrackSupportedConstraints::from_js(
-  value : JsValue,
-) -> MediaTrackSupportedConstraints {
+pub fn MediaTrackSupportedConstraints::from_js(value : JsValue) -> MediaTrackSupportedConstraints {
   MediaTrackSupportedConstraints::from_js_ffi(value)
 }
 
@@ -572,6 +506,14 @@ pub(all) struct MediaTrackCapabilities {
   tilt : MediaSettingsRange?
   zoom : MediaSettingsRange?
   torch : FixedArray[Bool]?
+  powerEfficient : FixedArray[Bool]?
+  powerEfficientPixelFormat : FixedArray[Bool]?
+  gestureReactions : FixedArray[Bool]?
+  faceFraming : FixedArray[Bool]?
+  eyeGazeCorrection : FixedArray[Bool]?
+  voiceIsolation : FixedArray[Bool]?
+  humanFaceDetectionMode : FixedArray[String]?
+  backgroundSegmentationMask : FixedArray[Bool]?
   width : ULongRange?
   height : ULongRange?
   aspectRatio : DoubleRange?
@@ -593,7 +535,6 @@ pub(all) struct MediaTrackCapabilities {
   cursor : FixedArray[String]?
 }
 
-///|
 /// Create a new MediaTrackCapabilities with default values
 pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
   MediaTrackCapabilities::{
@@ -613,6 +554,14 @@ pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
     tilt: None,
     zoom: None,
     torch: None,
+    powerEfficient: None,
+    powerEfficientPixelFormat: None,
+    gestureReactions: None,
+    faceFraming: None,
+    eyeGazeCorrection: None,
+    voiceIsolation: None,
+    humanFaceDetectionMode: None,
+    backgroundSegmentationMask: None,
     width: None,
     height: None,
     aspectRatio: None,
@@ -635,30 +584,7 @@ pub fn MediaTrackCapabilities::default() -> MediaTrackCapabilities {
   }
 }
 
-///|
-extern "js" fn MediaTrackCapabilities::to_js_ffi(
-  self : MediaTrackCapabilities,
-  convert_exposureCompensation : (MediaSettingsRange?) -> JsValue,
-  convert_exposureTime : (MediaSettingsRange?) -> JsValue,
-  convert_colorTemperature : (MediaSettingsRange?) -> JsValue,
-  convert_iso : (MediaSettingsRange?) -> JsValue,
-  convert_brightness : (MediaSettingsRange?) -> JsValue,
-  convert_contrast : (MediaSettingsRange?) -> JsValue,
-  convert_saturation : (MediaSettingsRange?) -> JsValue,
-  convert_sharpness : (MediaSettingsRange?) -> JsValue,
-  convert_focusDistance : (MediaSettingsRange?) -> JsValue,
-  convert_pan : (MediaSettingsRange?) -> JsValue,
-  convert_tilt : (MediaSettingsRange?) -> JsValue,
-  convert_zoom : (MediaSettingsRange?) -> JsValue,
-  convert_width : (ULongRange?) -> JsValue,
-  convert_height : (ULongRange?) -> JsValue,
-  convert_aspectRatio : (DoubleRange?) -> JsValue,
-  convert_frameRate : (DoubleRange?) -> JsValue,
-  convert_sampleRate : (ULongRange?) -> JsValue,
-  convert_sampleSize : (ULongRange?) -> JsValue,
-  convert_latency : (DoubleRange?) -> JsValue,
-  convert_channelCount : (ULongRange?) -> JsValue,
-) -> JsValue =
+extern "js" fn MediaTrackCapabilities::to_js_ffi(self : MediaTrackCapabilities, convert_exposureCompensation : (MediaSettingsRange?) -> JsValue, convert_exposureTime : (MediaSettingsRange?) -> JsValue, convert_colorTemperature : (MediaSettingsRange?) -> JsValue, convert_iso : (MediaSettingsRange?) -> JsValue, convert_brightness : (MediaSettingsRange?) -> JsValue, convert_contrast : (MediaSettingsRange?) -> JsValue, convert_saturation : (MediaSettingsRange?) -> JsValue, convert_sharpness : (MediaSettingsRange?) -> JsValue, convert_focusDistance : (MediaSettingsRange?) -> JsValue, convert_pan : (MediaSettingsRange?) -> JsValue, convert_tilt : (MediaSettingsRange?) -> JsValue, convert_zoom : (MediaSettingsRange?) -> JsValue, convert_width : (ULongRange?) -> JsValue, convert_height : (ULongRange?) -> JsValue, convert_aspectRatio : (DoubleRange?) -> JsValue, convert_frameRate : (DoubleRange?) -> JsValue, convert_sampleRate : (ULongRange?) -> JsValue, convert_sampleSize : (ULongRange?) -> JsValue, convert_latency : (DoubleRange?) -> JsValue, convert_channelCount : (ULongRange?) -> JsValue) -> JsValue =
   #| (self, convert_exposureCompensation, convert_exposureTime, convert_colorTemperature, convert_iso, convert_brightness, convert_contrast, convert_saturation, convert_sharpness, convert_focusDistance, convert_pan, convert_tilt, convert_zoom, convert_width, convert_height, convert_aspectRatio, convert_frameRate, convert_sampleRate, convert_sampleSize, convert_latency, convert_channelCount) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -676,6 +602,14 @@ extern "js" fn MediaTrackCapabilities::to_js_ffi(
   #|   tilt: convert_tilt(self.tilt),
   #|   zoom: convert_zoom(self.zoom),
   #|   torch: self.torch,
+  #|   powerEfficient: self.powerEfficient,
+  #|   powerEfficientPixelFormat: self.powerEfficientPixelFormat,
+  #|   gestureReactions: self.gestureReactions,
+  #|   faceFraming: self.faceFraming,
+  #|   eyeGazeCorrection: self.eyeGazeCorrection,
+  #|   voiceIsolation: self.voiceIsolation,
+  #|   humanFaceDetectionMode: self.humanFaceDetectionMode,
+  #|   backgroundSegmentationMask: self.backgroundSegmentationMask,
   #|   width: convert_width(self.width),
   #|   height: convert_height(self.height),
   #|   aspectRatio: convert_aspectRatio(self.aspectRatio),
@@ -697,158 +631,12 @@ extern "js" fn MediaTrackCapabilities::to_js_ffi(
   #|   cursor: self.cursor
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaTrackCapabilities::to_js(self : MediaTrackCapabilities) -> JsValue {
-  MediaTrackCapabilities::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  MediaTrackCapabilities::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn MediaTrackCapabilities::from_js_ffi(
-  value : JsValue,
-  convert_exposureCompensation : (JsValue) -> MediaSettingsRange?,
-  convert_exposureTime : (JsValue) -> MediaSettingsRange?,
-  convert_colorTemperature : (JsValue) -> MediaSettingsRange?,
-  convert_iso : (JsValue) -> MediaSettingsRange?,
-  convert_brightness : (JsValue) -> MediaSettingsRange?,
-  convert_contrast : (JsValue) -> MediaSettingsRange?,
-  convert_saturation : (JsValue) -> MediaSettingsRange?,
-  convert_sharpness : (JsValue) -> MediaSettingsRange?,
-  convert_focusDistance : (JsValue) -> MediaSettingsRange?,
-  convert_pan : (JsValue) -> MediaSettingsRange?,
-  convert_tilt : (JsValue) -> MediaSettingsRange?,
-  convert_zoom : (JsValue) -> MediaSettingsRange?,
-  convert_width : (JsValue) -> ULongRange?,
-  convert_height : (JsValue) -> ULongRange?,
-  convert_aspectRatio : (JsValue) -> DoubleRange?,
-  convert_frameRate : (JsValue) -> DoubleRange?,
-  convert_sampleRate : (JsValue) -> ULongRange?,
-  convert_sampleSize : (JsValue) -> ULongRange?,
-  convert_latency : (JsValue) -> DoubleRange?,
-  convert_channelCount : (JsValue) -> ULongRange?,
-) -> MediaTrackCapabilities =
+extern "js" fn MediaTrackCapabilities::from_js_ffi(value : JsValue, convert_exposureCompensation : (JsValue) -> MediaSettingsRange?, convert_exposureTime : (JsValue) -> MediaSettingsRange?, convert_colorTemperature : (JsValue) -> MediaSettingsRange?, convert_iso : (JsValue) -> MediaSettingsRange?, convert_brightness : (JsValue) -> MediaSettingsRange?, convert_contrast : (JsValue) -> MediaSettingsRange?, convert_saturation : (JsValue) -> MediaSettingsRange?, convert_sharpness : (JsValue) -> MediaSettingsRange?, convert_focusDistance : (JsValue) -> MediaSettingsRange?, convert_pan : (JsValue) -> MediaSettingsRange?, convert_tilt : (JsValue) -> MediaSettingsRange?, convert_zoom : (JsValue) -> MediaSettingsRange?, convert_width : (JsValue) -> ULongRange?, convert_height : (JsValue) -> ULongRange?, convert_aspectRatio : (JsValue) -> DoubleRange?, convert_frameRate : (JsValue) -> DoubleRange?, convert_sampleRate : (JsValue) -> ULongRange?, convert_sampleSize : (JsValue) -> ULongRange?, convert_latency : (JsValue) -> DoubleRange?, convert_channelCount : (JsValue) -> ULongRange?) -> MediaTrackCapabilities =
   #| (v, convert_exposureCompensation, convert_exposureTime, convert_colorTemperature, convert_iso, convert_brightness, convert_contrast, convert_saturation, convert_sharpness, convert_focusDistance, convert_pan, convert_tilt, convert_zoom, convert_width, convert_height, convert_aspectRatio, convert_frameRate, convert_sampleRate, convert_sampleSize, convert_latency, convert_channelCount) => ({
   #|   whiteBalanceMode: v.whiteBalanceMode,
   #|   exposureMode: v.exposureMode,
@@ -866,6 +654,14 @@ extern "js" fn MediaTrackCapabilities::from_js_ffi(
   #|   tilt: convert_tilt(v.tilt),
   #|   zoom: convert_zoom(v.zoom),
   #|   torch: v.torch,
+  #|   powerEfficient: v.powerEfficient,
+  #|   powerEfficientPixelFormat: v.powerEfficientPixelFormat,
+  #|   gestureReactions: v.gestureReactions,
+  #|   faceFraming: v.faceFraming,
+  #|   eyeGazeCorrection: v.eyeGazeCorrection,
+  #|   voiceIsolation: v.voiceIsolation,
+  #|   humanFaceDetectionMode: v.humanFaceDetectionMode,
+  #|   backgroundSegmentationMask: v.backgroundSegmentationMask,
   #|   width: convert_width(v.width),
   #|   height: convert_height(v.height),
   #|   aspectRatio: convert_aspectRatio(v.aspectRatio),
@@ -887,154 +683,9 @@ extern "js" fn MediaTrackCapabilities::from_js_ffi(
   #|   cursor: v.cursor
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaTrackCapabilities::from_js(
-  value : JsValue,
-) -> MediaTrackCapabilities {
-  MediaTrackCapabilities::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(MediaSettingsRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(ULongRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(ULongRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DoubleRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DoubleRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(ULongRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(ULongRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DoubleRange::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(ULongRange::from_js(value))
-      }
-    },
-  )
+pub fn MediaTrackCapabilities::from_js(value : JsValue) -> MediaTrackCapabilities {
+  MediaTrackCapabilities::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(MediaSettingsRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(ULongRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(ULongRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(DoubleRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(DoubleRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(ULongRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(ULongRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(DoubleRange::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(ULongRange::from_js(value)) } })
 }
 
 ///|
@@ -1057,6 +708,12 @@ pub(all) struct MediaTrackConstraintSet {
   tilt : BoolOrConstrainDouble?
   zoom : BoolOrConstrainDouble?
   torch : ConstrainBoolean?
+  gestureReactions : ConstrainBoolean?
+  faceFraming : ConstrainBoolean?
+  eyeGazeCorrection : ConstrainBoolean?
+  voiceIsolation : ConstrainBoolean?
+  humanFaceDetectionMode : ConstrainDOMString?
+  backgroundSegmentationMask : ConstrainBoolean?
   width : ConstrainULong?
   height : ConstrainULong?
   aspectRatio : ConstrainDouble?
@@ -1080,7 +737,6 @@ pub(all) struct MediaTrackConstraintSet {
   suppressLocalAudioPlayback : ConstrainBoolean?
 }
 
-///|
 /// Create a new MediaTrackConstraintSet with default values
 pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
   MediaTrackConstraintSet::{
@@ -1101,6 +757,12 @@ pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
     tilt: None,
     zoom: None,
     torch: None,
+    gestureReactions: None,
+    faceFraming: None,
+    eyeGazeCorrection: None,
+    voiceIsolation: None,
+    humanFaceDetectionMode: None,
+    backgroundSegmentationMask: None,
     width: None,
     height: None,
     aspectRatio: None,
@@ -1125,10 +787,7 @@ pub fn MediaTrackConstraintSet::default() -> MediaTrackConstraintSet {
   }
 }
 
-///|
-extern "js" fn MediaTrackConstraintSet::to_js_ffi(
-  self : MediaTrackConstraintSet,
-) -> JsValue =
+extern "js" fn MediaTrackConstraintSet::to_js_ffi(self : MediaTrackConstraintSet) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: ((() => { const v = self.whiteBalanceMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   exposureMode: ((() => { const v = self.exposureMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1147,6 +806,12 @@ extern "js" fn MediaTrackConstraintSet::to_js_ffi(
   #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   torch: ((() => { const v = self.torch; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   gestureReactions: ((() => { const v = self.gestureReactions; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   faceFraming: ((() => { const v = self.faceFraming; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   eyeGazeCorrection: ((() => { const v = self.eyeGazeCorrection; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   voiceIsolation: ((() => { const v = self.voiceIsolation; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   humanFaceDetectionMode: ((() => { const v = self.humanFaceDetectionMode; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
+  #|   backgroundSegmentationMask: ((() => { const v = self.backgroundSegmentationMask; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   width: ((() => { const v = self.width; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   height: ((() => { const v = self.height; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1170,18 +835,12 @@ extern "js" fn MediaTrackConstraintSet::to_js_ffi(
   #|   suppressLocalAudioPlayback: ((() => { const v = self.suppressLocalAudioPlayback; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaTrackConstraintSet::to_js(
-  self : MediaTrackConstraintSet,
-) -> JsValue {
+pub fn MediaTrackConstraintSet::to_js(self : MediaTrackConstraintSet) -> JsValue {
   MediaTrackConstraintSet::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaTrackConstraintSet::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackConstraintSet =
+extern "js" fn MediaTrackConstraintSet::from_js_ffi(value : JsValue) -> MediaTrackConstraintSet =
   #| (v) => ({
   #|   whiteBalanceMode: (v.whiteBalanceMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.whiteBalanceMode }),
   #|   exposureMode: (v.exposureMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.exposureMode }),
@@ -1200,6 +859,12 @@ extern "js" fn MediaTrackConstraintSet::from_js_ffi(
   #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
   #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
   #|   torch: (v.torch === undefined ? { $tag: 0 } : { $tag: 1, _0: v.torch }),
+  #|   gestureReactions: (v.gestureReactions === undefined ? { $tag: 0 } : { $tag: 1, _0: v.gestureReactions }),
+  #|   faceFraming: (v.faceFraming === undefined ? { $tag: 0 } : { $tag: 1, _0: v.faceFraming }),
+  #|   eyeGazeCorrection: (v.eyeGazeCorrection === undefined ? { $tag: 0 } : { $tag: 1, _0: v.eyeGazeCorrection }),
+  #|   voiceIsolation: (v.voiceIsolation === undefined ? { $tag: 0 } : { $tag: 1, _0: v.voiceIsolation }),
+  #|   humanFaceDetectionMode: (v.humanFaceDetectionMode === undefined ? { $tag: 0 } : { $tag: 1, _0: v.humanFaceDetectionMode }),
+  #|   backgroundSegmentationMask: (v.backgroundSegmentationMask === undefined ? { $tag: 0 } : { $tag: 1, _0: v.backgroundSegmentationMask }),
   #|   width: (v.width === undefined ? { $tag: 0 } : { $tag: 1, _0: v.width }),
   #|   height: (v.height === undefined ? { $tag: 0 } : { $tag: 1, _0: v.height }),
   #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
@@ -1223,11 +888,8 @@ extern "js" fn MediaTrackConstraintSet::from_js_ffi(
   #|   suppressLocalAudioPlayback: (v.suppressLocalAudioPlayback === undefined ? { $tag: 0 } : { $tag: 1, _0: v.suppressLocalAudioPlayback })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaTrackConstraintSet::from_js(
-  value : JsValue,
-) -> MediaTrackConstraintSet {
+pub fn MediaTrackConstraintSet::from_js(value : JsValue) -> MediaTrackConstraintSet {
   MediaTrackConstraintSet::from_js_ffi(value)
 }
 
@@ -1251,6 +913,14 @@ pub(all) struct MediaTrackSettings {
   tilt : Double?
   zoom : Double?
   torch : Bool?
+  powerEfficient : Bool?
+  powerEfficientPixelFormat : Bool?
+  gestureReactions : Bool?
+  faceFraming : Bool?
+  eyeGazeCorrection : Bool?
+  voiceIsolation : Bool?
+  humanFaceDetectionMode : String?
+  backgroundSegmentationMask : Bool?
   width : Int?
   height : Int?
   aspectRatio : Double?
@@ -1275,7 +945,6 @@ pub(all) struct MediaTrackSettings {
   screenPixelRatio : Double?
 }
 
-///|
 /// Create a new MediaTrackSettings with default values
 pub fn MediaTrackSettings::default() -> MediaTrackSettings {
   MediaTrackSettings::{
@@ -1296,6 +965,14 @@ pub fn MediaTrackSettings::default() -> MediaTrackSettings {
     tilt: None,
     zoom: None,
     torch: None,
+    powerEfficient: None,
+    powerEfficientPixelFormat: None,
+    gestureReactions: None,
+    faceFraming: None,
+    eyeGazeCorrection: None,
+    voiceIsolation: None,
+    humanFaceDetectionMode: None,
+    backgroundSegmentationMask: None,
     width: None,
     height: None,
     aspectRatio: None,
@@ -1321,10 +998,7 @@ pub fn MediaTrackSettings::default() -> MediaTrackSettings {
   }
 }
 
-///|
-extern "js" fn MediaTrackSettings::to_js_ffi(
-  self : MediaTrackSettings,
-) -> JsValue =
+extern "js" fn MediaTrackSettings::to_js_ffi(self : MediaTrackSettings) -> JsValue =
   #| (self) => ({
   #|   whiteBalanceMode: self.whiteBalanceMode,
   #|   exposureMode: self.exposureMode,
@@ -1343,6 +1017,14 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #|   tilt: ((() => { const v = self.tilt; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   zoom: ((() => { const v = self.zoom; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   torch: (self.torch === -1 ? undefined : self.torch),
+  #|   powerEfficient: (self.powerEfficient === -1 ? undefined : self.powerEfficient),
+  #|   powerEfficientPixelFormat: (self.powerEfficientPixelFormat === -1 ? undefined : self.powerEfficientPixelFormat),
+  #|   gestureReactions: (self.gestureReactions === -1 ? undefined : self.gestureReactions),
+  #|   faceFraming: (self.faceFraming === -1 ? undefined : self.faceFraming),
+  #|   eyeGazeCorrection: (self.eyeGazeCorrection === -1 ? undefined : self.eyeGazeCorrection),
+  #|   voiceIsolation: (self.voiceIsolation === -1 ? undefined : self.voiceIsolation),
+  #|   humanFaceDetectionMode: self.humanFaceDetectionMode,
+  #|   backgroundSegmentationMask: (self.backgroundSegmentationMask === -1 ? undefined : self.backgroundSegmentationMask),
   #|   width: self.width,
   #|   height: self.height,
   #|   aspectRatio: ((() => { const v = self.aspectRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1367,16 +1049,12 @@ extern "js" fn MediaTrackSettings::to_js_ffi(
   #|   screenPixelRatio: ((() => { const v = self.screenPixelRatio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn MediaTrackSettings::to_js(self : MediaTrackSettings) -> JsValue {
   MediaTrackSettings::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaTrackSettings::from_js_ffi(
-  value : JsValue,
-) -> MediaTrackSettings =
+extern "js" fn MediaTrackSettings::from_js_ffi(value : JsValue) -> MediaTrackSettings =
   #| (v) => ({
   #|   whiteBalanceMode: v.whiteBalanceMode,
   #|   exposureMode: v.exposureMode,
@@ -1395,6 +1073,14 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #|   tilt: (v.tilt === undefined ? { $tag: 0 } : { $tag: 1, _0: v.tilt }),
   #|   zoom: (v.zoom === undefined ? { $tag: 0 } : { $tag: 1, _0: v.zoom }),
   #|   torch: (v.torch === undefined ? -1 : v.torch),
+  #|   powerEfficient: (v.powerEfficient === undefined ? -1 : v.powerEfficient),
+  #|   powerEfficientPixelFormat: (v.powerEfficientPixelFormat === undefined ? -1 : v.powerEfficientPixelFormat),
+  #|   gestureReactions: (v.gestureReactions === undefined ? -1 : v.gestureReactions),
+  #|   faceFraming: (v.faceFraming === undefined ? -1 : v.faceFraming),
+  #|   eyeGazeCorrection: (v.eyeGazeCorrection === undefined ? -1 : v.eyeGazeCorrection),
+  #|   voiceIsolation: (v.voiceIsolation === undefined ? -1 : v.voiceIsolation),
+  #|   humanFaceDetectionMode: v.humanFaceDetectionMode,
+  #|   backgroundSegmentationMask: (v.backgroundSegmentationMask === undefined ? -1 : v.backgroundSegmentationMask),
   #|   width: v.width,
   #|   height: v.height,
   #|   aspectRatio: (v.aspectRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.aspectRatio }),
@@ -1419,7 +1105,6 @@ extern "js" fn MediaTrackSettings::from_js_ffi(
   #|   screenPixelRatio: (v.screenPixelRatio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.screenPixelRatio })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn MediaTrackSettings::from_js(value : JsValue) -> MediaTrackSettings {
   MediaTrackSettings::from_js_ffi(value)
@@ -1432,43 +1117,33 @@ pub(all) struct ConstrainPoint2DParameters {
   ideal : FixedArray[Point2D]?
 }
 
-///|
 /// Create a new ConstrainPoint2DParameters with default values
 pub fn ConstrainPoint2DParameters::default() -> ConstrainPoint2DParameters {
-  ConstrainPoint2DParameters::{ exact: None, ideal: None, }
+  ConstrainPoint2DParameters::{
+    exact: None,
+    ideal: None,
+  }
 }
 
-///|
-extern "js" fn ConstrainPoint2DParameters::to_js_ffi(
-  self : ConstrainPoint2DParameters,
-) -> JsValue =
+extern "js" fn ConstrainPoint2DParameters::to_js_ffi(self : ConstrainPoint2DParameters) -> JsValue =
   #| (self) => ({
   #|   exact: self.exact,
   #|   ideal: self.ideal
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ConstrainPoint2DParameters::to_js(
-  self : ConstrainPoint2DParameters,
-) -> JsValue {
+pub fn ConstrainPoint2DParameters::to_js(self : ConstrainPoint2DParameters) -> JsValue {
   ConstrainPoint2DParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConstrainPoint2DParameters::from_js_ffi(
-  value : JsValue,
-) -> ConstrainPoint2DParameters =
+extern "js" fn ConstrainPoint2DParameters::from_js_ffi(value : JsValue) -> ConstrainPoint2DParameters =
   #| (v) => ({
   #|   exact: v.exact,
   #|   ideal: v.ideal
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ConstrainPoint2DParameters::from_js(
-  value : JsValue,
-) -> ConstrainPoint2DParameters {
+pub fn ConstrainPoint2DParameters::from_js(value : JsValue) -> ConstrainPoint2DParameters {
   ConstrainPoint2DParameters::from_js_ffi(value)
 }
 
@@ -1479,33 +1154,31 @@ pub(all) struct Point2D {
   y : Double?
 }
 
-///|
 /// Create a new Point2D with default values
 pub fn Point2D::default() -> Point2D {
-  Point2D::{ x: None, y: None, }
+  Point2D::{
+    x: None,
+    y: None,
+  }
 }
 
-///|
 extern "js" fn Point2D::to_js_ffi(self : Point2D) -> JsValue =
   #| (self) => ({
   #|   x: ((() => { const v = self.x; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   y: ((() => { const v = self.y; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn Point2D::to_js(self : Point2D) -> JsValue {
   Point2D::to_js_ffi(self)
 }
 
-///|
 extern "js" fn Point2D::from_js_ffi(value : JsValue) -> Point2D =
   #| (v) => ({
   #|   x: (v.x === undefined ? { $tag: 0 } : { $tag: 1, _0: v.x }),
   #|   y: (v.y === undefined ? { $tag: 0 } : { $tag: 1, _0: v.y })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn Point2D::from_js(value : JsValue) -> Point2D {
   Point2D::from_js_ffi(value)
@@ -1515,28 +1188,21 @@ pub fn Point2D::from_js(value : JsValue) -> Point2D {
 /// ImageCapture interface
 pub type ImageCapture
 
-///|
 pub extern "js" fn ImageCapture::to_js_value(self : ImageCapture) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ImageCapture (unchecked)
 pub extern "js" fn ImageCapture::from_js_value(v : JsValue) -> ImageCapture =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ImageCapture (checked with instanceof)
-pub extern "js" fn ImageCapture::from_js_value_opt(
-  v : JsValue,
-) -> ImageCapture? =
+pub extern "js" fn ImageCapture::from_js_value_opt(v : JsValue) -> ImageCapture? =
   #| (v) => (v instanceof ImageCapture) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ImageCapture (checked with instanceof)
 pub extern "js" fn JsValue::as_image_capture(self : JsValue) -> ImageCapture? =
   #| (self) => (self instanceof ImageCapture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ImageCapture (unchecked)
 pub extern "js" fn JsValue::to_image_capture(self : JsValue) -> ImageCapture =
   #| (self) => self
@@ -1548,6 +1214,8 @@ pub(all) enum ImageCaptureConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ImageCaptureConstructorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ImageCaptureTakePhotoError {
@@ -1555,6 +1223,8 @@ pub(all) enum ImageCaptureTakePhotoError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend ImageCaptureTakePhotoError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1564,6 +1234,8 @@ pub(all) enum ImageCaptureGetPhotoCapabilitiesError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ImageCaptureGetPhotoCapabilitiesError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ImageCaptureGetPhotoSettingsError {
@@ -1571,6 +1243,8 @@ pub(all) enum ImageCaptureGetPhotoSettingsError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend ImageCaptureGetPhotoSettingsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -1580,37 +1254,22 @@ pub(all) enum ImageCaptureGrabFrameError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn ImageCapture::new(
-  video_track : MediaStreamTrack,
-) -> Result[ImageCapture, ImageCaptureConstructorError] =
+pub extend ImageCaptureGrabFrameError with @debug.Debug::{to_repr}
+
+pub extern "js" fn ImageCapture::new(video_track : MediaStreamTrack) -> Result[ImageCapture, ImageCaptureConstructorError] =
   #| (video_track) => (() => { try { return { $tag: 1, _0: new ImageCapture(video_track) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotSupportedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn ImageCapture::take_photo(
-  self : ImageCapture,
-) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
+pub extern "js" fn ImageCapture::take_photo(self : ImageCapture) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
   #| (self) => self.takePhoto().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn ImageCapture::take_photo_with_photo_settings_ffi(
-  self : ImageCapture,
-  photo_settings : JsValue,
-) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
+extern "js" fn ImageCapture::take_photo_with_photo_settings_ffi(self : ImageCapture, photo_settings : JsValue) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] =
   #| (self, photo_settings) => self.takePhoto(photo_settings).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn ImageCapture::take_photo_with_photo_settings(
-  self : ImageCapture,
-  photo_settings : PhotoSettings,
-) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] {
+pub fn ImageCapture::take_photo_with_photo_settings(self : ImageCapture, photo_settings : PhotoSettings) -> Promise[Result[Blob, ImageCaptureTakePhotoError]] {
   ImageCapture::take_photo_with_photo_settings_ffi(self, photo_settings.to_js())
 }
 
-///|
-pub extern "js" fn ImageCapture::get_photo_capabilities(
-  self : ImageCapture,
-) -> Promise[Result[PhotoCapabilities, ImageCaptureGetPhotoCapabilitiesError]] =
+pub extern "js" fn ImageCapture::get_photo_capabilities(self : ImageCapture) -> Promise[Result[PhotoCapabilities, ImageCaptureGetPhotoCapabilitiesError]] =
   #| (self) => self.getPhotoCapabilities().then(v => ({
   #|   redEyeReduction: (v.redEyeReduction === undefined ? undefined : ['never', 'always', 'controllable'].indexOf(v.redEyeReduction)),
   #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
@@ -1618,10 +1277,7 @@ pub extern "js" fn ImageCapture::get_photo_capabilities(
   #|   fillLightMode: v.fillLightMode
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn ImageCapture::get_photo_settings(
-  self : ImageCapture,
-) -> Promise[Result[PhotoSettings, ImageCaptureGetPhotoSettingsError]] =
+pub extern "js" fn ImageCapture::get_photo_settings(self : ImageCapture) -> Promise[Result[PhotoSettings, ImageCaptureGetPhotoSettingsError]] =
   #| (self) => self.getPhotoSettings().then(v => ({
   #|   fillLightMode: (v.fillLightMode === undefined ? undefined : ['auto', 'off', 'flash'].indexOf(v.fillLightMode)),
   #|   imageHeight: (v.imageHeight === undefined ? { $tag: 0 } : { $tag: 1, _0: v.imageHeight }),
@@ -1629,14 +1285,8 @@ pub extern "js" fn ImageCapture::get_photo_settings(
   #|   redEyeReduction: (v.redEyeReduction === undefined ? -1 : v.redEyeReduction)
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn ImageCapture::grab_frame(
-  self : ImageCapture,
-) -> Promise[Result[ImageBitmap, ImageCaptureGrabFrameError]] =
+pub extern "js" fn ImageCapture::grab_frame(self : ImageCapture) -> Promise[Result[ImageBitmap, ImageCaptureGrabFrameError]] =
   #| (self) => self.grabFrame().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'UnknownError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn ImageCapture::get_track(
-  self : ImageCapture,
-) -> MediaStreamTrack =
+pub extern "js" fn ImageCapture::get_track(self : ImageCapture) -> MediaStreamTrack =
   #| (self) => self.track

@@ -9,7 +9,6 @@ pub(all) struct CaptureHandleConfig {
   permittedOrigins : FixedArray[String]?
 }
 
-///|
 /// Create a new CaptureHandleConfig with default values
 pub fn CaptureHandleConfig::default() -> CaptureHandleConfig {
   CaptureHandleConfig::{
@@ -19,33 +18,25 @@ pub fn CaptureHandleConfig::default() -> CaptureHandleConfig {
   }
 }
 
-///|
-extern "js" fn CaptureHandleConfig::to_js_ffi(
-  self : CaptureHandleConfig,
-) -> JsValue =
+extern "js" fn CaptureHandleConfig::to_js_ffi(self : CaptureHandleConfig) -> JsValue =
   #| (self) => ({
   #|   exposeOrigin: (self.exposeOrigin === -1 ? undefined : self.exposeOrigin),
   #|   handle: self.handle,
   #|   permittedOrigins: self.permittedOrigins
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CaptureHandleConfig::to_js(self : CaptureHandleConfig) -> JsValue {
   CaptureHandleConfig::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CaptureHandleConfig::from_js_ffi(
-  value : JsValue,
-) -> CaptureHandleConfig =
+extern "js" fn CaptureHandleConfig::from_js_ffi(value : JsValue) -> CaptureHandleConfig =
   #| (v) => ({
   #|   exposeOrigin: (v.exposeOrigin === undefined ? -1 : v.exposeOrigin),
   #|   handle: v.handle,
   #|   permittedOrigins: v.permittedOrigins
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CaptureHandleConfig::from_js(value : JsValue) -> CaptureHandleConfig {
   CaptureHandleConfig::from_js_ffi(value)
@@ -58,33 +49,31 @@ pub(all) struct CaptureHandle {
   handle : String?
 }
 
-///|
 /// Create a new CaptureHandle with default values
 pub fn CaptureHandle::default() -> CaptureHandle {
-  CaptureHandle::{ origin: None, handle: None, }
+  CaptureHandle::{
+    origin: None,
+    handle: None,
+  }
 }
 
-///|
 extern "js" fn CaptureHandle::to_js_ffi(self : CaptureHandle) -> JsValue =
   #| (self) => ({
   #|   origin: self.origin,
   #|   handle: self.handle
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CaptureHandle::to_js(self : CaptureHandle) -> JsValue {
   CaptureHandle::to_js_ffi(self)
 }
 
-///|
 extern "js" fn CaptureHandle::from_js_ffi(value : JsValue) -> CaptureHandle =
   #| (v) => ({
   #|   origin: v.origin,
   #|   handle: v.handle
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CaptureHandle::from_js(value : JsValue) -> CaptureHandle {
   CaptureHandle::from_js_ffi(value)

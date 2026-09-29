@@ -9,7 +9,9 @@ pub(all) enum ParityType {
   Odd
 } derive(Eq, Debug)
 
-///|
+pub extend ParityType with Eq::{equal, not_equal}
+pub extend ParityType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ParityType::to_string(self : ParityType) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn ParityType::to_string(self : ParityType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ParityType::from_string(s : String) -> ParityType? {
   match s {
@@ -37,7 +38,9 @@ pub(all) enum FlowControlType {
   Hardware
 } derive(Eq, Debug)
 
-///|
+pub extend FlowControlType with Eq::{equal, not_equal}
+pub extend FlowControlType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn FlowControlType::to_string(self : FlowControlType) -> String {
   match self {
@@ -46,7 +49,6 @@ pub fn FlowControlType::to_string(self : FlowControlType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn FlowControlType::from_string(s : String) -> FlowControlType? {
   match s {
@@ -63,7 +65,6 @@ pub(all) struct SerialPortRequestOptions {
   allowedBluetoothServiceClassIds : FixedArray[BluetoothServiceUUID]?
 }
 
-///|
 /// Create a new SerialPortRequestOptions with default values
 pub fn SerialPortRequestOptions::default() -> SerialPortRequestOptions {
   SerialPortRequestOptions::{
@@ -72,37 +73,25 @@ pub fn SerialPortRequestOptions::default() -> SerialPortRequestOptions {
   }
 }
 
-///|
-extern "js" fn SerialPortRequestOptions::to_js_ffi(
-  self : SerialPortRequestOptions,
-) -> JsValue =
+extern "js" fn SerialPortRequestOptions::to_js_ffi(self : SerialPortRequestOptions) -> JsValue =
   #| (self) => ({
   #|   filters: self.filters,
   #|   allowedBluetoothServiceClassIds: self.allowedBluetoothServiceClassIds
   #| })
 
-///|
 /// Convert to JsValue
-pub fn SerialPortRequestOptions::to_js(
-  self : SerialPortRequestOptions,
-) -> JsValue {
+pub fn SerialPortRequestOptions::to_js(self : SerialPortRequestOptions) -> JsValue {
   SerialPortRequestOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SerialPortRequestOptions::from_js_ffi(
-  value : JsValue,
-) -> SerialPortRequestOptions =
+extern "js" fn SerialPortRequestOptions::from_js_ffi(value : JsValue) -> SerialPortRequestOptions =
   #| (v) => ({
   #|   filters: v.filters,
   #|   allowedBluetoothServiceClassIds: v.allowedBluetoothServiceClassIds
   #| })
 
-///|
 /// Convert from JsValue
-pub fn SerialPortRequestOptions::from_js(
-  value : JsValue,
-) -> SerialPortRequestOptions {
+pub fn SerialPortRequestOptions::from_js(value : JsValue) -> SerialPortRequestOptions {
   SerialPortRequestOptions::from_js_ffi(value)
 }
 
@@ -114,7 +103,6 @@ pub(all) struct SerialPortFilter {
   bluetoothServiceClassId : BluetoothServiceUUID?
 }
 
-///|
 /// Create a new SerialPortFilter with default values
 pub fn SerialPortFilter::default() -> SerialPortFilter {
   SerialPortFilter::{
@@ -124,7 +112,6 @@ pub fn SerialPortFilter::default() -> SerialPortFilter {
   }
 }
 
-///|
 extern "js" fn SerialPortFilter::to_js_ffi(self : SerialPortFilter) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
@@ -132,23 +119,18 @@ extern "js" fn SerialPortFilter::to_js_ffi(self : SerialPortFilter) -> JsValue =
   #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn SerialPortFilter::to_js(self : SerialPortFilter) -> JsValue {
   SerialPortFilter::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SerialPortFilter::from_js_ffi(
-  value : JsValue,
-) -> SerialPortFilter =
+extern "js" fn SerialPortFilter::from_js_ffi(value : JsValue) -> SerialPortFilter =
   #| (v) => ({
   #|   usbVendorId: v.usbVendorId,
   #|   usbProductId: v.usbProductId,
   #|   bluetoothServiceClassId: (v.bluetoothServiceClassId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bluetoothServiceClassId })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn SerialPortFilter::from_js(value : JsValue) -> SerialPortFilter {
   SerialPortFilter::from_js_ffi(value)
@@ -162,7 +144,6 @@ pub(all) struct SerialPortInfo {
   bluetoothServiceClassId : BluetoothServiceUUID?
 }
 
-///|
 /// Create a new SerialPortInfo with default values
 pub fn SerialPortInfo::default() -> SerialPortInfo {
   SerialPortInfo::{
@@ -172,7 +153,6 @@ pub fn SerialPortInfo::default() -> SerialPortInfo {
   }
 }
 
-///|
 extern "js" fn SerialPortInfo::to_js_ffi(self : SerialPortInfo) -> JsValue =
   #| (self) => ({
   #|   usbVendorId: self.usbVendorId,
@@ -180,13 +160,11 @@ extern "js" fn SerialPortInfo::to_js_ffi(self : SerialPortInfo) -> JsValue =
   #|   bluetoothServiceClassId: ((() => { const v = self.bluetoothServiceClassId; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn SerialPortInfo::to_js(self : SerialPortInfo) -> JsValue {
   SerialPortInfo::to_js_ffi(self)
 }
 
-///|
 extern "js" fn SerialPortInfo::from_js_ffi(value : JsValue) -> SerialPortInfo =
   #| (v) => ({
   #|   usbVendorId: v.usbVendorId,
@@ -194,7 +172,6 @@ extern "js" fn SerialPortInfo::from_js_ffi(value : JsValue) -> SerialPortInfo =
   #|   bluetoothServiceClassId: (v.bluetoothServiceClassId === undefined ? { $tag: 0 } : { $tag: 1, _0: v.bluetoothServiceClassId })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn SerialPortInfo::from_js(value : JsValue) -> SerialPortInfo {
   SerialPortInfo::from_js_ffi(value)
@@ -211,7 +188,6 @@ pub(all) struct SerialOptions {
   flowControl : FlowControlType?
 }
 
-///|
 /// Create a new SerialOptions with default values
 pub fn SerialOptions::default() -> SerialOptions {
   SerialOptions::{
@@ -224,7 +200,6 @@ pub fn SerialOptions::default() -> SerialOptions {
   }
 }
 
-///|
 extern "js" fn SerialOptions::to_js_ffi(self : SerialOptions) -> JsValue =
   #| (self) => ({
   #|   baudRate: self.baudRate,
@@ -235,13 +210,11 @@ extern "js" fn SerialOptions::to_js_ffi(self : SerialOptions) -> JsValue =
   #|   flowControl: ((() => { const v = self.flowControl; if (v === undefined) return undefined; return ['none', 'hardware'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn SerialOptions::to_js(self : SerialOptions) -> JsValue {
   SerialOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn SerialOptions::from_js_ffi(value : JsValue) -> SerialOptions =
   #| (v) => ({
   #|   baudRate: v.baudRate,
@@ -252,7 +225,6 @@ extern "js" fn SerialOptions::from_js_ffi(value : JsValue) -> SerialOptions =
   #|   flowControl: (v.flowControl === undefined ? undefined : ['none', 'hardware'].indexOf(v.flowControl))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn SerialOptions::from_js(value : JsValue) -> SerialOptions {
   SerialOptions::from_js_ffi(value)
@@ -266,7 +238,6 @@ pub(all) struct SerialOutputSignals {
   break_ : Bool?
 }
 
-///|
 /// Create a new SerialOutputSignals with default values
 pub fn SerialOutputSignals::default() -> SerialOutputSignals {
   SerialOutputSignals::{
@@ -276,33 +247,25 @@ pub fn SerialOutputSignals::default() -> SerialOutputSignals {
   }
 }
 
-///|
-extern "js" fn SerialOutputSignals::to_js_ffi(
-  self : SerialOutputSignals,
-) -> JsValue =
+extern "js" fn SerialOutputSignals::to_js_ffi(self : SerialOutputSignals) -> JsValue =
   #| (self) => ({
   #|   dataTerminalReady: (self.dataTerminalReady === -1 ? undefined : self.dataTerminalReady),
   #|   requestToSend: (self.requestToSend === -1 ? undefined : self.requestToSend),
   #|   break: (self.break_ === -1 ? undefined : self.break_)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn SerialOutputSignals::to_js(self : SerialOutputSignals) -> JsValue {
   SerialOutputSignals::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SerialOutputSignals::from_js_ffi(
-  value : JsValue,
-) -> SerialOutputSignals =
+extern "js" fn SerialOutputSignals::from_js_ffi(value : JsValue) -> SerialOutputSignals =
   #| (v) => ({
   #|   dataTerminalReady: (v.dataTerminalReady === undefined ? -1 : v.dataTerminalReady),
   #|   requestToSend: (v.requestToSend === undefined ? -1 : v.requestToSend),
   #|   break_: (v.break === undefined ? -1 : v.break)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn SerialOutputSignals::from_js(value : JsValue) -> SerialOutputSignals {
   SerialOutputSignals::from_js_ffi(value)
@@ -317,7 +280,6 @@ pub(all) struct SerialInputSignals {
   dataSetReady : Bool
 }
 
-///|
 /// Create a new SerialInputSignals with default values
 pub fn SerialInputSignals::default() -> SerialInputSignals {
   SerialInputSignals::{
@@ -328,10 +290,7 @@ pub fn SerialInputSignals::default() -> SerialInputSignals {
   }
 }
 
-///|
-extern "js" fn SerialInputSignals::to_js_ffi(
-  self : SerialInputSignals,
-) -> JsValue =
+extern "js" fn SerialInputSignals::to_js_ffi(self : SerialInputSignals) -> JsValue =
   #| (self) => ({
   #|   dataCarrierDetect: self.dataCarrierDetect,
   #|   clearToSend: self.clearToSend,
@@ -339,16 +298,12 @@ extern "js" fn SerialInputSignals::to_js_ffi(
   #|   dataSetReady: self.dataSetReady
   #| })
 
-///|
 /// Convert to JsValue
 pub fn SerialInputSignals::to_js(self : SerialInputSignals) -> JsValue {
   SerialInputSignals::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SerialInputSignals::from_js_ffi(
-  value : JsValue,
-) -> SerialInputSignals =
+extern "js" fn SerialInputSignals::from_js_ffi(value : JsValue) -> SerialInputSignals =
   #| (v) => ({
   #|   dataCarrierDetect: v.dataCarrierDetect,
   #|   clearToSend: v.clearToSend,
@@ -356,7 +311,6 @@ extern "js" fn SerialInputSignals::from_js_ffi(
   #|   dataSetReady: v.dataSetReady
   #| })
 
-///|
 /// Convert from JsValue
 pub fn SerialInputSignals::from_js(value : JsValue) -> SerialInputSignals {
   SerialInputSignals::from_js_ffi(value)
@@ -366,31 +320,25 @@ pub fn SerialInputSignals::from_js(value : JsValue) -> SerialInputSignals {
 /// Serial interface
 pub type Serial
 
-///|
 pub extern "js" fn Serial::to_js_value(self : Serial) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Serial (unchecked)
 pub extern "js" fn Serial::from_js_value(v : JsValue) -> Serial =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Serial (checked with instanceof)
 pub extern "js" fn Serial::from_js_value_opt(v : JsValue) -> Serial? =
   #| (v) => (v instanceof Serial) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Serial (checked with instanceof)
 pub extern "js" fn JsValue::as_serial(self : JsValue) -> Serial? =
   #| (self) => (self instanceof Serial) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Serial (unchecked)
 pub extern "js" fn JsValue::to_serial(self : JsValue) -> Serial =
   #| (self) => self
 
-///|
 pub extern "js" fn Serial::to_event_target(self : Serial) -> EventTarget =
   #| (self) => self
 
@@ -401,6 +349,8 @@ pub(all) enum SerialGetPortsError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SerialGetPortsError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum SerialRequestPortError {
@@ -409,52 +359,30 @@ pub(all) enum SerialRequestPortError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Serial::set_onconnect(
-  self : Serial,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extend SerialRequestPortError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Serial::set_onconnect(self : Serial, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onconnect = (e) => handler(e) }
 
-///|
 pub extern "js" fn Serial::clear_onconnect(self : Serial) -> Unit =
   #| (self) => { self.onconnect = null }
 
-///|
-pub extern "js" fn Serial::set_ondisconnect(
-  self : Serial,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Serial::set_ondisconnect(self : Serial, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.ondisconnect = (e) => handler(e) }
 
-///|
 pub extern "js" fn Serial::clear_ondisconnect(self : Serial) -> Unit =
   #| (self) => { self.ondisconnect = null }
 
-///|
-pub extern "js" fn Serial::get_ports(
-  self : Serial,
-) -> Promise[Result[FixedArray[SerialPort], SerialGetPortsError]] =
+pub extern "js" fn Serial::get_ports(self : Serial) -> Promise[Result[FixedArray[SerialPort], SerialGetPortsError]] =
   #| (self) => self.getPorts().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Serial::request_port(
-  self : Serial,
-) -> Promise[Result[SerialPort, SerialRequestPortError]] =
+pub extern "js" fn Serial::request_port(self : Serial) -> Promise[Result[SerialPort, SerialRequestPortError]] =
   #| (self) => self.requestPort().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn Serial::request_port_with_options_ffi(
-  self : Serial,
-  options : JsValue,
-) -> Promise[Result[SerialPort, SerialRequestPortError]] =
+extern "js" fn Serial::request_port_with_options_ffi(self : Serial, options : JsValue) -> Promise[Result[SerialPort, SerialRequestPortError]] =
   #| (self, options) => self.requestPort(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn Serial::request_port_with_options(
-  self : Serial,
-  options : SerialPortRequestOptions,
-) -> Promise[Result[SerialPort, SerialRequestPortError]] {
+pub fn Serial::request_port_with_options(self : Serial, options : SerialPortRequestOptions) -> Promise[Result[SerialPort, SerialRequestPortError]] {
   Serial::request_port_with_options_ffi(self, options.to_js())
 }
 
@@ -462,34 +390,26 @@ pub fn Serial::request_port_with_options(
 /// SerialPort interface
 pub type SerialPort
 
-///|
 pub extern "js" fn SerialPort::to_js_value(self : SerialPort) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to SerialPort (unchecked)
 pub extern "js" fn SerialPort::from_js_value(v : JsValue) -> SerialPort =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to SerialPort (checked with instanceof)
 pub extern "js" fn SerialPort::from_js_value_opt(v : JsValue) -> SerialPort? =
   #| (v) => (v instanceof SerialPort) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to SerialPort (checked with instanceof)
 pub extern "js" fn JsValue::as_serial_port(self : JsValue) -> SerialPort? =
   #| (self) => (self instanceof SerialPort) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to SerialPort (unchecked)
 pub extern "js" fn JsValue::to_serial_port(self : JsValue) -> SerialPort =
   #| (self) => self
 
-///|
-pub extern "js" fn SerialPort::to_event_target(
-  self : SerialPort,
-) -> EventTarget =
+pub extern "js" fn SerialPort::to_event_target(self : SerialPort) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -500,6 +420,8 @@ pub(all) enum SerialPortOpenError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend SerialPortOpenError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum SerialPortSetSignalsError {
@@ -507,6 +429,8 @@ pub(all) enum SerialPortSetSignalsError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend SerialPortSetSignalsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -516,88 +440,50 @@ pub(all) enum SerialPortGetSignalsError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn SerialPort::set_onconnect(
-  self : SerialPort,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extend SerialPortGetSignalsError with @debug.Debug::{to_repr}
+
+pub extern "js" fn SerialPort::set_onconnect(self : SerialPort, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onconnect = (e) => handler(e) }
 
-///|
 pub extern "js" fn SerialPort::clear_onconnect(self : SerialPort) -> Unit =
   #| (self) => { self.onconnect = null }
 
-///|
-pub extern "js" fn SerialPort::set_ondisconnect(
-  self : SerialPort,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn SerialPort::set_ondisconnect(self : SerialPort, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.ondisconnect = (e) => handler(e) }
 
-///|
 pub extern "js" fn SerialPort::clear_ondisconnect(self : SerialPort) -> Unit =
   #| (self) => { self.ondisconnect = null }
 
-///|
 pub extern "js" fn SerialPort::get_connected(self : SerialPort) -> Bool =
   #| (self) => self.connected
 
-///|
-pub extern "js" fn SerialPort::get_readable(
-  self : SerialPort,
-) -> ReadableStream? =
+pub extern "js" fn SerialPort::get_readable(self : SerialPort) -> ReadableStream? =
   #| (self) => (() => { const v = self.readable; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn SerialPort::get_writable(
-  self : SerialPort,
-) -> WritableStream? =
+pub extern "js" fn SerialPort::get_writable(self : SerialPort) -> WritableStream? =
   #| (self) => (() => { const v = self.writable; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn SerialPort::get_info(self : SerialPort) -> SerialPortInfo =
   #| (self) => self.getInfo()
 
-///|
-extern "js" fn SerialPort::open_ffi(
-  self : SerialPort,
-  options : JsValue,
-) -> Promise[Result[Unit, SerialPortOpenError]] =
+extern "js" fn SerialPort::open_ffi(self : SerialPort, options : JsValue) -> Promise[Result[Unit, SerialPortOpenError]] =
   #| (self, options) => self.open(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn SerialPort::open(
-  self : SerialPort,
-  options : SerialOptions,
-) -> Promise[Result[Unit, SerialPortOpenError]] {
+pub fn SerialPort::open(self : SerialPort, options : SerialOptions) -> Promise[Result[Unit, SerialPortOpenError]] {
   SerialPort::open_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn SerialPort::set_signals(
-  self : SerialPort,
-) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
+pub extern "js" fn SerialPort::set_signals(self : SerialPort) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
   #| (self) => self.setSignals().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn SerialPort::set_signals_with_signals_ffi(
-  self : SerialPort,
-  signals : JsValue,
-) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
+extern "js" fn SerialPort::set_signals_with_signals_ffi(self : SerialPort, signals : JsValue) -> Promise[Result[Unit, SerialPortSetSignalsError]] =
   #| (self, signals) => self.setSignals(signals).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn SerialPort::set_signals_with_signals(
-  self : SerialPort,
-  signals : SerialOutputSignals,
-) -> Promise[Result[Unit, SerialPortSetSignalsError]] {
+pub fn SerialPort::set_signals_with_signals(self : SerialPort, signals : SerialOutputSignals) -> Promise[Result[Unit, SerialPortSetSignalsError]] {
   SerialPort::set_signals_with_signals_ffi(self, signals.to_js())
 }
 
-///|
-pub extern "js" fn SerialPort::get_signals(
-  self : SerialPort,
-) -> Promise[Result[SerialInputSignals, SerialPortGetSignalsError]] =
+pub extern "js" fn SerialPort::get_signals(self : SerialPort) -> Promise[Result[SerialInputSignals, SerialPortGetSignalsError]] =
   #| (self) => self.getSignals().then(v => ({
   #|   dataCarrierDetect: v.dataCarrierDetect,
   #|   clearToSend: v.clearToSend,
@@ -605,10 +491,8 @@ pub extern "js" fn SerialPort::get_signals(
   #|   dataSetReady: v.dataSetReady
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NetworkError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
 pub extern "js" fn SerialPort::close(self : SerialPort) -> Promise[Unit] =
   #| (self) => self.close()
 
-///|
 pub extern "js" fn SerialPort::forget(self : SerialPort) -> Promise[Unit] =
   #| (self) => self.forget()

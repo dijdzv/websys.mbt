@@ -5,185 +5,90 @@
 /// CSSCounterStyleRule interface
 pub type CSSCounterStyleRule
 
-///|
-pub extern "js" fn CSSCounterStyleRule::to_js_value(
-  self : CSSCounterStyleRule,
-) -> JsValue =
+pub extern "js" fn CSSCounterStyleRule::to_js_value(self : CSSCounterStyleRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSCounterStyleRule (unchecked)
-pub extern "js" fn CSSCounterStyleRule::from_js_value(
-  v : JsValue,
-) -> CSSCounterStyleRule =
+pub extern "js" fn CSSCounterStyleRule::from_js_value(v : JsValue) -> CSSCounterStyleRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSCounterStyleRule (checked with instanceof)
-pub extern "js" fn CSSCounterStyleRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSCounterStyleRule? =
+pub extern "js" fn CSSCounterStyleRule::from_js_value_opt(v : JsValue) -> CSSCounterStyleRule? =
   #| (v) => (v instanceof CSSCounterStyleRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSCounterStyleRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_counter_style_rule(
-  self : JsValue,
-) -> CSSCounterStyleRule? =
+pub extern "js" fn JsValue::as_css_counter_style_rule(self : JsValue) -> CSSCounterStyleRule? =
   #| (self) => (self instanceof CSSCounterStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSCounterStyleRule (unchecked)
-pub extern "js" fn JsValue::to_css_counter_style_rule(
-  self : JsValue,
-) -> CSSCounterStyleRule =
+pub extern "js" fn JsValue::to_css_counter_style_rule(self : JsValue) -> CSSCounterStyleRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSCounterStyleRule::to_css_rule(
-  self : CSSCounterStyleRule,
-) -> CSSRule =
+pub extern "js" fn CSSCounterStyleRule::to_css_rule(self : CSSCounterStyleRule) -> CSSRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_name(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_name(self : CSSCounterStyleRule) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_name(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_name(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.name = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_system(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_system(self : CSSCounterStyleRule) -> String =
   #| (self) => self.system
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_system(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_system(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.system = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_symbols(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_symbols(self : CSSCounterStyleRule) -> String =
   #| (self) => self.symbols
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_symbols(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_symbols(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.symbols = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_additive_symbols(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_additive_symbols(self : CSSCounterStyleRule) -> String =
   #| (self) => self.additiveSymbols
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_additive_symbols(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_additive_symbols(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.additiveSymbols = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_negative(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_negative(self : CSSCounterStyleRule) -> String =
   #| (self) => self.negative
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_negative(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_negative(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.negative = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_prefix(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_prefix(self : CSSCounterStyleRule) -> String =
   #| (self) => self.prefix
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_prefix(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_prefix(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.prefix = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_suffix(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_suffix(self : CSSCounterStyleRule) -> String =
   #| (self) => self.suffix
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_suffix(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_suffix(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.suffix = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_range(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_range(self : CSSCounterStyleRule) -> String =
   #| (self) => self.range
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_range(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_range(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.range = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_pad(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_pad(self : CSSCounterStyleRule) -> String =
   #| (self) => self.pad
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_pad(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_pad(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.pad = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_speak_as(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_speak_as(self : CSSCounterStyleRule) -> String =
   #| (self) => self.speakAs
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_speak_as(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_speak_as(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.speakAs = value }
 
-///|
-pub extern "js" fn CSSCounterStyleRule::get_fallback(
-  self : CSSCounterStyleRule,
-) -> String =
+pub extern "js" fn CSSCounterStyleRule::get_fallback(self : CSSCounterStyleRule) -> String =
   #| (self) => self.fallback
 
-///|
-pub extern "js" fn CSSCounterStyleRule::set_fallback(
-  self : CSSCounterStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSCounterStyleRule::set_fallback(self : CSSCounterStyleRule, value : String) -> Unit =
   #| (self, value) => { self.fallback = value }

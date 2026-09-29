@@ -8,37 +8,31 @@ pub(all) struct TextDecoderOptions {
   ignoreBOM : Bool?
 }
 
-///|
 /// Create a new TextDecoderOptions with default values
 pub fn TextDecoderOptions::default() -> TextDecoderOptions {
-  TextDecoderOptions::{ fatal: None, ignoreBOM: None, }
+  TextDecoderOptions::{
+    fatal: None,
+    ignoreBOM: None,
+  }
 }
 
-///|
-extern "js" fn TextDecoderOptions::to_js_ffi(
-  self : TextDecoderOptions,
-) -> JsValue =
+extern "js" fn TextDecoderOptions::to_js_ffi(self : TextDecoderOptions) -> JsValue =
   #| (self) => ({
   #|   fatal: (self.fatal === -1 ? undefined : self.fatal),
   #|   ignoreBOM: (self.ignoreBOM === -1 ? undefined : self.ignoreBOM)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn TextDecoderOptions::to_js(self : TextDecoderOptions) -> JsValue {
   TextDecoderOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TextDecoderOptions::from_js_ffi(
-  value : JsValue,
-) -> TextDecoderOptions =
+extern "js" fn TextDecoderOptions::from_js_ffi(value : JsValue) -> TextDecoderOptions =
   #| (v) => ({
   #|   fatal: (v.fatal === undefined ? -1 : v.fatal),
   #|   ignoreBOM: (v.ignoreBOM === undefined ? -1 : v.ignoreBOM)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn TextDecoderOptions::from_js(value : JsValue) -> TextDecoderOptions {
   TextDecoderOptions::from_js_ffi(value)
@@ -50,35 +44,28 @@ pub(all) struct TextDecodeOptions {
   stream : Bool?
 }
 
-///|
 /// Create a new TextDecodeOptions with default values
 pub fn TextDecodeOptions::default() -> TextDecodeOptions {
-  TextDecodeOptions::{ stream: None, }
+  TextDecodeOptions::{
+    stream: None,
+  }
 }
 
-///|
-extern "js" fn TextDecodeOptions::to_js_ffi(
-  self : TextDecodeOptions,
-) -> JsValue =
+extern "js" fn TextDecodeOptions::to_js_ffi(self : TextDecodeOptions) -> JsValue =
   #| (self) => ({
   #|   stream: (self.stream === -1 ? undefined : self.stream)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn TextDecodeOptions::to_js(self : TextDecodeOptions) -> JsValue {
   TextDecodeOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TextDecodeOptions::from_js_ffi(
-  value : JsValue,
-) -> TextDecodeOptions =
+extern "js" fn TextDecodeOptions::from_js_ffi(value : JsValue) -> TextDecodeOptions =
   #| (v) => ({
   #|   stream: (v.stream === undefined ? -1 : v.stream)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn TextDecodeOptions::from_js(value : JsValue) -> TextDecodeOptions {
   TextDecodeOptions::from_js_ffi(value)
@@ -91,94 +78,67 @@ pub(all) struct TextEncoderEncodeIntoResult {
   written : Int64?
 }
 
-///|
 /// Create a new TextEncoderEncodeIntoResult with default values
 pub fn TextEncoderEncodeIntoResult::default() -> TextEncoderEncodeIntoResult {
-  TextEncoderEncodeIntoResult::{ read: None, written: None, }
+  TextEncoderEncodeIntoResult::{
+    read: None,
+    written: None,
+  }
 }
 
-///|
-extern "js" fn TextEncoderEncodeIntoResult::to_js_ffi(
-  self : TextEncoderEncodeIntoResult,
-) -> JsValue =
+extern "js" fn TextEncoderEncodeIntoResult::to_js_ffi(self : TextEncoderEncodeIntoResult) -> JsValue =
   #| (self) => ({
   #|   read: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.read),
   #|   written: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.written)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn TextEncoderEncodeIntoResult::to_js(
-  self : TextEncoderEncodeIntoResult,
-) -> JsValue {
+pub fn TextEncoderEncodeIntoResult::to_js(self : TextEncoderEncodeIntoResult) -> JsValue {
   TextEncoderEncodeIntoResult::to_js_ffi(self)
 }
 
-///|
-extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(
-  value : JsValue,
-) -> TextEncoderEncodeIntoResult =
+extern "js" fn TextEncoderEncodeIntoResult::from_js_ffi(value : JsValue) -> TextEncoderEncodeIntoResult =
   #| (v) => ({
   #|   read: (v.read === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.read)),
   #|   written: (v.written === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.written))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn TextEncoderEncodeIntoResult::from_js(
-  value : JsValue,
-) -> TextEncoderEncodeIntoResult {
+pub fn TextEncoderEncodeIntoResult::from_js(value : JsValue) -> TextEncoderEncodeIntoResult {
   TextEncoderEncodeIntoResult::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn TextEncoderEncodeIntoResult::to_js_checked(
-  self : TextEncoderEncodeIntoResult,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn TextEncoderEncodeIntoResult::to_js_checked(self : TextEncoderEncodeIntoResult) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_TextEncoderEncodeIntoResult(
-  convert : () -> TextEncoderEncodeIntoResult,
-) -> Result[TextEncoderEncodeIntoResult, JsError] =
+extern "js" fn try_dictionary_TextEncoderEncodeIntoResult(convert : () -> TextEncoderEncodeIntoResult) -> Result[TextEncoderEncodeIntoResult, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn TextEncoderEncodeIntoResult::from_js_checked(
-  value : JsValue,
-) -> Result[TextEncoderEncodeIntoResult, JsError] {
-  try_dictionary_TextEncoderEncodeIntoResult(() => {
-    TextEncoderEncodeIntoResult::from_js(value)
-  })
-}
+pub fn TextEncoderEncodeIntoResult::from_js_checked(value : JsValue) -> Result[TextEncoderEncodeIntoResult, JsError] { try_dictionary_TextEncoderEncodeIntoResult(() => TextEncoderEncodeIntoResult::from_js(value)) }
 
 ///|
 /// TextDecoder interface
 pub type TextDecoder
 
-///|
 pub extern "js" fn TextDecoder::to_js_value(self : TextDecoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TextDecoder (unchecked)
 pub extern "js" fn TextDecoder::from_js_value(v : JsValue) -> TextDecoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TextDecoder (checked with instanceof)
 pub extern "js" fn TextDecoder::from_js_value_opt(v : JsValue) -> TextDecoder? =
   #| (v) => (v instanceof TextDecoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TextDecoder (checked with instanceof)
 pub extern "js" fn JsValue::as_text_decoder(self : JsValue) -> TextDecoder? =
   #| (self) => (self instanceof TextDecoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TextDecoder (unchecked)
 pub extern "js" fn JsValue::to_text_decoder(self : JsValue) -> TextDecoder =
   #| (self) => self
@@ -190,6 +150,8 @@ pub(all) enum TextDecoderConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend TextDecoderConstructorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum TextDecoderDecodeError {
@@ -197,111 +159,53 @@ pub(all) enum TextDecoderDecodeError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn TextDecoder::new() -> Result[
-  TextDecoder,
-  TextDecoderConstructorError,
-] =
+pub extend TextDecoderDecodeError with @debug.Debug::{to_repr}
+
+pub extern "js" fn TextDecoder::new() -> Result[TextDecoder, TextDecoderConstructorError] =
   #| () => (() => { try { return { $tag: 1, _0: new TextDecoder() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn TextDecoder::new_with_options_ffi(
-  label : String,
-  options : JsValue,
-) -> Result[TextDecoder, TextDecoderConstructorError] =
+extern "js" fn TextDecoder::new_with_options_ffi(label : String, options : JsValue) -> Result[TextDecoder, TextDecoderConstructorError] =
   #| (label, options) => (() => { try { return { $tag: 1, _0: new TextDecoder(label, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoder::new_with_options(
-  label : String,
-  options : TextDecoderOptions,
-) -> Result[TextDecoder, TextDecoderConstructorError] {
+pub fn TextDecoder::new_with_options(label : String, options : TextDecoderOptions) -> Result[TextDecoder, TextDecoderConstructorError] {
   TextDecoder::new_with_options_ffi(label, options.to_js())
 }
 
-///|
-pub extern "js" fn TextDecoder::decode(
-  self : TextDecoder,
-) -> Result[String, TextDecoderDecodeError] =
+pub extern "js" fn TextDecoder::decode(self : TextDecoder) -> Result[String, TextDecoderDecodeError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.decode() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn TextDecoder::decode_with_options_ffi(
-  self : TextDecoder,
-  input : AllowSharedBufferSource,
-  options : JsValue,
-) -> Result[String, TextDecoderDecodeError] =
+extern "js" fn TextDecoder::decode_with_options_ffi(self : TextDecoder, input : AllowSharedBufferSource, options : JsValue) -> Result[String, TextDecoderDecodeError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoder::decode_with_options(
-  self : TextDecoder,
-  input : AllowSharedBufferSource,
-  options : TextDecodeOptions,
-) -> Result[String, TextDecoderDecodeError] {
+pub fn TextDecoder::decode_with_options(self : TextDecoder, input : AllowSharedBufferSource, options : TextDecodeOptions) -> Result[String, TextDecoderDecodeError] {
   TextDecoder::decode_with_options_ffi(self, input, options.to_js())
 }
 
-///|
 pub extern "js" fn TextDecoder::get_encoding(self : TextDecoder) -> String =
   #| (self) => self.encoding
 
-///|
 pub extern "js" fn TextDecoder::get_fatal(self : TextDecoder) -> Bool =
   #| (self) => self.fatal
 
-///|
 pub extern "js" fn TextDecoder::get_ignore_bom(self : TextDecoder) -> Bool =
   #| (self) => self.ignoreBOM
 
-///|
-extern "js" fn TextDecoder::decode_with_array_buffer_ffi(
-  self : TextDecoder,
-  input : ArrayBuffer,
-  options : JsValue,
-) -> Result[String, TextDecoderDecodeError] =
+extern "js" fn TextDecoder::decode_with_array_buffer_ffi(self : TextDecoder, input : ArrayBuffer, options : JsValue) -> Result[String, TextDecoderDecodeError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoder::decode_with_array_buffer(
-  self : TextDecoder,
-  input : ArrayBuffer,
-  options : TextDecodeOptions,
-) -> Result[String, TextDecoderDecodeError] {
+pub fn TextDecoder::decode_with_array_buffer(self : TextDecoder, input : ArrayBuffer, options : TextDecodeOptions) -> Result[String, TextDecoderDecodeError] {
   TextDecoder::decode_with_array_buffer_ffi(self, input, options.to_js())
 }
-
-///|
-extern "js" fn TextDecoder::decode_with_shared_array_buffer_ffi(
-  self : TextDecoder,
-  input : SharedArrayBuffer,
-  options : JsValue,
-) -> Result[String, TextDecoderDecodeError] =
+extern "js" fn TextDecoder::decode_with_shared_array_buffer_ffi(self : TextDecoder, input : SharedArrayBuffer, options : JsValue) -> Result[String, TextDecoderDecodeError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoder::decode_with_shared_array_buffer(
-  self : TextDecoder,
-  input : SharedArrayBuffer,
-  options : TextDecodeOptions,
-) -> Result[String, TextDecoderDecodeError] {
+pub fn TextDecoder::decode_with_shared_array_buffer(self : TextDecoder, input : SharedArrayBuffer, options : TextDecodeOptions) -> Result[String, TextDecoderDecodeError] {
   TextDecoder::decode_with_shared_array_buffer_ffi(self, input, options.to_js())
 }
-
-///|
-extern "js" fn TextDecoder::decode_with_array_buffer_view_ffi(
-  self : TextDecoder,
-  input : ArrayBufferView,
-  options : JsValue,
-) -> Result[String, TextDecoderDecodeError] =
+extern "js" fn TextDecoder::decode_with_array_buffer_view_ffi(self : TextDecoder, input : ArrayBufferView, options : JsValue) -> Result[String, TextDecoderDecodeError] =
   #| (self, input, options) => (() => { try { return { $tag: 1, _0: self.decode(input, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoder::decode_with_array_buffer_view(
-  self : TextDecoder,
-  input : ArrayBufferView,
-  options : TextDecodeOptions,
-) -> Result[String, TextDecoderDecodeError] {
+pub fn TextDecoder::decode_with_array_buffer_view(self : TextDecoder, input : ArrayBufferView, options : TextDecodeOptions) -> Result[String, TextDecoderDecodeError] {
   TextDecoder::decode_with_array_buffer_view_ffi(self, input, options.to_js())
 }
 
@@ -309,54 +213,37 @@ pub fn TextDecoder::decode_with_array_buffer_view(
 /// TextEncoder interface
 pub type TextEncoder
 
-///|
 pub extern "js" fn TextEncoder::to_js_value(self : TextEncoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TextEncoder (unchecked)
 pub extern "js" fn TextEncoder::from_js_value(v : JsValue) -> TextEncoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TextEncoder (checked with instanceof)
 pub extern "js" fn TextEncoder::from_js_value_opt(v : JsValue) -> TextEncoder? =
   #| (v) => (v instanceof TextEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TextEncoder (checked with instanceof)
 pub extern "js" fn JsValue::as_text_encoder(self : JsValue) -> TextEncoder? =
   #| (self) => (self instanceof TextEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TextEncoder (unchecked)
 pub extern "js" fn JsValue::to_text_encoder(self : JsValue) -> TextEncoder =
   #| (self) => self
 
-///|
 pub extern "js" fn TextEncoder::new() -> TextEncoder =
   #| () => new TextEncoder()
 
-///|
 pub extern "js" fn TextEncoder::encode(self : TextEncoder) -> Uint8Array =
   #| (self) => self.encode()
 
-///|
-pub extern "js" fn TextEncoder::encode_with_input(
-  self : TextEncoder,
-  input : String,
-) -> Uint8Array =
+pub extern "js" fn TextEncoder::encode_with_input(self : TextEncoder, input : String) -> Uint8Array =
   #| (self, input) => self.encode(input)
 
-///|
-pub extern "js" fn TextEncoder::encode_into(
-  self : TextEncoder,
-  source : String,
-  destination : Uint8Array,
-) -> TextEncoderEncodeIntoResult =
+pub extern "js" fn TextEncoder::encode_into(self : TextEncoder, source : String, destination : Uint8Array) -> TextEncoderEncodeIntoResult =
   #| (self, source, destination) => self.encodeInto(source, destination)
 
-///|
 pub extern "js" fn TextEncoder::get_encoding(self : TextEncoder) -> String =
   #| (self) => self.encoding
 
@@ -364,38 +251,23 @@ pub extern "js" fn TextEncoder::get_encoding(self : TextEncoder) -> String =
 /// TextDecoderStream interface
 pub type TextDecoderStream
 
-///|
-pub extern "js" fn TextDecoderStream::to_js_value(
-  self : TextDecoderStream,
-) -> JsValue =
+pub extern "js" fn TextDecoderStream::to_js_value(self : TextDecoderStream) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TextDecoderStream (unchecked)
-pub extern "js" fn TextDecoderStream::from_js_value(
-  v : JsValue,
-) -> TextDecoderStream =
+pub extern "js" fn TextDecoderStream::from_js_value(v : JsValue) -> TextDecoderStream =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TextDecoderStream (checked with instanceof)
-pub extern "js" fn TextDecoderStream::from_js_value_opt(
-  v : JsValue,
-) -> TextDecoderStream? =
+pub extern "js" fn TextDecoderStream::from_js_value_opt(v : JsValue) -> TextDecoderStream? =
   #| (v) => (v instanceof TextDecoderStream) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TextDecoderStream (checked with instanceof)
-pub extern "js" fn JsValue::as_text_decoder_stream(
-  self : JsValue,
-) -> TextDecoderStream? =
+pub extern "js" fn JsValue::as_text_decoder_stream(self : JsValue) -> TextDecoderStream? =
   #| (self) => (self instanceof TextDecoderStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TextDecoderStream (unchecked)
-pub extern "js" fn JsValue::to_text_decoder_stream(
-  self : JsValue,
-) -> TextDecoderStream =
+pub extern "js" fn JsValue::to_text_decoder_stream(self : JsValue) -> TextDecoderStream =
   #| (self) => self
 
 ///|
@@ -405,114 +277,64 @@ pub(all) enum TextDecoderStreamConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn TextDecoderStream::new() -> Result[
-  TextDecoderStream,
-  TextDecoderStreamConstructorError,
-] =
+pub extend TextDecoderStreamConstructorError with @debug.Debug::{to_repr}
+
+pub extern "js" fn TextDecoderStream::new() -> Result[TextDecoderStream, TextDecoderStreamConstructorError] =
   #| () => (() => { try { return { $tag: 1, _0: new TextDecoderStream() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn TextDecoderStream::new_with_options_ffi(
-  label : String,
-  options : JsValue,
-) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] =
+extern "js" fn TextDecoderStream::new_with_options_ffi(label : String, options : JsValue) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] =
   #| (label, options) => (() => { try { return { $tag: 1, _0: new TextDecoderStream(label, options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn TextDecoderStream::new_with_options(
-  label : String,
-  options : TextDecoderOptions,
-) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] {
+pub fn TextDecoderStream::new_with_options(label : String, options : TextDecoderOptions) -> Result[TextDecoderStream, TextDecoderStreamConstructorError] {
   TextDecoderStream::new_with_options_ffi(label, options.to_js())
 }
 
-///|
-pub extern "js" fn TextDecoderStream::get_encoding(
-  self : TextDecoderStream,
-) -> String =
+pub extern "js" fn TextDecoderStream::get_encoding(self : TextDecoderStream) -> String =
   #| (self) => self.encoding
 
-///|
-pub extern "js" fn TextDecoderStream::get_fatal(
-  self : TextDecoderStream,
-) -> Bool =
+pub extern "js" fn TextDecoderStream::get_fatal(self : TextDecoderStream) -> Bool =
   #| (self) => self.fatal
 
-///|
-pub extern "js" fn TextDecoderStream::get_ignore_bom(
-  self : TextDecoderStream,
-) -> Bool =
+pub extern "js" fn TextDecoderStream::get_ignore_bom(self : TextDecoderStream) -> Bool =
   #| (self) => self.ignoreBOM
 
-///|
-pub extern "js" fn TextDecoderStream::get_readable(
-  self : TextDecoderStream,
-) -> ReadableStream =
+pub extern "js" fn TextDecoderStream::get_readable(self : TextDecoderStream) -> ReadableStream =
   #| (self) => self.readable
 
-///|
-pub extern "js" fn TextDecoderStream::get_writable(
-  self : TextDecoderStream,
-) -> WritableStream =
+pub extern "js" fn TextDecoderStream::get_writable(self : TextDecoderStream) -> WritableStream =
   #| (self) => self.writable
 
 ///|
 /// TextEncoderStream interface
 pub type TextEncoderStream
 
-///|
-pub extern "js" fn TextEncoderStream::to_js_value(
-  self : TextEncoderStream,
-) -> JsValue =
+pub extern "js" fn TextEncoderStream::to_js_value(self : TextEncoderStream) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to TextEncoderStream (unchecked)
-pub extern "js" fn TextEncoderStream::from_js_value(
-  v : JsValue,
-) -> TextEncoderStream =
+pub extern "js" fn TextEncoderStream::from_js_value(v : JsValue) -> TextEncoderStream =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to TextEncoderStream (checked with instanceof)
-pub extern "js" fn TextEncoderStream::from_js_value_opt(
-  v : JsValue,
-) -> TextEncoderStream? =
+pub extern "js" fn TextEncoderStream::from_js_value_opt(v : JsValue) -> TextEncoderStream? =
   #| (v) => (v instanceof TextEncoderStream) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to TextEncoderStream (checked with instanceof)
-pub extern "js" fn JsValue::as_text_encoder_stream(
-  self : JsValue,
-) -> TextEncoderStream? =
+pub extern "js" fn JsValue::as_text_encoder_stream(self : JsValue) -> TextEncoderStream? =
   #| (self) => (self instanceof TextEncoderStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to TextEncoderStream (unchecked)
-pub extern "js" fn JsValue::to_text_encoder_stream(
-  self : JsValue,
-) -> TextEncoderStream =
+pub extern "js" fn JsValue::to_text_encoder_stream(self : JsValue) -> TextEncoderStream =
   #| (self) => self
 
-///|
 pub extern "js" fn TextEncoderStream::new() -> TextEncoderStream =
   #| () => new TextEncoderStream()
 
-///|
-pub extern "js" fn TextEncoderStream::get_encoding(
-  self : TextEncoderStream,
-) -> String =
+pub extern "js" fn TextEncoderStream::get_encoding(self : TextEncoderStream) -> String =
   #| (self) => self.encoding
 
-///|
-pub extern "js" fn TextEncoderStream::get_readable(
-  self : TextEncoderStream,
-) -> ReadableStream =
+pub extern "js" fn TextEncoderStream::get_readable(self : TextEncoderStream) -> ReadableStream =
   #| (self) => self.readable
 
-///|
-pub extern "js" fn TextEncoderStream::get_writable(
-  self : TextEncoderStream,
-) -> WritableStream =
+pub extern "js" fn TextEncoderStream::get_writable(self : TextEncoderStream) -> WritableStream =
   #| (self) => self.writable

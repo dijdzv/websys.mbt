@@ -8,43 +8,33 @@ pub(all) struct NavigatorUABrandVersion {
   version : String?
 }
 
-///|
 /// Create a new NavigatorUABrandVersion with default values
 pub fn NavigatorUABrandVersion::default() -> NavigatorUABrandVersion {
-  NavigatorUABrandVersion::{ brand: None, version: None, }
+  NavigatorUABrandVersion::{
+    brand: None,
+    version: None,
+  }
 }
 
-///|
-extern "js" fn NavigatorUABrandVersion::to_js_ffi(
-  self : NavigatorUABrandVersion,
-) -> JsValue =
+extern "js" fn NavigatorUABrandVersion::to_js_ffi(self : NavigatorUABrandVersion) -> JsValue =
   #| (self) => ({
   #|   brand: self.brand,
   #|   version: self.version
   #| })
 
-///|
 /// Convert to JsValue
-pub fn NavigatorUABrandVersion::to_js(
-  self : NavigatorUABrandVersion,
-) -> JsValue {
+pub fn NavigatorUABrandVersion::to_js(self : NavigatorUABrandVersion) -> JsValue {
   NavigatorUABrandVersion::to_js_ffi(self)
 }
 
-///|
-extern "js" fn NavigatorUABrandVersion::from_js_ffi(
-  value : JsValue,
-) -> NavigatorUABrandVersion =
+extern "js" fn NavigatorUABrandVersion::from_js_ffi(value : JsValue) -> NavigatorUABrandVersion =
   #| (v) => ({
   #|   brand: v.brand,
   #|   version: v.version
   #| })
 
-///|
 /// Convert from JsValue
-pub fn NavigatorUABrandVersion::from_js(
-  value : JsValue,
-) -> NavigatorUABrandVersion {
+pub fn NavigatorUABrandVersion::from_js(value : JsValue) -> NavigatorUABrandVersion {
   NavigatorUABrandVersion::from_js_ffi(value)
 }
 
@@ -64,7 +54,6 @@ pub(all) struct UADataValues {
   wow64 : Bool?
 }
 
-///|
 /// Create a new UADataValues with default values
 pub fn UADataValues::default() -> UADataValues {
   UADataValues::{
@@ -82,7 +71,6 @@ pub fn UADataValues::default() -> UADataValues {
   }
 }
 
-///|
 extern "js" fn UADataValues::to_js_ffi(self : UADataValues) -> JsValue =
   #| (self) => ({
   #|   architecture: self.architecture,
@@ -98,13 +86,11 @@ extern "js" fn UADataValues::to_js_ffi(self : UADataValues) -> JsValue =
   #|   wow64: (self.wow64 === -1 ? undefined : self.wow64)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn UADataValues::to_js(self : UADataValues) -> JsValue {
   UADataValues::to_js_ffi(self)
 }
 
-///|
 extern "js" fn UADataValues::from_js_ffi(value : JsValue) -> UADataValues =
   #| (v) => ({
   #|   architecture: v.architecture,
@@ -120,7 +106,6 @@ extern "js" fn UADataValues::from_js_ffi(value : JsValue) -> UADataValues =
   #|   wow64: (v.wow64 === undefined ? -1 : v.wow64)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn UADataValues::from_js(value : JsValue) -> UADataValues {
   UADataValues::from_js_ffi(value)
@@ -134,13 +119,15 @@ pub(all) struct UALowEntropyJSON {
   platform : String?
 }
 
-///|
 /// Create a new UALowEntropyJSON with default values
 pub fn UALowEntropyJSON::default() -> UALowEntropyJSON {
-  UALowEntropyJSON::{ brands: None, mobile: None, platform: None, }
+  UALowEntropyJSON::{
+    brands: None,
+    mobile: None,
+    platform: None,
+  }
 }
 
-///|
 extern "js" fn UALowEntropyJSON::to_js_ffi(self : UALowEntropyJSON) -> JsValue =
   #| (self) => ({
   #|   brands: self.brands,
@@ -148,23 +135,18 @@ extern "js" fn UALowEntropyJSON::to_js_ffi(self : UALowEntropyJSON) -> JsValue =
   #|   platform: self.platform
   #| })
 
-///|
 /// Convert to JsValue
 pub fn UALowEntropyJSON::to_js(self : UALowEntropyJSON) -> JsValue {
   UALowEntropyJSON::to_js_ffi(self)
 }
 
-///|
-extern "js" fn UALowEntropyJSON::from_js_ffi(
-  value : JsValue,
-) -> UALowEntropyJSON =
+extern "js" fn UALowEntropyJSON::from_js_ffi(value : JsValue) -> UALowEntropyJSON =
   #| (v) => ({
   #|   brands: v.brands,
   #|   mobile: (v.mobile === undefined ? -1 : v.mobile),
   #|   platform: v.platform
   #| })
 
-///|
 /// Convert from JsValue
 pub fn UALowEntropyJSON::from_js(value : JsValue) -> UALowEntropyJSON {
   UALowEntropyJSON::from_js_ffi(value)
@@ -174,38 +156,23 @@ pub fn UALowEntropyJSON::from_js(value : JsValue) -> UALowEntropyJSON {
 /// NavigatorUAData interface
 pub type NavigatorUAData
 
-///|
-pub extern "js" fn NavigatorUAData::to_js_value(
-  self : NavigatorUAData,
-) -> JsValue =
+pub extern "js" fn NavigatorUAData::to_js_value(self : NavigatorUAData) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to NavigatorUAData (unchecked)
-pub extern "js" fn NavigatorUAData::from_js_value(
-  v : JsValue,
-) -> NavigatorUAData =
+pub extern "js" fn NavigatorUAData::from_js_value(v : JsValue) -> NavigatorUAData =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to NavigatorUAData (checked with instanceof)
-pub extern "js" fn NavigatorUAData::from_js_value_opt(
-  v : JsValue,
-) -> NavigatorUAData? =
+pub extern "js" fn NavigatorUAData::from_js_value_opt(v : JsValue) -> NavigatorUAData? =
   #| (v) => (v instanceof NavigatorUAData) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to NavigatorUAData (checked with instanceof)
-pub extern "js" fn JsValue::as_navigator_ua_data(
-  self : JsValue,
-) -> NavigatorUAData? =
+pub extern "js" fn JsValue::as_navigator_ua_data(self : JsValue) -> NavigatorUAData? =
   #| (self) => (self instanceof NavigatorUAData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to NavigatorUAData (unchecked)
-pub extern "js" fn JsValue::to_navigator_ua_data(
-  self : JsValue,
-) -> NavigatorUAData =
+pub extern "js" fn JsValue::to_navigator_ua_data(self : JsValue) -> NavigatorUAData =
   #| (self) => self
 
 ///|
@@ -215,27 +182,18 @@ pub(all) enum NavigatorUADataGetHighEntropyValuesError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn NavigatorUAData::get_brands(
-  self : NavigatorUAData,
-) -> FixedArray[NavigatorUABrandVersion] =
+pub extend NavigatorUADataGetHighEntropyValuesError with @debug.Debug::{to_repr}
+
+pub extern "js" fn NavigatorUAData::get_brands(self : NavigatorUAData) -> FixedArray[NavigatorUABrandVersion] =
   #| (self) => self.brands
 
-///|
 pub extern "js" fn NavigatorUAData::get_mobile(self : NavigatorUAData) -> Bool =
   #| (self) => self.mobile
 
-///|
-pub extern "js" fn NavigatorUAData::get_platform(
-  self : NavigatorUAData,
-) -> String =
+pub extern "js" fn NavigatorUAData::get_platform(self : NavigatorUAData) -> String =
   #| (self) => self.platform
 
-///|
-pub extern "js" fn NavigatorUAData::get_high_entropy_values(
-  self : NavigatorUAData,
-  hints : FixedArray[String],
-) -> Promise[Result[UADataValues, NavigatorUADataGetHighEntropyValuesError]] =
+pub extern "js" fn NavigatorUAData::get_high_entropy_values(self : NavigatorUAData, hints : FixedArray[String]) -> Promise[Result[UADataValues, NavigatorUADataGetHighEntropyValuesError]] =
   #| (self, hints) => self.getHighEntropyValues(hints).then(v => ({
   #|   architecture: v.architecture,
   #|   bitness: v.bitness,
@@ -250,8 +208,5 @@ pub extern "js" fn NavigatorUAData::get_high_entropy_values(
   #|   wow64: (v.wow64 === undefined ? -1 : v.wow64)
   #| })).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn NavigatorUAData::to_json(
-  self : NavigatorUAData,
-) -> UALowEntropyJSON =
+pub extern "js" fn NavigatorUAData::to_json(self : NavigatorUAData) -> UALowEntropyJSON =
   #| (self) => self.toJSON()

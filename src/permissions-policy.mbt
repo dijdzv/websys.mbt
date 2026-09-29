@@ -13,7 +13,6 @@ pub(all) struct PermissionsPolicyViolationReportBody {
   srcAttribute : Nullable[String]
 }
 
-///|
 /// Create a new PermissionsPolicyViolationReportBody with default values
 pub fn PermissionsPolicyViolationReportBody::default() -> PermissionsPolicyViolationReportBody {
   PermissionsPolicyViolationReportBody::{
@@ -27,10 +26,7 @@ pub fn PermissionsPolicyViolationReportBody::default() -> PermissionsPolicyViola
   }
 }
 
-///|
-extern "js" fn PermissionsPolicyViolationReportBody::to_js_ffi(
-  self : PermissionsPolicyViolationReportBody,
-) -> JsValue =
+extern "js" fn PermissionsPolicyViolationReportBody::to_js_ffi(self : PermissionsPolicyViolationReportBody) -> JsValue =
   #| (self) => ({
   #|   featureId: self.featureId,
   #|   sourceFile: ((() => { const v = self.sourceFile; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -41,18 +37,12 @@ extern "js" fn PermissionsPolicyViolationReportBody::to_js_ffi(
   #|   srcAttribute: ((() => { const v = self.srcAttribute; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PermissionsPolicyViolationReportBody::to_js(
-  self : PermissionsPolicyViolationReportBody,
-) -> JsValue {
+pub fn PermissionsPolicyViolationReportBody::to_js(self : PermissionsPolicyViolationReportBody) -> JsValue {
   PermissionsPolicyViolationReportBody::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PermissionsPolicyViolationReportBody::from_js_ffi(
-  value : JsValue,
-) -> PermissionsPolicyViolationReportBody =
+extern "js" fn PermissionsPolicyViolationReportBody::from_js_ffi(value : JsValue) -> PermissionsPolicyViolationReportBody =
   #| (v) => ({
   #|   featureId: v.featureId,
   #|   sourceFile: (v.sourceFile === undefined ? { $tag: 0 } : v.sourceFile === null ? { $tag: 1 } : { $tag: 2, _0: v.sourceFile }),
@@ -63,11 +53,8 @@ extern "js" fn PermissionsPolicyViolationReportBody::from_js_ffi(
   #|   srcAttribute: (v.srcAttribute === undefined ? { $tag: 0 } : v.srcAttribute === null ? { $tag: 1 } : { $tag: 2, _0: v.srcAttribute })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PermissionsPolicyViolationReportBody::from_js(
-  value : JsValue,
-) -> PermissionsPolicyViolationReportBody {
+pub fn PermissionsPolicyViolationReportBody::from_js(value : JsValue) -> PermissionsPolicyViolationReportBody {
   PermissionsPolicyViolationReportBody::from_js_ffi(value)
 }
 
@@ -75,70 +62,36 @@ pub fn PermissionsPolicyViolationReportBody::from_js(
 /// PermissionsPolicy interface
 pub type PermissionsPolicy
 
-///|
-pub extern "js" fn PermissionsPolicy::to_js_value(
-  self : PermissionsPolicy,
-) -> JsValue =
+pub extern "js" fn PermissionsPolicy::to_js_value(self : PermissionsPolicy) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PermissionsPolicy (unchecked)
-pub extern "js" fn PermissionsPolicy::from_js_value(
-  v : JsValue,
-) -> PermissionsPolicy =
+pub extern "js" fn PermissionsPolicy::from_js_value(v : JsValue) -> PermissionsPolicy =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PermissionsPolicy (checked with instanceof)
-pub extern "js" fn PermissionsPolicy::from_js_value_opt(
-  v : JsValue,
-) -> PermissionsPolicy? =
+pub extern "js" fn PermissionsPolicy::from_js_value_opt(v : JsValue) -> PermissionsPolicy? =
   #| (v) => (v instanceof PermissionsPolicy) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PermissionsPolicy (checked with instanceof)
-pub extern "js" fn JsValue::as_permissions_policy(
-  self : JsValue,
-) -> PermissionsPolicy? =
+pub extern "js" fn JsValue::as_permissions_policy(self : JsValue) -> PermissionsPolicy? =
   #| (self) => (self instanceof PermissionsPolicy) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PermissionsPolicy (unchecked)
-pub extern "js" fn JsValue::to_permissions_policy(
-  self : JsValue,
-) -> PermissionsPolicy =
+pub extern "js" fn JsValue::to_permissions_policy(self : JsValue) -> PermissionsPolicy =
   #| (self) => self
 
-///|
-pub extern "js" fn PermissionsPolicy::allows_feature(
-  self : PermissionsPolicy,
-  feature : String,
-) -> Bool =
+pub extern "js" fn PermissionsPolicy::allows_feature(self : PermissionsPolicy, feature : String) -> Bool =
   #| (self, feature) => self.allowsFeature(feature)
 
-///|
-pub extern "js" fn PermissionsPolicy::allows_feature_with_origin(
-  self : PermissionsPolicy,
-  feature : String,
-  origin : String,
-) -> Bool =
+pub extern "js" fn PermissionsPolicy::allows_feature_with_origin(self : PermissionsPolicy, feature : String, origin : String) -> Bool =
   #| (self, feature, origin) => self.allowsFeature(feature, origin)
 
-///|
-pub extern "js" fn PermissionsPolicy::features(
-  self : PermissionsPolicy,
-) -> FixedArray[String] =
+pub extern "js" fn PermissionsPolicy::features(self : PermissionsPolicy) -> FixedArray[String] =
   #| (self) => self.features()
 
-///|
-pub extern "js" fn PermissionsPolicy::allowed_features(
-  self : PermissionsPolicy,
-) -> FixedArray[String] =
+pub extern "js" fn PermissionsPolicy::allowed_features(self : PermissionsPolicy) -> FixedArray[String] =
   #| (self) => self.allowedFeatures()
 
-///|
-pub extern "js" fn PermissionsPolicy::get_allowlist_for_feature(
-  self : PermissionsPolicy,
-  feature : String,
-) -> FixedArray[String] =
+pub extern "js" fn PermissionsPolicy::get_allowlist_for_feature(self : PermissionsPolicy, feature : String) -> FixedArray[String] =
   #| (self, feature) => self.getAllowlistForFeature(feature)

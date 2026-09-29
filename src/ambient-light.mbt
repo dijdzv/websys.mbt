@@ -5,50 +5,29 @@
 /// AmbientLightSensor interface
 pub type AmbientLightSensor
 
-///|
-pub extern "js" fn AmbientLightSensor::to_js_value(
-  self : AmbientLightSensor,
-) -> JsValue =
+pub extern "js" fn AmbientLightSensor::to_js_value(self : AmbientLightSensor) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to AmbientLightSensor (unchecked)
-pub extern "js" fn AmbientLightSensor::from_js_value(
-  v : JsValue,
-) -> AmbientLightSensor =
+pub extern "js" fn AmbientLightSensor::from_js_value(v : JsValue) -> AmbientLightSensor =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to AmbientLightSensor (checked with instanceof)
-pub extern "js" fn AmbientLightSensor::from_js_value_opt(
-  v : JsValue,
-) -> AmbientLightSensor? =
+pub extern "js" fn AmbientLightSensor::from_js_value_opt(v : JsValue) -> AmbientLightSensor? =
   #| (v) => (v instanceof AmbientLightSensor) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to AmbientLightSensor (checked with instanceof)
-pub extern "js" fn JsValue::as_ambient_light_sensor(
-  self : JsValue,
-) -> AmbientLightSensor? =
+pub extern "js" fn JsValue::as_ambient_light_sensor(self : JsValue) -> AmbientLightSensor? =
   #| (self) => (self instanceof AmbientLightSensor) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to AmbientLightSensor (unchecked)
-pub extern "js" fn JsValue::to_ambient_light_sensor(
-  self : JsValue,
-) -> AmbientLightSensor =
+pub extern "js" fn JsValue::to_ambient_light_sensor(self : JsValue) -> AmbientLightSensor =
   #| (self) => self
 
-///|
-pub extern "js" fn AmbientLightSensor::to_sensor(
-  self : AmbientLightSensor,
-) -> Sensor =
+pub extern "js" fn AmbientLightSensor::to_sensor(self : AmbientLightSensor) -> Sensor =
   #| (self) => self
 
-///|
-pub extern "js" fn AmbientLightSensor::to_event_target(
-  self : AmbientLightSensor,
-) -> EventTarget =
+pub extern "js" fn AmbientLightSensor::to_event_target(self : AmbientLightSensor) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -58,28 +37,17 @@ pub(all) enum AmbientLightSensorConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn AmbientLightSensor::new() -> Result[
-  AmbientLightSensor,
-  AmbientLightSensorConstructorError,
-] =
+pub extend AmbientLightSensorConstructorError with @debug.Debug::{to_repr}
+
+pub extern "js" fn AmbientLightSensor::new() -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
   #| () => (() => { try { return { $tag: 1, _0: new AmbientLightSensor() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(
-  sensor_options : JsValue,
-) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
+extern "js" fn AmbientLightSensor::new_with_sensor_options_ffi(sensor_options : JsValue) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] =
   #| (sensor_options) => (() => { try { return { $tag: 1, _0: new AmbientLightSensor(sensor_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn AmbientLightSensor::new_with_sensor_options(
-  sensor_options : SensorOptions,
-) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] {
+pub fn AmbientLightSensor::new_with_sensor_options(sensor_options : SensorOptions) -> Result[AmbientLightSensor, AmbientLightSensorConstructorError] {
   AmbientLightSensor::new_with_sensor_options_ffi(sensor_options.to_js())
 }
 
-///|
-pub extern "js" fn AmbientLightSensor::get_illuminance(
-  self : AmbientLightSensor,
-) -> Double? =
+pub extern "js" fn AmbientLightSensor::get_illuminance(self : AmbientLightSensor) -> Double? =
   #| (self) => (() => { const v = self.illuminance; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()

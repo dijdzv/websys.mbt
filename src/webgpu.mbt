@@ -21,208 +21,125 @@ pub type GPUShaderStageFlags = Int
 /// GPUBindingResource typedef
 pub type GPUBindingResource
 
-///|
-pub extern "js" fn GPUBindingResource::to_js_value(
-  self : GPUBindingResource,
-) -> JsValue =
+pub extern "js" fn GPUBindingResource::to_js_value(self : GPUBindingResource) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUBindingResource from GPUSampler
-pub extern "js" fn GPUBindingResource::from_gpu_sampler(
-  v : GPUSampler,
-) -> GPUBindingResource =
+pub extern "js" fn GPUBindingResource::from_gpu_sampler(v : GPUSampler) -> GPUBindingResource =
   #| (v) => v
 
-///|
 /// Create GPUBindingResource from GPUTexture
-pub extern "js" fn GPUBindingResource::from_gpu_texture(
-  v : GPUTexture,
-) -> GPUBindingResource =
+pub extern "js" fn GPUBindingResource::from_gpu_texture(v : GPUTexture) -> GPUBindingResource =
   #| (v) => v
 
-///|
 /// Create GPUBindingResource from GPUTextureView
-pub extern "js" fn GPUBindingResource::from_gpu_texture_view(
-  v : GPUTextureView,
-) -> GPUBindingResource =
+pub extern "js" fn GPUBindingResource::from_gpu_texture_view(v : GPUTextureView) -> GPUBindingResource =
   #| (v) => v
 
-///|
 /// Create GPUBindingResource from GPUBuffer
-pub extern "js" fn GPUBindingResource::from_gpu_buffer(
-  v : GPUBuffer,
-) -> GPUBindingResource =
+pub extern "js" fn GPUBindingResource::from_gpu_buffer(v : GPUBuffer) -> GPUBindingResource =
   #| (v) => v
 
 ///|
-extern "js" fn GPUBindingResource::from_gpu_buffer_binding_ffi(
-  v : JsValue,
-) -> GPUBindingResource =
+extern "js" fn GPUBindingResource::from_gpu_buffer_binding_ffi(v : JsValue) -> GPUBindingResource =
   #| v => v
 
 ///|
-pub fn GPUBindingResource::from_gpu_buffer_binding(
-  v : GPUBufferBinding,
-) -> GPUBindingResource {
-  GPUBindingResource::from_gpu_buffer_binding_ffi(v.to_js())
-}
+pub fn GPUBindingResource::from_gpu_buffer_binding(v : GPUBufferBinding) -> GPUBindingResource { GPUBindingResource::from_gpu_buffer_binding_ffi(v.to_js()) }
 
-///|
 /// Create GPUBindingResource from GPUExternalTexture
-pub extern "js" fn GPUBindingResource::from_gpu_external_texture(
-  v : GPUExternalTexture,
-) -> GPUBindingResource =
+pub extern "js" fn GPUBindingResource::from_gpu_external_texture(v : GPUExternalTexture) -> GPUBindingResource =
   #| (v) => v
 
-///|
 /// Check if this GPUBindingResource is GPUSampler
-pub extern "js" fn GPUBindingResource::is_gpu_sampler(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_sampler(self : GPUBindingResource) -> Bool =
   #| (self) => self instanceof GPUSampler
 
-///|
 /// Check if this GPUBindingResource is GPUTexture
-pub extern "js" fn GPUBindingResource::is_gpu_texture(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_texture(self : GPUBindingResource) -> Bool =
   #| (self) => self instanceof GPUTexture
 
-///|
 /// Check if this GPUBindingResource is GPUTextureView
-pub extern "js" fn GPUBindingResource::is_gpu_texture_view(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_texture_view(self : GPUBindingResource) -> Bool =
   #| (self) => self instanceof GPUTextureView
 
-///|
 /// Check if this GPUBindingResource is GPUBuffer
-pub extern "js" fn GPUBindingResource::is_gpu_buffer(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_buffer(self : GPUBindingResource) -> Bool =
   #| (self) => self instanceof GPUBuffer
 
-///|
 /// Check if this GPUBindingResource is GPUBufferBinding
-pub extern "js" fn GPUBindingResource::is_gpu_buffer_binding(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_buffer_binding(self : GPUBindingResource) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Check if this GPUBindingResource is GPUExternalTexture
-pub extern "js" fn GPUBindingResource::is_gpu_external_texture(
-  self : GPUBindingResource,
-) -> Bool =
+pub extern "js" fn GPUBindingResource::is_gpu_external_texture(self : GPUBindingResource) -> Bool =
   #| (self) => self instanceof GPUExternalTexture
 
-///|
 /// Try to get GPUBindingResource as GPUSampler
-pub extern "js" fn GPUBindingResource::as_gpu_sampler(
-  self : GPUBindingResource,
-) -> GPUSampler? =
+pub extern "js" fn GPUBindingResource::as_gpu_sampler(self : GPUBindingResource) -> GPUSampler? =
   #| (self) => (self instanceof GPUSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUBindingResource as GPUTexture
-pub extern "js" fn GPUBindingResource::as_gpu_texture(
-  self : GPUBindingResource,
-) -> GPUTexture? =
+pub extern "js" fn GPUBindingResource::as_gpu_texture(self : GPUBindingResource) -> GPUTexture? =
   #| (self) => (self instanceof GPUTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUBindingResource as GPUTextureView
-pub extern "js" fn GPUBindingResource::as_gpu_texture_view(
-  self : GPUBindingResource,
-) -> GPUTextureView? =
+pub extern "js" fn GPUBindingResource::as_gpu_texture_view(self : GPUBindingResource) -> GPUTextureView? =
   #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUBindingResource as GPUBuffer
-pub extern "js" fn GPUBindingResource::as_gpu_buffer(
-  self : GPUBindingResource,
-) -> GPUBuffer? =
+pub extern "js" fn GPUBindingResource::as_gpu_buffer(self : GPUBindingResource) -> GPUBuffer? =
   #| (self) => (self instanceof GPUBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
-pub fn GPUBindingResource::as_gpu_buffer_binding(
-  self : GPUBindingResource,
-) -> GPUBufferBinding? {
-  if self.is_gpu_buffer_binding() {
-    Some(GPUBufferBinding::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn GPUBindingResource::as_gpu_buffer_binding(self : GPUBindingResource) -> GPUBufferBinding? { if self.is_gpu_buffer_binding() { Some(GPUBufferBinding::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Try to get GPUBindingResource as GPUExternalTexture
-pub extern "js" fn GPUBindingResource::as_gpu_external_texture(
-  self : GPUBindingResource,
-) -> GPUExternalTexture? =
+pub extern "js" fn GPUBindingResource::as_gpu_external_texture(self : GPUBindingResource) -> GPUExternalTexture? =
   #| (self) => (self instanceof GPUExternalTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUSampler?
-pub fn GPUBindingResource::bind_as_gpu_sampler(
-  value : GPUBindingResource?,
-) -> GPUSampler? {
+pub fn GPUBindingResource::bind_as_gpu_sampler(value : GPUBindingResource?) -> GPUSampler? {
   match value {
     Some(v) => v.as_gpu_sampler()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUTexture?
-pub fn GPUBindingResource::bind_as_gpu_texture(
-  value : GPUBindingResource?,
-) -> GPUTexture? {
+pub fn GPUBindingResource::bind_as_gpu_texture(value : GPUBindingResource?) -> GPUTexture? {
   match value {
     Some(v) => v.as_gpu_texture()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUTextureView?
-pub fn GPUBindingResource::bind_as_gpu_texture_view(
-  value : GPUBindingResource?,
-) -> GPUTextureView? {
+pub fn GPUBindingResource::bind_as_gpu_texture_view(value : GPUBindingResource?) -> GPUTextureView? {
   match value {
     Some(v) => v.as_gpu_texture_view()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUBuffer?
-pub fn GPUBindingResource::bind_as_gpu_buffer(
-  value : GPUBindingResource?,
-) -> GPUBuffer? {
+pub fn GPUBindingResource::bind_as_gpu_buffer(value : GPUBindingResource?) -> GPUBuffer? {
   match value {
     Some(v) => v.as_gpu_buffer()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUBufferBinding?
-pub fn GPUBindingResource::bind_as_gpu_buffer_binding(
-  value : GPUBindingResource?,
-) -> GPUBufferBinding? {
+pub fn GPUBindingResource::bind_as_gpu_buffer_binding(value : GPUBindingResource?) -> GPUBufferBinding? {
   match value {
     Some(v) => v.as_gpu_buffer_binding()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUBindingResource] to GPUExternalTexture?
-pub fn GPUBindingResource::bind_as_gpu_external_texture(
-  value : GPUBindingResource?,
-) -> GPUExternalTexture? {
+pub fn GPUBindingResource::bind_as_gpu_external_texture(value : GPUBindingResource?) -> GPUExternalTexture? {
   match value {
     Some(v) => v.as_gpu_external_texture()
     None => None
@@ -241,230 +158,143 @@ pub type GPUColorWriteFlags = Int
 /// GPUCopyExternalImageSource typedef
 pub type GPUCopyExternalImageSource
 
-///|
-pub extern "js" fn GPUCopyExternalImageSource::to_js_value(
-  self : GPUCopyExternalImageSource,
-) -> JsValue =
+pub extern "js" fn GPUCopyExternalImageSource::to_js_value(self : GPUCopyExternalImageSource) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUCopyExternalImageSource from ImageBitmap
-pub extern "js" fn GPUCopyExternalImageSource::from_image_bitmap(
-  v : ImageBitmap,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_image_bitmap(v : ImageBitmap) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from ImageData
-pub extern "js" fn GPUCopyExternalImageSource::from_image_data(
-  v : ImageData,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_image_data(v : ImageData) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::from_html_image_element(
-  v : HTMLImageElement,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_html_image_element(v : HTMLImageElement) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::from_html_video_element(
-  v : HTMLVideoElement,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_html_video_element(v : HTMLVideoElement) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from VideoFrame
-pub extern "js" fn GPUCopyExternalImageSource::from_video_frame(
-  v : VideoFrame,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_video_frame(v : VideoFrame) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::from_html_canvas_element(
-  v : HTMLCanvasElement,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_html_canvas_element(v : HTMLCanvasElement) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Create GPUCopyExternalImageSource from OffscreenCanvas
-pub extern "js" fn GPUCopyExternalImageSource::from_offscreen_canvas(
-  v : OffscreenCanvas,
-) -> GPUCopyExternalImageSource =
+pub extern "js" fn GPUCopyExternalImageSource::from_offscreen_canvas(v : OffscreenCanvas) -> GPUCopyExternalImageSource =
   #| (v) => v
 
-///|
 /// Check if this GPUCopyExternalImageSource is ImageBitmap
-pub extern "js" fn GPUCopyExternalImageSource::is_image_bitmap(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_image_bitmap(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof ImageBitmap
 
-///|
 /// Check if this GPUCopyExternalImageSource is ImageData
-pub extern "js" fn GPUCopyExternalImageSource::is_image_data(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_image_data(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof ImageData
 
-///|
 /// Check if this GPUCopyExternalImageSource is HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::is_html_image_element(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_html_image_element(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof HTMLImageElement
 
-///|
 /// Check if this GPUCopyExternalImageSource is HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::is_html_video_element(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_html_video_element(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof HTMLVideoElement
 
-///|
 /// Check if this GPUCopyExternalImageSource is VideoFrame
-pub extern "js" fn GPUCopyExternalImageSource::is_video_frame(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_video_frame(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof VideoFrame
 
-///|
 /// Check if this GPUCopyExternalImageSource is HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::is_html_canvas_element(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_html_canvas_element(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof HTMLCanvasElement
 
-///|
 /// Check if this GPUCopyExternalImageSource is OffscreenCanvas
-pub extern "js" fn GPUCopyExternalImageSource::is_offscreen_canvas(
-  self : GPUCopyExternalImageSource,
-) -> Bool =
+pub extern "js" fn GPUCopyExternalImageSource::is_offscreen_canvas(self : GPUCopyExternalImageSource) -> Bool =
   #| (self) => self instanceof OffscreenCanvas
 
-///|
 /// Try to get GPUCopyExternalImageSource as ImageBitmap
-pub extern "js" fn GPUCopyExternalImageSource::as_image_bitmap(
-  self : GPUCopyExternalImageSource,
-) -> ImageBitmap? =
+pub extern "js" fn GPUCopyExternalImageSource::as_image_bitmap(self : GPUCopyExternalImageSource) -> ImageBitmap? =
   #| (self) => (self instanceof ImageBitmap) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as ImageData
-pub extern "js" fn GPUCopyExternalImageSource::as_image_data(
-  self : GPUCopyExternalImageSource,
-) -> ImageData? =
+pub extern "js" fn GPUCopyExternalImageSource::as_image_data(self : GPUCopyExternalImageSource) -> ImageData? =
   #| (self) => (self instanceof ImageData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as HTMLImageElement
-pub extern "js" fn GPUCopyExternalImageSource::as_html_image_element(
-  self : GPUCopyExternalImageSource,
-) -> HTMLImageElement? =
+pub extern "js" fn GPUCopyExternalImageSource::as_html_image_element(self : GPUCopyExternalImageSource) -> HTMLImageElement? =
   #| (self) => (self instanceof HTMLImageElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as HTMLVideoElement
-pub extern "js" fn GPUCopyExternalImageSource::as_html_video_element(
-  self : GPUCopyExternalImageSource,
-) -> HTMLVideoElement? =
+pub extern "js" fn GPUCopyExternalImageSource::as_html_video_element(self : GPUCopyExternalImageSource) -> HTMLVideoElement? =
   #| (self) => (self instanceof HTMLVideoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as VideoFrame
-pub extern "js" fn GPUCopyExternalImageSource::as_video_frame(
-  self : GPUCopyExternalImageSource,
-) -> VideoFrame? =
+pub extern "js" fn GPUCopyExternalImageSource::as_video_frame(self : GPUCopyExternalImageSource) -> VideoFrame? =
   #| (self) => (self instanceof VideoFrame) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as HTMLCanvasElement
-pub extern "js" fn GPUCopyExternalImageSource::as_html_canvas_element(
-  self : GPUCopyExternalImageSource,
-) -> HTMLCanvasElement? =
+pub extern "js" fn GPUCopyExternalImageSource::as_html_canvas_element(self : GPUCopyExternalImageSource) -> HTMLCanvasElement? =
   #| (self) => (self instanceof HTMLCanvasElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GPUCopyExternalImageSource as OffscreenCanvas
-pub extern "js" fn GPUCopyExternalImageSource::as_offscreen_canvas(
-  self : GPUCopyExternalImageSource,
-) -> OffscreenCanvas? =
+pub extern "js" fn GPUCopyExternalImageSource::as_offscreen_canvas(self : GPUCopyExternalImageSource) -> OffscreenCanvas? =
   #| (self) => (self instanceof OffscreenCanvas) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to ImageBitmap?
-pub fn GPUCopyExternalImageSource::bind_as_image_bitmap(
-  value : GPUCopyExternalImageSource?,
-) -> ImageBitmap? {
+pub fn GPUCopyExternalImageSource::bind_as_image_bitmap(value : GPUCopyExternalImageSource?) -> ImageBitmap? {
   match value {
     Some(v) => v.as_image_bitmap()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to ImageData?
-pub fn GPUCopyExternalImageSource::bind_as_image_data(
-  value : GPUCopyExternalImageSource?,
-) -> ImageData? {
+pub fn GPUCopyExternalImageSource::bind_as_image_data(value : GPUCopyExternalImageSource?) -> ImageData? {
   match value {
     Some(v) => v.as_image_data()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to HTMLImageElement?
-pub fn GPUCopyExternalImageSource::bind_as_html_image_element(
-  value : GPUCopyExternalImageSource?,
-) -> HTMLImageElement? {
+pub fn GPUCopyExternalImageSource::bind_as_html_image_element(value : GPUCopyExternalImageSource?) -> HTMLImageElement? {
   match value {
     Some(v) => v.as_html_image_element()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to HTMLVideoElement?
-pub fn GPUCopyExternalImageSource::bind_as_html_video_element(
-  value : GPUCopyExternalImageSource?,
-) -> HTMLVideoElement? {
+pub fn GPUCopyExternalImageSource::bind_as_html_video_element(value : GPUCopyExternalImageSource?) -> HTMLVideoElement? {
   match value {
     Some(v) => v.as_html_video_element()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to VideoFrame?
-pub fn GPUCopyExternalImageSource::bind_as_video_frame(
-  value : GPUCopyExternalImageSource?,
-) -> VideoFrame? {
+pub fn GPUCopyExternalImageSource::bind_as_video_frame(value : GPUCopyExternalImageSource?) -> VideoFrame? {
   match value {
     Some(v) => v.as_video_frame()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to HTMLCanvasElement?
-pub fn GPUCopyExternalImageSource::bind_as_html_canvas_element(
-  value : GPUCopyExternalImageSource?,
-) -> HTMLCanvasElement? {
+pub fn GPUCopyExternalImageSource::bind_as_html_canvas_element(value : GPUCopyExternalImageSource?) -> HTMLCanvasElement? {
   match value {
     Some(v) => v.as_html_canvas_element()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUCopyExternalImageSource] to OffscreenCanvas?
-pub fn GPUCopyExternalImageSource::bind_as_offscreen_canvas(
-  value : GPUCopyExternalImageSource?,
-) -> OffscreenCanvas? {
+pub fn GPUCopyExternalImageSource::bind_as_offscreen_canvas(value : GPUCopyExternalImageSource?) -> OffscreenCanvas? {
   match value {
     Some(v) => v.as_offscreen_canvas()
     None => None
@@ -527,15 +357,11 @@ pub type GPUFlagsConstant = Int
 /// GPUColor typedef
 pub type GPUColor
 
-///|
 pub extern "js" fn GPUColor::to_js_value(self : GPUColor) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUColor from FixedArray[Double]
-pub extern "js" fn GPUColor::from_array_of_double(
-  v : FixedArray[Double],
-) -> GPUColor =
+pub extern "js" fn GPUColor::from_array_of_double(v : FixedArray[Double]) -> GPUColor =
   #| (v) => v
 
 ///|
@@ -543,48 +369,31 @@ extern "js" fn GPUColor::from_gpu_color_dict_ffi(v : JsValue) -> GPUColor =
   #| v => v
 
 ///|
-pub fn GPUColor::from_gpu_color_dict(v : GPUColorDict) -> GPUColor {
-  GPUColor::from_gpu_color_dict_ffi(v.to_js())
-}
+pub fn GPUColor::from_gpu_color_dict(v : GPUColorDict) -> GPUColor { GPUColor::from_gpu_color_dict_ffi(v.to_js()) }
 
-///|
 /// Check if this GPUColor is FixedArray[Double]
 pub extern "js" fn GPUColor::is_array_of_double(self : GPUColor) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this GPUColor is GPUColorDict
 pub extern "js" fn GPUColor::is_gpu_color_dict(self : GPUColor) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get GPUColor as FixedArray[Double]
-pub extern "js" fn GPUColor::as_array_of_double(
-  self : GPUColor,
-) -> FixedArray[Double]? =
+pub extern "js" fn GPUColor::as_array_of_double(self : GPUColor) -> FixedArray[Double]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn GPUColor::as_gpu_color_dict(self : GPUColor) -> GPUColorDict? {
-  if self.is_gpu_color_dict() {
-    Some(GPUColorDict::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn GPUColor::as_gpu_color_dict(self : GPUColor) -> GPUColorDict? { if self.is_gpu_color_dict() { Some(GPUColorDict::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[GPUColor] to FixedArray[Double]?
-pub fn GPUColor::bind_as_array_of_double(
-  value : GPUColor?,
-) -> FixedArray[Double]? {
+pub fn GPUColor::bind_as_array_of_double(value : GPUColor?) -> FixedArray[Double]? {
   match value {
     Some(v) => v.as_array_of_double()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUColor] to GPUColorDict?
 pub fn GPUColor::bind_as_gpu_color_dict(value : GPUColor?) -> GPUColorDict? {
   match value {
@@ -597,76 +406,45 @@ pub fn GPUColor::bind_as_gpu_color_dict(value : GPUColor?) -> GPUColorDict? {
 /// GPUOrigin2D typedef
 pub type GPUOrigin2D
 
-///|
 pub extern "js" fn GPUOrigin2D::to_js_value(self : GPUOrigin2D) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUOrigin2D from FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::from_array_of_gpu_integer_coordinate(
-  v : FixedArray[GPUIntegerCoordinate],
-) -> GPUOrigin2D =
+pub extern "js" fn GPUOrigin2D::from_array_of_gpu_integer_coordinate(v : FixedArray[GPUIntegerCoordinate]) -> GPUOrigin2D =
   #| (v) => v
 
 ///|
-extern "js" fn GPUOrigin2D::from_gpu_origin_2d_dict_ffi(
-  v : JsValue,
-) -> GPUOrigin2D =
+extern "js" fn GPUOrigin2D::from_gpu_origin_2d_dict_ffi(v : JsValue) -> GPUOrigin2D =
   #| v => v
 
 ///|
-pub fn GPUOrigin2D::from_gpu_origin_2d_dict(v : GPUOrigin2DDict) -> GPUOrigin2D {
-  GPUOrigin2D::from_gpu_origin_2d_dict_ffi(v.to_js())
-}
+pub fn GPUOrigin2D::from_gpu_origin_2d_dict(v : GPUOrigin2DDict) -> GPUOrigin2D { GPUOrigin2D::from_gpu_origin_2d_dict_ffi(v.to_js()) }
 
-///|
 /// Check if this GPUOrigin2D is FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::is_array_of_gpu_integer_coordinate(
-  self : GPUOrigin2D,
-) -> Bool =
+pub extern "js" fn GPUOrigin2D::is_array_of_gpu_integer_coordinate(self : GPUOrigin2D) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this GPUOrigin2D is GPUOrigin2DDict
-pub extern "js" fn GPUOrigin2D::is_gpu_origin_2d_dict(
-  self : GPUOrigin2D,
-) -> Bool =
+pub extern "js" fn GPUOrigin2D::is_gpu_origin_2d_dict(self : GPUOrigin2D) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get GPUOrigin2D as FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin2D::as_array_of_gpu_integer_coordinate(
-  self : GPUOrigin2D,
-) -> FixedArray[GPUIntegerCoordinate]? =
+pub extern "js" fn GPUOrigin2D::as_array_of_gpu_integer_coordinate(self : GPUOrigin2D) -> FixedArray[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn GPUOrigin2D::as_gpu_origin_2d_dict(
-  self : GPUOrigin2D,
-) -> GPUOrigin2DDict? {
-  if self.is_gpu_origin_2d_dict() {
-    Some(GPUOrigin2DDict::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn GPUOrigin2D::as_gpu_origin_2d_dict(self : GPUOrigin2D) -> GPUOrigin2DDict? { if self.is_gpu_origin_2d_dict() { Some(GPUOrigin2DDict::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[GPUOrigin2D] to FixedArray[GPUIntegerCoordinate]?
-pub fn GPUOrigin2D::bind_as_array_of_gpu_integer_coordinate(
-  value : GPUOrigin2D?,
-) -> FixedArray[GPUIntegerCoordinate]? {
+pub fn GPUOrigin2D::bind_as_array_of_gpu_integer_coordinate(value : GPUOrigin2D?) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUOrigin2D] to GPUOrigin2DDict?
-pub fn GPUOrigin2D::bind_as_gpu_origin_2d_dict(
-  value : GPUOrigin2D?,
-) -> GPUOrigin2DDict? {
+pub fn GPUOrigin2D::bind_as_gpu_origin_2d_dict(value : GPUOrigin2D?) -> GPUOrigin2DDict? {
   match value {
     Some(v) => v.as_gpu_origin_2d_dict()
     None => None
@@ -677,76 +455,45 @@ pub fn GPUOrigin2D::bind_as_gpu_origin_2d_dict(
 /// GPUOrigin3D typedef
 pub type GPUOrigin3D
 
-///|
 pub extern "js" fn GPUOrigin3D::to_js_value(self : GPUOrigin3D) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUOrigin3D from FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::from_array_of_gpu_integer_coordinate(
-  v : FixedArray[GPUIntegerCoordinate],
-) -> GPUOrigin3D =
+pub extern "js" fn GPUOrigin3D::from_array_of_gpu_integer_coordinate(v : FixedArray[GPUIntegerCoordinate]) -> GPUOrigin3D =
   #| (v) => v
 
 ///|
-extern "js" fn GPUOrigin3D::from_gpu_origin_3d_dict_ffi(
-  v : JsValue,
-) -> GPUOrigin3D =
+extern "js" fn GPUOrigin3D::from_gpu_origin_3d_dict_ffi(v : JsValue) -> GPUOrigin3D =
   #| v => v
 
 ///|
-pub fn GPUOrigin3D::from_gpu_origin_3d_dict(v : GPUOrigin3DDict) -> GPUOrigin3D {
-  GPUOrigin3D::from_gpu_origin_3d_dict_ffi(v.to_js())
-}
+pub fn GPUOrigin3D::from_gpu_origin_3d_dict(v : GPUOrigin3DDict) -> GPUOrigin3D { GPUOrigin3D::from_gpu_origin_3d_dict_ffi(v.to_js()) }
 
-///|
 /// Check if this GPUOrigin3D is FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::is_array_of_gpu_integer_coordinate(
-  self : GPUOrigin3D,
-) -> Bool =
+pub extern "js" fn GPUOrigin3D::is_array_of_gpu_integer_coordinate(self : GPUOrigin3D) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this GPUOrigin3D is GPUOrigin3DDict
-pub extern "js" fn GPUOrigin3D::is_gpu_origin_3d_dict(
-  self : GPUOrigin3D,
-) -> Bool =
+pub extern "js" fn GPUOrigin3D::is_gpu_origin_3d_dict(self : GPUOrigin3D) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get GPUOrigin3D as FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUOrigin3D::as_array_of_gpu_integer_coordinate(
-  self : GPUOrigin3D,
-) -> FixedArray[GPUIntegerCoordinate]? =
+pub extern "js" fn GPUOrigin3D::as_array_of_gpu_integer_coordinate(self : GPUOrigin3D) -> FixedArray[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn GPUOrigin3D::as_gpu_origin_3d_dict(
-  self : GPUOrigin3D,
-) -> GPUOrigin3DDict? {
-  if self.is_gpu_origin_3d_dict() {
-    Some(GPUOrigin3DDict::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn GPUOrigin3D::as_gpu_origin_3d_dict(self : GPUOrigin3D) -> GPUOrigin3DDict? { if self.is_gpu_origin_3d_dict() { Some(GPUOrigin3DDict::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[GPUOrigin3D] to FixedArray[GPUIntegerCoordinate]?
-pub fn GPUOrigin3D::bind_as_array_of_gpu_integer_coordinate(
-  value : GPUOrigin3D?,
-) -> FixedArray[GPUIntegerCoordinate]? {
+pub fn GPUOrigin3D::bind_as_array_of_gpu_integer_coordinate(value : GPUOrigin3D?) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUOrigin3D] to GPUOrigin3DDict?
-pub fn GPUOrigin3D::bind_as_gpu_origin_3d_dict(
-  value : GPUOrigin3D?,
-) -> GPUOrigin3DDict? {
+pub fn GPUOrigin3D::bind_as_gpu_origin_3d_dict(value : GPUOrigin3D?) -> GPUOrigin3DDict? {
   match value {
     Some(v) => v.as_gpu_origin_3d_dict()
     None => None
@@ -757,76 +504,45 @@ pub fn GPUOrigin3D::bind_as_gpu_origin_3d_dict(
 /// GPUExtent3D typedef
 pub type GPUExtent3D
 
-///|
 pub extern "js" fn GPUExtent3D::to_js_value(self : GPUExtent3D) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GPUExtent3D from FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::from_array_of_gpu_integer_coordinate(
-  v : FixedArray[GPUIntegerCoordinate],
-) -> GPUExtent3D =
+pub extern "js" fn GPUExtent3D::from_array_of_gpu_integer_coordinate(v : FixedArray[GPUIntegerCoordinate]) -> GPUExtent3D =
   #| (v) => v
 
 ///|
-extern "js" fn GPUExtent3D::from_gpu_extent_3d_dict_ffi(
-  v : JsValue,
-) -> GPUExtent3D =
+extern "js" fn GPUExtent3D::from_gpu_extent_3d_dict_ffi(v : JsValue) -> GPUExtent3D =
   #| v => v
 
 ///|
-pub fn GPUExtent3D::from_gpu_extent_3d_dict(v : GPUExtent3DDict) -> GPUExtent3D {
-  GPUExtent3D::from_gpu_extent_3d_dict_ffi(v.to_js())
-}
+pub fn GPUExtent3D::from_gpu_extent_3d_dict(v : GPUExtent3DDict) -> GPUExtent3D { GPUExtent3D::from_gpu_extent_3d_dict_ffi(v.to_js()) }
 
-///|
 /// Check if this GPUExtent3D is FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::is_array_of_gpu_integer_coordinate(
-  self : GPUExtent3D,
-) -> Bool =
+pub extern "js" fn GPUExtent3D::is_array_of_gpu_integer_coordinate(self : GPUExtent3D) -> Bool =
   #| (self) => Array.isArray(self)
 
-///|
 /// Check if this GPUExtent3D is GPUExtent3DDict
-pub extern "js" fn GPUExtent3D::is_gpu_extent_3d_dict(
-  self : GPUExtent3D,
-) -> Bool =
+pub extern "js" fn GPUExtent3D::is_gpu_extent_3d_dict(self : GPUExtent3D) -> Bool =
   #| (self) => typeof self === 'object' && self !== null
 
-///|
 /// Try to get GPUExtent3D as FixedArray[GPUIntegerCoordinate]
-pub extern "js" fn GPUExtent3D::as_array_of_gpu_integer_coordinate(
-  self : GPUExtent3D,
-) -> FixedArray[GPUIntegerCoordinate]? =
+pub extern "js" fn GPUExtent3D::as_array_of_gpu_integer_coordinate(self : GPUExtent3D) -> FixedArray[GPUIntegerCoordinate]? =
   #| (self) => (Array.isArray(self)) ? self : undefined
 
 ///|
-pub fn GPUExtent3D::as_gpu_extent_3d_dict(
-  self : GPUExtent3D,
-) -> GPUExtent3DDict? {
-  if self.is_gpu_extent_3d_dict() {
-    Some(GPUExtent3DDict::from_js(self.to_js_value()))
-  } else {
-    None
-  }
-}
+pub fn GPUExtent3D::as_gpu_extent_3d_dict(self : GPUExtent3D) -> GPUExtent3DDict? { if self.is_gpu_extent_3d_dict() { Some(GPUExtent3DDict::from_js(self.to_js_value())) } else { None } }
 
-///|
 /// Flatten Option[GPUExtent3D] to FixedArray[GPUIntegerCoordinate]?
-pub fn GPUExtent3D::bind_as_array_of_gpu_integer_coordinate(
-  value : GPUExtent3D?,
-) -> FixedArray[GPUIntegerCoordinate]? {
+pub fn GPUExtent3D::bind_as_array_of_gpu_integer_coordinate(value : GPUExtent3D?) -> FixedArray[GPUIntegerCoordinate]? {
   match value {
     Some(v) => v.as_array_of_gpu_integer_coordinate()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GPUExtent3D] to GPUExtent3DDict?
-pub fn GPUExtent3D::bind_as_gpu_extent_3d_dict(
-  value : GPUExtent3D?,
-) -> GPUExtent3DDict? {
+pub fn GPUExtent3D::bind_as_gpu_extent_3d_dict(value : GPUExtent3D?) -> GPUExtent3DDict? {
   match value {
     Some(v) => v.as_gpu_extent_3d_dict()
     None => None
@@ -834,34 +550,9 @@ pub fn GPUExtent3D::bind_as_gpu_extent_3d_dict(
 }
 
 ///|
-/// GPUPowerPreference enum
-pub(all) enum GPUPowerPreference {
-  LowPower
-  HighPerformance
-} derive(Eq, Debug)
-
-///|
-/// Convert to string value
-pub fn GPUPowerPreference::to_string(self : GPUPowerPreference) -> String {
-  match self {
-    GPUPowerPreference::LowPower => "low-power"
-    GPUPowerPreference::HighPerformance => "high-performance"
-  }
-}
-
-///|
-/// Parse from string value
-pub fn GPUPowerPreference::from_string(s : String) -> GPUPowerPreference? {
-  match s {
-    "low-power" => Some(GPUPowerPreference::LowPower)
-    "high-performance" => Some(GPUPowerPreference::HighPerformance)
-    _ => None
-  }
-}
-
-///|
 /// GPUFeatureName enum
 pub(all) enum GPUFeatureName {
+  AtomicVec2uMinMax
   CoreFeaturesAndLimits
   DepthClipControl
   Depth32floatStencil8
@@ -884,22 +575,25 @@ pub(all) enum GPUFeatureName {
   TextureFormatsTier2
   PrimitiveIndex
   TextureComponentSwizzle
+  SubgroupSizeControl
+  TextureCompressionUnaligned
 } derive(Eq, Debug)
 
-///|
+pub extend GPUFeatureName with Eq::{equal, not_equal}
+pub extend GPUFeatureName with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUFeatureName::to_string(self : GPUFeatureName) -> String {
   match self {
+    GPUFeatureName::AtomicVec2uMinMax => "atomic-vec2u-min-max"
     GPUFeatureName::CoreFeaturesAndLimits => "core-features-and-limits"
     GPUFeatureName::DepthClipControl => "depth-clip-control"
     GPUFeatureName::Depth32floatStencil8 => "depth32float-stencil8"
     GPUFeatureName::TextureCompressionBc => "texture-compression-bc"
-    GPUFeatureName::TextureCompressionBcSliced3d =>
-      "texture-compression-bc-sliced-3d"
+    GPUFeatureName::TextureCompressionBcSliced3d => "texture-compression-bc-sliced-3d"
     GPUFeatureName::TextureCompressionEtc2 => "texture-compression-etc2"
     GPUFeatureName::TextureCompressionAstc => "texture-compression-astc"
-    GPUFeatureName::TextureCompressionAstcSliced3d =>
-      "texture-compression-astc-sliced-3d"
+    GPUFeatureName::TextureCompressionAstcSliced3d => "texture-compression-astc-sliced-3d"
     GPUFeatureName::TimestampQuery => "timestamp-query"
     GPUFeatureName::IndirectFirstInstance => "indirect-first-instance"
     GPUFeatureName::ShaderF16 => "shader-f16"
@@ -914,23 +608,23 @@ pub fn GPUFeatureName::to_string(self : GPUFeatureName) -> String {
     GPUFeatureName::TextureFormatsTier2 => "texture-formats-tier2"
     GPUFeatureName::PrimitiveIndex => "primitive-index"
     GPUFeatureName::TextureComponentSwizzle => "texture-component-swizzle"
+    GPUFeatureName::SubgroupSizeControl => "subgroup-size-control"
+    GPUFeatureName::TextureCompressionUnaligned => "texture-compression-unaligned"
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUFeatureName::from_string(s : String) -> GPUFeatureName? {
   match s {
+    "atomic-vec2u-min-max" => Some(GPUFeatureName::AtomicVec2uMinMax)
     "core-features-and-limits" => Some(GPUFeatureName::CoreFeaturesAndLimits)
     "depth-clip-control" => Some(GPUFeatureName::DepthClipControl)
     "depth32float-stencil8" => Some(GPUFeatureName::Depth32floatStencil8)
     "texture-compression-bc" => Some(GPUFeatureName::TextureCompressionBc)
-    "texture-compression-bc-sliced-3d" =>
-      Some(GPUFeatureName::TextureCompressionBcSliced3d)
+    "texture-compression-bc-sliced-3d" => Some(GPUFeatureName::TextureCompressionBcSliced3d)
     "texture-compression-etc2" => Some(GPUFeatureName::TextureCompressionEtc2)
     "texture-compression-astc" => Some(GPUFeatureName::TextureCompressionAstc)
-    "texture-compression-astc-sliced-3d" =>
-      Some(GPUFeatureName::TextureCompressionAstcSliced3d)
+    "texture-compression-astc-sliced-3d" => Some(GPUFeatureName::TextureCompressionAstcSliced3d)
     "timestamp-query" => Some(GPUFeatureName::TimestampQuery)
     "indirect-first-instance" => Some(GPUFeatureName::IndirectFirstInstance)
     "shader-f16" => Some(GPUFeatureName::ShaderF16)
@@ -945,6 +639,35 @@ pub fn GPUFeatureName::from_string(s : String) -> GPUFeatureName? {
     "texture-formats-tier2" => Some(GPUFeatureName::TextureFormatsTier2)
     "primitive-index" => Some(GPUFeatureName::PrimitiveIndex)
     "texture-component-swizzle" => Some(GPUFeatureName::TextureComponentSwizzle)
+    "subgroup-size-control" => Some(GPUFeatureName::SubgroupSizeControl)
+    "texture-compression-unaligned" => Some(GPUFeatureName::TextureCompressionUnaligned)
+    _ => None
+  }
+}
+
+///|
+/// GPUPowerPreference enum
+pub(all) enum GPUPowerPreference {
+  LowPower
+  HighPerformance
+} derive(Eq, Debug)
+
+pub extend GPUPowerPreference with Eq::{equal, not_equal}
+pub extend GPUPowerPreference with @debug.Debug::{to_repr}
+
+/// Convert to string value
+pub fn GPUPowerPreference::to_string(self : GPUPowerPreference) -> String {
+  match self {
+    GPUPowerPreference::LowPower => "low-power"
+    GPUPowerPreference::HighPerformance => "high-performance"
+  }
+}
+
+/// Parse from string value
+pub fn GPUPowerPreference::from_string(s : String) -> GPUPowerPreference? {
+  match s {
+    "low-power" => Some(GPUPowerPreference::LowPower)
+    "high-performance" => Some(GPUPowerPreference::HighPerformance)
     _ => None
   }
 }
@@ -957,7 +680,9 @@ pub(all) enum GPUBufferMapState {
   Mapped
 } derive(Eq, Debug)
 
-///|
+pub extend GPUBufferMapState with Eq::{equal, not_equal}
+pub extend GPUBufferMapState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUBufferMapState::to_string(self : GPUBufferMapState) -> String {
   match self {
@@ -967,7 +692,6 @@ pub fn GPUBufferMapState::to_string(self : GPUBufferMapState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUBufferMapState::from_string(s : String) -> GPUBufferMapState? {
   match s {
@@ -986,7 +710,9 @@ pub(all) enum GPUTextureDimension {
   N3d
 } derive(Eq, Debug)
 
-///|
+pub extend GPUTextureDimension with Eq::{equal, not_equal}
+pub extend GPUTextureDimension with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUTextureDimension::to_string(self : GPUTextureDimension) -> String {
   match self {
@@ -996,7 +722,6 @@ pub fn GPUTextureDimension::to_string(self : GPUTextureDimension) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUTextureDimension::from_string(s : String) -> GPUTextureDimension? {
   match s {
@@ -1018,11 +743,11 @@ pub(all) enum GPUTextureViewDimension {
   N3d
 } derive(Eq, Debug)
 
-///|
+pub extend GPUTextureViewDimension with Eq::{equal, not_equal}
+pub extend GPUTextureViewDimension with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GPUTextureViewDimension::to_string(
-  self : GPUTextureViewDimension,
-) -> String {
+pub fn GPUTextureViewDimension::to_string(self : GPUTextureViewDimension) -> String {
   match self {
     GPUTextureViewDimension::N1d => "1d"
     GPUTextureViewDimension::N2d => "2d"
@@ -1033,11 +758,8 @@ pub fn GPUTextureViewDimension::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn GPUTextureViewDimension::from_string(
-  s : String,
-) -> GPUTextureViewDimension? {
+pub fn GPUTextureViewDimension::from_string(s : String) -> GPUTextureViewDimension? {
   match s {
     "1d" => Some(GPUTextureViewDimension::N1d)
     "2d" => Some(GPUTextureViewDimension::N2d)
@@ -1057,7 +779,9 @@ pub(all) enum GPUTextureAspect {
   DepthOnly
 } derive(Eq, Debug)
 
-///|
+pub extend GPUTextureAspect with Eq::{equal, not_equal}
+pub extend GPUTextureAspect with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUTextureAspect::to_string(self : GPUTextureAspect) -> String {
   match self {
@@ -1067,7 +791,6 @@ pub fn GPUTextureAspect::to_string(self : GPUTextureAspect) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUTextureAspect::from_string(s : String) -> GPUTextureAspect? {
   match s {
@@ -1184,7 +907,9 @@ pub(all) enum GPUTextureFormat {
   Astc12x12UnormSrgb
 } derive(Eq, Debug)
 
-///|
+pub extend GPUTextureFormat with Eq::{equal, not_equal}
+pub extend GPUTextureFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUTextureFormat::to_string(self : GPUTextureFormat) -> String {
   match self {
@@ -1292,7 +1017,6 @@ pub fn GPUTextureFormat::to_string(self : GPUTextureFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUTextureFormat::from_string(s : String) -> GPUTextureFormat? {
   match s {
@@ -1409,7 +1133,9 @@ pub(all) enum GPUAddressMode {
   MirrorRepeat
 } derive(Eq, Debug)
 
-///|
+pub extend GPUAddressMode with Eq::{equal, not_equal}
+pub extend GPUAddressMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUAddressMode::to_string(self : GPUAddressMode) -> String {
   match self {
@@ -1419,7 +1145,6 @@ pub fn GPUAddressMode::to_string(self : GPUAddressMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUAddressMode::from_string(s : String) -> GPUAddressMode? {
   match s {
@@ -1437,7 +1162,9 @@ pub(all) enum GPUFilterMode {
   Linear
 } derive(Eq, Debug)
 
-///|
+pub extend GPUFilterMode with Eq::{equal, not_equal}
+pub extend GPUFilterMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUFilterMode::to_string(self : GPUFilterMode) -> String {
   match self {
@@ -1446,7 +1173,6 @@ pub fn GPUFilterMode::to_string(self : GPUFilterMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUFilterMode::from_string(s : String) -> GPUFilterMode? {
   match s {
@@ -1463,7 +1189,9 @@ pub(all) enum GPUMipmapFilterMode {
   Linear
 } derive(Eq, Debug)
 
-///|
+pub extend GPUMipmapFilterMode with Eq::{equal, not_equal}
+pub extend GPUMipmapFilterMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUMipmapFilterMode::to_string(self : GPUMipmapFilterMode) -> String {
   match self {
@@ -1472,7 +1200,6 @@ pub fn GPUMipmapFilterMode::to_string(self : GPUMipmapFilterMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUMipmapFilterMode::from_string(s : String) -> GPUMipmapFilterMode? {
   match s {
@@ -1495,7 +1222,9 @@ pub(all) enum GPUCompareFunction {
   Always
 } derive(Eq, Debug)
 
-///|
+pub extend GPUCompareFunction with Eq::{equal, not_equal}
+pub extend GPUCompareFunction with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUCompareFunction::to_string(self : GPUCompareFunction) -> String {
   match self {
@@ -1510,7 +1239,6 @@ pub fn GPUCompareFunction::to_string(self : GPUCompareFunction) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUCompareFunction::from_string(s : String) -> GPUCompareFunction? {
   match s {
@@ -1534,7 +1262,9 @@ pub(all) enum GPUBufferBindingType {
   ReadOnlyStorage
 } derive(Eq, Debug)
 
-///|
+pub extend GPUBufferBindingType with Eq::{equal, not_equal}
+pub extend GPUBufferBindingType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUBufferBindingType::to_string(self : GPUBufferBindingType) -> String {
   match self {
@@ -1544,7 +1274,6 @@ pub fn GPUBufferBindingType::to_string(self : GPUBufferBindingType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUBufferBindingType::from_string(s : String) -> GPUBufferBindingType? {
   match s {
@@ -1563,7 +1292,9 @@ pub(all) enum GPUSamplerBindingType {
   Comparison
 } derive(Eq, Debug)
 
-///|
+pub extend GPUSamplerBindingType with Eq::{equal, not_equal}
+pub extend GPUSamplerBindingType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUSamplerBindingType::to_string(self : GPUSamplerBindingType) -> String {
   match self {
@@ -1573,7 +1304,6 @@ pub fn GPUSamplerBindingType::to_string(self : GPUSamplerBindingType) -> String 
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUSamplerBindingType::from_string(s : String) -> GPUSamplerBindingType? {
   match s {
@@ -1594,7 +1324,9 @@ pub(all) enum GPUTextureSampleType {
   Uint
 } derive(Eq, Debug)
 
-///|
+pub extend GPUTextureSampleType with Eq::{equal, not_equal}
+pub extend GPUTextureSampleType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUTextureSampleType::to_string(self : GPUTextureSampleType) -> String {
   match self {
@@ -1606,7 +1338,6 @@ pub fn GPUTextureSampleType::to_string(self : GPUTextureSampleType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUTextureSampleType::from_string(s : String) -> GPUTextureSampleType? {
   match s {
@@ -1627,11 +1358,11 @@ pub(all) enum GPUStorageTextureAccess {
   ReadWrite
 } derive(Eq, Debug)
 
-///|
+pub extend GPUStorageTextureAccess with Eq::{equal, not_equal}
+pub extend GPUStorageTextureAccess with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GPUStorageTextureAccess::to_string(
-  self : GPUStorageTextureAccess,
-) -> String {
+pub fn GPUStorageTextureAccess::to_string(self : GPUStorageTextureAccess) -> String {
   match self {
     GPUStorageTextureAccess::WriteOnly => "write-only"
     GPUStorageTextureAccess::ReadOnly => "read-only"
@@ -1639,11 +1370,8 @@ pub fn GPUStorageTextureAccess::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn GPUStorageTextureAccess::from_string(
-  s : String,
-) -> GPUStorageTextureAccess? {
+pub fn GPUStorageTextureAccess::from_string(s : String) -> GPUStorageTextureAccess? {
   match s {
     "write-only" => Some(GPUStorageTextureAccess::WriteOnly)
     "read-only" => Some(GPUStorageTextureAccess::ReadOnly)
@@ -1660,11 +1388,11 @@ pub(all) enum GPUCompilationMessageType {
   Info
 } derive(Eq, Debug)
 
-///|
+pub extend GPUCompilationMessageType with Eq::{equal, not_equal}
+pub extend GPUCompilationMessageType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GPUCompilationMessageType::to_string(
-  self : GPUCompilationMessageType,
-) -> String {
+pub fn GPUCompilationMessageType::to_string(self : GPUCompilationMessageType) -> String {
   match self {
     GPUCompilationMessageType::Error => "error"
     GPUCompilationMessageType::Warning => "warning"
@@ -1672,11 +1400,8 @@ pub fn GPUCompilationMessageType::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn GPUCompilationMessageType::from_string(
-  s : String,
-) -> GPUCompilationMessageType? {
+pub fn GPUCompilationMessageType::from_string(s : String) -> GPUCompilationMessageType? {
   match s {
     "error" => Some(GPUCompilationMessageType::Error)
     "warning" => Some(GPUCompilationMessageType::Warning)
@@ -1692,22 +1417,19 @@ pub(all) enum GPUPipelineErrorReason {
   Internal
 } derive(Eq, Debug)
 
-///|
+pub extend GPUPipelineErrorReason with Eq::{equal, not_equal}
+pub extend GPUPipelineErrorReason with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GPUPipelineErrorReason::to_string(
-  self : GPUPipelineErrorReason,
-) -> String {
+pub fn GPUPipelineErrorReason::to_string(self : GPUPipelineErrorReason) -> String {
   match self {
     GPUPipelineErrorReason::Validation => "validation"
     GPUPipelineErrorReason::Internal => "internal"
   }
 }
 
-///|
 /// Parse from string value
-pub fn GPUPipelineErrorReason::from_string(
-  s : String,
-) -> GPUPipelineErrorReason? {
+pub fn GPUPipelineErrorReason::from_string(s : String) -> GPUPipelineErrorReason? {
   match s {
     "validation" => Some(GPUPipelineErrorReason::Validation)
     "internal" => Some(GPUPipelineErrorReason::Internal)
@@ -1721,7 +1443,9 @@ pub(all) enum GPUAutoLayoutMode {
   Auto
 } derive(Eq, Debug)
 
-///|
+pub extend GPUAutoLayoutMode with Eq::{equal, not_equal}
+pub extend GPUAutoLayoutMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUAutoLayoutMode::to_string(self : GPUAutoLayoutMode) -> String {
   match self {
@@ -1729,7 +1453,6 @@ pub fn GPUAutoLayoutMode::to_string(self : GPUAutoLayoutMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUAutoLayoutMode::from_string(s : String) -> GPUAutoLayoutMode? {
   match s {
@@ -1748,7 +1471,9 @@ pub(all) enum GPUPrimitiveTopology {
   TriangleStrip
 } derive(Eq, Debug)
 
-///|
+pub extend GPUPrimitiveTopology with Eq::{equal, not_equal}
+pub extend GPUPrimitiveTopology with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUPrimitiveTopology::to_string(self : GPUPrimitiveTopology) -> String {
   match self {
@@ -1760,7 +1485,6 @@ pub fn GPUPrimitiveTopology::to_string(self : GPUPrimitiveTopology) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUPrimitiveTopology::from_string(s : String) -> GPUPrimitiveTopology? {
   match s {
@@ -1780,7 +1504,9 @@ pub(all) enum GPUFrontFace {
   Cw
 } derive(Eq, Debug)
 
-///|
+pub extend GPUFrontFace with Eq::{equal, not_equal}
+pub extend GPUFrontFace with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUFrontFace::to_string(self : GPUFrontFace) -> String {
   match self {
@@ -1789,7 +1515,6 @@ pub fn GPUFrontFace::to_string(self : GPUFrontFace) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUFrontFace::from_string(s : String) -> GPUFrontFace? {
   match s {
@@ -1807,7 +1532,9 @@ pub(all) enum GPUCullMode {
   Back
 } derive(Eq, Debug)
 
-///|
+pub extend GPUCullMode with Eq::{equal, not_equal}
+pub extend GPUCullMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUCullMode::to_string(self : GPUCullMode) -> String {
   match self {
@@ -1817,7 +1544,6 @@ pub fn GPUCullMode::to_string(self : GPUCullMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUCullMode::from_string(s : String) -> GPUCullMode? {
   match s {
@@ -1850,7 +1576,9 @@ pub(all) enum GPUBlendFactor {
   OneMinusSrc1Alpha
 } derive(Eq, Debug)
 
-///|
+pub extend GPUBlendFactor with Eq::{equal, not_equal}
+pub extend GPUBlendFactor with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUBlendFactor::to_string(self : GPUBlendFactor) -> String {
   match self {
@@ -1874,7 +1602,6 @@ pub fn GPUBlendFactor::to_string(self : GPUBlendFactor) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUBlendFactor::from_string(s : String) -> GPUBlendFactor? {
   match s {
@@ -1909,7 +1636,9 @@ pub(all) enum GPUBlendOperation {
   Max
 } derive(Eq, Debug)
 
-///|
+pub extend GPUBlendOperation with Eq::{equal, not_equal}
+pub extend GPUBlendOperation with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUBlendOperation::to_string(self : GPUBlendOperation) -> String {
   match self {
@@ -1921,7 +1650,6 @@ pub fn GPUBlendOperation::to_string(self : GPUBlendOperation) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUBlendOperation::from_string(s : String) -> GPUBlendOperation? {
   match s {
@@ -1947,7 +1675,9 @@ pub(all) enum GPUStencilOperation {
   DecrementWrap
 } derive(Eq, Debug)
 
-///|
+pub extend GPUStencilOperation with Eq::{equal, not_equal}
+pub extend GPUStencilOperation with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUStencilOperation::to_string(self : GPUStencilOperation) -> String {
   match self {
@@ -1962,7 +1692,6 @@ pub fn GPUStencilOperation::to_string(self : GPUStencilOperation) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUStencilOperation::from_string(s : String) -> GPUStencilOperation? {
   match s {
@@ -1985,7 +1714,9 @@ pub(all) enum GPUIndexFormat {
   Uint32
 } derive(Eq, Debug)
 
-///|
+pub extend GPUIndexFormat with Eq::{equal, not_equal}
+pub extend GPUIndexFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUIndexFormat::to_string(self : GPUIndexFormat) -> String {
   match self {
@@ -1994,7 +1725,6 @@ pub fn GPUIndexFormat::to_string(self : GPUIndexFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUIndexFormat::from_string(s : String) -> GPUIndexFormat? {
   match s {
@@ -2048,9 +1778,12 @@ pub(all) enum GPUVertexFormat {
   Sint32x4
   Unorm1010102
   Unorm8x4Bgra
+  Snorm1010102
 } derive(Eq, Debug)
 
-///|
+pub extend GPUVertexFormat with Eq::{equal, not_equal}
+pub extend GPUVertexFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUVertexFormat::to_string(self : GPUVertexFormat) -> String {
   match self {
@@ -2095,10 +1828,10 @@ pub fn GPUVertexFormat::to_string(self : GPUVertexFormat) -> String {
     GPUVertexFormat::Sint32x4 => "sint32x4"
     GPUVertexFormat::Unorm1010102 => "unorm10-10-10-2"
     GPUVertexFormat::Unorm8x4Bgra => "unorm8x4-bgra"
+    GPUVertexFormat::Snorm1010102 => "snorm10-10-10-2"
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUVertexFormat::from_string(s : String) -> GPUVertexFormat? {
   match s {
@@ -2143,6 +1876,7 @@ pub fn GPUVertexFormat::from_string(s : String) -> GPUVertexFormat? {
     "sint32x4" => Some(GPUVertexFormat::Sint32x4)
     "unorm10-10-10-2" => Some(GPUVertexFormat::Unorm1010102)
     "unorm8x4-bgra" => Some(GPUVertexFormat::Unorm8x4Bgra)
+    "snorm10-10-10-2" => Some(GPUVertexFormat::Snorm1010102)
     _ => None
   }
 }
@@ -2154,7 +1888,9 @@ pub(all) enum GPUVertexStepMode {
   Instance
 } derive(Eq, Debug)
 
-///|
+pub extend GPUVertexStepMode with Eq::{equal, not_equal}
+pub extend GPUVertexStepMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUVertexStepMode::to_string(self : GPUVertexStepMode) -> String {
   match self {
@@ -2163,7 +1899,6 @@ pub fn GPUVertexStepMode::to_string(self : GPUVertexStepMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUVertexStepMode::from_string(s : String) -> GPUVertexStepMode? {
   match s {
@@ -2180,7 +1915,9 @@ pub(all) enum GPULoadOp {
   Clear
 } derive(Eq, Debug)
 
-///|
+pub extend GPULoadOp with Eq::{equal, not_equal}
+pub extend GPULoadOp with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPULoadOp::to_string(self : GPULoadOp) -> String {
   match self {
@@ -2189,7 +1926,6 @@ pub fn GPULoadOp::to_string(self : GPULoadOp) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPULoadOp::from_string(s : String) -> GPULoadOp? {
   match s {
@@ -2206,7 +1942,9 @@ pub(all) enum GPUStoreOp {
   Discard
 } derive(Eq, Debug)
 
-///|
+pub extend GPUStoreOp with Eq::{equal, not_equal}
+pub extend GPUStoreOp with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUStoreOp::to_string(self : GPUStoreOp) -> String {
   match self {
@@ -2215,7 +1953,6 @@ pub fn GPUStoreOp::to_string(self : GPUStoreOp) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUStoreOp::from_string(s : String) -> GPUStoreOp? {
   match s {
@@ -2232,7 +1969,9 @@ pub(all) enum GPUQueryType {
   Timestamp
 } derive(Eq, Debug)
 
-///|
+pub extend GPUQueryType with Eq::{equal, not_equal}
+pub extend GPUQueryType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUQueryType::to_string(self : GPUQueryType) -> String {
   match self {
@@ -2241,7 +1980,6 @@ pub fn GPUQueryType::to_string(self : GPUQueryType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUQueryType::from_string(s : String) -> GPUQueryType? {
   match s {
@@ -2258,7 +1996,9 @@ pub(all) enum GPUCanvasAlphaMode {
   Premultiplied
 } derive(Eq, Debug)
 
-///|
+pub extend GPUCanvasAlphaMode with Eq::{equal, not_equal}
+pub extend GPUCanvasAlphaMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUCanvasAlphaMode::to_string(self : GPUCanvasAlphaMode) -> String {
   match self {
@@ -2267,7 +2007,6 @@ pub fn GPUCanvasAlphaMode::to_string(self : GPUCanvasAlphaMode) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUCanvasAlphaMode::from_string(s : String) -> GPUCanvasAlphaMode? {
   match s {
@@ -2284,22 +2023,19 @@ pub(all) enum GPUCanvasToneMappingMode {
   Extended
 } derive(Eq, Debug)
 
-///|
+pub extend GPUCanvasToneMappingMode with Eq::{equal, not_equal}
+pub extend GPUCanvasToneMappingMode with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn GPUCanvasToneMappingMode::to_string(
-  self : GPUCanvasToneMappingMode,
-) -> String {
+pub fn GPUCanvasToneMappingMode::to_string(self : GPUCanvasToneMappingMode) -> String {
   match self {
     GPUCanvasToneMappingMode::Standard => "standard"
     GPUCanvasToneMappingMode::Extended => "extended"
   }
 }
 
-///|
 /// Parse from string value
-pub fn GPUCanvasToneMappingMode::from_string(
-  s : String,
-) -> GPUCanvasToneMappingMode? {
+pub fn GPUCanvasToneMappingMode::from_string(s : String) -> GPUCanvasToneMappingMode? {
   match s {
     "standard" => Some(GPUCanvasToneMappingMode::Standard)
     "extended" => Some(GPUCanvasToneMappingMode::Extended)
@@ -2314,7 +2050,9 @@ pub(all) enum GPUDeviceLostReason {
   Destroyed
 } derive(Eq, Debug)
 
-///|
+pub extend GPUDeviceLostReason with Eq::{equal, not_equal}
+pub extend GPUDeviceLostReason with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUDeviceLostReason::to_string(self : GPUDeviceLostReason) -> String {
   match self {
@@ -2323,7 +2061,6 @@ pub fn GPUDeviceLostReason::to_string(self : GPUDeviceLostReason) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUDeviceLostReason::from_string(s : String) -> GPUDeviceLostReason? {
   match s {
@@ -2341,7 +2078,9 @@ pub(all) enum GPUErrorFilter {
   Internal
 } derive(Eq, Debug)
 
-///|
+pub extend GPUErrorFilter with Eq::{equal, not_equal}
+pub extend GPUErrorFilter with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn GPUErrorFilter::to_string(self : GPUErrorFilter) -> String {
   match self {
@@ -2351,7 +2090,6 @@ pub fn GPUErrorFilter::to_string(self : GPUErrorFilter) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn GPUErrorFilter::from_string(s : String) -> GPUErrorFilter? {
   match s {
@@ -2368,41 +2106,30 @@ pub(all) struct GPUObjectDescriptorBase {
   label : String?
 }
 
-///|
 /// Create a new GPUObjectDescriptorBase with default values
 pub fn GPUObjectDescriptorBase::default() -> GPUObjectDescriptorBase {
-  GPUObjectDescriptorBase::{ label: None, }
+  GPUObjectDescriptorBase::{
+    label: None,
+  }
 }
 
-///|
-extern "js" fn GPUObjectDescriptorBase::to_js_ffi(
-  self : GPUObjectDescriptorBase,
-) -> JsValue =
+extern "js" fn GPUObjectDescriptorBase::to_js_ffi(self : GPUObjectDescriptorBase) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUObjectDescriptorBase::to_js(
-  self : GPUObjectDescriptorBase,
-) -> JsValue {
+pub fn GPUObjectDescriptorBase::to_js(self : GPUObjectDescriptorBase) -> JsValue {
   GPUObjectDescriptorBase::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUObjectDescriptorBase::from_js_ffi(
-  value : JsValue,
-) -> GPUObjectDescriptorBase =
+extern "js" fn GPUObjectDescriptorBase::from_js_ffi(value : JsValue) -> GPUObjectDescriptorBase =
   #| (v) => ({
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUObjectDescriptorBase::from_js(
-  value : JsValue,
-) -> GPUObjectDescriptorBase {
+pub fn GPUObjectDescriptorBase::from_js(value : JsValue) -> GPUObjectDescriptorBase {
   GPUObjectDescriptorBase::from_js_ffi(value)
 }
 
@@ -2415,7 +2142,6 @@ pub(all) struct GPURequestAdapterOptions {
   xrCompatible : Bool?
 }
 
-///|
 /// Create a new GPURequestAdapterOptions with default values
 pub fn GPURequestAdapterOptions::default() -> GPURequestAdapterOptions {
   GPURequestAdapterOptions::{
@@ -2426,10 +2152,7 @@ pub fn GPURequestAdapterOptions::default() -> GPURequestAdapterOptions {
   }
 }
 
-///|
-extern "js" fn GPURequestAdapterOptions::to_js_ffi(
-  self : GPURequestAdapterOptions,
-) -> JsValue =
+extern "js" fn GPURequestAdapterOptions::to_js_ffi(self : GPURequestAdapterOptions) -> JsValue =
   #| (self) => ({
   #|   featureLevel: self.featureLevel,
   #|   powerPreference: ((() => { const v = self.powerPreference; if (v === undefined) return undefined; return ['low-power', 'high-performance'][v]; })()),
@@ -2437,18 +2160,12 @@ extern "js" fn GPURequestAdapterOptions::to_js_ffi(
   #|   xrCompatible: (self.xrCompatible === -1 ? undefined : self.xrCompatible)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURequestAdapterOptions::to_js(
-  self : GPURequestAdapterOptions,
-) -> JsValue {
+pub fn GPURequestAdapterOptions::to_js(self : GPURequestAdapterOptions) -> JsValue {
   GPURequestAdapterOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURequestAdapterOptions::from_js_ffi(
-  value : JsValue,
-) -> GPURequestAdapterOptions =
+extern "js" fn GPURequestAdapterOptions::from_js_ffi(value : JsValue) -> GPURequestAdapterOptions =
   #| (v) => ({
   #|   featureLevel: v.featureLevel,
   #|   powerPreference: (v.powerPreference === undefined ? undefined : ['low-power', 'high-performance'].indexOf(v.powerPreference)),
@@ -2456,11 +2173,8 @@ extern "js" fn GPURequestAdapterOptions::from_js_ffi(
   #|   xrCompatible: (v.xrCompatible === undefined ? -1 : v.xrCompatible)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURequestAdapterOptions::from_js(
-  value : JsValue,
-) -> GPURequestAdapterOptions {
+pub fn GPURequestAdapterOptions::from_js(value : JsValue) -> GPURequestAdapterOptions {
   GPURequestAdapterOptions::from_js_ffi(value)
 }
 
@@ -2473,7 +2187,6 @@ pub(all) struct GPUDeviceDescriptor {
   defaultQueue : GPUQueueDescriptor?
 }
 
-///|
 /// Create a new GPUDeviceDescriptor with default values
 pub fn GPUDeviceDescriptor::default() -> GPUDeviceDescriptor {
   GPUDeviceDescriptor::{
@@ -2484,11 +2197,7 @@ pub fn GPUDeviceDescriptor::default() -> GPUDeviceDescriptor {
   }
 }
 
-///|
-extern "js" fn GPUDeviceDescriptor::to_js_ffi(
-  self : GPUDeviceDescriptor,
-  convert_defaultQueue : (GPUQueueDescriptor?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUDeviceDescriptor::to_js_ffi(self : GPUDeviceDescriptor, convert_defaultQueue : (GPUQueueDescriptor?) -> JsValue) -> JsValue =
   #| (self, convert_defaultQueue) => ({
   #|   label: self.label,
   #|   requiredFeatures: self.requiredFeatures,
@@ -2496,22 +2205,12 @@ extern "js" fn GPUDeviceDescriptor::to_js_ffi(
   #|   defaultQueue: convert_defaultQueue(self.defaultQueue)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUDeviceDescriptor::to_js(self : GPUDeviceDescriptor) -> JsValue {
-  GPUDeviceDescriptor::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+  GPUDeviceDescriptor::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUDeviceDescriptor::from_js_ffi(
-  value : JsValue,
-  convert_defaultQueue : (JsValue) -> GPUQueueDescriptor?,
-) -> GPUDeviceDescriptor =
+extern "js" fn GPUDeviceDescriptor::from_js_ffi(value : JsValue, convert_defaultQueue : (JsValue) -> GPUQueueDescriptor?) -> GPUDeviceDescriptor =
   #| (v, convert_defaultQueue) => ({
   #|   label: v.label,
   #|   requiredFeatures: v.requiredFeatures,
@@ -2519,16 +2218,9 @@ extern "js" fn GPUDeviceDescriptor::from_js_ffi(
   #|   defaultQueue: convert_defaultQueue(v.defaultQueue)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUDeviceDescriptor::from_js(value : JsValue) -> GPUDeviceDescriptor {
-  GPUDeviceDescriptor::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(GPUQueueDescriptor::from_js(value))
-    }
-  })
+  GPUDeviceDescriptor::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUQueueDescriptor::from_js(value)) } })
 }
 
 ///|
@@ -2540,19 +2232,17 @@ pub(all) struct GPUBufferDescriptor {
   mappedAtCreation : Bool?
 }
 
-///|
 /// Create a new GPUBufferDescriptor
-pub fn GPUBufferDescriptor::new(
-  size~ : GPUSize64,
-  usage~ : GPUBufferUsageFlags,
-) -> GPUBufferDescriptor {
-  GPUBufferDescriptor::{ label: None, size, usage, mappedAtCreation: None, }
+pub fn GPUBufferDescriptor::new(size~ : GPUSize64, usage~ : GPUBufferUsageFlags) -> GPUBufferDescriptor {
+  GPUBufferDescriptor::{
+    label: None,
+    size: size,
+    usage: usage,
+    mappedAtCreation: None,
+  }
 }
 
-///|
-extern "js" fn GPUBufferDescriptor::to_js_ffi(
-  self : GPUBufferDescriptor,
-) -> JsValue =
+extern "js" fn GPUBufferDescriptor::to_js_ffi(self : GPUBufferDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   size: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.size),
@@ -2560,16 +2250,12 @@ extern "js" fn GPUBufferDescriptor::to_js_ffi(
   #|   mappedAtCreation: (self.mappedAtCreation === -1 ? undefined : self.mappedAtCreation)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBufferDescriptor::to_js(self : GPUBufferDescriptor) -> JsValue {
   GPUBufferDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBufferDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUBufferDescriptor =
+extern "js" fn GPUBufferDescriptor::from_js_ffi(value : JsValue) -> GPUBufferDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   size: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.size),
@@ -2577,7 +2263,6 @@ extern "js" fn GPUBufferDescriptor::from_js_ffi(
   #|   mappedAtCreation: (v.mappedAtCreation === undefined ? -1 : v.mappedAtCreation)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUBufferDescriptor::from_js(value : JsValue) -> GPUBufferDescriptor {
   GPUBufferDescriptor::from_js_ffi(value)
@@ -2585,25 +2270,15 @@ pub fn GPUBufferDescriptor::from_js(value : JsValue) -> GPUBufferDescriptor {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUBufferDescriptor::to_js_checked(
-  self : GPUBufferDescriptor,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUBufferDescriptor::to_js_checked(self : GPUBufferDescriptor) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUBufferDescriptor(
-  convert : () -> GPUBufferDescriptor,
-) -> Result[GPUBufferDescriptor, JsError] =
+extern "js" fn try_dictionary_GPUBufferDescriptor(convert : () -> GPUBufferDescriptor) -> Result[GPUBufferDescriptor, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUBufferDescriptor::from_js_checked(
-  value : JsValue,
-) -> Result[GPUBufferDescriptor, JsError] {
-  try_dictionary_GPUBufferDescriptor(() => GPUBufferDescriptor::from_js(value))
-}
+pub fn GPUBufferDescriptor::from_js_checked(value : JsValue) -> Result[GPUBufferDescriptor, JsError] { try_dictionary_GPUBufferDescriptor(() => GPUBufferDescriptor::from_js(value)) }
 
 ///|
 /// GPUTextureDescriptor dictionary
@@ -2619,30 +2294,22 @@ pub(all) struct GPUTextureDescriptor {
   textureBindingViewDimension : GPUTextureViewDimension?
 }
 
-///|
 /// Create a new GPUTextureDescriptor
-pub fn GPUTextureDescriptor::new(
-  size~ : GPUExtent3D,
-  format~ : GPUTextureFormat,
-  usage~ : GPUTextureUsageFlags,
-) -> GPUTextureDescriptor {
+pub fn GPUTextureDescriptor::new(size~ : GPUExtent3D, format~ : GPUTextureFormat, usage~ : GPUTextureUsageFlags) -> GPUTextureDescriptor {
   GPUTextureDescriptor::{
     label: None,
-    size,
+    size: size,
     mipLevelCount: None,
     sampleCount: None,
     dimension: None,
-    format,
-    usage,
+    format: format,
+    usage: usage,
     viewFormats: None,
     textureBindingViewDimension: None,
   }
 }
 
-///|
-extern "js" fn GPUTextureDescriptor::to_js_ffi(
-  self : GPUTextureDescriptor,
-) -> JsValue =
+extern "js" fn GPUTextureDescriptor::to_js_ffi(self : GPUTextureDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   size: self.size,
@@ -2655,16 +2322,12 @@ extern "js" fn GPUTextureDescriptor::to_js_ffi(
   #|   textureBindingViewDimension: ((() => { const v = self.textureBindingViewDimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUTextureDescriptor::to_js(self : GPUTextureDescriptor) -> JsValue {
   GPUTextureDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTextureDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUTextureDescriptor =
+extern "js" fn GPUTextureDescriptor::from_js_ffi(value : JsValue) -> GPUTextureDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   size: v.size,
@@ -2677,7 +2340,6 @@ extern "js" fn GPUTextureDescriptor::from_js_ffi(
   #|   textureBindingViewDimension: (v.textureBindingViewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.textureBindingViewDimension))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUTextureDescriptor::from_js(value : JsValue) -> GPUTextureDescriptor {
   GPUTextureDescriptor::from_js_ffi(value)
@@ -2698,7 +2360,6 @@ pub(all) struct GPUTextureViewDescriptor {
   swizzle : String?
 }
 
-///|
 /// Create a new GPUTextureViewDescriptor with default values
 pub fn GPUTextureViewDescriptor::default() -> GPUTextureViewDescriptor {
   GPUTextureViewDescriptor::{
@@ -2715,10 +2376,7 @@ pub fn GPUTextureViewDescriptor::default() -> GPUTextureViewDescriptor {
   }
 }
 
-///|
-extern "js" fn GPUTextureViewDescriptor::to_js_ffi(
-  self : GPUTextureViewDescriptor,
-) -> JsValue =
+extern "js" fn GPUTextureViewDescriptor::to_js_ffi(self : GPUTextureViewDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][v]; })()),
@@ -2732,18 +2390,12 @@ extern "js" fn GPUTextureViewDescriptor::to_js_ffi(
   #|   swizzle: self.swizzle
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUTextureViewDescriptor::to_js(
-  self : GPUTextureViewDescriptor,
-) -> JsValue {
+pub fn GPUTextureViewDescriptor::to_js(self : GPUTextureViewDescriptor) -> JsValue {
   GPUTextureViewDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTextureViewDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUTextureViewDescriptor =
+extern "js" fn GPUTextureViewDescriptor::from_js_ffi(value : JsValue) -> GPUTextureViewDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   format: (v.format === undefined ? undefined : ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format)),
@@ -2757,11 +2409,8 @@ extern "js" fn GPUTextureViewDescriptor::from_js_ffi(
   #|   swizzle: v.swizzle
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUTextureViewDescriptor::from_js(
-  value : JsValue,
-) -> GPUTextureViewDescriptor {
+pub fn GPUTextureViewDescriptor::from_js(value : JsValue) -> GPUTextureViewDescriptor {
   GPUTextureViewDescriptor::from_js_ffi(value)
 }
 
@@ -2773,47 +2422,36 @@ pub(all) struct GPUExternalTextureDescriptor {
   colorSpace : PredefinedColorSpace?
 }
 
-///|
 /// Create a new GPUExternalTextureDescriptor
-pub fn GPUExternalTextureDescriptor::new(
-  source~ : HTMLVideoElementOrVideoFrame,
-) -> GPUExternalTextureDescriptor {
-  GPUExternalTextureDescriptor::{ label: None, source, colorSpace: None, }
+pub fn GPUExternalTextureDescriptor::new(source~ : HTMLVideoElementOrVideoFrame) -> GPUExternalTextureDescriptor {
+  GPUExternalTextureDescriptor::{
+    label: None,
+    source: source,
+    colorSpace: None,
+  }
 }
 
-///|
-extern "js" fn GPUExternalTextureDescriptor::to_js_ffi(
-  self : GPUExternalTextureDescriptor,
-) -> JsValue =
+extern "js" fn GPUExternalTextureDescriptor::to_js_ffi(self : GPUExternalTextureDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   source: self.source,
   #|   colorSpace: ((() => { const v = self.colorSpace; if (v === undefined) return undefined; return ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUExternalTextureDescriptor::to_js(
-  self : GPUExternalTextureDescriptor,
-) -> JsValue {
+pub fn GPUExternalTextureDescriptor::to_js(self : GPUExternalTextureDescriptor) -> JsValue {
   GPUExternalTextureDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUExternalTextureDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUExternalTextureDescriptor =
+extern "js" fn GPUExternalTextureDescriptor::from_js_ffi(value : JsValue) -> GPUExternalTextureDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   source: v.source,
   #|   colorSpace: (v.colorSpace === undefined ? undefined : ['srgb', 'srgb-linear', 'display-p3', 'display-p3-linear'].indexOf(v.colorSpace))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUExternalTextureDescriptor::from_js(
-  value : JsValue,
-) -> GPUExternalTextureDescriptor {
+pub fn GPUExternalTextureDescriptor::from_js(value : JsValue) -> GPUExternalTextureDescriptor {
   GPUExternalTextureDescriptor::from_js_ffi(value)
 }
 
@@ -2833,7 +2471,6 @@ pub(all) struct GPUSamplerDescriptor {
   maxAnisotropy : Int?
 }
 
-///|
 /// Create a new GPUSamplerDescriptor with default values
 pub fn GPUSamplerDescriptor::default() -> GPUSamplerDescriptor {
   GPUSamplerDescriptor::{
@@ -2851,10 +2488,7 @@ pub fn GPUSamplerDescriptor::default() -> GPUSamplerDescriptor {
   }
 }
 
-///|
-extern "js" fn GPUSamplerDescriptor::to_js_ffi(
-  self : GPUSamplerDescriptor,
-) -> JsValue =
+extern "js" fn GPUSamplerDescriptor::to_js_ffi(self : GPUSamplerDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   addressModeU: ((() => { const v = self.addressModeU; if (v === undefined) return undefined; return ['clamp-to-edge', 'repeat', 'mirror-repeat'][v]; })()),
@@ -2869,16 +2503,12 @@ extern "js" fn GPUSamplerDescriptor::to_js_ffi(
   #|   maxAnisotropy: self.maxAnisotropy
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUSamplerDescriptor::to_js(self : GPUSamplerDescriptor) -> JsValue {
   GPUSamplerDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUSamplerDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUSamplerDescriptor =
+extern "js" fn GPUSamplerDescriptor::from_js_ffi(value : JsValue) -> GPUSamplerDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   addressModeU: (v.addressModeU === undefined ? undefined : ['clamp-to-edge', 'repeat', 'mirror-repeat'].indexOf(v.addressModeU)),
@@ -2893,7 +2523,6 @@ extern "js" fn GPUSamplerDescriptor::from_js_ffi(
   #|   maxAnisotropy: v.maxAnisotropy
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUSamplerDescriptor::from_js(value : JsValue) -> GPUSamplerDescriptor {
   GPUSamplerDescriptor::from_js_ffi(value)
@@ -2906,43 +2535,33 @@ pub(all) struct GPUBindGroupLayoutDescriptor {
   entries : FixedArray[GPUBindGroupLayoutEntry]
 }
 
-///|
 /// Create a new GPUBindGroupLayoutDescriptor with default values
 pub fn GPUBindGroupLayoutDescriptor::default() -> GPUBindGroupLayoutDescriptor {
-  GPUBindGroupLayoutDescriptor::{ label: None, entries: [], }
+  GPUBindGroupLayoutDescriptor::{
+    label: None,
+    entries: [],
+  }
 }
 
-///|
-extern "js" fn GPUBindGroupLayoutDescriptor::to_js_ffi(
-  self : GPUBindGroupLayoutDescriptor,
-) -> JsValue =
+extern "js" fn GPUBindGroupLayoutDescriptor::to_js_ffi(self : GPUBindGroupLayoutDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   entries: self.entries
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUBindGroupLayoutDescriptor::to_js(
-  self : GPUBindGroupLayoutDescriptor,
-) -> JsValue {
+pub fn GPUBindGroupLayoutDescriptor::to_js(self : GPUBindGroupLayoutDescriptor) -> JsValue {
   GPUBindGroupLayoutDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBindGroupLayoutDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUBindGroupLayoutDescriptor =
+extern "js" fn GPUBindGroupLayoutDescriptor::from_js_ffi(value : JsValue) -> GPUBindGroupLayoutDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   entries: v.entries
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUBindGroupLayoutDescriptor::from_js(
-  value : JsValue,
-) -> GPUBindGroupLayoutDescriptor {
+pub fn GPUBindGroupLayoutDescriptor::from_js(value : JsValue) -> GPUBindGroupLayoutDescriptor {
   GPUBindGroupLayoutDescriptor::from_js_ffi(value)
 }
 
@@ -2958,15 +2577,11 @@ pub(all) struct GPUBindGroupLayoutEntry {
   externalTexture : GPUExternalTextureBindingLayout?
 }
 
-///|
 /// Create a new GPUBindGroupLayoutEntry
-pub fn GPUBindGroupLayoutEntry::new(
-  binding~ : GPUIndex32,
-  visibility~ : GPUShaderStageFlags,
-) -> GPUBindGroupLayoutEntry {
+pub fn GPUBindGroupLayoutEntry::new(binding~ : GPUIndex32, visibility~ : GPUShaderStageFlags) -> GPUBindGroupLayoutEntry {
   GPUBindGroupLayoutEntry::{
-    binding,
-    visibility,
+    binding: binding,
+    visibility: visibility,
     buffer: None,
     sampler: None,
     texture: None,
@@ -2975,15 +2590,7 @@ pub fn GPUBindGroupLayoutEntry::new(
   }
 }
 
-///|
-extern "js" fn GPUBindGroupLayoutEntry::to_js_ffi(
-  self : GPUBindGroupLayoutEntry,
-  convert_buffer : (GPUBufferBindingLayout?) -> JsValue,
-  convert_sampler : (GPUSamplerBindingLayout?) -> JsValue,
-  convert_texture : (GPUTextureBindingLayout?) -> JsValue,
-  convert_storageTexture : (GPUStorageTextureBindingLayout?) -> JsValue,
-  convert_externalTexture : (GPUExternalTextureBindingLayout?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUBindGroupLayoutEntry::to_js_ffi(self : GPUBindGroupLayoutEntry, convert_buffer : (GPUBufferBindingLayout?) -> JsValue, convert_sampler : (GPUSamplerBindingLayout?) -> JsValue, convert_texture : (GPUTextureBindingLayout?) -> JsValue, convert_storageTexture : (GPUStorageTextureBindingLayout?) -> JsValue, convert_externalTexture : (GPUExternalTextureBindingLayout?) -> JsValue) -> JsValue =
   #| (self, convert_buffer, convert_sampler, convert_texture, convert_storageTexture, convert_externalTexture) => ({
   #|   binding: self.binding,
   #|   visibility: self.visibility,
@@ -2994,55 +2601,12 @@ extern "js" fn GPUBindGroupLayoutEntry::to_js_ffi(
   #|   externalTexture: convert_externalTexture(self.externalTexture)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUBindGroupLayoutEntry::to_js(
-  self : GPUBindGroupLayoutEntry,
-) -> JsValue {
-  GPUBindGroupLayoutEntry::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn GPUBindGroupLayoutEntry::to_js(self : GPUBindGroupLayoutEntry) -> JsValue {
+  GPUBindGroupLayoutEntry::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUBindGroupLayoutEntry::from_js_ffi(
-  value : JsValue,
-  convert_buffer : (JsValue) -> GPUBufferBindingLayout?,
-  convert_sampler : (JsValue) -> GPUSamplerBindingLayout?,
-  convert_texture : (JsValue) -> GPUTextureBindingLayout?,
-  convert_storageTexture : (JsValue) -> GPUStorageTextureBindingLayout?,
-  convert_externalTexture : (JsValue) -> GPUExternalTextureBindingLayout?,
-) -> GPUBindGroupLayoutEntry =
+extern "js" fn GPUBindGroupLayoutEntry::from_js_ffi(value : JsValue, convert_buffer : (JsValue) -> GPUBufferBindingLayout?, convert_sampler : (JsValue) -> GPUSamplerBindingLayout?, convert_texture : (JsValue) -> GPUTextureBindingLayout?, convert_storageTexture : (JsValue) -> GPUStorageTextureBindingLayout?, convert_externalTexture : (JsValue) -> GPUExternalTextureBindingLayout?) -> GPUBindGroupLayoutEntry =
   #| (v, convert_buffer, convert_sampler, convert_texture, convert_storageTexture, convert_externalTexture) => ({
   #|   binding: v.binding,
   #|   visibility: v.visibility,
@@ -3053,49 +2617,9 @@ extern "js" fn GPUBindGroupLayoutEntry::from_js_ffi(
   #|   externalTexture: convert_externalTexture(v.externalTexture)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUBindGroupLayoutEntry::from_js(
-  value : JsValue,
-) -> GPUBindGroupLayoutEntry {
-  GPUBindGroupLayoutEntry::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUBufferBindingLayout::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUSamplerBindingLayout::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUTextureBindingLayout::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUStorageTextureBindingLayout::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUExternalTextureBindingLayout::from_js(value))
-      }
-    },
-  )
+pub fn GPUBindGroupLayoutEntry::from_js(value : JsValue) -> GPUBindGroupLayoutEntry {
+  GPUBindGroupLayoutEntry::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUBufferBindingLayout::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUSamplerBindingLayout::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUTextureBindingLayout::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUStorageTextureBindingLayout::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUExternalTextureBindingLayout::from_js(value)) } })
 }
 
 ///|
@@ -3106,7 +2630,6 @@ pub(all) struct GPUBufferBindingLayout {
   minBindingSize : GPUSize64?
 }
 
-///|
 /// Create a new GPUBufferBindingLayout with default values
 pub fn GPUBufferBindingLayout::default() -> GPUBufferBindingLayout {
   GPUBufferBindingLayout::{
@@ -3116,63 +2639,41 @@ pub fn GPUBufferBindingLayout::default() -> GPUBufferBindingLayout {
   }
 }
 
-///|
-extern "js" fn GPUBufferBindingLayout::to_js_ffi(
-  self : GPUBufferBindingLayout,
-) -> JsValue =
+extern "js" fn GPUBufferBindingLayout::to_js_ffi(self : GPUBufferBindingLayout) -> JsValue =
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['uniform', 'storage', 'read-only-storage'][v]; })()),
   #|   hasDynamicOffset: (self.hasDynamicOffset === -1 ? undefined : self.hasDynamicOffset),
   #|   minBindingSize: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.minBindingSize)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBufferBindingLayout::to_js(self : GPUBufferBindingLayout) -> JsValue {
   GPUBufferBindingLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBufferBindingLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUBufferBindingLayout =
+extern "js" fn GPUBufferBindingLayout::from_js_ffi(value : JsValue) -> GPUBufferBindingLayout =
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['uniform', 'storage', 'read-only-storage'].indexOf(v.type)),
   #|   hasDynamicOffset: (v.hasDynamicOffset === undefined ? -1 : v.hasDynamicOffset),
   #|   minBindingSize: (v.minBindingSize === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.minBindingSize))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUBufferBindingLayout::from_js(
-  value : JsValue,
-) -> GPUBufferBindingLayout {
+pub fn GPUBufferBindingLayout::from_js(value : JsValue) -> GPUBufferBindingLayout {
   GPUBufferBindingLayout::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUBufferBindingLayout::to_js_checked(
-  self : GPUBufferBindingLayout,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUBufferBindingLayout::to_js_checked(self : GPUBufferBindingLayout) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUBufferBindingLayout(
-  convert : () -> GPUBufferBindingLayout,
-) -> Result[GPUBufferBindingLayout, JsError] =
+extern "js" fn try_dictionary_GPUBufferBindingLayout(convert : () -> GPUBufferBindingLayout) -> Result[GPUBufferBindingLayout, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUBufferBindingLayout::from_js_checked(
-  value : JsValue,
-) -> Result[GPUBufferBindingLayout, JsError] {
-  try_dictionary_GPUBufferBindingLayout(() => {
-    GPUBufferBindingLayout::from_js(value)
-  })
-}
+pub fn GPUBufferBindingLayout::from_js_checked(value : JsValue) -> Result[GPUBufferBindingLayout, JsError] { try_dictionary_GPUBufferBindingLayout(() => GPUBufferBindingLayout::from_js(value)) }
 
 ///|
 /// GPUSamplerBindingLayout dictionary
@@ -3180,41 +2681,30 @@ pub(all) struct GPUSamplerBindingLayout {
   type_ : GPUSamplerBindingType?
 }
 
-///|
 /// Create a new GPUSamplerBindingLayout with default values
 pub fn GPUSamplerBindingLayout::default() -> GPUSamplerBindingLayout {
-  GPUSamplerBindingLayout::{ type_: None, }
+  GPUSamplerBindingLayout::{
+    type_: None,
+  }
 }
 
-///|
-extern "js" fn GPUSamplerBindingLayout::to_js_ffi(
-  self : GPUSamplerBindingLayout,
-) -> JsValue =
+extern "js" fn GPUSamplerBindingLayout::to_js_ffi(self : GPUSamplerBindingLayout) -> JsValue =
   #| (self) => ({
   #|   type: ((() => { const v = self.type_; if (v === undefined) return undefined; return ['filtering', 'non-filtering', 'comparison'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUSamplerBindingLayout::to_js(
-  self : GPUSamplerBindingLayout,
-) -> JsValue {
+pub fn GPUSamplerBindingLayout::to_js(self : GPUSamplerBindingLayout) -> JsValue {
   GPUSamplerBindingLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUSamplerBindingLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUSamplerBindingLayout =
+extern "js" fn GPUSamplerBindingLayout::from_js_ffi(value : JsValue) -> GPUSamplerBindingLayout =
   #| (v) => ({
   #|   type_: (v.type === undefined ? undefined : ['filtering', 'non-filtering', 'comparison'].indexOf(v.type))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUSamplerBindingLayout::from_js(
-  value : JsValue,
-) -> GPUSamplerBindingLayout {
+pub fn GPUSamplerBindingLayout::from_js(value : JsValue) -> GPUSamplerBindingLayout {
   GPUSamplerBindingLayout::from_js_ffi(value)
 }
 
@@ -3226,7 +2716,6 @@ pub(all) struct GPUTextureBindingLayout {
   multisampled : Bool?
 }
 
-///|
 /// Create a new GPUTextureBindingLayout with default values
 pub fn GPUTextureBindingLayout::default() -> GPUTextureBindingLayout {
   GPUTextureBindingLayout::{
@@ -3236,39 +2725,27 @@ pub fn GPUTextureBindingLayout::default() -> GPUTextureBindingLayout {
   }
 }
 
-///|
-extern "js" fn GPUTextureBindingLayout::to_js_ffi(
-  self : GPUTextureBindingLayout,
-) -> JsValue =
+extern "js" fn GPUTextureBindingLayout::to_js_ffi(self : GPUTextureBindingLayout) -> JsValue =
   #| (self) => ({
   #|   sampleType: ((() => { const v = self.sampleType; if (v === undefined) return undefined; return ['float', 'unfilterable-float', 'depth', 'sint', 'uint'][v]; })()),
   #|   viewDimension: ((() => { const v = self.viewDimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })()),
   #|   multisampled: (self.multisampled === -1 ? undefined : self.multisampled)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUTextureBindingLayout::to_js(
-  self : GPUTextureBindingLayout,
-) -> JsValue {
+pub fn GPUTextureBindingLayout::to_js(self : GPUTextureBindingLayout) -> JsValue {
   GPUTextureBindingLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTextureBindingLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUTextureBindingLayout =
+extern "js" fn GPUTextureBindingLayout::from_js_ffi(value : JsValue) -> GPUTextureBindingLayout =
   #| (v) => ({
   #|   sampleType: (v.sampleType === undefined ? undefined : ['float', 'unfilterable-float', 'depth', 'sint', 'uint'].indexOf(v.sampleType)),
   #|   viewDimension: (v.viewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.viewDimension)),
   #|   multisampled: (v.multisampled === undefined ? -1 : v.multisampled)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUTextureBindingLayout::from_js(
-  value : JsValue,
-) -> GPUTextureBindingLayout {
+pub fn GPUTextureBindingLayout::from_js(value : JsValue) -> GPUTextureBindingLayout {
   GPUTextureBindingLayout::from_js_ffi(value)
 }
 
@@ -3280,87 +2757,65 @@ pub(all) struct GPUStorageTextureBindingLayout {
   viewDimension : GPUTextureViewDimension?
 }
 
-///|
 /// Create a new GPUStorageTextureBindingLayout
-pub fn GPUStorageTextureBindingLayout::new(
-  format~ : GPUTextureFormat,
-) -> GPUStorageTextureBindingLayout {
-  GPUStorageTextureBindingLayout::{ access: None, format, viewDimension: None, }
+pub fn GPUStorageTextureBindingLayout::new(format~ : GPUTextureFormat) -> GPUStorageTextureBindingLayout {
+  GPUStorageTextureBindingLayout::{
+    access: None,
+    format: format,
+    viewDimension: None,
+  }
 }
 
-///|
-extern "js" fn GPUStorageTextureBindingLayout::to_js_ffi(
-  self : GPUStorageTextureBindingLayout,
-) -> JsValue =
+extern "js" fn GPUStorageTextureBindingLayout::to_js_ffi(self : GPUStorageTextureBindingLayout) -> JsValue =
   #| (self) => ({
   #|   access: ((() => { const v = self.access; if (v === undefined) return undefined; return ['write-only', 'read-only', 'read-write'][v]; })()),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   viewDimension: ((() => { const v = self.viewDimension; if (v === undefined) return undefined; return ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUStorageTextureBindingLayout::to_js(
-  self : GPUStorageTextureBindingLayout,
-) -> JsValue {
+pub fn GPUStorageTextureBindingLayout::to_js(self : GPUStorageTextureBindingLayout) -> JsValue {
   GPUStorageTextureBindingLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUStorageTextureBindingLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUStorageTextureBindingLayout =
+extern "js" fn GPUStorageTextureBindingLayout::from_js_ffi(value : JsValue) -> GPUStorageTextureBindingLayout =
   #| (v) => ({
   #|   access: (v.access === undefined ? undefined : ['write-only', 'read-only', 'read-write'].indexOf(v.access)),
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   viewDimension: (v.viewDimension === undefined ? undefined : ['1d', '2d', '2d-array', 'cube', 'cube-array', '3d'].indexOf(v.viewDimension))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUStorageTextureBindingLayout::from_js(
-  value : JsValue,
-) -> GPUStorageTextureBindingLayout {
+pub fn GPUStorageTextureBindingLayout::from_js(value : JsValue) -> GPUStorageTextureBindingLayout {
   GPUStorageTextureBindingLayout::from_js_ffi(value)
 }
 
 ///|
 /// GPUExternalTextureBindingLayout dictionary
-pub(all) struct GPUExternalTextureBindingLayout {}
-
-///|
-/// Create a new GPUExternalTextureBindingLayout with default values
-pub fn GPUExternalTextureBindingLayout::default() -> GPUExternalTextureBindingLayout {
-  GPUExternalTextureBindingLayout::{ }
+pub(all) struct GPUExternalTextureBindingLayout {
 }
 
-///|
-extern "js" fn GPUExternalTextureBindingLayout::to_js_ffi(
-  self : GPUExternalTextureBindingLayout,
-) -> JsValue =
+/// Create a new GPUExternalTextureBindingLayout with default values
+pub fn GPUExternalTextureBindingLayout::default() -> GPUExternalTextureBindingLayout {
+  GPUExternalTextureBindingLayout::{
+  }
+}
+
+extern "js" fn GPUExternalTextureBindingLayout::to_js_ffi(self : GPUExternalTextureBindingLayout) -> JsValue =
   #| (self) => ({
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUExternalTextureBindingLayout::to_js(
-  self : GPUExternalTextureBindingLayout,
-) -> JsValue {
+pub fn GPUExternalTextureBindingLayout::to_js(self : GPUExternalTextureBindingLayout) -> JsValue {
   GPUExternalTextureBindingLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUExternalTextureBindingLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUExternalTextureBindingLayout =
+extern "js" fn GPUExternalTextureBindingLayout::from_js_ffi(value : JsValue) -> GPUExternalTextureBindingLayout =
   #| (v) => ({
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUExternalTextureBindingLayout::from_js(
-  value : JsValue,
-) -> GPUExternalTextureBindingLayout {
+pub fn GPUExternalTextureBindingLayout::from_js(value : JsValue) -> GPUExternalTextureBindingLayout {
   GPUExternalTextureBindingLayout::from_js_ffi(value)
 }
 
@@ -3372,45 +2827,36 @@ pub(all) struct GPUBindGroupDescriptor {
   entries : FixedArray[GPUBindGroupEntry]
 }
 
-///|
 /// Create a new GPUBindGroupDescriptor
-pub fn GPUBindGroupDescriptor::new(
-  layout~ : GPUBindGroupLayout,
-) -> GPUBindGroupDescriptor {
-  GPUBindGroupDescriptor::{ label: None, layout, entries: [], }
+pub fn GPUBindGroupDescriptor::new(layout~ : GPUBindGroupLayout) -> GPUBindGroupDescriptor {
+  GPUBindGroupDescriptor::{
+    label: None,
+    layout: layout,
+    entries: [],
+  }
 }
 
-///|
-extern "js" fn GPUBindGroupDescriptor::to_js_ffi(
-  self : GPUBindGroupDescriptor,
-) -> JsValue =
+extern "js" fn GPUBindGroupDescriptor::to_js_ffi(self : GPUBindGroupDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   layout: self.layout,
   #|   entries: self.entries
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBindGroupDescriptor::to_js(self : GPUBindGroupDescriptor) -> JsValue {
   GPUBindGroupDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBindGroupDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUBindGroupDescriptor =
+extern "js" fn GPUBindGroupDescriptor::from_js_ffi(value : JsValue) -> GPUBindGroupDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   layout: v.layout,
   #|   entries: v.entries
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUBindGroupDescriptor::from_js(
-  value : JsValue,
-) -> GPUBindGroupDescriptor {
+pub fn GPUBindGroupDescriptor::from_js(value : JsValue) -> GPUBindGroupDescriptor {
   GPUBindGroupDescriptor::from_js_ffi(value)
 }
 
@@ -3421,40 +2867,31 @@ pub(all) struct GPUBindGroupEntry {
   resource : GPUBindingResource
 }
 
-///|
 /// Create a new GPUBindGroupEntry
-pub fn GPUBindGroupEntry::new(
-  binding~ : GPUIndex32,
-  resource~ : GPUBindingResource,
-) -> GPUBindGroupEntry {
-  GPUBindGroupEntry::{ binding, resource, }
+pub fn GPUBindGroupEntry::new(binding~ : GPUIndex32, resource~ : GPUBindingResource) -> GPUBindGroupEntry {
+  GPUBindGroupEntry::{
+    binding: binding,
+    resource: resource,
+  }
 }
 
-///|
-extern "js" fn GPUBindGroupEntry::to_js_ffi(
-  self : GPUBindGroupEntry,
-) -> JsValue =
+extern "js" fn GPUBindGroupEntry::to_js_ffi(self : GPUBindGroupEntry) -> JsValue =
   #| (self) => ({
   #|   binding: self.binding,
   #|   resource: self.resource
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBindGroupEntry::to_js(self : GPUBindGroupEntry) -> JsValue {
   GPUBindGroupEntry::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBindGroupEntry::from_js_ffi(
-  value : JsValue,
-) -> GPUBindGroupEntry =
+extern "js" fn GPUBindGroupEntry::from_js_ffi(value : JsValue) -> GPUBindGroupEntry =
   #| (v) => ({
   #|   binding: v.binding,
   #|   resource: v.resource
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUBindGroupEntry::from_js(value : JsValue) -> GPUBindGroupEntry {
   GPUBindGroupEntry::from_js_ffi(value)
@@ -3468,13 +2905,15 @@ pub(all) struct GPUBufferBinding {
   size : GPUSize64?
 }
 
-///|
 /// Create a new GPUBufferBinding
 pub fn GPUBufferBinding::new(buffer~ : GPUBuffer) -> GPUBufferBinding {
-  GPUBufferBinding::{ buffer, offset: None, size: None, }
+  GPUBufferBinding::{
+    buffer: buffer,
+    offset: None,
+    size: None,
+  }
 }
 
-///|
 extern "js" fn GPUBufferBinding::to_js_ffi(self : GPUBufferBinding) -> JsValue =
   #| (self) => ({
   #|   buffer: self.buffer,
@@ -3482,23 +2921,18 @@ extern "js" fn GPUBufferBinding::to_js_ffi(self : GPUBufferBinding) -> JsValue =
   #|   size: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.size)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBufferBinding::to_js(self : GPUBufferBinding) -> JsValue {
   GPUBufferBinding::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBufferBinding::from_js_ffi(
-  value : JsValue,
-) -> GPUBufferBinding =
+extern "js" fn GPUBufferBinding::from_js_ffi(value : JsValue) -> GPUBufferBinding =
   #| (v) => ({
   #|   buffer: v.buffer,
   #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
   #|   size: (v.size === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.size))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUBufferBinding::from_js(value : JsValue) -> GPUBufferBinding {
   GPUBufferBinding::from_js_ffi(value)
@@ -3506,70 +2940,54 @@ pub fn GPUBufferBinding::from_js(value : JsValue) -> GPUBufferBinding {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUBufferBinding::to_js_checked(
-  self : GPUBufferBinding,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUBufferBinding::to_js_checked(self : GPUBufferBinding) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUBufferBinding(
-  convert : () -> GPUBufferBinding,
-) -> Result[GPUBufferBinding, JsError] =
+extern "js" fn try_dictionary_GPUBufferBinding(convert : () -> GPUBufferBinding) -> Result[GPUBufferBinding, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUBufferBinding::from_js_checked(
-  value : JsValue,
-) -> Result[GPUBufferBinding, JsError] {
-  try_dictionary_GPUBufferBinding(() => GPUBufferBinding::from_js(value))
-}
+pub fn GPUBufferBinding::from_js_checked(value : JsValue) -> Result[GPUBufferBinding, JsError] { try_dictionary_GPUBufferBinding(() => GPUBufferBinding::from_js(value)) }
 
 ///|
 /// GPUPipelineLayoutDescriptor dictionary
 pub(all) struct GPUPipelineLayoutDescriptor {
   label : String?
   bindGroupLayouts : FixedArray[JsValue]
+  immediateSize : GPUSize32?
 }
 
-///|
 /// Create a new GPUPipelineLayoutDescriptor with default values
 pub fn GPUPipelineLayoutDescriptor::default() -> GPUPipelineLayoutDescriptor {
-  GPUPipelineLayoutDescriptor::{ label: None, bindGroupLayouts: [], }
+  GPUPipelineLayoutDescriptor::{
+    label: None,
+    bindGroupLayouts: [],
+    immediateSize: None,
+  }
 }
 
-///|
-extern "js" fn GPUPipelineLayoutDescriptor::to_js_ffi(
-  self : GPUPipelineLayoutDescriptor,
-) -> JsValue =
+extern "js" fn GPUPipelineLayoutDescriptor::to_js_ffi(self : GPUPipelineLayoutDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
-  #|   bindGroupLayouts: self.bindGroupLayouts
+  #|   bindGroupLayouts: self.bindGroupLayouts,
+  #|   immediateSize: self.immediateSize
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUPipelineLayoutDescriptor::to_js(
-  self : GPUPipelineLayoutDescriptor,
-) -> JsValue {
+pub fn GPUPipelineLayoutDescriptor::to_js(self : GPUPipelineLayoutDescriptor) -> JsValue {
   GPUPipelineLayoutDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUPipelineLayoutDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUPipelineLayoutDescriptor =
+extern "js" fn GPUPipelineLayoutDescriptor::from_js_ffi(value : JsValue) -> GPUPipelineLayoutDescriptor =
   #| (v) => ({
   #|   label: v.label,
-  #|   bindGroupLayouts: v.bindGroupLayouts
+  #|   bindGroupLayouts: v.bindGroupLayouts,
+  #|   immediateSize: v.immediateSize
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUPipelineLayoutDescriptor::from_js(
-  value : JsValue,
-) -> GPUPipelineLayoutDescriptor {
+pub fn GPUPipelineLayoutDescriptor::from_js(value : JsValue) -> GPUPipelineLayoutDescriptor {
   GPUPipelineLayoutDescriptor::from_js_ffi(value)
 }
 
@@ -3581,45 +2999,36 @@ pub(all) struct GPUShaderModuleDescriptor {
   compilationHints : FixedArray[GPUShaderModuleCompilationHint]?
 }
 
-///|
 /// Create a new GPUShaderModuleDescriptor with default values
 pub fn GPUShaderModuleDescriptor::default() -> GPUShaderModuleDescriptor {
-  GPUShaderModuleDescriptor::{ label: None, code: "", compilationHints: None, }
+  GPUShaderModuleDescriptor::{
+    label: None,
+    code: "",
+    compilationHints: None,
+  }
 }
 
-///|
-extern "js" fn GPUShaderModuleDescriptor::to_js_ffi(
-  self : GPUShaderModuleDescriptor,
-) -> JsValue =
+extern "js" fn GPUShaderModuleDescriptor::to_js_ffi(self : GPUShaderModuleDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   code: self.code,
   #|   compilationHints: self.compilationHints
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUShaderModuleDescriptor::to_js(
-  self : GPUShaderModuleDescriptor,
-) -> JsValue {
+pub fn GPUShaderModuleDescriptor::to_js(self : GPUShaderModuleDescriptor) -> JsValue {
   GPUShaderModuleDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUShaderModuleDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUShaderModuleDescriptor =
+extern "js" fn GPUShaderModuleDescriptor::from_js_ffi(value : JsValue) -> GPUShaderModuleDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   code: v.code,
   #|   compilationHints: v.compilationHints
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUShaderModuleDescriptor::from_js(
-  value : JsValue,
-) -> GPUShaderModuleDescriptor {
+pub fn GPUShaderModuleDescriptor::from_js(value : JsValue) -> GPUShaderModuleDescriptor {
   GPUShaderModuleDescriptor::from_js_ffi(value)
 }
 
@@ -3630,43 +3039,33 @@ pub(all) struct GPUShaderModuleCompilationHint {
   layout : GPUPipelineLayoutOrGPUAutoLayoutMode?
 }
 
-///|
 /// Create a new GPUShaderModuleCompilationHint with default values
 pub fn GPUShaderModuleCompilationHint::default() -> GPUShaderModuleCompilationHint {
-  GPUShaderModuleCompilationHint::{ entryPoint: "", layout: None, }
+  GPUShaderModuleCompilationHint::{
+    entryPoint: "",
+    layout: None,
+  }
 }
 
-///|
-extern "js" fn GPUShaderModuleCompilationHint::to_js_ffi(
-  self : GPUShaderModuleCompilationHint,
-) -> JsValue =
+extern "js" fn GPUShaderModuleCompilationHint::to_js_ffi(self : GPUShaderModuleCompilationHint) -> JsValue =
   #| (self) => ({
   #|   entryPoint: self.entryPoint,
   #|   layout: ((() => { const v = self.layout; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUShaderModuleCompilationHint::to_js(
-  self : GPUShaderModuleCompilationHint,
-) -> JsValue {
+pub fn GPUShaderModuleCompilationHint::to_js(self : GPUShaderModuleCompilationHint) -> JsValue {
   GPUShaderModuleCompilationHint::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUShaderModuleCompilationHint::from_js_ffi(
-  value : JsValue,
-) -> GPUShaderModuleCompilationHint =
+extern "js" fn GPUShaderModuleCompilationHint::from_js_ffi(value : JsValue) -> GPUShaderModuleCompilationHint =
   #| (v) => ({
   #|   entryPoint: v.entryPoint,
   #|   layout: (v.layout === undefined ? { $tag: 0 } : { $tag: 1, _0: v.layout })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUShaderModuleCompilationHint::from_js(
-  value : JsValue,
-) -> GPUShaderModuleCompilationHint {
+pub fn GPUShaderModuleCompilationHint::from_js(value : JsValue) -> GPUShaderModuleCompilationHint {
   GPUShaderModuleCompilationHint::from_js_ffi(value)
 }
 
@@ -3676,37 +3075,28 @@ pub(all) struct GPUPipelineErrorInit {
   reason : GPUPipelineErrorReason
 }
 
-///|
 /// Create a new GPUPipelineErrorInit
-pub fn GPUPipelineErrorInit::new(
-  reason~ : GPUPipelineErrorReason,
-) -> GPUPipelineErrorInit {
-  GPUPipelineErrorInit::{ reason, }
+pub fn GPUPipelineErrorInit::new(reason~ : GPUPipelineErrorReason) -> GPUPipelineErrorInit {
+  GPUPipelineErrorInit::{
+    reason: reason,
+  }
 }
 
-///|
-extern "js" fn GPUPipelineErrorInit::to_js_ffi(
-  self : GPUPipelineErrorInit,
-) -> JsValue =
+extern "js" fn GPUPipelineErrorInit::to_js_ffi(self : GPUPipelineErrorInit) -> JsValue =
   #| (self) => ({
   #|   reason: ['validation', 'internal'][self.reason]
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUPipelineErrorInit::to_js(self : GPUPipelineErrorInit) -> JsValue {
   GPUPipelineErrorInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUPipelineErrorInit::from_js_ffi(
-  value : JsValue,
-) -> GPUPipelineErrorInit =
+extern "js" fn GPUPipelineErrorInit::from_js_ffi(value : JsValue) -> GPUPipelineErrorInit =
   #| (v) => ({
   #|   reason: ['validation', 'internal'].indexOf(v.reason)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUPipelineErrorInit::from_js(value : JsValue) -> GPUPipelineErrorInit {
   GPUPipelineErrorInit::from_js_ffi(value)
@@ -3719,45 +3109,33 @@ pub(all) struct GPUPipelineDescriptorBase {
   layout : GPUPipelineLayoutOrGPUAutoLayoutMode
 }
 
-///|
 /// Create a new GPUPipelineDescriptorBase
-pub fn GPUPipelineDescriptorBase::new(
-  layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode,
-) -> GPUPipelineDescriptorBase {
-  GPUPipelineDescriptorBase::{ label: None, layout, }
+pub fn GPUPipelineDescriptorBase::new(layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode) -> GPUPipelineDescriptorBase {
+  GPUPipelineDescriptorBase::{
+    label: None,
+    layout: layout,
+  }
 }
 
-///|
-extern "js" fn GPUPipelineDescriptorBase::to_js_ffi(
-  self : GPUPipelineDescriptorBase,
-) -> JsValue =
+extern "js" fn GPUPipelineDescriptorBase::to_js_ffi(self : GPUPipelineDescriptorBase) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   layout: self.layout
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUPipelineDescriptorBase::to_js(
-  self : GPUPipelineDescriptorBase,
-) -> JsValue {
+pub fn GPUPipelineDescriptorBase::to_js(self : GPUPipelineDescriptorBase) -> JsValue {
   GPUPipelineDescriptorBase::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUPipelineDescriptorBase::from_js_ffi(
-  value : JsValue,
-) -> GPUPipelineDescriptorBase =
+extern "js" fn GPUPipelineDescriptorBase::from_js_ffi(value : JsValue) -> GPUPipelineDescriptorBase =
   #| (v) => ({
   #|   label: v.label,
   #|   layout: v.layout
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUPipelineDescriptorBase::from_js(
-  value : JsValue,
-) -> GPUPipelineDescriptorBase {
+pub fn GPUPipelineDescriptorBase::from_js(value : JsValue) -> GPUPipelineDescriptorBase {
   GPUPipelineDescriptorBase::from_js_ffi(value)
 }
 
@@ -3769,41 +3147,34 @@ pub(all) struct GPUProgrammableStage {
   constants : JsValue?
 }
 
-///|
 /// Create a new GPUProgrammableStage
-pub fn GPUProgrammableStage::new(
-  module_~ : GPUShaderModule,
-) -> GPUProgrammableStage {
-  GPUProgrammableStage::{ module_, entryPoint: None, constants: None, }
+pub fn GPUProgrammableStage::new(module_~ : GPUShaderModule) -> GPUProgrammableStage {
+  GPUProgrammableStage::{
+    module_: module_,
+    entryPoint: None,
+    constants: None,
+  }
 }
 
-///|
-extern "js" fn GPUProgrammableStage::to_js_ffi(
-  self : GPUProgrammableStage,
-) -> JsValue =
+extern "js" fn GPUProgrammableStage::to_js_ffi(self : GPUProgrammableStage) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
   #|   entryPoint: self.entryPoint,
   #|   constants: ((() => { const v = self.constants; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUProgrammableStage::to_js(self : GPUProgrammableStage) -> JsValue {
   GPUProgrammableStage::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUProgrammableStage::from_js_ffi(
-  value : JsValue,
-) -> GPUProgrammableStage =
+extern "js" fn GPUProgrammableStage::from_js_ffi(value : JsValue) -> GPUProgrammableStage =
   #| (v) => ({
   #|   module_: v.module,
   #|   entryPoint: v.entryPoint,
   #|   constants: (v.constants === undefined ? { $tag: 0 } : { $tag: 1, _0: v.constants })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUProgrammableStage::from_js(value : JsValue) -> GPUProgrammableStage {
   GPUProgrammableStage::from_js_ffi(value)
@@ -3817,54 +3188,37 @@ pub(all) struct GPUComputePipelineDescriptor {
   compute : GPUProgrammableStage
 }
 
-///|
 /// Create a new GPUComputePipelineDescriptor
-pub fn GPUComputePipelineDescriptor::new(
-  layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode,
-  compute~ : GPUProgrammableStage,
-) -> GPUComputePipelineDescriptor {
-  GPUComputePipelineDescriptor::{ label: None, layout, compute, }
+pub fn GPUComputePipelineDescriptor::new(layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode, compute~ : GPUProgrammableStage) -> GPUComputePipelineDescriptor {
+  GPUComputePipelineDescriptor::{
+    label: None,
+    layout: layout,
+    compute: compute,
+  }
 }
 
-///|
-extern "js" fn GPUComputePipelineDescriptor::to_js_ffi(
-  self : GPUComputePipelineDescriptor,
-  convert_compute : (GPUProgrammableStage) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUComputePipelineDescriptor::to_js_ffi(self : GPUComputePipelineDescriptor, convert_compute : (GPUProgrammableStage) -> JsValue) -> JsValue =
   #| (self, convert_compute) => ({
   #|   label: self.label,
   #|   layout: self.layout,
   #|   compute: convert_compute(self.compute)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUComputePipelineDescriptor::to_js(
-  self : GPUComputePipelineDescriptor,
-) -> JsValue {
+pub fn GPUComputePipelineDescriptor::to_js(self : GPUComputePipelineDescriptor) -> JsValue {
   GPUComputePipelineDescriptor::to_js_ffi(self, GPUProgrammableStage::to_js)
 }
 
-///|
-extern "js" fn GPUComputePipelineDescriptor::from_js_ffi(
-  value : JsValue,
-  convert_compute : (JsValue) -> GPUProgrammableStage,
-) -> GPUComputePipelineDescriptor =
+extern "js" fn GPUComputePipelineDescriptor::from_js_ffi(value : JsValue, convert_compute : (JsValue) -> GPUProgrammableStage) -> GPUComputePipelineDescriptor =
   #| (v, convert_compute) => ({
   #|   label: v.label,
   #|   layout: v.layout,
   #|   compute: convert_compute(v.compute)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUComputePipelineDescriptor::from_js(
-  value : JsValue,
-) -> GPUComputePipelineDescriptor {
-  GPUComputePipelineDescriptor::from_js_ffi(
-    value,
-    GPUProgrammableStage::from_js,
-  )
+pub fn GPUComputePipelineDescriptor::from_js(value : JsValue) -> GPUComputePipelineDescriptor {
+  GPUComputePipelineDescriptor::from_js_ffi(value, GPUProgrammableStage::from_js)
 }
 
 ///|
@@ -3879,16 +3233,12 @@ pub(all) struct GPURenderPipelineDescriptor {
   fragment : GPUFragmentState?
 }
 
-///|
 /// Create a new GPURenderPipelineDescriptor
-pub fn GPURenderPipelineDescriptor::new(
-  layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode,
-  vertex~ : GPUVertexState,
-) -> GPURenderPipelineDescriptor {
+pub fn GPURenderPipelineDescriptor::new(layout~ : GPUPipelineLayoutOrGPUAutoLayoutMode, vertex~ : GPUVertexState) -> GPURenderPipelineDescriptor {
   GPURenderPipelineDescriptor::{
     label: None,
-    layout,
-    vertex,
+    layout: layout,
+    vertex: vertex,
     primitive: None,
     depthStencil: None,
     multisample: None,
@@ -3896,15 +3246,7 @@ pub fn GPURenderPipelineDescriptor::new(
   }
 }
 
-///|
-extern "js" fn GPURenderPipelineDescriptor::to_js_ffi(
-  self : GPURenderPipelineDescriptor,
-  convert_vertex : (GPUVertexState) -> JsValue,
-  convert_primitive : (GPUPrimitiveState?) -> JsValue,
-  convert_depthStencil : (GPUDepthStencilState?) -> JsValue,
-  convert_multisample : (GPUMultisampleState?) -> JsValue,
-  convert_fragment : (GPUFragmentState?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPURenderPipelineDescriptor::to_js_ffi(self : GPURenderPipelineDescriptor, convert_vertex : (GPUVertexState) -> JsValue, convert_primitive : (GPUPrimitiveState?) -> JsValue, convert_depthStencil : (GPUDepthStencilState?) -> JsValue, convert_multisample : (GPUMultisampleState?) -> JsValue, convert_fragment : (GPUFragmentState?) -> JsValue) -> JsValue =
   #| (self, convert_vertex, convert_primitive, convert_depthStencil, convert_multisample, convert_fragment) => ({
   #|   label: self.label,
   #|   layout: self.layout,
@@ -3915,50 +3257,12 @@ extern "js" fn GPURenderPipelineDescriptor::to_js_ffi(
   #|   fragment: convert_fragment(self.fragment)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderPipelineDescriptor::to_js(
-  self : GPURenderPipelineDescriptor,
-) -> JsValue {
-  GPURenderPipelineDescriptor::to_js_ffi(
-    self,
-    GPUVertexState::to_js,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn GPURenderPipelineDescriptor::to_js(self : GPURenderPipelineDescriptor) -> JsValue {
+  GPURenderPipelineDescriptor::to_js_ffi(self, GPUVertexState::to_js, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPURenderPipelineDescriptor::from_js_ffi(
-  value : JsValue,
-  convert_vertex : (JsValue) -> GPUVertexState,
-  convert_primitive : (JsValue) -> GPUPrimitiveState?,
-  convert_depthStencil : (JsValue) -> GPUDepthStencilState?,
-  convert_multisample : (JsValue) -> GPUMultisampleState?,
-  convert_fragment : (JsValue) -> GPUFragmentState?,
-) -> GPURenderPipelineDescriptor =
+extern "js" fn GPURenderPipelineDescriptor::from_js_ffi(value : JsValue, convert_vertex : (JsValue) -> GPUVertexState, convert_primitive : (JsValue) -> GPUPrimitiveState?, convert_depthStencil : (JsValue) -> GPUDepthStencilState?, convert_multisample : (JsValue) -> GPUMultisampleState?, convert_fragment : (JsValue) -> GPUFragmentState?) -> GPURenderPipelineDescriptor =
   #| (v, convert_vertex, convert_primitive, convert_depthStencil, convert_multisample, convert_fragment) => ({
   #|   label: v.label,
   #|   layout: v.layout,
@@ -3969,43 +3273,9 @@ extern "js" fn GPURenderPipelineDescriptor::from_js_ffi(
   #|   fragment: convert_fragment(v.fragment)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderPipelineDescriptor::from_js(
-  value : JsValue,
-) -> GPURenderPipelineDescriptor {
-  GPURenderPipelineDescriptor::from_js_ffi(
-    value,
-    GPUVertexState::from_js,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUPrimitiveState::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUDepthStencilState::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUMultisampleState::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUFragmentState::from_js(value))
-      }
-    },
-  )
+pub fn GPURenderPipelineDescriptor::from_js(value : JsValue) -> GPURenderPipelineDescriptor {
+  GPURenderPipelineDescriptor::from_js_ffi(value, GPUVertexState::from_js, fn(value) { if value.is_undefined() { None } else { Some(GPUPrimitiveState::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUDepthStencilState::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUMultisampleState::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUFragmentState::from_js(value)) } })
 }
 
 ///|
@@ -4018,7 +3288,6 @@ pub(all) struct GPUPrimitiveState {
   unclippedDepth : Bool?
 }
 
-///|
 /// Create a new GPUPrimitiveState with default values
 pub fn GPUPrimitiveState::default() -> GPUPrimitiveState {
   GPUPrimitiveState::{
@@ -4030,10 +3299,7 @@ pub fn GPUPrimitiveState::default() -> GPUPrimitiveState {
   }
 }
 
-///|
-extern "js" fn GPUPrimitiveState::to_js_ffi(
-  self : GPUPrimitiveState,
-) -> JsValue =
+extern "js" fn GPUPrimitiveState::to_js_ffi(self : GPUPrimitiveState) -> JsValue =
   #| (self) => ({
   #|   topology: ((() => { const v = self.topology; if (v === undefined) return undefined; return ['point-list', 'line-list', 'line-strip', 'triangle-list', 'triangle-strip'][v]; })()),
   #|   stripIndexFormat: ((() => { const v = self.stripIndexFormat; if (v === undefined) return undefined; return ['uint16', 'uint32'][v]; })()),
@@ -4042,16 +3308,12 @@ extern "js" fn GPUPrimitiveState::to_js_ffi(
   #|   unclippedDepth: (self.unclippedDepth === -1 ? undefined : self.unclippedDepth)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUPrimitiveState::to_js(self : GPUPrimitiveState) -> JsValue {
   GPUPrimitiveState::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUPrimitiveState::from_js_ffi(
-  value : JsValue,
-) -> GPUPrimitiveState =
+extern "js" fn GPUPrimitiveState::from_js_ffi(value : JsValue) -> GPUPrimitiveState =
   #| (v) => ({
   #|   topology: (v.topology === undefined ? undefined : ['point-list', 'line-list', 'line-strip', 'triangle-list', 'triangle-strip'].indexOf(v.topology)),
   #|   stripIndexFormat: (v.stripIndexFormat === undefined ? undefined : ['uint16', 'uint32'].indexOf(v.stripIndexFormat)),
@@ -4060,7 +3322,6 @@ extern "js" fn GPUPrimitiveState::from_js_ffi(
   #|   unclippedDepth: (v.unclippedDepth === undefined ? -1 : v.unclippedDepth)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUPrimitiveState::from_js(value : JsValue) -> GPUPrimitiveState {
   GPUPrimitiveState::from_js_ffi(value)
@@ -4074,7 +3335,6 @@ pub(all) struct GPUMultisampleState {
   alphaToCoverageEnabled : Bool?
 }
 
-///|
 /// Create a new GPUMultisampleState with default values
 pub fn GPUMultisampleState::default() -> GPUMultisampleState {
   GPUMultisampleState::{
@@ -4084,33 +3344,25 @@ pub fn GPUMultisampleState::default() -> GPUMultisampleState {
   }
 }
 
-///|
-extern "js" fn GPUMultisampleState::to_js_ffi(
-  self : GPUMultisampleState,
-) -> JsValue =
+extern "js" fn GPUMultisampleState::to_js_ffi(self : GPUMultisampleState) -> JsValue =
   #| (self) => ({
   #|   count: self.count,
   #|   mask: self.mask,
   #|   alphaToCoverageEnabled: (self.alphaToCoverageEnabled === -1 ? undefined : self.alphaToCoverageEnabled)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUMultisampleState::to_js(self : GPUMultisampleState) -> JsValue {
   GPUMultisampleState::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUMultisampleState::from_js_ffi(
-  value : JsValue,
-) -> GPUMultisampleState =
+extern "js" fn GPUMultisampleState::from_js_ffi(value : JsValue) -> GPUMultisampleState =
   #| (v) => ({
   #|   count: v.count,
   #|   mask: v.mask,
   #|   alphaToCoverageEnabled: (v.alphaToCoverageEnabled === undefined ? -1 : v.alphaToCoverageEnabled)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUMultisampleState::from_js(value : JsValue) -> GPUMultisampleState {
   GPUMultisampleState::from_js_ffi(value)
@@ -4125,13 +3377,16 @@ pub(all) struct GPUFragmentState {
   targets : FixedArray[JsValue]
 }
 
-///|
 /// Create a new GPUFragmentState
 pub fn GPUFragmentState::new(module_~ : GPUShaderModule) -> GPUFragmentState {
-  GPUFragmentState::{ module_, entryPoint: None, constants: None, targets: [], }
+  GPUFragmentState::{
+    module_: module_,
+    entryPoint: None,
+    constants: None,
+    targets: [],
+  }
 }
 
-///|
 extern "js" fn GPUFragmentState::to_js_ffi(self : GPUFragmentState) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
@@ -4140,16 +3395,12 @@ extern "js" fn GPUFragmentState::to_js_ffi(self : GPUFragmentState) -> JsValue =
   #|   targets: self.targets
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUFragmentState::to_js(self : GPUFragmentState) -> JsValue {
   GPUFragmentState::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUFragmentState::from_js_ffi(
-  value : JsValue,
-) -> GPUFragmentState =
+extern "js" fn GPUFragmentState::from_js_ffi(value : JsValue) -> GPUFragmentState =
   #| (v) => ({
   #|   module_: v.module,
   #|   entryPoint: v.entryPoint,
@@ -4157,7 +3408,6 @@ extern "js" fn GPUFragmentState::from_js_ffi(
   #|   targets: v.targets
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUFragmentState::from_js(value : JsValue) -> GPUFragmentState {
   GPUFragmentState::from_js_ffi(value)
@@ -4171,57 +3421,37 @@ pub(all) struct GPUColorTargetState {
   writeMask : GPUColorWriteFlags?
 }
 
-///|
 /// Create a new GPUColorTargetState
-pub fn GPUColorTargetState::new(
-  format~ : GPUTextureFormat,
-) -> GPUColorTargetState {
-  GPUColorTargetState::{ format, blend: None, writeMask: None, }
+pub fn GPUColorTargetState::new(format~ : GPUTextureFormat) -> GPUColorTargetState {
+  GPUColorTargetState::{
+    format: format,
+    blend: None,
+    writeMask: None,
+  }
 }
 
-///|
-extern "js" fn GPUColorTargetState::to_js_ffi(
-  self : GPUColorTargetState,
-  convert_blend : (GPUBlendState?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUColorTargetState::to_js_ffi(self : GPUColorTargetState, convert_blend : (GPUBlendState?) -> JsValue) -> JsValue =
   #| (self, convert_blend) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   blend: convert_blend(self.blend),
   #|   writeMask: self.writeMask
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUColorTargetState::to_js(self : GPUColorTargetState) -> JsValue {
-  GPUColorTargetState::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+  GPUColorTargetState::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUColorTargetState::from_js_ffi(
-  value : JsValue,
-  convert_blend : (JsValue) -> GPUBlendState?,
-) -> GPUColorTargetState =
+extern "js" fn GPUColorTargetState::from_js_ffi(value : JsValue, convert_blend : (JsValue) -> GPUBlendState?) -> GPUColorTargetState =
   #| (v, convert_blend) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   blend: convert_blend(v.blend),
   #|   writeMask: v.writeMask
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUColorTargetState::from_js(value : JsValue) -> GPUColorTargetState {
-  GPUColorTargetState::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(GPUBlendState::from_js(value))
-    }
-  })
+  GPUColorTargetState::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUBlendState::from_js(value)) } })
 }
 
 ///|
@@ -4231,55 +3461,34 @@ pub(all) struct GPUBlendState {
   alpha : GPUBlendComponent
 }
 
-///|
 /// Create a new GPUBlendState
-pub fn GPUBlendState::new(
-  color~ : GPUBlendComponent,
-  alpha~ : GPUBlendComponent,
-) -> GPUBlendState {
-  GPUBlendState::{ color, alpha, }
+pub fn GPUBlendState::new(color~ : GPUBlendComponent, alpha~ : GPUBlendComponent) -> GPUBlendState {
+  GPUBlendState::{
+    color: color,
+    alpha: alpha,
+  }
 }
 
-///|
-extern "js" fn GPUBlendState::to_js_ffi(
-  self : GPUBlendState,
-  convert_color : (GPUBlendComponent) -> JsValue,
-  convert_alpha : (GPUBlendComponent) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUBlendState::to_js_ffi(self : GPUBlendState, convert_color : (GPUBlendComponent) -> JsValue, convert_alpha : (GPUBlendComponent) -> JsValue) -> JsValue =
   #| (self, convert_color, convert_alpha) => ({
   #|   color: convert_color(self.color),
   #|   alpha: convert_alpha(self.alpha)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBlendState::to_js(self : GPUBlendState) -> JsValue {
-  GPUBlendState::to_js_ffi(
-    self,
-    GPUBlendComponent::to_js,
-    GPUBlendComponent::to_js,
-  )
+  GPUBlendState::to_js_ffi(self, GPUBlendComponent::to_js, GPUBlendComponent::to_js)
 }
 
-///|
-extern "js" fn GPUBlendState::from_js_ffi(
-  value : JsValue,
-  convert_color : (JsValue) -> GPUBlendComponent,
-  convert_alpha : (JsValue) -> GPUBlendComponent,
-) -> GPUBlendState =
+extern "js" fn GPUBlendState::from_js_ffi(value : JsValue, convert_color : (JsValue) -> GPUBlendComponent, convert_alpha : (JsValue) -> GPUBlendComponent) -> GPUBlendState =
   #| (v, convert_color, convert_alpha) => ({
   #|   color: convert_color(v.color),
   #|   alpha: convert_alpha(v.alpha)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUBlendState::from_js(value : JsValue) -> GPUBlendState {
-  GPUBlendState::from_js_ffi(
-    value,
-    GPUBlendComponent::from_js,
-    GPUBlendComponent::from_js,
-  )
+  GPUBlendState::from_js_ffi(value, GPUBlendComponent::from_js, GPUBlendComponent::from_js)
 }
 
 ///|
@@ -4290,39 +3499,34 @@ pub(all) struct GPUBlendComponent {
   dstFactor : GPUBlendFactor?
 }
 
-///|
 /// Create a new GPUBlendComponent with default values
 pub fn GPUBlendComponent::default() -> GPUBlendComponent {
-  GPUBlendComponent::{ operation: None, srcFactor: None, dstFactor: None, }
+  GPUBlendComponent::{
+    operation: None,
+    srcFactor: None,
+    dstFactor: None,
+  }
 }
 
-///|
-extern "js" fn GPUBlendComponent::to_js_ffi(
-  self : GPUBlendComponent,
-) -> JsValue =
+extern "js" fn GPUBlendComponent::to_js_ffi(self : GPUBlendComponent) -> JsValue =
   #| (self) => ({
   #|   operation: ((() => { const v = self.operation; if (v === undefined) return undefined; return ['add', 'subtract', 'reverse-subtract', 'min', 'max'][v]; })()),
   #|   srcFactor: ((() => { const v = self.srcFactor; if (v === undefined) return undefined; return ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'][v]; })()),
   #|   dstFactor: ((() => { const v = self.dstFactor; if (v === undefined) return undefined; return ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUBlendComponent::to_js(self : GPUBlendComponent) -> JsValue {
   GPUBlendComponent::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUBlendComponent::from_js_ffi(
-  value : JsValue,
-) -> GPUBlendComponent =
+extern "js" fn GPUBlendComponent::from_js_ffi(value : JsValue) -> GPUBlendComponent =
   #| (v) => ({
   #|   operation: (v.operation === undefined ? undefined : ['add', 'subtract', 'reverse-subtract', 'min', 'max'].indexOf(v.operation)),
   #|   srcFactor: (v.srcFactor === undefined ? undefined : ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'].indexOf(v.srcFactor)),
   #|   dstFactor: (v.dstFactor === undefined ? undefined : ['zero', 'one', 'src', 'one-minus-src', 'src-alpha', 'one-minus-src-alpha', 'dst', 'one-minus-dst', 'dst-alpha', 'one-minus-dst-alpha', 'src-alpha-saturated', 'constant', 'one-minus-constant', 'src1', 'one-minus-src1', 'src1-alpha', 'one-minus-src1-alpha'].indexOf(v.dstFactor))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUBlendComponent::from_js(value : JsValue) -> GPUBlendComponent {
   GPUBlendComponent::from_js_ffi(value)
@@ -4343,13 +3547,10 @@ pub(all) struct GPUDepthStencilState {
   depthBiasClamp : Double?
 }
 
-///|
 /// Create a new GPUDepthStencilState
-pub fn GPUDepthStencilState::new(
-  format~ : GPUTextureFormat,
-) -> GPUDepthStencilState {
+pub fn GPUDepthStencilState::new(format~ : GPUTextureFormat) -> GPUDepthStencilState {
   GPUDepthStencilState::{
-    format,
+    format: format,
     depthWriteEnabled: None,
     depthCompare: None,
     stencilFront: None,
@@ -4362,12 +3563,7 @@ pub fn GPUDepthStencilState::new(
   }
 }
 
-///|
-extern "js" fn GPUDepthStencilState::to_js_ffi(
-  self : GPUDepthStencilState,
-  convert_stencilFront : (GPUStencilFaceState?) -> JsValue,
-  convert_stencilBack : (GPUStencilFaceState?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUDepthStencilState::to_js_ffi(self : GPUDepthStencilState, convert_stencilFront : (GPUStencilFaceState?) -> JsValue, convert_stencilBack : (GPUStencilFaceState?) -> JsValue) -> JsValue =
   #| (self, convert_stencilFront, convert_stencilBack) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
   #|   depthWriteEnabled: (self.depthWriteEnabled === -1 ? undefined : self.depthWriteEnabled),
@@ -4381,32 +3577,12 @@ extern "js" fn GPUDepthStencilState::to_js_ffi(
   #|   depthBiasClamp: ((() => { const v = self.depthBiasClamp; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUDepthStencilState::to_js(self : GPUDepthStencilState) -> JsValue {
-  GPUDepthStencilState::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  GPUDepthStencilState::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUDepthStencilState::from_js_ffi(
-  value : JsValue,
-  convert_stencilFront : (JsValue) -> GPUStencilFaceState?,
-  convert_stencilBack : (JsValue) -> GPUStencilFaceState?,
-) -> GPUDepthStencilState =
+extern "js" fn GPUDepthStencilState::from_js_ffi(value : JsValue, convert_stencilFront : (JsValue) -> GPUStencilFaceState?, convert_stencilBack : (JsValue) -> GPUStencilFaceState?) -> GPUDepthStencilState =
   #| (v, convert_stencilFront, convert_stencilBack) => ({
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
   #|   depthWriteEnabled: (v.depthWriteEnabled === undefined ? -1 : v.depthWriteEnabled),
@@ -4420,26 +3596,9 @@ extern "js" fn GPUDepthStencilState::from_js_ffi(
   #|   depthBiasClamp: (v.depthBiasClamp === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthBiasClamp })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUDepthStencilState::from_js(value : JsValue) -> GPUDepthStencilState {
-  GPUDepthStencilState::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUStencilFaceState::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPUStencilFaceState::from_js(value))
-      }
-    },
-  )
+  GPUDepthStencilState::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUStencilFaceState::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPUStencilFaceState::from_js(value)) } })
 }
 
 ///|
@@ -4451,7 +3610,6 @@ pub(all) struct GPUStencilFaceState {
   passOp : GPUStencilOperation?
 }
 
-///|
 /// Create a new GPUStencilFaceState with default values
 pub fn GPUStencilFaceState::default() -> GPUStencilFaceState {
   GPUStencilFaceState::{
@@ -4462,10 +3620,7 @@ pub fn GPUStencilFaceState::default() -> GPUStencilFaceState {
   }
 }
 
-///|
-extern "js" fn GPUStencilFaceState::to_js_ffi(
-  self : GPUStencilFaceState,
-) -> JsValue =
+extern "js" fn GPUStencilFaceState::to_js_ffi(self : GPUStencilFaceState) -> JsValue =
   #| (self) => ({
   #|   compare: ((() => { const v = self.compare; if (v === undefined) return undefined; return ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'][v]; })()),
   #|   failOp: ((() => { const v = self.failOp; if (v === undefined) return undefined; return ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'][v]; })()),
@@ -4473,16 +3628,12 @@ extern "js" fn GPUStencilFaceState::to_js_ffi(
   #|   passOp: ((() => { const v = self.passOp; if (v === undefined) return undefined; return ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUStencilFaceState::to_js(self : GPUStencilFaceState) -> JsValue {
   GPUStencilFaceState::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUStencilFaceState::from_js_ffi(
-  value : JsValue,
-) -> GPUStencilFaceState =
+extern "js" fn GPUStencilFaceState::from_js_ffi(value : JsValue) -> GPUStencilFaceState =
   #| (v) => ({
   #|   compare: (v.compare === undefined ? undefined : ['never', 'less', 'equal', 'less-equal', 'greater', 'not-equal', 'greater-equal', 'always'].indexOf(v.compare)),
   #|   failOp: (v.failOp === undefined ? undefined : ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'].indexOf(v.failOp)),
@@ -4490,7 +3641,6 @@ extern "js" fn GPUStencilFaceState::from_js_ffi(
   #|   passOp: (v.passOp === undefined ? undefined : ['keep', 'zero', 'replace', 'invert', 'increment-clamp', 'decrement-clamp', 'increment-wrap', 'decrement-wrap'].indexOf(v.passOp))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUStencilFaceState::from_js(value : JsValue) -> GPUStencilFaceState {
   GPUStencilFaceState::from_js_ffi(value)
@@ -4505,13 +3655,16 @@ pub(all) struct GPUVertexState {
   buffers : FixedArray[JsValue]?
 }
 
-///|
 /// Create a new GPUVertexState
 pub fn GPUVertexState::new(module_~ : GPUShaderModule) -> GPUVertexState {
-  GPUVertexState::{ module_, entryPoint: None, constants: None, buffers: None, }
+  GPUVertexState::{
+    module_: module_,
+    entryPoint: None,
+    constants: None,
+    buffers: None,
+  }
 }
 
-///|
 extern "js" fn GPUVertexState::to_js_ffi(self : GPUVertexState) -> JsValue =
   #| (self) => ({
   #|   module: self.module_,
@@ -4520,13 +3673,11 @@ extern "js" fn GPUVertexState::to_js_ffi(self : GPUVertexState) -> JsValue =
   #|   buffers: self.buffers
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUVertexState::to_js(self : GPUVertexState) -> JsValue {
   GPUVertexState::to_js_ffi(self)
 }
 
-///|
 extern "js" fn GPUVertexState::from_js_ffi(value : JsValue) -> GPUVertexState =
   #| (v) => ({
   #|   module_: v.module,
@@ -4535,7 +3686,6 @@ extern "js" fn GPUVertexState::from_js_ffi(value : JsValue) -> GPUVertexState =
   #|   buffers: v.buffers
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUVertexState::from_js(value : JsValue) -> GPUVertexState {
   GPUVertexState::from_js_ffi(value)
@@ -4549,41 +3699,34 @@ pub(all) struct GPUVertexBufferLayout {
   attributes : FixedArray[GPUVertexAttribute]
 }
 
-///|
 /// Create a new GPUVertexBufferLayout
-pub fn GPUVertexBufferLayout::new(
-  arrayStride~ : GPUSize64,
-) -> GPUVertexBufferLayout {
-  GPUVertexBufferLayout::{ arrayStride, stepMode: None, attributes: [], }
+pub fn GPUVertexBufferLayout::new(arrayStride~ : GPUSize64) -> GPUVertexBufferLayout {
+  GPUVertexBufferLayout::{
+    arrayStride: arrayStride,
+    stepMode: None,
+    attributes: [],
+  }
 }
 
-///|
-extern "js" fn GPUVertexBufferLayout::to_js_ffi(
-  self : GPUVertexBufferLayout,
-) -> JsValue =
+extern "js" fn GPUVertexBufferLayout::to_js_ffi(self : GPUVertexBufferLayout) -> JsValue =
   #| (self) => ({
   #|   arrayStride: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.arrayStride),
   #|   stepMode: ((() => { const v = self.stepMode; if (v === undefined) return undefined; return ['vertex', 'instance'][v]; })()),
   #|   attributes: self.attributes
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUVertexBufferLayout::to_js(self : GPUVertexBufferLayout) -> JsValue {
   GPUVertexBufferLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUVertexBufferLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUVertexBufferLayout =
+extern "js" fn GPUVertexBufferLayout::from_js_ffi(value : JsValue) -> GPUVertexBufferLayout =
   #| (v) => ({
   #|   arrayStride: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.arrayStride),
   #|   stepMode: (v.stepMode === undefined ? undefined : ['vertex', 'instance'].indexOf(v.stepMode)),
   #|   attributes: v.attributes
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUVertexBufferLayout::from_js(value : JsValue) -> GPUVertexBufferLayout {
   GPUVertexBufferLayout::from_js_ffi(value)
@@ -4591,27 +3734,15 @@ pub fn GPUVertexBufferLayout::from_js(value : JsValue) -> GPUVertexBufferLayout 
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUVertexBufferLayout::to_js_checked(
-  self : GPUVertexBufferLayout,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUVertexBufferLayout::to_js_checked(self : GPUVertexBufferLayout) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUVertexBufferLayout(
-  convert : () -> GPUVertexBufferLayout,
-) -> Result[GPUVertexBufferLayout, JsError] =
+extern "js" fn try_dictionary_GPUVertexBufferLayout(convert : () -> GPUVertexBufferLayout) -> Result[GPUVertexBufferLayout, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUVertexBufferLayout::from_js_checked(
-  value : JsValue,
-) -> Result[GPUVertexBufferLayout, JsError] {
-  try_dictionary_GPUVertexBufferLayout(() => {
-    GPUVertexBufferLayout::from_js(value)
-  })
-}
+pub fn GPUVertexBufferLayout::from_js_checked(value : JsValue) -> Result[GPUVertexBufferLayout, JsError] { try_dictionary_GPUVertexBufferLayout(() => GPUVertexBufferLayout::from_js(value)) }
 
 ///|
 /// GPUVertexAttribute dictionary
@@ -4621,43 +3752,34 @@ pub(all) struct GPUVertexAttribute {
   shaderLocation : GPUIndex32
 }
 
-///|
 /// Create a new GPUVertexAttribute
-pub fn GPUVertexAttribute::new(
-  format~ : GPUVertexFormat,
-  offset~ : GPUSize64,
-  shaderLocation~ : GPUIndex32,
-) -> GPUVertexAttribute {
-  GPUVertexAttribute::{ format, offset, shaderLocation, }
+pub fn GPUVertexAttribute::new(format~ : GPUVertexFormat, offset~ : GPUSize64, shaderLocation~ : GPUIndex32) -> GPUVertexAttribute {
+  GPUVertexAttribute::{
+    format: format,
+    offset: offset,
+    shaderLocation: shaderLocation,
+  }
 }
 
-///|
-extern "js" fn GPUVertexAttribute::to_js_ffi(
-  self : GPUVertexAttribute,
-) -> JsValue =
+extern "js" fn GPUVertexAttribute::to_js_ffi(self : GPUVertexAttribute) -> JsValue =
   #| (self) => ({
-  #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'][self.format],
+  #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra', 'snorm10-10-10-2'][self.format],
   #|   offset: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.offset),
   #|   shaderLocation: self.shaderLocation
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUVertexAttribute::to_js(self : GPUVertexAttribute) -> JsValue {
   GPUVertexAttribute::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUVertexAttribute::from_js_ffi(
-  value : JsValue,
-) -> GPUVertexAttribute =
+extern "js" fn GPUVertexAttribute::from_js_ffi(value : JsValue) -> GPUVertexAttribute =
   #| (v) => ({
-  #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra'].indexOf(v.format),
+  #|   format: ['uint8', 'uint8x2', 'uint8x4', 'sint8', 'sint8x2', 'sint8x4', 'unorm8', 'unorm8x2', 'unorm8x4', 'snorm8', 'snorm8x2', 'snorm8x4', 'uint16', 'uint16x2', 'uint16x4', 'sint16', 'sint16x2', 'sint16x4', 'unorm16', 'unorm16x2', 'unorm16x4', 'snorm16', 'snorm16x2', 'snorm16x4', 'float16', 'float16x2', 'float16x4', 'float32', 'float32x2', 'float32x3', 'float32x4', 'uint32', 'uint32x2', 'uint32x3', 'uint32x4', 'sint32', 'sint32x2', 'sint32x3', 'sint32x4', 'unorm10-10-10-2', 'unorm8x4-bgra', 'snorm10-10-10-2'].indexOf(v.format),
   #|   offset: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset),
   #|   shaderLocation: v.shaderLocation
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUVertexAttribute::from_js(value : JsValue) -> GPUVertexAttribute {
   GPUVertexAttribute::from_js_ffi(value)
@@ -4665,25 +3787,15 @@ pub fn GPUVertexAttribute::from_js(value : JsValue) -> GPUVertexAttribute {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUVertexAttribute::to_js_checked(
-  self : GPUVertexAttribute,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUVertexAttribute::to_js_checked(self : GPUVertexAttribute) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUVertexAttribute(
-  convert : () -> GPUVertexAttribute,
-) -> Result[GPUVertexAttribute, JsError] =
+extern "js" fn try_dictionary_GPUVertexAttribute(convert : () -> GPUVertexAttribute) -> Result[GPUVertexAttribute, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUVertexAttribute::from_js_checked(
-  value : JsValue,
-) -> Result[GPUVertexAttribute, JsError] {
-  try_dictionary_GPUVertexAttribute(() => GPUVertexAttribute::from_js(value))
-}
+pub fn GPUVertexAttribute::from_js_checked(value : JsValue) -> Result[GPUVertexAttribute, JsError] { try_dictionary_GPUVertexAttribute(() => GPUVertexAttribute::from_js(value)) }
 
 ///|
 /// GPUTexelCopyBufferLayout dictionary
@@ -4693,7 +3805,6 @@ pub(all) struct GPUTexelCopyBufferLayout {
   rowsPerImage : GPUSize32?
 }
 
-///|
 /// Create a new GPUTexelCopyBufferLayout with default values
 pub fn GPUTexelCopyBufferLayout::default() -> GPUTexelCopyBufferLayout {
   GPUTexelCopyBufferLayout::{
@@ -4703,65 +3814,41 @@ pub fn GPUTexelCopyBufferLayout::default() -> GPUTexelCopyBufferLayout {
   }
 }
 
-///|
-extern "js" fn GPUTexelCopyBufferLayout::to_js_ffi(
-  self : GPUTexelCopyBufferLayout,
-) -> JsValue =
+extern "js" fn GPUTexelCopyBufferLayout::to_js_ffi(self : GPUTexelCopyBufferLayout) -> JsValue =
   #| (self) => ({
   #|   offset: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.offset),
   #|   bytesPerRow: self.bytesPerRow,
   #|   rowsPerImage: self.rowsPerImage
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUTexelCopyBufferLayout::to_js(
-  self : GPUTexelCopyBufferLayout,
-) -> JsValue {
+pub fn GPUTexelCopyBufferLayout::to_js(self : GPUTexelCopyBufferLayout) -> JsValue {
   GPUTexelCopyBufferLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTexelCopyBufferLayout::from_js_ffi(
-  value : JsValue,
-) -> GPUTexelCopyBufferLayout =
+extern "js" fn GPUTexelCopyBufferLayout::from_js_ffi(value : JsValue) -> GPUTexelCopyBufferLayout =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
   #|   bytesPerRow: v.bytesPerRow,
   #|   rowsPerImage: v.rowsPerImage
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUTexelCopyBufferLayout::from_js(
-  value : JsValue,
-) -> GPUTexelCopyBufferLayout {
+pub fn GPUTexelCopyBufferLayout::from_js(value : JsValue) -> GPUTexelCopyBufferLayout {
   GPUTexelCopyBufferLayout::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUTexelCopyBufferLayout::to_js_checked(
-  self : GPUTexelCopyBufferLayout,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUTexelCopyBufferLayout::to_js_checked(self : GPUTexelCopyBufferLayout) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUTexelCopyBufferLayout(
-  convert : () -> GPUTexelCopyBufferLayout,
-) -> Result[GPUTexelCopyBufferLayout, JsError] =
+extern "js" fn try_dictionary_GPUTexelCopyBufferLayout(convert : () -> GPUTexelCopyBufferLayout) -> Result[GPUTexelCopyBufferLayout, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUTexelCopyBufferLayout::from_js_checked(
-  value : JsValue,
-) -> Result[GPUTexelCopyBufferLayout, JsError] {
-  try_dictionary_GPUTexelCopyBufferLayout(() => {
-    GPUTexelCopyBufferLayout::from_js(value)
-  })
-}
+pub fn GPUTexelCopyBufferLayout::from_js_checked(value : JsValue) -> Result[GPUTexelCopyBufferLayout, JsError] { try_dictionary_GPUTexelCopyBufferLayout(() => GPUTexelCopyBufferLayout::from_js(value)) }
 
 ///|
 /// GPUTexelCopyBufferInfo dictionary
@@ -4772,23 +3859,17 @@ pub(all) struct GPUTexelCopyBufferInfo {
   buffer : GPUBuffer
 }
 
-///|
 /// Create a new GPUTexelCopyBufferInfo
-pub fn GPUTexelCopyBufferInfo::new(
-  buffer~ : GPUBuffer,
-) -> GPUTexelCopyBufferInfo {
+pub fn GPUTexelCopyBufferInfo::new(buffer~ : GPUBuffer) -> GPUTexelCopyBufferInfo {
   GPUTexelCopyBufferInfo::{
     offset: None,
     bytesPerRow: None,
     rowsPerImage: None,
-    buffer,
+    buffer: buffer,
   }
 }
 
-///|
-extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
-  self : GPUTexelCopyBufferInfo,
-) -> JsValue =
+extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(self : GPUTexelCopyBufferInfo) -> JsValue =
   #| (self) => ({
   #|   offset: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.offset),
   #|   bytesPerRow: self.bytesPerRow,
@@ -4796,16 +3877,12 @@ extern "js" fn GPUTexelCopyBufferInfo::to_js_ffi(
   #|   buffer: self.buffer
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUTexelCopyBufferInfo::to_js(self : GPUTexelCopyBufferInfo) -> JsValue {
   GPUTexelCopyBufferInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(
-  value : JsValue,
-) -> GPUTexelCopyBufferInfo =
+extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(value : JsValue) -> GPUTexelCopyBufferInfo =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.offset)),
   #|   bytesPerRow: v.bytesPerRow,
@@ -4813,37 +3890,22 @@ extern "js" fn GPUTexelCopyBufferInfo::from_js_ffi(
   #|   buffer: v.buffer
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUTexelCopyBufferInfo::from_js(
-  value : JsValue,
-) -> GPUTexelCopyBufferInfo {
+pub fn GPUTexelCopyBufferInfo::from_js(value : JsValue) -> GPUTexelCopyBufferInfo {
   GPUTexelCopyBufferInfo::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPUTexelCopyBufferInfo::to_js_checked(
-  self : GPUTexelCopyBufferInfo,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPUTexelCopyBufferInfo::to_js_checked(self : GPUTexelCopyBufferInfo) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPUTexelCopyBufferInfo(
-  convert : () -> GPUTexelCopyBufferInfo,
-) -> Result[GPUTexelCopyBufferInfo, JsError] =
+extern "js" fn try_dictionary_GPUTexelCopyBufferInfo(convert : () -> GPUTexelCopyBufferInfo) -> Result[GPUTexelCopyBufferInfo, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPUTexelCopyBufferInfo::from_js_checked(
-  value : JsValue,
-) -> Result[GPUTexelCopyBufferInfo, JsError] {
-  try_dictionary_GPUTexelCopyBufferInfo(() => {
-    GPUTexelCopyBufferInfo::from_js(value)
-  })
-}
+pub fn GPUTexelCopyBufferInfo::from_js_checked(value : JsValue) -> Result[GPUTexelCopyBufferInfo, JsError] { try_dictionary_GPUTexelCopyBufferInfo(() => GPUTexelCopyBufferInfo::from_js(value)) }
 
 ///|
 /// GPUTexelCopyTextureInfo dictionary
@@ -4854,23 +3916,17 @@ pub(all) struct GPUTexelCopyTextureInfo {
   aspect : GPUTextureAspect?
 }
 
-///|
 /// Create a new GPUTexelCopyTextureInfo
-pub fn GPUTexelCopyTextureInfo::new(
-  texture~ : GPUTexture,
-) -> GPUTexelCopyTextureInfo {
+pub fn GPUTexelCopyTextureInfo::new(texture~ : GPUTexture) -> GPUTexelCopyTextureInfo {
   GPUTexelCopyTextureInfo::{
-    texture,
+    texture: texture,
     mipLevel: None,
     origin: None,
     aspect: None,
   }
 }
 
-///|
-extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(
-  self : GPUTexelCopyTextureInfo,
-) -> JsValue =
+extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(self : GPUTexelCopyTextureInfo) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: self.mipLevel,
@@ -4878,18 +3934,12 @@ extern "js" fn GPUTexelCopyTextureInfo::to_js_ffi(
   #|   aspect: ((() => { const v = self.aspect; if (v === undefined) return undefined; return ['all', 'stencil-only', 'depth-only'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUTexelCopyTextureInfo::to_js(
-  self : GPUTexelCopyTextureInfo,
-) -> JsValue {
+pub fn GPUTexelCopyTextureInfo::to_js(self : GPUTexelCopyTextureInfo) -> JsValue {
   GPUTexelCopyTextureInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUTexelCopyTextureInfo::from_js_ffi(
-  value : JsValue,
-) -> GPUTexelCopyTextureInfo =
+extern "js" fn GPUTexelCopyTextureInfo::from_js_ffi(value : JsValue) -> GPUTexelCopyTextureInfo =
   #| (v) => ({
   #|   texture: v.texture,
   #|   mipLevel: v.mipLevel,
@@ -4897,11 +3947,8 @@ extern "js" fn GPUTexelCopyTextureInfo::from_js_ffi(
   #|   aspect: (v.aspect === undefined ? undefined : ['all', 'stencil-only', 'depth-only'].indexOf(v.aspect))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUTexelCopyTextureInfo::from_js(
-  value : JsValue,
-) -> GPUTexelCopyTextureInfo {
+pub fn GPUTexelCopyTextureInfo::from_js(value : JsValue) -> GPUTexelCopyTextureInfo {
   GPUTexelCopyTextureInfo::from_js_ffi(value)
 }
 
@@ -4916,13 +3963,10 @@ pub(all) struct GPUCopyExternalImageDestInfo {
   premultipliedAlpha : Bool?
 }
 
-///|
 /// Create a new GPUCopyExternalImageDestInfo
-pub fn GPUCopyExternalImageDestInfo::new(
-  texture~ : GPUTexture,
-) -> GPUCopyExternalImageDestInfo {
+pub fn GPUCopyExternalImageDestInfo::new(texture~ : GPUTexture) -> GPUCopyExternalImageDestInfo {
   GPUCopyExternalImageDestInfo::{
-    texture,
+    texture: texture,
     mipLevel: None,
     origin: None,
     aspect: None,
@@ -4931,10 +3975,7 @@ pub fn GPUCopyExternalImageDestInfo::new(
   }
 }
 
-///|
-extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(
-  self : GPUCopyExternalImageDestInfo,
-) -> JsValue =
+extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(self : GPUCopyExternalImageDestInfo) -> JsValue =
   #| (self) => ({
   #|   texture: self.texture,
   #|   mipLevel: self.mipLevel,
@@ -4944,18 +3985,12 @@ extern "js" fn GPUCopyExternalImageDestInfo::to_js_ffi(
   #|   premultipliedAlpha: (self.premultipliedAlpha === -1 ? undefined : self.premultipliedAlpha)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUCopyExternalImageDestInfo::to_js(
-  self : GPUCopyExternalImageDestInfo,
-) -> JsValue {
+pub fn GPUCopyExternalImageDestInfo::to_js(self : GPUCopyExternalImageDestInfo) -> JsValue {
   GPUCopyExternalImageDestInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUCopyExternalImageDestInfo::from_js_ffi(
-  value : JsValue,
-) -> GPUCopyExternalImageDestInfo =
+extern "js" fn GPUCopyExternalImageDestInfo::from_js_ffi(value : JsValue) -> GPUCopyExternalImageDestInfo =
   #| (v) => ({
   #|   texture: v.texture,
   #|   mipLevel: v.mipLevel,
@@ -4965,11 +4000,8 @@ extern "js" fn GPUCopyExternalImageDestInfo::from_js_ffi(
   #|   premultipliedAlpha: (v.premultipliedAlpha === undefined ? -1 : v.premultipliedAlpha)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUCopyExternalImageDestInfo::from_js(
-  value : JsValue,
-) -> GPUCopyExternalImageDestInfo {
+pub fn GPUCopyExternalImageDestInfo::from_js(value : JsValue) -> GPUCopyExternalImageDestInfo {
   GPUCopyExternalImageDestInfo::from_js_ffi(value)
 }
 
@@ -4981,47 +4013,36 @@ pub(all) struct GPUCopyExternalImageSourceInfo {
   flipY : Bool?
 }
 
-///|
 /// Create a new GPUCopyExternalImageSourceInfo
-pub fn GPUCopyExternalImageSourceInfo::new(
-  source~ : GPUCopyExternalImageSource,
-) -> GPUCopyExternalImageSourceInfo {
-  GPUCopyExternalImageSourceInfo::{ source, origin: None, flipY: None, }
+pub fn GPUCopyExternalImageSourceInfo::new(source~ : GPUCopyExternalImageSource) -> GPUCopyExternalImageSourceInfo {
+  GPUCopyExternalImageSourceInfo::{
+    source: source,
+    origin: None,
+    flipY: None,
+  }
 }
 
-///|
-extern "js" fn GPUCopyExternalImageSourceInfo::to_js_ffi(
-  self : GPUCopyExternalImageSourceInfo,
-) -> JsValue =
+extern "js" fn GPUCopyExternalImageSourceInfo::to_js_ffi(self : GPUCopyExternalImageSourceInfo) -> JsValue =
   #| (self) => ({
   #|   source: self.source,
   #|   origin: ((() => { const v = self.origin; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   flipY: (self.flipY === -1 ? undefined : self.flipY)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUCopyExternalImageSourceInfo::to_js(
-  self : GPUCopyExternalImageSourceInfo,
-) -> JsValue {
+pub fn GPUCopyExternalImageSourceInfo::to_js(self : GPUCopyExternalImageSourceInfo) -> JsValue {
   GPUCopyExternalImageSourceInfo::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUCopyExternalImageSourceInfo::from_js_ffi(
-  value : JsValue,
-) -> GPUCopyExternalImageSourceInfo =
+extern "js" fn GPUCopyExternalImageSourceInfo::from_js_ffi(value : JsValue) -> GPUCopyExternalImageSourceInfo =
   #| (v) => ({
   #|   source: v.source,
   #|   origin: (v.origin === undefined ? { $tag: 0 } : { $tag: 1, _0: v.origin }),
   #|   flipY: (v.flipY === undefined ? -1 : v.flipY)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUCopyExternalImageSourceInfo::from_js(
-  value : JsValue,
-) -> GPUCopyExternalImageSourceInfo {
+pub fn GPUCopyExternalImageSourceInfo::from_js(value : JsValue) -> GPUCopyExternalImageSourceInfo {
   GPUCopyExternalImageSourceInfo::from_js_ffi(value)
 }
 
@@ -5031,41 +4052,30 @@ pub(all) struct GPUCommandBufferDescriptor {
   label : String?
 }
 
-///|
 /// Create a new GPUCommandBufferDescriptor with default values
 pub fn GPUCommandBufferDescriptor::default() -> GPUCommandBufferDescriptor {
-  GPUCommandBufferDescriptor::{ label: None, }
+  GPUCommandBufferDescriptor::{
+    label: None,
+  }
 }
 
-///|
-extern "js" fn GPUCommandBufferDescriptor::to_js_ffi(
-  self : GPUCommandBufferDescriptor,
-) -> JsValue =
+extern "js" fn GPUCommandBufferDescriptor::to_js_ffi(self : GPUCommandBufferDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUCommandBufferDescriptor::to_js(
-  self : GPUCommandBufferDescriptor,
-) -> JsValue {
+pub fn GPUCommandBufferDescriptor::to_js(self : GPUCommandBufferDescriptor) -> JsValue {
   GPUCommandBufferDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUCommandBufferDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUCommandBufferDescriptor =
+extern "js" fn GPUCommandBufferDescriptor::from_js_ffi(value : JsValue) -> GPUCommandBufferDescriptor =
   #| (v) => ({
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUCommandBufferDescriptor::from_js(
-  value : JsValue,
-) -> GPUCommandBufferDescriptor {
+pub fn GPUCommandBufferDescriptor::from_js(value : JsValue) -> GPUCommandBufferDescriptor {
   GPUCommandBufferDescriptor::from_js_ffi(value)
 }
 
@@ -5075,41 +4085,30 @@ pub(all) struct GPUCommandEncoderDescriptor {
   label : String?
 }
 
-///|
 /// Create a new GPUCommandEncoderDescriptor with default values
 pub fn GPUCommandEncoderDescriptor::default() -> GPUCommandEncoderDescriptor {
-  GPUCommandEncoderDescriptor::{ label: None, }
+  GPUCommandEncoderDescriptor::{
+    label: None,
+  }
 }
 
-///|
-extern "js" fn GPUCommandEncoderDescriptor::to_js_ffi(
-  self : GPUCommandEncoderDescriptor,
-) -> JsValue =
+extern "js" fn GPUCommandEncoderDescriptor::to_js_ffi(self : GPUCommandEncoderDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUCommandEncoderDescriptor::to_js(
-  self : GPUCommandEncoderDescriptor,
-) -> JsValue {
+pub fn GPUCommandEncoderDescriptor::to_js(self : GPUCommandEncoderDescriptor) -> JsValue {
   GPUCommandEncoderDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUCommandEncoderDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUCommandEncoderDescriptor =
+extern "js" fn GPUCommandEncoderDescriptor::from_js_ffi(value : JsValue) -> GPUCommandEncoderDescriptor =
   #| (v) => ({
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUCommandEncoderDescriptor::from_js(
-  value : JsValue,
-) -> GPUCommandEncoderDescriptor {
+pub fn GPUCommandEncoderDescriptor::from_js(value : JsValue) -> GPUCommandEncoderDescriptor {
   GPUCommandEncoderDescriptor::from_js_ffi(value)
 }
 
@@ -5121,51 +4120,36 @@ pub(all) struct GPUComputePassTimestampWrites {
   endOfPassWriteIndex : GPUSize32?
 }
 
-///|
 /// Create a new GPUComputePassTimestampWrites
-pub fn GPUComputePassTimestampWrites::new(
-  querySet~ : GPUQuerySet,
-) -> GPUComputePassTimestampWrites {
+pub fn GPUComputePassTimestampWrites::new(querySet~ : GPUQuerySet) -> GPUComputePassTimestampWrites {
   GPUComputePassTimestampWrites::{
-    querySet,
+    querySet: querySet,
     beginningOfPassWriteIndex: None,
     endOfPassWriteIndex: None,
   }
 }
 
-///|
-extern "js" fn GPUComputePassTimestampWrites::to_js_ffi(
-  self : GPUComputePassTimestampWrites,
-) -> JsValue =
+extern "js" fn GPUComputePassTimestampWrites::to_js_ffi(self : GPUComputePassTimestampWrites) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
   #|   beginningOfPassWriteIndex: self.beginningOfPassWriteIndex,
   #|   endOfPassWriteIndex: self.endOfPassWriteIndex
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUComputePassTimestampWrites::to_js(
-  self : GPUComputePassTimestampWrites,
-) -> JsValue {
+pub fn GPUComputePassTimestampWrites::to_js(self : GPUComputePassTimestampWrites) -> JsValue {
   GPUComputePassTimestampWrites::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUComputePassTimestampWrites::from_js_ffi(
-  value : JsValue,
-) -> GPUComputePassTimestampWrites =
+extern "js" fn GPUComputePassTimestampWrites::from_js_ffi(value : JsValue) -> GPUComputePassTimestampWrites =
   #| (v) => ({
   #|   querySet: v.querySet,
   #|   beginningOfPassWriteIndex: v.beginningOfPassWriteIndex,
   #|   endOfPassWriteIndex: v.endOfPassWriteIndex
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUComputePassTimestampWrites::from_js(
-  value : JsValue,
-) -> GPUComputePassTimestampWrites {
+pub fn GPUComputePassTimestampWrites::from_js(value : JsValue) -> GPUComputePassTimestampWrites {
   GPUComputePassTimestampWrites::from_js_ffi(value)
 }
 
@@ -5176,57 +4160,34 @@ pub(all) struct GPUComputePassDescriptor {
   timestampWrites : GPUComputePassTimestampWrites?
 }
 
-///|
 /// Create a new GPUComputePassDescriptor with default values
 pub fn GPUComputePassDescriptor::default() -> GPUComputePassDescriptor {
-  GPUComputePassDescriptor::{ label: None, timestampWrites: None, }
+  GPUComputePassDescriptor::{
+    label: None,
+    timestampWrites: None,
+  }
 }
 
-///|
-extern "js" fn GPUComputePassDescriptor::to_js_ffi(
-  self : GPUComputePassDescriptor,
-  convert_timestampWrites : (GPUComputePassTimestampWrites?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUComputePassDescriptor::to_js_ffi(self : GPUComputePassDescriptor, convert_timestampWrites : (GPUComputePassTimestampWrites?) -> JsValue) -> JsValue =
   #| (self, convert_timestampWrites) => ({
   #|   label: self.label,
   #|   timestampWrites: convert_timestampWrites(self.timestampWrites)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUComputePassDescriptor::to_js(
-  self : GPUComputePassDescriptor,
-) -> JsValue {
-  GPUComputePassDescriptor::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn GPUComputePassDescriptor::to_js(self : GPUComputePassDescriptor) -> JsValue {
+  GPUComputePassDescriptor::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUComputePassDescriptor::from_js_ffi(
-  value : JsValue,
-  convert_timestampWrites : (JsValue) -> GPUComputePassTimestampWrites?,
-) -> GPUComputePassDescriptor =
+extern "js" fn GPUComputePassDescriptor::from_js_ffi(value : JsValue, convert_timestampWrites : (JsValue) -> GPUComputePassTimestampWrites?) -> GPUComputePassDescriptor =
   #| (v, convert_timestampWrites) => ({
   #|   label: v.label,
   #|   timestampWrites: convert_timestampWrites(v.timestampWrites)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUComputePassDescriptor::from_js(
-  value : JsValue,
-) -> GPUComputePassDescriptor {
-  GPUComputePassDescriptor::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(GPUComputePassTimestampWrites::from_js(value))
-    }
-  })
+pub fn GPUComputePassDescriptor::from_js(value : JsValue) -> GPUComputePassDescriptor {
+  GPUComputePassDescriptor::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUComputePassTimestampWrites::from_js(value)) } })
 }
 
 ///|
@@ -5237,51 +4198,36 @@ pub(all) struct GPURenderPassTimestampWrites {
   endOfPassWriteIndex : GPUSize32?
 }
 
-///|
 /// Create a new GPURenderPassTimestampWrites
-pub fn GPURenderPassTimestampWrites::new(
-  querySet~ : GPUQuerySet,
-) -> GPURenderPassTimestampWrites {
+pub fn GPURenderPassTimestampWrites::new(querySet~ : GPUQuerySet) -> GPURenderPassTimestampWrites {
   GPURenderPassTimestampWrites::{
-    querySet,
+    querySet: querySet,
     beginningOfPassWriteIndex: None,
     endOfPassWriteIndex: None,
   }
 }
 
-///|
-extern "js" fn GPURenderPassTimestampWrites::to_js_ffi(
-  self : GPURenderPassTimestampWrites,
-) -> JsValue =
+extern "js" fn GPURenderPassTimestampWrites::to_js_ffi(self : GPURenderPassTimestampWrites) -> JsValue =
   #| (self) => ({
   #|   querySet: self.querySet,
   #|   beginningOfPassWriteIndex: self.beginningOfPassWriteIndex,
   #|   endOfPassWriteIndex: self.endOfPassWriteIndex
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderPassTimestampWrites::to_js(
-  self : GPURenderPassTimestampWrites,
-) -> JsValue {
+pub fn GPURenderPassTimestampWrites::to_js(self : GPURenderPassTimestampWrites) -> JsValue {
   GPURenderPassTimestampWrites::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderPassTimestampWrites::from_js_ffi(
-  value : JsValue,
-) -> GPURenderPassTimestampWrites =
+extern "js" fn GPURenderPassTimestampWrites::from_js_ffi(value : JsValue) -> GPURenderPassTimestampWrites =
   #| (v) => ({
   #|   querySet: v.querySet,
   #|   beginningOfPassWriteIndex: v.beginningOfPassWriteIndex,
   #|   endOfPassWriteIndex: v.endOfPassWriteIndex
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderPassTimestampWrites::from_js(
-  value : JsValue,
-) -> GPURenderPassTimestampWrites {
+pub fn GPURenderPassTimestampWrites::from_js(value : JsValue) -> GPURenderPassTimestampWrites {
   GPURenderPassTimestampWrites::from_js_ffi(value)
 }
 
@@ -5296,7 +4242,6 @@ pub(all) struct GPURenderPassDescriptor {
   maxDrawCount : GPUSize64?
 }
 
-///|
 /// Create a new GPURenderPassDescriptor with default values
 pub fn GPURenderPassDescriptor::default() -> GPURenderPassDescriptor {
   GPURenderPassDescriptor::{
@@ -5309,12 +4254,7 @@ pub fn GPURenderPassDescriptor::default() -> GPURenderPassDescriptor {
   }
 }
 
-///|
-extern "js" fn GPURenderPassDescriptor::to_js_ffi(
-  self : GPURenderPassDescriptor,
-  convert_depthStencilAttachment : (GPURenderPassDepthStencilAttachment?) -> JsValue,
-  convert_timestampWrites : (GPURenderPassTimestampWrites?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPURenderPassDescriptor::to_js_ffi(self : GPURenderPassDescriptor, convert_depthStencilAttachment : (GPURenderPassDepthStencilAttachment?) -> JsValue, convert_timestampWrites : (GPURenderPassTimestampWrites?) -> JsValue) -> JsValue =
   #| (self, convert_depthStencilAttachment, convert_timestampWrites) => ({
   #|   label: self.label,
   #|   colorAttachments: self.colorAttachments,
@@ -5324,34 +4264,12 @@ extern "js" fn GPURenderPassDescriptor::to_js_ffi(
   #|   maxDrawCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.maxDrawCount)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderPassDescriptor::to_js(
-  self : GPURenderPassDescriptor,
-) -> JsValue {
-  GPURenderPassDescriptor::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+pub fn GPURenderPassDescriptor::to_js(self : GPURenderPassDescriptor) -> JsValue {
+  GPURenderPassDescriptor::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPURenderPassDescriptor::from_js_ffi(
-  value : JsValue,
-  convert_depthStencilAttachment : (JsValue) -> GPURenderPassDepthStencilAttachment?,
-  convert_timestampWrites : (JsValue) -> GPURenderPassTimestampWrites?,
-) -> GPURenderPassDescriptor =
+extern "js" fn GPURenderPassDescriptor::from_js_ffi(value : JsValue, convert_depthStencilAttachment : (JsValue) -> GPURenderPassDepthStencilAttachment?, convert_timestampWrites : (JsValue) -> GPURenderPassTimestampWrites?) -> GPURenderPassDescriptor =
   #| (v, convert_depthStencilAttachment, convert_timestampWrites) => ({
   #|   label: v.label,
   #|   colorAttachments: v.colorAttachments,
@@ -5361,53 +4279,22 @@ extern "js" fn GPURenderPassDescriptor::from_js_ffi(
   #|   maxDrawCount: (v.maxDrawCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.maxDrawCount))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderPassDescriptor::from_js(
-  value : JsValue,
-) -> GPURenderPassDescriptor {
-  GPURenderPassDescriptor::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPURenderPassDepthStencilAttachment::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(GPURenderPassTimestampWrites::from_js(value))
-      }
-    },
-  )
+pub fn GPURenderPassDescriptor::from_js(value : JsValue) -> GPURenderPassDescriptor {
+  GPURenderPassDescriptor::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPURenderPassDepthStencilAttachment::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(GPURenderPassTimestampWrites::from_js(value)) } })
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn GPURenderPassDescriptor::to_js_checked(
-  self : GPURenderPassDescriptor,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn GPURenderPassDescriptor::to_js_checked(self : GPURenderPassDescriptor) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_GPURenderPassDescriptor(
-  convert : () -> GPURenderPassDescriptor,
-) -> Result[GPURenderPassDescriptor, JsError] =
+extern "js" fn try_dictionary_GPURenderPassDescriptor(convert : () -> GPURenderPassDescriptor) -> Result[GPURenderPassDescriptor, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn GPURenderPassDescriptor::from_js_checked(
-  value : JsValue,
-) -> Result[GPURenderPassDescriptor, JsError] {
-  try_dictionary_GPURenderPassDescriptor(() => {
-    GPURenderPassDescriptor::from_js(value)
-  })
-}
+pub fn GPURenderPassDescriptor::from_js_checked(value : JsValue) -> Result[GPURenderPassDescriptor, JsError] { try_dictionary_GPURenderPassDescriptor(() => GPURenderPassDescriptor::from_js(value)) }
 
 ///|
 /// GPURenderPassColorAttachment dictionary
@@ -5420,27 +4307,19 @@ pub(all) struct GPURenderPassColorAttachment {
   storeOp : GPUStoreOp
 }
 
-///|
 /// Create a new GPURenderPassColorAttachment
-pub fn GPURenderPassColorAttachment::new(
-  view~ : GPUTextureOrGPUTextureView,
-  loadOp~ : GPULoadOp,
-  storeOp~ : GPUStoreOp,
-) -> GPURenderPassColorAttachment {
+pub fn GPURenderPassColorAttachment::new(view~ : GPUTextureOrGPUTextureView, loadOp~ : GPULoadOp, storeOp~ : GPUStoreOp) -> GPURenderPassColorAttachment {
   GPURenderPassColorAttachment::{
-    view,
+    view: view,
     depthSlice: None,
     resolveTarget: None,
     clearValue: None,
-    loadOp,
-    storeOp,
+    loadOp: loadOp,
+    storeOp: storeOp,
   }
 }
 
-///|
-extern "js" fn GPURenderPassColorAttachment::to_js_ffi(
-  self : GPURenderPassColorAttachment,
-) -> JsValue =
+extern "js" fn GPURenderPassColorAttachment::to_js_ffi(self : GPURenderPassColorAttachment) -> JsValue =
   #| (self) => ({
   #|   view: self.view,
   #|   depthSlice: self.depthSlice,
@@ -5450,18 +4329,12 @@ extern "js" fn GPURenderPassColorAttachment::to_js_ffi(
   #|   storeOp: ['store', 'discard'][self.storeOp]
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderPassColorAttachment::to_js(
-  self : GPURenderPassColorAttachment,
-) -> JsValue {
+pub fn GPURenderPassColorAttachment::to_js(self : GPURenderPassColorAttachment) -> JsValue {
   GPURenderPassColorAttachment::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderPassColorAttachment::from_js_ffi(
-  value : JsValue,
-) -> GPURenderPassColorAttachment =
+extern "js" fn GPURenderPassColorAttachment::from_js_ffi(value : JsValue) -> GPURenderPassColorAttachment =
   #| (v) => ({
   #|   view: v.view,
   #|   depthSlice: v.depthSlice,
@@ -5471,11 +4344,8 @@ extern "js" fn GPURenderPassColorAttachment::from_js_ffi(
   #|   storeOp: ['store', 'discard'].indexOf(v.storeOp)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderPassColorAttachment::from_js(
-  value : JsValue,
-) -> GPURenderPassColorAttachment {
+pub fn GPURenderPassColorAttachment::from_js(value : JsValue) -> GPURenderPassColorAttachment {
   GPURenderPassColorAttachment::from_js_ffi(value)
 }
 
@@ -5493,13 +4363,10 @@ pub(all) struct GPURenderPassDepthStencilAttachment {
   stencilReadOnly : Bool?
 }
 
-///|
 /// Create a new GPURenderPassDepthStencilAttachment
-pub fn GPURenderPassDepthStencilAttachment::new(
-  view~ : GPUTextureOrGPUTextureView,
-) -> GPURenderPassDepthStencilAttachment {
+pub fn GPURenderPassDepthStencilAttachment::new(view~ : GPUTextureOrGPUTextureView) -> GPURenderPassDepthStencilAttachment {
   GPURenderPassDepthStencilAttachment::{
-    view,
+    view: view,
     depthClearValue: None,
     depthLoadOp: None,
     depthStoreOp: None,
@@ -5511,10 +4378,7 @@ pub fn GPURenderPassDepthStencilAttachment::new(
   }
 }
 
-///|
-extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(
-  self : GPURenderPassDepthStencilAttachment,
-) -> JsValue =
+extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(self : GPURenderPassDepthStencilAttachment) -> JsValue =
   #| (self) => ({
   #|   view: self.view,
   #|   depthClearValue: ((() => { const v = self.depthClearValue; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -5527,18 +4391,12 @@ extern "js" fn GPURenderPassDepthStencilAttachment::to_js_ffi(
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderPassDepthStencilAttachment::to_js(
-  self : GPURenderPassDepthStencilAttachment,
-) -> JsValue {
+pub fn GPURenderPassDepthStencilAttachment::to_js(self : GPURenderPassDepthStencilAttachment) -> JsValue {
   GPURenderPassDepthStencilAttachment::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(
-  value : JsValue,
-) -> GPURenderPassDepthStencilAttachment =
+extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(value : JsValue) -> GPURenderPassDepthStencilAttachment =
   #| (v) => ({
   #|   view: v.view,
   #|   depthClearValue: (v.depthClearValue === undefined ? { $tag: 0 } : { $tag: 1, _0: v.depthClearValue }),
@@ -5551,11 +4409,8 @@ extern "js" fn GPURenderPassDepthStencilAttachment::from_js_ffi(
   #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderPassDepthStencilAttachment::from_js(
-  value : JsValue,
-) -> GPURenderPassDepthStencilAttachment {
+pub fn GPURenderPassDepthStencilAttachment::from_js(value : JsValue) -> GPURenderPassDepthStencilAttachment {
   GPURenderPassDepthStencilAttachment::from_js_ffi(value)
 }
 
@@ -5568,7 +4423,6 @@ pub(all) struct GPURenderPassLayout {
   sampleCount : GPUSize32?
 }
 
-///|
 /// Create a new GPURenderPassLayout with default values
 pub fn GPURenderPassLayout::default() -> GPURenderPassLayout {
   GPURenderPassLayout::{
@@ -5579,10 +4433,7 @@ pub fn GPURenderPassLayout::default() -> GPURenderPassLayout {
   }
 }
 
-///|
-extern "js" fn GPURenderPassLayout::to_js_ffi(
-  self : GPURenderPassLayout,
-) -> JsValue =
+extern "js" fn GPURenderPassLayout::to_js_ffi(self : GPURenderPassLayout) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
@@ -5590,16 +4441,12 @@ extern "js" fn GPURenderPassLayout::to_js_ffi(
   #|   sampleCount: self.sampleCount
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPURenderPassLayout::to_js(self : GPURenderPassLayout) -> JsValue {
   GPURenderPassLayout::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderPassLayout::from_js_ffi(
-  value : JsValue,
-) -> GPURenderPassLayout =
+extern "js" fn GPURenderPassLayout::from_js_ffi(value : JsValue) -> GPURenderPassLayout =
   #| (v) => ({
   #|   label: v.label,
   #|   colorFormats: v.colorFormats,
@@ -5607,7 +4454,6 @@ extern "js" fn GPURenderPassLayout::from_js_ffi(
   #|   sampleCount: v.sampleCount
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPURenderPassLayout::from_js(value : JsValue) -> GPURenderPassLayout {
   GPURenderPassLayout::from_js_ffi(value)
@@ -5619,41 +4465,30 @@ pub(all) struct GPURenderBundleDescriptor {
   label : String?
 }
 
-///|
 /// Create a new GPURenderBundleDescriptor with default values
 pub fn GPURenderBundleDescriptor::default() -> GPURenderBundleDescriptor {
-  GPURenderBundleDescriptor::{ label: None, }
+  GPURenderBundleDescriptor::{
+    label: None,
+  }
 }
 
-///|
-extern "js" fn GPURenderBundleDescriptor::to_js_ffi(
-  self : GPURenderBundleDescriptor,
-) -> JsValue =
+extern "js" fn GPURenderBundleDescriptor::to_js_ffi(self : GPURenderBundleDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderBundleDescriptor::to_js(
-  self : GPURenderBundleDescriptor,
-) -> JsValue {
+pub fn GPURenderBundleDescriptor::to_js(self : GPURenderBundleDescriptor) -> JsValue {
   GPURenderBundleDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderBundleDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPURenderBundleDescriptor =
+extern "js" fn GPURenderBundleDescriptor::from_js_ffi(value : JsValue) -> GPURenderBundleDescriptor =
   #| (v) => ({
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderBundleDescriptor::from_js(
-  value : JsValue,
-) -> GPURenderBundleDescriptor {
+pub fn GPURenderBundleDescriptor::from_js(value : JsValue) -> GPURenderBundleDescriptor {
   GPURenderBundleDescriptor::from_js_ffi(value)
 }
 
@@ -5668,7 +4503,6 @@ pub(all) struct GPURenderBundleEncoderDescriptor {
   stencilReadOnly : Bool?
 }
 
-///|
 /// Create a new GPURenderBundleEncoderDescriptor with default values
 pub fn GPURenderBundleEncoderDescriptor::default() -> GPURenderBundleEncoderDescriptor {
   GPURenderBundleEncoderDescriptor::{
@@ -5681,10 +4515,7 @@ pub fn GPURenderBundleEncoderDescriptor::default() -> GPURenderBundleEncoderDesc
   }
 }
 
-///|
-extern "js" fn GPURenderBundleEncoderDescriptor::to_js_ffi(
-  self : GPURenderBundleEncoderDescriptor,
-) -> JsValue =
+extern "js" fn GPURenderBundleEncoderDescriptor::to_js_ffi(self : GPURenderBundleEncoderDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   colorFormats: self.colorFormats,
@@ -5694,18 +4525,12 @@ extern "js" fn GPURenderBundleEncoderDescriptor::to_js_ffi(
   #|   stencilReadOnly: (self.stencilReadOnly === -1 ? undefined : self.stencilReadOnly)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPURenderBundleEncoderDescriptor::to_js(
-  self : GPURenderBundleEncoderDescriptor,
-) -> JsValue {
+pub fn GPURenderBundleEncoderDescriptor::to_js(self : GPURenderBundleEncoderDescriptor) -> JsValue {
   GPURenderBundleEncoderDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPURenderBundleEncoderDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPURenderBundleEncoderDescriptor =
+extern "js" fn GPURenderBundleEncoderDescriptor::from_js_ffi(value : JsValue) -> GPURenderBundleEncoderDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   colorFormats: v.colorFormats,
@@ -5715,11 +4540,8 @@ extern "js" fn GPURenderBundleEncoderDescriptor::from_js_ffi(
   #|   stencilReadOnly: (v.stencilReadOnly === undefined ? -1 : v.stencilReadOnly)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPURenderBundleEncoderDescriptor::from_js(
-  value : JsValue,
-) -> GPURenderBundleEncoderDescriptor {
+pub fn GPURenderBundleEncoderDescriptor::from_js(value : JsValue) -> GPURenderBundleEncoderDescriptor {
   GPURenderBundleEncoderDescriptor::from_js_ffi(value)
 }
 
@@ -5729,35 +4551,28 @@ pub(all) struct GPUQueueDescriptor {
   label : String?
 }
 
-///|
 /// Create a new GPUQueueDescriptor with default values
 pub fn GPUQueueDescriptor::default() -> GPUQueueDescriptor {
-  GPUQueueDescriptor::{ label: None, }
+  GPUQueueDescriptor::{
+    label: None,
+  }
 }
 
-///|
-extern "js" fn GPUQueueDescriptor::to_js_ffi(
-  self : GPUQueueDescriptor,
-) -> JsValue =
+extern "js" fn GPUQueueDescriptor::to_js_ffi(self : GPUQueueDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUQueueDescriptor::to_js(self : GPUQueueDescriptor) -> JsValue {
   GPUQueueDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUQueueDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUQueueDescriptor =
+extern "js" fn GPUQueueDescriptor::from_js_ffi(value : JsValue) -> GPUQueueDescriptor =
   #| (v) => ({
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUQueueDescriptor::from_js(value : JsValue) -> GPUQueueDescriptor {
   GPUQueueDescriptor::from_js_ffi(value)
@@ -5771,42 +4586,34 @@ pub(all) struct GPUQuerySetDescriptor {
   count : GPUSize32
 }
 
-///|
 /// Create a new GPUQuerySetDescriptor
-pub fn GPUQuerySetDescriptor::new(
-  type_~ : GPUQueryType,
-  count~ : GPUSize32,
-) -> GPUQuerySetDescriptor {
-  GPUQuerySetDescriptor::{ label: None, type_, count, }
+pub fn GPUQuerySetDescriptor::new(type_~ : GPUQueryType, count~ : GPUSize32) -> GPUQuerySetDescriptor {
+  GPUQuerySetDescriptor::{
+    label: None,
+    type_: type_,
+    count: count,
+  }
 }
 
-///|
-extern "js" fn GPUQuerySetDescriptor::to_js_ffi(
-  self : GPUQuerySetDescriptor,
-) -> JsValue =
+extern "js" fn GPUQuerySetDescriptor::to_js_ffi(self : GPUQuerySetDescriptor) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   type: ['occlusion', 'timestamp'][self.type_],
   #|   count: self.count
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUQuerySetDescriptor::to_js(self : GPUQuerySetDescriptor) -> JsValue {
   GPUQuerySetDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUQuerySetDescriptor::from_js_ffi(
-  value : JsValue,
-) -> GPUQuerySetDescriptor =
+extern "js" fn GPUQuerySetDescriptor::from_js_ffi(value : JsValue) -> GPUQuerySetDescriptor =
   #| (v) => ({
   #|   label: v.label,
   #|   type_: ['occlusion', 'timestamp'].indexOf(v.type),
   #|   count: v.count
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUQuerySetDescriptor::from_js(value : JsValue) -> GPUQuerySetDescriptor {
   GPUQuerySetDescriptor::from_js_ffi(value)
@@ -5818,35 +4625,28 @@ pub(all) struct GPUCanvasToneMapping {
   mode : GPUCanvasToneMappingMode?
 }
 
-///|
 /// Create a new GPUCanvasToneMapping with default values
 pub fn GPUCanvasToneMapping::default() -> GPUCanvasToneMapping {
-  GPUCanvasToneMapping::{ mode: None, }
+  GPUCanvasToneMapping::{
+    mode: None,
+  }
 }
 
-///|
-extern "js" fn GPUCanvasToneMapping::to_js_ffi(
-  self : GPUCanvasToneMapping,
-) -> JsValue =
+extern "js" fn GPUCanvasToneMapping::to_js_ffi(self : GPUCanvasToneMapping) -> JsValue =
   #| (self) => ({
   #|   mode: ((() => { const v = self.mode; if (v === undefined) return undefined; return ['standard', 'extended'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUCanvasToneMapping::to_js(self : GPUCanvasToneMapping) -> JsValue {
   GPUCanvasToneMapping::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUCanvasToneMapping::from_js_ffi(
-  value : JsValue,
-) -> GPUCanvasToneMapping =
+extern "js" fn GPUCanvasToneMapping::from_js_ffi(value : JsValue) -> GPUCanvasToneMapping =
   #| (v) => ({
   #|   mode: (v.mode === undefined ? undefined : ['standard', 'extended'].indexOf(v.mode))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUCanvasToneMapping::from_js(value : JsValue) -> GPUCanvasToneMapping {
   GPUCanvasToneMapping::from_js_ffi(value)
@@ -5864,15 +4664,11 @@ pub(all) struct GPUCanvasConfiguration {
   alphaMode : GPUCanvasAlphaMode?
 }
 
-///|
 /// Create a new GPUCanvasConfiguration
-pub fn GPUCanvasConfiguration::new(
-  device~ : GPUDevice,
-  format~ : GPUTextureFormat,
-) -> GPUCanvasConfiguration {
+pub fn GPUCanvasConfiguration::new(device~ : GPUDevice, format~ : GPUTextureFormat) -> GPUCanvasConfiguration {
   GPUCanvasConfiguration::{
-    device,
-    format,
+    device: device,
+    format: format,
     usage: None,
     viewFormats: None,
     colorSpace: None,
@@ -5881,11 +4677,7 @@ pub fn GPUCanvasConfiguration::new(
   }
 }
 
-///|
-extern "js" fn GPUCanvasConfiguration::to_js_ffi(
-  self : GPUCanvasConfiguration,
-  convert_toneMapping : (GPUCanvasToneMapping?) -> JsValue,
-) -> JsValue =
+extern "js" fn GPUCanvasConfiguration::to_js_ffi(self : GPUCanvasConfiguration, convert_toneMapping : (GPUCanvasToneMapping?) -> JsValue) -> JsValue =
   #| (self, convert_toneMapping) => ({
   #|   device: self.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'][self.format],
@@ -5896,22 +4688,12 @@ extern "js" fn GPUCanvasConfiguration::to_js_ffi(
   #|   alphaMode: ((() => { const v = self.alphaMode; if (v === undefined) return undefined; return ['opaque', 'premultiplied'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUCanvasConfiguration::to_js(self : GPUCanvasConfiguration) -> JsValue {
-  GPUCanvasConfiguration::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+  GPUCanvasConfiguration::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn GPUCanvasConfiguration::from_js_ffi(
-  value : JsValue,
-  convert_toneMapping : (JsValue) -> GPUCanvasToneMapping?,
-) -> GPUCanvasConfiguration =
+extern "js" fn GPUCanvasConfiguration::from_js_ffi(value : JsValue, convert_toneMapping : (JsValue) -> GPUCanvasToneMapping?) -> GPUCanvasConfiguration =
   #| (v, convert_toneMapping) => ({
   #|   device: v.device,
   #|   format: ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(v.format),
@@ -5922,18 +4704,9 @@ extern "js" fn GPUCanvasConfiguration::from_js_ffi(
   #|   alphaMode: (v.alphaMode === undefined ? undefined : ['opaque', 'premultiplied'].indexOf(v.alphaMode))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUCanvasConfiguration::from_js(
-  value : JsValue,
-) -> GPUCanvasConfiguration {
-  GPUCanvasConfiguration::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(GPUCanvasToneMapping::from_js(value))
-    }
-  })
+pub fn GPUCanvasConfiguration::from_js(value : JsValue) -> GPUCanvasConfiguration {
+  GPUCanvasConfiguration::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(GPUCanvasToneMapping::from_js(value)) } })
 }
 
 ///|
@@ -5942,43 +4715,30 @@ pub(all) struct GPUUncapturedErrorEventInit {
   error : GPUError
 }
 
-///|
 /// Create a new GPUUncapturedErrorEventInit
-pub fn GPUUncapturedErrorEventInit::new(
-  error~ : GPUError,
-) -> GPUUncapturedErrorEventInit {
-  GPUUncapturedErrorEventInit::{ error, }
+pub fn GPUUncapturedErrorEventInit::new(error~ : GPUError) -> GPUUncapturedErrorEventInit {
+  GPUUncapturedErrorEventInit::{
+    error: error,
+  }
 }
 
-///|
-extern "js" fn GPUUncapturedErrorEventInit::to_js_ffi(
-  self : GPUUncapturedErrorEventInit,
-) -> JsValue =
+extern "js" fn GPUUncapturedErrorEventInit::to_js_ffi(self : GPUUncapturedErrorEventInit) -> JsValue =
   #| (self) => ({
   #|   error: self.error
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GPUUncapturedErrorEventInit::to_js(
-  self : GPUUncapturedErrorEventInit,
-) -> JsValue {
+pub fn GPUUncapturedErrorEventInit::to_js(self : GPUUncapturedErrorEventInit) -> JsValue {
   GPUUncapturedErrorEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GPUUncapturedErrorEventInit::from_js_ffi(
-  value : JsValue,
-) -> GPUUncapturedErrorEventInit =
+extern "js" fn GPUUncapturedErrorEventInit::from_js_ffi(value : JsValue) -> GPUUncapturedErrorEventInit =
   #| (v) => ({
   #|   error: v.error
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GPUUncapturedErrorEventInit::from_js(
-  value : JsValue,
-) -> GPUUncapturedErrorEventInit {
+pub fn GPUUncapturedErrorEventInit::from_js(value : JsValue) -> GPUUncapturedErrorEventInit {
   GPUUncapturedErrorEventInit::from_js_ffi(value)
 }
 
@@ -5991,13 +4751,16 @@ pub(all) struct GPUColorDict {
   a : Double
 }
 
-///|
 /// Create a new GPUColorDict with default values
 pub fn GPUColorDict::default() -> GPUColorDict {
-  GPUColorDict::{ r: 0, g: 0, b: 0, a: 0, }
+  GPUColorDict::{
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 0,
+  }
 }
 
-///|
 extern "js" fn GPUColorDict::to_js_ffi(self : GPUColorDict) -> JsValue =
   #| (self) => ({
   #|   r: self.r,
@@ -6006,13 +4769,11 @@ extern "js" fn GPUColorDict::to_js_ffi(self : GPUColorDict) -> JsValue =
   #|   a: self.a
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUColorDict::to_js(self : GPUColorDict) -> JsValue {
   GPUColorDict::to_js_ffi(self)
 }
 
-///|
 extern "js" fn GPUColorDict::from_js_ffi(value : JsValue) -> GPUColorDict =
   #| (v) => ({
   #|   r: v.r,
@@ -6021,7 +4782,6 @@ extern "js" fn GPUColorDict::from_js_ffi(value : JsValue) -> GPUColorDict =
   #|   a: v.a
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUColorDict::from_js(value : JsValue) -> GPUColorDict {
   GPUColorDict::from_js_ffi(value)
@@ -6034,33 +4794,31 @@ pub(all) struct GPUOrigin2DDict {
   y : GPUIntegerCoordinate?
 }
 
-///|
 /// Create a new GPUOrigin2DDict with default values
 pub fn GPUOrigin2DDict::default() -> GPUOrigin2DDict {
-  GPUOrigin2DDict::{ x: None, y: None, }
+  GPUOrigin2DDict::{
+    x: None,
+    y: None,
+  }
 }
 
-///|
 extern "js" fn GPUOrigin2DDict::to_js_ffi(self : GPUOrigin2DDict) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
   #|   y: self.y
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUOrigin2DDict::to_js(self : GPUOrigin2DDict) -> JsValue {
   GPUOrigin2DDict::to_js_ffi(self)
 }
 
-///|
 extern "js" fn GPUOrigin2DDict::from_js_ffi(value : JsValue) -> GPUOrigin2DDict =
   #| (v) => ({
   #|   x: v.x,
   #|   y: v.y
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUOrigin2DDict::from_js(value : JsValue) -> GPUOrigin2DDict {
   GPUOrigin2DDict::from_js_ffi(value)
@@ -6074,13 +4832,15 @@ pub(all) struct GPUOrigin3DDict {
   z : GPUIntegerCoordinate?
 }
 
-///|
 /// Create a new GPUOrigin3DDict with default values
 pub fn GPUOrigin3DDict::default() -> GPUOrigin3DDict {
-  GPUOrigin3DDict::{ x: None, y: None, z: None, }
+  GPUOrigin3DDict::{
+    x: None,
+    y: None,
+    z: None,
+  }
 }
 
-///|
 extern "js" fn GPUOrigin3DDict::to_js_ffi(self : GPUOrigin3DDict) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
@@ -6088,13 +4848,11 @@ extern "js" fn GPUOrigin3DDict::to_js_ffi(self : GPUOrigin3DDict) -> JsValue =
   #|   z: self.z
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUOrigin3DDict::to_js(self : GPUOrigin3DDict) -> JsValue {
   GPUOrigin3DDict::to_js_ffi(self)
 }
 
-///|
 extern "js" fn GPUOrigin3DDict::from_js_ffi(value : JsValue) -> GPUOrigin3DDict =
   #| (v) => ({
   #|   x: v.x,
@@ -6102,7 +4860,6 @@ extern "js" fn GPUOrigin3DDict::from_js_ffi(value : JsValue) -> GPUOrigin3DDict 
   #|   z: v.z
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUOrigin3DDict::from_js(value : JsValue) -> GPUOrigin3DDict {
   GPUOrigin3DDict::from_js_ffi(value)
@@ -6116,13 +4873,15 @@ pub(all) struct GPUExtent3DDict {
   depthOrArrayLayers : GPUIntegerCoordinate?
 }
 
-///|
 /// Create a new GPUExtent3DDict
 pub fn GPUExtent3DDict::new(width~ : GPUIntegerCoordinate) -> GPUExtent3DDict {
-  GPUExtent3DDict::{ width, height: None, depthOrArrayLayers: None, }
+  GPUExtent3DDict::{
+    width: width,
+    height: None,
+    depthOrArrayLayers: None,
+  }
 }
 
-///|
 extern "js" fn GPUExtent3DDict::to_js_ffi(self : GPUExtent3DDict) -> JsValue =
   #| (self) => ({
   #|   width: self.width,
@@ -6130,13 +4889,11 @@ extern "js" fn GPUExtent3DDict::to_js_ffi(self : GPUExtent3DDict) -> JsValue =
   #|   depthOrArrayLayers: self.depthOrArrayLayers
   #| })
 
-///|
 /// Convert to JsValue
 pub fn GPUExtent3DDict::to_js(self : GPUExtent3DDict) -> JsValue {
   GPUExtent3DDict::to_js_ffi(self)
 }
 
-///|
 extern "js" fn GPUExtent3DDict::from_js_ffi(value : JsValue) -> GPUExtent3DDict =
   #| (v) => ({
   #|   width: v.width,
@@ -6144,7 +4901,6 @@ extern "js" fn GPUExtent3DDict::from_js_ffi(value : JsValue) -> GPUExtent3DDict 
   #|   depthOrArrayLayers: v.depthOrArrayLayers
   #| })
 
-///|
 /// Convert from JsValue
 pub fn GPUExtent3DDict::from_js(value : JsValue) -> GPUExtent3DDict {
   GPUExtent3DDict::from_js_ffi(value)
@@ -6154,497 +4910,287 @@ pub fn GPUExtent3DDict::from_js(value : JsValue) -> GPUExtent3DDict {
 /// GPUSupportedLimits interface
 pub type GPUSupportedLimits
 
-///|
-pub extern "js" fn GPUSupportedLimits::to_js_value(
-  self : GPUSupportedLimits,
-) -> JsValue =
+pub extern "js" fn GPUSupportedLimits::to_js_value(self : GPUSupportedLimits) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUSupportedLimits (unchecked)
-pub extern "js" fn GPUSupportedLimits::from_js_value(
-  v : JsValue,
-) -> GPUSupportedLimits =
+pub extern "js" fn GPUSupportedLimits::from_js_value(v : JsValue) -> GPUSupportedLimits =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUSupportedLimits (checked with instanceof)
-pub extern "js" fn GPUSupportedLimits::from_js_value_opt(
-  v : JsValue,
-) -> GPUSupportedLimits? =
+pub extern "js" fn GPUSupportedLimits::from_js_value_opt(v : JsValue) -> GPUSupportedLimits? =
   #| (v) => (v instanceof GPUSupportedLimits) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUSupportedLimits (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_supported_limits(
-  self : JsValue,
-) -> GPUSupportedLimits? =
+pub extern "js" fn JsValue::as_gpu_supported_limits(self : JsValue) -> GPUSupportedLimits? =
   #| (self) => (self instanceof GPUSupportedLimits) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUSupportedLimits (unchecked)
-pub extern "js" fn JsValue::to_gpu_supported_limits(
-  self : JsValue,
-) -> GPUSupportedLimits =
+pub extern "js" fn JsValue::to_gpu_supported_limits(self : JsValue) -> GPUSupportedLimits =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_1d(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_1d(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxTextureDimension1D
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_2d(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_2d(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxTextureDimension2D
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_3d(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_texture_dimension_3d(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxTextureDimension3D
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_texture_array_layers(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_texture_array_layers(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxTextureArrayLayers
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_bind_groups(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_bind_groups(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxBindGroups
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_bind_groups_plus_vertex_buffers(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_bind_groups_plus_vertex_buffers(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxBindGroupsPlusVertexBuffers
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_bindings_per_bind_group(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_immediate_size(self : GPUSupportedLimits) -> Int =
+  #| (self) => self.maxImmediateSize
+
+pub extern "js" fn GPUSupportedLimits::get_max_bindings_per_bind_group(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxBindingsPerBindGroup
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_dynamic_uniform_buffers_per_pipeline_layout(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_dynamic_uniform_buffers_per_pipeline_layout(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxDynamicUniformBuffersPerPipelineLayout
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_dynamic_storage_buffers_per_pipeline_layout(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_dynamic_storage_buffers_per_pipeline_layout(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxDynamicStorageBuffersPerPipelineLayout
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_sampled_textures_per_shader_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_sampled_textures_per_shader_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxSampledTexturesPerShaderStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_samplers_per_shader_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_samplers_per_shader_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxSamplersPerShaderStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_per_shader_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_per_shader_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageBuffersPerShaderStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_in_vertex_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_in_vertex_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageBuffersInVertexStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_in_fragment_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_buffers_in_fragment_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageBuffersInFragmentStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_per_shader_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_per_shader_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageTexturesPerShaderStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_in_vertex_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_in_vertex_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageTexturesInVertexStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_in_fragment_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_textures_in_fragment_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxStorageTexturesInFragmentStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffers_per_shader_stage(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffers_per_shader_stage(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxUniformBuffersPerShaderStage
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffer_binding_size(
-  self : GPUSupportedLimits,
-) -> Int64 =
+pub extern "js" fn GPUSupportedLimits::get_max_uniform_buffer_binding_size(self : GPUSupportedLimits) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.maxUniformBufferBindingSize))
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_storage_buffer_binding_size(
-  self : GPUSupportedLimits,
-) -> Int64 =
+pub extern "js" fn GPUSupportedLimits::get_max_storage_buffer_binding_size(self : GPUSupportedLimits) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.maxStorageBufferBindingSize))
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_min_uniform_buffer_offset_alignment(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_min_uniform_buffer_offset_alignment(self : GPUSupportedLimits) -> Int =
   #| (self) => self.minUniformBufferOffsetAlignment
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_min_storage_buffer_offset_alignment(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_min_storage_buffer_offset_alignment(self : GPUSupportedLimits) -> Int =
   #| (self) => self.minStorageBufferOffsetAlignment
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_vertex_buffers(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_vertex_buffers(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxVertexBuffers
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_buffer_size(
-  self : GPUSupportedLimits,
-) -> Int64 =
+pub extern "js" fn GPUSupportedLimits::get_max_buffer_size(self : GPUSupportedLimits) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.maxBufferSize))
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_vertex_attributes(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_vertex_attributes(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxVertexAttributes
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_vertex_buffer_array_stride(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_vertex_buffer_array_stride(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxVertexBufferArrayStride
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_inter_stage_shader_variables(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_inter_stage_shader_variables(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxInterStageShaderVariables
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_color_attachments(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_color_attachments(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxColorAttachments
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_color_attachment_bytes_per_sample(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_color_attachment_bytes_per_sample(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxColorAttachmentBytesPerSample
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_storage_size(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_storage_size(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeWorkgroupStorageSize
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_invocations_per_workgroup(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_invocations_per_workgroup(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeInvocationsPerWorkgroup
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_x(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_x(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeWorkgroupSizeX
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_y(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_y(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeWorkgroupSizeY
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_z(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroup_size_z(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeWorkgroupSizeZ
 
-///|
-pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroups_per_dimension(
-  self : GPUSupportedLimits,
-) -> Int =
+pub extern "js" fn GPUSupportedLimits::get_max_compute_workgroups_per_dimension(self : GPUSupportedLimits) -> Int =
   #| (self) => self.maxComputeWorkgroupsPerDimension
 
 ///|
 /// GPUSupportedFeatures interface
 pub type GPUSupportedFeatures
 
-///|
-pub extern "js" fn GPUSupportedFeatures::to_js_value(
-  self : GPUSupportedFeatures,
-) -> JsValue =
+pub extern "js" fn GPUSupportedFeatures::to_js_value(self : GPUSupportedFeatures) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUSupportedFeatures (unchecked)
-pub extern "js" fn GPUSupportedFeatures::from_js_value(
-  v : JsValue,
-) -> GPUSupportedFeatures =
+pub extern "js" fn GPUSupportedFeatures::from_js_value(v : JsValue) -> GPUSupportedFeatures =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUSupportedFeatures (checked with instanceof)
-pub extern "js" fn GPUSupportedFeatures::from_js_value_opt(
-  v : JsValue,
-) -> GPUSupportedFeatures? =
+pub extern "js" fn GPUSupportedFeatures::from_js_value_opt(v : JsValue) -> GPUSupportedFeatures? =
   #| (v) => (v instanceof GPUSupportedFeatures) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUSupportedFeatures (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_supported_features(
-  self : JsValue,
-) -> GPUSupportedFeatures? =
+pub extern "js" fn JsValue::as_gpu_supported_features(self : JsValue) -> GPUSupportedFeatures? =
   #| (self) => (self instanceof GPUSupportedFeatures) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUSupportedFeatures (unchecked)
-pub extern "js" fn JsValue::to_gpu_supported_features(
-  self : JsValue,
-) -> GPUSupportedFeatures =
+pub extern "js" fn JsValue::to_gpu_supported_features(self : JsValue) -> GPUSupportedFeatures =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUSupportedFeatures::has(
-  self : GPUSupportedFeatures,
-  value : String,
-) -> Bool =
+pub extern "js" fn GPUSupportedFeatures::has(self : GPUSupportedFeatures, value : String) -> Bool =
   #| (self, value) => self.has(value)
 
 ///|
 /// WGSLLanguageFeatures interface
 pub type WGSLLanguageFeatures
 
-///|
-pub extern "js" fn WGSLLanguageFeatures::to_js_value(
-  self : WGSLLanguageFeatures,
-) -> JsValue =
+pub extern "js" fn WGSLLanguageFeatures::to_js_value(self : WGSLLanguageFeatures) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to WGSLLanguageFeatures (unchecked)
-pub extern "js" fn WGSLLanguageFeatures::from_js_value(
-  v : JsValue,
-) -> WGSLLanguageFeatures =
+pub extern "js" fn WGSLLanguageFeatures::from_js_value(v : JsValue) -> WGSLLanguageFeatures =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to WGSLLanguageFeatures (checked with instanceof)
-pub extern "js" fn WGSLLanguageFeatures::from_js_value_opt(
-  v : JsValue,
-) -> WGSLLanguageFeatures? =
+pub extern "js" fn WGSLLanguageFeatures::from_js_value_opt(v : JsValue) -> WGSLLanguageFeatures? =
   #| (v) => (v instanceof WGSLLanguageFeatures) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to WGSLLanguageFeatures (checked with instanceof)
-pub extern "js" fn JsValue::as_wgsl_language_features(
-  self : JsValue,
-) -> WGSLLanguageFeatures? =
+pub extern "js" fn JsValue::as_wgsl_language_features(self : JsValue) -> WGSLLanguageFeatures? =
   #| (self) => (self instanceof WGSLLanguageFeatures) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to WGSLLanguageFeatures (unchecked)
-pub extern "js" fn JsValue::to_wgsl_language_features(
-  self : JsValue,
-) -> WGSLLanguageFeatures =
+pub extern "js" fn JsValue::to_wgsl_language_features(self : JsValue) -> WGSLLanguageFeatures =
   #| (self) => self
 
-///|
-pub extern "js" fn WGSLLanguageFeatures::has(
-  self : WGSLLanguageFeatures,
-  value : String,
-) -> Bool =
+pub extern "js" fn WGSLLanguageFeatures::has(self : WGSLLanguageFeatures, value : String) -> Bool =
   #| (self, value) => self.has(value)
 
 ///|
 /// GPUAdapterInfo interface
 pub type GPUAdapterInfo
 
-///|
-pub extern "js" fn GPUAdapterInfo::to_js_value(
-  self : GPUAdapterInfo,
-) -> JsValue =
+pub extern "js" fn GPUAdapterInfo::to_js_value(self : GPUAdapterInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUAdapterInfo (unchecked)
 pub extern "js" fn GPUAdapterInfo::from_js_value(v : JsValue) -> GPUAdapterInfo =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUAdapterInfo (checked with instanceof)
-pub extern "js" fn GPUAdapterInfo::from_js_value_opt(
-  v : JsValue,
-) -> GPUAdapterInfo? =
+pub extern "js" fn GPUAdapterInfo::from_js_value_opt(v : JsValue) -> GPUAdapterInfo? =
   #| (v) => (v instanceof GPUAdapterInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUAdapterInfo (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_adapter_info(
-  self : JsValue,
-) -> GPUAdapterInfo? =
+pub extern "js" fn JsValue::as_gpu_adapter_info(self : JsValue) -> GPUAdapterInfo? =
   #| (self) => (self instanceof GPUAdapterInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUAdapterInfo (unchecked)
-pub extern "js" fn JsValue::to_gpu_adapter_info(
-  self : JsValue,
-) -> GPUAdapterInfo =
+pub extern "js" fn JsValue::to_gpu_adapter_info(self : JsValue) -> GPUAdapterInfo =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUAdapterInfo::get_vendor(self : GPUAdapterInfo) -> String =
   #| (self) => self.vendor
 
-///|
-pub extern "js" fn GPUAdapterInfo::get_architecture(
-  self : GPUAdapterInfo,
-) -> String =
+pub extern "js" fn GPUAdapterInfo::get_architecture(self : GPUAdapterInfo) -> String =
   #| (self) => self.architecture
 
-///|
 pub extern "js" fn GPUAdapterInfo::get_device(self : GPUAdapterInfo) -> String =
   #| (self) => self.device
 
-///|
-pub extern "js" fn GPUAdapterInfo::get_description(
-  self : GPUAdapterInfo,
-) -> String =
+pub extern "js" fn GPUAdapterInfo::get_description(self : GPUAdapterInfo) -> String =
   #| (self) => self.description
 
-///|
-pub extern "js" fn GPUAdapterInfo::get_subgroup_min_size(
-  self : GPUAdapterInfo,
-) -> Int =
+pub extern "js" fn GPUAdapterInfo::get_subgroup_min_size(self : GPUAdapterInfo) -> Int =
   #| (self) => self.subgroupMinSize
 
-///|
-pub extern "js" fn GPUAdapterInfo::get_subgroup_max_size(
-  self : GPUAdapterInfo,
-) -> Int =
+pub extern "js" fn GPUAdapterInfo::get_subgroup_max_size(self : GPUAdapterInfo) -> Int =
   #| (self) => self.subgroupMaxSize
 
-///|
-pub extern "js" fn GPUAdapterInfo::get_is_fallback_adapter(
-  self : GPUAdapterInfo,
-) -> Bool =
+pub extern "js" fn GPUAdapterInfo::get_is_fallback_adapter(self : GPUAdapterInfo) -> Bool =
   #| (self) => self.isFallbackAdapter
 
 ///|
 /// GPU interface
 pub type GPU
 
-///|
 pub extern "js" fn GPU::to_js_value(self : GPU) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPU (unchecked)
 pub extern "js" fn GPU::from_js_value(v : JsValue) -> GPU =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPU (checked with instanceof)
 pub extern "js" fn GPU::from_js_value_opt(v : JsValue) -> GPU? =
   #| (v) => (v instanceof GPU) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPU (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu(self : JsValue) -> GPU? =
   #| (self) => (self instanceof GPU) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPU (unchecked)
 pub extern "js" fn JsValue::to_gpu(self : JsValue) -> GPU =
   #| (self) => self
 
-///|
 pub extern "js" fn GPU::request_adapter(self : GPU) -> Promise[GPUAdapter?] =
   #| (self) => self.requestAdapter().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
-///|
-extern "js" fn GPU::request_adapter_with_options_ffi(
-  self : GPU,
-  options : JsValue,
-) -> Promise[GPUAdapter?] =
+extern "js" fn GPU::request_adapter_with_options_ffi(self : GPU, options : JsValue) -> Promise[GPUAdapter?] =
   #| (self, options) => self.requestAdapter(options).then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
-///|
-pub fn GPU::request_adapter_with_options(
-  self : GPU,
-  options : GPURequestAdapterOptions,
-) -> Promise[GPUAdapter?] {
+pub fn GPU::request_adapter_with_options(self : GPU, options : GPURequestAdapterOptions) -> Promise[GPUAdapter?] {
   GPU::request_adapter_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn GPU::get_preferred_canvas_format(
-  self : GPU,
-) -> GPUTextureFormat =
+pub extern "js" fn GPU::get_preferred_canvas_format(self : GPU) -> GPUTextureFormat =
   #| (self) => ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(self.getPreferredCanvasFormat())
 
-///|
-pub extern "js" fn GPU::get_wgsl_language_features(
-  self : GPU,
-) -> WGSLLanguageFeatures =
+pub extern "js" fn GPU::get_wgsl_language_features(self : GPU) -> WGSLLanguageFeatures =
   #| (self) => self.wgslLanguageFeatures
 
 ///|
 /// GPUAdapter interface
 pub type GPUAdapter
 
-///|
 pub extern "js" fn GPUAdapter::to_js_value(self : GPUAdapter) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUAdapter (unchecked)
 pub extern "js" fn GPUAdapter::from_js_value(v : JsValue) -> GPUAdapter =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUAdapter (checked with instanceof)
 pub extern "js" fn GPUAdapter::from_js_value_opt(v : JsValue) -> GPUAdapter? =
   #| (v) => (v instanceof GPUAdapter) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUAdapter (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_adapter(self : JsValue) -> GPUAdapter? =
   #| (self) => (self instanceof GPUAdapter) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUAdapter (unchecked)
 pub extern "js" fn JsValue::to_gpu_adapter(self : JsValue) -> GPUAdapter =
   #| (self) => self
@@ -6657,40 +5203,24 @@ pub(all) enum GPUAdapterRequestDeviceError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn GPUAdapter::get_features(
-  self : GPUAdapter,
-) -> GPUSupportedFeatures =
+pub extend GPUAdapterRequestDeviceError with @debug.Debug::{to_repr}
+
+pub extern "js" fn GPUAdapter::get_features(self : GPUAdapter) -> GPUSupportedFeatures =
   #| (self) => self.features
 
-///|
-pub extern "js" fn GPUAdapter::get_limits(
-  self : GPUAdapter,
-) -> GPUSupportedLimits =
+pub extern "js" fn GPUAdapter::get_limits(self : GPUAdapter) -> GPUSupportedLimits =
   #| (self) => self.limits
 
-///|
 pub extern "js" fn GPUAdapter::get_info(self : GPUAdapter) -> GPUAdapterInfo =
   #| (self) => self.info
 
-///|
-pub extern "js" fn GPUAdapter::request_device(
-  self : GPUAdapter,
-) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+pub extern "js" fn GPUAdapter::request_device(self : GPUAdapter) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
   #| (self) => self.requestDevice().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn GPUAdapter::request_device_with_descriptor_ffi(
-  self : GPUAdapter,
-  descriptor : JsValue,
-) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
+extern "js" fn GPUAdapter::request_device_with_descriptor_ffi(self : GPUAdapter, descriptor : JsValue) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] =
   #| (self, descriptor) => self.requestDevice(descriptor).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn GPUAdapter::request_device_with_descriptor(
-  self : GPUAdapter,
-  descriptor : GPUDeviceDescriptor,
-) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] {
+pub fn GPUAdapter::request_device_with_descriptor(self : GPUAdapter, descriptor : GPUDeviceDescriptor) -> Promise[Result[GPUDevice, GPUAdapterRequestDeviceError]] {
   GPUAdapter::request_device_with_descriptor_ffi(self, descriptor.to_js())
 }
 
@@ -6698,31 +5228,25 @@ pub fn GPUAdapter::request_device_with_descriptor(
 /// GPUDevice interface
 pub type GPUDevice
 
-///|
 pub extern "js" fn GPUDevice::to_js_value(self : GPUDevice) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUDevice (unchecked)
 pub extern "js" fn GPUDevice::from_js_value(v : JsValue) -> GPUDevice =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUDevice (checked with instanceof)
 pub extern "js" fn GPUDevice::from_js_value_opt(v : JsValue) -> GPUDevice? =
   #| (v) => (v instanceof GPUDevice) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUDevice (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_device(self : JsValue) -> GPUDevice? =
   #| (self) => (self instanceof GPUDevice) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUDevice (unchecked)
 pub extern "js" fn JsValue::to_gpu_device(self : JsValue) -> GPUDevice =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUDevice::to_event_target(self : GPUDevice) -> EventTarget =
   #| (self) => self
 
@@ -6733,6 +5257,8 @@ pub(all) enum GPUDeviceCreateBufferError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend GPUDeviceCreateBufferError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum GPUDeviceImportExternalTextureError {
@@ -6740,2318 +5266,1187 @@ pub(all) enum GPUDeviceImportExternalTextureError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn GPUDevice::get_features(
-  self : GPUDevice,
-) -> GPUSupportedFeatures =
+pub extend GPUDeviceImportExternalTextureError with @debug.Debug::{to_repr}
+
+pub extern "js" fn GPUDevice::get_features(self : GPUDevice) -> GPUSupportedFeatures =
   #| (self) => self.features
 
-///|
-pub extern "js" fn GPUDevice::get_limits(
-  self : GPUDevice,
-) -> GPUSupportedLimits =
+pub extern "js" fn GPUDevice::get_limits(self : GPUDevice) -> GPUSupportedLimits =
   #| (self) => self.limits
 
-///|
-pub extern "js" fn GPUDevice::get_adapter_info(
-  self : GPUDevice,
-) -> GPUAdapterInfo =
+pub extern "js" fn GPUDevice::get_adapter_info(self : GPUDevice) -> GPUAdapterInfo =
   #| (self) => self.adapterInfo
 
-///|
 pub extern "js" fn GPUDevice::get_queue(self : GPUDevice) -> GPUQueue =
   #| (self) => self.queue
 
-///|
 pub extern "js" fn GPUDevice::destroy(self : GPUDevice) -> Unit =
   #| (self) => self.destroy()
 
-///|
-extern "js" fn GPUDevice::create_buffer_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> Result[GPUBuffer, GPUDeviceCreateBufferError] =
+extern "js" fn GPUDevice::create_buffer_ffi(self : GPUDevice, descriptor : JsValue) -> Result[GPUBuffer, GPUDeviceCreateBufferError] =
   #| (self, descriptor) => (() => { try { return { $tag: 1, _0: self.createBuffer(descriptor) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn GPUDevice::create_buffer(
-  self : GPUDevice,
-  descriptor : GPUBufferDescriptor,
-) -> Result[GPUBuffer, GPUDeviceCreateBufferError] {
+pub fn GPUDevice::create_buffer(self : GPUDevice, descriptor : GPUBufferDescriptor) -> Result[GPUBuffer, GPUDeviceCreateBufferError] {
   GPUDevice::create_buffer_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_texture_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUTexture =
+extern "js" fn GPUDevice::create_texture_ffi(self : GPUDevice, descriptor : JsValue) -> GPUTexture =
   #| (self, descriptor) => self.createTexture(descriptor)
 
-///|
-pub fn GPUDevice::create_texture(
-  self : GPUDevice,
-  descriptor : GPUTextureDescriptor,
-) -> GPUTexture {
+pub fn GPUDevice::create_texture(self : GPUDevice, descriptor : GPUTextureDescriptor) -> GPUTexture {
   GPUDevice::create_texture_ffi(self, descriptor.to_js())
 }
 
-///|
 pub extern "js" fn GPUDevice::create_sampler(self : GPUDevice) -> GPUSampler =
   #| (self) => self.createSampler()
 
-///|
-extern "js" fn GPUDevice::create_sampler_with_descriptor_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUSampler =
+extern "js" fn GPUDevice::create_sampler_with_descriptor_ffi(self : GPUDevice, descriptor : JsValue) -> GPUSampler =
   #| (self, descriptor) => self.createSampler(descriptor)
 
-///|
-pub fn GPUDevice::create_sampler_with_descriptor(
-  self : GPUDevice,
-  descriptor : GPUSamplerDescriptor,
-) -> GPUSampler {
+pub fn GPUDevice::create_sampler_with_descriptor(self : GPUDevice, descriptor : GPUSamplerDescriptor) -> GPUSampler {
   GPUDevice::create_sampler_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::import_external_texture_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] =
+extern "js" fn GPUDevice::import_external_texture_ffi(self : GPUDevice, descriptor : JsValue) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] =
   #| (self, descriptor) => (() => { try { return { $tag: 1, _0: self.importExternalTexture(descriptor) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn GPUDevice::import_external_texture(
-  self : GPUDevice,
-  descriptor : GPUExternalTextureDescriptor,
-) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] {
+pub fn GPUDevice::import_external_texture(self : GPUDevice, descriptor : GPUExternalTextureDescriptor) -> Result[GPUExternalTexture, GPUDeviceImportExternalTextureError] {
   GPUDevice::import_external_texture_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_bind_group_layout_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUBindGroupLayout =
+extern "js" fn GPUDevice::create_bind_group_layout_ffi(self : GPUDevice, descriptor : JsValue) -> GPUBindGroupLayout =
   #| (self, descriptor) => self.createBindGroupLayout(descriptor)
 
-///|
-pub fn GPUDevice::create_bind_group_layout(
-  self : GPUDevice,
-  descriptor : GPUBindGroupLayoutDescriptor,
-) -> GPUBindGroupLayout {
+pub fn GPUDevice::create_bind_group_layout(self : GPUDevice, descriptor : GPUBindGroupLayoutDescriptor) -> GPUBindGroupLayout {
   GPUDevice::create_bind_group_layout_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_pipeline_layout_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUPipelineLayout =
+extern "js" fn GPUDevice::create_pipeline_layout_ffi(self : GPUDevice, descriptor : JsValue) -> GPUPipelineLayout =
   #| (self, descriptor) => self.createPipelineLayout(descriptor)
 
-///|
-pub fn GPUDevice::create_pipeline_layout(
-  self : GPUDevice,
-  descriptor : GPUPipelineLayoutDescriptor,
-) -> GPUPipelineLayout {
+pub fn GPUDevice::create_pipeline_layout(self : GPUDevice, descriptor : GPUPipelineLayoutDescriptor) -> GPUPipelineLayout {
   GPUDevice::create_pipeline_layout_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_bind_group_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUBindGroup =
+extern "js" fn GPUDevice::create_bind_group_ffi(self : GPUDevice, descriptor : JsValue) -> GPUBindGroup =
   #| (self, descriptor) => self.createBindGroup(descriptor)
 
-///|
-pub fn GPUDevice::create_bind_group(
-  self : GPUDevice,
-  descriptor : GPUBindGroupDescriptor,
-) -> GPUBindGroup {
+pub fn GPUDevice::create_bind_group(self : GPUDevice, descriptor : GPUBindGroupDescriptor) -> GPUBindGroup {
   GPUDevice::create_bind_group_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_shader_module_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUShaderModule =
+extern "js" fn GPUDevice::create_shader_module_ffi(self : GPUDevice, descriptor : JsValue) -> GPUShaderModule =
   #| (self, descriptor) => self.createShaderModule(descriptor)
 
-///|
-pub fn GPUDevice::create_shader_module(
-  self : GPUDevice,
-  descriptor : GPUShaderModuleDescriptor,
-) -> GPUShaderModule {
+pub fn GPUDevice::create_shader_module(self : GPUDevice, descriptor : GPUShaderModuleDescriptor) -> GPUShaderModule {
   GPUDevice::create_shader_module_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_compute_pipeline_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUComputePipeline =
+extern "js" fn GPUDevice::create_compute_pipeline_ffi(self : GPUDevice, descriptor : JsValue) -> GPUComputePipeline =
   #| (self, descriptor) => self.createComputePipeline(descriptor)
 
-///|
-pub fn GPUDevice::create_compute_pipeline(
-  self : GPUDevice,
-  descriptor : GPUComputePipelineDescriptor,
-) -> GPUComputePipeline {
+pub fn GPUDevice::create_compute_pipeline(self : GPUDevice, descriptor : GPUComputePipelineDescriptor) -> GPUComputePipeline {
   GPUDevice::create_compute_pipeline_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_render_pipeline_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPURenderPipeline =
+extern "js" fn GPUDevice::create_render_pipeline_ffi(self : GPUDevice, descriptor : JsValue) -> GPURenderPipeline =
   #| (self, descriptor) => self.createRenderPipeline(descriptor)
 
-///|
-pub fn GPUDevice::create_render_pipeline(
-  self : GPUDevice,
-  descriptor : GPURenderPipelineDescriptor,
-) -> GPURenderPipeline {
+pub fn GPUDevice::create_render_pipeline(self : GPUDevice, descriptor : GPURenderPipelineDescriptor) -> GPURenderPipeline {
   GPUDevice::create_render_pipeline_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_compute_pipeline_async_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> Promise[GPUComputePipeline] =
+extern "js" fn GPUDevice::create_compute_pipeline_async_ffi(self : GPUDevice, descriptor : JsValue) -> Promise[GPUComputePipeline] =
   #| (self, descriptor) => self.createComputePipelineAsync(descriptor)
 
-///|
-pub fn GPUDevice::create_compute_pipeline_async(
-  self : GPUDevice,
-  descriptor : GPUComputePipelineDescriptor,
-) -> Promise[GPUComputePipeline] {
+pub fn GPUDevice::create_compute_pipeline_async(self : GPUDevice, descriptor : GPUComputePipelineDescriptor) -> Promise[GPUComputePipeline] {
   GPUDevice::create_compute_pipeline_async_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_render_pipeline_async_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> Promise[GPURenderPipeline] =
+extern "js" fn GPUDevice::create_render_pipeline_async_ffi(self : GPUDevice, descriptor : JsValue) -> Promise[GPURenderPipeline] =
   #| (self, descriptor) => self.createRenderPipelineAsync(descriptor)
 
-///|
-pub fn GPUDevice::create_render_pipeline_async(
-  self : GPUDevice,
-  descriptor : GPURenderPipelineDescriptor,
-) -> Promise[GPURenderPipeline] {
+pub fn GPUDevice::create_render_pipeline_async(self : GPUDevice, descriptor : GPURenderPipelineDescriptor) -> Promise[GPURenderPipeline] {
   GPUDevice::create_render_pipeline_async_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPUDevice::create_command_encoder(
-  self : GPUDevice,
-) -> GPUCommandEncoder =
+pub extern "js" fn GPUDevice::create_command_encoder(self : GPUDevice) -> GPUCommandEncoder =
   #| (self) => self.createCommandEncoder()
 
-///|
-extern "js" fn GPUDevice::create_command_encoder_with_descriptor_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUCommandEncoder =
+extern "js" fn GPUDevice::create_command_encoder_with_descriptor_ffi(self : GPUDevice, descriptor : JsValue) -> GPUCommandEncoder =
   #| (self, descriptor) => self.createCommandEncoder(descriptor)
 
-///|
-pub fn GPUDevice::create_command_encoder_with_descriptor(
-  self : GPUDevice,
-  descriptor : GPUCommandEncoderDescriptor,
-) -> GPUCommandEncoder {
-  GPUDevice::create_command_encoder_with_descriptor_ffi(
-    self,
-    descriptor.to_js(),
-  )
+pub fn GPUDevice::create_command_encoder_with_descriptor(self : GPUDevice, descriptor : GPUCommandEncoderDescriptor) -> GPUCommandEncoder {
+  GPUDevice::create_command_encoder_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_render_bundle_encoder_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPURenderBundleEncoder =
+extern "js" fn GPUDevice::create_render_bundle_encoder_ffi(self : GPUDevice, descriptor : JsValue) -> GPURenderBundleEncoder =
   #| (self, descriptor) => self.createRenderBundleEncoder(descriptor)
 
-///|
-pub fn GPUDevice::create_render_bundle_encoder(
-  self : GPUDevice,
-  descriptor : GPURenderBundleEncoderDescriptor,
-) -> GPURenderBundleEncoder {
+pub fn GPUDevice::create_render_bundle_encoder(self : GPUDevice, descriptor : GPURenderBundleEncoderDescriptor) -> GPURenderBundleEncoder {
   GPUDevice::create_render_bundle_encoder_ffi(self, descriptor.to_js())
 }
 
-///|
-extern "js" fn GPUDevice::create_query_set_ffi(
-  self : GPUDevice,
-  descriptor : JsValue,
-) -> GPUQuerySet =
+extern "js" fn GPUDevice::create_query_set_ffi(self : GPUDevice, descriptor : JsValue) -> GPUQuerySet =
   #| (self, descriptor) => self.createQuerySet(descriptor)
 
-///|
-pub fn GPUDevice::create_query_set(
-  self : GPUDevice,
-  descriptor : GPUQuerySetDescriptor,
-) -> GPUQuerySet {
+pub fn GPUDevice::create_query_set(self : GPUDevice, descriptor : GPUQuerySetDescriptor) -> GPUQuerySet {
   GPUDevice::create_query_set_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPUDevice::get_lost(
-  self : GPUDevice,
-) -> Promise[GPUDeviceLostInfo] =
+pub extern "js" fn GPUDevice::get_lost(self : GPUDevice) -> Promise[GPUDeviceLostInfo] =
   #| (self) => self.lost
 
-///|
-pub extern "js" fn GPUDevice::push_error_scope(
-  self : GPUDevice,
-  filter : GPUErrorFilter,
-) -> Unit =
+pub extern "js" fn GPUDevice::push_error_scope(self : GPUDevice, filter : GPUErrorFilter) -> Unit =
   #| (self, filter) => self.pushErrorScope(['validation', 'out-of-memory', 'internal'][filter])
 
-///|
-pub extern "js" fn GPUDevice::pop_error_scope(
-  self : GPUDevice,
-) -> Promise[GPUError?] =
+pub extern "js" fn GPUDevice::pop_error_scope(self : GPUDevice) -> Promise[GPUError?] =
   #| (self) => self.popErrorScope().then(value => (() => { const v = value; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })())
 
-///|
-pub extern "js" fn GPUDevice::set_onuncapturederror(
-  self : GPUDevice,
-  handler : (GPUUncapturedErrorEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn GPUDevice::set_onuncapturederror(self : GPUDevice, handler : (GPUUncapturedErrorEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onuncapturederror = (e) => handler(e) }
 
-///|
 pub extern "js" fn GPUDevice::clear_onuncapturederror(self : GPUDevice) -> Unit =
   #| (self) => { self.onuncapturederror = null }
 
-///|
 pub extern "js" fn GPUDevice::get_label(self : GPUDevice) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUDevice::set_label(
-  self : GPUDevice,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUDevice::set_label(self : GPUDevice, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUBuffer interface
 pub type GPUBuffer
 
-///|
 pub extern "js" fn GPUBuffer::to_js_value(self : GPUBuffer) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUBuffer (unchecked)
 pub extern "js" fn GPUBuffer::from_js_value(v : JsValue) -> GPUBuffer =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUBuffer (checked with instanceof)
 pub extern "js" fn GPUBuffer::from_js_value_opt(v : JsValue) -> GPUBuffer? =
   #| (v) => (v instanceof GPUBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUBuffer (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_buffer(self : JsValue) -> GPUBuffer? =
   #| (self) => (self instanceof GPUBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUBuffer (unchecked)
 pub extern "js" fn JsValue::to_gpu_buffer(self : JsValue) -> GPUBuffer =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUBuffer::get_size(self : GPUBuffer) -> GPUSize64Out =
   #| (self) => self.size
 
-///|
 pub extern "js" fn GPUBuffer::get_usage(self : GPUBuffer) -> GPUFlagsConstant =
   #| (self) => self.usage
 
-///|
-pub extern "js" fn GPUBuffer::get_map_state(
-  self : GPUBuffer,
-) -> GPUBufferMapState =
+pub extern "js" fn GPUBuffer::get_map_state(self : GPUBuffer) -> GPUBufferMapState =
   #| (self) => ['unmapped', 'pending', 'mapped'].indexOf(self.mapState)
 
-///|
-pub extern "js" fn GPUBuffer::map_async(
-  self : GPUBuffer,
-  mode : GPUMapModeFlags,
-) -> Promise[Unit] =
+pub extern "js" fn GPUBuffer::map_async(self : GPUBuffer, mode : GPUMapModeFlags) -> Promise[Unit] =
   #| (self, mode) => self.mapAsync(mode)
 
-///|
-pub extern "js" fn GPUBuffer::map_async_with_size(
-  self : GPUBuffer,
-  mode : GPUMapModeFlags,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Promise[Unit] =
+pub extern "js" fn GPUBuffer::map_async_with_size(self : GPUBuffer, mode : GPUMapModeFlags, offset : GPUSize64, size : GPUSize64) -> Promise[Unit] =
   #| (self, mode, offset, size) => self.mapAsync(mode, Number(offset), Number(size))
 
-///|
 pub extern "js" fn GPUBuffer::get_mapped_range(self : GPUBuffer) -> ArrayBuffer =
   #| (self) => self.getMappedRange()
 
-///|
-pub extern "js" fn GPUBuffer::get_mapped_range_with_size(
-  self : GPUBuffer,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> ArrayBuffer =
+pub extern "js" fn GPUBuffer::get_mapped_range_with_size(self : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> ArrayBuffer =
   #| (self, offset, size) => self.getMappedRange(Number(offset), Number(size))
 
-///|
 pub extern "js" fn GPUBuffer::unmap(self : GPUBuffer) -> Unit =
   #| (self) => self.unmap()
 
-///|
 pub extern "js" fn GPUBuffer::destroy(self : GPUBuffer) -> Unit =
   #| (self) => self.destroy()
 
-///|
 pub extern "js" fn GPUBuffer::get_label(self : GPUBuffer) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUBuffer::set_label(
-  self : GPUBuffer,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUBuffer::set_label(self : GPUBuffer, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUTexture interface
 pub type GPUTexture
 
-///|
 pub extern "js" fn GPUTexture::to_js_value(self : GPUTexture) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUTexture (unchecked)
 pub extern "js" fn GPUTexture::from_js_value(v : JsValue) -> GPUTexture =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUTexture (checked with instanceof)
 pub extern "js" fn GPUTexture::from_js_value_opt(v : JsValue) -> GPUTexture? =
   #| (v) => (v instanceof GPUTexture) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUTexture (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_texture(self : JsValue) -> GPUTexture? =
   #| (self) => (self instanceof GPUTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUTexture (unchecked)
 pub extern "js" fn JsValue::to_gpu_texture(self : JsValue) -> GPUTexture =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUTexture::create_view(self : GPUTexture) -> GPUTextureView =
   #| (self) => self.createView()
 
-///|
-extern "js" fn GPUTexture::create_view_with_descriptor_ffi(
-  self : GPUTexture,
-  descriptor : JsValue,
-) -> GPUTextureView =
+extern "js" fn GPUTexture::create_view_with_descriptor_ffi(self : GPUTexture, descriptor : JsValue) -> GPUTextureView =
   #| (self, descriptor) => self.createView(descriptor)
 
-///|
-pub fn GPUTexture::create_view_with_descriptor(
-  self : GPUTexture,
-  descriptor : GPUTextureViewDescriptor,
-) -> GPUTextureView {
+pub fn GPUTexture::create_view_with_descriptor(self : GPUTexture, descriptor : GPUTextureViewDescriptor) -> GPUTextureView {
   GPUTexture::create_view_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
 pub extern "js" fn GPUTexture::destroy(self : GPUTexture) -> Unit =
   #| (self) => self.destroy()
 
-///|
-pub extern "js" fn GPUTexture::get_width(
-  self : GPUTexture,
-) -> GPUIntegerCoordinateOut =
+pub extern "js" fn GPUTexture::get_width(self : GPUTexture) -> GPUIntegerCoordinateOut =
   #| (self) => self.width
 
-///|
-pub extern "js" fn GPUTexture::get_height(
-  self : GPUTexture,
-) -> GPUIntegerCoordinateOut =
+pub extern "js" fn GPUTexture::get_height(self : GPUTexture) -> GPUIntegerCoordinateOut =
   #| (self) => self.height
 
-///|
-pub extern "js" fn GPUTexture::get_depth_or_array_layers(
-  self : GPUTexture,
-) -> GPUIntegerCoordinateOut =
+pub extern "js" fn GPUTexture::get_depth_or_array_layers(self : GPUTexture) -> GPUIntegerCoordinateOut =
   #| (self) => self.depthOrArrayLayers
 
-///|
-pub extern "js" fn GPUTexture::get_mip_level_count(
-  self : GPUTexture,
-) -> GPUIntegerCoordinateOut =
+pub extern "js" fn GPUTexture::get_mip_level_count(self : GPUTexture) -> GPUIntegerCoordinateOut =
   #| (self) => self.mipLevelCount
 
-///|
-pub extern "js" fn GPUTexture::get_sample_count(
-  self : GPUTexture,
-) -> GPUSize32Out =
+pub extern "js" fn GPUTexture::get_sample_count(self : GPUTexture) -> GPUSize32Out =
   #| (self) => self.sampleCount
 
-///|
-pub extern "js" fn GPUTexture::get_dimension(
-  self : GPUTexture,
-) -> GPUTextureDimension =
+pub extern "js" fn GPUTexture::get_dimension(self : GPUTexture) -> GPUTextureDimension =
   #| (self) => ['1d', '2d', '3d'].indexOf(self.dimension)
 
-///|
-pub extern "js" fn GPUTexture::get_format(
-  self : GPUTexture,
-) -> GPUTextureFormat =
+pub extern "js" fn GPUTexture::get_format(self : GPUTexture) -> GPUTextureFormat =
   #| (self) => ['r8unorm', 'r8snorm', 'r8uint', 'r8sint', 'r16unorm', 'r16snorm', 'r16uint', 'r16sint', 'r16float', 'rg8unorm', 'rg8snorm', 'rg8uint', 'rg8sint', 'r32uint', 'r32sint', 'r32float', 'rg16unorm', 'rg16snorm', 'rg16uint', 'rg16sint', 'rg16float', 'rgba8unorm', 'rgba8unorm-srgb', 'rgba8snorm', 'rgba8uint', 'rgba8sint', 'bgra8unorm', 'bgra8unorm-srgb', 'rgb9e5ufloat', 'rgb10a2uint', 'rgb10a2unorm', 'rg11b10ufloat', 'rg32uint', 'rg32sint', 'rg32float', 'rgba16unorm', 'rgba16snorm', 'rgba16uint', 'rgba16sint', 'rgba16float', 'rgba32uint', 'rgba32sint', 'rgba32float', 'stencil8', 'depth16unorm', 'depth24plus', 'depth24plus-stencil8', 'depth32float', 'depth32float-stencil8', 'bc1-rgba-unorm', 'bc1-rgba-unorm-srgb', 'bc2-rgba-unorm', 'bc2-rgba-unorm-srgb', 'bc3-rgba-unorm', 'bc3-rgba-unorm-srgb', 'bc4-r-unorm', 'bc4-r-snorm', 'bc5-rg-unorm', 'bc5-rg-snorm', 'bc6h-rgb-ufloat', 'bc6h-rgb-float', 'bc7-rgba-unorm', 'bc7-rgba-unorm-srgb', 'etc2-rgb8unorm', 'etc2-rgb8unorm-srgb', 'etc2-rgb8a1unorm', 'etc2-rgb8a1unorm-srgb', 'etc2-rgba8unorm', 'etc2-rgba8unorm-srgb', 'eac-r11unorm', 'eac-r11snorm', 'eac-rg11unorm', 'eac-rg11snorm', 'astc-4x4-unorm', 'astc-4x4-unorm-srgb', 'astc-5x4-unorm', 'astc-5x4-unorm-srgb', 'astc-5x5-unorm', 'astc-5x5-unorm-srgb', 'astc-6x5-unorm', 'astc-6x5-unorm-srgb', 'astc-6x6-unorm', 'astc-6x6-unorm-srgb', 'astc-8x5-unorm', 'astc-8x5-unorm-srgb', 'astc-8x6-unorm', 'astc-8x6-unorm-srgb', 'astc-8x8-unorm', 'astc-8x8-unorm-srgb', 'astc-10x5-unorm', 'astc-10x5-unorm-srgb', 'astc-10x6-unorm', 'astc-10x6-unorm-srgb', 'astc-10x8-unorm', 'astc-10x8-unorm-srgb', 'astc-10x10-unorm', 'astc-10x10-unorm-srgb', 'astc-12x10-unorm', 'astc-12x10-unorm-srgb', 'astc-12x12-unorm', 'astc-12x12-unorm-srgb'].indexOf(self.format)
 
-///|
 pub extern "js" fn GPUTexture::get_usage(self : GPUTexture) -> GPUFlagsConstant =
   #| (self) => self.usage
 
-///|
-pub extern "js" fn GPUTexture::get_texture_binding_view_dimension(
-  self : GPUTexture,
-) -> GPUTextureViewDimensionOrVoid =
+pub extern "js" fn GPUTexture::get_texture_binding_view_dimension(self : GPUTexture) -> GPUTextureViewDimensionOrVoid =
   #| (self) => self.textureBindingViewDimension
 
-///|
 pub extern "js" fn GPUTexture::get_label(self : GPUTexture) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUTexture::set_label(
-  self : GPUTexture,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUTexture::set_label(self : GPUTexture, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUTextureView interface
 pub type GPUTextureView
 
-///|
-pub extern "js" fn GPUTextureView::to_js_value(
-  self : GPUTextureView,
-) -> JsValue =
+pub extern "js" fn GPUTextureView::to_js_value(self : GPUTextureView) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUTextureView (unchecked)
 pub extern "js" fn GPUTextureView::from_js_value(v : JsValue) -> GPUTextureView =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUTextureView (checked with instanceof)
-pub extern "js" fn GPUTextureView::from_js_value_opt(
-  v : JsValue,
-) -> GPUTextureView? =
+pub extern "js" fn GPUTextureView::from_js_value_opt(v : JsValue) -> GPUTextureView? =
   #| (v) => (v instanceof GPUTextureView) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUTextureView (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_texture_view(
-  self : JsValue,
-) -> GPUTextureView? =
+pub extern "js" fn JsValue::as_gpu_texture_view(self : JsValue) -> GPUTextureView? =
   #| (self) => (self instanceof GPUTextureView) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUTextureView (unchecked)
-pub extern "js" fn JsValue::to_gpu_texture_view(
-  self : JsValue,
-) -> GPUTextureView =
+pub extern "js" fn JsValue::to_gpu_texture_view(self : JsValue) -> GPUTextureView =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUTextureView::get_label(self : GPUTextureView) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUTextureView::set_label(
-  self : GPUTextureView,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUTextureView::set_label(self : GPUTextureView, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUExternalTexture interface
 pub type GPUExternalTexture
 
-///|
-pub extern "js" fn GPUExternalTexture::to_js_value(
-  self : GPUExternalTexture,
-) -> JsValue =
+pub extern "js" fn GPUExternalTexture::to_js_value(self : GPUExternalTexture) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUExternalTexture (unchecked)
-pub extern "js" fn GPUExternalTexture::from_js_value(
-  v : JsValue,
-) -> GPUExternalTexture =
+pub extern "js" fn GPUExternalTexture::from_js_value(v : JsValue) -> GPUExternalTexture =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUExternalTexture (checked with instanceof)
-pub extern "js" fn GPUExternalTexture::from_js_value_opt(
-  v : JsValue,
-) -> GPUExternalTexture? =
+pub extern "js" fn GPUExternalTexture::from_js_value_opt(v : JsValue) -> GPUExternalTexture? =
   #| (v) => (v instanceof GPUExternalTexture) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUExternalTexture (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_external_texture(
-  self : JsValue,
-) -> GPUExternalTexture? =
+pub extern "js" fn JsValue::as_gpu_external_texture(self : JsValue) -> GPUExternalTexture? =
   #| (self) => (self instanceof GPUExternalTexture) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUExternalTexture (unchecked)
-pub extern "js" fn JsValue::to_gpu_external_texture(
-  self : JsValue,
-) -> GPUExternalTexture =
+pub extern "js" fn JsValue::to_gpu_external_texture(self : JsValue) -> GPUExternalTexture =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUExternalTexture::get_label(
-  self : GPUExternalTexture,
-) -> String =
+pub extern "js" fn GPUExternalTexture::get_label(self : GPUExternalTexture) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUExternalTexture::set_label(
-  self : GPUExternalTexture,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUExternalTexture::set_label(self : GPUExternalTexture, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUSampler interface
 pub type GPUSampler
 
-///|
 pub extern "js" fn GPUSampler::to_js_value(self : GPUSampler) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUSampler (unchecked)
 pub extern "js" fn GPUSampler::from_js_value(v : JsValue) -> GPUSampler =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUSampler (checked with instanceof)
 pub extern "js" fn GPUSampler::from_js_value_opt(v : JsValue) -> GPUSampler? =
   #| (v) => (v instanceof GPUSampler) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUSampler (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_sampler(self : JsValue) -> GPUSampler? =
   #| (self) => (self instanceof GPUSampler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUSampler (unchecked)
 pub extern "js" fn JsValue::to_gpu_sampler(self : JsValue) -> GPUSampler =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUSampler::get_label(self : GPUSampler) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUSampler::set_label(
-  self : GPUSampler,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUSampler::set_label(self : GPUSampler, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUBindGroupLayout interface
 pub type GPUBindGroupLayout
 
-///|
-pub extern "js" fn GPUBindGroupLayout::to_js_value(
-  self : GPUBindGroupLayout,
-) -> JsValue =
+pub extern "js" fn GPUBindGroupLayout::to_js_value(self : GPUBindGroupLayout) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUBindGroupLayout (unchecked)
-pub extern "js" fn GPUBindGroupLayout::from_js_value(
-  v : JsValue,
-) -> GPUBindGroupLayout =
+pub extern "js" fn GPUBindGroupLayout::from_js_value(v : JsValue) -> GPUBindGroupLayout =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUBindGroupLayout (checked with instanceof)
-pub extern "js" fn GPUBindGroupLayout::from_js_value_opt(
-  v : JsValue,
-) -> GPUBindGroupLayout? =
+pub extern "js" fn GPUBindGroupLayout::from_js_value_opt(v : JsValue) -> GPUBindGroupLayout? =
   #| (v) => (v instanceof GPUBindGroupLayout) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUBindGroupLayout (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_bind_group_layout(
-  self : JsValue,
-) -> GPUBindGroupLayout? =
+pub extern "js" fn JsValue::as_gpu_bind_group_layout(self : JsValue) -> GPUBindGroupLayout? =
   #| (self) => (self instanceof GPUBindGroupLayout) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUBindGroupLayout (unchecked)
-pub extern "js" fn JsValue::to_gpu_bind_group_layout(
-  self : JsValue,
-) -> GPUBindGroupLayout =
+pub extern "js" fn JsValue::to_gpu_bind_group_layout(self : JsValue) -> GPUBindGroupLayout =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUBindGroupLayout::get_label(
-  self : GPUBindGroupLayout,
-) -> String =
+pub extern "js" fn GPUBindGroupLayout::get_label(self : GPUBindGroupLayout) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUBindGroupLayout::set_label(
-  self : GPUBindGroupLayout,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUBindGroupLayout::set_label(self : GPUBindGroupLayout, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUBindGroup interface
 pub type GPUBindGroup
 
-///|
 pub extern "js" fn GPUBindGroup::to_js_value(self : GPUBindGroup) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUBindGroup (unchecked)
 pub extern "js" fn GPUBindGroup::from_js_value(v : JsValue) -> GPUBindGroup =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUBindGroup (checked with instanceof)
-pub extern "js" fn GPUBindGroup::from_js_value_opt(
-  v : JsValue,
-) -> GPUBindGroup? =
+pub extern "js" fn GPUBindGroup::from_js_value_opt(v : JsValue) -> GPUBindGroup? =
   #| (v) => (v instanceof GPUBindGroup) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUBindGroup (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_bind_group(self : JsValue) -> GPUBindGroup? =
   #| (self) => (self instanceof GPUBindGroup) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUBindGroup (unchecked)
 pub extern "js" fn JsValue::to_gpu_bind_group(self : JsValue) -> GPUBindGroup =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUBindGroup::get_label(self : GPUBindGroup) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUBindGroup::set_label(
-  self : GPUBindGroup,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUBindGroup::set_label(self : GPUBindGroup, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUPipelineLayout interface
 pub type GPUPipelineLayout
 
-///|
-pub extern "js" fn GPUPipelineLayout::to_js_value(
-  self : GPUPipelineLayout,
-) -> JsValue =
+pub extern "js" fn GPUPipelineLayout::to_js_value(self : GPUPipelineLayout) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUPipelineLayout (unchecked)
-pub extern "js" fn GPUPipelineLayout::from_js_value(
-  v : JsValue,
-) -> GPUPipelineLayout =
+pub extern "js" fn GPUPipelineLayout::from_js_value(v : JsValue) -> GPUPipelineLayout =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUPipelineLayout (checked with instanceof)
-pub extern "js" fn GPUPipelineLayout::from_js_value_opt(
-  v : JsValue,
-) -> GPUPipelineLayout? =
+pub extern "js" fn GPUPipelineLayout::from_js_value_opt(v : JsValue) -> GPUPipelineLayout? =
   #| (v) => (v instanceof GPUPipelineLayout) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUPipelineLayout (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_pipeline_layout(
-  self : JsValue,
-) -> GPUPipelineLayout? =
+pub extern "js" fn JsValue::as_gpu_pipeline_layout(self : JsValue) -> GPUPipelineLayout? =
   #| (self) => (self instanceof GPUPipelineLayout) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUPipelineLayout (unchecked)
-pub extern "js" fn JsValue::to_gpu_pipeline_layout(
-  self : JsValue,
-) -> GPUPipelineLayout =
+pub extern "js" fn JsValue::to_gpu_pipeline_layout(self : JsValue) -> GPUPipelineLayout =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUPipelineLayout::get_label(
-  self : GPUPipelineLayout,
-) -> String =
+pub extern "js" fn GPUPipelineLayout::get_label(self : GPUPipelineLayout) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUPipelineLayout::set_label(
-  self : GPUPipelineLayout,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUPipelineLayout::set_label(self : GPUPipelineLayout, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUShaderModule interface
 pub type GPUShaderModule
 
-///|
-pub extern "js" fn GPUShaderModule::to_js_value(
-  self : GPUShaderModule,
-) -> JsValue =
+pub extern "js" fn GPUShaderModule::to_js_value(self : GPUShaderModule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUShaderModule (unchecked)
-pub extern "js" fn GPUShaderModule::from_js_value(
-  v : JsValue,
-) -> GPUShaderModule =
+pub extern "js" fn GPUShaderModule::from_js_value(v : JsValue) -> GPUShaderModule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUShaderModule (checked with instanceof)
-pub extern "js" fn GPUShaderModule::from_js_value_opt(
-  v : JsValue,
-) -> GPUShaderModule? =
+pub extern "js" fn GPUShaderModule::from_js_value_opt(v : JsValue) -> GPUShaderModule? =
   #| (v) => (v instanceof GPUShaderModule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUShaderModule (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_shader_module(
-  self : JsValue,
-) -> GPUShaderModule? =
+pub extern "js" fn JsValue::as_gpu_shader_module(self : JsValue) -> GPUShaderModule? =
   #| (self) => (self instanceof GPUShaderModule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUShaderModule (unchecked)
-pub extern "js" fn JsValue::to_gpu_shader_module(
-  self : JsValue,
-) -> GPUShaderModule =
+pub extern "js" fn JsValue::to_gpu_shader_module(self : JsValue) -> GPUShaderModule =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUShaderModule::get_compilation_info(
-  self : GPUShaderModule,
-) -> Promise[GPUCompilationInfo] =
+pub extern "js" fn GPUShaderModule::get_compilation_info(self : GPUShaderModule) -> Promise[GPUCompilationInfo] =
   #| (self) => self.getCompilationInfo()
 
-///|
 pub extern "js" fn GPUShaderModule::get_label(self : GPUShaderModule) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUShaderModule::set_label(
-  self : GPUShaderModule,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUShaderModule::set_label(self : GPUShaderModule, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUCompilationMessage interface
 pub type GPUCompilationMessage
 
-///|
-pub extern "js" fn GPUCompilationMessage::to_js_value(
-  self : GPUCompilationMessage,
-) -> JsValue =
+pub extern "js" fn GPUCompilationMessage::to_js_value(self : GPUCompilationMessage) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUCompilationMessage (unchecked)
-pub extern "js" fn GPUCompilationMessage::from_js_value(
-  v : JsValue,
-) -> GPUCompilationMessage =
+pub extern "js" fn GPUCompilationMessage::from_js_value(v : JsValue) -> GPUCompilationMessage =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUCompilationMessage (checked with instanceof)
-pub extern "js" fn GPUCompilationMessage::from_js_value_opt(
-  v : JsValue,
-) -> GPUCompilationMessage? =
+pub extern "js" fn GPUCompilationMessage::from_js_value_opt(v : JsValue) -> GPUCompilationMessage? =
   #| (v) => (v instanceof GPUCompilationMessage) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUCompilationMessage (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_compilation_message(
-  self : JsValue,
-) -> GPUCompilationMessage? =
+pub extern "js" fn JsValue::as_gpu_compilation_message(self : JsValue) -> GPUCompilationMessage? =
   #| (self) => (self instanceof GPUCompilationMessage) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUCompilationMessage (unchecked)
-pub extern "js" fn JsValue::to_gpu_compilation_message(
-  self : JsValue,
-) -> GPUCompilationMessage =
+pub extern "js" fn JsValue::to_gpu_compilation_message(self : JsValue) -> GPUCompilationMessage =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_message(
-  self : GPUCompilationMessage,
-) -> String =
+pub extern "js" fn GPUCompilationMessage::get_message(self : GPUCompilationMessage) -> String =
   #| (self) => self.message
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_type(
-  self : GPUCompilationMessage,
-) -> GPUCompilationMessageType =
+pub extern "js" fn GPUCompilationMessage::get_type(self : GPUCompilationMessage) -> GPUCompilationMessageType =
   #| (self) => ['error', 'warning', 'info'].indexOf(self.type)
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_line_num(
-  self : GPUCompilationMessage,
-) -> Int64 =
+pub extern "js" fn GPUCompilationMessage::get_line_num(self : GPUCompilationMessage) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.lineNum))
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_line_pos(
-  self : GPUCompilationMessage,
-) -> Int64 =
+pub extern "js" fn GPUCompilationMessage::get_line_pos(self : GPUCompilationMessage) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.linePos))
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_offset(
-  self : GPUCompilationMessage,
-) -> Int64 =
+pub extern "js" fn GPUCompilationMessage::get_offset(self : GPUCompilationMessage) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.offset))
 
-///|
-pub extern "js" fn GPUCompilationMessage::get_length(
-  self : GPUCompilationMessage,
-) -> Int64 =
+pub extern "js" fn GPUCompilationMessage::get_length(self : GPUCompilationMessage) -> Int64 =
   #| (self) => BigInt.asUintN(64, BigInt(self.length))
 
 ///|
 /// GPUCompilationInfo interface
 pub type GPUCompilationInfo
 
-///|
-pub extern "js" fn GPUCompilationInfo::to_js_value(
-  self : GPUCompilationInfo,
-) -> JsValue =
+pub extern "js" fn GPUCompilationInfo::to_js_value(self : GPUCompilationInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUCompilationInfo (unchecked)
-pub extern "js" fn GPUCompilationInfo::from_js_value(
-  v : JsValue,
-) -> GPUCompilationInfo =
+pub extern "js" fn GPUCompilationInfo::from_js_value(v : JsValue) -> GPUCompilationInfo =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUCompilationInfo (checked with instanceof)
-pub extern "js" fn GPUCompilationInfo::from_js_value_opt(
-  v : JsValue,
-) -> GPUCompilationInfo? =
+pub extern "js" fn GPUCompilationInfo::from_js_value_opt(v : JsValue) -> GPUCompilationInfo? =
   #| (v) => (v instanceof GPUCompilationInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUCompilationInfo (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_compilation_info(
-  self : JsValue,
-) -> GPUCompilationInfo? =
+pub extern "js" fn JsValue::as_gpu_compilation_info(self : JsValue) -> GPUCompilationInfo? =
   #| (self) => (self instanceof GPUCompilationInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUCompilationInfo (unchecked)
-pub extern "js" fn JsValue::to_gpu_compilation_info(
-  self : JsValue,
-) -> GPUCompilationInfo =
+pub extern "js" fn JsValue::to_gpu_compilation_info(self : JsValue) -> GPUCompilationInfo =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUCompilationInfo::get_messages(
-  self : GPUCompilationInfo,
-) -> FixedArray[GPUCompilationMessage] =
+pub extern "js" fn GPUCompilationInfo::get_messages(self : GPUCompilationInfo) -> FixedArray[GPUCompilationMessage] =
   #| (self) => self.messages
 
 ///|
 /// GPUPipelineError interface
 pub type GPUPipelineError
 
-///|
-pub extern "js" fn GPUPipelineError::to_js_value(
-  self : GPUPipelineError,
-) -> JsValue =
+pub extern "js" fn GPUPipelineError::to_js_value(self : GPUPipelineError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUPipelineError (unchecked)
-pub extern "js" fn GPUPipelineError::from_js_value(
-  v : JsValue,
-) -> GPUPipelineError =
+pub extern "js" fn GPUPipelineError::from_js_value(v : JsValue) -> GPUPipelineError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUPipelineError (checked with instanceof)
-pub extern "js" fn GPUPipelineError::from_js_value_opt(
-  v : JsValue,
-) -> GPUPipelineError? =
+pub extern "js" fn GPUPipelineError::from_js_value_opt(v : JsValue) -> GPUPipelineError? =
   #| (v) => (v instanceof GPUPipelineError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUPipelineError (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_pipeline_error(
-  self : JsValue,
-) -> GPUPipelineError? =
+pub extern "js" fn JsValue::as_gpu_pipeline_error(self : JsValue) -> GPUPipelineError? =
   #| (self) => (self instanceof GPUPipelineError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUPipelineError (unchecked)
-pub extern "js" fn JsValue::to_gpu_pipeline_error(
-  self : JsValue,
-) -> GPUPipelineError =
+pub extern "js" fn JsValue::to_gpu_pipeline_error(self : JsValue) -> GPUPipelineError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUPipelineError::to_dom_exception(
-  self : GPUPipelineError,
-) -> DOMException =
+pub extern "js" fn GPUPipelineError::to_dom_exception(self : GPUPipelineError) -> DOMException =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUPipelineError::new() -> GPUPipelineError =
   #| () => new GPUPipelineError()
 
-///|
-extern "js" fn GPUPipelineError::new_with_options_ffi(
-  message : String,
-  options : JsValue,
-) -> GPUPipelineError =
+extern "js" fn GPUPipelineError::new_with_options_ffi(message : String, options : JsValue) -> GPUPipelineError =
   #| (message, options) => new GPUPipelineError(message, options)
 
-///|
-pub fn GPUPipelineError::new_with_options(
-  message : String,
-  options : GPUPipelineErrorInit,
-) -> GPUPipelineError {
+pub fn GPUPipelineError::new_with_options(message : String, options : GPUPipelineErrorInit) -> GPUPipelineError {
   GPUPipelineError::new_with_options_ffi(message, options.to_js())
 }
 
-///|
-pub extern "js" fn GPUPipelineError::get_reason(
-  self : GPUPipelineError,
-) -> GPUPipelineErrorReason =
+pub extern "js" fn GPUPipelineError::get_reason(self : GPUPipelineError) -> GPUPipelineErrorReason =
   #| (self) => ['validation', 'internal'].indexOf(self.reason)
 
 ///|
 /// GPUComputePipeline interface
 pub type GPUComputePipeline
 
-///|
-pub extern "js" fn GPUComputePipeline::to_js_value(
-  self : GPUComputePipeline,
-) -> JsValue =
+pub extern "js" fn GPUComputePipeline::to_js_value(self : GPUComputePipeline) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUComputePipeline (unchecked)
-pub extern "js" fn GPUComputePipeline::from_js_value(
-  v : JsValue,
-) -> GPUComputePipeline =
+pub extern "js" fn GPUComputePipeline::from_js_value(v : JsValue) -> GPUComputePipeline =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUComputePipeline (checked with instanceof)
-pub extern "js" fn GPUComputePipeline::from_js_value_opt(
-  v : JsValue,
-) -> GPUComputePipeline? =
+pub extern "js" fn GPUComputePipeline::from_js_value_opt(v : JsValue) -> GPUComputePipeline? =
   #| (v) => (v instanceof GPUComputePipeline) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUComputePipeline (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_compute_pipeline(
-  self : JsValue,
-) -> GPUComputePipeline? =
+pub extern "js" fn JsValue::as_gpu_compute_pipeline(self : JsValue) -> GPUComputePipeline? =
   #| (self) => (self instanceof GPUComputePipeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUComputePipeline (unchecked)
-pub extern "js" fn JsValue::to_gpu_compute_pipeline(
-  self : JsValue,
-) -> GPUComputePipeline =
+pub extern "js" fn JsValue::to_gpu_compute_pipeline(self : JsValue) -> GPUComputePipeline =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUComputePipeline::get_label(
-  self : GPUComputePipeline,
-) -> String =
+pub extern "js" fn GPUComputePipeline::get_label(self : GPUComputePipeline) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUComputePipeline::set_label(
-  self : GPUComputePipeline,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUComputePipeline::set_label(self : GPUComputePipeline, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPUComputePipeline::get_bind_group_layout(
-  self : GPUComputePipeline,
-  index : Int,
-) -> GPUBindGroupLayout =
+pub extern "js" fn GPUComputePipeline::get_bind_group_layout(self : GPUComputePipeline, index : Int) -> GPUBindGroupLayout =
   #| (self, index) => self.getBindGroupLayout(index)
 
 ///|
 /// GPURenderPipeline interface
 pub type GPURenderPipeline
 
-///|
-pub extern "js" fn GPURenderPipeline::to_js_value(
-  self : GPURenderPipeline,
-) -> JsValue =
+pub extern "js" fn GPURenderPipeline::to_js_value(self : GPURenderPipeline) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPURenderPipeline (unchecked)
-pub extern "js" fn GPURenderPipeline::from_js_value(
-  v : JsValue,
-) -> GPURenderPipeline =
+pub extern "js" fn GPURenderPipeline::from_js_value(v : JsValue) -> GPURenderPipeline =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPURenderPipeline (checked with instanceof)
-pub extern "js" fn GPURenderPipeline::from_js_value_opt(
-  v : JsValue,
-) -> GPURenderPipeline? =
+pub extern "js" fn GPURenderPipeline::from_js_value_opt(v : JsValue) -> GPURenderPipeline? =
   #| (v) => (v instanceof GPURenderPipeline) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPURenderPipeline (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_render_pipeline(
-  self : JsValue,
-) -> GPURenderPipeline? =
+pub extern "js" fn JsValue::as_gpu_render_pipeline(self : JsValue) -> GPURenderPipeline? =
   #| (self) => (self instanceof GPURenderPipeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPURenderPipeline (unchecked)
-pub extern "js" fn JsValue::to_gpu_render_pipeline(
-  self : JsValue,
-) -> GPURenderPipeline =
+pub extern "js" fn JsValue::to_gpu_render_pipeline(self : JsValue) -> GPURenderPipeline =
   #| (self) => self
 
-///|
-pub extern "js" fn GPURenderPipeline::get_label(
-  self : GPURenderPipeline,
-) -> String =
+pub extern "js" fn GPURenderPipeline::get_label(self : GPURenderPipeline) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPURenderPipeline::set_label(
-  self : GPURenderPipeline,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPURenderPipeline::set_label(self : GPURenderPipeline, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPURenderPipeline::get_bind_group_layout(
-  self : GPURenderPipeline,
-  index : Int,
-) -> GPUBindGroupLayout =
+pub extern "js" fn GPURenderPipeline::get_bind_group_layout(self : GPURenderPipeline, index : Int) -> GPUBindGroupLayout =
   #| (self, index) => self.getBindGroupLayout(index)
 
 ///|
 /// GPUCommandBuffer interface
 pub type GPUCommandBuffer
 
-///|
-pub extern "js" fn GPUCommandBuffer::to_js_value(
-  self : GPUCommandBuffer,
-) -> JsValue =
+pub extern "js" fn GPUCommandBuffer::to_js_value(self : GPUCommandBuffer) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUCommandBuffer (unchecked)
-pub extern "js" fn GPUCommandBuffer::from_js_value(
-  v : JsValue,
-) -> GPUCommandBuffer =
+pub extern "js" fn GPUCommandBuffer::from_js_value(v : JsValue) -> GPUCommandBuffer =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUCommandBuffer (checked with instanceof)
-pub extern "js" fn GPUCommandBuffer::from_js_value_opt(
-  v : JsValue,
-) -> GPUCommandBuffer? =
+pub extern "js" fn GPUCommandBuffer::from_js_value_opt(v : JsValue) -> GPUCommandBuffer? =
   #| (v) => (v instanceof GPUCommandBuffer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUCommandBuffer (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_command_buffer(
-  self : JsValue,
-) -> GPUCommandBuffer? =
+pub extern "js" fn JsValue::as_gpu_command_buffer(self : JsValue) -> GPUCommandBuffer? =
   #| (self) => (self instanceof GPUCommandBuffer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUCommandBuffer (unchecked)
-pub extern "js" fn JsValue::to_gpu_command_buffer(
-  self : JsValue,
-) -> GPUCommandBuffer =
+pub extern "js" fn JsValue::to_gpu_command_buffer(self : JsValue) -> GPUCommandBuffer =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUCommandBuffer::get_label(
-  self : GPUCommandBuffer,
-) -> String =
+pub extern "js" fn GPUCommandBuffer::get_label(self : GPUCommandBuffer) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUCommandBuffer::set_label(
-  self : GPUCommandBuffer,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUCommandBuffer::set_label(self : GPUCommandBuffer, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUCommandEncoder interface
 pub type GPUCommandEncoder
 
-///|
-pub extern "js" fn GPUCommandEncoder::to_js_value(
-  self : GPUCommandEncoder,
-) -> JsValue =
+pub extern "js" fn GPUCommandEncoder::to_js_value(self : GPUCommandEncoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUCommandEncoder (unchecked)
-pub extern "js" fn GPUCommandEncoder::from_js_value(
-  v : JsValue,
-) -> GPUCommandEncoder =
+pub extern "js" fn GPUCommandEncoder::from_js_value(v : JsValue) -> GPUCommandEncoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUCommandEncoder (checked with instanceof)
-pub extern "js" fn GPUCommandEncoder::from_js_value_opt(
-  v : JsValue,
-) -> GPUCommandEncoder? =
+pub extern "js" fn GPUCommandEncoder::from_js_value_opt(v : JsValue) -> GPUCommandEncoder? =
   #| (v) => (v instanceof GPUCommandEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUCommandEncoder (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_command_encoder(
-  self : JsValue,
-) -> GPUCommandEncoder? =
+pub extern "js" fn JsValue::as_gpu_command_encoder(self : JsValue) -> GPUCommandEncoder? =
   #| (self) => (self instanceof GPUCommandEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUCommandEncoder (unchecked)
-pub extern "js" fn JsValue::to_gpu_command_encoder(
-  self : JsValue,
-) -> GPUCommandEncoder =
+pub extern "js" fn JsValue::to_gpu_command_encoder(self : JsValue) -> GPUCommandEncoder =
   #| (self) => self
 
-///|
-extern "js" fn GPUCommandEncoder::begin_render_pass_ffi(
-  self : GPUCommandEncoder,
-  descriptor : JsValue,
-) -> GPURenderPassEncoder =
+extern "js" fn GPUCommandEncoder::begin_render_pass_ffi(self : GPUCommandEncoder, descriptor : JsValue) -> GPURenderPassEncoder =
   #| (self, descriptor) => self.beginRenderPass(descriptor)
 
-///|
-pub fn GPUCommandEncoder::begin_render_pass(
-  self : GPUCommandEncoder,
-  descriptor : GPURenderPassDescriptor,
-) -> GPURenderPassEncoder {
+pub fn GPUCommandEncoder::begin_render_pass(self : GPUCommandEncoder, descriptor : GPURenderPassDescriptor) -> GPURenderPassEncoder {
   GPUCommandEncoder::begin_render_pass_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPUCommandEncoder::begin_compute_pass(
-  self : GPUCommandEncoder,
-) -> GPUComputePassEncoder =
+pub extern "js" fn GPUCommandEncoder::begin_compute_pass(self : GPUCommandEncoder) -> GPUComputePassEncoder =
   #| (self) => self.beginComputePass()
 
-///|
-extern "js" fn GPUCommandEncoder::begin_compute_pass_with_descriptor_ffi(
-  self : GPUCommandEncoder,
-  descriptor : JsValue,
-) -> GPUComputePassEncoder =
+extern "js" fn GPUCommandEncoder::begin_compute_pass_with_descriptor_ffi(self : GPUCommandEncoder, descriptor : JsValue) -> GPUComputePassEncoder =
   #| (self, descriptor) => self.beginComputePass(descriptor)
 
-///|
-pub fn GPUCommandEncoder::begin_compute_pass_with_descriptor(
-  self : GPUCommandEncoder,
-  descriptor : GPUComputePassDescriptor,
-) -> GPUComputePassEncoder {
-  GPUCommandEncoder::begin_compute_pass_with_descriptor_ffi(
-    self,
-    descriptor.to_js(),
-  )
+pub fn GPUCommandEncoder::begin_compute_pass_with_descriptor(self : GPUCommandEncoder, descriptor : GPUComputePassDescriptor) -> GPUComputePassEncoder {
+  GPUCommandEncoder::begin_compute_pass_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer(
-  self : GPUCommandEncoder,
-  source : GPUBuffer,
-  destination : GPUBuffer,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer) -> Unit =
   #| (self, source, destination) => self.copyBufferToBuffer(source, destination)
 
-///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_size(
-  self : GPUCommandEncoder,
-  source : GPUBuffer,
-  destination : GPUBuffer,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_size(self : GPUCommandEncoder, source : GPUBuffer, destination : GPUBuffer, size : GPUSize64) -> Unit =
   #| (self, source, destination, size) => self.copyBufferToBuffer(source, destination, Number(size))
 
-///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64(
-  self : GPUCommandEncoder,
-  source : GPUBuffer,
-  source_offset : GPUSize64,
-  destination : GPUBuffer,
-  destination_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64(self : GPUCommandEncoder, source : GPUBuffer, source_offset : GPUSize64, destination : GPUBuffer, destination_offset : GPUSize64) -> Unit =
   #| (self, source, source_offset, destination, destination_offset) => self.copyBufferToBuffer(source, Number(source_offset), destination, Number(destination_offset))
 
-///|
-pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64_and_size_gpu_size64(
-  self : GPUCommandEncoder,
-  source : GPUBuffer,
-  source_offset : GPUSize64,
-  destination : GPUBuffer,
-  destination_offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::copy_buffer_to_buffer_with_source_gpu_buffer_and_source_offset_gpu_size64_and_destination_gpu_buffer_and_destination_offset_gpu_size64_and_size_gpu_size64(self : GPUCommandEncoder, source : GPUBuffer, source_offset : GPUSize64, destination : GPUBuffer, destination_offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, source, source_offset, destination, destination_offset, size) => self.copyBufferToBuffer(source, Number(source_offset), destination, Number(destination_offset), Number(size))
 
-///|
-extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : GPUExtent3D) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_buffer_to_texture(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyBufferInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : GPUExtent3D,
-) -> Unit {
-  GPUCommandEncoder::copy_buffer_to_texture_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_buffer_to_texture(self : GPUCommandEncoder, source : GPUTexelCopyBufferInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3D) -> Unit {
+  GPUCommandEncoder::copy_buffer_to_texture_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
 
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : GPUExtent3D) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_buffer(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyBufferInfo,
-  copy_size : GPUExtent3D,
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_buffer_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_texture_to_buffer(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyBufferInfo, copy_size : GPUExtent3D) -> Unit {
+  GPUCommandEncoder::copy_texture_to_buffer_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
 
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_texture_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_texture_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : GPUExtent3D) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_texture(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : GPUExtent3D,
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_texture_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_texture_to_texture(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3D) -> Unit {
+  GPUCommandEncoder::copy_texture_to_texture_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
 
-///|
-pub extern "js" fn GPUCommandEncoder::clear_buffer(
-  self : GPUCommandEncoder,
-  buffer : GPUBuffer,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::clear_buffer(self : GPUCommandEncoder, buffer : GPUBuffer) -> Unit =
   #| (self, buffer) => self.clearBuffer(buffer)
 
-///|
-pub extern "js" fn GPUCommandEncoder::clear_buffer_with_size(
-  self : GPUCommandEncoder,
-  buffer : GPUBuffer,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::clear_buffer_with_size(self : GPUCommandEncoder, buffer : GPUBuffer, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, offset, size) => self.clearBuffer(buffer, Number(offset), Number(size))
 
-///|
-pub extern "js" fn GPUCommandEncoder::resolve_query_set(
-  self : GPUCommandEncoder,
-  query_set : GPUQuerySet,
-  first_query : GPUSize32,
-  query_count : GPUSize32,
-  destination : GPUBuffer,
-  destination_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::resolve_query_set(self : GPUCommandEncoder, query_set : GPUQuerySet, first_query : GPUSize32, query_count : GPUSize32, destination : GPUBuffer, destination_offset : GPUSize64) -> Unit =
   #| (self, query_set, first_query, query_count, destination, destination_offset) => self.resolveQuerySet(query_set, first_query, query_count, destination, Number(destination_offset))
 
-///|
-pub extern "js" fn GPUCommandEncoder::finish(
-  self : GPUCommandEncoder,
-) -> GPUCommandBuffer =
+pub extern "js" fn GPUCommandEncoder::finish(self : GPUCommandEncoder) -> GPUCommandBuffer =
   #| (self) => self.finish()
 
-///|
-extern "js" fn GPUCommandEncoder::finish_with_descriptor_ffi(
-  self : GPUCommandEncoder,
-  descriptor : JsValue,
-) -> GPUCommandBuffer =
+extern "js" fn GPUCommandEncoder::finish_with_descriptor_ffi(self : GPUCommandEncoder, descriptor : JsValue) -> GPUCommandBuffer =
   #| (self, descriptor) => self.finish(descriptor)
 
-///|
-pub fn GPUCommandEncoder::finish_with_descriptor(
-  self : GPUCommandEncoder,
-  descriptor : GPUCommandBufferDescriptor,
-) -> GPUCommandBuffer {
+pub fn GPUCommandEncoder::finish_with_descriptor(self : GPUCommandEncoder, descriptor : GPUCommandBufferDescriptor) -> GPUCommandBuffer {
   GPUCommandEncoder::finish_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPUCommandEncoder::get_label(
-  self : GPUCommandEncoder,
-) -> String =
+pub extern "js" fn GPUCommandEncoder::get_label(self : GPUCommandEncoder) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUCommandEncoder::set_label(
-  self : GPUCommandEncoder,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::set_label(self : GPUCommandEncoder, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPUCommandEncoder::push_debug_group(
-  self : GPUCommandEncoder,
-  group_label : String,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::push_debug_group(self : GPUCommandEncoder, group_label : String) -> Unit =
   #| (self, group_label) => self.pushDebugGroup(group_label)
 
-///|
-pub extern "js" fn GPUCommandEncoder::pop_debug_group(
-  self : GPUCommandEncoder,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::pop_debug_group(self : GPUCommandEncoder) -> Unit =
   #| (self) => self.popDebugGroup()
 
-///|
-pub extern "js" fn GPUCommandEncoder::insert_debug_marker(
-  self : GPUCommandEncoder,
-  marker_label : String,
-) -> Unit =
+pub extern "js" fn GPUCommandEncoder::insert_debug_marker(self : GPUCommandEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-///|
-extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyBufferInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit {
-  GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate(self : GPUCommandEncoder, source : GPUTexelCopyBufferInfo, destination : GPUTexelCopyTextureInfo, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit {
+  GPUCommandEncoder::copy_buffer_to_texture_with_array_of_gpu_integer_coordinate_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
-
-///|
-extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : JsValue,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : JsValue) -> Unit =
   #| (self, source, destination, copy_size) => self.copyBufferToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyBufferInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : GPUExtent3DDict,
-) -> Unit {
-  GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size.to_js(),
-  )
+pub fn GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict(self : GPUCommandEncoder, source : GPUTexelCopyBufferInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3DDict) -> Unit {
+  GPUCommandEncoder::copy_buffer_to_texture_with_gpu_extent_3d_dict_ffi(self, source.to_js(), destination.to_js(), copy_size.to_js())
 }
-
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyBufferInfo,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyBufferInfo, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit {
+  GPUCommandEncoder::copy_texture_to_buffer_with_array_of_gpu_integer_coordinate_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
-
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : JsValue,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : JsValue) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToBuffer(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyBufferInfo,
-  copy_size : GPUExtent3DDict,
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size.to_js(),
-  )
+pub fn GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyBufferInfo, copy_size : GPUExtent3DDict) -> Unit {
+  GPUCommandEncoder::copy_texture_to_buffer_with_gpu_extent_3d_dict_ffi(self, source.to_js(), destination.to_js(), copy_size.to_js())
 }
-
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyTextureInfo, copy_size : FixedArray[GPUIntegerCoordinate]) -> Unit {
+  GPUCommandEncoder::copy_texture_to_texture_with_array_of_gpu_integer_coordinate_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
-
-///|
-extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(
-  self : GPUCommandEncoder,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : JsValue,
-) -> Unit =
+extern "js" fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(self : GPUCommandEncoder, source : JsValue, destination : JsValue, copy_size : JsValue) -> Unit =
   #| (self, source, destination, copy_size) => self.copyTextureToTexture(source, destination, copy_size)
 
-///|
-pub fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict(
-  self : GPUCommandEncoder,
-  source : GPUTexelCopyTextureInfo,
-  destination : GPUTexelCopyTextureInfo,
-  copy_size : GPUExtent3DDict,
-) -> Unit {
-  GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size.to_js(),
-  )
+pub fn GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict(self : GPUCommandEncoder, source : GPUTexelCopyTextureInfo, destination : GPUTexelCopyTextureInfo, copy_size : GPUExtent3DDict) -> Unit {
+  GPUCommandEncoder::copy_texture_to_texture_with_gpu_extent_3d_dict_ffi(self, source.to_js(), destination.to_js(), copy_size.to_js())
 }
 
 ///|
 /// GPUComputePassEncoder interface
 pub type GPUComputePassEncoder
 
-///|
-pub extern "js" fn GPUComputePassEncoder::to_js_value(
-  self : GPUComputePassEncoder,
-) -> JsValue =
+pub extern "js" fn GPUComputePassEncoder::to_js_value(self : GPUComputePassEncoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUComputePassEncoder (unchecked)
-pub extern "js" fn GPUComputePassEncoder::from_js_value(
-  v : JsValue,
-) -> GPUComputePassEncoder =
+pub extern "js" fn GPUComputePassEncoder::from_js_value(v : JsValue) -> GPUComputePassEncoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUComputePassEncoder (checked with instanceof)
-pub extern "js" fn GPUComputePassEncoder::from_js_value_opt(
-  v : JsValue,
-) -> GPUComputePassEncoder? =
+pub extern "js" fn GPUComputePassEncoder::from_js_value_opt(v : JsValue) -> GPUComputePassEncoder? =
   #| (v) => (v instanceof GPUComputePassEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUComputePassEncoder (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_compute_pass_encoder(
-  self : JsValue,
-) -> GPUComputePassEncoder? =
+pub extern "js" fn JsValue::as_gpu_compute_pass_encoder(self : JsValue) -> GPUComputePassEncoder? =
   #| (self) => (self instanceof GPUComputePassEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUComputePassEncoder (unchecked)
-pub extern "js" fn JsValue::to_gpu_compute_pass_encoder(
-  self : JsValue,
-) -> GPUComputePassEncoder =
+pub extern "js" fn JsValue::to_gpu_compute_pass_encoder(self : JsValue) -> GPUComputePassEncoder =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUComputePassEncoder::set_pipeline(
-  self : GPUComputePassEncoder,
-  pipeline : GPUComputePipeline,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_pipeline(self : GPUComputePassEncoder, pipeline : GPUComputePipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups(
-  self : GPUComputePassEncoder,
-  workgroup_count_x : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups(self : GPUComputePassEncoder, workgroup_count_x : GPUSize32) -> Unit =
   #| (self, workgroup_count_x) => self.dispatchWorkgroups(workgroup_count_x)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_with_workgroup_count_z(
-  self : GPUComputePassEncoder,
-  workgroup_count_x : GPUSize32,
-  workgroup_count_y : GPUSize32,
-  workgroup_count_z : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_with_workgroup_count_z(self : GPUComputePassEncoder, workgroup_count_x : GPUSize32, workgroup_count_y : GPUSize32, workgroup_count_z : GPUSize32) -> Unit =
   #| (self, workgroup_count_x, workgroup_count_y, workgroup_count_z) => self.dispatchWorkgroups(workgroup_count_x, workgroup_count_y, workgroup_count_z)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_indirect(
-  self : GPUComputePassEncoder,
-  indirect_buffer : GPUBuffer,
-  indirect_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::dispatch_workgroups_indirect(self : GPUComputePassEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
   #| (self, indirect_buffer, indirect_offset) => self.dispatchWorkgroupsIndirect(indirect_buffer, Number(indirect_offset))
 
-///|
-pub extern "js" fn GPUComputePassEncoder::end(
-  self : GPUComputePassEncoder,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::end(self : GPUComputePassEncoder) -> Unit =
   #| (self) => self.end()
 
-///|
-pub extern "js" fn GPUComputePassEncoder::get_label(
-  self : GPUComputePassEncoder,
-) -> String =
+pub extern "js" fn GPUComputePassEncoder::get_label(self : GPUComputePassEncoder) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUComputePassEncoder::set_label(
-  self : GPUComputePassEncoder,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_label(self : GPUComputePassEncoder, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPUComputePassEncoder::push_debug_group(
-  self : GPUComputePassEncoder,
-  group_label : String,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::push_debug_group(self : GPUComputePassEncoder, group_label : String) -> Unit =
   #| (self, group_label) => self.pushDebugGroup(group_label)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::pop_debug_group(
-  self : GPUComputePassEncoder,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::pop_debug_group(self : GPUComputePassEncoder) -> Unit =
   #| (self) => self.popDebugGroup()
 
-///|
-pub extern "js" fn GPUComputePassEncoder::insert_debug_marker(
-  self : GPUComputePassEncoder,
-  marker_label : String,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::insert_debug_marker(self : GPUComputePassEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::set_bind_group(
-  self : GPUComputePassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_bind_group(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
   #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
-///|
-pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(
-  self : GPUComputePassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_dynamic_offsets(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : FixedArray[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
-///|
-pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
-  self : GPUComputePassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets_data : Uint32Array,
-  dynamic_offsets_data_start : GPUSize64,
-  dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPUComputePassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(self : GPUComputePassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
   #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, Number(dynamic_offsets_data_start), dynamic_offsets_data_length)
+
+pub extern "js" fn GPUComputePassEncoder::set_immediates(self : GPUComputePassEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource) -> Unit =
+  #| (self, range_offset, data) => self.setImmediates(range_offset, data)
+
+pub extern "js" fn GPUComputePassEncoder::set_immediates_with_data_size(self : GPUComputePassEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPUComputePassEncoder::set_immediates_with_array_buffer(self : GPUComputePassEncoder, range_offset : GPUSize32, data : ArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPUComputePassEncoder::set_immediates_with_shared_array_buffer(self : GPUComputePassEncoder, range_offset : GPUSize32, data : SharedArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPUComputePassEncoder::set_immediates_with_array_buffer_view(self : GPUComputePassEncoder, range_offset : GPUSize32, data : ArrayBufferView, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
 
 ///|
 /// GPURenderPassEncoder interface
 pub type GPURenderPassEncoder
 
-///|
-pub extern "js" fn GPURenderPassEncoder::to_js_value(
-  self : GPURenderPassEncoder,
-) -> JsValue =
+pub extern "js" fn GPURenderPassEncoder::to_js_value(self : GPURenderPassEncoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPURenderPassEncoder (unchecked)
-pub extern "js" fn GPURenderPassEncoder::from_js_value(
-  v : JsValue,
-) -> GPURenderPassEncoder =
+pub extern "js" fn GPURenderPassEncoder::from_js_value(v : JsValue) -> GPURenderPassEncoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPURenderPassEncoder (checked with instanceof)
-pub extern "js" fn GPURenderPassEncoder::from_js_value_opt(
-  v : JsValue,
-) -> GPURenderPassEncoder? =
+pub extern "js" fn GPURenderPassEncoder::from_js_value_opt(v : JsValue) -> GPURenderPassEncoder? =
   #| (v) => (v instanceof GPURenderPassEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPURenderPassEncoder (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_render_pass_encoder(
-  self : JsValue,
-) -> GPURenderPassEncoder? =
+pub extern "js" fn JsValue::as_gpu_render_pass_encoder(self : JsValue) -> GPURenderPassEncoder? =
   #| (self) => (self instanceof GPURenderPassEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPURenderPassEncoder (unchecked)
-pub extern "js" fn JsValue::to_gpu_render_pass_encoder(
-  self : JsValue,
-) -> GPURenderPassEncoder =
+pub extern "js" fn JsValue::to_gpu_render_pass_encoder(self : JsValue) -> GPURenderPassEncoder =
   #| (self) => self
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_viewport(
-  self : GPURenderPassEncoder,
-  x : Double,
-  y : Double,
-  width : Double,
-  height : Double,
-  min_depth : Double,
-  max_depth : Double,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_viewport(self : GPURenderPassEncoder, x : Double, y : Double, width : Double, height : Double, min_depth : Double, max_depth : Double) -> Unit =
   #| (self, x, y, width, height, min_depth, max_depth) => self.setViewport(x, y, width, height, min_depth, max_depth)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_scissor_rect(
-  self : GPURenderPassEncoder,
-  x : GPUIntegerCoordinate,
-  y : GPUIntegerCoordinate,
-  width : GPUIntegerCoordinate,
-  height : GPUIntegerCoordinate,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_scissor_rect(self : GPURenderPassEncoder, x : GPUIntegerCoordinate, y : GPUIntegerCoordinate, width : GPUIntegerCoordinate, height : GPUIntegerCoordinate) -> Unit =
   #| (self, x, y, width, height) => self.setScissorRect(x, y, width, height)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_blend_constant(
-  self : GPURenderPassEncoder,
-  color : GPUColor,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_blend_constant(self : GPURenderPassEncoder, color : GPUColor) -> Unit =
   #| (self, color) => self.setBlendConstant(color)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_stencil_reference(
-  self : GPURenderPassEncoder,
-  reference : GPUStencilValue,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_stencil_reference(self : GPURenderPassEncoder, reference : GPUStencilValue) -> Unit =
   #| (self, reference) => self.setStencilReference(reference)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::begin_occlusion_query(
-  self : GPURenderPassEncoder,
-  query_index : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::begin_occlusion_query(self : GPURenderPassEncoder, query_index : GPUSize32) -> Unit =
   #| (self, query_index) => self.beginOcclusionQuery(query_index)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::end_occlusion_query(
-  self : GPURenderPassEncoder,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::end_occlusion_query(self : GPURenderPassEncoder) -> Unit =
   #| (self) => self.endOcclusionQuery()
 
-///|
-pub extern "js" fn GPURenderPassEncoder::execute_bundles(
-  self : GPURenderPassEncoder,
-  bundles : FixedArray[GPURenderBundle],
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::execute_bundles(self : GPURenderPassEncoder, bundles : FixedArray[GPURenderBundle]) -> Unit =
   #| (self, bundles) => self.executeBundles(bundles)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::end(
-  self : GPURenderPassEncoder,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::end(self : GPURenderPassEncoder) -> Unit =
   #| (self) => self.end()
 
-///|
-pub extern "js" fn GPURenderPassEncoder::get_label(
-  self : GPURenderPassEncoder,
-) -> String =
+pub extern "js" fn GPURenderPassEncoder::get_label(self : GPURenderPassEncoder) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_label(
-  self : GPURenderPassEncoder,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_label(self : GPURenderPassEncoder, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPURenderPassEncoder::push_debug_group(
-  self : GPURenderPassEncoder,
-  group_label : String,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::push_debug_group(self : GPURenderPassEncoder, group_label : String) -> Unit =
   #| (self, group_label) => self.pushDebugGroup(group_label)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::pop_debug_group(
-  self : GPURenderPassEncoder,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::pop_debug_group(self : GPURenderPassEncoder) -> Unit =
   #| (self) => self.popDebugGroup()
 
-///|
-pub extern "js" fn GPURenderPassEncoder::insert_debug_marker(
-  self : GPURenderPassEncoder,
-  marker_label : String,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::insert_debug_marker(self : GPURenderPassEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_bind_group(
-  self : GPURenderPassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_bind_group(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
   #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(
-  self : GPURenderPassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : FixedArray[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
-  self : GPURenderPassEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets_data : Uint32Array,
-  dynamic_offsets_data_start : GPUSize64,
-  dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(self : GPURenderPassEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
   #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, Number(dynamic_offsets_data_start), dynamic_offsets_data_length)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_pipeline(
-  self : GPURenderPassEncoder,
-  pipeline : GPURenderPipeline,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_immediates(self : GPURenderPassEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource) -> Unit =
+  #| (self, range_offset, data) => self.setImmediates(range_offset, data)
+
+pub extern "js" fn GPURenderPassEncoder::set_immediates_with_data_size(self : GPURenderPassEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderPassEncoder::set_pipeline(self : GPURenderPassEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_index_buffer(
-  self : GPURenderPassEncoder,
-  buffer : GPUBuffer,
-  index_format : GPUIndexFormat,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_index_buffer(self : GPURenderPassEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat) -> Unit =
   #| (self, buffer, index_format) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format])
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_index_buffer_with_size(
-  self : GPURenderPassEncoder,
-  buffer : GPUBuffer,
-  index_format : GPUIndexFormat,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_index_buffer_with_size(self : GPURenderPassEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, index_format, offset, size) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format], Number(offset), Number(size))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer(
-  self : GPURenderPassEncoder,
-  slot : GPUIndex32,
-  buffer : GPUBuffer?,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer(self : GPURenderPassEncoder, slot : GPUIndex32, buffer : GPUBuffer?) -> Unit =
   #| (self, slot, buffer) => self.setVertexBuffer(slot, (buffer.$tag === 1 ? buffer._0 : null))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer_with_size(
-  self : GPURenderPassEncoder,
-  slot : GPUIndex32,
-  buffer : GPUBuffer?,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_vertex_buffer_with_size(self : GPURenderPassEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, slot, buffer, offset, size) => self.setVertexBuffer(slot, (buffer.$tag === 1 ? buffer._0 : null), Number(offset), Number(size))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw(
-  self : GPURenderPassEncoder,
-  vertex_count : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw(self : GPURenderPassEncoder, vertex_count : GPUSize32) -> Unit =
   #| (self, vertex_count) => self.draw(vertex_count)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw_with_first_instance(
-  self : GPURenderPassEncoder,
-  vertex_count : GPUSize32,
-  instance_count : GPUSize32,
-  first_vertex : GPUSize32,
-  first_instance : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_with_first_instance(self : GPURenderPassEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
   #| (self, vertex_count, instance_count, first_vertex, first_instance) => self.draw(vertex_count, instance_count, first_vertex, first_instance)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw_indexed(
-  self : GPURenderPassEncoder,
-  index_count : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_indexed(self : GPURenderPassEncoder, index_count : GPUSize32) -> Unit =
   #| (self, index_count) => self.drawIndexed(index_count)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw_indexed_with_first_instance(
-  self : GPURenderPassEncoder,
-  index_count : GPUSize32,
-  instance_count : GPUSize32,
-  first_index : GPUSize32,
-  base_vertex : GPUSignedOffset32,
-  first_instance : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_indexed_with_first_instance(self : GPURenderPassEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
   #| (self, index_count, instance_count, first_index, base_vertex, first_instance) => self.drawIndexed(index_count, instance_count, first_index, base_vertex, first_instance)
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw_indirect(
-  self : GPURenderPassEncoder,
-  indirect_buffer : GPUBuffer,
-  indirect_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_indirect(self : GPURenderPassEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
   #| (self, indirect_buffer, indirect_offset) => self.drawIndirect(indirect_buffer, Number(indirect_offset))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::draw_indexed_indirect(
-  self : GPURenderPassEncoder,
-  indirect_buffer : GPUBuffer,
-  indirect_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::draw_indexed_indirect(self : GPURenderPassEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
   #| (self, indirect_buffer, indirect_offset) => self.drawIndexedIndirect(indirect_buffer, Number(indirect_offset))
 
-///|
-pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_array_of_double(
-  self : GPURenderPassEncoder,
-  color : FixedArray[Double],
-) -> Unit =
+pub extern "js" fn GPURenderPassEncoder::set_blend_constant_with_array_of_double(self : GPURenderPassEncoder, color : FixedArray[Double]) -> Unit =
   #| (self, color) => self.setBlendConstant(color)
 
-///|
-extern "js" fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(
-  self : GPURenderPassEncoder,
-  color : JsValue,
-) -> Unit =
+extern "js" fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(self : GPURenderPassEncoder, color : JsValue) -> Unit =
   #| (self, color) => self.setBlendConstant(color)
 
-///|
-pub fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict(
-  self : GPURenderPassEncoder,
-  color : GPUColorDict,
-) -> Unit {
-  GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(
-    self,
-    color.to_js(),
-  )
+pub fn GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict(self : GPURenderPassEncoder, color : GPUColorDict) -> Unit {
+  GPURenderPassEncoder::set_blend_constant_with_gpu_color_dict_ffi(self, color.to_js())
 }
+pub extern "js" fn GPURenderPassEncoder::set_immediates_with_array_buffer(self : GPURenderPassEncoder, range_offset : GPUSize32, data : ArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderPassEncoder::set_immediates_with_shared_array_buffer(self : GPURenderPassEncoder, range_offset : GPUSize32, data : SharedArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderPassEncoder::set_immediates_with_array_buffer_view(self : GPURenderPassEncoder, range_offset : GPUSize32, data : ArrayBufferView, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
 
 ///|
 /// GPURenderBundle interface
 pub type GPURenderBundle
 
-///|
-pub extern "js" fn GPURenderBundle::to_js_value(
-  self : GPURenderBundle,
-) -> JsValue =
+pub extern "js" fn GPURenderBundle::to_js_value(self : GPURenderBundle) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPURenderBundle (unchecked)
-pub extern "js" fn GPURenderBundle::from_js_value(
-  v : JsValue,
-) -> GPURenderBundle =
+pub extern "js" fn GPURenderBundle::from_js_value(v : JsValue) -> GPURenderBundle =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPURenderBundle (checked with instanceof)
-pub extern "js" fn GPURenderBundle::from_js_value_opt(
-  v : JsValue,
-) -> GPURenderBundle? =
+pub extern "js" fn GPURenderBundle::from_js_value_opt(v : JsValue) -> GPURenderBundle? =
   #| (v) => (v instanceof GPURenderBundle) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPURenderBundle (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_render_bundle(
-  self : JsValue,
-) -> GPURenderBundle? =
+pub extern "js" fn JsValue::as_gpu_render_bundle(self : JsValue) -> GPURenderBundle? =
   #| (self) => (self instanceof GPURenderBundle) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPURenderBundle (unchecked)
-pub extern "js" fn JsValue::to_gpu_render_bundle(
-  self : JsValue,
-) -> GPURenderBundle =
+pub extern "js" fn JsValue::to_gpu_render_bundle(self : JsValue) -> GPURenderBundle =
   #| (self) => self
 
-///|
 pub extern "js" fn GPURenderBundle::get_label(self : GPURenderBundle) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPURenderBundle::set_label(
-  self : GPURenderBundle,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPURenderBundle::set_label(self : GPURenderBundle, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPURenderBundleEncoder interface
 pub type GPURenderBundleEncoder
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::to_js_value(
-  self : GPURenderBundleEncoder,
-) -> JsValue =
+pub extern "js" fn GPURenderBundleEncoder::to_js_value(self : GPURenderBundleEncoder) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPURenderBundleEncoder (unchecked)
-pub extern "js" fn GPURenderBundleEncoder::from_js_value(
-  v : JsValue,
-) -> GPURenderBundleEncoder =
+pub extern "js" fn GPURenderBundleEncoder::from_js_value(v : JsValue) -> GPURenderBundleEncoder =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPURenderBundleEncoder (checked with instanceof)
-pub extern "js" fn GPURenderBundleEncoder::from_js_value_opt(
-  v : JsValue,
-) -> GPURenderBundleEncoder? =
+pub extern "js" fn GPURenderBundleEncoder::from_js_value_opt(v : JsValue) -> GPURenderBundleEncoder? =
   #| (v) => (v instanceof GPURenderBundleEncoder) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPURenderBundleEncoder (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_render_bundle_encoder(
-  self : JsValue,
-) -> GPURenderBundleEncoder? =
+pub extern "js" fn JsValue::as_gpu_render_bundle_encoder(self : JsValue) -> GPURenderBundleEncoder? =
   #| (self) => (self instanceof GPURenderBundleEncoder) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPURenderBundleEncoder (unchecked)
-pub extern "js" fn JsValue::to_gpu_render_bundle_encoder(
-  self : JsValue,
-) -> GPURenderBundleEncoder =
+pub extern "js" fn JsValue::to_gpu_render_bundle_encoder(self : JsValue) -> GPURenderBundleEncoder =
   #| (self) => self
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::finish(
-  self : GPURenderBundleEncoder,
-) -> GPURenderBundle =
+pub extern "js" fn GPURenderBundleEncoder::finish(self : GPURenderBundleEncoder) -> GPURenderBundle =
   #| (self) => self.finish()
 
-///|
-extern "js" fn GPURenderBundleEncoder::finish_with_descriptor_ffi(
-  self : GPURenderBundleEncoder,
-  descriptor : JsValue,
-) -> GPURenderBundle =
+extern "js" fn GPURenderBundleEncoder::finish_with_descriptor_ffi(self : GPURenderBundleEncoder, descriptor : JsValue) -> GPURenderBundle =
   #| (self, descriptor) => self.finish(descriptor)
 
-///|
-pub fn GPURenderBundleEncoder::finish_with_descriptor(
-  self : GPURenderBundleEncoder,
-  descriptor : GPURenderBundleDescriptor,
-) -> GPURenderBundle {
+pub fn GPURenderBundleEncoder::finish_with_descriptor(self : GPURenderBundleEncoder, descriptor : GPURenderBundleDescriptor) -> GPURenderBundle {
   GPURenderBundleEncoder::finish_with_descriptor_ffi(self, descriptor.to_js())
 }
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::get_label(
-  self : GPURenderBundleEncoder,
-) -> String =
+pub extern "js" fn GPURenderBundleEncoder::get_label(self : GPURenderBundleEncoder) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_label(
-  self : GPURenderBundleEncoder,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_label(self : GPURenderBundleEncoder, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::push_debug_group(
-  self : GPURenderBundleEncoder,
-  group_label : String,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::push_debug_group(self : GPURenderBundleEncoder, group_label : String) -> Unit =
   #| (self, group_label) => self.pushDebugGroup(group_label)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::pop_debug_group(
-  self : GPURenderBundleEncoder,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::pop_debug_group(self : GPURenderBundleEncoder) -> Unit =
   #| (self) => self.popDebugGroup()
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::insert_debug_marker(
-  self : GPURenderBundleEncoder,
-  marker_label : String,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::insert_debug_marker(self : GPURenderBundleEncoder, marker_label : String) -> Unit =
   #| (self, marker_label) => self.insertDebugMarker(marker_label)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_bind_group(
-  self : GPURenderBundleEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?) -> Unit =
   #| (self, index, bind_group) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null))
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(
-  self : GPURenderBundleEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets : FixedArray[GPUBufferDynamicOffset],
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_dynamic_offsets(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets : FixedArray[GPUBufferDynamicOffset]) -> Unit =
   #| (self, index, bind_group, dynamic_offsets) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(
-  self : GPURenderBundleEncoder,
-  index : GPUIndex32,
-  bind_group : GPUBindGroup?,
-  dynamic_offsets_data : Uint32Array,
-  dynamic_offsets_data_start : GPUSize64,
-  dynamic_offsets_data_length : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_bind_group_with_index_gpu_index32_and_bind_group_and_dynamic_offsets_data_uint32_array_and_dynamic_offsets_data_start_gpu_size64_and_dynamic_offsets_data_length_gpu_size32(self : GPURenderBundleEncoder, index : GPUIndex32, bind_group : GPUBindGroup?, dynamic_offsets_data : Uint32Array, dynamic_offsets_data_start : GPUSize64, dynamic_offsets_data_length : GPUSize32) -> Unit =
   #| (self, index, bind_group, dynamic_offsets_data, dynamic_offsets_data_start, dynamic_offsets_data_length) => self.setBindGroup(index, (bind_group.$tag === 1 ? bind_group._0 : null), dynamic_offsets_data, Number(dynamic_offsets_data_start), dynamic_offsets_data_length)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_pipeline(
-  self : GPURenderBundleEncoder,
-  pipeline : GPURenderPipeline,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_immediates(self : GPURenderBundleEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource) -> Unit =
+  #| (self, range_offset, data) => self.setImmediates(range_offset, data)
+
+pub extern "js" fn GPURenderBundleEncoder::set_immediates_with_data_size(self : GPURenderBundleEncoder, range_offset : GPUSize32, data : AllowSharedBufferSource, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderBundleEncoder::set_pipeline(self : GPURenderBundleEncoder, pipeline : GPURenderPipeline) -> Unit =
   #| (self, pipeline) => self.setPipeline(pipeline)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_index_buffer(
-  self : GPURenderBundleEncoder,
-  buffer : GPUBuffer,
-  index_format : GPUIndexFormat,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_index_buffer(self : GPURenderBundleEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat) -> Unit =
   #| (self, buffer, index_format) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format])
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_index_buffer_with_size(
-  self : GPURenderBundleEncoder,
-  buffer : GPUBuffer,
-  index_format : GPUIndexFormat,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_index_buffer_with_size(self : GPURenderBundleEncoder, buffer : GPUBuffer, index_format : GPUIndexFormat, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, buffer, index_format, offset, size) => self.setIndexBuffer(buffer, ['uint16', 'uint32'][index_format], Number(offset), Number(size))
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer(
-  self : GPURenderBundleEncoder,
-  slot : GPUIndex32,
-  buffer : GPUBuffer?,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer(self : GPURenderBundleEncoder, slot : GPUIndex32, buffer : GPUBuffer?) -> Unit =
   #| (self, slot, buffer) => self.setVertexBuffer(slot, (buffer.$tag === 1 ? buffer._0 : null))
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer_with_size(
-  self : GPURenderBundleEncoder,
-  slot : GPUIndex32,
-  buffer : GPUBuffer?,
-  offset : GPUSize64,
-  size : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::set_vertex_buffer_with_size(self : GPURenderBundleEncoder, slot : GPUIndex32, buffer : GPUBuffer?, offset : GPUSize64, size : GPUSize64) -> Unit =
   #| (self, slot, buffer, offset, size) => self.setVertexBuffer(slot, (buffer.$tag === 1 ? buffer._0 : null), Number(offset), Number(size))
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw(
-  self : GPURenderBundleEncoder,
-  vertex_count : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw(self : GPURenderBundleEncoder, vertex_count : GPUSize32) -> Unit =
   #| (self, vertex_count) => self.draw(vertex_count)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw_with_first_instance(
-  self : GPURenderBundleEncoder,
-  vertex_count : GPUSize32,
-  instance_count : GPUSize32,
-  first_vertex : GPUSize32,
-  first_instance : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_with_first_instance(self : GPURenderBundleEncoder, vertex_count : GPUSize32, instance_count : GPUSize32, first_vertex : GPUSize32, first_instance : GPUSize32) -> Unit =
   #| (self, vertex_count, instance_count, first_vertex, first_instance) => self.draw(vertex_count, instance_count, first_vertex, first_instance)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw_indexed(
-  self : GPURenderBundleEncoder,
-  index_count : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_indexed(self : GPURenderBundleEncoder, index_count : GPUSize32) -> Unit =
   #| (self, index_count) => self.drawIndexed(index_count)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw_indexed_with_first_instance(
-  self : GPURenderBundleEncoder,
-  index_count : GPUSize32,
-  instance_count : GPUSize32,
-  first_index : GPUSize32,
-  base_vertex : GPUSignedOffset32,
-  first_instance : GPUSize32,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_indexed_with_first_instance(self : GPURenderBundleEncoder, index_count : GPUSize32, instance_count : GPUSize32, first_index : GPUSize32, base_vertex : GPUSignedOffset32, first_instance : GPUSize32) -> Unit =
   #| (self, index_count, instance_count, first_index, base_vertex, first_instance) => self.drawIndexed(index_count, instance_count, first_index, base_vertex, first_instance)
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw_indirect(
-  self : GPURenderBundleEncoder,
-  indirect_buffer : GPUBuffer,
-  indirect_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_indirect(self : GPURenderBundleEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
   #| (self, indirect_buffer, indirect_offset) => self.drawIndirect(indirect_buffer, Number(indirect_offset))
 
-///|
-pub extern "js" fn GPURenderBundleEncoder::draw_indexed_indirect(
-  self : GPURenderBundleEncoder,
-  indirect_buffer : GPUBuffer,
-  indirect_offset : GPUSize64,
-) -> Unit =
+pub extern "js" fn GPURenderBundleEncoder::draw_indexed_indirect(self : GPURenderBundleEncoder, indirect_buffer : GPUBuffer, indirect_offset : GPUSize64) -> Unit =
   #| (self, indirect_buffer, indirect_offset) => self.drawIndexedIndirect(indirect_buffer, Number(indirect_offset))
+
+pub extern "js" fn GPURenderBundleEncoder::set_immediates_with_array_buffer(self : GPURenderBundleEncoder, range_offset : GPUSize32, data : ArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderBundleEncoder::set_immediates_with_shared_array_buffer(self : GPURenderBundleEncoder, range_offset : GPUSize32, data : SharedArrayBuffer, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
+
+pub extern "js" fn GPURenderBundleEncoder::set_immediates_with_array_buffer_view(self : GPURenderBundleEncoder, range_offset : GPUSize32, data : ArrayBufferView, data_offset : GPUSize64, data_size : GPUSize64) -> Unit =
+  #| (self, range_offset, data, data_offset, data_size) => self.setImmediates(range_offset, data, Number(data_offset), Number(data_size))
 
 ///|
 /// GPUQueue interface
 pub type GPUQueue
 
-///|
 pub extern "js" fn GPUQueue::to_js_value(self : GPUQueue) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUQueue (unchecked)
 pub extern "js" fn GPUQueue::from_js_value(v : JsValue) -> GPUQueue =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUQueue (checked with instanceof)
 pub extern "js" fn GPUQueue::from_js_value_opt(v : JsValue) -> GPUQueue? =
   #| (v) => (v instanceof GPUQueue) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUQueue (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_queue(self : JsValue) -> GPUQueue? =
   #| (self) => (self instanceof GPUQueue) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUQueue (unchecked)
 pub extern "js" fn JsValue::to_gpu_queue(self : JsValue) -> GPUQueue =
   #| (self) => self
@@ -9063,6 +6458,8 @@ pub(all) enum GPUQueueWriteBufferError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend GPUQueueWriteBufferError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum GPUQueueCopyExternalImageToTextureError {
@@ -9071,347 +6468,139 @@ pub(all) enum GPUQueueCopyExternalImageToTextureError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn GPUQueue::submit(
-  self : GPUQueue,
-  command_buffers : FixedArray[GPUCommandBuffer],
-) -> Unit =
+pub extend GPUQueueCopyExternalImageToTextureError with @debug.Debug::{to_repr}
+
+pub extern "js" fn GPUQueue::submit(self : GPUQueue, command_buffers : FixedArray[GPUCommandBuffer]) -> Unit =
   #| (self, command_buffers) => self.submit(command_buffers)
 
-///|
-pub extern "js" fn GPUQueue::on_submitted_work_done(
-  self : GPUQueue,
-) -> Promise[Unit] =
+pub extern "js" fn GPUQueue::on_submitted_work_done(self : GPUQueue) -> Promise[Unit] =
   #| (self) => self.onSubmittedWorkDone()
 
-///|
-pub extern "js" fn GPUQueue::write_buffer(
-  self : GPUQueue,
-  buffer : GPUBuffer,
-  buffer_offset : GPUSize64,
-  data : AllowSharedBufferSource,
-) -> Result[Unit, GPUQueueWriteBufferError] =
+pub extern "js" fn GPUQueue::write_buffer(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : AllowSharedBufferSource) -> Result[Unit, GPUQueueWriteBufferError] =
   #| (self, buffer, buffer_offset, data) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn GPUQueue::write_buffer_with_size(
-  self : GPUQueue,
-  buffer : GPUBuffer,
-  buffer_offset : GPUSize64,
-  data : AllowSharedBufferSource,
-  data_offset : GPUSize64,
-  size : GPUSize64,
-) -> Result[Unit, GPUQueueWriteBufferError] =
+pub extern "js" fn GPUQueue::write_buffer_with_size(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : AllowSharedBufferSource, data_offset : GPUSize64, size : GPUSize64) -> Result[Unit, GPUQueueWriteBufferError] =
   #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data, Number(data_offset), Number(size)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn GPUQueue::write_texture_ffi(
-  self : GPUQueue,
-  destination : JsValue,
-  data : AllowSharedBufferSource,
-  data_layout : JsValue,
-  size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUQueue::write_texture_ffi(self : GPUQueue, destination : JsValue, data : AllowSharedBufferSource, data_layout : JsValue, size : GPUExtent3D) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
-///|
-pub fn GPUQueue::write_texture(
-  self : GPUQueue,
-  destination : GPUTexelCopyTextureInfo,
-  data : AllowSharedBufferSource,
-  data_layout : GPUTexelCopyBufferLayout,
-  size : GPUExtent3D,
-) -> Unit {
-  GPUQueue::write_texture_ffi(
-    self,
-    destination.to_js(),
-    data,
-    data_layout.to_js(),
-    size,
-  )
+pub fn GPUQueue::write_texture(self : GPUQueue, destination : GPUTexelCopyTextureInfo, data : AllowSharedBufferSource, data_layout : GPUTexelCopyBufferLayout, size : GPUExtent3D) -> Unit {
+  GPUQueue::write_texture_ffi(self, destination.to_js(), data, data_layout.to_js(), size)
 }
 
-///|
-extern "js" fn GPUQueue::copy_external_image_to_texture_ffi(
-  self : GPUQueue,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : GPUExtent3D,
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+extern "js" fn GPUQueue::copy_external_image_to_texture_ffi(self : GPUQueue, source : JsValue, destination : JsValue, copy_size : GPUExtent3D) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
   #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn GPUQueue::copy_external_image_to_texture(
-  self : GPUQueue,
-  source : GPUCopyExternalImageSourceInfo,
-  destination : GPUCopyExternalImageDestInfo,
-  copy_size : GPUExtent3D,
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
-  GPUQueue::copy_external_image_to_texture_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUQueue::copy_external_image_to_texture(self : GPUQueue, source : GPUCopyExternalImageSourceInfo, destination : GPUCopyExternalImageDestInfo, copy_size : GPUExtent3D) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
+  GPUQueue::copy_external_image_to_texture_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
 
-///|
 pub extern "js" fn GPUQueue::get_label(self : GPUQueue) -> String =
   #| (self) => self.label
 
-///|
 pub extern "js" fn GPUQueue::set_label(self : GPUQueue, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
-///|
-pub extern "js" fn GPUQueue::write_buffer_with_array_buffer(
-  self : GPUQueue,
-  buffer : GPUBuffer,
-  buffer_offset : GPUSize64,
-  data : ArrayBuffer,
-  data_offset : GPUSize64,
-  size : GPUSize64,
-) -> Result[Unit, GPUQueueWriteBufferError] =
+pub extern "js" fn GPUQueue::write_buffer_with_array_buffer(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : ArrayBuffer, data_offset : GPUSize64, size : GPUSize64) -> Result[Unit, GPUQueueWriteBufferError] =
   #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data, Number(data_offset), Number(size)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(
-  self : GPUQueue,
-  buffer : GPUBuffer,
-  buffer_offset : GPUSize64,
-  data : SharedArrayBuffer,
-  data_offset : GPUSize64,
-  size : GPUSize64,
-) -> Result[Unit, GPUQueueWriteBufferError] =
+pub extern "js" fn GPUQueue::write_buffer_with_shared_array_buffer(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : SharedArrayBuffer, data_offset : GPUSize64, size : GPUSize64) -> Result[Unit, GPUQueueWriteBufferError] =
   #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data, Number(data_offset), Number(size)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(
-  self : GPUQueue,
-  buffer : GPUBuffer,
-  buffer_offset : GPUSize64,
-  data : ArrayBufferView,
-  data_offset : GPUSize64,
-  size : GPUSize64,
-) -> Result[Unit, GPUQueueWriteBufferError] =
+pub extern "js" fn GPUQueue::write_buffer_with_array_buffer_view(self : GPUQueue, buffer : GPUBuffer, buffer_offset : GPUSize64, data : ArrayBufferView, data_offset : GPUSize64, size : GPUSize64) -> Result[Unit, GPUQueueWriteBufferError] =
   #| (self, buffer, buffer_offset, data, data_offset, size) => (() => { try { self.writeBuffer(buffer, Number(buffer_offset), data, Number(data_offset), Number(size)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'OperationError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-extern "js" fn GPUQueue::write_texture_with_array_buffer_ffi(
-  self : GPUQueue,
-  destination : JsValue,
-  data : ArrayBuffer,
-  data_layout : JsValue,
-  size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUQueue::write_texture_with_array_buffer_ffi(self : GPUQueue, destination : JsValue, data : ArrayBuffer, data_layout : JsValue, size : GPUExtent3D) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
-///|
-pub fn GPUQueue::write_texture_with_array_buffer(
-  self : GPUQueue,
-  destination : GPUTexelCopyTextureInfo,
-  data : ArrayBuffer,
-  data_layout : GPUTexelCopyBufferLayout,
-  size : GPUExtent3D,
-) -> Unit {
-  GPUQueue::write_texture_with_array_buffer_ffi(
-    self,
-    destination.to_js(),
-    data,
-    data_layout.to_js(),
-    size,
-  )
+pub fn GPUQueue::write_texture_with_array_buffer(self : GPUQueue, destination : GPUTexelCopyTextureInfo, data : ArrayBuffer, data_layout : GPUTexelCopyBufferLayout, size : GPUExtent3D) -> Unit {
+  GPUQueue::write_texture_with_array_buffer_ffi(self, destination.to_js(), data, data_layout.to_js(), size)
 }
-
-///|
-extern "js" fn GPUQueue::write_texture_with_shared_array_buffer_ffi(
-  self : GPUQueue,
-  destination : JsValue,
-  data : SharedArrayBuffer,
-  data_layout : JsValue,
-  size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUQueue::write_texture_with_shared_array_buffer_ffi(self : GPUQueue, destination : JsValue, data : SharedArrayBuffer, data_layout : JsValue, size : GPUExtent3D) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
-///|
-pub fn GPUQueue::write_texture_with_shared_array_buffer(
-  self : GPUQueue,
-  destination : GPUTexelCopyTextureInfo,
-  data : SharedArrayBuffer,
-  data_layout : GPUTexelCopyBufferLayout,
-  size : GPUExtent3D,
-) -> Unit {
-  GPUQueue::write_texture_with_shared_array_buffer_ffi(
-    self,
-    destination.to_js(),
-    data,
-    data_layout.to_js(),
-    size,
-  )
+pub fn GPUQueue::write_texture_with_shared_array_buffer(self : GPUQueue, destination : GPUTexelCopyTextureInfo, data : SharedArrayBuffer, data_layout : GPUTexelCopyBufferLayout, size : GPUExtent3D) -> Unit {
+  GPUQueue::write_texture_with_shared_array_buffer_ffi(self, destination.to_js(), data, data_layout.to_js(), size)
 }
-
-///|
-extern "js" fn GPUQueue::write_texture_with_array_buffer_view_ffi(
-  self : GPUQueue,
-  destination : JsValue,
-  data : ArrayBufferView,
-  data_layout : JsValue,
-  size : GPUExtent3D,
-) -> Unit =
+extern "js" fn GPUQueue::write_texture_with_array_buffer_view_ffi(self : GPUQueue, destination : JsValue, data : ArrayBufferView, data_layout : JsValue, size : GPUExtent3D) -> Unit =
   #| (self, destination, data, data_layout, size) => self.writeTexture(destination, data, data_layout, size)
 
-///|
-pub fn GPUQueue::write_texture_with_array_buffer_view(
-  self : GPUQueue,
-  destination : GPUTexelCopyTextureInfo,
-  data : ArrayBufferView,
-  data_layout : GPUTexelCopyBufferLayout,
-  size : GPUExtent3D,
-) -> Unit {
-  GPUQueue::write_texture_with_array_buffer_view_ffi(
-    self,
-    destination.to_js(),
-    data,
-    data_layout.to_js(),
-    size,
-  )
+pub fn GPUQueue::write_texture_with_array_buffer_view(self : GPUQueue, destination : GPUTexelCopyTextureInfo, data : ArrayBufferView, data_layout : GPUTexelCopyBufferLayout, size : GPUExtent3D) -> Unit {
+  GPUQueue::write_texture_with_array_buffer_view_ffi(self, destination.to_js(), data, data_layout.to_js(), size)
 }
-
-///|
-extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-  self : GPUQueue,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+extern "js" fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(self : GPUQueue, source : JsValue, destination : JsValue, copy_size : FixedArray[GPUIntegerCoordinate]) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
   #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate(
-  self : GPUQueue,
-  source : GPUCopyExternalImageSourceInfo,
-  destination : GPUCopyExternalImageDestInfo,
-  copy_size : FixedArray[GPUIntegerCoordinate],
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
-  GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size,
-  )
+pub fn GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate(self : GPUQueue, source : GPUCopyExternalImageSourceInfo, destination : GPUCopyExternalImageDestInfo, copy_size : FixedArray[GPUIntegerCoordinate]) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
+  GPUQueue::copy_external_image_to_texture_with_array_of_gpu_integer_coordinate_ffi(self, source.to_js(), destination.to_js(), copy_size)
 }
-
-///|
-extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(
-  self : GPUQueue,
-  source : JsValue,
-  destination : JsValue,
-  copy_size : JsValue,
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
+extern "js" fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(self : GPUQueue, source : JsValue, destination : JsValue, copy_size : JsValue) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] =
   #| (self, source, destination, copy_size) => (() => { try { self.copyExternalImageToTexture(source, destination, copy_size); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(
-  self : GPUQueue,
-  source : GPUCopyExternalImageSourceInfo,
-  destination : GPUCopyExternalImageDestInfo,
-  copy_size : GPUExtent3DDict,
-) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
-  GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(
-    self,
-    source.to_js(),
-    destination.to_js(),
-    copy_size.to_js(),
-  )
+pub fn GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict(self : GPUQueue, source : GPUCopyExternalImageSourceInfo, destination : GPUCopyExternalImageDestInfo, copy_size : GPUExtent3DDict) -> Result[Unit, GPUQueueCopyExternalImageToTextureError] {
+  GPUQueue::copy_external_image_to_texture_with_gpu_extent_3d_dict_ffi(self, source.to_js(), destination.to_js(), copy_size.to_js())
 }
 
 ///|
 /// GPUQuerySet interface
 pub type GPUQuerySet
 
-///|
 pub extern "js" fn GPUQuerySet::to_js_value(self : GPUQuerySet) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUQuerySet (unchecked)
 pub extern "js" fn GPUQuerySet::from_js_value(v : JsValue) -> GPUQuerySet =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUQuerySet (checked with instanceof)
 pub extern "js" fn GPUQuerySet::from_js_value_opt(v : JsValue) -> GPUQuerySet? =
   #| (v) => (v instanceof GPUQuerySet) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUQuerySet (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_query_set(self : JsValue) -> GPUQuerySet? =
   #| (self) => (self instanceof GPUQuerySet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUQuerySet (unchecked)
 pub extern "js" fn JsValue::to_gpu_query_set(self : JsValue) -> GPUQuerySet =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUQuerySet::destroy(self : GPUQuerySet) -> Unit =
   #| (self) => self.destroy()
 
-///|
 pub extern "js" fn GPUQuerySet::get_type(self : GPUQuerySet) -> GPUQueryType =
   #| (self) => ['occlusion', 'timestamp'].indexOf(self.type)
 
-///|
 pub extern "js" fn GPUQuerySet::get_count(self : GPUQuerySet) -> GPUSize32Out =
   #| (self) => self.count
 
-///|
 pub extern "js" fn GPUQuerySet::get_label(self : GPUQuerySet) -> String =
   #| (self) => self.label
 
-///|
-pub extern "js" fn GPUQuerySet::set_label(
-  self : GPUQuerySet,
-  value : String,
-) -> Unit =
+pub extern "js" fn GPUQuerySet::set_label(self : GPUQuerySet, value : String) -> Unit =
   #| (self, value) => { self.label = value }
 
 ///|
 /// GPUCanvasContext interface
 pub type GPUCanvasContext
 
-///|
-pub extern "js" fn GPUCanvasContext::to_js_value(
-  self : GPUCanvasContext,
-) -> JsValue =
+pub extern "js" fn GPUCanvasContext::to_js_value(self : GPUCanvasContext) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUCanvasContext (unchecked)
-pub extern "js" fn GPUCanvasContext::from_js_value(
-  v : JsValue,
-) -> GPUCanvasContext =
+pub extern "js" fn GPUCanvasContext::from_js_value(v : JsValue) -> GPUCanvasContext =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUCanvasContext (checked with instanceof)
-pub extern "js" fn GPUCanvasContext::from_js_value_opt(
-  v : JsValue,
-) -> GPUCanvasContext? =
+pub extern "js" fn GPUCanvasContext::from_js_value_opt(v : JsValue) -> GPUCanvasContext? =
   #| (v) => (v instanceof GPUCanvasContext) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUCanvasContext (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_canvas_context(
-  self : JsValue,
-) -> GPUCanvasContext? =
+pub extern "js" fn JsValue::as_gpu_canvas_context(self : JsValue) -> GPUCanvasContext? =
   #| (self) => (self instanceof GPUCanvasContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUCanvasContext (unchecked)
-pub extern "js" fn JsValue::to_gpu_canvas_context(
-  self : JsValue,
-) -> GPUCanvasContext =
+pub extern "js" fn JsValue::to_gpu_canvas_context(self : JsValue) -> GPUCanvasContext =
   #| (self) => self
 
 ///|
@@ -9421,6 +6610,8 @@ pub(all) enum GPUCanvasContextConfigureError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend GPUCanvasContextConfigureError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum GPUCanvasContextGetCurrentTextureError {
@@ -9428,142 +6619,88 @@ pub(all) enum GPUCanvasContextGetCurrentTextureError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn GPUCanvasContext::get_canvas(
-  self : GPUCanvasContext,
-) -> HTMLCanvasElementOrOffscreenCanvas =
+pub extend GPUCanvasContextGetCurrentTextureError with @debug.Debug::{to_repr}
+
+pub extern "js" fn GPUCanvasContext::get_canvas(self : GPUCanvasContext) -> HTMLCanvasElementOrOffscreenCanvas =
   #| (self) => self.canvas
 
-///|
-extern "js" fn GPUCanvasContext::configure_ffi(
-  self : GPUCanvasContext,
-  configuration : JsValue,
-) -> Result[Unit, GPUCanvasContextConfigureError] =
+extern "js" fn GPUCanvasContext::configure_ffi(self : GPUCanvasContext, configuration : JsValue) -> Result[Unit, GPUCanvasContextConfigureError] =
   #| (self, configuration) => (() => { try { self.configure(configuration); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub fn GPUCanvasContext::configure(
-  self : GPUCanvasContext,
-  configuration : GPUCanvasConfiguration,
-) -> Result[Unit, GPUCanvasContextConfigureError] {
+pub fn GPUCanvasContext::configure(self : GPUCanvasContext, configuration : GPUCanvasConfiguration) -> Result[Unit, GPUCanvasContextConfigureError] {
   GPUCanvasContext::configure_ffi(self, configuration.to_js())
 }
 
-///|
-pub extern "js" fn GPUCanvasContext::unconfigure(
-  self : GPUCanvasContext,
-) -> Unit =
+pub extern "js" fn GPUCanvasContext::unconfigure(self : GPUCanvasContext) -> Unit =
   #| (self) => self.unconfigure()
 
-///|
-pub extern "js" fn GPUCanvasContext::get_configuration(
-  self : GPUCanvasContext,
-) -> GPUCanvasConfiguration? =
+pub extern "js" fn GPUCanvasContext::get_configuration(self : GPUCanvasContext) -> GPUCanvasConfiguration? =
   #| (self) => (() => { const v = self.getConfiguration(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn GPUCanvasContext::get_current_texture(
-  self : GPUCanvasContext,
-) -> Result[GPUTexture, GPUCanvasContextGetCurrentTextureError] =
+pub extern "js" fn GPUCanvasContext::get_current_texture(self : GPUCanvasContext) -> Result[GPUTexture, GPUCanvasContextGetCurrentTextureError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getCurrentTexture() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// GPUDeviceLostInfo interface
 pub type GPUDeviceLostInfo
 
-///|
-pub extern "js" fn GPUDeviceLostInfo::to_js_value(
-  self : GPUDeviceLostInfo,
-) -> JsValue =
+pub extern "js" fn GPUDeviceLostInfo::to_js_value(self : GPUDeviceLostInfo) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUDeviceLostInfo (unchecked)
-pub extern "js" fn GPUDeviceLostInfo::from_js_value(
-  v : JsValue,
-) -> GPUDeviceLostInfo =
+pub extern "js" fn GPUDeviceLostInfo::from_js_value(v : JsValue) -> GPUDeviceLostInfo =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUDeviceLostInfo (checked with instanceof)
-pub extern "js" fn GPUDeviceLostInfo::from_js_value_opt(
-  v : JsValue,
-) -> GPUDeviceLostInfo? =
+pub extern "js" fn GPUDeviceLostInfo::from_js_value_opt(v : JsValue) -> GPUDeviceLostInfo? =
   #| (v) => (v instanceof GPUDeviceLostInfo) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUDeviceLostInfo (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_device_lost_info(
-  self : JsValue,
-) -> GPUDeviceLostInfo? =
+pub extern "js" fn JsValue::as_gpu_device_lost_info(self : JsValue) -> GPUDeviceLostInfo? =
   #| (self) => (self instanceof GPUDeviceLostInfo) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUDeviceLostInfo (unchecked)
-pub extern "js" fn JsValue::to_gpu_device_lost_info(
-  self : JsValue,
-) -> GPUDeviceLostInfo =
+pub extern "js" fn JsValue::to_gpu_device_lost_info(self : JsValue) -> GPUDeviceLostInfo =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUDeviceLostInfo::get_reason(
-  self : GPUDeviceLostInfo,
-) -> GPUDeviceLostReason =
+pub extern "js" fn GPUDeviceLostInfo::get_reason(self : GPUDeviceLostInfo) -> GPUDeviceLostReason =
   #| (self) => ['unknown', 'destroyed'].indexOf(self.reason)
 
-///|
-pub extern "js" fn GPUDeviceLostInfo::get_message(
-  self : GPUDeviceLostInfo,
-) -> String =
+pub extern "js" fn GPUDeviceLostInfo::get_message(self : GPUDeviceLostInfo) -> String =
   #| (self) => self.message
 
 ///|
 /// GPUError interface
 pub type GPUError
 
-///|
 pub extern "js" fn GPUError::to_js_value(self : GPUError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUError (unchecked)
 pub extern "js" fn GPUError::from_js_value(v : JsValue) -> GPUError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUError (checked with instanceof)
 pub extern "js" fn GPUError::from_js_value_opt(v : JsValue) -> GPUError? =
   #| (v) => (v instanceof GPUError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUError (checked with instanceof)
 pub extern "js" fn JsValue::as_gpu_error(self : JsValue) -> GPUError? =
   #| (self) => (self instanceof GPUError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUError (unchecked)
 pub extern "js" fn JsValue::to_gpu_error(self : JsValue) -> GPUError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUError::as_gpu_validation_error(
-  self : GPUError,
-) -> GPUValidationError? =
+pub extern "js" fn GPUError::as_gpu_validation_error(self : GPUError) -> GPUValidationError? =
   #| (self) => (self instanceof GPUValidationError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn GPUError::as_gpu_out_of_memory_error(
-  self : GPUError,
-) -> GPUOutOfMemoryError? =
+pub extern "js" fn GPUError::as_gpu_out_of_memory_error(self : GPUError) -> GPUOutOfMemoryError? =
   #| (self) => (self instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn GPUError::as_gpu_internal_error(
-  self : GPUError,
-) -> GPUInternalError? =
+pub extern "js" fn GPUError::as_gpu_internal_error(self : GPUError) -> GPUInternalError? =
   #| (self) => (self instanceof GPUInternalError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn GPUError::get_message(self : GPUError) -> String =
   #| (self) => self.message
 
@@ -9571,147 +6708,86 @@ pub extern "js" fn GPUError::get_message(self : GPUError) -> String =
 /// GPUValidationError interface
 pub type GPUValidationError
 
-///|
-pub extern "js" fn GPUValidationError::to_js_value(
-  self : GPUValidationError,
-) -> JsValue =
+pub extern "js" fn GPUValidationError::to_js_value(self : GPUValidationError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUValidationError (unchecked)
-pub extern "js" fn GPUValidationError::from_js_value(
-  v : JsValue,
-) -> GPUValidationError =
+pub extern "js" fn GPUValidationError::from_js_value(v : JsValue) -> GPUValidationError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUValidationError (checked with instanceof)
-pub extern "js" fn GPUValidationError::from_js_value_opt(
-  v : JsValue,
-) -> GPUValidationError? =
+pub extern "js" fn GPUValidationError::from_js_value_opt(v : JsValue) -> GPUValidationError? =
   #| (v) => (v instanceof GPUValidationError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUValidationError (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_validation_error(
-  self : JsValue,
-) -> GPUValidationError? =
+pub extern "js" fn JsValue::as_gpu_validation_error(self : JsValue) -> GPUValidationError? =
   #| (self) => (self instanceof GPUValidationError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUValidationError (unchecked)
-pub extern "js" fn JsValue::to_gpu_validation_error(
-  self : JsValue,
-) -> GPUValidationError =
+pub extern "js" fn JsValue::to_gpu_validation_error(self : JsValue) -> GPUValidationError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUValidationError::to_gpu_error(
-  self : GPUValidationError,
-) -> GPUError =
+pub extern "js" fn GPUValidationError::to_gpu_error(self : GPUValidationError) -> GPUError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUValidationError::new(
-  message : String,
-) -> GPUValidationError =
+pub extern "js" fn GPUValidationError::new(message : String) -> GPUValidationError =
   #| (message) => new GPUValidationError(message)
 
 ///|
 /// GPUOutOfMemoryError interface
 pub type GPUOutOfMemoryError
 
-///|
-pub extern "js" fn GPUOutOfMemoryError::to_js_value(
-  self : GPUOutOfMemoryError,
-) -> JsValue =
+pub extern "js" fn GPUOutOfMemoryError::to_js_value(self : GPUOutOfMemoryError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUOutOfMemoryError (unchecked)
-pub extern "js" fn GPUOutOfMemoryError::from_js_value(
-  v : JsValue,
-) -> GPUOutOfMemoryError =
+pub extern "js" fn GPUOutOfMemoryError::from_js_value(v : JsValue) -> GPUOutOfMemoryError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUOutOfMemoryError (checked with instanceof)
-pub extern "js" fn GPUOutOfMemoryError::from_js_value_opt(
-  v : JsValue,
-) -> GPUOutOfMemoryError? =
+pub extern "js" fn GPUOutOfMemoryError::from_js_value_opt(v : JsValue) -> GPUOutOfMemoryError? =
   #| (v) => (v instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUOutOfMemoryError (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_out_of_memory_error(
-  self : JsValue,
-) -> GPUOutOfMemoryError? =
+pub extern "js" fn JsValue::as_gpu_out_of_memory_error(self : JsValue) -> GPUOutOfMemoryError? =
   #| (self) => (self instanceof GPUOutOfMemoryError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUOutOfMemoryError (unchecked)
-pub extern "js" fn JsValue::to_gpu_out_of_memory_error(
-  self : JsValue,
-) -> GPUOutOfMemoryError =
+pub extern "js" fn JsValue::to_gpu_out_of_memory_error(self : JsValue) -> GPUOutOfMemoryError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUOutOfMemoryError::to_gpu_error(
-  self : GPUOutOfMemoryError,
-) -> GPUError =
+pub extern "js" fn GPUOutOfMemoryError::to_gpu_error(self : GPUOutOfMemoryError) -> GPUError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUOutOfMemoryError::new(
-  message : String,
-) -> GPUOutOfMemoryError =
+pub extern "js" fn GPUOutOfMemoryError::new(message : String) -> GPUOutOfMemoryError =
   #| (message) => new GPUOutOfMemoryError(message)
 
 ///|
 /// GPUInternalError interface
 pub type GPUInternalError
 
-///|
-pub extern "js" fn GPUInternalError::to_js_value(
-  self : GPUInternalError,
-) -> JsValue =
+pub extern "js" fn GPUInternalError::to_js_value(self : GPUInternalError) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUInternalError (unchecked)
-pub extern "js" fn GPUInternalError::from_js_value(
-  v : JsValue,
-) -> GPUInternalError =
+pub extern "js" fn GPUInternalError::from_js_value(v : JsValue) -> GPUInternalError =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUInternalError (checked with instanceof)
-pub extern "js" fn GPUInternalError::from_js_value_opt(
-  v : JsValue,
-) -> GPUInternalError? =
+pub extern "js" fn GPUInternalError::from_js_value_opt(v : JsValue) -> GPUInternalError? =
   #| (v) => (v instanceof GPUInternalError) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUInternalError (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_internal_error(
-  self : JsValue,
-) -> GPUInternalError? =
+pub extern "js" fn JsValue::as_gpu_internal_error(self : JsValue) -> GPUInternalError? =
   #| (self) => (self instanceof GPUInternalError) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUInternalError (unchecked)
-pub extern "js" fn JsValue::to_gpu_internal_error(
-  self : JsValue,
-) -> GPUInternalError =
+pub extern "js" fn JsValue::to_gpu_internal_error(self : JsValue) -> GPUInternalError =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUInternalError::to_gpu_error(
-  self : GPUInternalError,
-) -> GPUError =
+pub extern "js" fn GPUInternalError::to_gpu_error(self : GPUInternalError) -> GPUError =
   #| (self) => self
 
-///|
 pub extern "js" fn GPUInternalError::new(message : String) -> GPUInternalError =
   #| (message) => new GPUInternalError(message)
 
@@ -9719,68 +6795,36 @@ pub extern "js" fn GPUInternalError::new(message : String) -> GPUInternalError =
 /// GPUUncapturedErrorEvent interface
 pub type GPUUncapturedErrorEvent
 
-///|
-pub extern "js" fn GPUUncapturedErrorEvent::to_js_value(
-  self : GPUUncapturedErrorEvent,
-) -> JsValue =
+pub extern "js" fn GPUUncapturedErrorEvent::to_js_value(self : GPUUncapturedErrorEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to GPUUncapturedErrorEvent (unchecked)
-pub extern "js" fn GPUUncapturedErrorEvent::from_js_value(
-  v : JsValue,
-) -> GPUUncapturedErrorEvent =
+pub extern "js" fn GPUUncapturedErrorEvent::from_js_value(v : JsValue) -> GPUUncapturedErrorEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to GPUUncapturedErrorEvent (checked with instanceof)
-pub extern "js" fn GPUUncapturedErrorEvent::from_js_value_opt(
-  v : JsValue,
-) -> GPUUncapturedErrorEvent? =
+pub extern "js" fn GPUUncapturedErrorEvent::from_js_value_opt(v : JsValue) -> GPUUncapturedErrorEvent? =
   #| (v) => (v instanceof GPUUncapturedErrorEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to GPUUncapturedErrorEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_gpu_uncaptured_error_event(
-  self : JsValue,
-) -> GPUUncapturedErrorEvent? =
+pub extern "js" fn JsValue::as_gpu_uncaptured_error_event(self : JsValue) -> GPUUncapturedErrorEvent? =
   #| (self) => (self instanceof GPUUncapturedErrorEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to GPUUncapturedErrorEvent (unchecked)
-pub extern "js" fn JsValue::to_gpu_uncaptured_error_event(
-  self : JsValue,
-) -> GPUUncapturedErrorEvent =
+pub extern "js" fn JsValue::to_gpu_uncaptured_error_event(self : JsValue) -> GPUUncapturedErrorEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn GPUUncapturedErrorEvent::to_event(
-  self : GPUUncapturedErrorEvent,
-) -> Event =
+pub extern "js" fn GPUUncapturedErrorEvent::to_event(self : GPUUncapturedErrorEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn GPUUncapturedErrorEvent::new_ffi(
-  type_ : String,
-  gpu_uncaptured_error_event_init_dict : JsValue,
-) -> GPUUncapturedErrorEvent =
+extern "js" fn GPUUncapturedErrorEvent::new_ffi(type_ : String, gpu_uncaptured_error_event_init_dict : JsValue) -> GPUUncapturedErrorEvent =
   #| (type_, gpu_uncaptured_error_event_init_dict) => new GPUUncapturedErrorEvent(type_, gpu_uncaptured_error_event_init_dict)
 
-///|
-pub fn GPUUncapturedErrorEvent::new(
-  type_ : String,
-  gpu_uncaptured_error_event_init_dict : GPUUncapturedErrorEventInit,
-) -> GPUUncapturedErrorEvent {
-  GPUUncapturedErrorEvent::new_ffi(
-    type_,
-    gpu_uncaptured_error_event_init_dict.to_js(),
-  )
+pub fn GPUUncapturedErrorEvent::new(type_ : String, gpu_uncaptured_error_event_init_dict : GPUUncapturedErrorEventInit) -> GPUUncapturedErrorEvent {
+  GPUUncapturedErrorEvent::new_ffi(type_, gpu_uncaptured_error_event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn GPUUncapturedErrorEvent::get_error(
-  self : GPUUncapturedErrorEvent,
-) -> GPUError =
+pub extern "js" fn GPUUncapturedErrorEvent::get_error(self : GPUUncapturedErrorEvent) -> GPUError =
   #| (self) => self.error
 
 ///|

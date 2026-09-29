@@ -1,9 +1,9 @@
 diff --git a/src/integration.mbt b/src/integration.mbt
-index 5e21d26..12c48df 100644
+index f1e7816..944e4c2 100644
 --- a/src/integration.mbt
 +++ b/src/integration.mbt
 @@ -59,7 +59,7 @@ extern "C" fn exit(code : Int) = "exit"
- 
+
  ///|
  #coverage.skip
 -#cfg(target="js")
@@ -12,10 +12,10 @@ index 5e21d26..12c48df 100644
  pub fn run_async_main(main : async () -> Unit) -> Unit {
    let _ = @coroutine.spawn <| () => {
 diff --git a/src/internal/event_loop/moon.pkg b/src/internal/event_loop/moon.pkg
-index c33d4fa..f1209de 100644
+index 2bcb63d..3984c4d 100644
 --- a/src/internal/event_loop/moon.pkg
 +++ b/src/internal/event_loop/moon.pkg
-@@ -42,7 +42,8 @@ options(
+@@ -43,7 +43,8 @@ options(
    ],
    targets: {
      "cancel_before_submit_test.mbt": [ "native", "wasm" ],
@@ -25,7 +25,7 @@ index c33d4fa..f1209de 100644
      "event_loop.mbt": [ "native", "wasm" ],
      "event_loop_unix.mbt": [ "native", "wasm" ],
      "event_loop_windows.mbt": [ "native", "wasm" ],
-@@ -68,7 +69,6 @@ options(
+@@ -71,7 +72,6 @@ options(
      "thread_pool.mbt": [ "native" ],
      "timer.mbt": [ "native", "wasm" ],
      "io.wasm.mbt": [ "wasm" ],
@@ -39,12 +39,12 @@ index 39e915f..7399563 100644
 +++ b/src/internal/event_loop/timer.js.mbt
 @@ -17,9 +17,14 @@
  type Timer
- 
+
  ///|
 +#cfg(target="js")
  extern "js" fn set_timeout(duration : Int, f : () -> Unit) -> Timer =
    #| (duration, f) => setTimeout(f, duration)
- 
+
 +///|
 +#cfg(target="wasm-gc")
 +fn set_timeout(duration : Int, f : () -> Unit) -> Timer = "moonbit:async" "set_timeout"
@@ -54,12 +54,12 @@ index 39e915f..7399563 100644
    set_timeout(duration) <| () => {
 @@ -29,11 +34,16 @@ pub fn Timer::new(duration : Int, f : () -> Unit) -> Timer {
  }
- 
+
  ///|
 +#cfg(target="js")
  pub extern "js" fn Timer::cancel(self : Timer) =
    #| (timer) => clearTimeout(timer)
- 
+
  ///|
 -pub async fn sleep(duration : Int) -> Unit noraise {
 +#cfg(target="wasm-gc")
@@ -72,10 +72,10 @@ index 39e915f..7399563 100644
    defer timer.cancel()
 diff --git a/src/internal/event_loop/unimplemented.mbt b/src/internal/event_loop/unimplemented.mbt
 deleted file mode 100644
-index 8f41501..0000000
+index 42c9b34..0000000
 --- a/src/internal/event_loop/unimplemented.mbt
 +++ /dev/null
-@@ -1,57 +0,0 @@
+@@ -1,58 +0,0 @@
 -// Copyright 2025 International Digital Economy Academy
 -//
 -// Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,8 +102,9 @@ index 8f41501..0000000
 -  ignore(@os_string.unimplemented)
 -  ignore(@os_error.unimplemented)
 -  ignore(@coroutine.is_being_cancelled)
--  ignore(@env_util.eprintln)
+-  ignore((_ : @env_util.Platform) => ())
 -  let _ : (&@external_loop_integration.ExternalEventLoop) -> Unit = ignore
+-  ignore(@utf8.encode(""))
 -}
 -
 -///|
@@ -134,11 +135,11 @@ index 8f41501..0000000
 -  abort("`sleep()` is unimplemented on WASM backend")
 -}
 diff --git a/src/js_async/unimplemented.mbt b/src/js_async/unimplemented.mbt
-index 6ac45ef..41d04b6 100644
+index 4b5c228..221ea56 100644
 --- a/src/js_async/unimplemented.mbt
 +++ b/src/js_async/unimplemented.mbt
 @@ -21,11 +21,17 @@ let _ignore_unused_import : Unit = {
- 
+
  ///|
  /// A JavaScript promise that resolves to a value of type `X`
 +#cfg(not(target="wasm-gc"))
@@ -146,7 +147,7 @@ index 6ac45ef..41d04b6 100644
  #internal(unimplemented, "unimplemented in native backend")
  #coverage.skip
  pub type Promise[X]
- 
+
 +///|
 +#cfg(target="wasm-gc")
 +#external

@@ -8,22 +8,19 @@ pub(all) enum HandwritingRecognitionType {
   PerCharacter
 } derive(Eq, Debug)
 
-///|
+pub extend HandwritingRecognitionType with Eq::{equal, not_equal}
+pub extend HandwritingRecognitionType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn HandwritingRecognitionType::to_string(
-  self : HandwritingRecognitionType,
-) -> String {
+pub fn HandwritingRecognitionType::to_string(self : HandwritingRecognitionType) -> String {
   match self {
     HandwritingRecognitionType::Text => "text"
     HandwritingRecognitionType::PerCharacter => "per-character"
   }
 }
 
-///|
 /// Parse from string value
-pub fn HandwritingRecognitionType::from_string(
-  s : String,
-) -> HandwritingRecognitionType? {
+pub fn HandwritingRecognitionType::from_string(s : String) -> HandwritingRecognitionType? {
   match s {
     "text" => Some(HandwritingRecognitionType::Text)
     "per-character" => Some(HandwritingRecognitionType::PerCharacter)
@@ -39,7 +36,9 @@ pub(all) enum HandwritingInputType {
   Touch
 } derive(Eq, Debug)
 
-///|
+pub extend HandwritingInputType with Eq::{equal, not_equal}
+pub extend HandwritingInputType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn HandwritingInputType::to_string(self : HandwritingInputType) -> String {
   match self {
@@ -49,7 +48,6 @@ pub fn HandwritingInputType::to_string(self : HandwritingInputType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn HandwritingInputType::from_string(s : String) -> HandwritingInputType? {
   match s {
@@ -66,41 +64,30 @@ pub(all) struct HandwritingModelConstraint {
   languages : FixedArray[String]
 }
 
-///|
 /// Create a new HandwritingModelConstraint with default values
 pub fn HandwritingModelConstraint::default() -> HandwritingModelConstraint {
-  HandwritingModelConstraint::{ languages: [], }
+  HandwritingModelConstraint::{
+    languages: [],
+  }
 }
 
-///|
-extern "js" fn HandwritingModelConstraint::to_js_ffi(
-  self : HandwritingModelConstraint,
-) -> JsValue =
+extern "js" fn HandwritingModelConstraint::to_js_ffi(self : HandwritingModelConstraint) -> JsValue =
   #| (self) => ({
   #|   languages: self.languages
   #| })
 
-///|
 /// Convert to JsValue
-pub fn HandwritingModelConstraint::to_js(
-  self : HandwritingModelConstraint,
-) -> JsValue {
+pub fn HandwritingModelConstraint::to_js(self : HandwritingModelConstraint) -> JsValue {
   HandwritingModelConstraint::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingModelConstraint::from_js_ffi(
-  value : JsValue,
-) -> HandwritingModelConstraint =
+extern "js" fn HandwritingModelConstraint::from_js_ffi(value : JsValue) -> HandwritingModelConstraint =
   #| (v) => ({
   #|   languages: v.languages
   #| })
 
-///|
 /// Convert from JsValue
-pub fn HandwritingModelConstraint::from_js(
-  value : JsValue,
-) -> HandwritingModelConstraint {
+pub fn HandwritingModelConstraint::from_js(value : JsValue) -> HandwritingModelConstraint {
   HandwritingModelConstraint::from_js_ffi(value)
 }
 
@@ -112,7 +99,6 @@ pub(all) struct HandwritingRecognizerQueryResult {
   hints : HandwritingHintsQueryResult?
 }
 
-///|
 /// Create a new HandwritingRecognizerQueryResult with default values
 pub fn HandwritingRecognizerQueryResult::default() -> HandwritingRecognizerQueryResult {
   HandwritingRecognizerQueryResult::{
@@ -122,53 +108,28 @@ pub fn HandwritingRecognizerQueryResult::default() -> HandwritingRecognizerQuery
   }
 }
 
-///|
-extern "js" fn HandwritingRecognizerQueryResult::to_js_ffi(
-  self : HandwritingRecognizerQueryResult,
-  convert_hints : (HandwritingHintsQueryResult?) -> JsValue,
-) -> JsValue =
+extern "js" fn HandwritingRecognizerQueryResult::to_js_ffi(self : HandwritingRecognizerQueryResult, convert_hints : (HandwritingHintsQueryResult?) -> JsValue) -> JsValue =
   #| (self, convert_hints) => ({
   #|   textAlternatives: (self.textAlternatives === -1 ? undefined : self.textAlternatives),
   #|   textSegmentation: (self.textSegmentation === -1 ? undefined : self.textSegmentation),
   #|   hints: convert_hints(self.hints)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn HandwritingRecognizerQueryResult::to_js(
-  self : HandwritingRecognizerQueryResult,
-) -> JsValue {
-  HandwritingRecognizerQueryResult::to_js_ffi(self, fn(value) {
-    match value {
-      Some(value) => value.to_js()
-      None => dictionary_undefined()
-    }
-  })
+pub fn HandwritingRecognizerQueryResult::to_js(self : HandwritingRecognizerQueryResult) -> JsValue {
+  HandwritingRecognizerQueryResult::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn HandwritingRecognizerQueryResult::from_js_ffi(
-  value : JsValue,
-  convert_hints : (JsValue) -> HandwritingHintsQueryResult?,
-) -> HandwritingRecognizerQueryResult =
+extern "js" fn HandwritingRecognizerQueryResult::from_js_ffi(value : JsValue, convert_hints : (JsValue) -> HandwritingHintsQueryResult?) -> HandwritingRecognizerQueryResult =
   #| (v, convert_hints) => ({
   #|   textAlternatives: (v.textAlternatives === undefined ? -1 : v.textAlternatives),
   #|   textSegmentation: (v.textSegmentation === undefined ? -1 : v.textSegmentation),
   #|   hints: convert_hints(v.hints)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn HandwritingRecognizerQueryResult::from_js(
-  value : JsValue,
-) -> HandwritingRecognizerQueryResult {
-  HandwritingRecognizerQueryResult::from_js_ffi(value, fn(value) {
-    if value.is_undefined() {
-      None
-    } else {
-      Some(HandwritingHintsQueryResult::from_js(value))
-    }
-  })
+pub fn HandwritingRecognizerQueryResult::from_js(value : JsValue) -> HandwritingRecognizerQueryResult {
+  HandwritingRecognizerQueryResult::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(HandwritingHintsQueryResult::from_js(value)) } })
 }
 
 ///|
@@ -180,7 +141,6 @@ pub(all) struct HandwritingHintsQueryResult {
   alternatives : Bool?
 }
 
-///|
 /// Create a new HandwritingHintsQueryResult with default values
 pub fn HandwritingHintsQueryResult::default() -> HandwritingHintsQueryResult {
   HandwritingHintsQueryResult::{
@@ -191,10 +151,7 @@ pub fn HandwritingHintsQueryResult::default() -> HandwritingHintsQueryResult {
   }
 }
 
-///|
-extern "js" fn HandwritingHintsQueryResult::to_js_ffi(
-  self : HandwritingHintsQueryResult,
-) -> JsValue =
+extern "js" fn HandwritingHintsQueryResult::to_js_ffi(self : HandwritingHintsQueryResult) -> JsValue =
   #| (self) => ({
   #|   recognitionType: self.recognitionType,
   #|   inputType: self.inputType,
@@ -202,18 +159,12 @@ extern "js" fn HandwritingHintsQueryResult::to_js_ffi(
   #|   alternatives: (self.alternatives === -1 ? undefined : self.alternatives)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn HandwritingHintsQueryResult::to_js(
-  self : HandwritingHintsQueryResult,
-) -> JsValue {
+pub fn HandwritingHintsQueryResult::to_js(self : HandwritingHintsQueryResult) -> JsValue {
   HandwritingHintsQueryResult::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingHintsQueryResult::from_js_ffi(
-  value : JsValue,
-) -> HandwritingHintsQueryResult =
+extern "js" fn HandwritingHintsQueryResult::from_js_ffi(value : JsValue) -> HandwritingHintsQueryResult =
   #| (v) => ({
   #|   recognitionType: v.recognitionType,
   #|   inputType: v.inputType,
@@ -221,11 +172,8 @@ extern "js" fn HandwritingHintsQueryResult::from_js_ffi(
   #|   alternatives: (v.alternatives === undefined ? -1 : v.alternatives)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn HandwritingHintsQueryResult::from_js(
-  value : JsValue,
-) -> HandwritingHintsQueryResult {
+pub fn HandwritingHintsQueryResult::from_js(value : JsValue) -> HandwritingHintsQueryResult {
   HandwritingHintsQueryResult::from_js_ffi(value)
 }
 
@@ -238,7 +186,6 @@ pub(all) struct HandwritingHints {
   alternatives : Int?
 }
 
-///|
 /// Create a new HandwritingHints with default values
 pub fn HandwritingHints::default() -> HandwritingHints {
   HandwritingHints::{
@@ -249,7 +196,6 @@ pub fn HandwritingHints::default() -> HandwritingHints {
   }
 }
 
-///|
 extern "js" fn HandwritingHints::to_js_ffi(self : HandwritingHints) -> JsValue =
   #| (self) => ({
   #|   recognitionType: self.recognitionType,
@@ -258,16 +204,12 @@ extern "js" fn HandwritingHints::to_js_ffi(self : HandwritingHints) -> JsValue =
   #|   alternatives: self.alternatives
   #| })
 
-///|
 /// Convert to JsValue
 pub fn HandwritingHints::to_js(self : HandwritingHints) -> JsValue {
   HandwritingHints::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingHints::from_js_ffi(
-  value : JsValue,
-) -> HandwritingHints =
+extern "js" fn HandwritingHints::from_js_ffi(value : JsValue) -> HandwritingHints =
   #| (v) => ({
   #|   recognitionType: v.recognitionType,
   #|   inputType: v.inputType,
@@ -275,7 +217,6 @@ extern "js" fn HandwritingHints::from_js_ffi(
   #|   alternatives: v.alternatives
   #| })
 
-///|
 /// Convert from JsValue
 pub fn HandwritingHints::from_js(value : JsValue) -> HandwritingHints {
   HandwritingHints::from_js_ffi(value)
@@ -289,13 +230,15 @@ pub(all) struct HandwritingPoint {
   t : DOMHighResTimeStamp?
 }
 
-///|
 /// Create a new HandwritingPoint with default values
 pub fn HandwritingPoint::default() -> HandwritingPoint {
-  HandwritingPoint::{ x: 0, y: 0, t: None, }
+  HandwritingPoint::{
+    x: 0,
+    y: 0,
+    t: None,
+  }
 }
 
-///|
 extern "js" fn HandwritingPoint::to_js_ffi(self : HandwritingPoint) -> JsValue =
   #| (self) => ({
   #|   x: self.x,
@@ -303,23 +246,18 @@ extern "js" fn HandwritingPoint::to_js_ffi(self : HandwritingPoint) -> JsValue =
   #|   t: ((() => { const v = self.t; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn HandwritingPoint::to_js(self : HandwritingPoint) -> JsValue {
   HandwritingPoint::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingPoint::from_js_ffi(
-  value : JsValue,
-) -> HandwritingPoint =
+extern "js" fn HandwritingPoint::from_js_ffi(value : JsValue) -> HandwritingPoint =
   #| (v) => ({
   #|   x: v.x,
   #|   y: v.y,
   #|   t: (v.t === undefined ? { $tag: 0 } : { $tag: 1, _0: v.t })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn HandwritingPoint::from_js(value : JsValue) -> HandwritingPoint {
   HandwritingPoint::from_js_ffi(value)
@@ -332,37 +270,31 @@ pub(all) struct HandwritingPrediction {
   segmentationResult : FixedArray[HandwritingSegment]?
 }
 
-///|
 /// Create a new HandwritingPrediction with default values
 pub fn HandwritingPrediction::default() -> HandwritingPrediction {
-  HandwritingPrediction::{ text: "", segmentationResult: None, }
+  HandwritingPrediction::{
+    text: "",
+    segmentationResult: None,
+  }
 }
 
-///|
-extern "js" fn HandwritingPrediction::to_js_ffi(
-  self : HandwritingPrediction,
-) -> JsValue =
+extern "js" fn HandwritingPrediction::to_js_ffi(self : HandwritingPrediction) -> JsValue =
   #| (self) => ({
   #|   text: self.text,
   #|   segmentationResult: self.segmentationResult
   #| })
 
-///|
 /// Convert to JsValue
 pub fn HandwritingPrediction::to_js(self : HandwritingPrediction) -> JsValue {
   HandwritingPrediction::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingPrediction::from_js_ffi(
-  value : JsValue,
-) -> HandwritingPrediction =
+extern "js" fn HandwritingPrediction::from_js_ffi(value : JsValue) -> HandwritingPrediction =
   #| (v) => ({
   #|   text: v.text,
   #|   segmentationResult: v.segmentationResult
   #| })
 
-///|
 /// Convert from JsValue
 pub fn HandwritingPrediction::from_js(value : JsValue) -> HandwritingPrediction {
   HandwritingPrediction::from_js_ffi(value)
@@ -377,7 +309,6 @@ pub(all) struct HandwritingSegment {
   drawingSegments : FixedArray[HandwritingDrawingSegment]
 }
 
-///|
 /// Create a new HandwritingSegment with default values
 pub fn HandwritingSegment::default() -> HandwritingSegment {
   HandwritingSegment::{
@@ -388,10 +319,7 @@ pub fn HandwritingSegment::default() -> HandwritingSegment {
   }
 }
 
-///|
-extern "js" fn HandwritingSegment::to_js_ffi(
-  self : HandwritingSegment,
-) -> JsValue =
+extern "js" fn HandwritingSegment::to_js_ffi(self : HandwritingSegment) -> JsValue =
   #| (self) => ({
   #|   grapheme: self.grapheme,
   #|   beginIndex: self.beginIndex,
@@ -399,16 +327,12 @@ extern "js" fn HandwritingSegment::to_js_ffi(
   #|   drawingSegments: self.drawingSegments
   #| })
 
-///|
 /// Convert to JsValue
 pub fn HandwritingSegment::to_js(self : HandwritingSegment) -> JsValue {
   HandwritingSegment::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingSegment::from_js_ffi(
-  value : JsValue,
-) -> HandwritingSegment =
+extern "js" fn HandwritingSegment::from_js_ffi(value : JsValue) -> HandwritingSegment =
   #| (v) => ({
   #|   grapheme: v.grapheme,
   #|   beginIndex: v.beginIndex,
@@ -416,7 +340,6 @@ extern "js" fn HandwritingSegment::from_js_ffi(
   #|   drawingSegments: v.drawingSegments
   #| })
 
-///|
 /// Convert from JsValue
 pub fn HandwritingSegment::from_js(value : JsValue) -> HandwritingSegment {
   HandwritingSegment::from_js_ffi(value)
@@ -430,7 +353,6 @@ pub(all) struct HandwritingDrawingSegment {
   endPointIndex : Int
 }
 
-///|
 /// Create a new HandwritingDrawingSegment with default values
 pub fn HandwritingDrawingSegment::default() -> HandwritingDrawingSegment {
   HandwritingDrawingSegment::{
@@ -440,39 +362,27 @@ pub fn HandwritingDrawingSegment::default() -> HandwritingDrawingSegment {
   }
 }
 
-///|
-extern "js" fn HandwritingDrawingSegment::to_js_ffi(
-  self : HandwritingDrawingSegment,
-) -> JsValue =
+extern "js" fn HandwritingDrawingSegment::to_js_ffi(self : HandwritingDrawingSegment) -> JsValue =
   #| (self) => ({
   #|   strokeIndex: self.strokeIndex,
   #|   beginPointIndex: self.beginPointIndex,
   #|   endPointIndex: self.endPointIndex
   #| })
 
-///|
 /// Convert to JsValue
-pub fn HandwritingDrawingSegment::to_js(
-  self : HandwritingDrawingSegment,
-) -> JsValue {
+pub fn HandwritingDrawingSegment::to_js(self : HandwritingDrawingSegment) -> JsValue {
   HandwritingDrawingSegment::to_js_ffi(self)
 }
 
-///|
-extern "js" fn HandwritingDrawingSegment::from_js_ffi(
-  value : JsValue,
-) -> HandwritingDrawingSegment =
+extern "js" fn HandwritingDrawingSegment::from_js_ffi(value : JsValue) -> HandwritingDrawingSegment =
   #| (v) => ({
   #|   strokeIndex: v.strokeIndex,
   #|   beginPointIndex: v.beginPointIndex,
   #|   endPointIndex: v.endPointIndex
   #| })
 
-///|
 /// Convert from JsValue
-pub fn HandwritingDrawingSegment::from_js(
-  value : JsValue,
-) -> HandwritingDrawingSegment {
+pub fn HandwritingDrawingSegment::from_js(value : JsValue) -> HandwritingDrawingSegment {
   HandwritingDrawingSegment::from_js_ffi(value)
 }
 
@@ -480,198 +390,111 @@ pub fn HandwritingDrawingSegment::from_js(
 /// HandwritingRecognizer interface
 pub type HandwritingRecognizer
 
-///|
-pub extern "js" fn HandwritingRecognizer::to_js_value(
-  self : HandwritingRecognizer,
-) -> JsValue =
+pub extern "js" fn HandwritingRecognizer::to_js_value(self : HandwritingRecognizer) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to HandwritingRecognizer (unchecked)
-pub extern "js" fn HandwritingRecognizer::from_js_value(
-  v : JsValue,
-) -> HandwritingRecognizer =
+pub extern "js" fn HandwritingRecognizer::from_js_value(v : JsValue) -> HandwritingRecognizer =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to HandwritingRecognizer (checked with instanceof)
-pub extern "js" fn HandwritingRecognizer::from_js_value_opt(
-  v : JsValue,
-) -> HandwritingRecognizer? =
+pub extern "js" fn HandwritingRecognizer::from_js_value_opt(v : JsValue) -> HandwritingRecognizer? =
   #| (v) => (v instanceof HandwritingRecognizer) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to HandwritingRecognizer (checked with instanceof)
-pub extern "js" fn JsValue::as_handwriting_recognizer(
-  self : JsValue,
-) -> HandwritingRecognizer? =
+pub extern "js" fn JsValue::as_handwriting_recognizer(self : JsValue) -> HandwritingRecognizer? =
   #| (self) => (self instanceof HandwritingRecognizer) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to HandwritingRecognizer (unchecked)
-pub extern "js" fn JsValue::to_handwriting_recognizer(
-  self : JsValue,
-) -> HandwritingRecognizer =
+pub extern "js" fn JsValue::to_handwriting_recognizer(self : JsValue) -> HandwritingRecognizer =
   #| (self) => self
 
-///|
-pub extern "js" fn HandwritingRecognizer::start_drawing(
-  self : HandwritingRecognizer,
-) -> HandwritingDrawing =
+pub extern "js" fn HandwritingRecognizer::start_drawing(self : HandwritingRecognizer) -> HandwritingDrawing =
   #| (self) => self.startDrawing()
 
-///|
-extern "js" fn HandwritingRecognizer::start_drawing_with_hints_ffi(
-  self : HandwritingRecognizer,
-  hints : JsValue,
-) -> HandwritingDrawing =
+extern "js" fn HandwritingRecognizer::start_drawing_with_hints_ffi(self : HandwritingRecognizer, hints : JsValue) -> HandwritingDrawing =
   #| (self, hints) => self.startDrawing(hints)
 
-///|
-pub fn HandwritingRecognizer::start_drawing_with_hints(
-  self : HandwritingRecognizer,
-  hints : HandwritingHints,
-) -> HandwritingDrawing {
+pub fn HandwritingRecognizer::start_drawing_with_hints(self : HandwritingRecognizer, hints : HandwritingHints) -> HandwritingDrawing {
   HandwritingRecognizer::start_drawing_with_hints_ffi(self, hints.to_js())
 }
 
-///|
-pub extern "js" fn HandwritingRecognizer::finish(
-  self : HandwritingRecognizer,
-) -> Unit =
+pub extern "js" fn HandwritingRecognizer::finish(self : HandwritingRecognizer) -> Unit =
   #| (self) => self.finish()
 
 ///|
 /// HandwritingDrawing interface
 pub type HandwritingDrawing
 
-///|
-pub extern "js" fn HandwritingDrawing::to_js_value(
-  self : HandwritingDrawing,
-) -> JsValue =
+pub extern "js" fn HandwritingDrawing::to_js_value(self : HandwritingDrawing) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to HandwritingDrawing (unchecked)
-pub extern "js" fn HandwritingDrawing::from_js_value(
-  v : JsValue,
-) -> HandwritingDrawing =
+pub extern "js" fn HandwritingDrawing::from_js_value(v : JsValue) -> HandwritingDrawing =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to HandwritingDrawing (checked with instanceof)
-pub extern "js" fn HandwritingDrawing::from_js_value_opt(
-  v : JsValue,
-) -> HandwritingDrawing? =
+pub extern "js" fn HandwritingDrawing::from_js_value_opt(v : JsValue) -> HandwritingDrawing? =
   #| (v) => (v instanceof HandwritingDrawing) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to HandwritingDrawing (checked with instanceof)
-pub extern "js" fn JsValue::as_handwriting_drawing(
-  self : JsValue,
-) -> HandwritingDrawing? =
+pub extern "js" fn JsValue::as_handwriting_drawing(self : JsValue) -> HandwritingDrawing? =
   #| (self) => (self instanceof HandwritingDrawing) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to HandwritingDrawing (unchecked)
-pub extern "js" fn JsValue::to_handwriting_drawing(
-  self : JsValue,
-) -> HandwritingDrawing =
+pub extern "js" fn JsValue::to_handwriting_drawing(self : JsValue) -> HandwritingDrawing =
   #| (self) => self
 
-///|
-pub extern "js" fn HandwritingDrawing::add_stroke(
-  self : HandwritingDrawing,
-  stroke : HandwritingStroke,
-) -> Unit =
+pub extern "js" fn HandwritingDrawing::add_stroke(self : HandwritingDrawing, stroke : HandwritingStroke) -> Unit =
   #| (self, stroke) => self.addStroke(stroke)
 
-///|
-pub extern "js" fn HandwritingDrawing::remove_stroke(
-  self : HandwritingDrawing,
-  stroke : HandwritingStroke,
-) -> Unit =
+pub extern "js" fn HandwritingDrawing::remove_stroke(self : HandwritingDrawing, stroke : HandwritingStroke) -> Unit =
   #| (self, stroke) => self.removeStroke(stroke)
 
-///|
 pub extern "js" fn HandwritingDrawing::clear(self : HandwritingDrawing) -> Unit =
   #| (self) => self.clear()
 
-///|
-pub extern "js" fn HandwritingDrawing::get_strokes(
-  self : HandwritingDrawing,
-) -> FixedArray[HandwritingStroke] =
+pub extern "js" fn HandwritingDrawing::get_strokes(self : HandwritingDrawing) -> FixedArray[HandwritingStroke] =
   #| (self) => self.getStrokes()
 
-///|
-pub extern "js" fn HandwritingDrawing::get_prediction(
-  self : HandwritingDrawing,
-) -> Promise[FixedArray[HandwritingPrediction]] =
+pub extern "js" fn HandwritingDrawing::get_prediction(self : HandwritingDrawing) -> Promise[FixedArray[HandwritingPrediction]] =
   #| (self) => self.getPrediction()
 
 ///|
 /// HandwritingStroke interface
 pub type HandwritingStroke
 
-///|
-pub extern "js" fn HandwritingStroke::to_js_value(
-  self : HandwritingStroke,
-) -> JsValue =
+pub extern "js" fn HandwritingStroke::to_js_value(self : HandwritingStroke) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to HandwritingStroke (unchecked)
-pub extern "js" fn HandwritingStroke::from_js_value(
-  v : JsValue,
-) -> HandwritingStroke =
+pub extern "js" fn HandwritingStroke::from_js_value(v : JsValue) -> HandwritingStroke =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to HandwritingStroke (checked with instanceof)
-pub extern "js" fn HandwritingStroke::from_js_value_opt(
-  v : JsValue,
-) -> HandwritingStroke? =
+pub extern "js" fn HandwritingStroke::from_js_value_opt(v : JsValue) -> HandwritingStroke? =
   #| (v) => (v instanceof HandwritingStroke) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to HandwritingStroke (checked with instanceof)
-pub extern "js" fn JsValue::as_handwriting_stroke(
-  self : JsValue,
-) -> HandwritingStroke? =
+pub extern "js" fn JsValue::as_handwriting_stroke(self : JsValue) -> HandwritingStroke? =
   #| (self) => (self instanceof HandwritingStroke) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to HandwritingStroke (unchecked)
-pub extern "js" fn JsValue::to_handwriting_stroke(
-  self : JsValue,
-) -> HandwritingStroke =
+pub extern "js" fn JsValue::to_handwriting_stroke(self : JsValue) -> HandwritingStroke =
   #| (self) => self
 
-///|
 pub extern "js" fn HandwritingStroke::new() -> HandwritingStroke =
   #| () => new HandwritingStroke()
 
-///|
-extern "js" fn HandwritingStroke::add_point_ffi(
-  self : HandwritingStroke,
-  point : JsValue,
-) -> Unit =
+extern "js" fn HandwritingStroke::add_point_ffi(self : HandwritingStroke, point : JsValue) -> Unit =
   #| (self, point) => self.addPoint(point)
 
-///|
-pub fn HandwritingStroke::add_point(
-  self : HandwritingStroke,
-  point : HandwritingPoint,
-) -> Unit {
+pub fn HandwritingStroke::add_point(self : HandwritingStroke, point : HandwritingPoint) -> Unit {
   HandwritingStroke::add_point_ffi(self, point.to_js())
 }
 
-///|
-pub extern "js" fn HandwritingStroke::get_points(
-  self : HandwritingStroke,
-) -> FixedArray[HandwritingPoint] =
+pub extern "js" fn HandwritingStroke::get_points(self : HandwritingStroke) -> FixedArray[HandwritingPoint] =
   #| (self) => self.getPoints()
 
-///|
 pub extern "js" fn HandwritingStroke::clear(self : HandwritingStroke) -> Unit =
   #| (self) => self.clear()

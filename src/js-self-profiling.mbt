@@ -14,13 +14,16 @@ pub(all) struct ProfilerTrace {
   samples : FixedArray[ProfilerSample]
 }
 
-///|
 /// Create a new ProfilerTrace with default values
 pub fn ProfilerTrace::default() -> ProfilerTrace {
-  ProfilerTrace::{ resources: [], frames: [], stacks: [], samples: [], }
+  ProfilerTrace::{
+    resources: [],
+    frames: [],
+    stacks: [],
+    samples: [],
+  }
 }
 
-///|
 extern "js" fn ProfilerTrace::to_js_ffi(self : ProfilerTrace) -> JsValue =
   #| (self) => ({
   #|   resources: self.resources,
@@ -29,13 +32,11 @@ extern "js" fn ProfilerTrace::to_js_ffi(self : ProfilerTrace) -> JsValue =
   #|   samples: self.samples
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ProfilerTrace::to_js(self : ProfilerTrace) -> JsValue {
   ProfilerTrace::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ProfilerTrace::from_js_ffi(value : JsValue) -> ProfilerTrace =
   #| (v) => ({
   #|   resources: v.resources,
@@ -44,7 +45,6 @@ extern "js" fn ProfilerTrace::from_js_ffi(value : JsValue) -> ProfilerTrace =
   #|   samples: v.samples
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ProfilerTrace::from_js(value : JsValue) -> ProfilerTrace {
   ProfilerTrace::from_js_ffi(value)
@@ -57,33 +57,31 @@ pub(all) struct ProfilerSample {
   stackId : Int64?
 }
 
-///|
 /// Create a new ProfilerSample
 pub fn ProfilerSample::new(timestamp~ : DOMHighResTimeStamp) -> ProfilerSample {
-  ProfilerSample::{ timestamp, stackId: None, }
+  ProfilerSample::{
+    timestamp: timestamp,
+    stackId: None,
+  }
 }
 
-///|
 extern "js" fn ProfilerSample::to_js_ffi(self : ProfilerSample) -> JsValue =
   #| (self) => ({
   #|   timestamp: self.timestamp,
   #|   stackId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.stackId)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ProfilerSample::to_js(self : ProfilerSample) -> JsValue {
   ProfilerSample::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ProfilerSample::from_js_ffi(value : JsValue) -> ProfilerSample =
   #| (v) => ({
   #|   timestamp: v.timestamp,
   #|   stackId: (v.stackId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.stackId))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ProfilerSample::from_js(value : JsValue) -> ProfilerSample {
   ProfilerSample::from_js_ffi(value)
@@ -91,25 +89,15 @@ pub fn ProfilerSample::from_js(value : JsValue) -> ProfilerSample {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn ProfilerSample::to_js_checked(
-  self : ProfilerSample,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn ProfilerSample::to_js_checked(self : ProfilerSample) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_ProfilerSample(
-  convert : () -> ProfilerSample,
-) -> Result[ProfilerSample, JsError] =
+extern "js" fn try_dictionary_ProfilerSample(convert : () -> ProfilerSample) -> Result[ProfilerSample, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn ProfilerSample::from_js_checked(
-  value : JsValue,
-) -> Result[ProfilerSample, JsError] {
-  try_dictionary_ProfilerSample(() => ProfilerSample::from_js(value))
-}
+pub fn ProfilerSample::from_js_checked(value : JsValue) -> Result[ProfilerSample, JsError] { try_dictionary_ProfilerSample(() => ProfilerSample::from_js(value)) }
 
 ///|
 /// ProfilerStack dictionary
@@ -118,33 +106,31 @@ pub(all) struct ProfilerStack {
   frameId : Int64
 }
 
-///|
 /// Create a new ProfilerStack with default values
 pub fn ProfilerStack::default() -> ProfilerStack {
-  ProfilerStack::{ parentId: None, frameId: 0, }
+  ProfilerStack::{
+    parentId: None,
+    frameId: 0,
+  }
 }
 
-///|
 extern "js" fn ProfilerStack::to_js_ffi(self : ProfilerStack) -> JsValue =
   #| (self) => ({
   #|   parentId: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.parentId),
   #|   frameId: ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(self.frameId)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ProfilerStack::to_js(self : ProfilerStack) -> JsValue {
   ProfilerStack::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ProfilerStack::from_js_ffi(value : JsValue) -> ProfilerStack =
   #| (v) => ({
   #|   parentId: (v.parentId === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.parentId)),
   #|   frameId: ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.frameId)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ProfilerStack::from_js(value : JsValue) -> ProfilerStack {
   ProfilerStack::from_js_ffi(value)
@@ -152,25 +138,15 @@ pub fn ProfilerStack::from_js(value : JsValue) -> ProfilerStack {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn ProfilerStack::to_js_checked(
-  self : ProfilerStack,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn ProfilerStack::to_js_checked(self : ProfilerStack) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_ProfilerStack(
-  convert : () -> ProfilerStack,
-) -> Result[ProfilerStack, JsError] =
+extern "js" fn try_dictionary_ProfilerStack(convert : () -> ProfilerStack) -> Result[ProfilerStack, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn ProfilerStack::from_js_checked(
-  value : JsValue,
-) -> Result[ProfilerStack, JsError] {
-  try_dictionary_ProfilerStack(() => ProfilerStack::from_js(value))
-}
+pub fn ProfilerStack::from_js_checked(value : JsValue) -> Result[ProfilerStack, JsError] { try_dictionary_ProfilerStack(() => ProfilerStack::from_js(value)) }
 
 ///|
 /// ProfilerFrame dictionary
@@ -181,13 +157,16 @@ pub(all) struct ProfilerFrame {
   column : Int64?
 }
 
-///|
 /// Create a new ProfilerFrame with default values
 pub fn ProfilerFrame::default() -> ProfilerFrame {
-  ProfilerFrame::{ name: "", resourceId: None, line: None, column: None, }
+  ProfilerFrame::{
+    name: "",
+    resourceId: None,
+    line: None,
+    column: None,
+  }
 }
 
-///|
 extern "js" fn ProfilerFrame::to_js_ffi(self : ProfilerFrame) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
@@ -196,13 +175,11 @@ extern "js" fn ProfilerFrame::to_js_ffi(self : ProfilerFrame) -> JsValue =
   #|   column: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.column)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ProfilerFrame::to_js(self : ProfilerFrame) -> JsValue {
   ProfilerFrame::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
   #| (v) => ({
   #|   name: v.name,
@@ -211,7 +188,6 @@ extern "js" fn ProfilerFrame::from_js_ffi(value : JsValue) -> ProfilerFrame =
   #|   column: (v.column === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.column))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ProfilerFrame::from_js(value : JsValue) -> ProfilerFrame {
   ProfilerFrame::from_js_ffi(value)
@@ -219,25 +195,15 @@ pub fn ProfilerFrame::from_js(value : JsValue) -> ProfilerFrame {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn ProfilerFrame::to_js_checked(
-  self : ProfilerFrame,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn ProfilerFrame::to_js_checked(self : ProfilerFrame) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_ProfilerFrame(
-  convert : () -> ProfilerFrame,
-) -> Result[ProfilerFrame, JsError] =
+extern "js" fn try_dictionary_ProfilerFrame(convert : () -> ProfilerFrame) -> Result[ProfilerFrame, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn ProfilerFrame::from_js_checked(
-  value : JsValue,
-) -> Result[ProfilerFrame, JsError] {
-  try_dictionary_ProfilerFrame(() => ProfilerFrame::from_js(value))
-}
+pub fn ProfilerFrame::from_js_checked(value : JsValue) -> Result[ProfilerFrame, JsError] { try_dictionary_ProfilerFrame(() => ProfilerFrame::from_js(value)) }
 
 ///|
 /// ProfilerInitOptions dictionary
@@ -246,39 +212,31 @@ pub(all) struct ProfilerInitOptions {
   maxBufferSize : Int
 }
 
-///|
 /// Create a new ProfilerInitOptions
-pub fn ProfilerInitOptions::new(
-  sampleInterval~ : DOMHighResTimeStamp,
-) -> ProfilerInitOptions {
-  ProfilerInitOptions::{ sampleInterval, maxBufferSize: 0, }
+pub fn ProfilerInitOptions::new(sampleInterval~ : DOMHighResTimeStamp) -> ProfilerInitOptions {
+  ProfilerInitOptions::{
+    sampleInterval: sampleInterval,
+    maxBufferSize: 0,
+  }
 }
 
-///|
-extern "js" fn ProfilerInitOptions::to_js_ffi(
-  self : ProfilerInitOptions,
-) -> JsValue =
+extern "js" fn ProfilerInitOptions::to_js_ffi(self : ProfilerInitOptions) -> JsValue =
   #| (self) => ({
   #|   sampleInterval: self.sampleInterval,
   #|   maxBufferSize: self.maxBufferSize
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ProfilerInitOptions::to_js(self : ProfilerInitOptions) -> JsValue {
   ProfilerInitOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ProfilerInitOptions::from_js_ffi(
-  value : JsValue,
-) -> ProfilerInitOptions =
+extern "js" fn ProfilerInitOptions::from_js_ffi(value : JsValue) -> ProfilerInitOptions =
   #| (v) => ({
   #|   sampleInterval: v.sampleInterval,
   #|   maxBufferSize: v.maxBufferSize
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ProfilerInitOptions::from_js(value : JsValue) -> ProfilerInitOptions {
   ProfilerInitOptions::from_js_ffi(value)
@@ -288,31 +246,25 @@ pub fn ProfilerInitOptions::from_js(value : JsValue) -> ProfilerInitOptions {
 /// Profiler interface
 pub type Profiler
 
-///|
 pub extern "js" fn Profiler::to_js_value(self : Profiler) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Profiler (unchecked)
 pub extern "js" fn Profiler::from_js_value(v : JsValue) -> Profiler =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Profiler (checked with instanceof)
 pub extern "js" fn Profiler::from_js_value_opt(v : JsValue) -> Profiler? =
   #| (v) => (v instanceof Profiler) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Profiler (checked with instanceof)
 pub extern "js" fn JsValue::as_profiler(self : JsValue) -> Profiler? =
   #| (self) => (self instanceof Profiler) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Profiler (unchecked)
 pub extern "js" fn JsValue::to_profiler(self : JsValue) -> Profiler =
   #| (self) => self
 
-///|
 pub extern "js" fn Profiler::to_event_target(self : Profiler) -> EventTarget =
   #| (self) => self
 
@@ -324,30 +276,21 @@ pub(all) enum ProfilerConstructorError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Profiler::get_sample_interval(
-  self : Profiler,
-) -> DOMHighResTimeStamp =
+pub extend ProfilerConstructorError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Profiler::get_sample_interval(self : Profiler) -> DOMHighResTimeStamp =
   #| (self) => self.sampleInterval
 
-///|
 pub extern "js" fn Profiler::get_stopped(self : Profiler) -> Bool =
   #| (self) => self.stopped
 
-///|
-extern "js" fn Profiler::new_ffi(
-  options : JsValue,
-) -> Result[Profiler, ProfilerConstructorError] =
+extern "js" fn Profiler::new_ffi(options : JsValue) -> Result[Profiler, ProfilerConstructorError] =
   #| (options) => (() => { try { return { $tag: 1, _0: new Profiler(options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'RangeError') return { $tag: 0, _0: e }; if (n === 'NotAllowedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub fn Profiler::new(
-  options : ProfilerInitOptions,
-) -> Result[Profiler, ProfilerConstructorError] {
+pub fn Profiler::new(options : ProfilerInitOptions) -> Result[Profiler, ProfilerConstructorError] {
   Profiler::new_ffi(options.to_js())
 }
 
-///|
 pub extern "js" fn Profiler::stop(self : Profiler) -> Promise[ProfilerTrace] =
   #| (self) => self.stop().then(v => ({
   #|   resources: v.resources,

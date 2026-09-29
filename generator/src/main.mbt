@@ -169,16 +169,14 @@ async fn main {
       )
       write_file_sync(
         path_join(args.output, "moon.pkg"),
+        "import { " +
         (if moonbit.contains("pub struct WebsysPromise") {
-          "import { \"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\" }\n"
-        } else {
-          ""
-        }) +
-        (if moonbit.contains("pub type JsError") {
-          "import { \"moonbitlang/core/debug\" }\n"
-        } else {
-          ""
-        }) +
+          "\"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\", "
+        } else { "" }) +
+        (if moonbit.contains("@debug.") {
+          "\"moonbitlang/core/debug\", "
+        } else { "" }) +
+        "}\n" +
         "supported_targets = \"wasm-gc\"\n",
       )
     }
@@ -391,7 +389,7 @@ async fn main {
     callback_interface_names~,
   )
   let shared_file = path_join(args.output, "shared.mbt")
-  write_file_sync(shared_file, shared_code)
+  write_file_sync(shared_file, shared_code.trim_end().to_owned() + "\n")
 
   // Output each spec to its own file
   let (success_count, total_defs) = results
@@ -409,7 +407,7 @@ async fn main {
           let code = format_spec_output(result.spec_name, merged, gen_ctx)
           if merged.length() > 0 {
             let output_file = path_join(args.output, result.spec_name + ".mbt")
-            write_file_sync(output_file, code)
+            write_file_sync(output_file, code.trim_end().to_owned() + "\n")
             (success_count + 1, total_defs + merged.length())
           } else {
             counts

@@ -8,7 +8,9 @@ pub(all) enum AacBitstreamFormat {
   Adts
 } derive(Eq, Debug)
 
-///|
+pub extend AacBitstreamFormat with Eq::{equal, not_equal}
+pub extend AacBitstreamFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn AacBitstreamFormat::to_string(self : AacBitstreamFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AacBitstreamFormat::from_string(s : String) -> AacBitstreamFormat? {
   match s {
@@ -40,7 +41,6 @@ pub(all) struct AudioEncoderConfig {
   bitrateMode : BitrateMode?
 }
 
-///|
 /// Create a new AudioEncoderConfig with default values
 pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
   AudioEncoderConfig::{
@@ -55,13 +55,7 @@ pub fn AudioEncoderConfig::default() -> AudioEncoderConfig {
   }
 }
 
-///|
-extern "js" fn AudioEncoderConfig::to_js_ffi(
-  self : AudioEncoderConfig,
-  convert_aac : (AacEncoderConfig?) -> JsValue,
-  convert_flac : (FlacEncoderConfig?) -> JsValue,
-  convert_opus : (OpusEncoderConfig?) -> JsValue,
-) -> JsValue =
+extern "js" fn AudioEncoderConfig::to_js_ffi(self : AudioEncoderConfig, convert_aac : (AacEncoderConfig?) -> JsValue, convert_flac : (FlacEncoderConfig?) -> JsValue, convert_opus : (OpusEncoderConfig?) -> JsValue) -> JsValue =
   #| (self, convert_aac, convert_flac, convert_opus) => ({
   #|   aac: convert_aac(self.aac),
   #|   flac: convert_flac(self.flac),
@@ -73,39 +67,12 @@ extern "js" fn AudioEncoderConfig::to_js_ffi(
   #|   bitrateMode: ((() => { const v = self.bitrateMode; if (v === undefined) return undefined; return ['constant', 'variable'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn AudioEncoderConfig::to_js(self : AudioEncoderConfig) -> JsValue {
-  AudioEncoderConfig::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  AudioEncoderConfig::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn AudioEncoderConfig::from_js_ffi(
-  value : JsValue,
-  convert_aac : (JsValue) -> AacEncoderConfig?,
-  convert_flac : (JsValue) -> FlacEncoderConfig?,
-  convert_opus : (JsValue) -> OpusEncoderConfig?,
-) -> AudioEncoderConfig =
+extern "js" fn AudioEncoderConfig::from_js_ffi(value : JsValue, convert_aac : (JsValue) -> AacEncoderConfig?, convert_flac : (JsValue) -> FlacEncoderConfig?, convert_opus : (JsValue) -> OpusEncoderConfig?) -> AudioEncoderConfig =
   #| (v, convert_aac, convert_flac, convert_opus) => ({
   #|   aac: convert_aac(v.aac),
   #|   flac: convert_flac(v.flac),
@@ -117,56 +84,22 @@ extern "js" fn AudioEncoderConfig::from_js_ffi(
   #|   bitrateMode: (v.bitrateMode === undefined ? undefined : ['constant', 'variable'].indexOf(v.bitrateMode))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn AudioEncoderConfig::from_js(value : JsValue) -> AudioEncoderConfig {
-  AudioEncoderConfig::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AacEncoderConfig::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(FlacEncoderConfig::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(OpusEncoderConfig::from_js(value))
-      }
-    },
-  )
+  AudioEncoderConfig::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AacEncoderConfig::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(FlacEncoderConfig::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(OpusEncoderConfig::from_js(value)) } })
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn AudioEncoderConfig::to_js_checked(
-  self : AudioEncoderConfig,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn AudioEncoderConfig::to_js_checked(self : AudioEncoderConfig) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_AudioEncoderConfig(
-  convert : () -> AudioEncoderConfig,
-) -> Result[AudioEncoderConfig, JsError] =
+extern "js" fn try_dictionary_AudioEncoderConfig(convert : () -> AudioEncoderConfig) -> Result[AudioEncoderConfig, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn AudioEncoderConfig::from_js_checked(
-  value : JsValue,
-) -> Result[AudioEncoderConfig, JsError] {
-  try_dictionary_AudioEncoderConfig(() => AudioEncoderConfig::from_js(value))
-}
+pub fn AudioEncoderConfig::from_js_checked(value : JsValue) -> Result[AudioEncoderConfig, JsError] { try_dictionary_AudioEncoderConfig(() => AudioEncoderConfig::from_js(value)) }
 
 ///|
 /// AacEncoderConfig dictionary
@@ -174,33 +107,28 @@ pub(all) struct AacEncoderConfig {
   format : AacBitstreamFormat?
 }
 
-///|
 /// Create a new AacEncoderConfig with default values
 pub fn AacEncoderConfig::default() -> AacEncoderConfig {
-  AacEncoderConfig::{ format: None, }
+  AacEncoderConfig::{
+    format: None,
+  }
 }
 
-///|
 extern "js" fn AacEncoderConfig::to_js_ffi(self : AacEncoderConfig) -> JsValue =
   #| (self) => ({
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['aac', 'adts'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn AacEncoderConfig::to_js(self : AacEncoderConfig) -> JsValue {
   AacEncoderConfig::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AacEncoderConfig::from_js_ffi(
-  value : JsValue,
-) -> AacEncoderConfig =
+extern "js" fn AacEncoderConfig::from_js_ffi(value : JsValue) -> AacEncoderConfig =
   #| (v) => ({
   #|   format: (v.format === undefined ? undefined : ['aac', 'adts'].indexOf(v.format))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn AacEncoderConfig::from_js(value : JsValue) -> AacEncoderConfig {
   AacEncoderConfig::from_js_ffi(value)

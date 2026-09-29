@@ -5,92 +5,48 @@
 /// NavigatorManagedData interface
 pub type NavigatorManagedData
 
-///|
-pub extern "js" fn NavigatorManagedData::to_js_value(
-  self : NavigatorManagedData,
-) -> JsValue =
+pub extern "js" fn NavigatorManagedData::to_js_value(self : NavigatorManagedData) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to NavigatorManagedData (unchecked)
-pub extern "js" fn NavigatorManagedData::from_js_value(
-  v : JsValue,
-) -> NavigatorManagedData =
+pub extern "js" fn NavigatorManagedData::from_js_value(v : JsValue) -> NavigatorManagedData =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to NavigatorManagedData (checked with instanceof)
-pub extern "js" fn NavigatorManagedData::from_js_value_opt(
-  v : JsValue,
-) -> NavigatorManagedData? =
+pub extern "js" fn NavigatorManagedData::from_js_value_opt(v : JsValue) -> NavigatorManagedData? =
   #| (v) => (v instanceof NavigatorManagedData) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to NavigatorManagedData (checked with instanceof)
-pub extern "js" fn JsValue::as_navigator_managed_data(
-  self : JsValue,
-) -> NavigatorManagedData? =
+pub extern "js" fn JsValue::as_navigator_managed_data(self : JsValue) -> NavigatorManagedData? =
   #| (self) => (self instanceof NavigatorManagedData) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to NavigatorManagedData (unchecked)
-pub extern "js" fn JsValue::to_navigator_managed_data(
-  self : JsValue,
-) -> NavigatorManagedData =
+pub extern "js" fn JsValue::to_navigator_managed_data(self : JsValue) -> NavigatorManagedData =
   #| (self) => self
 
-///|
-pub extern "js" fn NavigatorManagedData::to_event_target(
-  self : NavigatorManagedData,
-) -> EventTarget =
+pub extern "js" fn NavigatorManagedData::to_event_target(self : NavigatorManagedData) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn NavigatorManagedData::get_managed_configuration(
-  self : NavigatorManagedData,
-  keys : FixedArray[String],
-) -> Promise[JsValue] =
+pub extern "js" fn NavigatorManagedData::get_managed_configuration(self : NavigatorManagedData, keys : FixedArray[String]) -> Promise[JsValue] =
   #| (self, keys) => self.getManagedConfiguration(keys)
 
-///|
-pub extern "js" fn NavigatorManagedData::set_onmanagedconfigurationchange(
-  self : NavigatorManagedData,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn NavigatorManagedData::set_onmanagedconfigurationchange(self : NavigatorManagedData, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onmanagedconfigurationchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn NavigatorManagedData::clear_onmanagedconfigurationchange(
-  self : NavigatorManagedData,
-) -> Unit =
+pub extern "js" fn NavigatorManagedData::clear_onmanagedconfigurationchange(self : NavigatorManagedData) -> Unit =
   #| (self) => { self.onmanagedconfigurationchange = null }
 
-///|
-pub extern "js" fn NavigatorManagedData::get_annotated_asset_id(
-  self : NavigatorManagedData,
-) -> Promise[String] =
+pub extern "js" fn NavigatorManagedData::get_annotated_asset_id(self : NavigatorManagedData) -> Promise[String] =
   #| (self) => self.getAnnotatedAssetId()
 
-///|
-pub extern "js" fn NavigatorManagedData::get_annotated_location(
-  self : NavigatorManagedData,
-) -> Promise[String] =
+pub extern "js" fn NavigatorManagedData::get_annotated_location(self : NavigatorManagedData) -> Promise[String] =
   #| (self) => self.getAnnotatedLocation()
 
-///|
-pub extern "js" fn NavigatorManagedData::get_directory_id(
-  self : NavigatorManagedData,
-) -> Promise[String] =
+pub extern "js" fn NavigatorManagedData::get_directory_id(self : NavigatorManagedData) -> Promise[String] =
   #| (self) => self.getDirectoryId()
 
-///|
-pub extern "js" fn NavigatorManagedData::get_hostname(
-  self : NavigatorManagedData,
-) -> Promise[String] =
+pub extern "js" fn NavigatorManagedData::get_hostname(self : NavigatorManagedData) -> Promise[String] =
   #| (self) => self.getHostname()
 
-///|
-pub extern "js" fn NavigatorManagedData::get_serial_number(
-  self : NavigatorManagedData,
-) -> Promise[String] =
+pub extern "js" fn NavigatorManagedData::get_serial_number(self : NavigatorManagedData) -> Promise[String] =
   #| (self) => self.getSerialNumber()

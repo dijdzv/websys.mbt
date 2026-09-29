@@ -8,6 +8,7 @@ fn emit_wasm_getter_error_support(
     "pub fn JsError::name(self : JsError) -> String = \"websys\" \"getter_error_name\"\n" +
     "pub fn JsError::message(self : JsError) -> String = \"websys\" \"getter_error_message\"\n" +
     "pub impl Debug for JsError with to_repr(self) { @debug.Repr::Repr(self.message()) }\n" +
+    "pub extend JsError with @debug.Debug::{to_repr}\n" +
     "fn websys_getter_ok(result : WebsysGetterOutcome) -> Bool = \"websys\" \"getter_ok\"\n" +
     "fn websys_getter_error(result : WebsysGetterOutcome) -> JsError = \"websys\" \"getter_error\"\n",
   )

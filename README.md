@@ -42,7 +42,10 @@ mise run generate
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
-Development uses MoonBit `0.10.12+1634b282e` and `moonbitlang/async` `0.21.3`.
+Development uses MoonBit `0.10.14+7d59c7ec9` and `moonbitlang/async` `0.22.4`.
+Generation uses `@webref/idl` `3.85.0` and `webidl2` `24.5.0`.
+Adopt new published compiler and dependency releases as they become available;
+exact pins and checksums make the validated inputs reproducible.
 Published bindings currently support JavaScript. An [experimental WasmGC backend](generator/WASM.md)
 generates and tests representative DOM/input, Fetch/Streams, buffer and WebGPU
 paths. It does not cover the full published API or make the published package
@@ -69,7 +72,10 @@ Environment and task configuration lives only in `mise.toml`; Nix/devenv,
 direnv and just are not required. Nix-managed Linux machines can supply mise
 through their system configuration. NixOS may additionally need its usual
 foreign-binary support to run the downloaded Linux tools.
-Use `mise run fmt` / `mise run fmt-check` for formatting.
+Formatting normally uses `mise run fmt` / `mise run fmt-check`. Formatter
+execution, including the formatting step during generation, is currently
+suspended while the Windows executable's quarantine is investigated. Generation
+still validates its output with the compiler before installing it.
 
 The library continues to publish to Mooncakes through the Release workflow.
 The generator is maintained locally and is not published to npm.

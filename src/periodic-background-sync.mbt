@@ -7,35 +7,28 @@ pub(all) struct BackgroundSyncOptions {
   minInterval : Int64?
 }
 
-///|
 /// Create a new BackgroundSyncOptions with default values
 pub fn BackgroundSyncOptions::default() -> BackgroundSyncOptions {
-  BackgroundSyncOptions::{ minInterval: None, }
+  BackgroundSyncOptions::{
+    minInterval: None,
+  }
 }
 
-///|
-extern "js" fn BackgroundSyncOptions::to_js_ffi(
-  self : BackgroundSyncOptions,
-) -> JsValue =
+extern "js" fn BackgroundSyncOptions::to_js_ffi(self : BackgroundSyncOptions) -> JsValue =
   #| (self) => ({
   #|   minInterval: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.minInterval)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn BackgroundSyncOptions::to_js(self : BackgroundSyncOptions) -> JsValue {
   BackgroundSyncOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn BackgroundSyncOptions::from_js_ffi(
-  value : JsValue,
-) -> BackgroundSyncOptions =
+extern "js" fn BackgroundSyncOptions::from_js_ffi(value : JsValue) -> BackgroundSyncOptions =
   #| (v) => ({
   #|   minInterval: (v.minInterval === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.minInterval))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn BackgroundSyncOptions::from_js(value : JsValue) -> BackgroundSyncOptions {
   BackgroundSyncOptions::from_js_ffi(value)
@@ -43,27 +36,15 @@ pub fn BackgroundSyncOptions::from_js(value : JsValue) -> BackgroundSyncOptions 
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn BackgroundSyncOptions::to_js_checked(
-  self : BackgroundSyncOptions,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn BackgroundSyncOptions::to_js_checked(self : BackgroundSyncOptions) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_BackgroundSyncOptions(
-  convert : () -> BackgroundSyncOptions,
-) -> Result[BackgroundSyncOptions, JsError] =
+extern "js" fn try_dictionary_BackgroundSyncOptions(convert : () -> BackgroundSyncOptions) -> Result[BackgroundSyncOptions, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn BackgroundSyncOptions::from_js_checked(
-  value : JsValue,
-) -> Result[BackgroundSyncOptions, JsError] {
-  try_dictionary_BackgroundSyncOptions(() => {
-    BackgroundSyncOptions::from_js(value)
-  })
-}
+pub fn BackgroundSyncOptions::from_js_checked(value : JsValue) -> Result[BackgroundSyncOptions, JsError] { try_dictionary_BackgroundSyncOptions(() => BackgroundSyncOptions::from_js(value)) }
 
 ///|
 /// PeriodicSyncEventInit dictionary
@@ -71,35 +52,28 @@ pub(all) struct PeriodicSyncEventInit {
   tag : String
 }
 
-///|
 /// Create a new PeriodicSyncEventInit with default values
 pub fn PeriodicSyncEventInit::default() -> PeriodicSyncEventInit {
-  PeriodicSyncEventInit::{ tag: "", }
+  PeriodicSyncEventInit::{
+    tag: "",
+  }
 }
 
-///|
-extern "js" fn PeriodicSyncEventInit::to_js_ffi(
-  self : PeriodicSyncEventInit,
-) -> JsValue =
+extern "js" fn PeriodicSyncEventInit::to_js_ffi(self : PeriodicSyncEventInit) -> JsValue =
   #| (self) => ({
   #|   tag: self.tag
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PeriodicSyncEventInit::to_js(self : PeriodicSyncEventInit) -> JsValue {
   PeriodicSyncEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PeriodicSyncEventInit::from_js_ffi(
-  value : JsValue,
-) -> PeriodicSyncEventInit =
+extern "js" fn PeriodicSyncEventInit::from_js_ffi(value : JsValue) -> PeriodicSyncEventInit =
   #| (v) => ({
   #|   tag: v.tag
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PeriodicSyncEventInit::from_js(value : JsValue) -> PeriodicSyncEventInit {
   PeriodicSyncEventInit::from_js_ffi(value)
@@ -109,38 +83,23 @@ pub fn PeriodicSyncEventInit::from_js(value : JsValue) -> PeriodicSyncEventInit 
 /// PeriodicSyncManager interface
 pub type PeriodicSyncManager
 
-///|
-pub extern "js" fn PeriodicSyncManager::to_js_value(
-  self : PeriodicSyncManager,
-) -> JsValue =
+pub extern "js" fn PeriodicSyncManager::to_js_value(self : PeriodicSyncManager) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PeriodicSyncManager (unchecked)
-pub extern "js" fn PeriodicSyncManager::from_js_value(
-  v : JsValue,
-) -> PeriodicSyncManager =
+pub extern "js" fn PeriodicSyncManager::from_js_value(v : JsValue) -> PeriodicSyncManager =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PeriodicSyncManager (checked with instanceof)
-pub extern "js" fn PeriodicSyncManager::from_js_value_opt(
-  v : JsValue,
-) -> PeriodicSyncManager? =
+pub extern "js" fn PeriodicSyncManager::from_js_value_opt(v : JsValue) -> PeriodicSyncManager? =
   #| (v) => (v instanceof PeriodicSyncManager) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PeriodicSyncManager (checked with instanceof)
-pub extern "js" fn JsValue::as_periodic_sync_manager(
-  self : JsValue,
-) -> PeriodicSyncManager? =
+pub extern "js" fn JsValue::as_periodic_sync_manager(self : JsValue) -> PeriodicSyncManager? =
   #| (self) => (self instanceof PeriodicSyncManager) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PeriodicSyncManager (unchecked)
-pub extern "js" fn JsValue::to_periodic_sync_manager(
-  self : JsValue,
-) -> PeriodicSyncManager =
+pub extern "js" fn JsValue::to_periodic_sync_manager(self : JsValue) -> PeriodicSyncManager =
   #| (self) => self
 
 ///|
@@ -152,110 +111,59 @@ pub(all) enum PeriodicSyncManagerRegisterError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn PeriodicSyncManager::register(
-  self : PeriodicSyncManager,
-  tag : String,
-) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
+pub extend PeriodicSyncManagerRegisterError with @debug.Debug::{to_repr}
+
+pub extern "js" fn PeriodicSyncManager::register(self : PeriodicSyncManager, tag : String) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
   #| (self, tag) => self.register(tag).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-extern "js" fn PeriodicSyncManager::register_with_options_ffi(
-  self : PeriodicSyncManager,
-  tag : String,
-  options : JsValue,
-) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
+extern "js" fn PeriodicSyncManager::register_with_options_ffi(self : PeriodicSyncManager, tag : String, options : JsValue) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] =
   #| (self, tag, options) => self.register(tag, options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub fn PeriodicSyncManager::register_with_options(
-  self : PeriodicSyncManager,
-  tag : String,
-  options : BackgroundSyncOptions,
-) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] {
+pub fn PeriodicSyncManager::register_with_options(self : PeriodicSyncManager, tag : String, options : BackgroundSyncOptions) -> Promise[Result[Unit, PeriodicSyncManagerRegisterError]] {
   PeriodicSyncManager::register_with_options_ffi(self, tag, options.to_js())
 }
 
-///|
-pub extern "js" fn PeriodicSyncManager::get_tags(
-  self : PeriodicSyncManager,
-) -> Promise[FixedArray[String]] =
+pub extern "js" fn PeriodicSyncManager::get_tags(self : PeriodicSyncManager) -> Promise[FixedArray[String]] =
   #| (self) => self.getTags()
 
-///|
-pub extern "js" fn PeriodicSyncManager::unregister(
-  self : PeriodicSyncManager,
-  tag : String,
-) -> Promise[Unit] =
+pub extern "js" fn PeriodicSyncManager::unregister(self : PeriodicSyncManager, tag : String) -> Promise[Unit] =
   #| (self, tag) => self.unregister(tag)
 
 ///|
 /// PeriodicSyncEvent interface
 pub type PeriodicSyncEvent
 
-///|
-pub extern "js" fn PeriodicSyncEvent::to_js_value(
-  self : PeriodicSyncEvent,
-) -> JsValue =
+pub extern "js" fn PeriodicSyncEvent::to_js_value(self : PeriodicSyncEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PeriodicSyncEvent (unchecked)
-pub extern "js" fn PeriodicSyncEvent::from_js_value(
-  v : JsValue,
-) -> PeriodicSyncEvent =
+pub extern "js" fn PeriodicSyncEvent::from_js_value(v : JsValue) -> PeriodicSyncEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PeriodicSyncEvent (checked with instanceof)
-pub extern "js" fn PeriodicSyncEvent::from_js_value_opt(
-  v : JsValue,
-) -> PeriodicSyncEvent? =
+pub extern "js" fn PeriodicSyncEvent::from_js_value_opt(v : JsValue) -> PeriodicSyncEvent? =
   #| (v) => (v instanceof PeriodicSyncEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PeriodicSyncEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_periodic_sync_event(
-  self : JsValue,
-) -> PeriodicSyncEvent? =
+pub extern "js" fn JsValue::as_periodic_sync_event(self : JsValue) -> PeriodicSyncEvent? =
   #| (self) => (self instanceof PeriodicSyncEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PeriodicSyncEvent (unchecked)
-pub extern "js" fn JsValue::to_periodic_sync_event(
-  self : JsValue,
-) -> PeriodicSyncEvent =
+pub extern "js" fn JsValue::to_periodic_sync_event(self : JsValue) -> PeriodicSyncEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn PeriodicSyncEvent::to_extendable_event(
-  self : PeriodicSyncEvent,
-) -> ExtendableEvent =
+pub extern "js" fn PeriodicSyncEvent::to_extendable_event(self : PeriodicSyncEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn PeriodicSyncEvent::to_event(
-  self : PeriodicSyncEvent,
-) -> Event =
+pub extern "js" fn PeriodicSyncEvent::to_event(self : PeriodicSyncEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn PeriodicSyncEvent::new_ffi(
-  type_ : String,
-  init_ : JsValue,
-) -> PeriodicSyncEvent =
+extern "js" fn PeriodicSyncEvent::new_ffi(type_ : String, init_ : JsValue) -> PeriodicSyncEvent =
   #| (type_, init_) => new PeriodicSyncEvent(type_, init_)
 
-///|
-pub fn PeriodicSyncEvent::new(
-  type_ : String,
-  init_ : PeriodicSyncEventInit,
-) -> PeriodicSyncEvent {
+pub fn PeriodicSyncEvent::new(type_ : String, init_ : PeriodicSyncEventInit) -> PeriodicSyncEvent {
   PeriodicSyncEvent::new_ffi(type_, init_.to_js())
 }
 
-///|
-pub extern "js" fn PeriodicSyncEvent::get_tag(
-  self : PeriodicSyncEvent,
-) -> String =
+pub extern "js" fn PeriodicSyncEvent::get_tag(self : PeriodicSyncEvent) -> String =
   #| (self) => self.tag

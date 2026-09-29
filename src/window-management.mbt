@@ -5,150 +5,92 @@
 /// ScreenDetails interface
 pub type ScreenDetails
 
-///|
 pub extern "js" fn ScreenDetails::to_js_value(self : ScreenDetails) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ScreenDetails (unchecked)
 pub extern "js" fn ScreenDetails::from_js_value(v : JsValue) -> ScreenDetails =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ScreenDetails (checked with instanceof)
-pub extern "js" fn ScreenDetails::from_js_value_opt(
-  v : JsValue,
-) -> ScreenDetails? =
+pub extern "js" fn ScreenDetails::from_js_value_opt(v : JsValue) -> ScreenDetails? =
   #| (v) => (v instanceof ScreenDetails) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ScreenDetails (checked with instanceof)
 pub extern "js" fn JsValue::as_screen_details(self : JsValue) -> ScreenDetails? =
   #| (self) => (self instanceof ScreenDetails) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ScreenDetails (unchecked)
 pub extern "js" fn JsValue::to_screen_details(self : JsValue) -> ScreenDetails =
   #| (self) => self
 
-///|
-pub extern "js" fn ScreenDetails::to_event_target(
-  self : ScreenDetails,
-) -> EventTarget =
+pub extern "js" fn ScreenDetails::to_event_target(self : ScreenDetails) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn ScreenDetails::get_screens(
-  self : ScreenDetails,
-) -> FixedArray[ScreenDetailed] =
+pub extern "js" fn ScreenDetails::get_screens(self : ScreenDetails) -> FixedArray[ScreenDetailed] =
   #| (self) => self.screens
 
-///|
-pub extern "js" fn ScreenDetails::get_current_screen(
-  self : ScreenDetails,
-) -> ScreenDetailed =
+pub extern "js" fn ScreenDetails::get_current_screen(self : ScreenDetails) -> ScreenDetailed =
   #| (self) => self.currentScreen
 
-///|
-pub extern "js" fn ScreenDetails::set_onscreenschange(
-  self : ScreenDetails,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn ScreenDetails::set_onscreenschange(self : ScreenDetails, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onscreenschange = (e) => handler(e) }
 
-///|
-pub extern "js" fn ScreenDetails::clear_onscreenschange(
-  self : ScreenDetails,
-) -> Unit =
+pub extern "js" fn ScreenDetails::clear_onscreenschange(self : ScreenDetails) -> Unit =
   #| (self) => { self.onscreenschange = null }
 
-///|
-pub extern "js" fn ScreenDetails::set_oncurrentscreenchange(
-  self : ScreenDetails,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn ScreenDetails::set_oncurrentscreenchange(self : ScreenDetails, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.oncurrentscreenchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn ScreenDetails::clear_oncurrentscreenchange(
-  self : ScreenDetails,
-) -> Unit =
+pub extern "js" fn ScreenDetails::clear_oncurrentscreenchange(self : ScreenDetails) -> Unit =
   #| (self) => { self.oncurrentscreenchange = null }
 
 ///|
 /// ScreenDetailed interface
 pub type ScreenDetailed
 
-///|
-pub extern "js" fn ScreenDetailed::to_js_value(
-  self : ScreenDetailed,
-) -> JsValue =
+pub extern "js" fn ScreenDetailed::to_js_value(self : ScreenDetailed) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ScreenDetailed (unchecked)
 pub extern "js" fn ScreenDetailed::from_js_value(v : JsValue) -> ScreenDetailed =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ScreenDetailed (checked with instanceof)
-pub extern "js" fn ScreenDetailed::from_js_value_opt(
-  v : JsValue,
-) -> ScreenDetailed? =
+pub extern "js" fn ScreenDetailed::from_js_value_opt(v : JsValue) -> ScreenDetailed? =
   #| (v) => (v instanceof ScreenDetailed) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ScreenDetailed (checked with instanceof)
-pub extern "js" fn JsValue::as_screen_detailed(
-  self : JsValue,
-) -> ScreenDetailed? =
+pub extern "js" fn JsValue::as_screen_detailed(self : JsValue) -> ScreenDetailed? =
   #| (self) => (self instanceof ScreenDetailed) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ScreenDetailed (unchecked)
-pub extern "js" fn JsValue::to_screen_detailed(
-  self : JsValue,
-) -> ScreenDetailed =
+pub extern "js" fn JsValue::to_screen_detailed(self : JsValue) -> ScreenDetailed =
   #| (self) => self
 
-///|
 pub extern "js" fn ScreenDetailed::to_screen(self : ScreenDetailed) -> Screen =
   #| (self) => self
 
-///|
 pub extern "js" fn ScreenDetailed::get_avail_left(self : ScreenDetailed) -> Int =
   #| (self) => self.availLeft
 
-///|
 pub extern "js" fn ScreenDetailed::get_avail_top(self : ScreenDetailed) -> Int =
   #| (self) => self.availTop
 
-///|
 pub extern "js" fn ScreenDetailed::get_left(self : ScreenDetailed) -> Int =
   #| (self) => self.left
 
-///|
 pub extern "js" fn ScreenDetailed::get_top(self : ScreenDetailed) -> Int =
   #| (self) => self.top
 
-///|
-pub extern "js" fn ScreenDetailed::get_is_primary(
-  self : ScreenDetailed,
-) -> Bool =
+pub extern "js" fn ScreenDetailed::get_is_primary(self : ScreenDetailed) -> Bool =
   #| (self) => self.isPrimary
 
-///|
-pub extern "js" fn ScreenDetailed::get_is_internal(
-  self : ScreenDetailed,
-) -> Bool =
+pub extern "js" fn ScreenDetailed::get_is_internal(self : ScreenDetailed) -> Bool =
   #| (self) => self.isInternal
 
-///|
-pub extern "js" fn ScreenDetailed::get_device_pixel_ratio(
-  self : ScreenDetailed,
-) -> Double =
+pub extern "js" fn ScreenDetailed::get_device_pixel_ratio(self : ScreenDetailed) -> Double =
   #| (self) => self.devicePixelRatio
 
-///|
 pub extern "js" fn ScreenDetailed::get_label(self : ScreenDetailed) -> String =
   #| (self) => self.label

@@ -6,7 +6,7 @@
         "generate": "mise run generate"
     },
     "devDependencies": {
-        "@webref/idl": "3.73.1",
+        "@webref/idl": "3.85.0",
         "webidl2": "24.5.0"
     }
 }

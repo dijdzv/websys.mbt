@@ -7,21 +7,18 @@ pub(all) enum OTPCredentialTransportType {
   Sms
 } derive(Eq, Debug)
 
-///|
+pub extend OTPCredentialTransportType with Eq::{equal, not_equal}
+pub extend OTPCredentialTransportType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn OTPCredentialTransportType::to_string(
-  self : OTPCredentialTransportType,
-) -> String {
+pub fn OTPCredentialTransportType::to_string(self : OTPCredentialTransportType) -> String {
   match self {
     OTPCredentialTransportType::Sms => "sms"
   }
 }
 
-///|
 /// Parse from string value
-pub fn OTPCredentialTransportType::from_string(
-  s : String,
-) -> OTPCredentialTransportType? {
+pub fn OTPCredentialTransportType::from_string(s : String) -> OTPCredentialTransportType? {
   match s {
     "sms" => Some(OTPCredentialTransportType::Sms)
     _ => None
@@ -34,41 +31,30 @@ pub(all) struct OTPCredentialRequestOptions {
   transport : FixedArray[OTPCredentialTransportType]?
 }
 
-///|
 /// Create a new OTPCredentialRequestOptions with default values
 pub fn OTPCredentialRequestOptions::default() -> OTPCredentialRequestOptions {
-  OTPCredentialRequestOptions::{ transport: None, }
+  OTPCredentialRequestOptions::{
+    transport: None,
+  }
 }
 
-///|
-extern "js" fn OTPCredentialRequestOptions::to_js_ffi(
-  self : OTPCredentialRequestOptions,
-) -> JsValue =
+extern "js" fn OTPCredentialRequestOptions::to_js_ffi(self : OTPCredentialRequestOptions) -> JsValue =
   #| (self) => ({
   #|   transport: self.transport
   #| })
 
-///|
 /// Convert to JsValue
-pub fn OTPCredentialRequestOptions::to_js(
-  self : OTPCredentialRequestOptions,
-) -> JsValue {
+pub fn OTPCredentialRequestOptions::to_js(self : OTPCredentialRequestOptions) -> JsValue {
   OTPCredentialRequestOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn OTPCredentialRequestOptions::from_js_ffi(
-  value : JsValue,
-) -> OTPCredentialRequestOptions =
+extern "js" fn OTPCredentialRequestOptions::from_js_ffi(value : JsValue) -> OTPCredentialRequestOptions =
   #| (v) => ({
   #|   transport: v.transport
   #| })
 
-///|
 /// Convert from JsValue
-pub fn OTPCredentialRequestOptions::from_js(
-  value : JsValue,
-) -> OTPCredentialRequestOptions {
+pub fn OTPCredentialRequestOptions::from_js(value : JsValue) -> OTPCredentialRequestOptions {
   OTPCredentialRequestOptions::from_js_ffi(value)
 }
 
@@ -76,38 +62,27 @@ pub fn OTPCredentialRequestOptions::from_js(
 /// OTPCredential interface
 pub type OTPCredential
 
-///|
 pub extern "js" fn OTPCredential::to_js_value(self : OTPCredential) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to OTPCredential (unchecked)
 pub extern "js" fn OTPCredential::from_js_value(v : JsValue) -> OTPCredential =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to OTPCredential (checked with instanceof)
-pub extern "js" fn OTPCredential::from_js_value_opt(
-  v : JsValue,
-) -> OTPCredential? =
+pub extern "js" fn OTPCredential::from_js_value_opt(v : JsValue) -> OTPCredential? =
   #| (v) => (v instanceof OTPCredential) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to OTPCredential (checked with instanceof)
 pub extern "js" fn JsValue::as_otp_credential(self : JsValue) -> OTPCredential? =
   #| (self) => (self instanceof OTPCredential) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to OTPCredential (unchecked)
 pub extern "js" fn JsValue::to_otp_credential(self : JsValue) -> OTPCredential =
   #| (self) => self
 
-///|
-pub extern "js" fn OTPCredential::to_credential(
-  self : OTPCredential,
-) -> Credential =
+pub extern "js" fn OTPCredential::to_credential(self : OTPCredential) -> Credential =
   #| (self) => self
 
-///|
 pub extern "js" fn OTPCredential::get_code(self : OTPCredential) -> String =
   #| (self) => self.code

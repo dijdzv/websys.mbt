@@ -8,7 +8,9 @@ pub(all) enum RefreshPolicy {
   Refresh
 } derive(Eq, Debug)
 
-///|
+pub extend RefreshPolicy with Eq::{equal, not_equal}
+pub extend RefreshPolicy with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn RefreshPolicy::to_string(self : RefreshPolicy) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn RefreshPolicy::from_string(s : String) -> RefreshPolicy? {
   match s {
@@ -33,7 +34,9 @@ pub(all) enum TokenVersion {
   N1
 } derive(Eq, Debug)
 
-///|
+pub extend TokenVersion with Eq::{equal, not_equal}
+pub extend TokenVersion with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn TokenVersion::to_string(self : TokenVersion) -> String {
   match self {
@@ -41,7 +44,6 @@ pub fn TokenVersion::to_string(self : TokenVersion) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn TokenVersion::from_string(s : String) -> TokenVersion? {
   match s {
@@ -58,7 +60,9 @@ pub(all) enum OperationType {
   TokenRedemption
 } derive(Eq, Debug)
 
-///|
+pub extend OperationType with Eq::{equal, not_equal}
+pub extend OperationType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OperationType::to_string(self : OperationType) -> String {
   match self {
@@ -68,7 +72,6 @@ pub fn OperationType::to_string(self : OperationType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OperationType::from_string(s : String) -> OperationType? {
   match s {
@@ -88,16 +91,16 @@ pub(all) struct PrivateToken {
   issuers : FixedArray[String]?
 }
 
-///|
 /// Create a new PrivateToken
-pub fn PrivateToken::new(
-  version~ : TokenVersion,
-  operation~ : OperationType,
-) -> PrivateToken {
-  PrivateToken::{ version, operation, refreshPolicy: None, issuers: None, }
+pub fn PrivateToken::new(version~ : TokenVersion, operation~ : OperationType) -> PrivateToken {
+  PrivateToken::{
+    version: version,
+    operation: operation,
+    refreshPolicy: None,
+    issuers: None,
+  }
 }
 
-///|
 extern "js" fn PrivateToken::to_js_ffi(self : PrivateToken) -> JsValue =
   #| (self) => ({
   #|   version: ['1'][self.version],
@@ -106,13 +109,11 @@ extern "js" fn PrivateToken::to_js_ffi(self : PrivateToken) -> JsValue =
   #|   issuers: self.issuers
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PrivateToken::to_js(self : PrivateToken) -> JsValue {
   PrivateToken::to_js_ffi(self)
 }
 
-///|
 extern "js" fn PrivateToken::from_js_ffi(value : JsValue) -> PrivateToken =
   #| (v) => ({
   #|   version: ['1'].indexOf(v.version),
@@ -121,7 +122,6 @@ extern "js" fn PrivateToken::from_js_ffi(value : JsValue) -> PrivateToken =
   #|   issuers: v.issuers
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PrivateToken::from_js(value : JsValue) -> PrivateToken {
   PrivateToken::from_js_ffi(value)

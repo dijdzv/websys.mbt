@@ -9,29 +9,23 @@ pub(all) enum CaptureStartFocusBehavior {
   NoFocusChange
 } derive(Eq, Debug)
 
-///|
+pub extend CaptureStartFocusBehavior with Eq::{equal, not_equal}
+pub extend CaptureStartFocusBehavior with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn CaptureStartFocusBehavior::to_string(
-  self : CaptureStartFocusBehavior,
-) -> String {
+pub fn CaptureStartFocusBehavior::to_string(self : CaptureStartFocusBehavior) -> String {
   match self {
-    CaptureStartFocusBehavior::FocusCapturingApplication =>
-      "focus-capturing-application"
+    CaptureStartFocusBehavior::FocusCapturingApplication => "focus-capturing-application"
     CaptureStartFocusBehavior::FocusCapturedSurface => "focus-captured-surface"
     CaptureStartFocusBehavior::NoFocusChange => "no-focus-change"
   }
 }
 
-///|
 /// Parse from string value
-pub fn CaptureStartFocusBehavior::from_string(
-  s : String,
-) -> CaptureStartFocusBehavior? {
+pub fn CaptureStartFocusBehavior::from_string(s : String) -> CaptureStartFocusBehavior? {
   match s {
-    "focus-capturing-application" =>
-      Some(CaptureStartFocusBehavior::FocusCapturingApplication)
-    "focus-captured-surface" =>
-      Some(CaptureStartFocusBehavior::FocusCapturedSurface)
+    "focus-capturing-application" => Some(CaptureStartFocusBehavior::FocusCapturingApplication)
+    "focus-captured-surface" => Some(CaptureStartFocusBehavior::FocusCapturedSurface)
     "no-focus-change" => Some(CaptureStartFocusBehavior::NoFocusChange)
     _ => None
   }
@@ -44,22 +38,19 @@ pub(all) enum SelfCapturePreferenceEnum {
   Exclude
 } derive(Eq, Debug)
 
-///|
+pub extend SelfCapturePreferenceEnum with Eq::{equal, not_equal}
+pub extend SelfCapturePreferenceEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn SelfCapturePreferenceEnum::to_string(
-  self : SelfCapturePreferenceEnum,
-) -> String {
+pub fn SelfCapturePreferenceEnum::to_string(self : SelfCapturePreferenceEnum) -> String {
   match self {
     SelfCapturePreferenceEnum::Include => "include"
     SelfCapturePreferenceEnum::Exclude => "exclude"
   }
 }
 
-///|
 /// Parse from string value
-pub fn SelfCapturePreferenceEnum::from_string(
-  s : String,
-) -> SelfCapturePreferenceEnum? {
+pub fn SelfCapturePreferenceEnum::from_string(s : String) -> SelfCapturePreferenceEnum? {
   match s {
     "include" => Some(SelfCapturePreferenceEnum::Include)
     "exclude" => Some(SelfCapturePreferenceEnum::Exclude)
@@ -74,22 +65,19 @@ pub(all) enum SystemAudioPreferenceEnum {
   Exclude
 } derive(Eq, Debug)
 
-///|
+pub extend SystemAudioPreferenceEnum with Eq::{equal, not_equal}
+pub extend SystemAudioPreferenceEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn SystemAudioPreferenceEnum::to_string(
-  self : SystemAudioPreferenceEnum,
-) -> String {
+pub fn SystemAudioPreferenceEnum::to_string(self : SystemAudioPreferenceEnum) -> String {
   match self {
     SystemAudioPreferenceEnum::Include => "include"
     SystemAudioPreferenceEnum::Exclude => "exclude"
   }
 }
 
-///|
 /// Parse from string value
-pub fn SystemAudioPreferenceEnum::from_string(
-  s : String,
-) -> SystemAudioPreferenceEnum? {
+pub fn SystemAudioPreferenceEnum::from_string(s : String) -> SystemAudioPreferenceEnum? {
   match s {
     "include" => Some(SystemAudioPreferenceEnum::Include)
     "exclude" => Some(SystemAudioPreferenceEnum::Exclude)
@@ -105,11 +93,11 @@ pub(all) enum WindowAudioPreferenceEnum {
   Exclude
 } derive(Eq, Debug)
 
-///|
+pub extend WindowAudioPreferenceEnum with Eq::{equal, not_equal}
+pub extend WindowAudioPreferenceEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn WindowAudioPreferenceEnum::to_string(
-  self : WindowAudioPreferenceEnum,
-) -> String {
+pub fn WindowAudioPreferenceEnum::to_string(self : WindowAudioPreferenceEnum) -> String {
   match self {
     WindowAudioPreferenceEnum::System => "system"
     WindowAudioPreferenceEnum::Window => "window"
@@ -117,11 +105,8 @@ pub fn WindowAudioPreferenceEnum::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn WindowAudioPreferenceEnum::from_string(
-  s : String,
-) -> WindowAudioPreferenceEnum? {
+pub fn WindowAudioPreferenceEnum::from_string(s : String) -> WindowAudioPreferenceEnum? {
   match s {
     "system" => Some(WindowAudioPreferenceEnum::System)
     "window" => Some(WindowAudioPreferenceEnum::Window)
@@ -137,22 +122,19 @@ pub(all) enum SurfaceSwitchingPreferenceEnum {
   Exclude
 } derive(Eq, Debug)
 
-///|
+pub extend SurfaceSwitchingPreferenceEnum with Eq::{equal, not_equal}
+pub extend SurfaceSwitchingPreferenceEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn SurfaceSwitchingPreferenceEnum::to_string(
-  self : SurfaceSwitchingPreferenceEnum,
-) -> String {
+pub fn SurfaceSwitchingPreferenceEnum::to_string(self : SurfaceSwitchingPreferenceEnum) -> String {
   match self {
     SurfaceSwitchingPreferenceEnum::Include => "include"
     SurfaceSwitchingPreferenceEnum::Exclude => "exclude"
   }
 }
 
-///|
 /// Parse from string value
-pub fn SurfaceSwitchingPreferenceEnum::from_string(
-  s : String,
-) -> SurfaceSwitchingPreferenceEnum? {
+pub fn SurfaceSwitchingPreferenceEnum::from_string(s : String) -> SurfaceSwitchingPreferenceEnum? {
   match s {
     "include" => Some(SurfaceSwitchingPreferenceEnum::Include)
     "exclude" => Some(SurfaceSwitchingPreferenceEnum::Exclude)
@@ -167,25 +149,46 @@ pub(all) enum MonitorTypeSurfacesEnum {
   Exclude
 } derive(Eq, Debug)
 
-///|
+pub extend MonitorTypeSurfacesEnum with Eq::{equal, not_equal}
+pub extend MonitorTypeSurfacesEnum with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn MonitorTypeSurfacesEnum::to_string(
-  self : MonitorTypeSurfacesEnum,
-) -> String {
+pub fn MonitorTypeSurfacesEnum::to_string(self : MonitorTypeSurfacesEnum) -> String {
   match self {
     MonitorTypeSurfacesEnum::Include => "include"
     MonitorTypeSurfacesEnum::Exclude => "exclude"
   }
 }
 
-///|
 /// Parse from string value
-pub fn MonitorTypeSurfacesEnum::from_string(
-  s : String,
-) -> MonitorTypeSurfacesEnum? {
+pub fn MonitorTypeSurfacesEnum::from_string(s : String) -> MonitorTypeSurfacesEnum? {
   match s {
     "include" => Some(MonitorTypeSurfacesEnum::Include)
     "exclude" => Some(MonitorTypeSurfacesEnum::Exclude)
+    _ => None
+  }
+}
+
+///|
+/// AudioSelectionPreferenceEnum enum
+pub(all) enum AudioSelectionPreferenceEnum {
+  Preferred
+} derive(Eq, Debug)
+
+pub extend AudioSelectionPreferenceEnum with Eq::{equal, not_equal}
+pub extend AudioSelectionPreferenceEnum with @debug.Debug::{to_repr}
+
+/// Convert to string value
+pub fn AudioSelectionPreferenceEnum::to_string(self : AudioSelectionPreferenceEnum) -> String {
+  match self {
+    AudioSelectionPreferenceEnum::Preferred => "preferred"
+  }
+}
+
+/// Parse from string value
+pub fn AudioSelectionPreferenceEnum::from_string(s : String) -> AudioSelectionPreferenceEnum? {
+  match s {
+    "preferred" => Some(AudioSelectionPreferenceEnum::Preferred)
     _ => None
   }
 }
@@ -198,11 +201,11 @@ pub(all) enum DisplayCaptureSurfaceType {
   Browser
 } derive(Eq, Debug)
 
-///|
+pub extend DisplayCaptureSurfaceType with Eq::{equal, not_equal}
+pub extend DisplayCaptureSurfaceType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn DisplayCaptureSurfaceType::to_string(
-  self : DisplayCaptureSurfaceType,
-) -> String {
+pub fn DisplayCaptureSurfaceType::to_string(self : DisplayCaptureSurfaceType) -> String {
   match self {
     DisplayCaptureSurfaceType::Monitor => "monitor"
     DisplayCaptureSurfaceType::Window => "window"
@@ -210,11 +213,8 @@ pub fn DisplayCaptureSurfaceType::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn DisplayCaptureSurfaceType::from_string(
-  s : String,
-) -> DisplayCaptureSurfaceType? {
+pub fn DisplayCaptureSurfaceType::from_string(s : String) -> DisplayCaptureSurfaceType? {
   match s {
     "monitor" => Some(DisplayCaptureSurfaceType::Monitor)
     "window" => Some(DisplayCaptureSurfaceType::Window)
@@ -231,11 +231,11 @@ pub(all) enum CursorCaptureConstraint {
   Motion
 } derive(Eq, Debug)
 
-///|
+pub extend CursorCaptureConstraint with Eq::{equal, not_equal}
+pub extend CursorCaptureConstraint with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn CursorCaptureConstraint::to_string(
-  self : CursorCaptureConstraint,
-) -> String {
+pub fn CursorCaptureConstraint::to_string(self : CursorCaptureConstraint) -> String {
   match self {
     CursorCaptureConstraint::Never => "never"
     CursorCaptureConstraint::Always => "always"
@@ -243,11 +243,8 @@ pub fn CursorCaptureConstraint::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn CursorCaptureConstraint::from_string(
-  s : String,
-) -> CursorCaptureConstraint? {
+pub fn CursorCaptureConstraint::from_string(s : String) -> CursorCaptureConstraint? {
   match s {
     "never" => Some(CursorCaptureConstraint::Never)
     "always" => Some(CursorCaptureConstraint::Always)
@@ -267,9 +264,9 @@ pub(all) struct DisplayMediaStreamOptions {
   windowAudio : WindowAudioPreferenceEnum?
   surfaceSwitching : SurfaceSwitchingPreferenceEnum?
   monitorTypeSurfaces : MonitorTypeSurfacesEnum?
+  audioSelection : AudioSelectionPreferenceEnum?
 }
 
-///|
 /// Create a new DisplayMediaStreamOptions with default values
 pub fn DisplayMediaStreamOptions::default() -> DisplayMediaStreamOptions {
   DisplayMediaStreamOptions::{
@@ -281,13 +278,11 @@ pub fn DisplayMediaStreamOptions::default() -> DisplayMediaStreamOptions {
     windowAudio: None,
     surfaceSwitching: None,
     monitorTypeSurfaces: None,
+    audioSelection: None,
   }
 }
 
-///|
-extern "js" fn DisplayMediaStreamOptions::to_js_ffi(
-  self : DisplayMediaStreamOptions,
-) -> JsValue =
+extern "js" fn DisplayMediaStreamOptions::to_js_ffi(self : DisplayMediaStreamOptions) -> JsValue =
   #| (self) => ({
   #|   video: ((() => { const v = self.video; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   audio: ((() => { const v = self.audio; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -296,21 +291,16 @@ extern "js" fn DisplayMediaStreamOptions::to_js_ffi(
   #|   systemAudio: ((() => { const v = self.systemAudio; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
   #|   windowAudio: ((() => { const v = self.windowAudio; if (v === undefined) return undefined; return ['system', 'window', 'exclude'][v]; })()),
   #|   surfaceSwitching: ((() => { const v = self.surfaceSwitching; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
-  #|   monitorTypeSurfaces: ((() => { const v = self.monitorTypeSurfaces; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })())
+  #|   monitorTypeSurfaces: ((() => { const v = self.monitorTypeSurfaces; if (v === undefined) return undefined; return ['include', 'exclude'][v]; })()),
+  #|   audioSelection: ((() => { const v = self.audioSelection; if (v === undefined) return undefined; return ['preferred'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DisplayMediaStreamOptions::to_js(
-  self : DisplayMediaStreamOptions,
-) -> JsValue {
+pub fn DisplayMediaStreamOptions::to_js(self : DisplayMediaStreamOptions) -> JsValue {
   DisplayMediaStreamOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DisplayMediaStreamOptions::from_js_ffi(
-  value : JsValue,
-) -> DisplayMediaStreamOptions =
+extern "js" fn DisplayMediaStreamOptions::from_js_ffi(value : JsValue) -> DisplayMediaStreamOptions =
   #| (v) => ({
   #|   video: (v.video === undefined ? { $tag: 0 } : { $tag: 1, _0: v.video }),
   #|   audio: (v.audio === undefined ? { $tag: 0 } : { $tag: 1, _0: v.audio }),
@@ -319,14 +309,12 @@ extern "js" fn DisplayMediaStreamOptions::from_js_ffi(
   #|   systemAudio: (v.systemAudio === undefined ? undefined : ['include', 'exclude'].indexOf(v.systemAudio)),
   #|   windowAudio: (v.windowAudio === undefined ? undefined : ['system', 'window', 'exclude'].indexOf(v.windowAudio)),
   #|   surfaceSwitching: (v.surfaceSwitching === undefined ? undefined : ['include', 'exclude'].indexOf(v.surfaceSwitching)),
-  #|   monitorTypeSurfaces: (v.monitorTypeSurfaces === undefined ? undefined : ['include', 'exclude'].indexOf(v.monitorTypeSurfaces))
+  #|   monitorTypeSurfaces: (v.monitorTypeSurfaces === undefined ? undefined : ['include', 'exclude'].indexOf(v.monitorTypeSurfaces)),
+  #|   audioSelection: (v.audioSelection === undefined ? undefined : ['preferred'].indexOf(v.audioSelection))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DisplayMediaStreamOptions::from_js(
-  value : JsValue,
-) -> DisplayMediaStreamOptions {
+pub fn DisplayMediaStreamOptions::from_js(value : JsValue) -> DisplayMediaStreamOptions {
   DisplayMediaStreamOptions::from_js_ffi(value)
 }
 
@@ -334,44 +322,26 @@ pub fn DisplayMediaStreamOptions::from_js(
 /// CaptureController interface
 pub type CaptureController
 
-///|
-pub extern "js" fn CaptureController::to_js_value(
-  self : CaptureController,
-) -> JsValue =
+pub extern "js" fn CaptureController::to_js_value(self : CaptureController) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CaptureController (unchecked)
-pub extern "js" fn CaptureController::from_js_value(
-  v : JsValue,
-) -> CaptureController =
+pub extern "js" fn CaptureController::from_js_value(v : JsValue) -> CaptureController =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CaptureController (checked with instanceof)
-pub extern "js" fn CaptureController::from_js_value_opt(
-  v : JsValue,
-) -> CaptureController? =
+pub extern "js" fn CaptureController::from_js_value_opt(v : JsValue) -> CaptureController? =
   #| (v) => (v instanceof CaptureController) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CaptureController (checked with instanceof)
-pub extern "js" fn JsValue::as_capture_controller(
-  self : JsValue,
-) -> CaptureController? =
+pub extern "js" fn JsValue::as_capture_controller(self : JsValue) -> CaptureController? =
   #| (self) => (self instanceof CaptureController) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CaptureController (unchecked)
-pub extern "js" fn JsValue::to_capture_controller(
-  self : JsValue,
-) -> CaptureController =
+pub extern "js" fn JsValue::to_capture_controller(self : JsValue) -> CaptureController =
   #| (self) => self
 
-///|
-pub extern "js" fn CaptureController::to_event_target(
-  self : CaptureController,
-) -> EventTarget =
+pub extern "js" fn CaptureController::to_event_target(self : CaptureController) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -381,6 +351,8 @@ pub(all) enum CaptureControllerSetFocusBehaviorError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CaptureControllerSetFocusBehaviorError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
@@ -388,6 +360,8 @@ pub(all) enum CaptureControllerGetSupportedZoomLevelsError {
   NotSupportedError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend CaptureControllerGetSupportedZoomLevelsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -397,6 +371,8 @@ pub(all) enum CaptureControllerIncreaseZoomLevelError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CaptureControllerIncreaseZoomLevelError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerDecreaseZoomLevelError {
@@ -405,6 +381,8 @@ pub(all) enum CaptureControllerDecreaseZoomLevelError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CaptureControllerDecreaseZoomLevelError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CaptureControllerResetZoomLevelError {
@@ -412,6 +390,8 @@ pub(all) enum CaptureControllerResetZoomLevelError {
   InvalidStateError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend CaptureControllerResetZoomLevelError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -422,76 +402,40 @@ pub(all) enum CaptureControllerForwardWheelError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend CaptureControllerForwardWheelError with @debug.Debug::{to_repr}
+
 pub extern "js" fn CaptureController::new() -> CaptureController =
   #| () => new CaptureController()
 
-///|
-pub extern "js" fn CaptureController::set_focus_behavior(
-  self : CaptureController,
-  focus_behavior : CaptureStartFocusBehavior,
-) -> Result[Unit, CaptureControllerSetFocusBehaviorError] =
+pub extern "js" fn CaptureController::set_focus_behavior(self : CaptureController, focus_behavior : CaptureStartFocusBehavior) -> Result[Unit, CaptureControllerSetFocusBehaviorError] =
   #| (self, focus_behavior) => (() => { try { self.setFocusBehavior(['focus-capturing-application', 'focus-captured-surface', 'no-focus-change'][focus_behavior]); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CaptureController::set_oncapturedmousechange(
-  self : CaptureController,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn CaptureController::set_oncapturedmousechange(self : CaptureController, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.oncapturedmousechange = (e) => handler(e) }
 
-///|
-pub extern "js" fn CaptureController::clear_oncapturedmousechange(
-  self : CaptureController,
-) -> Unit =
+pub extern "js" fn CaptureController::clear_oncapturedmousechange(self : CaptureController) -> Unit =
   #| (self) => { self.oncapturedmousechange = null }
 
-///|
-pub extern "js" fn CaptureController::get_supported_zoom_levels(
-  self : CaptureController,
-) -> Result[FixedArray[Int], CaptureControllerGetSupportedZoomLevelsError] =
+pub extern "js" fn CaptureController::get_supported_zoom_levels(self : CaptureController) -> Result[FixedArray[Int], CaptureControllerGetSupportedZoomLevelsError] =
   #| (self) => (() => { try { return { $tag: 1, _0: self.getSupportedZoomLevels() }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CaptureController::get_zoom_level(
-  self : CaptureController,
-) -> Int? =
+pub extern "js" fn CaptureController::get_zoom_level(self : CaptureController) -> Int? =
   #| (self) => (self.zoomLevel) ?? undefined
 
-///|
-pub extern "js" fn CaptureController::increase_zoom_level(
-  self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerIncreaseZoomLevelError]] =
+pub extern "js" fn CaptureController::increase_zoom_level(self : CaptureController) -> Promise[Result[Unit, CaptureControllerIncreaseZoomLevelError]] =
   #| (self) => self.increaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn CaptureController::decrease_zoom_level(
-  self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerDecreaseZoomLevelError]] =
+pub extern "js" fn CaptureController::decrease_zoom_level(self : CaptureController) -> Promise[Result[Unit, CaptureControllerDecreaseZoomLevelError]] =
   #| (self) => self.decreaseZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn CaptureController::reset_zoom_level(
-  self : CaptureController,
-) -> Promise[Result[Unit, CaptureControllerResetZoomLevelError]] =
+pub extern "js" fn CaptureController::reset_zoom_level(self : CaptureController) -> Promise[Result[Unit, CaptureControllerResetZoomLevelError]] =
   #| (self) => self.resetZoomLevel().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn CaptureController::set_onzoomlevelchange(
-  self : CaptureController,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn CaptureController::set_onzoomlevelchange(self : CaptureController, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onzoomlevelchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn CaptureController::clear_onzoomlevelchange(
-  self : CaptureController,
-) -> Unit =
+pub extern "js" fn CaptureController::clear_onzoomlevelchange(self : CaptureController) -> Unit =
   #| (self) => { self.onzoomlevelchange = null }
 
-///|
-pub extern "js" fn CaptureController::forward_wheel(
-  self : CaptureController,
-  element : HTMLElement?,
-) -> Promise[Result[Unit, CaptureControllerForwardWheelError]] =
+pub extern "js" fn CaptureController::forward_wheel(self : CaptureController, element : HTMLElement?) -> Promise[Result[Unit, CaptureControllerForwardWheelError]] =
   #| (self, element) => self.forwardWheel((element.$tag === 1 ? element._0 : null)).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'NotSupportedError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))

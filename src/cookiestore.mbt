@@ -13,7 +13,9 @@ pub(all) enum CookieSameSite {
   None
 } derive(Eq, Debug)
 
-///|
+pub extend CookieSameSite with Eq::{equal, not_equal}
+pub extend CookieSameSite with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn CookieSameSite::to_string(self : CookieSameSite) -> String {
   match self {
@@ -23,7 +25,6 @@ pub fn CookieSameSite::to_string(self : CookieSameSite) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn CookieSameSite::from_string(s : String) -> CookieSameSite? {
   match s {
@@ -41,37 +42,31 @@ pub(all) struct CookieStoreGetOptions {
   url : String?
 }
 
-///|
 /// Create a new CookieStoreGetOptions with default values
 pub fn CookieStoreGetOptions::default() -> CookieStoreGetOptions {
-  CookieStoreGetOptions::{ name: None, url: None, }
+  CookieStoreGetOptions::{
+    name: None,
+    url: None,
+  }
 }
 
-///|
-extern "js" fn CookieStoreGetOptions::to_js_ffi(
-  self : CookieStoreGetOptions,
-) -> JsValue =
+extern "js" fn CookieStoreGetOptions::to_js_ffi(self : CookieStoreGetOptions) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   url: self.url
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CookieStoreGetOptions::to_js(self : CookieStoreGetOptions) -> JsValue {
   CookieStoreGetOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CookieStoreGetOptions::from_js_ffi(
-  value : JsValue,
-) -> CookieStoreGetOptions =
+extern "js" fn CookieStoreGetOptions::from_js_ffi(value : JsValue) -> CookieStoreGetOptions =
   #| (v) => ({
   #|   name: v.name,
   #|   url: v.url
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CookieStoreGetOptions::from_js(value : JsValue) -> CookieStoreGetOptions {
   CookieStoreGetOptions::from_js_ffi(value)
@@ -90,7 +85,6 @@ pub(all) struct CookieInit {
   maxAge : Nullable[Int64]
 }
 
-///|
 /// Create a new CookieInit with default values
 pub fn CookieInit::default() -> CookieInit {
   CookieInit::{
@@ -105,7 +99,6 @@ pub fn CookieInit::default() -> CookieInit {
   }
 }
 
-///|
 extern "js" fn CookieInit::to_js_ffi(self : CookieInit) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
@@ -118,13 +111,11 @@ extern "js" fn CookieInit::to_js_ffi(self : CookieInit) -> JsValue =
   #|   maxAge: ((() => { const v = self.maxAge; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CookieInit::to_js(self : CookieInit) -> JsValue {
   CookieInit::to_js_ffi(self)
 }
 
-///|
 extern "js" fn CookieInit::from_js_ffi(value : JsValue) -> CookieInit =
   #| (v) => ({
   #|   name: v.name,
@@ -137,7 +128,6 @@ extern "js" fn CookieInit::from_js_ffi(value : JsValue) -> CookieInit =
   #|   maxAge: (v.maxAge === undefined ? { $tag: 0 } : v.maxAge === null ? { $tag: 1 } : { $tag: 2, _0: v.maxAge })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CookieInit::from_js(value : JsValue) -> CookieInit {
   CookieInit::from_js_ffi(value)
@@ -152,7 +142,6 @@ pub(all) struct CookieStoreDeleteOptions {
   partitioned : Bool?
 }
 
-///|
 /// Create a new CookieStoreDeleteOptions with default values
 pub fn CookieStoreDeleteOptions::default() -> CookieStoreDeleteOptions {
   CookieStoreDeleteOptions::{
@@ -163,10 +152,7 @@ pub fn CookieStoreDeleteOptions::default() -> CookieStoreDeleteOptions {
   }
 }
 
-///|
-extern "js" fn CookieStoreDeleteOptions::to_js_ffi(
-  self : CookieStoreDeleteOptions,
-) -> JsValue =
+extern "js" fn CookieStoreDeleteOptions::to_js_ffi(self : CookieStoreDeleteOptions) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   domain: ((() => { const v = self.domain; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -174,18 +160,12 @@ extern "js" fn CookieStoreDeleteOptions::to_js_ffi(
   #|   partitioned: (self.partitioned === -1 ? undefined : self.partitioned)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn CookieStoreDeleteOptions::to_js(
-  self : CookieStoreDeleteOptions,
-) -> JsValue {
+pub fn CookieStoreDeleteOptions::to_js(self : CookieStoreDeleteOptions) -> JsValue {
   CookieStoreDeleteOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CookieStoreDeleteOptions::from_js_ffi(
-  value : JsValue,
-) -> CookieStoreDeleteOptions =
+extern "js" fn CookieStoreDeleteOptions::from_js_ffi(value : JsValue) -> CookieStoreDeleteOptions =
   #| (v) => ({
   #|   name: v.name,
   #|   domain: (v.domain === undefined ? { $tag: 0 } : v.domain === null ? { $tag: 1 } : { $tag: 2, _0: v.domain }),
@@ -193,11 +173,8 @@ extern "js" fn CookieStoreDeleteOptions::from_js_ffi(
   #|   partitioned: (v.partitioned === undefined ? -1 : v.partitioned)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CookieStoreDeleteOptions::from_js(
-  value : JsValue,
-) -> CookieStoreDeleteOptions {
+pub fn CookieStoreDeleteOptions::from_js(value : JsValue) -> CookieStoreDeleteOptions {
   CookieStoreDeleteOptions::from_js_ffi(value)
 }
 
@@ -208,33 +185,31 @@ pub(all) struct CookieListItem {
   value : String?
 }
 
-///|
 /// Create a new CookieListItem with default values
 pub fn CookieListItem::default() -> CookieListItem {
-  CookieListItem::{ name: None, value: None, }
+  CookieListItem::{
+    name: None,
+    value: None,
+  }
 }
 
-///|
 extern "js" fn CookieListItem::to_js_ffi(self : CookieListItem) -> JsValue =
   #| (self) => ({
   #|   name: self.name,
   #|   value: self.value
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CookieListItem::to_js(self : CookieListItem) -> JsValue {
   CookieListItem::to_js_ffi(self)
 }
 
-///|
 extern "js" fn CookieListItem::from_js_ffi(value : JsValue) -> CookieListItem =
   #| (v) => ({
   #|   name: v.name,
   #|   value: v.value
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CookieListItem::from_js(value : JsValue) -> CookieListItem {
   CookieListItem::from_js_ffi(value)
@@ -247,37 +222,31 @@ pub(all) struct CookieChangeEventInit {
   deleted : CookieList?
 }
 
-///|
 /// Create a new CookieChangeEventInit with default values
 pub fn CookieChangeEventInit::default() -> CookieChangeEventInit {
-  CookieChangeEventInit::{ changed: None, deleted: None, }
+  CookieChangeEventInit::{
+    changed: None,
+    deleted: None,
+  }
 }
 
-///|
-extern "js" fn CookieChangeEventInit::to_js_ffi(
-  self : CookieChangeEventInit,
-) -> JsValue =
+extern "js" fn CookieChangeEventInit::to_js_ffi(self : CookieChangeEventInit) -> JsValue =
   #| (self) => ({
   #|   changed: self.changed,
   #|   deleted: self.deleted
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CookieChangeEventInit::to_js(self : CookieChangeEventInit) -> JsValue {
   CookieChangeEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CookieChangeEventInit::from_js_ffi(
-  value : JsValue,
-) -> CookieChangeEventInit =
+extern "js" fn CookieChangeEventInit::from_js_ffi(value : JsValue) -> CookieChangeEventInit =
   #| (v) => ({
   #|   changed: v.changed,
   #|   deleted: v.deleted
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CookieChangeEventInit::from_js(value : JsValue) -> CookieChangeEventInit {
   CookieChangeEventInit::from_js_ffi(value)
@@ -290,43 +259,33 @@ pub(all) struct ExtendableCookieChangeEventInit {
   deleted : CookieList?
 }
 
-///|
 /// Create a new ExtendableCookieChangeEventInit with default values
 pub fn ExtendableCookieChangeEventInit::default() -> ExtendableCookieChangeEventInit {
-  ExtendableCookieChangeEventInit::{ changed: None, deleted: None, }
+  ExtendableCookieChangeEventInit::{
+    changed: None,
+    deleted: None,
+  }
 }
 
-///|
-extern "js" fn ExtendableCookieChangeEventInit::to_js_ffi(
-  self : ExtendableCookieChangeEventInit,
-) -> JsValue =
+extern "js" fn ExtendableCookieChangeEventInit::to_js_ffi(self : ExtendableCookieChangeEventInit) -> JsValue =
   #| (self) => ({
   #|   changed: self.changed,
   #|   deleted: self.deleted
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ExtendableCookieChangeEventInit::to_js(
-  self : ExtendableCookieChangeEventInit,
-) -> JsValue {
+pub fn ExtendableCookieChangeEventInit::to_js(self : ExtendableCookieChangeEventInit) -> JsValue {
   ExtendableCookieChangeEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ExtendableCookieChangeEventInit::from_js_ffi(
-  value : JsValue,
-) -> ExtendableCookieChangeEventInit =
+extern "js" fn ExtendableCookieChangeEventInit::from_js_ffi(value : JsValue) -> ExtendableCookieChangeEventInit =
   #| (v) => ({
   #|   changed: v.changed,
   #|   deleted: v.deleted
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ExtendableCookieChangeEventInit::from_js(
-  value : JsValue,
-) -> ExtendableCookieChangeEventInit {
+pub fn ExtendableCookieChangeEventInit::from_js(value : JsValue) -> ExtendableCookieChangeEventInit {
   ExtendableCookieChangeEventInit::from_js_ffi(value)
 }
 
@@ -334,34 +293,26 @@ pub fn ExtendableCookieChangeEventInit::from_js(
 /// CookieStore interface
 pub type CookieStore
 
-///|
 pub extern "js" fn CookieStore::to_js_value(self : CookieStore) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CookieStore (unchecked)
 pub extern "js" fn CookieStore::from_js_value(v : JsValue) -> CookieStore =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CookieStore (checked with instanceof)
 pub extern "js" fn CookieStore::from_js_value_opt(v : JsValue) -> CookieStore? =
   #| (v) => (v instanceof CookieStore) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CookieStore (checked with instanceof)
 pub extern "js" fn JsValue::as_cookie_store(self : JsValue) -> CookieStore? =
   #| (self) => (self instanceof CookieStore) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CookieStore (unchecked)
 pub extern "js" fn JsValue::to_cookie_store(self : JsValue) -> CookieStore =
   #| (self) => self
 
-///|
-pub extern "js" fn CookieStore::to_event_target(
-  self : CookieStore,
-) -> EventTarget =
+pub extern "js" fn CookieStore::to_event_target(self : CookieStore) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -372,6 +323,8 @@ pub(all) enum CookieStoreGetError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CookieStoreGetError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CookieStoreGetAllError {
@@ -379,6 +332,8 @@ pub(all) enum CookieStoreGetAllError {
   SecurityError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend CookieStoreGetAllError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -388,6 +343,8 @@ pub(all) enum CookieStoreSetError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CookieStoreSetError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CookieStoreDeleteError {
@@ -396,118 +353,57 @@ pub(all) enum CookieStoreDeleteError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn CookieStore::get(
-  self : CookieStore,
-) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
+pub extend CookieStoreDeleteError with @debug.Debug::{to_repr}
+
+pub extern "js" fn CookieStore::get(self : CookieStore) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
   #| (self) => self.get().then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn CookieStore::get_with_options_ffi(
-  self : CookieStore,
-  options : JsValue,
-) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
+extern "js" fn CookieStore::get_with_options_ffi(self : CookieStore, options : JsValue) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
   #| (self, options) => self.get(options).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn CookieStore::get_with_options(
-  self : CookieStore,
-  options : CookieStoreGetOptions,
-) -> Promise[Result[CookieListItem?, CookieStoreGetError]] {
+pub fn CookieStore::get_with_options(self : CookieStore, options : CookieStoreGetOptions) -> Promise[Result[CookieListItem?, CookieStoreGetError]] {
   CookieStore::get_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn CookieStore::get_with_name(
-  self : CookieStore,
-  name : String,
-) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
+pub extern "js" fn CookieStore::get_with_name(self : CookieStore, name : String) -> Promise[Result[CookieListItem?, CookieStoreGetError]] =
   #| (self, name) => self.get(name).then(r => ({ $tag: 1, _0: (() => { const v = r; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })() })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn CookieStore::get_all(
-  self : CookieStore,
-) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
+pub extern "js" fn CookieStore::get_all(self : CookieStore) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
   #| (self) => self.getAll().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn CookieStore::get_all_with_options_ffi(
-  self : CookieStore,
-  options : JsValue,
-) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
+extern "js" fn CookieStore::get_all_with_options_ffi(self : CookieStore, options : JsValue) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
   #| (self, options) => self.getAll(options).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn CookieStore::get_all_with_options(
-  self : CookieStore,
-  options : CookieStoreGetOptions,
-) -> Promise[Result[CookieList, CookieStoreGetAllError]] {
+pub fn CookieStore::get_all_with_options(self : CookieStore, options : CookieStoreGetOptions) -> Promise[Result[CookieList, CookieStoreGetAllError]] {
   CookieStore::get_all_with_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn CookieStore::get_all_with_name(
-  self : CookieStore,
-  name : String,
-) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
+pub extern "js" fn CookieStore::get_all_with_name(self : CookieStore, name : String) -> Promise[Result[CookieList, CookieStoreGetAllError]] =
   #| (self, name) => self.getAll(name).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn CookieStore::set_ffi(
-  self : CookieStore,
-  options : JsValue,
-) -> Promise[Result[Unit, CookieStoreSetError]] =
+extern "js" fn CookieStore::set_ffi(self : CookieStore, options : JsValue) -> Promise[Result[Unit, CookieStoreSetError]] =
   #| (self, options) => self.set(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn CookieStore::set(
-  self : CookieStore,
-  options : CookieInit,
-) -> Promise[Result[Unit, CookieStoreSetError]] {
+pub fn CookieStore::set(self : CookieStore, options : CookieInit) -> Promise[Result[Unit, CookieStoreSetError]] {
   CookieStore::set_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn CookieStore::set_with_name_and_value(
-  self : CookieStore,
-  name : String,
-  value : String,
-) -> Promise[Result[Unit, CookieStoreSetError]] =
+pub extern "js" fn CookieStore::set_with_name_and_value(self : CookieStore, name : String, value : String) -> Promise[Result[Unit, CookieStoreSetError]] =
   #| (self, name, value) => self.set(name, value).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn CookieStore::delete(
-  self : CookieStore,
-  name : String,
-) -> Promise[Result[Unit, CookieStoreDeleteError]] =
+pub extern "js" fn CookieStore::delete(self : CookieStore, name : String) -> Promise[Result[Unit, CookieStoreDeleteError]] =
   #| (self, name) => self.delete(name).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-extern "js" fn CookieStore::delete_with_options_cookie_store_delete_options_ffi(
-  self : CookieStore,
-  options : JsValue,
-) -> Promise[Result[Unit, CookieStoreDeleteError]] =
+extern "js" fn CookieStore::delete_with_options_cookie_store_delete_options_ffi(self : CookieStore, options : JsValue) -> Promise[Result[Unit, CookieStoreDeleteError]] =
   #| (self, options) => self.delete(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub fn CookieStore::delete_with_options_cookie_store_delete_options(
-  self : CookieStore,
-  options : CookieStoreDeleteOptions,
-) -> Promise[Result[Unit, CookieStoreDeleteError]] {
-  CookieStore::delete_with_options_cookie_store_delete_options_ffi(
-    self,
-    options.to_js(),
-  )
+pub fn CookieStore::delete_with_options_cookie_store_delete_options(self : CookieStore, options : CookieStoreDeleteOptions) -> Promise[Result[Unit, CookieStoreDeleteError]] {
+  CookieStore::delete_with_options_cookie_store_delete_options_ffi(self, options.to_js())
 }
 
-///|
-pub extern "js" fn CookieStore::set_onchange(
-  self : CookieStore,
-  handler : (CookieChangeEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn CookieStore::set_onchange(self : CookieStore, handler : (CookieChangeEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
 pub extern "js" fn CookieStore::clear_onchange(self : CookieStore) -> Unit =
   #| (self) => { self.onchange = null }
 
@@ -515,38 +411,23 @@ pub extern "js" fn CookieStore::clear_onchange(self : CookieStore) -> Unit =
 /// CookieStoreManager interface
 pub type CookieStoreManager
 
-///|
-pub extern "js" fn CookieStoreManager::to_js_value(
-  self : CookieStoreManager,
-) -> JsValue =
+pub extern "js" fn CookieStoreManager::to_js_value(self : CookieStoreManager) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CookieStoreManager (unchecked)
-pub extern "js" fn CookieStoreManager::from_js_value(
-  v : JsValue,
-) -> CookieStoreManager =
+pub extern "js" fn CookieStoreManager::from_js_value(v : JsValue) -> CookieStoreManager =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CookieStoreManager (checked with instanceof)
-pub extern "js" fn CookieStoreManager::from_js_value_opt(
-  v : JsValue,
-) -> CookieStoreManager? =
+pub extern "js" fn CookieStoreManager::from_js_value_opt(v : JsValue) -> CookieStoreManager? =
   #| (v) => (v instanceof CookieStoreManager) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CookieStoreManager (checked with instanceof)
-pub extern "js" fn JsValue::as_cookie_store_manager(
-  self : JsValue,
-) -> CookieStoreManager? =
+pub extern "js" fn JsValue::as_cookie_store_manager(self : JsValue) -> CookieStoreManager? =
   #| (self) => (self instanceof CookieStoreManager) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CookieStoreManager (unchecked)
-pub extern "js" fn JsValue::to_cookie_store_manager(
-  self : JsValue,
-) -> CookieStoreManager =
+pub extern "js" fn JsValue::to_cookie_store_manager(self : JsValue) -> CookieStoreManager =
   #| (self) => self
 
 ///|
@@ -556,6 +437,8 @@ pub(all) enum CookieStoreManagerSubscribeError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CookieStoreManagerSubscribeError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CookieStoreManagerUnsubscribeError {
@@ -563,186 +446,100 @@ pub(all) enum CookieStoreManagerUnsubscribeError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn CookieStoreManager::subscribe(
-  self : CookieStoreManager,
-  subscriptions : FixedArray[CookieStoreGetOptions],
-) -> Promise[Result[Unit, CookieStoreManagerSubscribeError]] =
+pub extend CookieStoreManagerUnsubscribeError with @debug.Debug::{to_repr}
+
+pub extern "js" fn CookieStoreManager::subscribe(self : CookieStoreManager, subscriptions : FixedArray[CookieStoreGetOptions]) -> Promise[Result[Unit, CookieStoreManagerSubscribeError]] =
   #| (self, subscriptions) => self.subscribe(subscriptions).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn CookieStoreManager::get_subscriptions(
-  self : CookieStoreManager,
-) -> Promise[FixedArray[CookieStoreGetOptions]] =
+pub extern "js" fn CookieStoreManager::get_subscriptions(self : CookieStoreManager) -> Promise[FixedArray[CookieStoreGetOptions]] =
   #| (self) => self.getSubscriptions()
 
-///|
-pub extern "js" fn CookieStoreManager::unsubscribe(
-  self : CookieStoreManager,
-  subscriptions : FixedArray[CookieStoreGetOptions],
-) -> Promise[Result[Unit, CookieStoreManagerUnsubscribeError]] =
+pub extern "js" fn CookieStoreManager::unsubscribe(self : CookieStoreManager, subscriptions : FixedArray[CookieStoreGetOptions]) -> Promise[Result[Unit, CookieStoreManagerUnsubscribeError]] =
   #| (self, subscriptions) => self.unsubscribe(subscriptions).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// CookieChangeEvent interface
 pub type CookieChangeEvent
 
-///|
-pub extern "js" fn CookieChangeEvent::to_js_value(
-  self : CookieChangeEvent,
-) -> JsValue =
+pub extern "js" fn CookieChangeEvent::to_js_value(self : CookieChangeEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CookieChangeEvent (unchecked)
-pub extern "js" fn CookieChangeEvent::from_js_value(
-  v : JsValue,
-) -> CookieChangeEvent =
+pub extern "js" fn CookieChangeEvent::from_js_value(v : JsValue) -> CookieChangeEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CookieChangeEvent (checked with instanceof)
-pub extern "js" fn CookieChangeEvent::from_js_value_opt(
-  v : JsValue,
-) -> CookieChangeEvent? =
+pub extern "js" fn CookieChangeEvent::from_js_value_opt(v : JsValue) -> CookieChangeEvent? =
   #| (v) => (v instanceof CookieChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CookieChangeEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_cookie_change_event(
-  self : JsValue,
-) -> CookieChangeEvent? =
+pub extern "js" fn JsValue::as_cookie_change_event(self : JsValue) -> CookieChangeEvent? =
   #| (self) => (self instanceof CookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CookieChangeEvent (unchecked)
-pub extern "js" fn JsValue::to_cookie_change_event(
-  self : JsValue,
-) -> CookieChangeEvent =
+pub extern "js" fn JsValue::to_cookie_change_event(self : JsValue) -> CookieChangeEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn CookieChangeEvent::to_event(
-  self : CookieChangeEvent,
-) -> Event =
+pub extern "js" fn CookieChangeEvent::to_event(self : CookieChangeEvent) -> Event =
   #| (self) => self
 
-///|
 pub extern "js" fn CookieChangeEvent::new(type_ : String) -> CookieChangeEvent =
   #| (type_) => new CookieChangeEvent(type_)
 
-///|
-extern "js" fn CookieChangeEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> CookieChangeEvent =
+extern "js" fn CookieChangeEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> CookieChangeEvent =
   #| (type_, event_init_dict) => new CookieChangeEvent(type_, event_init_dict)
 
-///|
-pub fn CookieChangeEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : CookieChangeEventInit,
-) -> CookieChangeEvent {
-  CookieChangeEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn CookieChangeEvent::new_with_event_init_dict(type_ : String, event_init_dict : CookieChangeEventInit) -> CookieChangeEvent {
+  CookieChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn CookieChangeEvent::get_changed(
-  self : CookieChangeEvent,
-) -> FixedArray[CookieListItem] =
+pub extern "js" fn CookieChangeEvent::get_changed(self : CookieChangeEvent) -> FixedArray[CookieListItem] =
   #| (self) => self.changed
 
-///|
-pub extern "js" fn CookieChangeEvent::get_deleted(
-  self : CookieChangeEvent,
-) -> FixedArray[CookieListItem] =
+pub extern "js" fn CookieChangeEvent::get_deleted(self : CookieChangeEvent) -> FixedArray[CookieListItem] =
   #| (self) => self.deleted
 
 ///|
 /// ExtendableCookieChangeEvent interface
 pub type ExtendableCookieChangeEvent
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::to_js_value(
-  self : ExtendableCookieChangeEvent,
-) -> JsValue =
+pub extern "js" fn ExtendableCookieChangeEvent::to_js_value(self : ExtendableCookieChangeEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ExtendableCookieChangeEvent (unchecked)
-pub extern "js" fn ExtendableCookieChangeEvent::from_js_value(
-  v : JsValue,
-) -> ExtendableCookieChangeEvent =
+pub extern "js" fn ExtendableCookieChangeEvent::from_js_value(v : JsValue) -> ExtendableCookieChangeEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ExtendableCookieChangeEvent (checked with instanceof)
-pub extern "js" fn ExtendableCookieChangeEvent::from_js_value_opt(
-  v : JsValue,
-) -> ExtendableCookieChangeEvent? =
+pub extern "js" fn ExtendableCookieChangeEvent::from_js_value_opt(v : JsValue) -> ExtendableCookieChangeEvent? =
   #| (v) => (v instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ExtendableCookieChangeEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_extendable_cookie_change_event(
-  self : JsValue,
-) -> ExtendableCookieChangeEvent? =
+pub extern "js" fn JsValue::as_extendable_cookie_change_event(self : JsValue) -> ExtendableCookieChangeEvent? =
   #| (self) => (self instanceof ExtendableCookieChangeEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ExtendableCookieChangeEvent (unchecked)
-pub extern "js" fn JsValue::to_extendable_cookie_change_event(
-  self : JsValue,
-) -> ExtendableCookieChangeEvent =
+pub extern "js" fn JsValue::to_extendable_cookie_change_event(self : JsValue) -> ExtendableCookieChangeEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::to_extendable_event(
-  self : ExtendableCookieChangeEvent,
-) -> ExtendableEvent =
+pub extern "js" fn ExtendableCookieChangeEvent::to_extendable_event(self : ExtendableCookieChangeEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::to_event(
-  self : ExtendableCookieChangeEvent,
-) -> Event =
+pub extern "js" fn ExtendableCookieChangeEvent::to_event(self : ExtendableCookieChangeEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::new(
-  type_ : String,
-) -> ExtendableCookieChangeEvent =
+pub extern "js" fn ExtendableCookieChangeEvent::new(type_ : String) -> ExtendableCookieChangeEvent =
   #| (type_) => new ExtendableCookieChangeEvent(type_)
 
-///|
-extern "js" fn ExtendableCookieChangeEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> ExtendableCookieChangeEvent =
+extern "js" fn ExtendableCookieChangeEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> ExtendableCookieChangeEvent =
   #| (type_, event_init_dict) => new ExtendableCookieChangeEvent(type_, event_init_dict)
 
-///|
-pub fn ExtendableCookieChangeEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : ExtendableCookieChangeEventInit,
-) -> ExtendableCookieChangeEvent {
-  ExtendableCookieChangeEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn ExtendableCookieChangeEvent::new_with_event_init_dict(type_ : String, event_init_dict : ExtendableCookieChangeEventInit) -> ExtendableCookieChangeEvent {
+  ExtendableCookieChangeEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::get_changed(
-  self : ExtendableCookieChangeEvent,
-) -> FixedArray[CookieListItem] =
+pub extern "js" fn ExtendableCookieChangeEvent::get_changed(self : ExtendableCookieChangeEvent) -> FixedArray[CookieListItem] =
   #| (self) => self.changed
 
-///|
-pub extern "js" fn ExtendableCookieChangeEvent::get_deleted(
-  self : ExtendableCookieChangeEvent,
-) -> FixedArray[CookieListItem] =
+pub extern "js" fn ExtendableCookieChangeEvent::get_deleted(self : ExtendableCookieChangeEvent) -> FixedArray[CookieListItem] =
   #| (self) => self.deleted

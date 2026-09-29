@@ -8,22 +8,19 @@ pub(all) enum SecurityPolicyViolationEventDisposition {
   Report
 } derive(Eq, Debug)
 
-///|
+pub extend SecurityPolicyViolationEventDisposition with Eq::{equal, not_equal}
+pub extend SecurityPolicyViolationEventDisposition with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn SecurityPolicyViolationEventDisposition::to_string(
-  self : SecurityPolicyViolationEventDisposition,
-) -> String {
+pub fn SecurityPolicyViolationEventDisposition::to_string(self : SecurityPolicyViolationEventDisposition) -> String {
   match self {
     SecurityPolicyViolationEventDisposition::Enforce => "enforce"
     SecurityPolicyViolationEventDisposition::Report => "report"
   }
 }
 
-///|
 /// Parse from string value
-pub fn SecurityPolicyViolationEventDisposition::from_string(
-  s : String,
-) -> SecurityPolicyViolationEventDisposition? {
+pub fn SecurityPolicyViolationEventDisposition::from_string(s : String) -> SecurityPolicyViolationEventDisposition? {
   match s {
     "enforce" => Some(SecurityPolicyViolationEventDisposition::Enforce)
     "report" => Some(SecurityPolicyViolationEventDisposition::Report)
@@ -47,7 +44,6 @@ pub(all) struct CSPViolationReportBody {
   columnNumber : Nullable[Int]
 }
 
-///|
 /// Create a new CSPViolationReportBody with default values
 pub fn CSPViolationReportBody::default() -> CSPViolationReportBody {
   CSPViolationReportBody::{
@@ -65,10 +61,7 @@ pub fn CSPViolationReportBody::default() -> CSPViolationReportBody {
   }
 }
 
-///|
-extern "js" fn CSPViolationReportBody::to_js_ffi(
-  self : CSPViolationReportBody,
-) -> JsValue =
+extern "js" fn CSPViolationReportBody::to_js_ffi(self : CSPViolationReportBody) -> JsValue =
   #| (self) => ({
   #|   documentURL: self.documentURL,
   #|   referrer: ((() => { const v = self.referrer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -83,16 +76,12 @@ extern "js" fn CSPViolationReportBody::to_js_ffi(
   #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CSPViolationReportBody::to_js(self : CSPViolationReportBody) -> JsValue {
   CSPViolationReportBody::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CSPViolationReportBody::from_js_ffi(
-  value : JsValue,
-) -> CSPViolationReportBody =
+extern "js" fn CSPViolationReportBody::from_js_ffi(value : JsValue) -> CSPViolationReportBody =
   #| (v) => ({
   #|   documentURL: v.documentURL,
   #|   referrer: (v.referrer === undefined ? { $tag: 0 } : v.referrer === null ? { $tag: 1 } : { $tag: 2, _0: v.referrer }),
@@ -107,11 +96,8 @@ extern "js" fn CSPViolationReportBody::from_js_ffi(
   #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CSPViolationReportBody::from_js(
-  value : JsValue,
-) -> CSPViolationReportBody {
+pub fn CSPViolationReportBody::from_js(value : JsValue) -> CSPViolationReportBody {
   CSPViolationReportBody::from_js_ffi(value)
 }
 
@@ -132,7 +118,6 @@ pub(all) struct SecurityPolicyViolationEventInit {
   columnNumber : Int?
 }
 
-///|
 /// Create a new SecurityPolicyViolationEventInit with default values
 pub fn SecurityPolicyViolationEventInit::default() -> SecurityPolicyViolationEventInit {
   SecurityPolicyViolationEventInit::{
@@ -151,10 +136,7 @@ pub fn SecurityPolicyViolationEventInit::default() -> SecurityPolicyViolationEve
   }
 }
 
-///|
-extern "js" fn SecurityPolicyViolationEventInit::to_js_ffi(
-  self : SecurityPolicyViolationEventInit,
-) -> JsValue =
+extern "js" fn SecurityPolicyViolationEventInit::to_js_ffi(self : SecurityPolicyViolationEventInit) -> JsValue =
   #| (self) => ({
   #|   documentURI: self.documentURI,
   #|   referrer: self.referrer,
@@ -170,18 +152,12 @@ extern "js" fn SecurityPolicyViolationEventInit::to_js_ffi(
   #|   columnNumber: self.columnNumber
   #| })
 
-///|
 /// Convert to JsValue
-pub fn SecurityPolicyViolationEventInit::to_js(
-  self : SecurityPolicyViolationEventInit,
-) -> JsValue {
+pub fn SecurityPolicyViolationEventInit::to_js(self : SecurityPolicyViolationEventInit) -> JsValue {
   SecurityPolicyViolationEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn SecurityPolicyViolationEventInit::from_js_ffi(
-  value : JsValue,
-) -> SecurityPolicyViolationEventInit =
+extern "js" fn SecurityPolicyViolationEventInit::from_js_ffi(value : JsValue) -> SecurityPolicyViolationEventInit =
   #| (v) => ({
   #|   documentURI: v.documentURI,
   #|   referrer: v.referrer,
@@ -197,11 +173,8 @@ extern "js" fn SecurityPolicyViolationEventInit::from_js_ffi(
   #|   columnNumber: v.columnNumber
   #| })
 
-///|
 /// Convert from JsValue
-pub fn SecurityPolicyViolationEventInit::from_js(
-  value : JsValue,
-) -> SecurityPolicyViolationEventInit {
+pub fn SecurityPolicyViolationEventInit::from_js(value : JsValue) -> SecurityPolicyViolationEventInit {
   SecurityPolicyViolationEventInit::from_js_ffi(value)
 }
 
@@ -209,138 +182,70 @@ pub fn SecurityPolicyViolationEventInit::from_js(
 /// SecurityPolicyViolationEvent interface
 pub type SecurityPolicyViolationEvent
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::to_js_value(
-  self : SecurityPolicyViolationEvent,
-) -> JsValue =
+pub extern "js" fn SecurityPolicyViolationEvent::to_js_value(self : SecurityPolicyViolationEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to SecurityPolicyViolationEvent (unchecked)
-pub extern "js" fn SecurityPolicyViolationEvent::from_js_value(
-  v : JsValue,
-) -> SecurityPolicyViolationEvent =
+pub extern "js" fn SecurityPolicyViolationEvent::from_js_value(v : JsValue) -> SecurityPolicyViolationEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to SecurityPolicyViolationEvent (checked with instanceof)
-pub extern "js" fn SecurityPolicyViolationEvent::from_js_value_opt(
-  v : JsValue,
-) -> SecurityPolicyViolationEvent? =
+pub extern "js" fn SecurityPolicyViolationEvent::from_js_value_opt(v : JsValue) -> SecurityPolicyViolationEvent? =
   #| (v) => (v instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to SecurityPolicyViolationEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_security_policy_violation_event(
-  self : JsValue,
-) -> SecurityPolicyViolationEvent? =
+pub extern "js" fn JsValue::as_security_policy_violation_event(self : JsValue) -> SecurityPolicyViolationEvent? =
   #| (self) => (self instanceof SecurityPolicyViolationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to SecurityPolicyViolationEvent (unchecked)
-pub extern "js" fn JsValue::to_security_policy_violation_event(
-  self : JsValue,
-) -> SecurityPolicyViolationEvent =
+pub extern "js" fn JsValue::to_security_policy_violation_event(self : JsValue) -> SecurityPolicyViolationEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::to_event(
-  self : SecurityPolicyViolationEvent,
-) -> Event =
+pub extern "js" fn SecurityPolicyViolationEvent::to_event(self : SecurityPolicyViolationEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::new(
-  type_ : String,
-) -> SecurityPolicyViolationEvent =
+pub extern "js" fn SecurityPolicyViolationEvent::new(type_ : String) -> SecurityPolicyViolationEvent =
   #| (type_) => new SecurityPolicyViolationEvent(type_)
 
-///|
-extern "js" fn SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> SecurityPolicyViolationEvent =
+extern "js" fn SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> SecurityPolicyViolationEvent =
   #| (type_, event_init_dict) => new SecurityPolicyViolationEvent(type_, event_init_dict)
 
-///|
-pub fn SecurityPolicyViolationEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : SecurityPolicyViolationEventInit,
-) -> SecurityPolicyViolationEvent {
-  SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn SecurityPolicyViolationEvent::new_with_event_init_dict(type_ : String, event_init_dict : SecurityPolicyViolationEventInit) -> SecurityPolicyViolationEvent {
+  SecurityPolicyViolationEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_document_uri(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_document_uri(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.documentURI
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_referrer(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_referrer(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.referrer
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_blocked_uri(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_blocked_uri(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.blockedURI
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_effective_directive(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_effective_directive(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.effectiveDirective
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_violated_directive(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_violated_directive(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.violatedDirective
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_original_policy(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_original_policy(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.originalPolicy
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_source_file(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_source_file(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.sourceFile
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_sample(
-  self : SecurityPolicyViolationEvent,
-) -> String =
+pub extern "js" fn SecurityPolicyViolationEvent::get_sample(self : SecurityPolicyViolationEvent) -> String =
   #| (self) => self.sample
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_disposition(
-  self : SecurityPolicyViolationEvent,
-) -> SecurityPolicyViolationEventDisposition =
+pub extern "js" fn SecurityPolicyViolationEvent::get_disposition(self : SecurityPolicyViolationEvent) -> SecurityPolicyViolationEventDisposition =
   #| (self) => ['enforce', 'report'].indexOf(self.disposition)
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_status_code(
-  self : SecurityPolicyViolationEvent,
-) -> Int =
+pub extern "js" fn SecurityPolicyViolationEvent::get_status_code(self : SecurityPolicyViolationEvent) -> Int =
   #| (self) => self.statusCode
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_line_number(
-  self : SecurityPolicyViolationEvent,
-) -> Int =
+pub extern "js" fn SecurityPolicyViolationEvent::get_line_number(self : SecurityPolicyViolationEvent) -> Int =
   #| (self) => self.lineNumber
 
-///|
-pub extern "js" fn SecurityPolicyViolationEvent::get_column_number(
-  self : SecurityPolicyViolationEvent,
-) -> Int =
+pub extern "js" fn SecurityPolicyViolationEvent::get_column_number(self : SecurityPolicyViolationEvent) -> Int =
   #| (self) => self.columnNumber

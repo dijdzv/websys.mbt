@@ -5,77 +5,57 @@
 /// GeometryNode typedef
 pub type GeometryNode
 
-///|
 pub extern "js" fn GeometryNode::to_js_value(self : GeometryNode) -> JsValue =
   #| (self) => self
 
-///|
 /// Create GeometryNode from Text
 pub extern "js" fn GeometryNode::from_text(v : Text) -> GeometryNode =
   #| (v) => v
 
-///|
 /// Create GeometryNode from Element
 pub extern "js" fn GeometryNode::from_element(v : Element) -> GeometryNode =
   #| (v) => v
 
-///|
 /// Create GeometryNode from CSSPseudoElement
-pub extern "js" fn GeometryNode::from_css_pseudo_element(
-  v : CSSPseudoElement,
-) -> GeometryNode =
+pub extern "js" fn GeometryNode::from_css_pseudo_element(v : CSSPseudoElement) -> GeometryNode =
   #| (v) => v
 
-///|
 /// Create GeometryNode from Document
 pub extern "js" fn GeometryNode::from_document(v : Document) -> GeometryNode =
   #| (v) => v
 
-///|
 /// Check if this GeometryNode is Text
 pub extern "js" fn GeometryNode::is_text(self : GeometryNode) -> Bool =
   #| (self) => self instanceof Text
 
-///|
 /// Check if this GeometryNode is Element
 pub extern "js" fn GeometryNode::is_element(self : GeometryNode) -> Bool =
   #| (self) => self instanceof Element
 
-///|
 /// Check if this GeometryNode is CSSPseudoElement
-pub extern "js" fn GeometryNode::is_css_pseudo_element(
-  self : GeometryNode,
-) -> Bool =
+pub extern "js" fn GeometryNode::is_css_pseudo_element(self : GeometryNode) -> Bool =
   #| (self) => self instanceof CSSPseudoElement
 
-///|
 /// Check if this GeometryNode is Document
 pub extern "js" fn GeometryNode::is_document(self : GeometryNode) -> Bool =
   #| (self) => self instanceof Document
 
-///|
 /// Try to get GeometryNode as Text
 pub extern "js" fn GeometryNode::as_text(self : GeometryNode) -> Text? =
   #| (self) => (self instanceof Text) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GeometryNode as Element
 pub extern "js" fn GeometryNode::as_element(self : GeometryNode) -> Element? =
   #| (self) => (self instanceof Element) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GeometryNode as CSSPseudoElement
-pub extern "js" fn GeometryNode::as_css_pseudo_element(
-  self : GeometryNode,
-) -> CSSPseudoElement? =
+pub extern "js" fn GeometryNode::as_css_pseudo_element(self : GeometryNode) -> CSSPseudoElement? =
   #| (self) => (self instanceof CSSPseudoElement) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Try to get GeometryNode as Document
 pub extern "js" fn GeometryNode::as_document(self : GeometryNode) -> Document? =
   #| (self) => (self instanceof Document) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Flatten Option[GeometryNode] to Text?
 pub fn GeometryNode::bind_as_text(value : GeometryNode?) -> Text? {
   match value {
@@ -84,7 +64,6 @@ pub fn GeometryNode::bind_as_text(value : GeometryNode?) -> Text? {
   }
 }
 
-///|
 /// Flatten Option[GeometryNode] to Element?
 pub fn GeometryNode::bind_as_element(value : GeometryNode?) -> Element? {
   match value {
@@ -93,18 +72,14 @@ pub fn GeometryNode::bind_as_element(value : GeometryNode?) -> Element? {
   }
 }
 
-///|
 /// Flatten Option[GeometryNode] to CSSPseudoElement?
-pub fn GeometryNode::bind_as_css_pseudo_element(
-  value : GeometryNode?,
-) -> CSSPseudoElement? {
+pub fn GeometryNode::bind_as_css_pseudo_element(value : GeometryNode?) -> CSSPseudoElement? {
   match value {
     Some(v) => v.as_css_pseudo_element()
     None => None
   }
 }
 
-///|
 /// Flatten Option[GeometryNode] to Document?
 pub fn GeometryNode::bind_as_document(value : GeometryNode?) -> Document? {
   match value {
@@ -121,7 +96,9 @@ pub(all) enum ScrollBehavior {
   Smooth
 } derive(Eq, Debug)
 
-///|
+pub extend ScrollBehavior with Eq::{equal, not_equal}
+pub extend ScrollBehavior with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ScrollBehavior::to_string(self : ScrollBehavior) -> String {
   match self {
@@ -131,7 +108,6 @@ pub fn ScrollBehavior::to_string(self : ScrollBehavior) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ScrollBehavior::from_string(s : String) -> ScrollBehavior? {
   match s {
@@ -151,7 +127,9 @@ pub(all) enum ScrollLogicalPosition {
   Nearest
 } derive(Eq, Debug)
 
-///|
+pub extend ScrollLogicalPosition with Eq::{equal, not_equal}
+pub extend ScrollLogicalPosition with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ScrollLogicalPosition::to_string(self : ScrollLogicalPosition) -> String {
   match self {
@@ -162,7 +140,6 @@ pub fn ScrollLogicalPosition::to_string(self : ScrollLogicalPosition) -> String 
   }
 }
 
-///|
 /// Parse from string value
 pub fn ScrollLogicalPosition::from_string(s : String) -> ScrollLogicalPosition? {
   match s {
@@ -181,22 +158,19 @@ pub(all) enum ScrollIntoViewContainer {
   Nearest
 } derive(Eq, Debug)
 
-///|
+pub extend ScrollIntoViewContainer with Eq::{equal, not_equal}
+pub extend ScrollIntoViewContainer with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn ScrollIntoViewContainer::to_string(
-  self : ScrollIntoViewContainer,
-) -> String {
+pub fn ScrollIntoViewContainer::to_string(self : ScrollIntoViewContainer) -> String {
   match self {
     ScrollIntoViewContainer::All => "all"
     ScrollIntoViewContainer::Nearest => "nearest"
   }
 }
 
-///|
 /// Parse from string value
-pub fn ScrollIntoViewContainer::from_string(
-  s : String,
-) -> ScrollIntoViewContainer? {
+pub fn ScrollIntoViewContainer::from_string(s : String) -> ScrollIntoViewContainer? {
   match s {
     "all" => Some(ScrollIntoViewContainer::All)
     "nearest" => Some(ScrollIntoViewContainer::Nearest)
@@ -213,7 +187,9 @@ pub(all) enum CSSBoxType {
   Content
 } derive(Eq, Debug)
 
-///|
+pub extend CSSBoxType with Eq::{equal, not_equal}
+pub extend CSSBoxType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn CSSBoxType::to_string(self : CSSBoxType) -> String {
   match self {
@@ -224,7 +200,6 @@ pub fn CSSBoxType::to_string(self : CSSBoxType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn CSSBoxType::from_string(s : String) -> CSSBoxType? {
   match s {
@@ -242,31 +217,28 @@ pub(all) struct ScrollOptions {
   behavior : ScrollBehavior?
 }
 
-///|
 /// Create a new ScrollOptions with default values
 pub fn ScrollOptions::default() -> ScrollOptions {
-  ScrollOptions::{ behavior: None, }
+  ScrollOptions::{
+    behavior: None,
+  }
 }
 
-///|
 extern "js" fn ScrollOptions::to_js_ffi(self : ScrollOptions) -> JsValue =
   #| (self) => ({
   #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ScrollOptions::to_js(self : ScrollOptions) -> JsValue {
   ScrollOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ScrollOptions::from_js_ffi(value : JsValue) -> ScrollOptions =
   #| (v) => ({
   #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ScrollOptions::from_js(value : JsValue) -> ScrollOptions {
   ScrollOptions::from_js_ffi(value)
@@ -280,13 +252,15 @@ pub(all) struct ScrollToOptions {
   top : Double?
 }
 
-///|
 /// Create a new ScrollToOptions with default values
 pub fn ScrollToOptions::default() -> ScrollToOptions {
-  ScrollToOptions::{ behavior: None, left: None, top: None, }
+  ScrollToOptions::{
+    behavior: None,
+    left: None,
+    top: None,
+  }
 }
 
-///|
 extern "js" fn ScrollToOptions::to_js_ffi(self : ScrollToOptions) -> JsValue =
   #| (self) => ({
   #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })()),
@@ -294,13 +268,11 @@ extern "js" fn ScrollToOptions::to_js_ffi(self : ScrollToOptions) -> JsValue =
   #|   top: ((() => { const v = self.top; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ScrollToOptions::to_js(self : ScrollToOptions) -> JsValue {
   ScrollToOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ScrollToOptions::from_js_ffi(value : JsValue) -> ScrollToOptions =
   #| (v) => ({
   #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior)),
@@ -308,7 +280,6 @@ extern "js" fn ScrollToOptions::from_js_ffi(value : JsValue) -> ScrollToOptions 
   #|   top: (v.top === undefined ? { $tag: 0 } : { $tag: 1, _0: v.top })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ScrollToOptions::from_js(value : JsValue) -> ScrollToOptions {
   ScrollToOptions::from_js_ffi(value)
@@ -321,43 +292,33 @@ pub(all) struct MediaQueryListEventInit {
   matches : Bool?
 }
 
-///|
 /// Create a new MediaQueryListEventInit with default values
 pub fn MediaQueryListEventInit::default() -> MediaQueryListEventInit {
-  MediaQueryListEventInit::{ media: None, matches: None, }
+  MediaQueryListEventInit::{
+    media: None,
+    matches: None,
+  }
 }
 
-///|
-extern "js" fn MediaQueryListEventInit::to_js_ffi(
-  self : MediaQueryListEventInit,
-) -> JsValue =
+extern "js" fn MediaQueryListEventInit::to_js_ffi(self : MediaQueryListEventInit) -> JsValue =
   #| (self) => ({
   #|   media: self.media,
   #|   matches: (self.matches === -1 ? undefined : self.matches)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn MediaQueryListEventInit::to_js(
-  self : MediaQueryListEventInit,
-) -> JsValue {
+pub fn MediaQueryListEventInit::to_js(self : MediaQueryListEventInit) -> JsValue {
   MediaQueryListEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn MediaQueryListEventInit::from_js_ffi(
-  value : JsValue,
-) -> MediaQueryListEventInit =
+extern "js" fn MediaQueryListEventInit::from_js_ffi(value : JsValue) -> MediaQueryListEventInit =
   #| (v) => ({
   #|   media: v.media,
   #|   matches: (v.matches === undefined ? -1 : v.matches)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn MediaQueryListEventInit::from_js(
-  value : JsValue,
-) -> MediaQueryListEventInit {
+pub fn MediaQueryListEventInit::from_js(value : JsValue) -> MediaQueryListEventInit {
   MediaQueryListEventInit::from_js_ffi(value)
 }
 
@@ -367,41 +328,30 @@ pub(all) struct CaretPositionFromPointOptions {
   shadowRoots : FixedArray[ShadowRoot]?
 }
 
-///|
 /// Create a new CaretPositionFromPointOptions with default values
 pub fn CaretPositionFromPointOptions::default() -> CaretPositionFromPointOptions {
-  CaretPositionFromPointOptions::{ shadowRoots: None, }
+  CaretPositionFromPointOptions::{
+    shadowRoots: None,
+  }
 }
 
-///|
-extern "js" fn CaretPositionFromPointOptions::to_js_ffi(
-  self : CaretPositionFromPointOptions,
-) -> JsValue =
+extern "js" fn CaretPositionFromPointOptions::to_js_ffi(self : CaretPositionFromPointOptions) -> JsValue =
   #| (self) => ({
   #|   shadowRoots: self.shadowRoots
   #| })
 
-///|
 /// Convert to JsValue
-pub fn CaretPositionFromPointOptions::to_js(
-  self : CaretPositionFromPointOptions,
-) -> JsValue {
+pub fn CaretPositionFromPointOptions::to_js(self : CaretPositionFromPointOptions) -> JsValue {
   CaretPositionFromPointOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CaretPositionFromPointOptions::from_js_ffi(
-  value : JsValue,
-) -> CaretPositionFromPointOptions =
+extern "js" fn CaretPositionFromPointOptions::from_js_ffi(value : JsValue) -> CaretPositionFromPointOptions =
   #| (v) => ({
   #|   shadowRoots: v.shadowRoots
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CaretPositionFromPointOptions::from_js(
-  value : JsValue,
-) -> CaretPositionFromPointOptions {
+pub fn CaretPositionFromPointOptions::from_js(value : JsValue) -> CaretPositionFromPointOptions {
   CaretPositionFromPointOptions::from_js_ffi(value)
 }
 
@@ -414,7 +364,6 @@ pub(all) struct ScrollIntoViewOptions {
   container : ScrollIntoViewContainer?
 }
 
-///|
 /// Create a new ScrollIntoViewOptions with default values
 pub fn ScrollIntoViewOptions::default() -> ScrollIntoViewOptions {
   ScrollIntoViewOptions::{
@@ -425,10 +374,7 @@ pub fn ScrollIntoViewOptions::default() -> ScrollIntoViewOptions {
   }
 }
 
-///|
-extern "js" fn ScrollIntoViewOptions::to_js_ffi(
-  self : ScrollIntoViewOptions,
-) -> JsValue =
+extern "js" fn ScrollIntoViewOptions::to_js_ffi(self : ScrollIntoViewOptions) -> JsValue =
   #| (self) => ({
   #|   behavior: ((() => { const v = self.behavior; if (v === undefined) return undefined; return ['auto', 'instant', 'smooth'][v]; })()),
   #|   block: ((() => { const v = self.block; if (v === undefined) return undefined; return ['start', 'center', 'end', 'nearest'][v]; })()),
@@ -436,16 +382,12 @@ extern "js" fn ScrollIntoViewOptions::to_js_ffi(
   #|   container: ((() => { const v = self.container; if (v === undefined) return undefined; return ['all', 'nearest'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ScrollIntoViewOptions::to_js(self : ScrollIntoViewOptions) -> JsValue {
   ScrollIntoViewOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ScrollIntoViewOptions::from_js_ffi(
-  value : JsValue,
-) -> ScrollIntoViewOptions =
+extern "js" fn ScrollIntoViewOptions::from_js_ffi(value : JsValue) -> ScrollIntoViewOptions =
   #| (v) => ({
   #|   behavior: (v.behavior === undefined ? undefined : ['auto', 'instant', 'smooth'].indexOf(v.behavior)),
   #|   block: (v.block === undefined ? undefined : ['start', 'center', 'end', 'nearest'].indexOf(v.block)),
@@ -453,7 +395,6 @@ extern "js" fn ScrollIntoViewOptions::from_js_ffi(
   #|   container: (v.container === undefined ? undefined : ['all', 'nearest'].indexOf(v.container))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ScrollIntoViewOptions::from_js(value : JsValue) -> ScrollIntoViewOptions {
   ScrollIntoViewOptions::from_js_ffi(value)
@@ -469,7 +410,6 @@ pub(all) struct CheckVisibilityOptions {
   visibilityProperty : Bool?
 }
 
-///|
 /// Create a new CheckVisibilityOptions with default values
 pub fn CheckVisibilityOptions::default() -> CheckVisibilityOptions {
   CheckVisibilityOptions::{
@@ -481,10 +421,7 @@ pub fn CheckVisibilityOptions::default() -> CheckVisibilityOptions {
   }
 }
 
-///|
-extern "js" fn CheckVisibilityOptions::to_js_ffi(
-  self : CheckVisibilityOptions,
-) -> JsValue =
+extern "js" fn CheckVisibilityOptions::to_js_ffi(self : CheckVisibilityOptions) -> JsValue =
   #| (self) => ({
   #|   checkOpacity: (self.checkOpacity === -1 ? undefined : self.checkOpacity),
   #|   checkVisibilityCSS: (self.checkVisibilityCSS === -1 ? undefined : self.checkVisibilityCSS),
@@ -493,16 +430,12 @@ extern "js" fn CheckVisibilityOptions::to_js_ffi(
   #|   visibilityProperty: (self.visibilityProperty === -1 ? undefined : self.visibilityProperty)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CheckVisibilityOptions::to_js(self : CheckVisibilityOptions) -> JsValue {
   CheckVisibilityOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CheckVisibilityOptions::from_js_ffi(
-  value : JsValue,
-) -> CheckVisibilityOptions =
+extern "js" fn CheckVisibilityOptions::from_js_ffi(value : JsValue) -> CheckVisibilityOptions =
   #| (v) => ({
   #|   checkOpacity: (v.checkOpacity === undefined ? -1 : v.checkOpacity),
   #|   checkVisibilityCSS: (v.checkVisibilityCSS === undefined ? -1 : v.checkVisibilityCSS),
@@ -511,11 +444,8 @@ extern "js" fn CheckVisibilityOptions::from_js_ffi(
   #|   visibilityProperty: (v.visibilityProperty === undefined ? -1 : v.visibilityProperty)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn CheckVisibilityOptions::from_js(
-  value : JsValue,
-) -> CheckVisibilityOptions {
+pub fn CheckVisibilityOptions::from_js(value : JsValue) -> CheckVisibilityOptions {
   CheckVisibilityOptions::from_js_ffi(value)
 }
 
@@ -526,33 +456,31 @@ pub(all) struct BoxQuadOptions {
   relativeTo : GeometryNode?
 }
 
-///|
 /// Create a new BoxQuadOptions with default values
 pub fn BoxQuadOptions::default() -> BoxQuadOptions {
-  BoxQuadOptions::{ box: None, relativeTo: None, }
+  BoxQuadOptions::{
+    box: None,
+    relativeTo: None,
+  }
 }
 
-///|
 extern "js" fn BoxQuadOptions::to_js_ffi(self : BoxQuadOptions) -> JsValue =
   #| (self) => ({
   #|   box: ((() => { const v = self.box; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })()),
   #|   relativeTo: ((() => { const v = self.relativeTo; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn BoxQuadOptions::to_js(self : BoxQuadOptions) -> JsValue {
   BoxQuadOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn BoxQuadOptions::from_js_ffi(value : JsValue) -> BoxQuadOptions =
   #| (v) => ({
   #|   box: (v.box === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.box)),
   #|   relativeTo: (v.relativeTo === undefined ? { $tag: 0 } : { $tag: 1, _0: v.relativeTo })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn BoxQuadOptions::from_js(value : JsValue) -> BoxQuadOptions {
   BoxQuadOptions::from_js_ffi(value)
@@ -565,43 +493,33 @@ pub(all) struct ConvertCoordinateOptions {
   toBox : CSSBoxType?
 }
 
-///|
 /// Create a new ConvertCoordinateOptions with default values
 pub fn ConvertCoordinateOptions::default() -> ConvertCoordinateOptions {
-  ConvertCoordinateOptions::{ fromBox: None, toBox: None, }
+  ConvertCoordinateOptions::{
+    fromBox: None,
+    toBox: None,
+  }
 }
 
-///|
-extern "js" fn ConvertCoordinateOptions::to_js_ffi(
-  self : ConvertCoordinateOptions,
-) -> JsValue =
+extern "js" fn ConvertCoordinateOptions::to_js_ffi(self : ConvertCoordinateOptions) -> JsValue =
   #| (self) => ({
   #|   fromBox: ((() => { const v = self.fromBox; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })()),
   #|   toBox: ((() => { const v = self.toBox; if (v === undefined) return undefined; return ['margin', 'border', 'padding', 'content'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ConvertCoordinateOptions::to_js(
-  self : ConvertCoordinateOptions,
-) -> JsValue {
+pub fn ConvertCoordinateOptions::to_js(self : ConvertCoordinateOptions) -> JsValue {
   ConvertCoordinateOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ConvertCoordinateOptions::from_js_ffi(
-  value : JsValue,
-) -> ConvertCoordinateOptions =
+extern "js" fn ConvertCoordinateOptions::from_js_ffi(value : JsValue) -> ConvertCoordinateOptions =
   #| (v) => ({
   #|   fromBox: (v.fromBox === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.fromBox)),
   #|   toBox: (v.toBox === undefined ? undefined : ['margin', 'border', 'padding', 'content'].indexOf(v.toBox))
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ConvertCoordinateOptions::from_js(
-  value : JsValue,
-) -> ConvertCoordinateOptions {
+pub fn ConvertCoordinateOptions::from_js(value : JsValue) -> ConvertCoordinateOptions {
   ConvertCoordinateOptions::from_js_ffi(value)
 }
 
@@ -609,233 +527,143 @@ pub fn ConvertCoordinateOptions::from_js(
 /// MediaQueryList interface
 pub type MediaQueryList
 
-///|
-pub extern "js" fn MediaQueryList::to_js_value(
-  self : MediaQueryList,
-) -> JsValue =
+pub extern "js" fn MediaQueryList::to_js_value(self : MediaQueryList) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaQueryList (unchecked)
 pub extern "js" fn MediaQueryList::from_js_value(v : JsValue) -> MediaQueryList =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaQueryList (checked with instanceof)
-pub extern "js" fn MediaQueryList::from_js_value_opt(
-  v : JsValue,
-) -> MediaQueryList? =
+pub extern "js" fn MediaQueryList::from_js_value_opt(v : JsValue) -> MediaQueryList? =
   #| (v) => (v instanceof MediaQueryList) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaQueryList (checked with instanceof)
-pub extern "js" fn JsValue::as_media_query_list(
-  self : JsValue,
-) -> MediaQueryList? =
+pub extern "js" fn JsValue::as_media_query_list(self : JsValue) -> MediaQueryList? =
   #| (self) => (self instanceof MediaQueryList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaQueryList (unchecked)
-pub extern "js" fn JsValue::to_media_query_list(
-  self : JsValue,
-) -> MediaQueryList =
+pub extern "js" fn JsValue::to_media_query_list(self : JsValue) -> MediaQueryList =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaQueryList::to_event_target(
-  self : MediaQueryList,
-) -> EventTarget =
+pub extern "js" fn MediaQueryList::to_event_target(self : MediaQueryList) -> EventTarget =
   #| (self) => self
 
-///|
 pub extern "js" fn MediaQueryList::get_media(self : MediaQueryList) -> String =
   #| (self) => self.media
 
-///|
 pub extern "js" fn MediaQueryList::get_matches(self : MediaQueryList) -> Bool =
   #| (self) => self.matches
 
-///|
-/// @alert deprecated "addListener is deprecated"
-pub extern "js" fn MediaQueryList::add_listener(
-  self : MediaQueryList,
-  callback : EventListener?,
-) -> Unit =
+///| @alert deprecated "addListener is deprecated"
+pub extern "js" fn MediaQueryList::add_listener(self : MediaQueryList, callback : EventListener?) -> Unit =
   #| (self, callback) => self.addListener((callback.$tag === 1 ? callback._0 : null))
 
-///|
-/// @alert deprecated "removeListener is deprecated"
-pub extern "js" fn MediaQueryList::remove_listener(
-  self : MediaQueryList,
-  callback : EventListener?,
-) -> Unit =
+///| @alert deprecated "removeListener is deprecated"
+pub extern "js" fn MediaQueryList::remove_listener(self : MediaQueryList, callback : EventListener?) -> Unit =
   #| (self, callback) => self.removeListener((callback.$tag === 1 ? callback._0 : null))
 
-///|
-pub extern "js" fn MediaQueryList::set_onchange(
-  self : MediaQueryList,
-  handler : (MediaQueryListEvent) -> Unit,
-) -> Unit =
+pub extern "js" fn MediaQueryList::set_onchange(self : MediaQueryList, handler : (MediaQueryListEvent) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn MediaQueryList::clear_onchange(
-  self : MediaQueryList,
-) -> Unit =
+pub extern "js" fn MediaQueryList::clear_onchange(self : MediaQueryList) -> Unit =
   #| (self) => { self.onchange = null }
 
 ///|
 /// MediaQueryListEvent interface
 pub type MediaQueryListEvent
 
-///|
-pub extern "js" fn MediaQueryListEvent::to_js_value(
-  self : MediaQueryListEvent,
-) -> JsValue =
+pub extern "js" fn MediaQueryListEvent::to_js_value(self : MediaQueryListEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaQueryListEvent (unchecked)
-pub extern "js" fn MediaQueryListEvent::from_js_value(
-  v : JsValue,
-) -> MediaQueryListEvent =
+pub extern "js" fn MediaQueryListEvent::from_js_value(v : JsValue) -> MediaQueryListEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaQueryListEvent (checked with instanceof)
-pub extern "js" fn MediaQueryListEvent::from_js_value_opt(
-  v : JsValue,
-) -> MediaQueryListEvent? =
+pub extern "js" fn MediaQueryListEvent::from_js_value_opt(v : JsValue) -> MediaQueryListEvent? =
   #| (v) => (v instanceof MediaQueryListEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaQueryListEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_media_query_list_event(
-  self : JsValue,
-) -> MediaQueryListEvent? =
+pub extern "js" fn JsValue::as_media_query_list_event(self : JsValue) -> MediaQueryListEvent? =
   #| (self) => (self instanceof MediaQueryListEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaQueryListEvent (unchecked)
-pub extern "js" fn JsValue::to_media_query_list_event(
-  self : JsValue,
-) -> MediaQueryListEvent =
+pub extern "js" fn JsValue::to_media_query_list_event(self : JsValue) -> MediaQueryListEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaQueryListEvent::to_event(
-  self : MediaQueryListEvent,
-) -> Event =
+pub extern "js" fn MediaQueryListEvent::to_event(self : MediaQueryListEvent) -> Event =
   #| (self) => self
 
-///|
-pub extern "js" fn MediaQueryListEvent::new(
-  type_ : String,
-) -> MediaQueryListEvent =
+pub extern "js" fn MediaQueryListEvent::new(type_ : String) -> MediaQueryListEvent =
   #| (type_) => new MediaQueryListEvent(type_)
 
-///|
-extern "js" fn MediaQueryListEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> MediaQueryListEvent =
+extern "js" fn MediaQueryListEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> MediaQueryListEvent =
   #| (type_, event_init_dict) => new MediaQueryListEvent(type_, event_init_dict)
 
-///|
-pub fn MediaQueryListEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : MediaQueryListEventInit,
-) -> MediaQueryListEvent {
-  MediaQueryListEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn MediaQueryListEvent::new_with_event_init_dict(type_ : String, event_init_dict : MediaQueryListEventInit) -> MediaQueryListEvent {
+  MediaQueryListEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn MediaQueryListEvent::get_media(
-  self : MediaQueryListEvent,
-) -> String =
+pub extern "js" fn MediaQueryListEvent::get_media(self : MediaQueryListEvent) -> String =
   #| (self) => self.media
 
-///|
-pub extern "js" fn MediaQueryListEvent::get_matches(
-  self : MediaQueryListEvent,
-) -> Bool =
+pub extern "js" fn MediaQueryListEvent::get_matches(self : MediaQueryListEvent) -> Bool =
   #| (self) => self.matches
 
 ///|
 /// Screen interface
 pub type Screen
 
-///|
 pub extern "js" fn Screen::to_js_value(self : Screen) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Screen (unchecked)
 pub extern "js" fn Screen::from_js_value(v : JsValue) -> Screen =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Screen (checked with instanceof)
 pub extern "js" fn Screen::from_js_value_opt(v : JsValue) -> Screen? =
   #| (v) => (v instanceof Screen) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Screen (checked with instanceof)
 pub extern "js" fn JsValue::as_screen(self : JsValue) -> Screen? =
   #| (self) => (self instanceof Screen) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Screen (unchecked)
 pub extern "js" fn JsValue::to_screen(self : JsValue) -> Screen =
   #| (self) => self
 
-///|
 pub extern "js" fn Screen::as_screen_detailed(self : Screen) -> ScreenDetailed? =
   #| (self) => (self instanceof ScreenDetailed) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn Screen::get_avail_width(self : Screen) -> Int =
   #| (self) => self.availWidth
 
-///|
 pub extern "js" fn Screen::get_avail_height(self : Screen) -> Int =
   #| (self) => self.availHeight
 
-///|
 pub extern "js" fn Screen::get_width(self : Screen) -> Int =
   #| (self) => self.width
 
-///|
 pub extern "js" fn Screen::get_height(self : Screen) -> Int =
   #| (self) => self.height
 
-///|
 pub extern "js" fn Screen::get_color_depth(self : Screen) -> Int =
   #| (self) => self.colorDepth
 
-///|
 pub extern "js" fn Screen::get_pixel_depth(self : Screen) -> Int =
   #| (self) => self.pixelDepth
 
-///|
 pub extern "js" fn Screen::get_orientation(self : Screen) -> ScreenOrientation =
   #| (self) => self.orientation
 
-///|
 pub extern "js" fn Screen::get_is_extended(self : Screen) -> Bool =
   #| (self) => self.isExtended
 
-///|
-pub extern "js" fn Screen::set_onchange(
-  self : Screen,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Screen::set_onchange(self : Screen, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
 pub extern "js" fn Screen::clear_onchange(self : Screen) -> Unit =
   #| (self) => { self.onchange = null }
 
@@ -843,159 +671,95 @@ pub extern "js" fn Screen::clear_onchange(self : Screen) -> Unit =
 /// CaretPosition interface
 pub type CaretPosition
 
-///|
 pub extern "js" fn CaretPosition::to_js_value(self : CaretPosition) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CaretPosition (unchecked)
 pub extern "js" fn CaretPosition::from_js_value(v : JsValue) -> CaretPosition =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CaretPosition (checked with instanceof)
-pub extern "js" fn CaretPosition::from_js_value_opt(
-  v : JsValue,
-) -> CaretPosition? =
+pub extern "js" fn CaretPosition::from_js_value_opt(v : JsValue) -> CaretPosition? =
   #| (v) => (v instanceof CaretPosition) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CaretPosition (checked with instanceof)
 pub extern "js" fn JsValue::as_caret_position(self : JsValue) -> CaretPosition? =
   #| (self) => (self instanceof CaretPosition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CaretPosition (unchecked)
 pub extern "js" fn JsValue::to_caret_position(self : JsValue) -> CaretPosition =
   #| (self) => self
 
-///|
 pub extern "js" fn CaretPosition::get_offset_node(self : CaretPosition) -> Node =
   #| (self) => self.offsetNode
 
-///|
 pub extern "js" fn CaretPosition::get_offset(self : CaretPosition) -> Int =
   #| (self) => self.offset
 
-///|
-pub extern "js" fn CaretPosition::get_client_rect(
-  self : CaretPosition,
-) -> DOMRect? =
+pub extern "js" fn CaretPosition::get_client_rect(self : CaretPosition) -> DOMRect? =
   #| (self) => (() => { const v = self.getClientRect(); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// VisualViewport interface
 pub type VisualViewport
 
-///|
-pub extern "js" fn VisualViewport::to_js_value(
-  self : VisualViewport,
-) -> JsValue =
+pub extern "js" fn VisualViewport::to_js_value(self : VisualViewport) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to VisualViewport (unchecked)
 pub extern "js" fn VisualViewport::from_js_value(v : JsValue) -> VisualViewport =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to VisualViewport (checked with instanceof)
-pub extern "js" fn VisualViewport::from_js_value_opt(
-  v : JsValue,
-) -> VisualViewport? =
+pub extern "js" fn VisualViewport::from_js_value_opt(v : JsValue) -> VisualViewport? =
   #| (v) => (v instanceof VisualViewport) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to VisualViewport (checked with instanceof)
-pub extern "js" fn JsValue::as_visual_viewport(
-  self : JsValue,
-) -> VisualViewport? =
+pub extern "js" fn JsValue::as_visual_viewport(self : JsValue) -> VisualViewport? =
   #| (self) => (self instanceof VisualViewport) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to VisualViewport (unchecked)
-pub extern "js" fn JsValue::to_visual_viewport(
-  self : JsValue,
-) -> VisualViewport =
+pub extern "js" fn JsValue::to_visual_viewport(self : JsValue) -> VisualViewport =
   #| (self) => self
 
-///|
-pub extern "js" fn VisualViewport::to_event_target(
-  self : VisualViewport,
-) -> EventTarget =
+pub extern "js" fn VisualViewport::to_event_target(self : VisualViewport) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn VisualViewport::get_offset_left(
-  self : VisualViewport,
-) -> Double =
+pub extern "js" fn VisualViewport::get_offset_left(self : VisualViewport) -> Double =
   #| (self) => self.offsetLeft
 
-///|
-pub extern "js" fn VisualViewport::get_offset_top(
-  self : VisualViewport,
-) -> Double =
+pub extern "js" fn VisualViewport::get_offset_top(self : VisualViewport) -> Double =
   #| (self) => self.offsetTop
 
-///|
-pub extern "js" fn VisualViewport::get_page_left(
-  self : VisualViewport,
-) -> Double =
+pub extern "js" fn VisualViewport::get_page_left(self : VisualViewport) -> Double =
   #| (self) => self.pageLeft
 
-///|
-pub extern "js" fn VisualViewport::get_page_top(
-  self : VisualViewport,
-) -> Double =
+pub extern "js" fn VisualViewport::get_page_top(self : VisualViewport) -> Double =
   #| (self) => self.pageTop
 
-///|
 pub extern "js" fn VisualViewport::get_width(self : VisualViewport) -> Double =
   #| (self) => self.width
 
-///|
 pub extern "js" fn VisualViewport::get_height(self : VisualViewport) -> Double =
   #| (self) => self.height
 
-///|
 pub extern "js" fn VisualViewport::get_scale(self : VisualViewport) -> Double =
   #| (self) => self.scale
 
-///|
-pub extern "js" fn VisualViewport::set_onresize(
-  self : VisualViewport,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn VisualViewport::set_onresize(self : VisualViewport, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onresize = (e) => handler(e) }
 
-///|
-pub extern "js" fn VisualViewport::clear_onresize(
-  self : VisualViewport,
-) -> Unit =
+pub extern "js" fn VisualViewport::clear_onresize(self : VisualViewport) -> Unit =
   #| (self) => { self.onresize = null }
 
-///|
-pub extern "js" fn VisualViewport::set_onscroll(
-  self : VisualViewport,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn VisualViewport::set_onscroll(self : VisualViewport, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onscroll = (e) => handler(e) }
 
-///|
-pub extern "js" fn VisualViewport::clear_onscroll(
-  self : VisualViewport,
-) -> Unit =
+pub extern "js" fn VisualViewport::clear_onscroll(self : VisualViewport) -> Unit =
   #| (self) => { self.onscroll = null }
 
-///|
-pub extern "js" fn VisualViewport::set_onscrollend(
-  self : VisualViewport,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn VisualViewport::set_onscrollend(self : VisualViewport, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onscrollend = (e) => handler(e) }
 
-///|
-pub extern "js" fn VisualViewport::clear_onscrollend(
-  self : VisualViewport,
-) -> Unit =
+pub extern "js" fn VisualViewport::clear_onscrollend(self : VisualViewport) -> Unit =
   #| (self) => { self.onscrollend = null }

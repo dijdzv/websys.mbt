@@ -10,11 +10,11 @@ pub(all) enum ScriptingPolicyViolationType {
   Eval
 } derive(Eq, Debug)
 
-///|
+pub extend ScriptingPolicyViolationType with Eq::{equal, not_equal}
+pub extend ScriptingPolicyViolationType with @debug.Debug::{to_repr}
+
 /// Convert to string value
-pub fn ScriptingPolicyViolationType::to_string(
-  self : ScriptingPolicyViolationType,
-) -> String {
+pub fn ScriptingPolicyViolationType::to_string(self : ScriptingPolicyViolationType) -> String {
   match self {
     ScriptingPolicyViolationType::ExternalScript => "externalScript"
     ScriptingPolicyViolationType::InlineScript => "inlineScript"
@@ -23,16 +23,12 @@ pub fn ScriptingPolicyViolationType::to_string(
   }
 }
 
-///|
 /// Parse from string value
-pub fn ScriptingPolicyViolationType::from_string(
-  s : String,
-) -> ScriptingPolicyViolationType? {
+pub fn ScriptingPolicyViolationType::from_string(s : String) -> ScriptingPolicyViolationType? {
   match s {
     "externalScript" => Some(ScriptingPolicyViolationType::ExternalScript)
     "inlineScript" => Some(ScriptingPolicyViolationType::InlineScript)
-    "inlineEventHandler" =>
-      Some(ScriptingPolicyViolationType::InlineEventHandler)
+    "inlineEventHandler" => Some(ScriptingPolicyViolationType::InlineEventHandler)
     "eval" => Some(ScriptingPolicyViolationType::Eval)
     _ => None
   }
@@ -48,7 +44,6 @@ pub(all) struct ScriptingPolicyReportBody {
   colno : Int?
 }
 
-///|
 /// Create a new ScriptingPolicyReportBody with default values
 pub fn ScriptingPolicyReportBody::default() -> ScriptingPolicyReportBody {
   ScriptingPolicyReportBody::{
@@ -60,10 +55,7 @@ pub fn ScriptingPolicyReportBody::default() -> ScriptingPolicyReportBody {
   }
 }
 
-///|
-extern "js" fn ScriptingPolicyReportBody::to_js_ffi(
-  self : ScriptingPolicyReportBody,
-) -> JsValue =
+extern "js" fn ScriptingPolicyReportBody::to_js_ffi(self : ScriptingPolicyReportBody) -> JsValue =
   #| (self) => ({
   #|   violationType: self.violationType,
   #|   violationURL: ((() => { const v = self.violationURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -72,18 +64,12 @@ extern "js" fn ScriptingPolicyReportBody::to_js_ffi(
   #|   colno: self.colno
   #| })
 
-///|
 /// Convert to JsValue
-pub fn ScriptingPolicyReportBody::to_js(
-  self : ScriptingPolicyReportBody,
-) -> JsValue {
+pub fn ScriptingPolicyReportBody::to_js(self : ScriptingPolicyReportBody) -> JsValue {
   ScriptingPolicyReportBody::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ScriptingPolicyReportBody::from_js_ffi(
-  value : JsValue,
-) -> ScriptingPolicyReportBody =
+extern "js" fn ScriptingPolicyReportBody::from_js_ffi(value : JsValue) -> ScriptingPolicyReportBody =
   #| (v) => ({
   #|   violationType: v.violationType,
   #|   violationURL: (v.violationURL === undefined ? { $tag: 0 } : v.violationURL === null ? { $tag: 1 } : { $tag: 2, _0: v.violationURL }),
@@ -92,10 +78,7 @@ extern "js" fn ScriptingPolicyReportBody::from_js_ffi(
   #|   colno: v.colno
   #| })
 
-///|
 /// Convert from JsValue
-pub fn ScriptingPolicyReportBody::from_js(
-  value : JsValue,
-) -> ScriptingPolicyReportBody {
+pub fn ScriptingPolicyReportBody::from_js(value : JsValue) -> ScriptingPolicyReportBody {
   ScriptingPolicyReportBody::from_js_ffi(value)
 }

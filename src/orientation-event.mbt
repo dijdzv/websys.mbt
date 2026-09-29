@@ -10,7 +10,6 @@ pub(all) struct DeviceOrientationEventInit {
   absolute : Bool?
 }
 
-///|
 /// Create a new DeviceOrientationEventInit with default values
 pub fn DeviceOrientationEventInit::default() -> DeviceOrientationEventInit {
   DeviceOrientationEventInit::{
@@ -21,10 +20,7 @@ pub fn DeviceOrientationEventInit::default() -> DeviceOrientationEventInit {
   }
 }
 
-///|
-extern "js" fn DeviceOrientationEventInit::to_js_ffi(
-  self : DeviceOrientationEventInit,
-) -> JsValue =
+extern "js" fn DeviceOrientationEventInit::to_js_ffi(self : DeviceOrientationEventInit) -> JsValue =
   #| (self) => ({
   #|   alpha: ((() => { const v = self.alpha; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   beta: ((() => { const v = self.beta; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -32,18 +28,12 @@ extern "js" fn DeviceOrientationEventInit::to_js_ffi(
   #|   absolute: (self.absolute === -1 ? undefined : self.absolute)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DeviceOrientationEventInit::to_js(
-  self : DeviceOrientationEventInit,
-) -> JsValue {
+pub fn DeviceOrientationEventInit::to_js(self : DeviceOrientationEventInit) -> JsValue {
   DeviceOrientationEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DeviceOrientationEventInit::from_js_ffi(
-  value : JsValue,
-) -> DeviceOrientationEventInit =
+extern "js" fn DeviceOrientationEventInit::from_js_ffi(value : JsValue) -> DeviceOrientationEventInit =
   #| (v) => ({
   #|   alpha: (v.alpha === undefined ? { $tag: 0 } : v.alpha === null ? { $tag: 1 } : { $tag: 2, _0: v.alpha }),
   #|   beta: (v.beta === undefined ? { $tag: 0 } : v.beta === null ? { $tag: 1 } : { $tag: 2, _0: v.beta }),
@@ -51,11 +41,8 @@ extern "js" fn DeviceOrientationEventInit::from_js_ffi(
   #|   absolute: (v.absolute === undefined ? -1 : v.absolute)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DeviceOrientationEventInit::from_js(
-  value : JsValue,
-) -> DeviceOrientationEventInit {
+pub fn DeviceOrientationEventInit::from_js(value : JsValue) -> DeviceOrientationEventInit {
   DeviceOrientationEventInit::from_js_ffi(value)
 }
 
@@ -67,7 +54,6 @@ pub(all) struct DeviceMotionEventAccelerationInit {
   z : Nullable[Double]
 }
 
-///|
 /// Create a new DeviceMotionEventAccelerationInit with default values
 pub fn DeviceMotionEventAccelerationInit::default() -> DeviceMotionEventAccelerationInit {
   DeviceMotionEventAccelerationInit::{
@@ -77,39 +63,27 @@ pub fn DeviceMotionEventAccelerationInit::default() -> DeviceMotionEventAccelera
   }
 }
 
-///|
-extern "js" fn DeviceMotionEventAccelerationInit::to_js_ffi(
-  self : DeviceMotionEventAccelerationInit,
-) -> JsValue =
+extern "js" fn DeviceMotionEventAccelerationInit::to_js_ffi(self : DeviceMotionEventAccelerationInit) -> JsValue =
   #| (self) => ({
   #|   x: ((() => { const v = self.x; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   y: ((() => { const v = self.y; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   z: ((() => { const v = self.z; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DeviceMotionEventAccelerationInit::to_js(
-  self : DeviceMotionEventAccelerationInit,
-) -> JsValue {
+pub fn DeviceMotionEventAccelerationInit::to_js(self : DeviceMotionEventAccelerationInit) -> JsValue {
   DeviceMotionEventAccelerationInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DeviceMotionEventAccelerationInit::from_js_ffi(
-  value : JsValue,
-) -> DeviceMotionEventAccelerationInit =
+extern "js" fn DeviceMotionEventAccelerationInit::from_js_ffi(value : JsValue) -> DeviceMotionEventAccelerationInit =
   #| (v) => ({
   #|   x: (v.x === undefined ? { $tag: 0 } : v.x === null ? { $tag: 1 } : { $tag: 2, _0: v.x }),
   #|   y: (v.y === undefined ? { $tag: 0 } : v.y === null ? { $tag: 1 } : { $tag: 2, _0: v.y }),
   #|   z: (v.z === undefined ? { $tag: 0 } : v.z === null ? { $tag: 1 } : { $tag: 2, _0: v.z })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DeviceMotionEventAccelerationInit::from_js(
-  value : JsValue,
-) -> DeviceMotionEventAccelerationInit {
+pub fn DeviceMotionEventAccelerationInit::from_js(value : JsValue) -> DeviceMotionEventAccelerationInit {
   DeviceMotionEventAccelerationInit::from_js_ffi(value)
 }
 
@@ -121,7 +95,6 @@ pub(all) struct DeviceMotionEventRotationRateInit {
   gamma : Nullable[Double]
 }
 
-///|
 /// Create a new DeviceMotionEventRotationRateInit with default values
 pub fn DeviceMotionEventRotationRateInit::default() -> DeviceMotionEventRotationRateInit {
   DeviceMotionEventRotationRateInit::{
@@ -131,39 +104,27 @@ pub fn DeviceMotionEventRotationRateInit::default() -> DeviceMotionEventRotation
   }
 }
 
-///|
-extern "js" fn DeviceMotionEventRotationRateInit::to_js_ffi(
-  self : DeviceMotionEventRotationRateInit,
-) -> JsValue =
+extern "js" fn DeviceMotionEventRotationRateInit::to_js_ffi(self : DeviceMotionEventRotationRateInit) -> JsValue =
   #| (self) => ({
   #|   alpha: ((() => { const v = self.alpha; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   beta: ((() => { const v = self.beta; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   gamma: ((() => { const v = self.gamma; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn DeviceMotionEventRotationRateInit::to_js(
-  self : DeviceMotionEventRotationRateInit,
-) -> JsValue {
+pub fn DeviceMotionEventRotationRateInit::to_js(self : DeviceMotionEventRotationRateInit) -> JsValue {
   DeviceMotionEventRotationRateInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn DeviceMotionEventRotationRateInit::from_js_ffi(
-  value : JsValue,
-) -> DeviceMotionEventRotationRateInit =
+extern "js" fn DeviceMotionEventRotationRateInit::from_js_ffi(value : JsValue) -> DeviceMotionEventRotationRateInit =
   #| (v) => ({
   #|   alpha: (v.alpha === undefined ? { $tag: 0 } : v.alpha === null ? { $tag: 1 } : { $tag: 2, _0: v.alpha }),
   #|   beta: (v.beta === undefined ? { $tag: 0 } : v.beta === null ? { $tag: 1 } : { $tag: 2, _0: v.beta }),
   #|   gamma: (v.gamma === undefined ? { $tag: 0 } : v.gamma === null ? { $tag: 1 } : { $tag: 2, _0: v.gamma })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn DeviceMotionEventRotationRateInit::from_js(
-  value : JsValue,
-) -> DeviceMotionEventRotationRateInit {
+pub fn DeviceMotionEventRotationRateInit::from_js(value : JsValue) -> DeviceMotionEventRotationRateInit {
   DeviceMotionEventRotationRateInit::from_js_ffi(value)
 }
 
@@ -176,7 +137,6 @@ pub(all) struct DeviceMotionEventInit {
   interval : Double?
 }
 
-///|
 /// Create a new DeviceMotionEventInit with default values
 pub fn DeviceMotionEventInit::default() -> DeviceMotionEventInit {
   DeviceMotionEventInit::{
@@ -187,13 +147,7 @@ pub fn DeviceMotionEventInit::default() -> DeviceMotionEventInit {
   }
 }
 
-///|
-extern "js" fn DeviceMotionEventInit::to_js_ffi(
-  self : DeviceMotionEventInit,
-  convert_acceleration : (DeviceMotionEventAccelerationInit?) -> JsValue,
-  convert_accelerationIncludingGravity : (DeviceMotionEventAccelerationInit?) -> JsValue,
-  convert_rotationRate : (DeviceMotionEventRotationRateInit?) -> JsValue,
-) -> JsValue =
+extern "js" fn DeviceMotionEventInit::to_js_ffi(self : DeviceMotionEventInit, convert_acceleration : (DeviceMotionEventAccelerationInit?) -> JsValue, convert_accelerationIncludingGravity : (DeviceMotionEventAccelerationInit?) -> JsValue, convert_rotationRate : (DeviceMotionEventRotationRateInit?) -> JsValue) -> JsValue =
   #| (self, convert_acceleration, convert_accelerationIncludingGravity, convert_rotationRate) => ({
   #|   acceleration: convert_acceleration(self.acceleration),
   #|   accelerationIncludingGravity: convert_accelerationIncludingGravity(self.accelerationIncludingGravity),
@@ -201,39 +155,12 @@ extern "js" fn DeviceMotionEventInit::to_js_ffi(
   #|   interval: ((() => { const v = self.interval; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn DeviceMotionEventInit::to_js(self : DeviceMotionEventInit) -> JsValue {
-  DeviceMotionEventInit::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  DeviceMotionEventInit::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn DeviceMotionEventInit::from_js_ffi(
-  value : JsValue,
-  convert_acceleration : (JsValue) -> DeviceMotionEventAccelerationInit?,
-  convert_accelerationIncludingGravity : (JsValue) -> DeviceMotionEventAccelerationInit?,
-  convert_rotationRate : (JsValue) -> DeviceMotionEventRotationRateInit?,
-) -> DeviceMotionEventInit =
+extern "js" fn DeviceMotionEventInit::from_js_ffi(value : JsValue, convert_acceleration : (JsValue) -> DeviceMotionEventAccelerationInit?, convert_accelerationIncludingGravity : (JsValue) -> DeviceMotionEventAccelerationInit?, convert_rotationRate : (JsValue) -> DeviceMotionEventRotationRateInit?) -> DeviceMotionEventInit =
   #| (v, convert_acceleration, convert_accelerationIncludingGravity, convert_rotationRate) => ({
   #|   acceleration: convert_acceleration(v.acceleration),
   #|   accelerationIncludingGravity: convert_accelerationIncludingGravity(v.accelerationIncludingGravity),
@@ -241,77 +168,35 @@ extern "js" fn DeviceMotionEventInit::from_js_ffi(
   #|   interval: (v.interval === undefined ? { $tag: 0 } : { $tag: 1, _0: v.interval })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn DeviceMotionEventInit::from_js(value : JsValue) -> DeviceMotionEventInit {
-  DeviceMotionEventInit::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DeviceMotionEventAccelerationInit::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DeviceMotionEventAccelerationInit::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(DeviceMotionEventRotationRateInit::from_js(value))
-      }
-    },
-  )
+  DeviceMotionEventInit::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(DeviceMotionEventAccelerationInit::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(DeviceMotionEventAccelerationInit::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(DeviceMotionEventRotationRateInit::from_js(value)) } })
 }
 
 ///|
 /// DeviceOrientationEvent interface
 pub type DeviceOrientationEvent
 
-///|
-pub extern "js" fn DeviceOrientationEvent::to_js_value(
-  self : DeviceOrientationEvent,
-) -> JsValue =
+pub extern "js" fn DeviceOrientationEvent::to_js_value(self : DeviceOrientationEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DeviceOrientationEvent (unchecked)
-pub extern "js" fn DeviceOrientationEvent::from_js_value(
-  v : JsValue,
-) -> DeviceOrientationEvent =
+pub extern "js" fn DeviceOrientationEvent::from_js_value(v : JsValue) -> DeviceOrientationEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DeviceOrientationEvent (checked with instanceof)
-pub extern "js" fn DeviceOrientationEvent::from_js_value_opt(
-  v : JsValue,
-) -> DeviceOrientationEvent? =
+pub extern "js" fn DeviceOrientationEvent::from_js_value_opt(v : JsValue) -> DeviceOrientationEvent? =
   #| (v) => (v instanceof DeviceOrientationEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DeviceOrientationEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_device_orientation_event(
-  self : JsValue,
-) -> DeviceOrientationEvent? =
+pub extern "js" fn JsValue::as_device_orientation_event(self : JsValue) -> DeviceOrientationEvent? =
   #| (self) => (self instanceof DeviceOrientationEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DeviceOrientationEvent (unchecked)
-pub extern "js" fn JsValue::to_device_orientation_event(
-  self : JsValue,
-) -> DeviceOrientationEvent =
+pub extern "js" fn JsValue::to_device_orientation_event(self : JsValue) -> DeviceOrientationEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn DeviceOrientationEvent::to_event(
-  self : DeviceOrientationEvent,
-) -> Event =
+pub extern "js" fn DeviceOrientationEvent::to_event(self : DeviceOrientationEvent) -> Event =
   #| (self) => self
 
 ///|
@@ -321,222 +206,124 @@ pub(all) enum DeviceOrientationEventRequestPermissionError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn DeviceOrientationEvent::new(
-  type_ : String,
-) -> DeviceOrientationEvent =
+pub extend DeviceOrientationEventRequestPermissionError with @debug.Debug::{to_repr}
+
+pub extern "js" fn DeviceOrientationEvent::new(type_ : String) -> DeviceOrientationEvent =
   #| (type_) => new DeviceOrientationEvent(type_)
 
-///|
-extern "js" fn DeviceOrientationEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> DeviceOrientationEvent =
+extern "js" fn DeviceOrientationEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> DeviceOrientationEvent =
   #| (type_, event_init_dict) => new DeviceOrientationEvent(type_, event_init_dict)
 
-///|
-pub fn DeviceOrientationEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : DeviceOrientationEventInit,
-) -> DeviceOrientationEvent {
-  DeviceOrientationEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn DeviceOrientationEvent::new_with_event_init_dict(type_ : String, event_init_dict : DeviceOrientationEventInit) -> DeviceOrientationEvent {
+  DeviceOrientationEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn DeviceOrientationEvent::get_alpha(
-  self : DeviceOrientationEvent,
-) -> Double? =
+pub extern "js" fn DeviceOrientationEvent::get_alpha(self : DeviceOrientationEvent) -> Double? =
   #| (self) => (() => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceOrientationEvent::get_beta(
-  self : DeviceOrientationEvent,
-) -> Double? =
+pub extern "js" fn DeviceOrientationEvent::get_beta(self : DeviceOrientationEvent) -> Double? =
   #| (self) => (() => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceOrientationEvent::get_gamma(
-  self : DeviceOrientationEvent,
-) -> Double? =
+pub extern "js" fn DeviceOrientationEvent::get_gamma(self : DeviceOrientationEvent) -> Double? =
   #| (self) => (() => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceOrientationEvent::get_absolute(
-  self : DeviceOrientationEvent,
-) -> Bool =
+pub extern "js" fn DeviceOrientationEvent::get_absolute(self : DeviceOrientationEvent) -> Bool =
   #| (self) => self.absolute
 
-///|
-pub extern "js" fn DeviceOrientationEvent::request_permission() -> Promise[
-  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
-] =
+pub extern "js" fn DeviceOrientationEvent::request_permission() -> Promise[Result[PermissionState, DeviceOrientationEventRequestPermissionError]] =
   #| () => DeviceOrientationEvent.requestPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn DeviceOrientationEvent::request_permission_with_absolute(
-  absolute : Bool,
-) -> Promise[
-  Result[PermissionState, DeviceOrientationEventRequestPermissionError],
-] =
+pub extern "js" fn DeviceOrientationEvent::request_permission_with_absolute(absolute : Bool) -> Promise[Result[PermissionState, DeviceOrientationEventRequestPermissionError]] =
   #| (absolute) => DeviceOrientationEvent.requestPermission(absolute).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// DeviceMotionEventAcceleration interface
 pub type DeviceMotionEventAcceleration
 
-///|
-pub extern "js" fn DeviceMotionEventAcceleration::to_js_value(
-  self : DeviceMotionEventAcceleration,
-) -> JsValue =
+pub extern "js" fn DeviceMotionEventAcceleration::to_js_value(self : DeviceMotionEventAcceleration) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DeviceMotionEventAcceleration (unchecked)
-pub extern "js" fn DeviceMotionEventAcceleration::from_js_value(
-  v : JsValue,
-) -> DeviceMotionEventAcceleration =
+pub extern "js" fn DeviceMotionEventAcceleration::from_js_value(v : JsValue) -> DeviceMotionEventAcceleration =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DeviceMotionEventAcceleration (checked with instanceof)
-pub extern "js" fn DeviceMotionEventAcceleration::from_js_value_opt(
-  v : JsValue,
-) -> DeviceMotionEventAcceleration? =
+pub extern "js" fn DeviceMotionEventAcceleration::from_js_value_opt(v : JsValue) -> DeviceMotionEventAcceleration? =
   #| (v) => (v instanceof DeviceMotionEventAcceleration) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DeviceMotionEventAcceleration (checked with instanceof)
-pub extern "js" fn JsValue::as_device_motion_event_acceleration(
-  self : JsValue,
-) -> DeviceMotionEventAcceleration? =
+pub extern "js" fn JsValue::as_device_motion_event_acceleration(self : JsValue) -> DeviceMotionEventAcceleration? =
   #| (self) => (self instanceof DeviceMotionEventAcceleration) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DeviceMotionEventAcceleration (unchecked)
-pub extern "js" fn JsValue::to_device_motion_event_acceleration(
-  self : JsValue,
-) -> DeviceMotionEventAcceleration =
+pub extern "js" fn JsValue::to_device_motion_event_acceleration(self : JsValue) -> DeviceMotionEventAcceleration =
   #| (self) => self
 
-///|
-pub extern "js" fn DeviceMotionEventAcceleration::get_x(
-  self : DeviceMotionEventAcceleration,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventAcceleration::get_x(self : DeviceMotionEventAcceleration) -> Double? =
   #| (self) => (() => { const v = self.x; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEventAcceleration::get_y(
-  self : DeviceMotionEventAcceleration,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventAcceleration::get_y(self : DeviceMotionEventAcceleration) -> Double? =
   #| (self) => (() => { const v = self.y; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEventAcceleration::get_z(
-  self : DeviceMotionEventAcceleration,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventAcceleration::get_z(self : DeviceMotionEventAcceleration) -> Double? =
   #| (self) => (() => { const v = self.z; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DeviceMotionEventRotationRate interface
 pub type DeviceMotionEventRotationRate
 
-///|
-pub extern "js" fn DeviceMotionEventRotationRate::to_js_value(
-  self : DeviceMotionEventRotationRate,
-) -> JsValue =
+pub extern "js" fn DeviceMotionEventRotationRate::to_js_value(self : DeviceMotionEventRotationRate) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DeviceMotionEventRotationRate (unchecked)
-pub extern "js" fn DeviceMotionEventRotationRate::from_js_value(
-  v : JsValue,
-) -> DeviceMotionEventRotationRate =
+pub extern "js" fn DeviceMotionEventRotationRate::from_js_value(v : JsValue) -> DeviceMotionEventRotationRate =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DeviceMotionEventRotationRate (checked with instanceof)
-pub extern "js" fn DeviceMotionEventRotationRate::from_js_value_opt(
-  v : JsValue,
-) -> DeviceMotionEventRotationRate? =
+pub extern "js" fn DeviceMotionEventRotationRate::from_js_value_opt(v : JsValue) -> DeviceMotionEventRotationRate? =
   #| (v) => (v instanceof DeviceMotionEventRotationRate) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DeviceMotionEventRotationRate (checked with instanceof)
-pub extern "js" fn JsValue::as_device_motion_event_rotation_rate(
-  self : JsValue,
-) -> DeviceMotionEventRotationRate? =
+pub extern "js" fn JsValue::as_device_motion_event_rotation_rate(self : JsValue) -> DeviceMotionEventRotationRate? =
   #| (self) => (self instanceof DeviceMotionEventRotationRate) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DeviceMotionEventRotationRate (unchecked)
-pub extern "js" fn JsValue::to_device_motion_event_rotation_rate(
-  self : JsValue,
-) -> DeviceMotionEventRotationRate =
+pub extern "js" fn JsValue::to_device_motion_event_rotation_rate(self : JsValue) -> DeviceMotionEventRotationRate =
   #| (self) => self
 
-///|
-pub extern "js" fn DeviceMotionEventRotationRate::get_alpha(
-  self : DeviceMotionEventRotationRate,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventRotationRate::get_alpha(self : DeviceMotionEventRotationRate) -> Double? =
   #| (self) => (() => { const v = self.alpha; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEventRotationRate::get_beta(
-  self : DeviceMotionEventRotationRate,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventRotationRate::get_beta(self : DeviceMotionEventRotationRate) -> Double? =
   #| (self) => (() => { const v = self.beta; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEventRotationRate::get_gamma(
-  self : DeviceMotionEventRotationRate,
-) -> Double? =
+pub extern "js" fn DeviceMotionEventRotationRate::get_gamma(self : DeviceMotionEventRotationRate) -> Double? =
   #| (self) => (() => { const v = self.gamma; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// DeviceMotionEvent interface
 pub type DeviceMotionEvent
 
-///|
-pub extern "js" fn DeviceMotionEvent::to_js_value(
-  self : DeviceMotionEvent,
-) -> JsValue =
+pub extern "js" fn DeviceMotionEvent::to_js_value(self : DeviceMotionEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to DeviceMotionEvent (unchecked)
-pub extern "js" fn DeviceMotionEvent::from_js_value(
-  v : JsValue,
-) -> DeviceMotionEvent =
+pub extern "js" fn DeviceMotionEvent::from_js_value(v : JsValue) -> DeviceMotionEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to DeviceMotionEvent (checked with instanceof)
-pub extern "js" fn DeviceMotionEvent::from_js_value_opt(
-  v : JsValue,
-) -> DeviceMotionEvent? =
+pub extern "js" fn DeviceMotionEvent::from_js_value_opt(v : JsValue) -> DeviceMotionEvent? =
   #| (v) => (v instanceof DeviceMotionEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to DeviceMotionEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_device_motion_event(
-  self : JsValue,
-) -> DeviceMotionEvent? =
+pub extern "js" fn JsValue::as_device_motion_event(self : JsValue) -> DeviceMotionEvent? =
   #| (self) => (self instanceof DeviceMotionEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to DeviceMotionEvent (unchecked)
-pub extern "js" fn JsValue::to_device_motion_event(
-  self : JsValue,
-) -> DeviceMotionEvent =
+pub extern "js" fn JsValue::to_device_motion_event(self : JsValue) -> DeviceMotionEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn DeviceMotionEvent::to_event(
-  self : DeviceMotionEvent,
-) -> Event =
+pub extern "js" fn DeviceMotionEvent::to_event(self : DeviceMotionEvent) -> Event =
   #| (self) => self
 
 ///|
@@ -546,54 +333,29 @@ pub(all) enum DeviceMotionEventRequestPermissionError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend DeviceMotionEventRequestPermissionError with @debug.Debug::{to_repr}
+
 pub extern "js" fn DeviceMotionEvent::new(type_ : String) -> DeviceMotionEvent =
   #| (type_) => new DeviceMotionEvent(type_)
 
-///|
-extern "js" fn DeviceMotionEvent::new_with_event_init_dict_ffi(
-  type_ : String,
-  event_init_dict : JsValue,
-) -> DeviceMotionEvent =
+extern "js" fn DeviceMotionEvent::new_with_event_init_dict_ffi(type_ : String, event_init_dict : JsValue) -> DeviceMotionEvent =
   #| (type_, event_init_dict) => new DeviceMotionEvent(type_, event_init_dict)
 
-///|
-pub fn DeviceMotionEvent::new_with_event_init_dict(
-  type_ : String,
-  event_init_dict : DeviceMotionEventInit,
-) -> DeviceMotionEvent {
-  DeviceMotionEvent::new_with_event_init_dict_ffi(
-    type_,
-    event_init_dict.to_js(),
-  )
+pub fn DeviceMotionEvent::new_with_event_init_dict(type_ : String, event_init_dict : DeviceMotionEventInit) -> DeviceMotionEvent {
+  DeviceMotionEvent::new_with_event_init_dict_ffi(type_, event_init_dict.to_js())
 }
 
-///|
-pub extern "js" fn DeviceMotionEvent::get_acceleration(
-  self : DeviceMotionEvent,
-) -> DeviceMotionEventAcceleration? =
+pub extern "js" fn DeviceMotionEvent::get_acceleration(self : DeviceMotionEvent) -> DeviceMotionEventAcceleration? =
   #| (self) => (() => { const v = self.acceleration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEvent::get_acceleration_including_gravity(
-  self : DeviceMotionEvent,
-) -> DeviceMotionEventAcceleration? =
+pub extern "js" fn DeviceMotionEvent::get_acceleration_including_gravity(self : DeviceMotionEvent) -> DeviceMotionEventAcceleration? =
   #| (self) => (() => { const v = self.accelerationIncludingGravity; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEvent::get_rotation_rate(
-  self : DeviceMotionEvent,
-) -> DeviceMotionEventRotationRate? =
+pub extern "js" fn DeviceMotionEvent::get_rotation_rate(self : DeviceMotionEvent) -> DeviceMotionEventRotationRate? =
   #| (self) => (() => { const v = self.rotationRate; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn DeviceMotionEvent::get_interval(
-  self : DeviceMotionEvent,
-) -> Double =
+pub extern "js" fn DeviceMotionEvent::get_interval(self : DeviceMotionEvent) -> Double =
   #| (self) => self.interval
 
-///|
-pub extern "js" fn DeviceMotionEvent::request_permission() -> Promise[
-  Result[PermissionState, DeviceMotionEventRequestPermissionError],
-] =
+pub extern "js" fn DeviceMotionEvent::request_permission() -> Promise[Result[PermissionState, DeviceMotionEventRequestPermissionError]] =
   #| () => DeviceMotionEvent.requestPermission().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))

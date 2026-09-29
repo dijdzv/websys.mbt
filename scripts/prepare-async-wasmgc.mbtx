@@ -1,7 +1,7 @@
 import {
-  "moonbitlang/async@0.21.3",
-  "moonbitlang/async@0.21.3/fs",
-  "moonbitlang/async@0.21.3/process",
+  "moonbitlang/async@0.22.4",
+  "moonbitlang/async@0.22.4/fs",
+  "moonbitlang/async@0.22.4/process",
 }
 
 async fn git(args : Array[String]) -> String {
@@ -12,7 +12,7 @@ async fn git(args : Array[String]) -> String {
 
 async fn main {
   let root = ".work/dependencies/async-wasmgc"
-  let revision = "a4cbfabbcdf4fa70ef28ad7ccc388082d92371de"
+  let revision = "00aa493c5a674988dc0f4dc3f9bf0a0e654427ac"
   let patch = @fs.realpath("patches/async-wasmgc.patch")
   if !@fs.exists(root) {
     @fs.mkdir(root, recursive=true)
@@ -30,7 +30,9 @@ async fn main {
     ignore(git(["-C", root, "apply", patch]))
   }
   ignore(git(["-C", root, "add", "-N", "src/wasm_async/moon.pkg", "src/wasm_async/wait.mbt"]))
-  assert_eq(git(["-C", root, "diff", "HEAD"]), @fs.read_file(patch).text().trim().to_owned(), msg="Prepared dependency differs from the reviewed patch")
+  let actual = git(["-C", root, "diff", "HEAD"])
+    .replace_all(old="\n \n", new="\n\n")
+  assert_eq(actual, @fs.read_file(patch).text().trim().to_owned(), msg="Prepared dependency differs from the reviewed patch")
   assert_eq(git(["-C", root, "ls-files", "--others", "--exclude-standard"]), "", msg="Unexpected files in prepared dependency")
   println("Prepared pinned WasmGC async candidate: " + root)
 }

@@ -10,13 +10,16 @@ pub(all) struct ImageResource {
   label : String?
 }
 
-///|
 /// Create a new ImageResource with default values
 pub fn ImageResource::default() -> ImageResource {
-  ImageResource::{ src: "", sizes: None, type_: None, label: None, }
+  ImageResource::{
+    src: "",
+    sizes: None,
+    type_: None,
+    label: None,
+  }
 }
 
-///|
 extern "js" fn ImageResource::to_js_ffi(self : ImageResource) -> JsValue =
   #| (self) => ({
   #|   src: self.src,
@@ -25,13 +28,11 @@ extern "js" fn ImageResource::to_js_ffi(self : ImageResource) -> JsValue =
   #|   label: self.label
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ImageResource::to_js(self : ImageResource) -> JsValue {
   ImageResource::to_js_ffi(self)
 }
 
-///|
 extern "js" fn ImageResource::from_js_ffi(value : JsValue) -> ImageResource =
   #| (v) => ({
   #|   src: v.src,
@@ -40,7 +41,6 @@ extern "js" fn ImageResource::from_js_ffi(value : JsValue) -> ImageResource =
   #|   label: v.label
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ImageResource::from_js(value : JsValue) -> ImageResource {
   ImageResource::from_js_ffi(value)

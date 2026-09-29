@@ -9,7 +9,6 @@ pub(all) struct CSSStyleSheetInit {
   disabled : Bool?
 }
 
-///|
 /// Create a new CSSStyleSheetInit with default values
 pub fn CSSStyleSheetInit::default() -> CSSStyleSheetInit {
   CSSStyleSheetInit::{
@@ -19,33 +18,25 @@ pub fn CSSStyleSheetInit::default() -> CSSStyleSheetInit {
   }
 }
 
-///|
-extern "js" fn CSSStyleSheetInit::to_js_ffi(
-  self : CSSStyleSheetInit,
-) -> JsValue =
+extern "js" fn CSSStyleSheetInit::to_js_ffi(self : CSSStyleSheetInit) -> JsValue =
   #| (self) => ({
   #|   baseURL: ((() => { const v = self.baseURL; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   media: ((() => { const v = self.media; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   disabled: (self.disabled === -1 ? undefined : self.disabled)
   #| })
 
-///|
 /// Convert to JsValue
 pub fn CSSStyleSheetInit::to_js(self : CSSStyleSheetInit) -> JsValue {
   CSSStyleSheetInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn CSSStyleSheetInit::from_js_ffi(
-  value : JsValue,
-) -> CSSStyleSheetInit =
+extern "js" fn CSSStyleSheetInit::from_js_ffi(value : JsValue) -> CSSStyleSheetInit =
   #| (v) => ({
   #|   baseURL: (v.baseURL === undefined ? { $tag: 0 } : v.baseURL === null ? { $tag: 1 } : { $tag: 2, _0: v.baseURL }),
   #|   media: (v.media === undefined ? { $tag: 0 } : { $tag: 1, _0: v.media }),
   #|   disabled: (v.disabled === undefined ? -1 : v.disabled)
   #| })
 
-///|
 /// Convert from JsValue
 pub fn CSSStyleSheetInit::from_js(value : JsValue) -> CSSStyleSheetInit {
   CSSStyleSheetInit::from_js_ffi(value)
@@ -55,26 +46,21 @@ pub fn CSSStyleSheetInit::from_js(value : JsValue) -> CSSStyleSheetInit {
 /// MediaList interface
 pub type MediaList
 
-///|
 pub extern "js" fn MediaList::to_js_value(self : MediaList) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to MediaList (unchecked)
 pub extern "js" fn MediaList::from_js_value(v : JsValue) -> MediaList =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to MediaList (checked with instanceof)
 pub extern "js" fn MediaList::from_js_value_opt(v : JsValue) -> MediaList? =
   #| (v) => (v instanceof MediaList) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to MediaList (checked with instanceof)
 pub extern "js" fn JsValue::as_media_list(self : JsValue) -> MediaList? =
   #| (self) => (self instanceof MediaList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to MediaList (unchecked)
 pub extern "js" fn JsValue::to_media_list(self : JsValue) -> MediaList =
   #| (self) => self
@@ -86,153 +72,104 @@ pub(all) enum MediaListDeleteMediumError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend MediaListDeleteMediumError with @debug.Debug::{to_repr}
+
 pub extern "js" fn MediaList::get_media_text(self : MediaList) -> String =
   #| (self) => self.mediaText
 
-///|
-pub extern "js" fn MediaList::set_media_text(
-  self : MediaList,
-  value : String,
-) -> Unit =
+pub extern "js" fn MediaList::set_media_text(self : MediaList, value : String) -> Unit =
   #| (self, value) => { self.mediaText = value }
 
-///|
 pub extern "js" fn MediaList::get_length(self : MediaList) -> Int =
   #| (self) => self.length
 
-///|
 pub extern "js" fn MediaList::item(self : MediaList, index : Int) -> String? =
   #| (self, index) => (self.item(index)) ?? undefined
 
-///|
 #alias("_[_]")
 pub extern "js" fn MediaList::get(self : MediaList, index : Int) -> String? =
   #| (self, index) => (self[index]) ?? undefined
 
-///|
-pub extern "js" fn MediaList::append_medium(
-  self : MediaList,
-  medium : String,
-) -> Unit =
+pub extern "js" fn MediaList::append_medium(self : MediaList, medium : String) -> Unit =
   #| (self, medium) => self.appendMedium(medium)
 
-///|
-pub extern "js" fn MediaList::delete_medium(
-  self : MediaList,
-  medium : String,
-) -> Result[Unit, MediaListDeleteMediumError] =
+pub extern "js" fn MediaList::delete_medium(self : MediaList, medium : String) -> Result[Unit, MediaListDeleteMediumError] =
   #| (self, medium) => (() => { try { self.deleteMedium(medium); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
 ///|
 /// StyleSheet interface
 pub type StyleSheet
 
-///|
 pub extern "js" fn StyleSheet::to_js_value(self : StyleSheet) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to StyleSheet (unchecked)
 pub extern "js" fn StyleSheet::from_js_value(v : JsValue) -> StyleSheet =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to StyleSheet (checked with instanceof)
 pub extern "js" fn StyleSheet::from_js_value_opt(v : JsValue) -> StyleSheet? =
   #| (v) => (v instanceof StyleSheet) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to StyleSheet (checked with instanceof)
 pub extern "js" fn JsValue::as_style_sheet(self : JsValue) -> StyleSheet? =
   #| (self) => (self instanceof StyleSheet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to StyleSheet (unchecked)
 pub extern "js" fn JsValue::to_style_sheet(self : JsValue) -> StyleSheet =
   #| (self) => self
 
-///|
-pub extern "js" fn StyleSheet::as_css_style_sheet(
-  self : StyleSheet,
-) -> CSSStyleSheet? =
+pub extern "js" fn StyleSheet::as_css_style_sheet(self : StyleSheet) -> CSSStyleSheet? =
   #| (self) => (self instanceof CSSStyleSheet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn StyleSheet::get_type(self : StyleSheet) -> String =
   #| (self) => self.type
 
-///|
 pub extern "js" fn StyleSheet::get_href(self : StyleSheet) -> String? =
   #| (self) => (self.href) ?? undefined
 
-///|
-pub extern "js" fn StyleSheet::get_owner_node(
-  self : StyleSheet,
-) -> ElementOrProcessingInstruction =
+pub extern "js" fn StyleSheet::get_owner_node(self : StyleSheet) -> ElementOrProcessingInstruction =
   #| (self) => self.ownerNode
 
-///|
-pub extern "js" fn StyleSheet::get_parent_style_sheet(
-  self : StyleSheet,
-) -> CSSStyleSheet? =
+pub extern "js" fn StyleSheet::get_parent_style_sheet(self : StyleSheet) -> CSSStyleSheet? =
   #| (self) => (() => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn StyleSheet::get_title(self : StyleSheet) -> String? =
   #| (self) => (self.title) ?? undefined
 
-///|
 pub extern "js" fn StyleSheet::get_media(self : StyleSheet) -> MediaList =
   #| (self) => self.media
 
-///|
 pub extern "js" fn StyleSheet::get_disabled(self : StyleSheet) -> Bool =
   #| (self) => self.disabled
 
-///|
-pub extern "js" fn StyleSheet::set_disabled(
-  self : StyleSheet,
-  value : Bool,
-) -> Unit =
+pub extern "js" fn StyleSheet::set_disabled(self : StyleSheet, value : Bool) -> Unit =
   #| (self, value) => { self.disabled = value }
 
 ///|
 /// CSSStyleSheet interface
 pub type CSSStyleSheet
 
-///|
 pub extern "js" fn CSSStyleSheet::to_js_value(self : CSSStyleSheet) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSStyleSheet (unchecked)
 pub extern "js" fn CSSStyleSheet::from_js_value(v : JsValue) -> CSSStyleSheet =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSStyleSheet (checked with instanceof)
-pub extern "js" fn CSSStyleSheet::from_js_value_opt(
-  v : JsValue,
-) -> CSSStyleSheet? =
+pub extern "js" fn CSSStyleSheet::from_js_value_opt(v : JsValue) -> CSSStyleSheet? =
   #| (v) => (v instanceof CSSStyleSheet) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSStyleSheet (checked with instanceof)
-pub extern "js" fn JsValue::as_css_style_sheet(
-  self : JsValue,
-) -> CSSStyleSheet? =
+pub extern "js" fn JsValue::as_css_style_sheet(self : JsValue) -> CSSStyleSheet? =
   #| (self) => (self instanceof CSSStyleSheet) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSStyleSheet (unchecked)
 pub extern "js" fn JsValue::to_css_style_sheet(self : JsValue) -> CSSStyleSheet =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleSheet::to_style_sheet(
-  self : CSSStyleSheet,
-) -> StyleSheet =
+pub extern "js" fn CSSStyleSheet::to_style_sheet(self : CSSStyleSheet) -> StyleSheet =
   #| (self) => self
 
 ///|
@@ -245,12 +182,16 @@ pub(all) enum CSSStyleSheetInsertRuleError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CSSStyleSheetInsertRuleError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetDeleteRuleError {
   IndexSizeError(JsError)
   OtherError(JsError)
 } derive(Debug)
+
+pub extend CSSStyleSheetDeleteRuleError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
@@ -259,6 +200,8 @@ pub(all) enum CSSStyleSheetReplaceError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CSSStyleSheetReplaceError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleSheetReplaceSyncError {
@@ -266,155 +209,86 @@ pub(all) enum CSSStyleSheetReplaceSyncError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend CSSStyleSheetReplaceSyncError with @debug.Debug::{to_repr}
+
 pub extern "js" fn CSSStyleSheet::new() -> CSSStyleSheet =
   #| () => new CSSStyleSheet()
 
-///|
-extern "js" fn CSSStyleSheet::new_with_options_ffi(
-  options : JsValue,
-) -> CSSStyleSheet =
+extern "js" fn CSSStyleSheet::new_with_options_ffi(options : JsValue) -> CSSStyleSheet =
   #| (options) => new CSSStyleSheet(options)
 
-///|
-pub fn CSSStyleSheet::new_with_options(
-  options : CSSStyleSheetInit,
-) -> CSSStyleSheet {
+pub fn CSSStyleSheet::new_with_options(options : CSSStyleSheetInit) -> CSSStyleSheet {
   CSSStyleSheet::new_with_options_ffi(options.to_js())
 }
 
-///|
-pub extern "js" fn CSSStyleSheet::get_owner_rule(
-  self : CSSStyleSheet,
-) -> CSSRule? =
+pub extern "js" fn CSSStyleSheet::get_owner_rule(self : CSSStyleSheet) -> CSSRule? =
   #| (self) => (() => { const v = self.ownerRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn CSSStyleSheet::get_css_rules(
-  self : CSSStyleSheet,
-) -> CSSRuleList =
+pub extern "js" fn CSSStyleSheet::get_css_rules(self : CSSStyleSheet) -> CSSRuleList =
   #| (self) => self.cssRules
 
-///|
-pub extern "js" fn CSSStyleSheet::insert_rule(
-  self : CSSStyleSheet,
-  rule : String,
-) -> Result[Int, CSSStyleSheetInsertRuleError] =
+pub extern "js" fn CSSStyleSheet::insert_rule(self : CSSStyleSheet, rule : String) -> Result[Int, CSSStyleSheetInsertRuleError] =
   #| (self, rule) => (() => { try { return { $tag: 1, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleSheet::insert_rule_with_index(
-  self : CSSStyleSheet,
-  rule : String,
-  index : Int,
-) -> Result[Int, CSSStyleSheetInsertRuleError] =
+pub extern "js" fn CSSStyleSheet::insert_rule_with_index(self : CSSStyleSheet, rule : String, index : Int) -> Result[Int, CSSStyleSheetInsertRuleError] =
   #| (self, rule, index) => (() => { try { return { $tag: 1, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; if (n === 'IndexSizeError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleSheet::delete_rule(
-  self : CSSStyleSheet,
-  index : Int,
-) -> Result[Unit, CSSStyleSheetDeleteRuleError] =
+pub extern "js" fn CSSStyleSheet::delete_rule(self : CSSStyleSheet, index : Int) -> Result[Unit, CSSStyleSheetDeleteRuleError] =
   #| (self, index) => (() => { try { self.deleteRule(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleSheet::replace(
-  self : CSSStyleSheet,
-  text : String,
-) -> Promise[Result[CSSStyleSheet, CSSStyleSheetReplaceError]] =
+pub extern "js" fn CSSStyleSheet::replace(self : CSSStyleSheet, text : String) -> Promise[Result[CSSStyleSheet, CSSStyleSheetReplaceError]] =
   #| (self, text) => self.replace(text).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn CSSStyleSheet::replace_sync(
-  self : CSSStyleSheet,
-  text : String,
-) -> Result[Unit, CSSStyleSheetReplaceSyncError] =
+pub extern "js" fn CSSStyleSheet::replace_sync(self : CSSStyleSheet, text : String) -> Result[Unit, CSSStyleSheetReplaceSyncError] =
   #| (self, text) => (() => { try { self.replaceSync(text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleSheet::get_rules(
-  self : CSSStyleSheet,
-) -> CSSRuleList =
+pub extern "js" fn CSSStyleSheet::get_rules(self : CSSStyleSheet) -> CSSRuleList =
   #| (self) => self.rules
 
-///|
-/// @alert deprecated "addRule is deprecated"
+///| @alert deprecated "addRule is deprecated"
 pub extern "js" fn CSSStyleSheet::add_rule(self : CSSStyleSheet) -> Int =
   #| (self) => self.addRule()
 
-///|
-pub extern "js" fn CSSStyleSheet::add_rule_with_index(
-  self : CSSStyleSheet,
-  selector : String,
-  style : String,
-  index : Int,
-) -> Int =
+pub extern "js" fn CSSStyleSheet::add_rule_with_index(self : CSSStyleSheet, selector : String, style : String, index : Int) -> Int =
   #| (self, selector, style, index) => self.addRule(selector, style, index)
 
-///|
-/// @alert deprecated "removeRule is deprecated"
+///| @alert deprecated "removeRule is deprecated"
 pub extern "js" fn CSSStyleSheet::remove_rule(self : CSSStyleSheet) -> Unit =
   #| (self) => self.removeRule()
 
-///|
-pub extern "js" fn CSSStyleSheet::remove_rule_with_index(
-  self : CSSStyleSheet,
-  index : Int,
-) -> Unit =
+pub extern "js" fn CSSStyleSheet::remove_rule_with_index(self : CSSStyleSheet, index : Int) -> Unit =
   #| (self, index) => self.removeRule(index)
 
 ///|
 /// StyleSheetList interface
 pub type StyleSheetList
 
-///|
-pub extern "js" fn StyleSheetList::to_js_value(
-  self : StyleSheetList,
-) -> JsValue =
+pub extern "js" fn StyleSheetList::to_js_value(self : StyleSheetList) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to StyleSheetList (unchecked)
 pub extern "js" fn StyleSheetList::from_js_value(v : JsValue) -> StyleSheetList =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to StyleSheetList (checked with instanceof)
-pub extern "js" fn StyleSheetList::from_js_value_opt(
-  v : JsValue,
-) -> StyleSheetList? =
+pub extern "js" fn StyleSheetList::from_js_value_opt(v : JsValue) -> StyleSheetList? =
   #| (v) => (v instanceof StyleSheetList) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to StyleSheetList (checked with instanceof)
-pub extern "js" fn JsValue::as_style_sheet_list(
-  self : JsValue,
-) -> StyleSheetList? =
+pub extern "js" fn JsValue::as_style_sheet_list(self : JsValue) -> StyleSheetList? =
   #| (self) => (self instanceof StyleSheetList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to StyleSheetList (unchecked)
-pub extern "js" fn JsValue::to_style_sheet_list(
-  self : JsValue,
-) -> StyleSheetList =
+pub extern "js" fn JsValue::to_style_sheet_list(self : JsValue) -> StyleSheetList =
   #| (self) => self
 
-///|
-pub extern "js" fn StyleSheetList::item(
-  self : StyleSheetList,
-  index : Int,
-) -> CSSStyleSheet? =
+pub extern "js" fn StyleSheetList::item(self : StyleSheetList, index : Int) -> CSSStyleSheet? =
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 #alias("_[_]")
-pub extern "js" fn StyleSheetList::get(
-  self : StyleSheetList,
-  index : Int,
-) -> CSSStyleSheet? =
+pub extern "js" fn StyleSheetList::get(self : StyleSheetList, index : Int) -> CSSStyleSheet? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn StyleSheetList::get_length(self : StyleSheetList) -> Int =
   #| (self) => self.length
 
@@ -422,46 +296,32 @@ pub extern "js" fn StyleSheetList::get_length(self : StyleSheetList) -> Int =
 /// CSSRuleList interface
 pub type CSSRuleList
 
-///|
 pub extern "js" fn CSSRuleList::to_js_value(self : CSSRuleList) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSRuleList (unchecked)
 pub extern "js" fn CSSRuleList::from_js_value(v : JsValue) -> CSSRuleList =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSRuleList (checked with instanceof)
 pub extern "js" fn CSSRuleList::from_js_value_opt(v : JsValue) -> CSSRuleList? =
   #| (v) => (v instanceof CSSRuleList) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSRuleList (checked with instanceof)
 pub extern "js" fn JsValue::as_css_rule_list(self : JsValue) -> CSSRuleList? =
   #| (self) => (self instanceof CSSRuleList) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSRuleList (unchecked)
 pub extern "js" fn JsValue::to_css_rule_list(self : JsValue) -> CSSRuleList =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSRuleList::item(
-  self : CSSRuleList,
-  index : Int,
-) -> CSSRule? =
+pub extern "js" fn CSSRuleList::item(self : CSSRuleList, index : Int) -> CSSRule? =
   #| (self, index) => (() => { const v = self.item(index); return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 #alias("_[_]")
-pub extern "js" fn CSSRuleList::get(
-  self : CSSRuleList,
-  index : Int,
-) -> CSSRule? =
+pub extern "js" fn CSSRuleList::get(self : CSSRuleList, index : Int) -> CSSRule? =
   #| (self, index) => (() => { const v = self[index]; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn CSSRuleList::get_length(self : CSSRuleList) -> Int =
   #| (self) => self.length
 
@@ -469,567 +329,329 @@ pub extern "js" fn CSSRuleList::get_length(self : CSSRuleList) -> Int =
 /// CSSRule interface
 pub type CSSRule
 
-///|
 pub extern "js" fn CSSRule::to_js_value(self : CSSRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSRule (unchecked)
 pub extern "js" fn CSSRule::from_js_value(v : JsValue) -> CSSRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSRule (checked with instanceof)
 pub extern "js" fn CSSRule::from_js_value_opt(v : JsValue) -> CSSRule? =
   #| (v) => (v instanceof CSSRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSRule (checked with instanceof)
 pub extern "js" fn JsValue::as_css_rule(self : JsValue) -> CSSRule? =
   #| (self) => (self instanceof CSSRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSRule (unchecked)
 pub extern "js" fn JsValue::to_css_rule(self : JsValue) -> CSSRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSRule::as_css_position_try_rule(
-  self : CSSRule,
-) -> CSSPositionTryRule? =
+pub extern "js" fn CSSRule::as_css_position_try_rule(self : CSSRule) -> CSSPositionTryRule? =
   #| (self) => (self instanceof CSSPositionTryRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_keyframe_rule(
-  self : CSSRule,
-) -> CSSKeyframeRule? =
+pub extern "js" fn CSSRule::as_css_keyframe_rule(self : CSSRule) -> CSSKeyframeRule? =
   #| (self) => (self instanceof CSSKeyframeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_keyframes_rule(
-  self : CSSRule,
-) -> CSSKeyframesRule? =
+pub extern "js" fn CSSRule::as_css_keyframes_rule(self : CSSRule) -> CSSKeyframesRule? =
   #| (self) => (self instanceof CSSKeyframesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::as_css_scope_rule(self : CSSRule) -> CSSScopeRule? =
   #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_layer_block_rule(
-  self : CSSRule,
-) -> CSSLayerBlockRule? =
+pub extern "js" fn CSSRule::as_css_layer_block_rule(self : CSSRule) -> CSSLayerBlockRule? =
   #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_layer_statement_rule(
-  self : CSSRule,
-) -> CSSLayerStatementRule? =
+pub extern "js" fn CSSRule::as_css_layer_statement_rule(self : CSSRule) -> CSSLayerStatementRule? =
   #| (self) => (self instanceof CSSLayerStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_color_profile_rule(
-  self : CSSRule,
-) -> CSSColorProfileRule? =
+pub extern "js" fn CSSRule::as_css_color_profile_rule(self : CSSRule) -> CSSColorProfileRule? =
   #| (self) => (self instanceof CSSColorProfileRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_container_rule(
-  self : CSSRule,
-) -> CSSContainerRule? =
+pub extern "js" fn CSSRule::as_css_container_rule(self : CSSRule) -> CSSContainerRule? =
   #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_supports_condition_rule(
-  self : CSSRule,
-) -> CSSSupportsConditionRule? =
+pub extern "js" fn CSSRule::as_css_supports_condition_rule(self : CSSRule) -> CSSSupportsConditionRule? =
   #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_condition_rule(
-  self : CSSRule,
-) -> CSSConditionRule? =
+pub extern "js" fn CSSRule::as_css_condition_rule(self : CSSRule) -> CSSConditionRule? =
   #| (self) => (self instanceof CSSConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::as_css_media_rule(self : CSSRule) -> CSSMediaRule? =
   #| (self) => (self instanceof CSSMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_supports_rule(
-  self : CSSRule,
-) -> CSSSupportsRule? =
+pub extern "js" fn CSSRule::as_css_supports_rule(self : CSSRule) -> CSSSupportsRule? =
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_counter_style_rule(
-  self : CSSRule,
-) -> CSSCounterStyleRule? =
+pub extern "js" fn CSSRule::as_css_counter_style_rule(self : CSSRule) -> CSSCounterStyleRule? =
   #| (self) => (self instanceof CSSCounterStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_font_face_rule(
-  self : CSSRule,
-) -> CSSFontFaceRule? =
+pub extern "js" fn CSSRule::as_css_font_face_rule(self : CSSRule) -> CSSFontFaceRule? =
   #| (self) => (self instanceof CSSFontFaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_font_feature_values_rule(
-  self : CSSRule,
-) -> CSSFontFeatureValuesRule? =
+pub extern "js" fn CSSRule::as_css_font_feature_values_rule(self : CSSRule) -> CSSFontFeatureValuesRule? =
   #| (self) => (self instanceof CSSFontFeatureValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_font_palette_values_rule(
-  self : CSSRule,
-) -> CSSFontPaletteValuesRule? =
+pub extern "js" fn CSSRule::as_css_font_palette_values_rule(self : CSSRule) -> CSSFontPaletteValuesRule? =
   #| (self) => (self instanceof CSSFontPaletteValuesRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_function_rule(
-  self : CSSRule,
-) -> CSSFunctionRule? =
+pub extern "js" fn CSSRule::as_css_function_rule(self : CSSRule) -> CSSFunctionRule? =
   #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_function_declarations(
-  self : CSSRule,
-) -> CSSFunctionDeclarations? =
+pub extern "js" fn CSSRule::as_css_function_declarations(self : CSSRule) -> CSSFunctionDeclarations? =
   #| (self) => (self instanceof CSSFunctionDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::as_css_mixin_rule(self : CSSRule) -> CSSMixinRule? =
   #| (self) => (self instanceof CSSMixinRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_apply_block_rule(
-  self : CSSRule,
-) -> CSSApplyBlockRule? =
+pub extern "js" fn CSSRule::as_css_apply_block_rule(self : CSSRule) -> CSSApplyBlockRule? =
   #| (self) => (self instanceof CSSApplyBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_apply_statement_rule(
-  self : CSSRule,
-) -> CSSApplyStatementRule? =
+pub extern "js" fn CSSRule::as_css_apply_statement_rule(self : CSSRule) -> CSSApplyStatementRule? =
   #| (self) => (self instanceof CSSApplyStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_contents_block_rule(
-  self : CSSRule,
-) -> CSSContentsBlockRule? =
+pub extern "js" fn CSSRule::as_css_contents_block_rule(self : CSSRule) -> CSSContentsBlockRule? =
   #| (self) => (self instanceof CSSContentsBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_contents_statement_rule(
-  self : CSSRule,
-) -> CSSContentsStatementRule? =
+pub extern "js" fn CSSRule::as_css_contents_statement_rule(self : CSSRule) -> CSSContentsStatementRule? =
   #| (self) => (self instanceof CSSContentsStatementRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_nested_declarations(
-  self : CSSRule,
-) -> CSSNestedDeclarations? =
+pub extern "js" fn CSSRule::as_css_nested_declarations(self : CSSRule) -> CSSNestedDeclarations? =
   #| (self) => (self instanceof CSSNestedDeclarations) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_property_rule(
-  self : CSSRule,
-) -> CSSPropertyRule? =
+pub extern "js" fn CSSRule::as_css_property_rule(self : CSSRule) -> CSSPropertyRule? =
   #| (self) => (self instanceof CSSPropertyRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_starting_style_rule(
-  self : CSSRule,
-) -> CSSStartingStyleRule? =
+pub extern "js" fn CSSRule::as_css_starting_style_rule(self : CSSRule) -> CSSStartingStyleRule? =
   #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_view_transition_rule(
-  self : CSSRule,
-) -> CSSViewTransitionRule? =
+pub extern "js" fn CSSRule::as_css_view_transition_rule(self : CSSRule) -> CSSViewTransitionRule? =
   #| (self) => (self instanceof CSSViewTransitionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::as_css_style_rule(self : CSSRule) -> CSSStyleRule? =
   #| (self) => (self instanceof CSSStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_import_rule(
-  self : CSSRule,
-) -> CSSImportRule? =
+pub extern "js" fn CSSRule::as_css_import_rule(self : CSSRule) -> CSSImportRule? =
   #| (self) => (self instanceof CSSImportRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_grouping_rule(
-  self : CSSRule,
-) -> CSSGroupingRule? =
+pub extern "js" fn CSSRule::as_css_grouping_rule(self : CSSRule) -> CSSGroupingRule? =
   #| (self) => (self instanceof CSSGroupingRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::as_css_page_rule(self : CSSRule) -> CSSPageRule? =
   #| (self) => (self instanceof CSSPageRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_margin_rule(
-  self : CSSRule,
-) -> CSSMarginRule? =
+pub extern "js" fn CSSRule::as_css_margin_rule(self : CSSRule) -> CSSMarginRule? =
   #| (self) => (self instanceof CSSMarginRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_namespace_rule(
-  self : CSSRule,
-) -> CSSNamespaceRule? =
+pub extern "js" fn CSSRule::as_css_namespace_rule(self : CSSRule) -> CSSNamespaceRule? =
   #| (self) => (self instanceof CSSNamespaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSRule::as_css_custom_media_rule(
-  self : CSSRule,
-) -> CSSCustomMediaRule? =
+pub extern "js" fn CSSRule::as_css_custom_media_rule(self : CSSRule) -> CSSCustomMediaRule? =
   #| (self) => (self instanceof CSSCustomMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 pub extern "js" fn CSSRule::get_css_text(self : CSSRule) -> String =
   #| (self) => self.cssText
 
-///|
-pub extern "js" fn CSSRule::set_css_text(
-  self : CSSRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSRule::set_css_text(self : CSSRule, value : String) -> Unit =
   #| (self, value) => { self.cssText = value }
 
-///|
 pub extern "js" fn CSSRule::get_parent_rule(self : CSSRule) -> CSSRule? =
   #| (self) => (() => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn CSSRule::get_parent_style_sheet(
-  self : CSSRule,
-) -> CSSStyleSheet? =
+pub extern "js" fn CSSRule::get_parent_style_sheet(self : CSSRule) -> CSSStyleSheet? =
   #| (self) => (() => { const v = self.parentStyleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn CSSRule::get_type(self : CSSRule) -> Int =
   #| (self) => self.type
 
 // CSSRule.STYLE_RULE
-
-///|
 pub let css_rule_style_rule : Int = 1
 
 // CSSRule.CHARSET_RULE
-
-///|
 pub let css_rule_charset_rule : Int = 2
 
 // CSSRule.IMPORT_RULE
-
-///|
 pub let css_rule_import_rule : Int = 3
 
 // CSSRule.MEDIA_RULE
-
-///|
 pub let css_rule_media_rule : Int = 4
 
 // CSSRule.FONT_FACE_RULE
-
-///|
 pub let css_rule_font_face_rule : Int = 5
 
 // CSSRule.PAGE_RULE
-
-///|
 pub let css_rule_page_rule : Int = 6
 
 // CSSRule.MARGIN_RULE
-
-///|
 pub let css_rule_margin_rule : Int = 9
 
 // CSSRule.NAMESPACE_RULE
-
-///|
 pub let css_rule_namespace_rule : Int = 10
 
 // CSSRule.KEYFRAMES_RULE
-
-///|
 pub let css_rule_keyframes_rule : Int = 7
 
 // CSSRule.KEYFRAME_RULE
-
-///|
 pub let css_rule_keyframe_rule : Int = 8
 
 // CSSRule.SUPPORTS_RULE
-
-///|
 pub let css_rule_supports_rule : Int = 12
 
 // CSSRule.COUNTER_STYLE_RULE
-
-///|
 pub let css_rule_counter_style_rule : Int = 11
 
 // CSSRule.FONT_FEATURE_VALUES_RULE
-
-///|
 pub let css_rule_font_feature_values_rule : Int = 14
 
 ///|
 /// CSSStyleRule interface
 pub type CSSStyleRule
 
-///|
 pub extern "js" fn CSSStyleRule::to_js_value(self : CSSStyleRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSStyleRule (unchecked)
 pub extern "js" fn CSSStyleRule::from_js_value(v : JsValue) -> CSSStyleRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSStyleRule (checked with instanceof)
-pub extern "js" fn CSSStyleRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSStyleRule? =
+pub extern "js" fn CSSStyleRule::from_js_value_opt(v : JsValue) -> CSSStyleRule? =
   #| (v) => (v instanceof CSSStyleRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSStyleRule (checked with instanceof)
 pub extern "js" fn JsValue::as_css_style_rule(self : JsValue) -> CSSStyleRule? =
   #| (self) => (self instanceof CSSStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSStyleRule (unchecked)
 pub extern "js" fn JsValue::to_css_style_rule(self : JsValue) -> CSSStyleRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleRule::to_css_grouping_rule(
-  self : CSSStyleRule,
-) -> CSSGroupingRule =
+pub extern "js" fn CSSStyleRule::to_css_grouping_rule(self : CSSStyleRule) -> CSSGroupingRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSStyleRule::to_css_rule(self : CSSStyleRule) -> CSSRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleRule::get_selector_text(
-  self : CSSStyleRule,
-) -> String =
+pub extern "js" fn CSSStyleRule::get_selector_text(self : CSSStyleRule) -> String =
   #| (self) => self.selectorText
 
-///|
-pub extern "js" fn CSSStyleRule::set_selector_text(
-  self : CSSStyleRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSStyleRule::set_selector_text(self : CSSStyleRule, value : String) -> Unit =
   #| (self, value) => { self.selectorText = value }
 
-///|
-pub extern "js" fn CSSStyleRule::get_style(
-  self : CSSStyleRule,
-) -> CSSStyleProperties =
+pub extern "js" fn CSSStyleRule::get_style(self : CSSStyleRule) -> CSSStyleProperties =
   #| (self) => self.style
 
-///|
-pub extern "js" fn CSSStyleRule::get_style_map(
-  self : CSSStyleRule,
-) -> StylePropertyMap =
+pub extern "js" fn CSSStyleRule::get_style_map(self : CSSStyleRule) -> StylePropertyMap =
   #| (self) => self.styleMap
 
 ///|
 /// CSSImportRule interface
 pub type CSSImportRule
 
-///|
 pub extern "js" fn CSSImportRule::to_js_value(self : CSSImportRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSImportRule (unchecked)
 pub extern "js" fn CSSImportRule::from_js_value(v : JsValue) -> CSSImportRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSImportRule (checked with instanceof)
-pub extern "js" fn CSSImportRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSImportRule? =
+pub extern "js" fn CSSImportRule::from_js_value_opt(v : JsValue) -> CSSImportRule? =
   #| (v) => (v instanceof CSSImportRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSImportRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_import_rule(
-  self : JsValue,
-) -> CSSImportRule? =
+pub extern "js" fn JsValue::as_css_import_rule(self : JsValue) -> CSSImportRule? =
   #| (self) => (self instanceof CSSImportRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSImportRule (unchecked)
 pub extern "js" fn JsValue::to_css_import_rule(self : JsValue) -> CSSImportRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSImportRule::to_css_rule(self : CSSImportRule) -> CSSRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSImportRule::get_href(self : CSSImportRule) -> String =
   #| (self) => self.href
 
-///|
 pub extern "js" fn CSSImportRule::get_media(self : CSSImportRule) -> MediaList =
   #| (self) => self.media
 
-///|
-pub extern "js" fn CSSImportRule::get_style_sheet(
-  self : CSSImportRule,
-) -> CSSStyleSheet? =
+pub extern "js" fn CSSImportRule::get_style_sheet(self : CSSImportRule) -> CSSStyleSheet? =
   #| (self) => (() => { const v = self.styleSheet; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
-pub extern "js" fn CSSImportRule::get_layer_name(
-  self : CSSImportRule,
-) -> String? =
+pub extern "js" fn CSSImportRule::get_layer_name(self : CSSImportRule) -> String? =
   #| (self) => (self.layerName) ?? undefined
 
-///|
-pub extern "js" fn CSSImportRule::get_supports_text(
-  self : CSSImportRule,
-) -> String? =
+pub extern "js" fn CSSImportRule::get_supports_text(self : CSSImportRule) -> String? =
   #| (self) => (self.supportsText) ?? undefined
 
 ///|
 /// CSSGroupingRule interface
 pub type CSSGroupingRule
 
-///|
-pub extern "js" fn CSSGroupingRule::to_js_value(
-  self : CSSGroupingRule,
-) -> JsValue =
+pub extern "js" fn CSSGroupingRule::to_js_value(self : CSSGroupingRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSGroupingRule (unchecked)
-pub extern "js" fn CSSGroupingRule::from_js_value(
-  v : JsValue,
-) -> CSSGroupingRule =
+pub extern "js" fn CSSGroupingRule::from_js_value(v : JsValue) -> CSSGroupingRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSGroupingRule (checked with instanceof)
-pub extern "js" fn CSSGroupingRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSGroupingRule? =
+pub extern "js" fn CSSGroupingRule::from_js_value_opt(v : JsValue) -> CSSGroupingRule? =
   #| (v) => (v instanceof CSSGroupingRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSGroupingRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_grouping_rule(
-  self : JsValue,
-) -> CSSGroupingRule? =
+pub extern "js" fn JsValue::as_css_grouping_rule(self : JsValue) -> CSSGroupingRule? =
   #| (self) => (self instanceof CSSGroupingRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSGroupingRule (unchecked)
-pub extern "js" fn JsValue::to_css_grouping_rule(
-  self : JsValue,
-) -> CSSGroupingRule =
+pub extern "js" fn JsValue::to_css_grouping_rule(self : JsValue) -> CSSGroupingRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSGroupingRule::to_css_rule(
-  self : CSSGroupingRule,
-) -> CSSRule =
+pub extern "js" fn CSSGroupingRule::to_css_rule(self : CSSGroupingRule) -> CSSRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_scope_rule(
-  self : CSSGroupingRule,
-) -> CSSScopeRule? =
+pub extern "js" fn CSSGroupingRule::as_css_scope_rule(self : CSSGroupingRule) -> CSSScopeRule? =
   #| (self) => (self instanceof CSSScopeRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_layer_block_rule(
-  self : CSSGroupingRule,
-) -> CSSLayerBlockRule? =
+pub extern "js" fn CSSGroupingRule::as_css_layer_block_rule(self : CSSGroupingRule) -> CSSLayerBlockRule? =
   #| (self) => (self instanceof CSSLayerBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_container_rule(
-  self : CSSGroupingRule,
-) -> CSSContainerRule? =
+pub extern "js" fn CSSGroupingRule::as_css_container_rule(self : CSSGroupingRule) -> CSSContainerRule? =
   #| (self) => (self instanceof CSSContainerRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_supports_condition_rule(
-  self : CSSGroupingRule,
-) -> CSSSupportsConditionRule? =
+pub extern "js" fn CSSGroupingRule::as_css_supports_condition_rule(self : CSSGroupingRule) -> CSSSupportsConditionRule? =
   #| (self) => (self instanceof CSSSupportsConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_condition_rule(
-  self : CSSGroupingRule,
-) -> CSSConditionRule? =
+pub extern "js" fn CSSGroupingRule::as_css_condition_rule(self : CSSGroupingRule) -> CSSConditionRule? =
   #| (self) => (self instanceof CSSConditionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_media_rule(
-  self : CSSGroupingRule,
-) -> CSSMediaRule? =
+pub extern "js" fn CSSGroupingRule::as_css_media_rule(self : CSSGroupingRule) -> CSSMediaRule? =
   #| (self) => (self instanceof CSSMediaRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_supports_rule(
-  self : CSSGroupingRule,
-) -> CSSSupportsRule? =
+pub extern "js" fn CSSGroupingRule::as_css_supports_rule(self : CSSGroupingRule) -> CSSSupportsRule? =
   #| (self) => (self instanceof CSSSupportsRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_function_rule(
-  self : CSSGroupingRule,
-) -> CSSFunctionRule? =
+pub extern "js" fn CSSGroupingRule::as_css_function_rule(self : CSSGroupingRule) -> CSSFunctionRule? =
   #| (self) => (self instanceof CSSFunctionRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_mixin_rule(
-  self : CSSGroupingRule,
-) -> CSSMixinRule? =
+pub extern "js" fn CSSGroupingRule::as_css_mixin_rule(self : CSSGroupingRule) -> CSSMixinRule? =
   #| (self) => (self instanceof CSSMixinRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_apply_block_rule(
-  self : CSSGroupingRule,
-) -> CSSApplyBlockRule? =
+pub extern "js" fn CSSGroupingRule::as_css_apply_block_rule(self : CSSGroupingRule) -> CSSApplyBlockRule? =
   #| (self) => (self instanceof CSSApplyBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_contents_block_rule(
-  self : CSSGroupingRule,
-) -> CSSContentsBlockRule? =
+pub extern "js" fn CSSGroupingRule::as_css_contents_block_rule(self : CSSGroupingRule) -> CSSContentsBlockRule? =
   #| (self) => (self instanceof CSSContentsBlockRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(
-  self : CSSGroupingRule,
-) -> CSSStartingStyleRule? =
+pub extern "js" fn CSSGroupingRule::as_css_starting_style_rule(self : CSSGroupingRule) -> CSSStartingStyleRule? =
   #| (self) => (self instanceof CSSStartingStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_style_rule(
-  self : CSSGroupingRule,
-) -> CSSStyleRule? =
+pub extern "js" fn CSSGroupingRule::as_css_style_rule(self : CSSGroupingRule) -> CSSStyleRule? =
   #| (self) => (self instanceof CSSStyleRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSGroupingRule::as_css_page_rule(
-  self : CSSGroupingRule,
-) -> CSSPageRule? =
+pub extern "js" fn CSSGroupingRule::as_css_page_rule(self : CSSGroupingRule) -> CSSPageRule? =
   #| (self) => (self instanceof CSSPageRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
@@ -1040,6 +662,8 @@ pub(all) enum CSSGroupingRuleInsertRuleError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CSSGroupingRuleInsertRuleError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSGroupingRuleDeleteRuleError {
@@ -1048,418 +672,238 @@ pub(all) enum CSSGroupingRuleDeleteRuleError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn CSSGroupingRule::get_css_rules(
-  self : CSSGroupingRule,
-) -> CSSRuleList =
+pub extend CSSGroupingRuleDeleteRuleError with @debug.Debug::{to_repr}
+
+pub extern "js" fn CSSGroupingRule::get_css_rules(self : CSSGroupingRule) -> CSSRuleList =
   #| (self) => self.cssRules
 
-///|
-pub extern "js" fn CSSGroupingRule::insert_rule(
-  self : CSSGroupingRule,
-  rule : String,
-) -> Result[Int, CSSGroupingRuleInsertRuleError] =
+pub extern "js" fn CSSGroupingRule::insert_rule(self : CSSGroupingRule, rule : String) -> Result[Int, CSSGroupingRuleInsertRuleError] =
   #| (self, rule) => (() => { try { return { $tag: 1, _0: self.insertRule(rule) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSGroupingRule::insert_rule_with_index(
-  self : CSSGroupingRule,
-  rule : String,
-  index : Int,
-) -> Result[Int, CSSGroupingRuleInsertRuleError] =
+pub extern "js" fn CSSGroupingRule::insert_rule_with_index(self : CSSGroupingRule, rule : String, index : Int) -> Result[Int, CSSGroupingRuleInsertRuleError] =
   #| (self, rule, index) => (() => { try { return { $tag: 1, _0: self.insertRule(rule, index) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'HierarchyRequestError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSGroupingRule::delete_rule(
-  self : CSSGroupingRule,
-  index : Int,
-) -> Result[Unit, CSSGroupingRuleDeleteRuleError] =
+pub extern "js" fn CSSGroupingRule::delete_rule(self : CSSGroupingRule, index : Int) -> Result[Unit, CSSGroupingRuleDeleteRuleError] =
   #| (self, index) => (() => { try { self.deleteRule(index); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
 ///|
 /// CSSPageDescriptors interface
 pub type CSSPageDescriptors
 
-///|
-pub extern "js" fn CSSPageDescriptors::to_js_value(
-  self : CSSPageDescriptors,
-) -> JsValue =
+pub extern "js" fn CSSPageDescriptors::to_js_value(self : CSSPageDescriptors) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSPageDescriptors (unchecked)
-pub extern "js" fn CSSPageDescriptors::from_js_value(
-  v : JsValue,
-) -> CSSPageDescriptors =
+pub extern "js" fn CSSPageDescriptors::from_js_value(v : JsValue) -> CSSPageDescriptors =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSPageDescriptors (checked with instanceof)
-pub extern "js" fn CSSPageDescriptors::from_js_value_opt(
-  v : JsValue,
-) -> CSSPageDescriptors? =
+pub extern "js" fn CSSPageDescriptors::from_js_value_opt(v : JsValue) -> CSSPageDescriptors? =
   #| (v) => (v instanceof CSSPageDescriptors) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSPageDescriptors (checked with instanceof)
-pub extern "js" fn JsValue::as_css_page_descriptors(
-  self : JsValue,
-) -> CSSPageDescriptors? =
+pub extern "js" fn JsValue::as_css_page_descriptors(self : JsValue) -> CSSPageDescriptors? =
   #| (self) => (self instanceof CSSPageDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSPageDescriptors (unchecked)
-pub extern "js" fn JsValue::to_css_page_descriptors(
-  self : JsValue,
-) -> CSSPageDescriptors =
+pub extern "js" fn JsValue::to_css_page_descriptors(self : JsValue) -> CSSPageDescriptors =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSPageDescriptors::to_css_style_declaration(
-  self : CSSPageDescriptors,
-) -> CSSStyleDeclaration =
+pub extern "js" fn CSSPageDescriptors::to_css_style_declaration(self : CSSPageDescriptors) -> CSSStyleDeclaration =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_margin(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_margin(self : CSSPageDescriptors) -> String =
   #| (self) => self.margin
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_margin(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_margin(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.margin = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_margin_top(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_margin_top(self : CSSPageDescriptors) -> String =
   #| (self) => self.marginTop
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_margin_top(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_margin_top(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.marginTop = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_margin_right(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_margin_right(self : CSSPageDescriptors) -> String =
   #| (self) => self.marginRight
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_margin_right(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_margin_right(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.marginRight = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_margin_bottom(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_margin_bottom(self : CSSPageDescriptors) -> String =
   #| (self) => self.marginBottom
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_margin_bottom(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_margin_bottom(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.marginBottom = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_margin_left(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_margin_left(self : CSSPageDescriptors) -> String =
   #| (self) => self.marginLeft
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_margin_left(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_margin_left(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.marginLeft = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_size(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_size(self : CSSPageDescriptors) -> String =
   #| (self) => self.size
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_size(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_size(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.size = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_page_orientation(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_page_orientation(self : CSSPageDescriptors) -> String =
   #| (self) => self.pageOrientation
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_page_orientation(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_page_orientation(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.pageOrientation = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_marks(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_marks(self : CSSPageDescriptors) -> String =
   #| (self) => self.marks
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_marks(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_marks(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.marks = value }
 
-///|
-pub extern "js" fn CSSPageDescriptors::get_bleed(
-  self : CSSPageDescriptors,
-) -> String =
+pub extern "js" fn CSSPageDescriptors::get_bleed(self : CSSPageDescriptors) -> String =
   #| (self) => self.bleed
 
-///|
-pub extern "js" fn CSSPageDescriptors::set_bleed(
-  self : CSSPageDescriptors,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageDescriptors::set_bleed(self : CSSPageDescriptors, value : String) -> Unit =
   #| (self, value) => { self.bleed = value }
 
 ///|
 /// CSSPageRule interface
 pub type CSSPageRule
 
-///|
 pub extern "js" fn CSSPageRule::to_js_value(self : CSSPageRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSPageRule (unchecked)
 pub extern "js" fn CSSPageRule::from_js_value(v : JsValue) -> CSSPageRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSPageRule (checked with instanceof)
 pub extern "js" fn CSSPageRule::from_js_value_opt(v : JsValue) -> CSSPageRule? =
   #| (v) => (v instanceof CSSPageRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSPageRule (checked with instanceof)
 pub extern "js" fn JsValue::as_css_page_rule(self : JsValue) -> CSSPageRule? =
   #| (self) => (self instanceof CSSPageRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSPageRule (unchecked)
 pub extern "js" fn JsValue::to_css_page_rule(self : JsValue) -> CSSPageRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSPageRule::to_css_grouping_rule(
-  self : CSSPageRule,
-) -> CSSGroupingRule =
+pub extern "js" fn CSSPageRule::to_css_grouping_rule(self : CSSPageRule) -> CSSGroupingRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSPageRule::to_css_rule(self : CSSPageRule) -> CSSRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSPageRule::get_selector_text(self : CSSPageRule) -> String =
   #| (self) => self.selectorText
 
-///|
-pub extern "js" fn CSSPageRule::set_selector_text(
-  self : CSSPageRule,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSPageRule::set_selector_text(self : CSSPageRule, value : String) -> Unit =
   #| (self, value) => { self.selectorText = value }
 
-///|
-pub extern "js" fn CSSPageRule::get_style(
-  self : CSSPageRule,
-) -> CSSPageDescriptors =
+pub extern "js" fn CSSPageRule::get_style(self : CSSPageRule) -> CSSPageDescriptors =
   #| (self) => self.style
 
 ///|
 /// CSSMarginRule interface
 pub type CSSMarginRule
 
-///|
 pub extern "js" fn CSSMarginRule::to_js_value(self : CSSMarginRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSMarginRule (unchecked)
 pub extern "js" fn CSSMarginRule::from_js_value(v : JsValue) -> CSSMarginRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSMarginRule (checked with instanceof)
-pub extern "js" fn CSSMarginRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSMarginRule? =
+pub extern "js" fn CSSMarginRule::from_js_value_opt(v : JsValue) -> CSSMarginRule? =
   #| (v) => (v instanceof CSSMarginRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSMarginRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_margin_rule(
-  self : JsValue,
-) -> CSSMarginRule? =
+pub extern "js" fn JsValue::as_css_margin_rule(self : JsValue) -> CSSMarginRule? =
   #| (self) => (self instanceof CSSMarginRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSMarginRule (unchecked)
 pub extern "js" fn JsValue::to_css_margin_rule(self : JsValue) -> CSSMarginRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSMarginRule::to_css_rule(self : CSSMarginRule) -> CSSRule =
   #| (self) => self
 
-///|
 pub extern "js" fn CSSMarginRule::get_name(self : CSSMarginRule) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn CSSMarginRule::get_style(
-  self : CSSMarginRule,
-) -> CSSStyleDeclaration =
+pub extern "js" fn CSSMarginRule::get_style(self : CSSMarginRule) -> CSSStyleDeclaration =
   #| (self) => self.style
 
 ///|
 /// CSSNamespaceRule interface
 pub type CSSNamespaceRule
 
-///|
-pub extern "js" fn CSSNamespaceRule::to_js_value(
-  self : CSSNamespaceRule,
-) -> JsValue =
+pub extern "js" fn CSSNamespaceRule::to_js_value(self : CSSNamespaceRule) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSNamespaceRule (unchecked)
-pub extern "js" fn CSSNamespaceRule::from_js_value(
-  v : JsValue,
-) -> CSSNamespaceRule =
+pub extern "js" fn CSSNamespaceRule::from_js_value(v : JsValue) -> CSSNamespaceRule =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSNamespaceRule (checked with instanceof)
-pub extern "js" fn CSSNamespaceRule::from_js_value_opt(
-  v : JsValue,
-) -> CSSNamespaceRule? =
+pub extern "js" fn CSSNamespaceRule::from_js_value_opt(v : JsValue) -> CSSNamespaceRule? =
   #| (v) => (v instanceof CSSNamespaceRule) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSNamespaceRule (checked with instanceof)
-pub extern "js" fn JsValue::as_css_namespace_rule(
-  self : JsValue,
-) -> CSSNamespaceRule? =
+pub extern "js" fn JsValue::as_css_namespace_rule(self : JsValue) -> CSSNamespaceRule? =
   #| (self) => (self instanceof CSSNamespaceRule) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSNamespaceRule (unchecked)
-pub extern "js" fn JsValue::to_css_namespace_rule(
-  self : JsValue,
-) -> CSSNamespaceRule =
+pub extern "js" fn JsValue::to_css_namespace_rule(self : JsValue) -> CSSNamespaceRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSNamespaceRule::to_css_rule(
-  self : CSSNamespaceRule,
-) -> CSSRule =
+pub extern "js" fn CSSNamespaceRule::to_css_rule(self : CSSNamespaceRule) -> CSSRule =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSNamespaceRule::get_namespace_uri(
-  self : CSSNamespaceRule,
-) -> String =
+pub extern "js" fn CSSNamespaceRule::get_namespace_uri(self : CSSNamespaceRule) -> String =
   #| (self) => self.namespaceURI
 
-///|
-pub extern "js" fn CSSNamespaceRule::get_prefix(
-  self : CSSNamespaceRule,
-) -> String =
+pub extern "js" fn CSSNamespaceRule::get_prefix(self : CSSNamespaceRule) -> String =
   #| (self) => self.prefix
 
 ///|
 /// CSSStyleDeclaration interface
 pub type CSSStyleDeclaration
 
-///|
-pub extern "js" fn CSSStyleDeclaration::to_js_value(
-  self : CSSStyleDeclaration,
-) -> JsValue =
+pub extern "js" fn CSSStyleDeclaration::to_js_value(self : CSSStyleDeclaration) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSStyleDeclaration (unchecked)
-pub extern "js" fn CSSStyleDeclaration::from_js_value(
-  v : JsValue,
-) -> CSSStyleDeclaration =
+pub extern "js" fn CSSStyleDeclaration::from_js_value(v : JsValue) -> CSSStyleDeclaration =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSStyleDeclaration (checked with instanceof)
-pub extern "js" fn CSSStyleDeclaration::from_js_value_opt(
-  v : JsValue,
-) -> CSSStyleDeclaration? =
+pub extern "js" fn CSSStyleDeclaration::from_js_value_opt(v : JsValue) -> CSSStyleDeclaration? =
   #| (v) => (v instanceof CSSStyleDeclaration) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSStyleDeclaration (checked with instanceof)
-pub extern "js" fn JsValue::as_css_style_declaration(
-  self : JsValue,
-) -> CSSStyleDeclaration? =
+pub extern "js" fn JsValue::as_css_style_declaration(self : JsValue) -> CSSStyleDeclaration? =
   #| (self) => (self instanceof CSSStyleDeclaration) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSStyleDeclaration (unchecked)
-pub extern "js" fn JsValue::to_css_style_declaration(
-  self : JsValue,
-) -> CSSStyleDeclaration =
+pub extern "js" fn JsValue::to_css_style_declaration(self : JsValue) -> CSSStyleDeclaration =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSPositionTryDescriptors? =
+pub extern "js" fn CSSStyleDeclaration::as_css_position_try_descriptors(self : CSSStyleDeclaration) -> CSSPositionTryDescriptors? =
   #| (self) => (self instanceof CSSPositionTryDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSFontFaceDescriptors? =
+pub extern "js" fn CSSStyleDeclaration::as_css_font_face_descriptors(self : CSSStyleDeclaration) -> CSSFontFaceDescriptors? =
   #| (self) => (self instanceof CSSFontFaceDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_function_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSFunctionDescriptors? =
+pub extern "js" fn CSSStyleDeclaration::as_css_function_descriptors(self : CSSStyleDeclaration) -> CSSFunctionDescriptors? =
   #| (self) => (self instanceof CSSFunctionDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_page_descriptors(
-  self : CSSStyleDeclaration,
-) -> CSSPageDescriptors? =
+pub extern "js" fn CSSStyleDeclaration::as_css_page_descriptors(self : CSSStyleDeclaration) -> CSSPageDescriptors? =
   #| (self) => (self instanceof CSSPageDescriptors) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn CSSStyleDeclaration::as_css_style_properties(
-  self : CSSStyleDeclaration,
-) -> CSSStyleProperties? =
+pub extern "js" fn CSSStyleDeclaration::as_css_style_properties(self : CSSStyleDeclaration) -> CSSStyleProperties? =
   #| (self) => (self instanceof CSSStyleProperties) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
@@ -1469,6 +913,8 @@ pub(all) enum CSSStyleDeclarationSetPropertyError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend CSSStyleDeclarationSetPropertyError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum CSSStyleDeclarationRemovePropertyError {
@@ -1476,137 +922,70 @@ pub(all) enum CSSStyleDeclarationRemovePropertyError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn CSSStyleDeclaration::get_css_text(
-  self : CSSStyleDeclaration,
-) -> String =
+pub extend CSSStyleDeclarationRemovePropertyError with @debug.Debug::{to_repr}
+
+pub extern "js" fn CSSStyleDeclaration::get_css_text(self : CSSStyleDeclaration) -> String =
   #| (self) => self.cssText
 
-///|
-pub extern "js" fn CSSStyleDeclaration::set_css_text(
-  self : CSSStyleDeclaration,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSStyleDeclaration::set_css_text(self : CSSStyleDeclaration, value : String) -> Unit =
   #| (self, value) => { self.cssText = value }
 
-///|
-pub extern "js" fn CSSStyleDeclaration::get_length(
-  self : CSSStyleDeclaration,
-) -> Int =
+pub extern "js" fn CSSStyleDeclaration::get_length(self : CSSStyleDeclaration) -> Int =
   #| (self) => self.length
 
-///|
-pub extern "js" fn CSSStyleDeclaration::item(
-  self : CSSStyleDeclaration,
-  index : Int,
-) -> String =
+pub extern "js" fn CSSStyleDeclaration::item(self : CSSStyleDeclaration, index : Int) -> String =
   #| (self, index) => self.item(index)
 
-///|
 #alias("_[_]")
-pub extern "js" fn CSSStyleDeclaration::get(
-  self : CSSStyleDeclaration,
-  index : Int,
-) -> String =
+pub extern "js" fn CSSStyleDeclaration::get(self : CSSStyleDeclaration, index : Int) -> String =
   #| (self, index) => self[index]
 
-///|
-pub extern "js" fn CSSStyleDeclaration::get_property_value(
-  self : CSSStyleDeclaration,
-  property : String,
-) -> String =
+pub extern "js" fn CSSStyleDeclaration::get_property_value(self : CSSStyleDeclaration, property : String) -> String =
   #| (self, property) => self.getPropertyValue(property)
 
-///|
-pub extern "js" fn CSSStyleDeclaration::get_property_priority(
-  self : CSSStyleDeclaration,
-  property : String,
-) -> String =
+pub extern "js" fn CSSStyleDeclaration::get_property_priority(self : CSSStyleDeclaration, property : String) -> String =
   #| (self, property) => self.getPropertyPriority(property)
 
-///|
-pub extern "js" fn CSSStyleDeclaration::set_property(
-  self : CSSStyleDeclaration,
-  property : String,
-  value : String,
-) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
+pub extern "js" fn CSSStyleDeclaration::set_property(self : CSSStyleDeclaration, property : String, value : String) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
   #| (self, property, value) => (() => { try { self.setProperty(property, value); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(
-  self : CSSStyleDeclaration,
-  property : String,
-  value : String,
-  priority : String,
-) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
+pub extern "js" fn CSSStyleDeclaration::set_property_with_priority(self : CSSStyleDeclaration, property : String, value : String, priority : String) -> Result[Unit, CSSStyleDeclarationSetPropertyError] =
   #| (self, property, value, priority) => (() => { try { self.setProperty(property, value, priority); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleDeclaration::remove_property(
-  self : CSSStyleDeclaration,
-  property : String,
-) -> Result[String, CSSStyleDeclarationRemovePropertyError] =
+pub extern "js" fn CSSStyleDeclaration::remove_property(self : CSSStyleDeclaration, property : String) -> Result[String, CSSStyleDeclarationRemovePropertyError] =
   #| (self, property) => (() => { try { return { $tag: 1, _0: self.removeProperty(property) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NoModificationAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn CSSStyleDeclaration::get_parent_rule(
-  self : CSSStyleDeclaration,
-) -> CSSRule? =
+pub extern "js" fn CSSStyleDeclaration::get_parent_rule(self : CSSStyleDeclaration) -> CSSRule? =
   #| (self) => (() => { const v = self.parentRule; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
 ///|
 /// CSSStyleProperties interface
 pub type CSSStyleProperties
 
-///|
-pub extern "js" fn CSSStyleProperties::to_js_value(
-  self : CSSStyleProperties,
-) -> JsValue =
+pub extern "js" fn CSSStyleProperties::to_js_value(self : CSSStyleProperties) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to CSSStyleProperties (unchecked)
-pub extern "js" fn CSSStyleProperties::from_js_value(
-  v : JsValue,
-) -> CSSStyleProperties =
+pub extern "js" fn CSSStyleProperties::from_js_value(v : JsValue) -> CSSStyleProperties =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to CSSStyleProperties (checked with instanceof)
-pub extern "js" fn CSSStyleProperties::from_js_value_opt(
-  v : JsValue,
-) -> CSSStyleProperties? =
+pub extern "js" fn CSSStyleProperties::from_js_value_opt(v : JsValue) -> CSSStyleProperties? =
   #| (v) => (v instanceof CSSStyleProperties) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to CSSStyleProperties (checked with instanceof)
-pub extern "js" fn JsValue::as_css_style_properties(
-  self : JsValue,
-) -> CSSStyleProperties? =
+pub extern "js" fn JsValue::as_css_style_properties(self : JsValue) -> CSSStyleProperties? =
   #| (self) => (self instanceof CSSStyleProperties) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to CSSStyleProperties (unchecked)
-pub extern "js" fn JsValue::to_css_style_properties(
-  self : JsValue,
-) -> CSSStyleProperties =
+pub extern "js" fn JsValue::to_css_style_properties(self : JsValue) -> CSSStyleProperties =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleProperties::to_css_style_declaration(
-  self : CSSStyleProperties,
-) -> CSSStyleDeclaration =
+pub extern "js" fn CSSStyleProperties::to_css_style_declaration(self : CSSStyleProperties) -> CSSStyleDeclaration =
   #| (self) => self
 
-///|
-pub extern "js" fn CSSStyleProperties::get_css_float(
-  self : CSSStyleProperties,
-) -> String =
+pub extern "js" fn CSSStyleProperties::get_css_float(self : CSSStyleProperties) -> String =
   #| (self) => self.cssFloat
 
-///|
-pub extern "js" fn CSSStyleProperties::set_css_float(
-  self : CSSStyleProperties,
-  value : String,
-) -> Unit =
+pub extern "js" fn CSSStyleProperties::set_css_float(self : CSSStyleProperties, value : String) -> Unit =
   #| (self, value) => { self.cssFloat = value }

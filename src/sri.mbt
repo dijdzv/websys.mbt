@@ -10,7 +10,6 @@ pub(all) struct IntegrityViolationReportBody {
   reportOnly : Bool?
 }
 
-///|
 /// Create a new IntegrityViolationReportBody with default values
 pub fn IntegrityViolationReportBody::default() -> IntegrityViolationReportBody {
   IntegrityViolationReportBody::{
@@ -21,10 +20,7 @@ pub fn IntegrityViolationReportBody::default() -> IntegrityViolationReportBody {
   }
 }
 
-///|
-extern "js" fn IntegrityViolationReportBody::to_js_ffi(
-  self : IntegrityViolationReportBody,
-) -> JsValue =
+extern "js" fn IntegrityViolationReportBody::to_js_ffi(self : IntegrityViolationReportBody) -> JsValue =
   #| (self) => ({
   #|   documentURL: self.documentURL,
   #|   blockedURL: self.blockedURL,
@@ -32,18 +28,12 @@ extern "js" fn IntegrityViolationReportBody::to_js_ffi(
   #|   reportOnly: (self.reportOnly === -1 ? undefined : self.reportOnly)
   #| })
 
-///|
 /// Convert to JsValue
-pub fn IntegrityViolationReportBody::to_js(
-  self : IntegrityViolationReportBody,
-) -> JsValue {
+pub fn IntegrityViolationReportBody::to_js(self : IntegrityViolationReportBody) -> JsValue {
   IntegrityViolationReportBody::to_js_ffi(self)
 }
 
-///|
-extern "js" fn IntegrityViolationReportBody::from_js_ffi(
-  value : JsValue,
-) -> IntegrityViolationReportBody =
+extern "js" fn IntegrityViolationReportBody::from_js_ffi(value : JsValue) -> IntegrityViolationReportBody =
   #| (v) => ({
   #|   documentURL: v.documentURL,
   #|   blockedURL: v.blockedURL,
@@ -51,10 +41,7 @@ extern "js" fn IntegrityViolationReportBody::from_js_ffi(
   #|   reportOnly: (v.reportOnly === undefined ? -1 : v.reportOnly)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn IntegrityViolationReportBody::from_js(
-  value : JsValue,
-) -> IntegrityViolationReportBody {
+pub fn IntegrityViolationReportBody::from_js(value : JsValue) -> IntegrityViolationReportBody {
   IntegrityViolationReportBody::from_js_ffi(value)
 }

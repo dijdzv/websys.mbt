@@ -11,7 +11,6 @@ pub(all) struct InputEventInit {
   inputType : String?
 }
 
-///|
 /// Create a new InputEventInit with default values
 pub fn InputEventInit::default() -> InputEventInit {
   InputEventInit::{
@@ -23,7 +22,6 @@ pub fn InputEventInit::default() -> InputEventInit {
   }
 }
 
-///|
 extern "js" fn InputEventInit::to_js_ffi(self : InputEventInit) -> JsValue =
   #| (self) => ({
   #|   dataTransfer: ((() => { const v = self.dataTransfer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -33,13 +31,11 @@ extern "js" fn InputEventInit::to_js_ffi(self : InputEventInit) -> JsValue =
   #|   inputType: self.inputType
   #| })
 
-///|
 /// Convert to JsValue
 pub fn InputEventInit::to_js(self : InputEventInit) -> JsValue {
   InputEventInit::to_js_ffi(self)
 }
 
-///|
 extern "js" fn InputEventInit::from_js_ffi(value : JsValue) -> InputEventInit =
   #| (v) => ({
   #|   dataTransfer: (v.dataTransfer === undefined ? { $tag: 0 } : v.dataTransfer === null ? { $tag: 1 } : { $tag: 2, _0: v.dataTransfer }),
@@ -49,7 +45,6 @@ extern "js" fn InputEventInit::from_js_ffi(value : JsValue) -> InputEventInit =
   #|   inputType: v.inputType
   #| })
 
-///|
 /// Convert from JsValue
 pub fn InputEventInit::from_js(value : JsValue) -> InputEventInit {
   InputEventInit::from_js_ffi(value)

@@ -1,7 +1,7 @@
 # WasmGC async candidate
 
 This experimental dependency patch targets official async commit
-`a4cbfabbcdf4fa70ef28ad7ccc388082d92371de` (manifest 0.22.1).
+`00aa493c5a674988dc0f4dc3f9bf0a0e654427ac` (release 0.22.4).
 It is not an upstream release or a replacement scheduler. Public WebSys JS
 dependencies remain unchanged. Generated consumers use the separately pinned
 experimental source path described in [WasmGC support](../generator/WASM.md).
@@ -24,9 +24,11 @@ The host subscription must deliver asynchronously, at most once, and release
 both callbacks when detached. Abort callbacks must not throw. These are explicit
 adapter preconditions, not guarantees for arbitrary injected host code.
 
-The candidate passed the WasmGC package check, 12 JS Promise/Stream
+The initial candidate passed the WasmGC package check, 12 JS Promise/Stream
 tests and 91 root JS async tests at initial integration. The maintained isolated
 headless JS/WasmGC consumer now has 218 cases.
+The 0.22.4 update passes those 218 cases on MoonBit v0.10.14+7d59c7ec9,
+with no pending timers and no surviving observed subscription callbacks.
 The browser comparison covers settlement, checked primitive decoding,
 Fetch cancellation, late settlement and bounded callback reclamation. It does
 not establish generated API coverage, full WebIDL conversion, or complete
@@ -54,7 +56,7 @@ suspension observes cancellation. Do not assume that canceling a newly spawned
 task means its operation body never executes or its abort callback is unnecessary.
 
 Cancellation of the current coroutine is an async cancellation effect. Waiting
-on a different canceled task raises `TaskCancelled`; `handle_cancellation` alone
+on a different canceled task raises `WaitedTaskAlreadyCancelled`; `handle_cancellation` alone
 does not catch that error. Timeout conversion is owned by `with_timeout`, not by
 the Promise decoder. The consumer tests cover explicit cancellation, timeouts,
 late settlements and success/rejection/decoder-failure paths separately.

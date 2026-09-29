@@ -8,7 +8,9 @@ pub(all) enum AvcBitstreamFormat {
   Avc
 } derive(Eq, Debug)
 
-///|
+pub extend AvcBitstreamFormat with Eq::{equal, not_equal}
+pub extend AvcBitstreamFormat with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn AvcBitstreamFormat::to_string(self : AvcBitstreamFormat) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AvcBitstreamFormat::from_string(s : String) -> AvcBitstreamFormat? {
   match s {
@@ -47,7 +48,6 @@ pub(all) struct VideoEncoderConfig {
   contentHint : String?
 }
 
-///|
 /// Create a new VideoEncoderConfig with default values
 pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
   VideoEncoderConfig::{
@@ -69,12 +69,7 @@ pub fn VideoEncoderConfig::default() -> VideoEncoderConfig {
   }
 }
 
-///|
-extern "js" fn VideoEncoderConfig::to_js_ffi(
-  self : VideoEncoderConfig,
-  convert_avc : (AvcEncoderConfig?) -> JsValue,
-  convert_hevc : (HevcEncoderConfig?) -> JsValue,
-) -> JsValue =
+extern "js" fn VideoEncoderConfig::to_js_ffi(self : VideoEncoderConfig, convert_avc : (AvcEncoderConfig?) -> JsValue, convert_hevc : (HevcEncoderConfig?) -> JsValue) -> JsValue =
   #| (self, convert_avc, convert_hevc) => ({
   #|   avc: convert_avc(self.avc),
   #|   hevc: convert_hevc(self.hevc),
@@ -93,32 +88,12 @@ extern "js" fn VideoEncoderConfig::to_js_ffi(
   #|   contentHint: self.contentHint
   #| })
 
-///|
 /// Convert to JsValue
 pub fn VideoEncoderConfig::to_js(self : VideoEncoderConfig) -> JsValue {
-  VideoEncoderConfig::to_js_ffi(
-    self,
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-    fn(value) {
-      match value {
-        Some(value) => value.to_js()
-        None => dictionary_undefined()
-      }
-    },
-  )
+  VideoEncoderConfig::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } }, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
 }
 
-///|
-extern "js" fn VideoEncoderConfig::from_js_ffi(
-  value : JsValue,
-  convert_avc : (JsValue) -> AvcEncoderConfig?,
-  convert_hevc : (JsValue) -> HevcEncoderConfig?,
-) -> VideoEncoderConfig =
+extern "js" fn VideoEncoderConfig::from_js_ffi(value : JsValue, convert_avc : (JsValue) -> AvcEncoderConfig?, convert_hevc : (JsValue) -> HevcEncoderConfig?) -> VideoEncoderConfig =
   #| (v, convert_avc, convert_hevc) => ({
   #|   avc: convert_avc(v.avc),
   #|   hevc: convert_hevc(v.hevc),
@@ -137,49 +112,22 @@ extern "js" fn VideoEncoderConfig::from_js_ffi(
   #|   contentHint: v.contentHint
   #| })
 
-///|
 /// Convert from JsValue
 pub fn VideoEncoderConfig::from_js(value : JsValue) -> VideoEncoderConfig {
-  VideoEncoderConfig::from_js_ffi(
-    value,
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(AvcEncoderConfig::from_js(value))
-      }
-    },
-    fn(value) {
-      if value.is_undefined() {
-        None
-      } else {
-        Some(HevcEncoderConfig::from_js(value))
-      }
-    },
-  )
+  VideoEncoderConfig::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(AvcEncoderConfig::from_js(value)) } }, fn(value) { if value.is_undefined() { None } else { Some(HevcEncoderConfig::from_js(value)) } })
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn VideoEncoderConfig::to_js_checked(
-  self : VideoEncoderConfig,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn VideoEncoderConfig::to_js_checked(self : VideoEncoderConfig) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_VideoEncoderConfig(
-  convert : () -> VideoEncoderConfig,
-) -> Result[VideoEncoderConfig, JsError] =
+extern "js" fn try_dictionary_VideoEncoderConfig(convert : () -> VideoEncoderConfig) -> Result[VideoEncoderConfig, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn VideoEncoderConfig::from_js_checked(
-  value : JsValue,
-) -> Result[VideoEncoderConfig, JsError] {
-  try_dictionary_VideoEncoderConfig(() => VideoEncoderConfig::from_js(value))
-}
+pub fn VideoEncoderConfig::from_js_checked(value : JsValue) -> Result[VideoEncoderConfig, JsError] { try_dictionary_VideoEncoderConfig(() => VideoEncoderConfig::from_js(value)) }
 
 ///|
 /// AvcEncoderConfig dictionary
@@ -187,33 +135,28 @@ pub(all) struct AvcEncoderConfig {
   format : AvcBitstreamFormat?
 }
 
-///|
 /// Create a new AvcEncoderConfig with default values
 pub fn AvcEncoderConfig::default() -> AvcEncoderConfig {
-  AvcEncoderConfig::{ format: None, }
+  AvcEncoderConfig::{
+    format: None,
+  }
 }
 
-///|
 extern "js" fn AvcEncoderConfig::to_js_ffi(self : AvcEncoderConfig) -> JsValue =
   #| (self) => ({
   #|   format: ((() => { const v = self.format; if (v === undefined) return undefined; return ['annexb', 'avc'][v]; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn AvcEncoderConfig::to_js(self : AvcEncoderConfig) -> JsValue {
   AvcEncoderConfig::to_js_ffi(self)
 }
 
-///|
-extern "js" fn AvcEncoderConfig::from_js_ffi(
-  value : JsValue,
-) -> AvcEncoderConfig =
+extern "js" fn AvcEncoderConfig::from_js_ffi(value : JsValue) -> AvcEncoderConfig =
   #| (v) => ({
   #|   format: (v.format === undefined ? undefined : ['annexb', 'avc'].indexOf(v.format))
   #| })
 
-///|
 /// Convert from JsValue
 pub fn AvcEncoderConfig::from_js(value : JsValue) -> AvcEncoderConfig {
   AvcEncoderConfig::from_js_ffi(value)
@@ -225,40 +168,29 @@ pub(all) struct VideoEncoderEncodeOptionsForAvc {
   quantizer : Nullable[Int]
 }
 
-///|
 /// Create a new VideoEncoderEncodeOptionsForAvc with default values
 pub fn VideoEncoderEncodeOptionsForAvc::default() -> VideoEncoderEncodeOptionsForAvc {
-  VideoEncoderEncodeOptionsForAvc::{ quantizer: Nullable::Undefined, }
+  VideoEncoderEncodeOptionsForAvc::{
+    quantizer: Nullable::Undefined,
+  }
 }
 
-///|
-extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js_ffi(
-  self : VideoEncoderEncodeOptionsForAvc,
-) -> JsValue =
+extern "js" fn VideoEncoderEncodeOptionsForAvc::to_js_ffi(self : VideoEncoderEncodeOptionsForAvc) -> JsValue =
   #| (self) => ({
   #|   quantizer: ((() => { const v = self.quantizer; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
-pub fn VideoEncoderEncodeOptionsForAvc::to_js(
-  self : VideoEncoderEncodeOptionsForAvc,
-) -> JsValue {
+pub fn VideoEncoderEncodeOptionsForAvc::to_js(self : VideoEncoderEncodeOptionsForAvc) -> JsValue {
   VideoEncoderEncodeOptionsForAvc::to_js_ffi(self)
 }
 
-///|
-extern "js" fn VideoEncoderEncodeOptionsForAvc::from_js_ffi(
-  value : JsValue,
-) -> VideoEncoderEncodeOptionsForAvc =
+extern "js" fn VideoEncoderEncodeOptionsForAvc::from_js_ffi(value : JsValue) -> VideoEncoderEncodeOptionsForAvc =
   #| (v) => ({
   #|   quantizer: (v.quantizer === undefined ? { $tag: 0 } : v.quantizer === null ? { $tag: 1 } : { $tag: 2, _0: v.quantizer })
   #| })
 
-///|
 /// Convert from JsValue
-pub fn VideoEncoderEncodeOptionsForAvc::from_js(
-  value : JsValue,
-) -> VideoEncoderEncodeOptionsForAvc {
+pub fn VideoEncoderEncodeOptionsForAvc::from_js(value : JsValue) -> VideoEncoderEncodeOptionsForAvc {
   VideoEncoderEncodeOptionsForAvc::from_js_ffi(value)
 }

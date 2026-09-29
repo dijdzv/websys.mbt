@@ -8,7 +8,9 @@ pub(all) enum ClientLifecycleState {
   Frozen
 } derive(Eq, Debug)
 
-///|
+pub extend ClientLifecycleState with Eq::{equal, not_equal}
+pub extend ClientLifecycleState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn ClientLifecycleState::to_string(self : ClientLifecycleState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ClientLifecycleState::from_string(s : String) -> ClientLifecycleState? {
   match s {

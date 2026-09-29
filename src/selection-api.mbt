@@ -7,41 +7,30 @@ pub(all) struct GetComposedRangesOptions {
   shadowRoots : FixedArray[ShadowRoot]?
 }
 
-///|
 /// Create a new GetComposedRangesOptions with default values
 pub fn GetComposedRangesOptions::default() -> GetComposedRangesOptions {
-  GetComposedRangesOptions::{ shadowRoots: None, }
+  GetComposedRangesOptions::{
+    shadowRoots: None,
+  }
 }
 
-///|
-extern "js" fn GetComposedRangesOptions::to_js_ffi(
-  self : GetComposedRangesOptions,
-) -> JsValue =
+extern "js" fn GetComposedRangesOptions::to_js_ffi(self : GetComposedRangesOptions) -> JsValue =
   #| (self) => ({
   #|   shadowRoots: self.shadowRoots
   #| })
 
-///|
 /// Convert to JsValue
-pub fn GetComposedRangesOptions::to_js(
-  self : GetComposedRangesOptions,
-) -> JsValue {
+pub fn GetComposedRangesOptions::to_js(self : GetComposedRangesOptions) -> JsValue {
   GetComposedRangesOptions::to_js_ffi(self)
 }
 
-///|
-extern "js" fn GetComposedRangesOptions::from_js_ffi(
-  value : JsValue,
-) -> GetComposedRangesOptions =
+extern "js" fn GetComposedRangesOptions::from_js_ffi(value : JsValue) -> GetComposedRangesOptions =
   #| (v) => ({
   #|   shadowRoots: v.shadowRoots
   #| })
 
-///|
 /// Convert from JsValue
-pub fn GetComposedRangesOptions::from_js(
-  value : JsValue,
-) -> GetComposedRangesOptions {
+pub fn GetComposedRangesOptions::from_js(value : JsValue) -> GetComposedRangesOptions {
   GetComposedRangesOptions::from_js_ffi(value)
 }
 
@@ -49,26 +38,21 @@ pub fn GetComposedRangesOptions::from_js(
 /// Selection interface
 pub type Selection
 
-///|
 pub extern "js" fn Selection::to_js_value(self : Selection) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Selection (unchecked)
 pub extern "js" fn Selection::from_js_value(v : JsValue) -> Selection =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Selection (checked with instanceof)
 pub extern "js" fn Selection::from_js_value_opt(v : JsValue) -> Selection? =
   #| (v) => (v instanceof Selection) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Selection (checked with instanceof)
 pub extern "js" fn JsValue::as_selection(self : JsValue) -> Selection? =
   #| (self) => (self instanceof Selection) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Selection (unchecked)
 pub extern "js" fn JsValue::to_selection(self : JsValue) -> Selection =
   #| (self) => self
@@ -80,180 +64,98 @@ pub(all) enum SelectionSetBaseAndExtentError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend SelectionSetBaseAndExtentError with @debug.Debug::{to_repr}
+
 pub extern "js" fn Selection::get_anchor_node(self : Selection) -> Node? =
   #| (self) => (() => { const v = self.anchorNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Selection::get_anchor_offset(self : Selection) -> Int =
   #| (self) => self.anchorOffset
 
-///|
 pub extern "js" fn Selection::get_focus_node(self : Selection) -> Node? =
   #| (self) => (() => { const v = self.focusNode; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-///|
 pub extern "js" fn Selection::get_focus_offset(self : Selection) -> Int =
   #| (self) => self.focusOffset
 
-///|
 pub extern "js" fn Selection::get_is_collapsed(self : Selection) -> Bool =
   #| (self) => self.isCollapsed
 
-///|
 pub extern "js" fn Selection::get_range_count(self : Selection) -> Int =
   #| (self) => self.rangeCount
 
-///|
 pub extern "js" fn Selection::get_type(self : Selection) -> String =
   #| (self) => self.type
 
-///|
 pub extern "js" fn Selection::get_direction(self : Selection) -> String =
   #| (self) => self.direction
 
-///|
-pub extern "js" fn Selection::get_range_at(
-  self : Selection,
-  index : Int,
-) -> Range =
+pub extern "js" fn Selection::get_range_at(self : Selection, index : Int) -> Range =
   #| (self, index) => self.getRangeAt(index)
 
-///|
-pub extern "js" fn Selection::add_range(
-  self : Selection,
-  range : Range,
-) -> Unit =
+pub extern "js" fn Selection::add_range(self : Selection, range : Range) -> Unit =
   #| (self, range) => self.addRange(range)
 
-///|
-pub extern "js" fn Selection::remove_range(
-  self : Selection,
-  range : Range,
-) -> Unit =
+pub extern "js" fn Selection::remove_range(self : Selection, range : Range) -> Unit =
   #| (self, range) => self.removeRange(range)
 
-///|
 pub extern "js" fn Selection::remove_all_ranges(self : Selection) -> Unit =
   #| (self) => self.removeAllRanges()
 
-///|
 pub extern "js" fn Selection::empty(self : Selection) -> Unit =
   #| (self) => self.empty()
 
-///|
-pub extern "js" fn Selection::get_composed_ranges(
-  self : Selection,
-) -> FixedArray[StaticRange] =
+pub extern "js" fn Selection::get_composed_ranges(self : Selection) -> FixedArray[StaticRange] =
   #| (self) => self.getComposedRanges()
 
-///|
-extern "js" fn Selection::get_composed_ranges_with_options_ffi(
-  self : Selection,
-  options : JsValue,
-) -> FixedArray[StaticRange] =
+extern "js" fn Selection::get_composed_ranges_with_options_ffi(self : Selection, options : JsValue) -> FixedArray[StaticRange] =
   #| (self, options) => self.getComposedRanges(options)
 
-///|
-pub fn Selection::get_composed_ranges_with_options(
-  self : Selection,
-  options : GetComposedRangesOptions,
-) -> FixedArray[StaticRange] {
+pub fn Selection::get_composed_ranges_with_options(self : Selection, options : GetComposedRangesOptions) -> FixedArray[StaticRange] {
   Selection::get_composed_ranges_with_options_ffi(self, options.to_js())
 }
 
-///|
 pub extern "js" fn Selection::collapse(self : Selection, node : Node?) -> Unit =
   #| (self, node) => self.collapse((node.$tag === 1 ? node._0 : null))
 
-///|
-pub extern "js" fn Selection::collapse_with_offset(
-  self : Selection,
-  node : Node?,
-  offset : Int,
-) -> Unit =
+pub extern "js" fn Selection::collapse_with_offset(self : Selection, node : Node?, offset : Int) -> Unit =
   #| (self, node, offset) => self.collapse((node.$tag === 1 ? node._0 : null), offset)
 
-///|
-pub extern "js" fn Selection::set_position(
-  self : Selection,
-  node : Node?,
-) -> Unit =
+pub extern "js" fn Selection::set_position(self : Selection, node : Node?) -> Unit =
   #| (self, node) => self.setPosition((node.$tag === 1 ? node._0 : null))
 
-///|
-pub extern "js" fn Selection::set_position_with_offset(
-  self : Selection,
-  node : Node?,
-  offset : Int,
-) -> Unit =
+pub extern "js" fn Selection::set_position_with_offset(self : Selection, node : Node?, offset : Int) -> Unit =
   #| (self, node, offset) => self.setPosition((node.$tag === 1 ? node._0 : null), offset)
 
-///|
 pub extern "js" fn Selection::collapse_to_start(self : Selection) -> Unit =
   #| (self) => self.collapseToStart()
 
-///|
 pub extern "js" fn Selection::collapse_to_end(self : Selection) -> Unit =
   #| (self) => self.collapseToEnd()
 
-///|
 pub extern "js" fn Selection::extend_(self : Selection, node : Node) -> Unit =
   #| (self, node) => self.extend(node)
 
-///|
-pub extern "js" fn Selection::extend__with_offset(
-  self : Selection,
-  node : Node,
-  offset : Int,
-) -> Unit =
+pub extern "js" fn Selection::extend__with_offset(self : Selection, node : Node, offset : Int) -> Unit =
   #| (self, node, offset) => self.extend(node, offset)
 
-///|
-pub extern "js" fn Selection::set_base_and_extent(
-  self : Selection,
-  anchor_node : Node,
-  anchor_offset : Int,
-  focus_node : Node,
-  focus_offset : Int,
-) -> Result[Unit, SelectionSetBaseAndExtentError] =
+pub extern "js" fn Selection::set_base_and_extent(self : Selection, anchor_node : Node, anchor_offset : Int, focus_node : Node, focus_offset : Int) -> Result[Unit, SelectionSetBaseAndExtentError] =
   #| (self, anchor_node, anchor_offset, focus_node, focus_offset) => (() => { try { self.setBaseAndExtent(anchor_node, anchor_offset, focus_node, focus_offset); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'IndexSizeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn Selection::select_all_children(
-  self : Selection,
-  node : Node,
-) -> Unit =
+pub extern "js" fn Selection::select_all_children(self : Selection, node : Node) -> Unit =
   #| (self, node) => self.selectAllChildren(node)
 
-///|
 pub extern "js" fn Selection::modify(self : Selection) -> Unit =
   #| (self) => self.modify()
 
-///|
-pub extern "js" fn Selection::modify_with_granularity(
-  self : Selection,
-  alter : String,
-  direction : String,
-  granularity : String,
-) -> Unit =
+pub extern "js" fn Selection::modify_with_granularity(self : Selection, alter : String, direction : String, granularity : String) -> Unit =
   #| (self, alter, direction, granularity) => self.modify(alter, direction, granularity)
 
-///|
 pub extern "js" fn Selection::delete_from_document(self : Selection) -> Unit =
   #| (self) => self.deleteFromDocument()
 
-///|
-pub extern "js" fn Selection::contains_node(
-  self : Selection,
-  node : Node,
-) -> Bool =
+pub extern "js" fn Selection::contains_node(self : Selection, node : Node) -> Bool =
   #| (self, node) => self.containsNode(node)
 
-///|
-pub extern "js" fn Selection::contains_node_with_allow_partial_containment(
-  self : Selection,
-  node : Node,
-  allow_partial_containment : Bool,
-) -> Bool =
+pub extern "js" fn Selection::contains_node_with_allow_partial_containment(self : Selection, node : Node, allow_partial_containment : Bool) -> Bool =
   #| (self, node, allow_partial_containment) => self.containsNode(node, allow_partial_containment)

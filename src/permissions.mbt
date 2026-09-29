@@ -9,7 +9,9 @@ pub(all) enum PermissionState {
   Prompt
 } derive(Eq, Debug)
 
-///|
+pub extend PermissionState with Eq::{equal, not_equal}
+pub extend PermissionState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn PermissionState::to_string(self : PermissionState) -> String {
   match self {
@@ -19,7 +21,6 @@ pub fn PermissionState::to_string(self : PermissionState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn PermissionState::from_string(s : String) -> PermissionState? {
   match s {
@@ -36,35 +37,28 @@ pub(all) struct PermissionDescriptor {
   name : String
 }
 
-///|
 /// Create a new PermissionDescriptor with default values
 pub fn PermissionDescriptor::default() -> PermissionDescriptor {
-  PermissionDescriptor::{ name: "", }
+  PermissionDescriptor::{
+    name: "",
+  }
 }
 
-///|
-extern "js" fn PermissionDescriptor::to_js_ffi(
-  self : PermissionDescriptor,
-) -> JsValue =
+extern "js" fn PermissionDescriptor::to_js_ffi(self : PermissionDescriptor) -> JsValue =
   #| (self) => ({
   #|   name: self.name
   #| })
 
-///|
 /// Convert to JsValue
 pub fn PermissionDescriptor::to_js(self : PermissionDescriptor) -> JsValue {
   PermissionDescriptor::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PermissionDescriptor::from_js_ffi(
-  value : JsValue,
-) -> PermissionDescriptor =
+extern "js" fn PermissionDescriptor::from_js_ffi(value : JsValue) -> PermissionDescriptor =
   #| (v) => ({
   #|   name: v.name
   #| })
 
-///|
 /// Convert from JsValue
 pub fn PermissionDescriptor::from_js(value : JsValue) -> PermissionDescriptor {
   PermissionDescriptor::from_js_ffi(value)
@@ -77,46 +71,33 @@ pub(all) struct PermissionSetParameters {
   state : PermissionState
 }
 
-///|
 /// Create a new PermissionSetParameters
-pub fn PermissionSetParameters::new(
-  descriptor~ : JsValue,
-  state~ : PermissionState,
-) -> PermissionSetParameters {
-  PermissionSetParameters::{ descriptor, state, }
+pub fn PermissionSetParameters::new(descriptor~ : JsValue, state~ : PermissionState) -> PermissionSetParameters {
+  PermissionSetParameters::{
+    descriptor: descriptor,
+    state: state,
+  }
 }
 
-///|
-extern "js" fn PermissionSetParameters::to_js_ffi(
-  self : PermissionSetParameters,
-) -> JsValue =
+extern "js" fn PermissionSetParameters::to_js_ffi(self : PermissionSetParameters) -> JsValue =
   #| (self) => ({
   #|   descriptor: self.descriptor,
   #|   state: ['granted', 'denied', 'prompt'][self.state]
   #| })
 
-///|
 /// Convert to JsValue
-pub fn PermissionSetParameters::to_js(
-  self : PermissionSetParameters,
-) -> JsValue {
+pub fn PermissionSetParameters::to_js(self : PermissionSetParameters) -> JsValue {
   PermissionSetParameters::to_js_ffi(self)
 }
 
-///|
-extern "js" fn PermissionSetParameters::from_js_ffi(
-  value : JsValue,
-) -> PermissionSetParameters =
+extern "js" fn PermissionSetParameters::from_js_ffi(value : JsValue) -> PermissionSetParameters =
   #| (v) => ({
   #|   descriptor: v.descriptor,
   #|   state: ['granted', 'denied', 'prompt'].indexOf(v.state)
   #| })
 
-///|
 /// Convert from JsValue
-pub fn PermissionSetParameters::from_js(
-  value : JsValue,
-) -> PermissionSetParameters {
+pub fn PermissionSetParameters::from_js(value : JsValue) -> PermissionSetParameters {
   PermissionSetParameters::from_js_ffi(value)
 }
 
@@ -124,26 +105,21 @@ pub fn PermissionSetParameters::from_js(
 /// Permissions interface
 pub type Permissions
 
-///|
 pub extern "js" fn Permissions::to_js_value(self : Permissions) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Permissions (unchecked)
 pub extern "js" fn Permissions::from_js_value(v : JsValue) -> Permissions =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Permissions (checked with instanceof)
 pub extern "js" fn Permissions::from_js_value_opt(v : JsValue) -> Permissions? =
   #| (v) => (v instanceof Permissions) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Permissions (checked with instanceof)
 pub extern "js" fn JsValue::as_permissions(self : JsValue) -> Permissions? =
   #| (self) => (self instanceof Permissions) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Permissions (unchecked)
 pub extern "js" fn JsValue::to_permissions(self : JsValue) -> Permissions =
   #| (self) => self
@@ -156,6 +132,8 @@ pub(all) enum PermissionsQueryError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend PermissionsQueryError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum PermissionsRevokeError {
@@ -163,117 +141,64 @@ pub(all) enum PermissionsRevokeError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Permissions::query(
-  self : Permissions,
-  permission_desc : JsValue,
-) -> Promise[Result[PermissionStatus, PermissionsQueryError]] =
+pub extend PermissionsRevokeError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Permissions::query(self : Permissions, permission_desc : JsValue) -> Promise[Result[PermissionStatus, PermissionsQueryError]] =
   #| (self, permission_desc) => self.query(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-///|
-pub extern "js" fn Permissions::request(
-  self : Permissions,
-  permission_desc : JsValue,
-) -> Promise[PermissionStatus] =
+pub extern "js" fn Permissions::request(self : Permissions, permission_desc : JsValue) -> Promise[PermissionStatus] =
   #| (self, permission_desc) => self.request(permission_desc)
 
-///|
-/// @alert deprecated "revoke is deprecated"
-pub extern "js" fn Permissions::revoke(
-  self : Permissions,
-  permission_desc : JsValue,
-) -> Promise[Result[PermissionStatus, PermissionsRevokeError]] =
+///| @alert deprecated "revoke is deprecated"
+pub extern "js" fn Permissions::revoke(self : Permissions, permission_desc : JsValue) -> Promise[Result[PermissionStatus, PermissionsRevokeError]] =
   #| (self, permission_desc) => self.revoke(permission_desc).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
 ///|
 /// PermissionStatus interface
 pub type PermissionStatus
 
-///|
-pub extern "js" fn PermissionStatus::to_js_value(
-  self : PermissionStatus,
-) -> JsValue =
+pub extern "js" fn PermissionStatus::to_js_value(self : PermissionStatus) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to PermissionStatus (unchecked)
-pub extern "js" fn PermissionStatus::from_js_value(
-  v : JsValue,
-) -> PermissionStatus =
+pub extern "js" fn PermissionStatus::from_js_value(v : JsValue) -> PermissionStatus =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to PermissionStatus (checked with instanceof)
-pub extern "js" fn PermissionStatus::from_js_value_opt(
-  v : JsValue,
-) -> PermissionStatus? =
+pub extern "js" fn PermissionStatus::from_js_value_opt(v : JsValue) -> PermissionStatus? =
   #| (v) => (v instanceof PermissionStatus) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to PermissionStatus (checked with instanceof)
-pub extern "js" fn JsValue::as_permission_status(
-  self : JsValue,
-) -> PermissionStatus? =
+pub extern "js" fn JsValue::as_permission_status(self : JsValue) -> PermissionStatus? =
   #| (self) => (self instanceof PermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to PermissionStatus (unchecked)
-pub extern "js" fn JsValue::to_permission_status(
-  self : JsValue,
-) -> PermissionStatus =
+pub extern "js" fn JsValue::to_permission_status(self : JsValue) -> PermissionStatus =
   #| (self) => self
 
-///|
-pub extern "js" fn PermissionStatus::to_event_target(
-  self : PermissionStatus,
-) -> EventTarget =
+pub extern "js" fn PermissionStatus::to_event_target(self : PermissionStatus) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn PermissionStatus::as_bluetooth_le_scan_permission_result(
-  self : PermissionStatus,
-) -> BluetoothLEScanPermissionResult? =
+pub extern "js" fn PermissionStatus::as_bluetooth_le_scan_permission_result(self : PermissionStatus) -> BluetoothLEScanPermissionResult? =
   #| (self) => (self instanceof BluetoothLEScanPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(
-  self : PermissionStatus,
-) -> BluetoothPermissionResult? =
+pub extern "js" fn PermissionStatus::as_bluetooth_permission_result(self : PermissionStatus) -> BluetoothPermissionResult? =
   #| (self) => (self instanceof BluetoothPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn PermissionStatus::as_usb_permission_result(
-  self : PermissionStatus,
-) -> USBPermissionResult? =
+pub extern "js" fn PermissionStatus::as_usb_permission_result(self : PermissionStatus) -> USBPermissionResult? =
   #| (self) => (self instanceof USBPermissionResult) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn PermissionStatus::as_xr_permission_status(
-  self : PermissionStatus,
-) -> XRPermissionStatus? =
+pub extern "js" fn PermissionStatus::as_xr_permission_status(self : PermissionStatus) -> XRPermissionStatus? =
   #| (self) => (self instanceof XRPermissionStatus) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
-pub extern "js" fn PermissionStatus::get_state(
-  self : PermissionStatus,
-) -> PermissionState =
+pub extern "js" fn PermissionStatus::get_state(self : PermissionStatus) -> PermissionState =
   #| (self) => ['granted', 'denied', 'prompt'].indexOf(self.state)
 
-///|
-pub extern "js" fn PermissionStatus::get_name(
-  self : PermissionStatus,
-) -> String =
+pub extern "js" fn PermissionStatus::get_name(self : PermissionStatus) -> String =
   #| (self) => self.name
 
-///|
-pub extern "js" fn PermissionStatus::set_onchange(
-  self : PermissionStatus,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn PermissionStatus::set_onchange(self : PermissionStatus, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn PermissionStatus::clear_onchange(
-  self : PermissionStatus,
-) -> Unit =
+pub extern "js" fn PermissionStatus::clear_onchange(self : PermissionStatus) -> Unit =
   #| (self) => { self.onchange = null }

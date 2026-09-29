@@ -5,31 +5,25 @@
 /// Keyboard interface
 pub type Keyboard
 
-///|
 pub extern "js" fn Keyboard::to_js_value(self : Keyboard) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to Keyboard (unchecked)
 pub extern "js" fn Keyboard::from_js_value(v : JsValue) -> Keyboard =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to Keyboard (checked with instanceof)
 pub extern "js" fn Keyboard::from_js_value_opt(v : JsValue) -> Keyboard? =
   #| (v) => (v instanceof Keyboard) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to Keyboard (checked with instanceof)
 pub extern "js" fn JsValue::as_keyboard(self : JsValue) -> Keyboard? =
   #| (self) => (self instanceof Keyboard) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to Keyboard (unchecked)
 pub extern "js" fn JsValue::to_keyboard(self : JsValue) -> Keyboard =
   #| (self) => self
 
-///|
 pub extern "js" fn Keyboard::to_event_target(self : Keyboard) -> EventTarget =
   #| (self) => self
 
@@ -42,6 +36,8 @@ pub(all) enum KeyboardLockError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend KeyboardLockError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum KeyboardGetLayoutMapError {
@@ -49,36 +45,22 @@ pub(all) enum KeyboardGetLayoutMapError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn Keyboard::lock(
-  self : Keyboard,
-) -> Promise[Result[Unit, KeyboardLockError]] =
+pub extend KeyboardGetLayoutMapError with @debug.Debug::{to_repr}
+
+pub extern "js" fn Keyboard::lock(self : Keyboard) -> Promise[Result[Unit, KeyboardLockError]] =
   #| (self) => self.lock().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
-pub extern "js" fn Keyboard::lock_with_key_codes(
-  self : Keyboard,
-  key_codes : FixedArray[String],
-) -> Promise[Result[Unit, KeyboardLockError]] =
+pub extern "js" fn Keyboard::lock_with_key_codes(self : Keyboard, key_codes : FixedArray[String]) -> Promise[Result[Unit, KeyboardLockError]] =
   #| (self, key_codes) => self.lock(key_codes).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; if (n === 'InvalidAccessError') return { $tag: 2, _0: e }; return { $tag: 3, _0: e }; })() }))
 
-///|
 pub extern "js" fn Keyboard::unlock(self : Keyboard) -> Unit =
   #| (self) => self.unlock()
 
-///|
-pub extern "js" fn Keyboard::get_layout_map(
-  self : Keyboard,
-) -> Promise[Result[KeyboardLayoutMap, KeyboardGetLayoutMapError]] =
+pub extern "js" fn Keyboard::get_layout_map(self : Keyboard) -> Promise[Result[KeyboardLayoutMap, KeyboardGetLayoutMapError]] =
   #| (self) => self.getLayoutMap().then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub extern "js" fn Keyboard::set_onlayoutchange(
-  self : Keyboard,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn Keyboard::set_onlayoutchange(self : Keyboard, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onlayoutchange = (e) => handler(e) }
 
-///|
 pub extern "js" fn Keyboard::clear_onlayoutchange(self : Keyboard) -> Unit =
   #| (self) => { self.onlayoutchange = null }

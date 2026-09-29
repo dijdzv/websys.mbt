@@ -12,7 +12,9 @@ pub(all) enum AudioSessionType {
   PlayAndRecord
 } derive(Eq, Debug)
 
-///|
+pub extend AudioSessionType with Eq::{equal, not_equal}
+pub extend AudioSessionType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
   match self {
@@ -25,7 +27,6 @@ pub fn AudioSessionType::to_string(self : AudioSessionType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AudioSessionType::from_string(s : String) -> AudioSessionType? {
   match s {
@@ -47,7 +48,9 @@ pub(all) enum AudioSessionState {
   Interrupted
 } derive(Eq, Debug)
 
-///|
+pub extend AudioSessionState with Eq::{equal, not_equal}
+pub extend AudioSessionState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
   match self {
@@ -57,7 +60,6 @@ pub fn AudioSessionState::to_string(self : AudioSessionState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn AudioSessionState::from_string(s : String) -> AudioSessionState? {
   match s {
@@ -72,66 +74,39 @@ pub fn AudioSessionState::from_string(s : String) -> AudioSessionState? {
 /// AudioSession interface
 pub type AudioSession
 
-///|
 pub extern "js" fn AudioSession::to_js_value(self : AudioSession) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to AudioSession (unchecked)
 pub extern "js" fn AudioSession::from_js_value(v : JsValue) -> AudioSession =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to AudioSession (checked with instanceof)
-pub extern "js" fn AudioSession::from_js_value_opt(
-  v : JsValue,
-) -> AudioSession? =
+pub extern "js" fn AudioSession::from_js_value_opt(v : JsValue) -> AudioSession? =
   #| (v) => (v instanceof AudioSession) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to AudioSession (checked with instanceof)
 pub extern "js" fn JsValue::as_audio_session(self : JsValue) -> AudioSession? =
   #| (self) => (self instanceof AudioSession) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to AudioSession (unchecked)
 pub extern "js" fn JsValue::to_audio_session(self : JsValue) -> AudioSession =
   #| (self) => self
 
-///|
-pub extern "js" fn AudioSession::to_event_target(
-  self : AudioSession,
-) -> EventTarget =
+pub extern "js" fn AudioSession::to_event_target(self : AudioSession) -> EventTarget =
   #| (self) => self
 
-///|
-pub extern "js" fn AudioSession::get_type(
-  self : AudioSession,
-) -> AudioSessionType =
+pub extern "js" fn AudioSession::get_type(self : AudioSession) -> AudioSessionType =
   #| (self) => ['auto', 'playback', 'transient', 'transient-solo', 'ambient', 'play-and-record'].indexOf(self.type)
 
-///|
-pub extern "js" fn AudioSession::set_type(
-  self : AudioSession,
-  value : AudioSessionType,
-) -> Unit =
+pub extern "js" fn AudioSession::set_type(self : AudioSession, value : AudioSessionType) -> Unit =
   #| (self, value) => { self.type = ['auto', 'playback', 'transient', 'transient-solo', 'ambient', 'play-and-record'][value] }
 
-///|
-pub extern "js" fn AudioSession::get_state(
-  self : AudioSession,
-) -> AudioSessionState =
+pub extern "js" fn AudioSession::get_state(self : AudioSession) -> AudioSessionState =
   #| (self) => ['inactive', 'active', 'interrupted'].indexOf(self.state)
 
-///|
-pub extern "js" fn AudioSession::set_onstatechange(
-  self : AudioSession,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn AudioSession::set_onstatechange(self : AudioSession, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onstatechange = (e) => handler(e) }
 
-///|
-pub extern "js" fn AudioSession::clear_onstatechange(
-  self : AudioSession,
-) -> Unit =
+pub extern "js" fn AudioSession::clear_onstatechange(self : AudioSession) -> Unit =
   #| (self) => { self.onstatechange = null }

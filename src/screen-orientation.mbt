@@ -14,7 +14,9 @@ pub(all) enum OrientationLockType {
   LandscapeSecondary
 } derive(Eq, Debug)
 
-///|
+pub extend OrientationLockType with Eq::{equal, not_equal}
+pub extend OrientationLockType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
   match self {
@@ -29,7 +31,6 @@ pub fn OrientationLockType::to_string(self : OrientationLockType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OrientationLockType::from_string(s : String) -> OrientationLockType? {
   match s {
@@ -54,7 +55,9 @@ pub(all) enum OrientationType {
   LandscapeSecondary
 } derive(Eq, Debug)
 
-///|
+pub extend OrientationType with Eq::{equal, not_equal}
+pub extend OrientationType with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn OrientationType::to_string(self : OrientationType) -> String {
   match self {
@@ -65,7 +68,6 @@ pub fn OrientationType::to_string(self : OrientationType) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn OrientationType::from_string(s : String) -> OrientationType? {
   match s {
@@ -81,44 +83,26 @@ pub fn OrientationType::from_string(s : String) -> OrientationType? {
 /// ScreenOrientation interface
 pub type ScreenOrientation
 
-///|
-pub extern "js" fn ScreenOrientation::to_js_value(
-  self : ScreenOrientation,
-) -> JsValue =
+pub extern "js" fn ScreenOrientation::to_js_value(self : ScreenOrientation) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ScreenOrientation (unchecked)
-pub extern "js" fn ScreenOrientation::from_js_value(
-  v : JsValue,
-) -> ScreenOrientation =
+pub extern "js" fn ScreenOrientation::from_js_value(v : JsValue) -> ScreenOrientation =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ScreenOrientation (checked with instanceof)
-pub extern "js" fn ScreenOrientation::from_js_value_opt(
-  v : JsValue,
-) -> ScreenOrientation? =
+pub extern "js" fn ScreenOrientation::from_js_value_opt(v : JsValue) -> ScreenOrientation? =
   #| (v) => (v instanceof ScreenOrientation) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ScreenOrientation (checked with instanceof)
-pub extern "js" fn JsValue::as_screen_orientation(
-  self : JsValue,
-) -> ScreenOrientation? =
+pub extern "js" fn JsValue::as_screen_orientation(self : JsValue) -> ScreenOrientation? =
   #| (self) => (self instanceof ScreenOrientation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ScreenOrientation (unchecked)
-pub extern "js" fn JsValue::to_screen_orientation(
-  self : JsValue,
-) -> ScreenOrientation =
+pub extern "js" fn JsValue::to_screen_orientation(self : JsValue) -> ScreenOrientation =
   #| (self) => self
 
-///|
-pub extern "js" fn ScreenOrientation::to_event_target(
-  self : ScreenOrientation,
-) -> EventTarget =
+pub extern "js" fn ScreenOrientation::to_event_target(self : ScreenOrientation) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -131,6 +115,8 @@ pub(all) enum ScreenOrientationLockError {
   OtherError(JsError)
 } derive(Debug)
 
+pub extend ScreenOrientationLockError with @debug.Debug::{to_repr}
+
 ///|
 /// Error type for throwing methods
 pub(all) enum ScreenOrientationUnlockError {
@@ -139,40 +125,22 @@ pub(all) enum ScreenOrientationUnlockError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-pub extern "js" fn ScreenOrientation::lock(
-  self : ScreenOrientation,
-  orientation : OrientationLockType,
-) -> Promise[Result[Unit, ScreenOrientationLockError]] =
+pub extend ScreenOrientationUnlockError with @debug.Debug::{to_repr}
+
+pub extern "js" fn ScreenOrientation::lock(self : ScreenOrientation, orientation : OrientationLockType) -> Promise[Result[Unit, ScreenOrientationLockError]] =
   #| (self, orientation) => self.lock(['any', 'natural', 'landscape', 'portrait', 'portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'][orientation]).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'AbortError') return { $tag: 0, _0: e }; if (n === 'SecurityError') return { $tag: 1, _0: e }; if (n === 'InvalidStateError') return { $tag: 2, _0: e }; if (n === 'NotSupportedError') return { $tag: 3, _0: e }; return { $tag: 4, _0: e }; })() }))
 
-///|
-pub extern "js" fn ScreenOrientation::unlock(
-  self : ScreenOrientation,
-) -> Result[Unit, ScreenOrientationUnlockError] =
+pub extern "js" fn ScreenOrientation::unlock(self : ScreenOrientation) -> Result[Unit, ScreenOrientationUnlockError] =
   #| (self) => (() => { try { self.unlock(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SecurityError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-///|
-pub extern "js" fn ScreenOrientation::get_type(
-  self : ScreenOrientation,
-) -> OrientationType =
+pub extern "js" fn ScreenOrientation::get_type(self : ScreenOrientation) -> OrientationType =
   #| (self) => ['portrait-primary', 'portrait-secondary', 'landscape-primary', 'landscape-secondary'].indexOf(self.type)
 
-///|
-pub extern "js" fn ScreenOrientation::get_angle(
-  self : ScreenOrientation,
-) -> Int =
+pub extern "js" fn ScreenOrientation::get_angle(self : ScreenOrientation) -> Int =
   #| (self) => self.angle
 
-///|
-pub extern "js" fn ScreenOrientation::set_onchange(
-  self : ScreenOrientation,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn ScreenOrientation::set_onchange(self : ScreenOrientation, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
-pub extern "js" fn ScreenOrientation::clear_onchange(
-  self : ScreenOrientation,
-) -> Unit =
+pub extern "js" fn ScreenOrientation::clear_onchange(self : ScreenOrientation) -> Unit =
   #| (self) => { self.onchange = null }

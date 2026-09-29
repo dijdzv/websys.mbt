@@ -654,6 +654,8 @@ pub fn gen_enum(enum_def : EnumDef) -> String {
       acc + "  " + variant + "\n"
     })
   result = result + "} derive(Eq, Debug)\n\n"
+  result = result + "pub extend " + enum_def.name + " with Eq::{equal, not_equal}\n"
+  result = result + "pub extend " + enum_def.name + " with @debug.Debug::{to_repr}\n\n"
 
   // Conversion function to string
   result = result + "/// Convert to string value\n"

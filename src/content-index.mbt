@@ -11,7 +11,9 @@ pub(all) enum ContentCategory {
   Audio
 } derive(Eq, Debug)
 
-///|
+pub extend ContentCategory with Eq::{equal, not_equal}
+pub extend ContentCategory with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ContentCategory::to_string(self : ContentCategory) -> String {
   match self {
@@ -23,7 +25,6 @@ pub fn ContentCategory::to_string(self : ContentCategory) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ContentCategory::from_string(s : String) -> ContentCategory? {
   match s {
@@ -47,7 +48,6 @@ pub(all) struct ContentDescription {
   url : String
 }
 
-///|
 /// Create a new ContentDescription with default values
 pub fn ContentDescription::default() -> ContentDescription {
   ContentDescription::{
@@ -60,10 +60,7 @@ pub fn ContentDescription::default() -> ContentDescription {
   }
 }
 
-///|
-extern "js" fn ContentDescription::to_js_ffi(
-  self : ContentDescription,
-) -> JsValue =
+extern "js" fn ContentDescription::to_js_ffi(self : ContentDescription) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   title: self.title,
@@ -73,16 +70,12 @@ extern "js" fn ContentDescription::to_js_ffi(
   #|   url: self.url
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ContentDescription::to_js(self : ContentDescription) -> JsValue {
   ContentDescription::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ContentDescription::from_js_ffi(
-  value : JsValue,
-) -> ContentDescription =
+extern "js" fn ContentDescription::from_js_ffi(value : JsValue) -> ContentDescription =
   #| (v) => ({
   #|   id: v.id,
   #|   title: v.title,
@@ -92,7 +85,6 @@ extern "js" fn ContentDescription::from_js_ffi(
   #|   url: v.url
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ContentDescription::from_js(value : JsValue) -> ContentDescription {
   ContentDescription::from_js_ffi(value)
@@ -104,35 +96,28 @@ pub(all) struct ContentIndexEventInit {
   id : String
 }
 
-///|
 /// Create a new ContentIndexEventInit with default values
 pub fn ContentIndexEventInit::default() -> ContentIndexEventInit {
-  ContentIndexEventInit::{ id: "", }
+  ContentIndexEventInit::{
+    id: "",
+  }
 }
 
-///|
-extern "js" fn ContentIndexEventInit::to_js_ffi(
-  self : ContentIndexEventInit,
-) -> JsValue =
+extern "js" fn ContentIndexEventInit::to_js_ffi(self : ContentIndexEventInit) -> JsValue =
   #| (self) => ({
   #|   id: self.id
   #| })
 
-///|
 /// Convert to JsValue
 pub fn ContentIndexEventInit::to_js(self : ContentIndexEventInit) -> JsValue {
   ContentIndexEventInit::to_js_ffi(self)
 }
 
-///|
-extern "js" fn ContentIndexEventInit::from_js_ffi(
-  value : JsValue,
-) -> ContentIndexEventInit =
+extern "js" fn ContentIndexEventInit::from_js_ffi(value : JsValue) -> ContentIndexEventInit =
   #| (v) => ({
   #|   id: v.id
   #| })
 
-///|
 /// Convert from JsValue
 pub fn ContentIndexEventInit::from_js(value : JsValue) -> ContentIndexEventInit {
   ContentIndexEventInit::from_js_ffi(value)
@@ -142,28 +127,21 @@ pub fn ContentIndexEventInit::from_js(value : JsValue) -> ContentIndexEventInit 
 /// ContentIndex interface
 pub type ContentIndex
 
-///|
 pub extern "js" fn ContentIndex::to_js_value(self : ContentIndex) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ContentIndex (unchecked)
 pub extern "js" fn ContentIndex::from_js_value(v : JsValue) -> ContentIndex =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ContentIndex (checked with instanceof)
-pub extern "js" fn ContentIndex::from_js_value_opt(
-  v : JsValue,
-) -> ContentIndex? =
+pub extern "js" fn ContentIndex::from_js_value_opt(v : JsValue) -> ContentIndex? =
   #| (v) => (v instanceof ContentIndex) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ContentIndex (checked with instanceof)
 pub extern "js" fn JsValue::as_content_index(self : JsValue) -> ContentIndex? =
   #| (self) => (self instanceof ContentIndex) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ContentIndex (unchecked)
 pub extern "js" fn JsValue::to_content_index(self : JsValue) -> ContentIndex =
   #| (self) => self
@@ -175,101 +153,56 @@ pub(all) enum ContentIndexAddError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
-extern "js" fn ContentIndex::add_ffi(
-  self : ContentIndex,
-  description : JsValue,
-) -> Promise[Result[Unit, ContentIndexAddError]] =
+pub extend ContentIndexAddError with @debug.Debug::{to_repr}
+
+extern "js" fn ContentIndex::add_ffi(self : ContentIndex, description : JsValue) -> Promise[Result[Unit, ContentIndexAddError]] =
   #| (self, description) => self.add(description).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn ContentIndex::add(
-  self : ContentIndex,
-  description : ContentDescription,
-) -> Promise[Result[Unit, ContentIndexAddError]] {
+pub fn ContentIndex::add(self : ContentIndex, description : ContentDescription) -> Promise[Result[Unit, ContentIndexAddError]] {
   ContentIndex::add_ffi(self, description.to_js())
 }
 
-///|
-pub extern "js" fn ContentIndex::delete(
-  self : ContentIndex,
-  id : String,
-) -> Promise[Unit] =
+pub extern "js" fn ContentIndex::delete(self : ContentIndex, id : String) -> Promise[Unit] =
   #| (self, id) => self.delete(id)
 
-///|
-pub extern "js" fn ContentIndex::get_all(
-  self : ContentIndex,
-) -> Promise[FixedArray[ContentDescription]] =
+pub extern "js" fn ContentIndex::get_all(self : ContentIndex) -> Promise[FixedArray[ContentDescription]] =
   #| (self) => self.getAll()
 
 ///|
 /// ContentIndexEvent interface
 pub type ContentIndexEvent
 
-///|
-pub extern "js" fn ContentIndexEvent::to_js_value(
-  self : ContentIndexEvent,
-) -> JsValue =
+pub extern "js" fn ContentIndexEvent::to_js_value(self : ContentIndexEvent) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to ContentIndexEvent (unchecked)
-pub extern "js" fn ContentIndexEvent::from_js_value(
-  v : JsValue,
-) -> ContentIndexEvent =
+pub extern "js" fn ContentIndexEvent::from_js_value(v : JsValue) -> ContentIndexEvent =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to ContentIndexEvent (checked with instanceof)
-pub extern "js" fn ContentIndexEvent::from_js_value_opt(
-  v : JsValue,
-) -> ContentIndexEvent? =
+pub extern "js" fn ContentIndexEvent::from_js_value_opt(v : JsValue) -> ContentIndexEvent? =
   #| (v) => (v instanceof ContentIndexEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to ContentIndexEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_content_index_event(
-  self : JsValue,
-) -> ContentIndexEvent? =
+pub extern "js" fn JsValue::as_content_index_event(self : JsValue) -> ContentIndexEvent? =
   #| (self) => (self instanceof ContentIndexEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to ContentIndexEvent (unchecked)
-pub extern "js" fn JsValue::to_content_index_event(
-  self : JsValue,
-) -> ContentIndexEvent =
+pub extern "js" fn JsValue::to_content_index_event(self : JsValue) -> ContentIndexEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn ContentIndexEvent::to_extendable_event(
-  self : ContentIndexEvent,
-) -> ExtendableEvent =
+pub extern "js" fn ContentIndexEvent::to_extendable_event(self : ContentIndexEvent) -> ExtendableEvent =
   #| (self) => self
 
-///|
-pub extern "js" fn ContentIndexEvent::to_event(
-  self : ContentIndexEvent,
-) -> Event =
+pub extern "js" fn ContentIndexEvent::to_event(self : ContentIndexEvent) -> Event =
   #| (self) => self
 
-///|
-extern "js" fn ContentIndexEvent::new_ffi(
-  type_ : String,
-  init_ : JsValue,
-) -> ContentIndexEvent =
+extern "js" fn ContentIndexEvent::new_ffi(type_ : String, init_ : JsValue) -> ContentIndexEvent =
   #| (type_, init_) => new ContentIndexEvent(type_, init_)
 
-///|
-pub fn ContentIndexEvent::new(
-  type_ : String,
-  init_ : ContentIndexEventInit,
-) -> ContentIndexEvent {
+pub fn ContentIndexEvent::new(type_ : String, init_ : ContentIndexEventInit) -> ContentIndexEvent {
   ContentIndexEvent::new_ffi(type_, init_.to_js())
 }
 
-///|
-pub extern "js" fn ContentIndexEvent::get_id(
-  self : ContentIndexEvent,
-) -> String =
+pub extern "js" fn ContentIndexEvent::get_id(self : ContentIndexEvent) -> String =
   #| (self) => self.id

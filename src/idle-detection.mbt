@@ -8,7 +8,9 @@ pub(all) enum UserIdleState {
   Idle
 } derive(Eq, Debug)
 
-///|
+pub extend UserIdleState with Eq::{equal, not_equal}
+pub extend UserIdleState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn UserIdleState::to_string(self : UserIdleState) -> String {
   match self {
@@ -17,7 +19,6 @@ pub fn UserIdleState::to_string(self : UserIdleState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn UserIdleState::from_string(s : String) -> UserIdleState? {
   match s {
@@ -34,7 +35,9 @@ pub(all) enum ScreenIdleState {
   Unlocked
 } derive(Eq, Debug)
 
-///|
+pub extend ScreenIdleState with Eq::{equal, not_equal}
+pub extend ScreenIdleState with @debug.Debug::{to_repr}
+
 /// Convert to string value
 pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
   match self {
@@ -43,7 +46,6 @@ pub fn ScreenIdleState::to_string(self : ScreenIdleState) -> String {
   }
 }
 
-///|
 /// Parse from string value
 pub fn ScreenIdleState::from_string(s : String) -> ScreenIdleState? {
   match s {
@@ -60,33 +62,31 @@ pub(all) struct IdleOptions {
   signal : AbortSignal?
 }
 
-///|
 /// Create a new IdleOptions with default values
 pub fn IdleOptions::default() -> IdleOptions {
-  IdleOptions::{ threshold: None, signal: None, }
+  IdleOptions::{
+    threshold: None,
+    signal: None,
+  }
 }
 
-///|
 extern "js" fn IdleOptions::to_js_ffi(self : IdleOptions) -> JsValue =
   #| (self) => ({
   #|   threshold: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.threshold),
   #|   signal: ((() => { const v = self.signal; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
-///|
 /// Convert to JsValue
 pub fn IdleOptions::to_js(self : IdleOptions) -> JsValue {
   IdleOptions::to_js_ffi(self)
 }
 
-///|
 extern "js" fn IdleOptions::from_js_ffi(value : JsValue) -> IdleOptions =
   #| (v) => ({
   #|   threshold: (v.threshold === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.threshold)),
   #|   signal: (v.signal === undefined ? { $tag: 0 } : { $tag: 1, _0: v.signal })
   #| })
 
-///|
 /// Convert from JsValue
 pub fn IdleOptions::from_js(value : JsValue) -> IdleOptions {
   IdleOptions::from_js_ffi(value)
@@ -94,60 +94,40 @@ pub fn IdleOptions::from_js(value : JsValue) -> IdleOptions {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn IdleOptions::to_js_checked(
-  self : IdleOptions,
-) -> Result[JsValue, JsError] {
-  try_dictionary_conversion(() => self.to_js())
-}
+pub fn IdleOptions::to_js_checked(self : IdleOptions) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
 
 ///|
-extern "js" fn try_dictionary_IdleOptions(
-  convert : () -> IdleOptions,
-) -> Result[IdleOptions, JsError] =
+extern "js" fn try_dictionary_IdleOptions(convert : () -> IdleOptions) -> Result[IdleOptions, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn IdleOptions::from_js_checked(
-  value : JsValue,
-) -> Result[IdleOptions, JsError] {
-  try_dictionary_IdleOptions(() => IdleOptions::from_js(value))
-}
+pub fn IdleOptions::from_js_checked(value : JsValue) -> Result[IdleOptions, JsError] { try_dictionary_IdleOptions(() => IdleOptions::from_js(value)) }
 
 ///|
 /// IdleDetector interface
 pub type IdleDetector
 
-///|
 pub extern "js" fn IdleDetector::to_js_value(self : IdleDetector) -> JsValue =
   #| (self) => self
 
-///|
 /// Cast JsValue to IdleDetector (unchecked)
 pub extern "js" fn IdleDetector::from_js_value(v : JsValue) -> IdleDetector =
   #| (v) => v
 
-///|
 /// Safely cast JsValue to IdleDetector (checked with instanceof)
-pub extern "js" fn IdleDetector::from_js_value_opt(
-  v : JsValue,
-) -> IdleDetector? =
+pub extern "js" fn IdleDetector::from_js_value_opt(v : JsValue) -> IdleDetector? =
   #| (v) => (v instanceof IdleDetector) ? { $tag: 1, _0: v } : { $tag: 0 }
 
-///|
 /// Safely cast JsValue to IdleDetector (checked with instanceof)
 pub extern "js" fn JsValue::as_idle_detector(self : JsValue) -> IdleDetector? =
   #| (self) => (self instanceof IdleDetector) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-///|
 /// Cast JsValue to IdleDetector (unchecked)
 pub extern "js" fn JsValue::to_idle_detector(self : JsValue) -> IdleDetector =
   #| (self) => self
 
-///|
-pub extern "js" fn IdleDetector::to_event_target(
-  self : IdleDetector,
-) -> EventTarget =
+pub extern "js" fn IdleDetector::to_event_target(self : IdleDetector) -> EventTarget =
   #| (self) => self
 
 ///|
@@ -157,56 +137,32 @@ pub(all) enum IdleDetectorStartError {
   OtherError(JsError)
 } derive(Debug)
 
-///|
+pub extend IdleDetectorStartError with @debug.Debug::{to_repr}
+
 pub extern "js" fn IdleDetector::new() -> IdleDetector =
   #| () => new IdleDetector()
 
-///|
-pub extern "js" fn IdleDetector::get_user_state(
-  self : IdleDetector,
-) -> UserIdleState? =
+pub extern "js" fn IdleDetector::get_user_state(self : IdleDetector) -> UserIdleState? =
   #| (self) => (() => { const v = self.userState; return v == null ? undefined : ['active', 'idle'].indexOf(v); })()
 
-///|
-pub extern "js" fn IdleDetector::get_screen_state(
-  self : IdleDetector,
-) -> ScreenIdleState? =
+pub extern "js" fn IdleDetector::get_screen_state(self : IdleDetector) -> ScreenIdleState? =
   #| (self) => (() => { const v = self.screenState; return v == null ? undefined : ['locked', 'unlocked'].indexOf(v); })()
 
-///|
-pub extern "js" fn IdleDetector::set_onchange(
-  self : IdleDetector,
-  handler : (Event) -> Unit,
-) -> Unit =
+pub extern "js" fn IdleDetector::set_onchange(self : IdleDetector, handler : (Event) -> Unit) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-///|
 pub extern "js" fn IdleDetector::clear_onchange(self : IdleDetector) -> Unit =
   #| (self) => { self.onchange = null }
 
-///|
-pub extern "js" fn IdleDetector::request_permission() -> Promise[
-  PermissionState,
-] =
+pub extern "js" fn IdleDetector::request_permission() -> Promise[PermissionState] =
   #| () => IdleDetector.requestPermission()
 
-///|
-pub extern "js" fn IdleDetector::start(
-  self : IdleDetector,
-) -> Promise[Result[Unit, IdleDetectorStartError]] =
+pub extern "js" fn IdleDetector::start(self : IdleDetector) -> Promise[Result[Unit, IdleDetectorStartError]] =
   #| (self) => self.start().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-extern "js" fn IdleDetector::start_with_options_ffi(
-  self : IdleDetector,
-  options : JsValue,
-) -> Promise[Result[Unit, IdleDetectorStartError]] =
+extern "js" fn IdleDetector::start_with_options_ffi(self : IdleDetector, options : JsValue) -> Promise[Result[Unit, IdleDetectorStartError]] =
   #| (self, options) => self.start(options).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotAllowedError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }))
 
-///|
-pub fn IdleDetector::start_with_options(
-  self : IdleDetector,
-  options : IdleOptions,
-) -> Promise[Result[Unit, IdleDetectorStartError]] {
+pub fn IdleDetector::start_with_options(self : IdleDetector, options : IdleOptions) -> Promise[Result[Unit, IdleDetectorStartError]] {
   IdleDetector::start_with_options_ffi(self, options.to_js())
 }

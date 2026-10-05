@@ -97,6 +97,39 @@ GPU/driver validation. The relevant Chromium test configuration is documented in
 
 ### Promise operation results
 
+`Promise<any>` preserves its settled value as an opaque `JsValue`, including
+null and undefined. WebSys does not interpret it as JSON.
+
+### Promise callbacks
+
+Promise-returning callbacks accept supported scalar/reference arguments, opaque
+`any`/`object` values and flat dictionary arguments. Dictionary getters are read
+once into the same checked snapshot used for Promise dictionary results.
+Missing required fields, throwing getters and invalid foreign arguments reject
+the returned JavaScript Promise without entering the callback body. Recoverable
+MoonBit callback errors also reject it; panic/trap recovery is not an application
+lifetime guarantee.
+
+The generated callback takes a handler returning `WebsysPromise[T]`. For
+example, `new_js_value_promise()` creates a `PromiseResolver[JsValue]`;
+`resolver.promise()` supplies the callback result, and `resolve(value)` or
+`reject(reason)` completes it once. The first completion clears both foreign
+resolver functions; later completions return false. This is a JS Promise FFI,
+not a task scheduler. Registration ownership, abort listeners, application
+mutation and disposal remain the consumer's responsibility.
+
+Factories also cover supported nonnullable scalar, interface and flat dictionary
+results. Nullable callback Promise results and optional/nullable/variadic
+callback arguments remain unsupported. Void callbacks retain their existing
+opaque handle representation.
+
+The generated WasmGC browser consumer checks delayed resolution/rejection,
+original value identity, null/undefined, single getter reads, invalid input,
+resolver callback release and String/Unit/UInt result representations. This is
+an ABI fixture, not browser WebMCP registration or permission validation.
+
+### Waiting for Promise operation results
+
 Promise-returning operations support DOMString, boolean, long, unsigned long
 and finite double settlement through generated `WebsysPromise[T]` values.
 `Promise<undefined>` settles to Unit after checking for host undefined.

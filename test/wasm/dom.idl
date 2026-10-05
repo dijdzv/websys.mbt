@@ -113,3 +113,10 @@ dictionary NestedOptions {
   NestedLeaf optionalChild;
   NestedLeaf? nullableChild;
 };
+callback HeaderCallback = undefined (ByteString value, ByteString name, Headers headers);
+interface Headers {
+  constructor();
+  undefined append(ByteString name, ByteString value);
+  ByteString? get(ByteString name);
+  undefined forEach(HeaderCallback callback);
+};

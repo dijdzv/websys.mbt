@@ -1,4 +1,22 @@
 ///|
+test "WasmGC callback preserves every supported argument in declaration order" {
+  let parsed = parse_webidl_raw(
+    "interface Headers {}; callback HeaderCallback = undefined (ByteString value, ByteString name, Headers headers); callback Empty = undefined (); callback One = undefined (double value);",
+  )
+  assert_true(is_parse_success(parsed))
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(
+    code.contains(
+      "HeaderCallback::new(callback : (String, String, Headers) -> Unit)",
+    ),
+  )
+  assert_true(code.contains("Empty::new(callback : () -> Unit)"))
+  assert_true(code.contains("One::new(callback : (Double) -> Unit)"))
+  assert_true(runtime.contains("HeaderCallback_new: callback => callback"))
+}
+
+///|
 test "WasmGC ArrayBuffer uses an opaque reference including nullable values" {
   assert_eq(wasm_type(Named("ArrayBuffer"), []), Some("ArrayBuffer"))
   assert_eq(wasm_type(Nullable(Named("ArrayBuffer")), []), Some("ArrayBuffer?"))
@@ -119,7 +137,9 @@ test "typed browser errors expose Debug without deprecated derivation" {
   assert_true(code.contains("derive(Debug)"))
   assert_true(!code.contains("derive(Show)"))
   assert_true(code.contains("OtherError(JsError)"))
-  assert_true(code.contains("pub extend ExampleError with @debug.Debug::{to_repr}"))
+  assert_true(
+    code.contains("pub extend ExampleError with @debug.Debug::{to_repr}"),
+  )
 }
 
 ///|

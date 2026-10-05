@@ -221,11 +221,9 @@ fn emit_wasm_function(
     enum_result ||
     result is Promise(_) ||
     result is Nullable(_) ||
-    params.any(p => {
-      input_converters.contains(p.0) ||
+    params.any(p => input_converters.contains(p.0) ||
       p.1 is Nullable(_) ||
-      (p.1 is Named(name) && dictionaries.contains(name))
-    })
+      (p.1 is Named(name) && dictionaries.contains(name)))
   if !needs_wrapper {
     out.write_string(
       "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} = \"websys\" \"\{key}\"\n",
@@ -233,8 +231,7 @@ fn emit_wasm_function(
     return
   }
   let raw_params = params
-    .map(p => {
-      (if p.0 == "self" { "receiver" } else { p.0 }) +
+    .map(p => (if p.0 == "self" { "receiver" } else { p.0 }) +
       " : " +
       (if input_converters.contains(p.0) {
         "JsValue"
@@ -244,8 +241,7 @@ fn emit_wasm_function(
         "JsValue"
       } else {
         require_wasm_type(p.1, names)
-      })
-    })
+      }))
     .join(", ")
   let raw_result = if enum_result {
     "String"
@@ -568,15 +564,13 @@ fn generate_wasm(
           enums~,
         )
       CallbackInterface(cb) => {
-        guard cb.arguments.length() <= 1 && cb.return_type is Some(Void) else {
+        guard cb.return_type is Some(Void) else {
           abort(
-            "WasmGC callbacks currently require zero or one argument and a void result",
+            "WasmGC callbacks currently require a void result",
           )
         }
-        let event = if cb.arguments.is_empty() {
-          ""
-        } else {
-          let argument = cb.arguments[0]
+        let arguments : Array[String] = []
+        for argument in cb.arguments {
           let typ = require_wasm_type(argument.idl_type, names)
           guard !dictionaries.contains(typ) else {
             abort("WasmGC dictionary callback values are not implemented")
@@ -587,8 +581,9 @@ fn generate_wasm(
           guard !argument.optional && !argument.variadic else {
             abort("Optional/variadic WasmGC callbacks are not implemented")
           }
-          typ
+          arguments.push(typ)
         }
+        let event = arguments.join(", ")
         let name = cb.name
         mbt.write_string("#external\npub type \{name}\n")
         mbt.write_string(

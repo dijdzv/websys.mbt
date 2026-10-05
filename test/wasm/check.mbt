@@ -1,5 +1,12 @@
 ///|
 pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
+  let headers = @bindings.Headers::new()
+  headers.append("X-Example", "café")
+  let values : Array[(String, String, String?)] = []
+  headers.for_each(@bindings.HeaderCallback::new((value, name, owner) => {
+    values.push((value, name, owner.get(name)))
+  }))
+  guard values == [("café", "x-example", Some("café"))] else { return 55 }
   guard @bindings.HTMLInputElement::from_element_opt(
       document.create_element("input"),
     )

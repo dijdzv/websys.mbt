@@ -240,6 +240,11 @@ dictionary RequiredResult {
 };
 
 dictionary CallbackOptions { required AbortSignal signal; };
+dictionary ObjectInputs {
+  required object schema;
+  object? nullableObject;
+  required sequence<object> objects;
+};
 callback PromiseCallback = Promise<any> (object input, CallbackOptions options);
 callback StringCallback = Promise<DOMString> ();
 callback VoidPromiseCallback = Promise<undefined> ();

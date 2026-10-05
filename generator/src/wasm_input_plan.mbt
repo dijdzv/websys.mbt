@@ -48,6 +48,7 @@ fn plan_wasm_input(
     Name("long") => Some(Scalar("Int", "long"))
     Name("unsigned long") => Some(Scalar("UInt", "unsigned long"))
     Name("double") => Some(Scalar("Double", "double"))
+    Name("object") => Some(Scalar("JsValue", "object"))
     Name("ArrayBuffer" | "SharedArrayBuffer" | "ArrayBufferView" as name) =>
       Some(Scalar(name, "reference"))
     Name(name) if references.contains(name) => Some(Scalar(name, "reference"))
@@ -120,6 +121,7 @@ fn emit_wasm_input_plan(
       let expression = match kind {
         "boolean" => "value !== 0"
         "unsigned long" => "value >>> 0"
+        "object" => wasm_object_input("value")
         "enforced-u64" =>
           "(() => { const unsigned = BigInt.asUintN(64, value); if (unsigned > 9007199254740991n) throw new TypeError('EnforceRange unsigned long long exceeds the exact WebIDL range'); return Number(unsigned); })()"
         _ => "value"
@@ -171,4 +173,9 @@ fn emit_wasm_input_plan(
     "fn \{prefix}(value : \{public_type}) -> JsValue { \{body} }\n",
   )
   public_type
+}
+
+///|
+fn wasm_object_input(value : String) -> String {
+  "(() => { const object = " + value + "; if (object === null || (typeof object !== 'object' && typeof object !== 'function')) throw new TypeError('WebIDL object requires an object'); return object; })()"
 }

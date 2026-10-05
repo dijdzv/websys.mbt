@@ -273,6 +273,12 @@ Use focused generation and browser tests to establish support for each API.
 
 ### Dictionary inputs
 
+WebIDL `object` fields use opaque `JsValue` values, preserving object identity.
+Conversion accepts objects and functions and rejects null, undefined and scalar
+values with TypeError. Nullable fields retain omission versus explicit null;
+typedef aliases and sequence elements use the same checked conversion. This
+does not change an `object` declaration into the less restrictive `any` type.
+
 Input dictionaries use public MoonBit records and explicit `to_js()` conversion.
 Required fields are provided in record literals; optional fields use `Option`,
 and optional nullable fields use `Nullable::{Undefined, Null, Value}` as in the

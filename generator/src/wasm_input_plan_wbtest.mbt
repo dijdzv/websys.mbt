@@ -1,4 +1,20 @@
 ///|
+test "object dictionary inputs preserve opaque values and nullable presence" {
+  let parsed = parse_webidl_raw(
+    "typedef object Schema; dictionary Options { required Schema schema; object? nullableObject; required sequence<object> objects; };",
+  )
+  assert_true(validate_wasm_input(parsed) is None)
+  let types = wasm_dictionary_semantics(parsed)
+  assert_eq(plan_wasm_input(types["Options.schema"]), Some(Scalar("JsValue", "object")))
+  let (code, host) = generate_wasm(convert_to_definitions(parsed), dictionary_types=types)
+  assert_true(code.contains("schema : JsValue"), msg=code)
+  assert_true(code.contains("nullableObject : Nullable[JsValue]"))
+  assert_true(code.contains("objects : Array[JsValue]"))
+  assert_true(host.contains("WebIDL object requires an object"))
+  assert_true(host.contains("typeof object !== 'function'"))
+}
+
+///|
 test "nested nullable dictionary inputs require declared dictionary conversion" {
   let parsed = parse_webidl_raw(
     "dictionary Color { required double r; }; dictionary Options { required sequence<Color?> colors; (sequence<double> or Color) clear; };",

@@ -1,4 +1,10 @@
 ///|
+pub fn object_inputs(schema : @web.JsValue, optional : @web.JsValue, mode : Int) -> @web.JsValue {
+  let optional = match mode { 0 => @web.Nullable::Undefined; 1 => Null; _ => Value(optional) }
+  @web.ObjectInputs::{ schema, nullableObject: optional, objects: [schema] }.to_js()
+}
+
+///|
 let pending_callback : Ref[@web.PromiseResolver[@web.JsValue]?] = Ref(None)
 
 ///|

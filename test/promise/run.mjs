@@ -89,6 +89,26 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    for (const schema of [{ type: 'object' }, [], () => {}]) {
+      for (const mode of [0, 1, 2]) {
+        const value = instance.exports.object_inputs(schema, schema, mode);
+        if (value.schema !== schema || value.objects[0] !== schema) throw Error('Object identity was lost');
+        if (mode === 0 ? Object.hasOwn(value, 'nullableObject') : value.nullableObject !== (mode === 1 ? null : schema)) throw Error('Object nullable presence was lost');
+        count++;
+      }
+    }
+    for (const schema of [null, undefined, 'text', 1, true]) {
+      let rejected = false;
+      try { instance.exports.object_inputs(schema, schema, 0); } catch (error) { rejected = error instanceof TypeError; }
+      if (!rejected) throw Error('Non-object schema was accepted');
+      count++;
+    }
+    for (const optional of [null, undefined, 'text', 1, true]) {
+      let rejected = false;
+      try { instance.exports.object_inputs({}, optional, 2); } catch (error) { rejected = error instanceof TypeError; }
+      if (!rejected) throw Error('Invalid nullable object value was accepted');
+      count++;
+    }
     const signal = new AbortController().signal;
     const promiseCallback = instance.exports.promise_callback(signal);
     for (const value of [{ text: '日本😀' }, null, undefined]) {

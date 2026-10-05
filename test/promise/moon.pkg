@@ -38,6 +38,7 @@ options(
         "read_required",
         "start",
         "promise_callback",
+        "object_inputs",
         "settle_callback",
         "callback_count",
         "string_callback",

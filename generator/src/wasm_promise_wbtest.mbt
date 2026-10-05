@@ -18,8 +18,7 @@ test "Promise buffer builtins do not require interface declarations" {
 test "Promise conversion rejects unsupported shapes before emitting bindings" {
   for
     typ in [
-      Any,
-      Sequence(String),
+      IdlType::Sequence(String),
       Nullable(String),
       Named("Response"),
       Primitive("long long"),
@@ -28,6 +27,7 @@ test "Promise conversion rejects unsupported shapes before emitting bindings" {
   }
   for
     typ in [
+      Any,
       String,
       Void,
       Primitive("long"),

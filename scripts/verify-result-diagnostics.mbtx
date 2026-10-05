@@ -31,4 +31,17 @@ async fn main {
   assert_true(code != 0)
   assert_true((output.text() + errors.text()).contains("record key/value conversion"))
   println("Lossy record conversion diagnostic: passed")
+  let callback_cases = [
+    ("nullable-callback", "interface Value {}; callback Run = Promise<Value?> ();", "Nullable callback Promise results"),
+    ("optional-callback", "callback Run = Promise<any> (optional long value);", "Optional/nullable/variadic WasmGC callback arguments"),
+    ("nullable-callback-argument", "callback Run = Promise<any> (long? value);", "Optional/nullable/variadic WasmGC callback arguments"),
+  ]
+  for (name, source, expected) in callback_cases {
+    let input = root + "/" + name + ".idl"
+    @fs.write_file(input, source)
+    let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name], no_console_window=true)
+    assert_true(code != 0, msg="Unsupported callback accepted: " + name)
+    assert_true((output.text() + errors.text()).contains(expected), msg="Missing callback diagnostic: " + name)
+  }
+  println("Callback unsupported-shape diagnostics: 3 cases passed")
 }

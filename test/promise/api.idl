@@ -238,3 +238,10 @@ interface Values {
 dictionary RequiredResult {
   required boolean done;
 };
+
+dictionary CallbackOptions { required AbortSignal signal; };
+callback PromiseCallback = Promise<any> (object input, CallbackOptions options);
+callback StringCallback = Promise<DOMString> ();
+callback VoidPromiseCallback = Promise<undefined> ();
+callback UnsignedCallback = Promise<unsigned long> ();
+callback DictionaryCallback = Promise<RequiredResult> (boolean done);

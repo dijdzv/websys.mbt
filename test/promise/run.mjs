@@ -57,6 +57,10 @@ try {
     imports.fixture = { notify: (callback, code, text) => callback(code, text), abort: callback => { callback.aborts++; }, value: (callback, value) => { callback.value = value; callback.hasValue = true; }, error: (callback, value) => { callback.error = value; } };
     imports.spectest = { print_char() {} };
     imports.console = { log: value => console.log(value) };
+    imports.websys.callback_same_signal = (left, right) => left === right;
+    const resolverSlots = [];
+    const createResolver = imports.websys.resolver_new;
+    imports.websys.resolver_new = () => { const slot = createResolver(); resolverSlots.push(slot); return slot; };
     const { instance } = await WebAssembly.instantiate(new Uint8Array(bytes), imports, { builtins: ['js-string'], importedStringConstants: '_' });
     async function check(response, expected, text = '', timeout = 1000) {
       let calls = 0;
@@ -85,6 +89,57 @@ try {
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
     let count = 6;
+    const signal = new AbortController().signal;
+    const promiseCallback = instance.exports.promise_callback(signal);
+    for (const value of [{ text: '日本😀' }, null, undefined]) {
+      let reads = 0;
+      let settled = false;
+      const result = promiseCallback({}, { get signal() { reads++; return signal; } });
+      if (!(result instanceof Promise)) throw Error('Callback did not return a JavaScript Promise');
+      result.then(() => { settled = true; });
+      await Promise.resolve();
+      if (settled || reads !== 1) throw Error('Callback resolved early or reread its dictionary');
+      if (!instance.exports.settle_callback(value, false)) throw Error('Resolver did not settle exactly once');
+      if ((await result) !== value) throw Error('Promise<any> changed its value');
+      count++;
+    }
+    const reason = { reason: 'callback rejection' };
+    const callbackRejection = promiseCallback({}, { signal });
+    if (!instance.exports.settle_callback(reason, true)) throw Error('Rejection did not settle once');
+    try { await callbackRejection; throw Error('Callback rejection was lost'); } catch (error) { if (error !== reason) throw error; }
+    count++;
+    const callsBeforeInvalid = instance.exports.callback_count();
+    const getterFailure = Error('callback getter');
+    for (const [input, options, expected] of [
+      [null, { signal }, null], [1, { signal }, null],
+      [{}, {}, null], [{}, { signal: {} }, null],
+      [{}, { get signal() { throw getterFailure; } }, getterFailure],
+    ]) {
+      let failure;
+      try { await promiseCallback(input, options); } catch (error) { failure = error; }
+      if (!failure || (expected && failure !== expected)) throw Error('Invalid callback argument was not rejected');
+      if (instance.exports.callback_count() !== callsBeforeInvalid) throw Error('Invalid arguments entered the callback');
+      count++;
+    }
+    if (await instance.exports.string_callback()() !== '日本😀') throw Error('String callback ABI failed');
+    if (await instance.exports.void_promise_callback()() !== undefined) throw Error('Unit callback ABI failed');
+    if (await instance.exports.unsigned_callback()() !== 4294967295) throw Error('Unsigned callback ABI failed');
+    count += 3;
+    for (const done of [true, false]) {
+      const value = await instance.exports.dictionary_callback()(done);
+      if (value.done !== done || typeof value.done !== 'boolean') throw Error('Dictionary callback result ABI failed');
+      count++;
+    }
+    const invalidScalar = instance.exports.dictionary_callback();
+    let scalarRejected = false;
+    try { await invalidScalar(1); } catch (error) { scalarRejected = error instanceof TypeError; }
+    if (!scalarRejected) throw Error('Invalid scalar callback argument was accepted');
+    count++;
+    let bodyRejected = false;
+    try { await promiseCallback({}, { signal: new AbortController().signal }); } catch (error) { bodyRejected = error.message.includes('InvalidBody'); }
+    if (!bodyRejected) throw Error('MoonBit callback failure was not a Promise rejection');
+    count++;
+    if (resolverSlots.some(slot => slot.resolve !== undefined || slot.reject !== undefined)) throw Error('Settled resolver retained callbacks');
     for (const format of ['rgba8unorm', 'bgra8unorm']) {
       if (instance.exports.gpu_canvas_format({ getPreferredCanvasFormat: () => format }) !== format) throw Error('Enum result conversion failed');
       count++;

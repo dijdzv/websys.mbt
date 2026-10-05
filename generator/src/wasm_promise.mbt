@@ -20,6 +20,7 @@ fn wasm_promise_value(
   dictionaries? : Array[String] = [],
 ) -> WasmPromiseValue? {
   match t {
+    Any => Some({ name: "JsValue", predicate: "true" })
     Void => Some({ name: "Unit", predicate: "value === undefined", })
     String => Some({ name: "String", predicate: "typeof value === 'string'", })
     Primitive("boolean") =>

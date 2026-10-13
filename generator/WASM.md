@@ -226,6 +226,9 @@ the complete standard Event constructor signature or real keyboard/IME input.
 WebIDL `unsigned long` uses UInt on WasmGC. Outgoing i32 values are explicitly
 converted to unsigned JS numbers, including dictionary fields. The browser
 fixture checks 2147483648 and 4294967295 directly in the host object.
+Nonnullable WebIDL `short` uses Int, including signed event properties such as
+`MouseEvent.button`. Int does not enforce the 16-bit WebIDL range; arguments
+retain the existing conversion performed by the receiving browser API.
 Nullable unsigned long values use UInt?. Other nullable numeric interface values
 remain unsupported. The input fixture checks UTF-16 selection endpoints around
 an emoji, backward selection on input/textarea, and null selection positions on

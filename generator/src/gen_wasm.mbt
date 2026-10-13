@@ -145,7 +145,7 @@ fn wasm_type(t : IdlType, names : Array[String]) -> String? {
     Void => Some("Unit")
     String => Some("String")
     Primitive("boolean") => Some("Bool")
-    Primitive("long") => Some("Int")
+    Primitive("short" | "long") => Some("Int")
     Primitive("unsigned long") => Some("UInt")
     Primitive("unsigned short") => Some("UInt")
     Primitive("double") => Some("Double")

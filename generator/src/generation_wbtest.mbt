@@ -17,6 +17,30 @@ test "WasmGC callback preserves every supported argument in declaration order" {
 }
 
 ///|
+test "WasmGC signed short preserves signed getter and operation values" {
+  let parsed = parse_webidl_raw(
+    "interface MouseEvent { readonly attribute short button; attribute short value; short echo(short value); readonly attribute unsigned short buttons; };",
+  )
+  assert_true(is_parse_success(parsed))
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("MouseEvent::button(self : MouseEvent) -> Int"))
+  assert_true(
+    code.contains("MouseEvent::set_value(self : MouseEvent, value : Int) -> Unit"),
+  )
+  assert_true(
+    code.contains("MouseEvent::echo(self : MouseEvent, arg0 : Int) -> Int"),
+  )
+  assert_true(code.contains("MouseEvent::buttons(self : MouseEvent) -> UInt"))
+  assert_true(runtime.contains("MouseEvent_button: self => self.button"))
+  assert_true(
+    runtime.contains("MouseEvent_set_value: (self, value) => { self.value = value; }"),
+  )
+  assert_true(runtime.contains("MouseEvent_echo: (self, arg0) => self.echo(arg0)"))
+  assert_eq(wasm_type(Nullable(Primitive("short")), []), None)
+}
+
+///|
 test "WasmGC ArrayBuffer uses an opaque reference including nullable values" {
   assert_eq(wasm_type(Named("ArrayBuffer"), []), Some("ArrayBuffer"))
   assert_eq(wasm_type(Nullable(Named("ArrayBuffer")), []), Some("ArrayBuffer?"))

@@ -1,16 +1,26 @@
 # WasmGC async candidate
 
 This experimental dependency patch targets official async commit
-`00aa493c5a674988dc0f4dc3f9bf0a0e654427ac` (release 0.22.4).
+`11749dec32e2b4de8cc8a6101e18110019c29893` (release 0.22.5).
 It is not an upstream release or a replacement scheduler. Public WebSys JS
-dependencies remain unchanged. Generated consumers use the separately pinned
+dependencies use the published async release. Generated consumers use the separately pinned
 experimental source path described in [WasmGC support](../generator/WASM.md).
 
 Run `mise exec -- moon run scripts/prepare-async-wasmgc.mbtx` to construct
-`.work/dependencies/async-wasmgc`. Git and network access are required for the
-first run. Preparation pins the revision, applies the tracked patch, and rejects
+`.work/dependencies/async-wasmgc-0.22.5`. Git and network access are required for the
+first run. Preparation pins the revision and the patch SHA-256
+`8624c2e7ccb24fe9f7f06aea02086c3d419ce46a885ce2d91976cdb459df3558`,
+applies the tracked patch, and rejects
 unexpected source changes or untracked files on reuse. It never edits the
 Mooncakes registry. An interrupted or modified checkout is rejected for inspection.
+
+Embedding consumers can pass `--root checkout-directory --patch patch-file` after
+`--` in the `moon run` command. Paths are relative to the invoking working
+directory; `--root` is the dependency checkout, not the application root. The
+same pinned revision and patch bytes are required regardless of location. The
+script is reusable unchanged; callers must not rewrite its source to relocate
+it. A hash mismatch is rejected before creating the checkout. Existing modified
+sources are never reset or overwritten.
 
 The patch enables the official coroutine/event-loop code for WasmGC, supplies
 timer imports, and adds an experimental Promise waiter. The waiter detaches host
@@ -29,6 +39,26 @@ tests and 91 root JS async tests at initial integration. The maintained isolated
 headless JS/WasmGC consumer now has 218 cases.
 The 0.22.4 update passes those 218 cases on MoonBit v0.10.14+7d59c7ec9,
 with no pending timers and no surviving observed subscription callbacks.
+The 0.22.5 update was separately verified on Windows with WebSys's own
+`mise run setup`, MoonBit v0.10.15+943464bfa, moon 0.1.20261012 and Node 26.10.0:
+
+- `mise run test-async`: 218 JS/WasmGC cases, zero pending timers, 218 observed
+  callbacks with zero survivors; the live control and instance remained reachable.
+- `mise run test-promises`: 197 generated WasmGC consumer cases, existing
+  dictionary/cycle/lossy-record/callback diagnostics, and the relocated source
+  bundle browser consumer passed.
+- Generator JS tests: 54 passed with `--deny-warn`.
+- `mise run check`: published JS bindings and generator checked with `--deny-warn`.
+- Published JS browser consumer: 222/222 passed, including the generated public
+  bounded-byte API. Its first attempt failed because SharedArrayBuffer was not
+  exposed without cross-origin isolation; the existing server now supplies the
+  same isolation headers used by the Promise consumer. No product guard was
+  weakened or shared-buffer case skipped.
+- Explicit preparation paths successfully reused the reviewed checkout; altered
+  patch bytes were rejected before a new checkout was created.
+
+These are bounded compatibility observations, not whole-library or native async
+qualification. No performance improvement is inferred from them.
 The browser comparison covers settlement, checked primitive decoding,
 Fetch cancellation, late settlement and bounded callback reclamation. It does
 not establish generated API coverage, full WebIDL conversion, or complete
@@ -81,5 +111,5 @@ the exact supported subset is recorded in `generator/WASM.md`.
 This review accepts the bounded experimental contract and reproducible source
 delivery path. It does not establish upstream API approval, registry availability,
 full WebIDL coverage or every backend supported by official async. Keep the
-published JS API and its separate dependency unchanged. A generated `wait` must
+published JS API and its separate dependency contract stable. A generated `wait` must
 resolve to the verified adapter, never an unimplemented backend method.

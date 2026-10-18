@@ -1,1 +1,1 @@
-members = [".", "../../.work/dependencies/async-wasmgc"]
+members = [".", "../../.work/dependencies/async-wasmgc-0.22.5"]

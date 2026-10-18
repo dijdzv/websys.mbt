@@ -1,8 +1,8 @@
 diff --git a/src/integration.mbt b/src/integration.mbt
-index f1e7816..944e4c2 100644
+index 2db679c..d31833d 100644
 --- a/src/integration.mbt
 +++ b/src/integration.mbt
-@@ -59,7 +59,7 @@ extern "C" fn exit(code : Int) = "exit"
+@@ -59,7 +59,7 @@ extern "C" fn exit(code : Int32) = "exit"
 
  ///|
  #coverage.skip
@@ -34,7 +34,7 @@ index 2bcb63d..3984c4d 100644
      "thread_pool.wasm.mbt": [ "wasm" ],
    },
 diff --git a/src/internal/event_loop/timer.js.mbt b/src/internal/event_loop/timer.js.mbt
-index 39e915f..7399563 100644
+index 71ea052..8d2bd90 100644
 --- a/src/internal/event_loop/timer.js.mbt
 +++ b/src/internal/event_loop/timer.js.mbt
 @@ -17,9 +17,14 @@
@@ -42,17 +42,17 @@ index 39e915f..7399563 100644
 
  ///|
 +#cfg(target="js")
- extern "js" fn set_timeout(duration : Int, f : () -> Unit) -> Timer =
+ extern "js" fn set_timeout(duration : Int32, f : () -> Unit) -> Timer =
    #| (duration, f) => setTimeout(f, duration)
 
 +///|
 +#cfg(target="wasm-gc")
-+fn set_timeout(duration : Int, f : () -> Unit) -> Timer = "moonbit:async" "set_timeout"
++fn set_timeout(duration : Int32, f : () -> Unit) -> Timer = "moonbit:async" "set_timeout"
 +
  ///|
- pub fn Timer::new(duration : Int, f : () -> Unit) -> Timer {
+ pub fn Timer::new(duration : Int32, f : () -> Unit) -> Timer {
    set_timeout(duration) <| () => {
-@@ -29,11 +34,16 @@ pub fn Timer::new(duration : Int, f : () -> Unit) -> Timer {
+@@ -29,11 +34,16 @@ pub fn Timer::new(duration : Int32, f : () -> Unit) -> Timer {
  }
 
  ///|
@@ -61,18 +61,18 @@ index 39e915f..7399563 100644
    #| (timer) => clearTimeout(timer)
 
  ///|
--pub async fn sleep(duration : Int) -> Unit noraise {
+-pub async fn sleep(duration : Int32) -> Unit noraise {
 +#cfg(target="wasm-gc")
 +pub fn Timer::cancel(self : Timer) -> Unit = "moonbit:async" "clear_timeout"
 +
 +///|
-+pub async fn sleep(duration : Int) -> Unit {
++pub async fn sleep(duration : Int32) -> Unit {
    let coro = @coroutine.current_coroutine()
    let timer = Timer::new(duration, () => coro.wake())
    defer timer.cancel()
 diff --git a/src/internal/event_loop/unimplemented.mbt b/src/internal/event_loop/unimplemented.mbt
 deleted file mode 100644
-index 42c9b34..0000000
+index 094b146..0000000
 --- a/src/internal/event_loop/unimplemented.mbt
 +++ /dev/null
 @@ -1,58 +0,0 @@
@@ -93,8 +93,8 @@ index 42c9b34..0000000
 -///|
 -#coverage.skip
 -let _ignore_unused_import : Unit = {
--  let _ : (@deque.Deque[Int]) -> Unit = ignore
--  let _ : (@sorted_set.SortedSet[Int]) -> Unit = ignore
+-  let _ : (@deque.Deque[Int32]) -> Unit = ignore
+-  let _ : (@sorted_set.SortedSet[Int32]) -> Unit = ignore
 -  ignore(@cmp.minimum(0, 0))
 -  ignore(@debug.to_string(0))
 -  ignore(@c_buffer.unimplemented)
@@ -116,7 +116,7 @@ index 42c9b34..0000000
 -type Timer
 -
 -///|
--pub fn Timer::new(duration : Int, callback : () -> Unit) -> Timer {
+-pub fn Timer::new(duration : Int32, callback : () -> Unit) -> Timer {
 -  ignore(duration)
 -  ignore(callback)
 -  abort("`Timer::new()` is unimplemented on WASM backend")
@@ -130,7 +130,7 @@ index 42c9b34..0000000
 -
 -///|
 -#warnings("-unused_async")
--pub async fn sleep(duration : Int) -> Unit {
+-pub async fn sleep(duration : Int32) -> Unit {
 -  ignore(duration)
 -  abort("`sleep()` is unimplemented on WASM backend")
 -}
@@ -169,10 +169,10 @@ index 0000000..a9eab53
 +}
 diff --git a/src/wasm_async/wait.mbt b/src/wasm_async/wait.mbt
 new file mode 100644
-index 0000000..11527fb
+index 0000000..f80d4b5
 --- /dev/null
 +++ b/src/wasm_async/wait.mbt
-@@ -0,0 +1,74 @@
+@@ -0,0 +1,96 @@
 +///|
 +#external
 +pub type JsValue
@@ -182,7 +182,9 @@ index 0000000..11527fb
 +priv type Subscription
 +
 +///|
-+pub suberror Rejection { Rejection(JsValue) }
++pub suberror Rejection {
++  Rejection(JsValue)
++}
 +
 +///|
 +priv struct Waiter {
@@ -193,11 +195,19 @@ index 0000000..11527fb
 +
 +///|
 +#cfg(target="wasm-gc")
-+fn subscribe(promise : JsValue, resolve : (JsValue) -> Unit, reject : (JsValue) -> Unit) -> Subscription = "moonbit:async" "subscribe"
++fn subscribe(
++  promise : JsValue,
++  resolve : (JsValue) -> Unit,
++  reject : (JsValue) -> Unit,
++) -> Subscription = "moonbit:async" "subscribe"
 +
 +///|
 +#cfg(target="js")
-+extern "js" fn subscribe(promise : JsValue, resolve : (JsValue) -> Unit, reject : (JsValue) -> Unit) -> Subscription =
++extern "js" fn subscribe(
++  promise : JsValue,
++  resolve : (JsValue) -> Unit,
++  reject : (JsValue) -> Unit,
++) -> Subscription =
 +  #| (promise, resolve, reject) => {
 +  #|   const slot = { resolve, reject };
 +  #|   Promise.resolve(promise).then(value => slot.resolve?.(value), reason => slot.reject?.(reason));
@@ -217,26 +227,38 @@ index 0000000..11527fb
 +fn[T] promise_reference(promise : @js_async.Promise[T]) -> JsValue = "%identity"
 +
 +///|
-+pub async fn[T] wait(promise : @js_async.Promise[T], decode : (JsValue) -> T raise, abort : () -> Unit) -> T {
-+  let waiter = Waiter::{ coro: Some(@coroutine.current_coroutine()), value: None, failure: None }
++pub async fn[T] wait(
++  promise : @js_async.Promise[T],
++  decode : (JsValue) -> T raise,
++  abort : () -> Unit,
++) -> T {
++  let waiter = Waiter::{
++    coro: Some(@coroutine.current_coroutine()),
++    value: None,
++    failure: None,
++  }
 +  defer {
 +    waiter.coro = None
 +    waiter.value = None
 +    waiter.failure = None
 +  }
-+  let subscription = subscribe(promise_reference(promise), value => {
-+    if waiter.coro is Some(coro) {
-+      waiter.value = Some(value)
-+      coro.wake()
-+      @event_loop.reschedule()
-+    }
-+  }, reason => {
-+    if waiter.coro is Some(coro) {
-+      waiter.failure = Some(reason)
-+      coro.wake()
-+      @event_loop.reschedule()
-+    }
-+  })
++  let subscription = subscribe(
++    promise_reference(promise),
++    value => {
++      if waiter.coro is Some(coro) {
++        waiter.value = Some(value)
++        coro.wake()
++        @event_loop.reschedule()
++      }
++    },
++    reason => {
++      if waiter.coro is Some(coro) {
++        waiter.failure = Some(reason)
++        coro.wake()
++        @event_loop.reschedule()
++      }
++    },
++  )
 +  defer detach(subscription)
 +  let _ : Unit = {
 +    errdefer abort()

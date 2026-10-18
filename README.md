@@ -42,7 +42,7 @@ mise run generate
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
-Development uses MoonBit `0.10.14+7d59c7ec9` and `moonbitlang/async` `0.22.4`.
+Development uses MoonBit `0.10.15+943464bfa` and `moonbitlang/async` `0.22.5`.
 Generation uses `@webref/idl` `3.85.0` and `webidl2` `24.5.0`.
 Adopt new published compiler and dependency releases as they become available;
 exact pins and checksums make the validated inputs reproducible.
@@ -53,6 +53,8 @@ generally usable on WasmGC. See the [consumer compatibility contract](generator/
 for verified behavior, backend differences and external-use instructions.
 Change the generator rather than editing generated `src/*.mbt` files.
 Generation reads MDN metadata over the network for typed errors and event types.
+See [generation inputs and reproducibility](generator/GENERATION.md) before
+regenerating published APIs; live metadata can change generated signatures.
 
 Run `mise run check` for warning-free compiler checks and `mise run test` for
 generator tests plus headless browser integration. Install the browser once with

@@ -1,7 +1,7 @@
 import {
-  "moonbitlang/async@0.22.4",
-  "moonbitlang/async@0.22.4/fs",
-  "moonbitlang/async@0.22.4/process",
+  "moonbitlang/async@0.22.5",
+  "moonbitlang/async@0.22.5/fs",
+  "moonbitlang/async@0.22.5/process",
   "moonbitlang/core/env",
 }
 
@@ -29,7 +29,7 @@ async fn main {
     assert_true(@fs.exists(source + "/" + name), msg="Missing generated module file: " + name)
   }
   ignore(checked("moon", ["run", "scripts/prepare-async-wasmgc.mbtx"]))
-  let dependency = ".work/dependencies/async-wasmgc"
+  let dependency = ".work/dependencies/async-wasmgc-0.22.5"
   let revision = checked("git", ["-C", dependency, "rev-parse", "HEAD"])
   for name in ["bindings.mbt", "runtime.mjs", "moon.mod", "moon.pkg"] {
     copy_file(source + "/" + name, destination + "/bindings/" + name)

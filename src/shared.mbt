@@ -4,6 +4,21 @@
 /// Generic JavaScript value
 pub type JsValue
 
+pub(all) enum BytesConversionError { TooLarge; InvalidValue }
+extern "js" fn bounded_bytes_snapshot(value : JsValue, max_bytes : Int) -> JsValue =
+  #| (value, maxBytes) => { if (maxBytes < 0 || !(value instanceof Uint8Array)) return { status: 1 }; try { const proto = Object.getPrototypeOf(Uint8Array.prototype); const buffer = Object.getOwnPropertyDescriptor(proto, 'buffer').get.call(value); if (!(buffer instanceof ArrayBuffer)) return { status: 1 }; const resizable = Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, 'resizable'); if (resizable && resizable.get.call(buffer)) return { status: 1 }; new Uint8Array(buffer); const length = Object.getOwnPropertyDescriptor(proto, 'length').get.call(value); if (length > maxBytes) return { status: 2 }; const copy = new Uint8Array(length); Uint8Array.prototype.set.call(copy, value); return { status: 0, bytes: copy }; } catch { return { status: 1 }; } }
+extern "js" fn bounded_bytes_status(value : JsValue) -> Int =
+  #| value => value.status
+extern "js" fn bounded_bytes_value(value : JsValue) -> Bytes =
+  #| value => value.bytes
+pub fn JsValue::to_bytes_bounded(self : JsValue, max_bytes~ : Int) -> Result[Bytes, BytesConversionError] {
+  let outcome = bounded_bytes_snapshot(self, max_bytes)
+  match bounded_bytes_status(outcome) {
+    0 => Ok(bounded_bytes_value(outcome))
+    2 => Err(TooLarge)
+    _ => Err(InvalidValue)
+  }
+}
 extern "js" fn bytes_snapshot(value : JsValue) -> JsValue =
   #| value => { if (!(value instanceof Uint8Array)) return null; try { const length = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(Uint8Array.prototype), 'length').get.call(value); if (length > 2147483647) return null; const copy = new Uint8Array(length); Uint8Array.prototype.set.call(copy, value); return copy; } catch { return null; } }
 extern "js" fn bytes_snapshot_valid(value : JsValue) -> Bool =

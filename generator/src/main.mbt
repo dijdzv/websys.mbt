@@ -4,11 +4,11 @@
 // Node.js/Bun FFI for CLI - uses types from parser.mbt
 
 ///|
-extern "js" fn get_argv_string(index : Int) -> String =
+extern "js" fn get_argv_string(index : Int32) -> String =
   #| (index) => process.argv[index]
 
 ///|
-extern "js" fn get_argv_length() -> Int =
+extern "js" fn get_argv_length() -> Int32 =
   #| () => process.argv.length
 
 ///|
@@ -146,7 +146,7 @@ async fn main {
     mkdir_sync(args.output)
     write_file_sync(
       path_join(args.output, "wasm-inventory.json"),
-      reports.to_json().stringify(),
+      Json(reports).stringify(),
     )
     println(
       "Inventoried " +
@@ -197,10 +197,14 @@ async fn main {
         "import { " +
         (if moonbit.contains("pub struct WebsysPromise") {
           "\"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\", "
-        } else { "" }) +
+        } else {
+          ""
+        }) +
         (if moonbit.contains("@debug.") {
           "\"moonbitlang/core/debug\", "
-        } else { "" }) +
+        } else {
+          ""
+        }) +
         "}\n" +
         "supported_targets = \"wasm-gc\"\n",
       )

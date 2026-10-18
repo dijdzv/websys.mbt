@@ -80,6 +80,18 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### Static operations and compound constructors
+
+Static operations call the interface constructor in the current realm and do not
+take an instance argument. Instance operations retain their receiver. Required
+constructor arguments can use the same sequence/union input conversion as
+operations: MoonBit values are converted before entering the JavaScript
+constructor. Optional/variadic constructor arguments remain unsupported.
+
+Generator contracts cover the emitted call boundary, and the independent
+browser consumer checks the static receiver and both union alternatives with
+a sequence argument. This does not add application-specific constructors.
+
 ### WebGPU discovery
 
 The browser fixtures require a SwiftShader adapter and create/destroy a device
@@ -196,6 +208,21 @@ generated GPU buffer creation or rendering/readback.
 bytes into it without exposing the GC array layout. The consumer checks empty
 and nonempty copies and verifies that host mutation cannot change the source.
 This is an explicit copy, not a zero-copy or atomic shared-memory operation.
+
+`JsValue::to_bytes_bounded(max_bytes~ : Int)` is a separate snapshot API on the
+JS and WasmGC generation paths. It returns owned bytes for a same-realm stable
+`Uint8Array` view, respecting the view's offset and length. Oversize input returns
+`BytesConversionError::TooLarge` before allocating the copy. A negative limit,
+wrong source kind, detached view, shared backing buffer or resizable backing
+buffer returns `InvalidValue`. Empty views with a zero limit succeed. Intrinsic
+typed-array getters avoid reading user-provided `length` properties.
+
+These sharing/resizing restrictions belong to this snapshot API, not to WebIDL
+`BufferSource` generally or the existing opaque-reference conversions. The
+unbounded conversion retains its earlier policy. The shared snapshot function is
+executed by the generator's JS tests; an independent WasmGC consumer also checks
+the generated ABI in isolated headless Chromium. This does not claim a separately
+compiled JS consumer for the new method.
 
 SharedArrayBuffer and ArrayBufferView are opaque built-in references. The standard
 AllowSharedBufferSource union retains its three branches, including AllowShared

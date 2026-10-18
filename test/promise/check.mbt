@@ -6,6 +6,43 @@ type Callback
 priv suberror InvalidBody
 
 ///|
+let bounded_snapshot : Ref[Bytes] = Ref(b"")
+
+///|
+pub fn bounded_bytes_capture(value : @web.JsValue, max_bytes : Int32) -> Int32 {
+  match value.to_bytes_bounded(max_bytes~) {
+    Ok(bytes) => {
+      bounded_snapshot.val = bytes
+      bytes.length()
+    }
+    Err(TooLarge) => -2
+    Err(InvalidValue) => -1
+  }
+}
+
+///|
+pub fn bounded_bytes_at(index : Int32) -> Int32 {
+  bounded_snapshot.val[index].to_int()
+}
+
+///|
+pub fn constructor_sum(number : Bool) -> Int32 {
+  @web.ConstructionFixture::new(
+    [3, 4],
+    if number {
+      Case1(9)
+    } else {
+      Case0("tag")
+    },
+  ).total()
+}
+
+///|
+pub fn static_sum() -> Int32 {
+  @web.ConstructionFixture::copy(11).total()
+}
+
+///|
 pub fn buffer_inputs(
   probe : @web.BufferInputProbe,
   plain : @web.ArrayBuffer,
@@ -162,7 +199,7 @@ pub fn unsigned_sequence(probe : @web.SequenceProbe) -> Unit {
 }
 
 ///|
-pub fn enum_options(mode : Int) -> @web.JsValue {
+pub fn enum_options(mode : Int32) -> @web.JsValue {
   @web.EnumInputs::{
     mode: MirrorRepeat,
     optionalMode: match mode {
@@ -301,7 +338,7 @@ pub fn post_body(
   url : String,
   blob : @web.Blob,
   params : @web.URLSearchParams,
-  mode : Int,
+  mode : Int32,
   callback : Callback,
 ) -> Unit {
   @async.run_async_main(async fn() {
@@ -349,7 +386,7 @@ pub fn post_headers(
 }
 
 ///|
-fn notify(callback : Callback, code : Int, text : String) -> Unit = "fixture" "notify"
+fn notify(callback : Callback, code : Int32, text : String) -> Unit = "fixture" "notify"
 
 ///|
 fn abort_wait(callback : Callback) -> Unit = "fixture" "abort"
@@ -364,7 +401,7 @@ fn notify_error(callback : Callback, value : @bridge.JsValue) -> Unit = "fixture
 pub fn fetch_body(
   window : @web.Window,
   url : String,
-  timeout : Int,
+  timeout : Int32,
   callback : Callback,
 ) -> Unit {
   @async.run_async_main(async fn() {
@@ -507,7 +544,7 @@ pub fn cancel_stream(stream : @web.ReadableStream, callback : Callback) -> Unit 
 pub fn fetch_text(
   window : @web.Window,
   url : String,
-  timeout : Int,
+  timeout : Int32,
   callback : Callback,
 ) -> Unit {
   @async.run_async_main(async fn() {
@@ -543,7 +580,7 @@ pub fn fetch_text(
 ///|
 pub fn start(
   response : @web.Response,
-  timeout : Int,
+  timeout : Int32,
   callback : Callback,
 ) -> Unit {
   @async.run_async_main(async fn() {
@@ -571,7 +608,7 @@ pub fn start(
 ///|
 pub fn start_value(
   values : @web.Values,
-  kind : Int,
+  kind : Int32,
   callback : Callback,
 ) -> Unit {
   @async.run_async_main(async fn() {

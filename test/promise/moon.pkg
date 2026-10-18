@@ -10,6 +10,10 @@ options(
   link: {
     "wasm-gc": {
       "exports": [
+        "bounded_bytes_capture",
+        "bounded_bytes_at",
+        "constructor_sum",
+        "static_sum",
         "render_options",
         "encode_clear",
         "submit_clear",

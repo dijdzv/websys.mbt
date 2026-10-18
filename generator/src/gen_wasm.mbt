@@ -52,7 +52,11 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
         let members = get_members(item)
         for j = 0; j < js_array_length(members); j = j + 1 {
           let mem = js_array_get(members, j)
-          if get_special(mem) != "" || js_array_length(get_ext_attrs(mem)) != 0 {
+          if (
+              get_special(mem) != "" &&
+              !(get_type(mem) == "operation" && get_special(mem) == "static")
+            ) ||
+            js_array_length(get_ext_attrs(mem)) != 0 {
             return Some(
               "WasmGC special members and extended attributes are not implemented",
             )
@@ -127,8 +131,12 @@ fn validate_wasm_input(parsed : JsValue) -> String? {
           let arguments = get_arguments(item)
           for index = 0; index < js_array_length(arguments); index = index + 1 {
             let argument = js_array_get(arguments, index)
-            if is_optional(argument) || is_variadic(argument) || is_nullable_type(get_idl_type(argument)) {
-              return Some("Optional/nullable/variadic WasmGC callback arguments are not implemented")
+            if is_optional(argument) ||
+              is_variadic(argument) ||
+              is_nullable_type(get_idl_type(argument)) {
+              return Some(
+                "Optional/nullable/variadic WasmGC callback arguments are not implemented",
+              )
             }
           }
         }
@@ -190,11 +198,11 @@ fn emit_wasm_function(
   params : Array[(String, IdlType)],
   result : IdlType,
   names : Array[String],
-  dictionaries? : Array[String] = [],
-  promise_interfaces? : Array[String] = [],
-  input_converters? : Map[String, (String, String)] = Map([]),
-  result_enums? : Array[String] = [],
-  throws? : Array[String] = [],
+  dictionaries~ : Array[String] = [],
+  promise_interfaces~ : Array[String] = [],
+  input_converters~ : Map[String, (String, String)] = Map([]),
+  result_enums~ : Array[String] = [],
+  throws~ : Array[String] = [],
 ) -> Unit {
   let throwing = !throws.is_empty() && !(result is Promise(_))
   if result is Named(name) && dictionaries.contains(name) {
@@ -235,9 +243,11 @@ fn emit_wasm_function(
     enum_result ||
     result is Promise(_) ||
     result is Nullable(_) ||
-    params.any(p => input_converters.contains(p.0) ||
+    params.any(p => {
+      input_converters.contains(p.0) ||
       p.1 is Nullable(_) ||
-      (p.1 is Named(name) && dictionaries.contains(name)))
+      (p.1 is Named(name) && dictionaries.contains(name))
+    })
   if !needs_wrapper {
     out.write_string(
       "pub fn \{owner}::\{member_name}(\{public_params}) -> \{result_type} = \"websys\" \"\{key}\"\n",
@@ -245,7 +255,8 @@ fn emit_wasm_function(
     return
   }
   let raw_params = params
-    .map(p => (if p.0 == "self" { "receiver" } else { p.0 }) +
+    .map(p => {
+      (if p.0 == "self" { "receiver" } else { p.0 }) +
       " : " +
       (if input_converters.contains(p.0) {
         "JsValue"
@@ -255,7 +266,8 @@ fn emit_wasm_function(
         "JsValue"
       } else {
         require_wasm_type(p.1, names)
-      }))
+      })
+    })
     .join(", ")
   let raw_result = if enum_result {
     "String"
@@ -340,8 +352,8 @@ fn emit_wasm_function(
 ///|
 fn generate_wasm(
   definitions : Array[Definition],
-  dictionary_types? : Map[String, WasmSemanticType] = Map([]),
-  operation_types? : Map[String, WasmSemanticType] = Map([]),
+  dictionary_types~ : Map[String, WasmSemanticType] = Map([]),
+  operation_types~ : Map[String, WasmSemanticType] = Map([]),
 ) -> (String, String) {
   let definitions = match resolve_wasm_typedefs(definitions) {
     Ok(values) => values
@@ -388,7 +400,8 @@ fn generate_wasm(
     names.push(name)
   }
   let mbt = StringBuilder()
-  let mut needs_js_values = !dictionaries.is_empty() || !operation_types.is_empty()
+  let mut needs_js_values = !dictionaries.is_empty() ||
+    !operation_types.is_empty()
   for name in enums {
     guard !names.contains(name) else { abort("Conflicting WasmGC enum name") }
   }
@@ -406,15 +419,25 @@ fn generate_wasm(
     }
   }
   for definition in definitions {
-    if definition is CallbackInterface(callback) && callback.return_type is Some(Promise(inner)) {
+    if definition is CallbackInterface(callback) &&
+      callback.return_type is Some(Promise(inner)) {
       needs_js_values = true
-      let plan = require_wasm_promise_value(inner, interfaces=promise_interfaces, dictionaries~)
-      if !callback_values.any(value => value.name == plan.name) { callback_values.push(plan) }
-      if !promise_values.any(value => value.name == plan.name) { promise_values.push(plan) }
+      let plan = require_wasm_promise_value(
+        inner,
+        interfaces=promise_interfaces,
+        dictionaries~,
+      )
+      if !callback_values.any(value => value.name == plan.name) {
+        callback_values.push(plan)
+      }
+      if !promise_values.any(value => value.name == plan.name) {
+        promise_values.push(plan)
+      }
       for argument in callback.arguments {
-        if argument.idl_type is Named(name) && dictionaries.contains(name) &&
+        if argument.idl_type is Named(name) &&
+          dictionaries.contains(name) &&
           !promise_values.any(value => value.name == name) {
-          promise_values.push({ name, predicate: "" })
+          promise_values.push({ name, predicate: "", })
         }
       }
     }
@@ -440,7 +463,9 @@ fn generate_wasm(
               if !promise_values.any(value => value.name == plan.name) {
                 promise_values.push(plan)
               }
-              if plan.name == "JsValue" { needs_js_values = true }
+              if plan.name == "JsValue" {
+                needs_js_values = true
+              }
             }
             record(op.return_type, outputs)
             for arg in op.arguments {
@@ -561,7 +586,9 @@ fn generate_wasm(
     )
   }
   if !callback_values.is_empty() {
-    guard !names.contains("PromiseResolver") else { abort("Reserved PromiseResolver type name") }
+    guard !names.contains("PromiseResolver") else {
+      abort("Reserved PromiseResolver type name")
+    }
     emit_wasm_resolvers(mbt, js, callback_values, dictionaries)
   }
   js.write_string(
@@ -597,13 +624,13 @@ fn generate_wasm(
         )
       CallbackInterface(cb) => {
         if cb.return_type is Some(Promise(_)) {
-          emit_wasm_promise_callback(cb, mbt, js, names, dictionaries, promise_interfaces)
+          emit_wasm_promise_callback(
+            cb, mbt, js, names, dictionaries, promise_interfaces,
+          )
           continue
         }
         guard cb.return_type is Some(Void) else {
-          abort(
-            "WasmGC callbacks currently require a void result",
-          )
+          abort("WasmGC callbacks currently require a void result")
         }
         let arguments : Array[String] = []
         for argument in cb.arguments {
@@ -710,7 +737,8 @@ fn generate_wasm(
               }
             }
             Operation(op) => {
-              guard op.special is None && op.name != "" else {
+              guard (op.special is None || op.special == Some("static")) &&
+                op.name != "" else {
                 abort("Unsupported WasmGC operation")
               }
               for (fn_name, variant_arguments) in wasm_operation_variants(op) {
@@ -718,9 +746,12 @@ fn generate_wasm(
                   abort("WasmGC overloads are not implemented")
                 }
                 emitted.push(fn_name)
-                let parameters : Array[(String, IdlType)] = [
-                  ("self", Named(name)),
-                ]
+                let is_static = op.special == Some("static")
+                let parameters : Array[(String, IdlType)] = if is_static {
+                  []
+                } else {
+                  [("self", Named(name))]
+                }
                 let arguments = StringBuilder()
                 let values = StringBuilder()
                 let input_converters : Map[String, (String, String)] = Map([])
@@ -783,23 +814,30 @@ fn generate_wasm(
                   result_enums=enums,
                   throws=op.throws,
                 )
-                let js_params = if variant_arguments.is_empty() {
+                let js_params = if is_static {
+                  arguments.to_string()
+                } else if variant_arguments.is_empty() {
                   "self"
                 } else {
                   "self, " + arguments.to_string()
                 }
+                let receiver = if is_static {
+                  "globalThis." + name
+                } else {
+                  "self"
+                }
                 if op.return_type is Promise(_) {
                   js.write_string(
-                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return self.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
+                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return \{receiver}.\{op.name}(\{values}); } catch (error) { return Promise.reject(error); } },\n",
                   )
                 } else if !op.throws.is_empty() {
                   js.write_string(
-                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return { ok: true, value: self.\{op.name}(\{values}) }; } catch(error) { return { ok: false, error }; } },\n" +
+                    "    \{name}_\{fn_name}: (\{js_params}) => { try { return { ok: true, value: \{receiver}.\{op.name}(\{values}) }; } catch(error) { return { ok: false, error }; } },\n" +
                     "    \{name}_\{fn_name}_value: result => result.value,\n",
                   )
                 } else {
                   js.write_string(
-                    "    \{name}_\{fn_name}: (\{js_params}) => self.\{op.name}(\{values}),\n",
+                    "    \{name}_\{fn_name}: (\{js_params}) => \{receiver}.\{op.name}(\{values}),\n",
                   )
                 }
               }
@@ -812,6 +850,7 @@ fn generate_wasm(
               let params : Array[(String, IdlType)] = []
               let arguments : Array[String] = []
               let values : Array[String] = []
+              let input_converters : Map[String, (String, String)] = Map([])
               for i, arg in ctor.arguments {
                 guard !arg.optional && !arg.variadic else {
                   abort(
@@ -819,6 +858,16 @@ fn generate_wasm(
                   )
                 }
                 params.push(("arg\{i}", arg.idl_type))
+                if arg.idl_type is Sequence(_) || arg.idl_type is Union(_) {
+                  let plan = wasm_compound_argument_plan(
+                    arg.idl_type,
+                    names,
+                    dictionaries,
+                  )
+                  let converter = "websys_arg_" + name + "_new_" + i.to_string()
+                  let typ = emit_wasm_input_plan(plan, converter, mbt, js)
+                  input_converters["arg\{i}"] = (typ, converter)
+                }
                 arguments.push("arg\{i}")
                 values.push(wasm_js_arg(arg.idl_type, "arg\{i}"))
               }
@@ -830,6 +879,7 @@ fn generate_wasm(
                 Named(name),
                 names,
                 dictionaries~,
+                input_converters~,
               )
               js.write_string(
                 "    \{name}_new: (\{arguments.join(", ")}) => new globalThis.\{name}(\{values.join(", ")}),\n",

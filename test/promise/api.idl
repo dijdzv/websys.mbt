@@ -1,4 +1,9 @@
 typedef DOMString ResponseText;
+interface ConstructionFixture {
+  constructor(sequence<long> values, (DOMString or long) flag);
+  readonly attribute long total;
+  static ConstructionFixture copy(long value);
+};
 interface BufferPromiseProbe {
   Promise<ArrayBuffer> plain();
   Promise<SharedArrayBuffer> shared();

@@ -26,7 +26,9 @@ test "WasmGC signed short preserves signed getter and operation values" {
   let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
   assert_true(code.contains("MouseEvent::button(self : MouseEvent) -> Int"))
   assert_true(
-    code.contains("MouseEvent::set_value(self : MouseEvent, value : Int) -> Unit"),
+    code.contains(
+      "MouseEvent::set_value(self : MouseEvent, value : Int) -> Unit",
+    ),
   )
   assert_true(
     code.contains("MouseEvent::echo(self : MouseEvent, arg0 : Int) -> Int"),
@@ -34,9 +36,13 @@ test "WasmGC signed short preserves signed getter and operation values" {
   assert_true(code.contains("MouseEvent::buttons(self : MouseEvent) -> UInt"))
   assert_true(runtime.contains("MouseEvent_button: self => self.button"))
   assert_true(
-    runtime.contains("MouseEvent_set_value: (self, value) => { self.value = value; }"),
+    runtime.contains(
+      "MouseEvent_set_value: (self, value) => { self.value = value; }",
+    ),
   )
-  assert_true(runtime.contains("MouseEvent_echo: (self, arg0) => self.echo(arg0)"))
+  assert_true(
+    runtime.contains("MouseEvent_echo: (self, arg0) => self.echo(arg0)"),
+  )
   assert_eq(wasm_type(Nullable(Primitive("short")), []), None)
 }
 
@@ -79,8 +85,8 @@ test "WasmGC nullable references and strings expose Option" {
 test "WasmGC rejects definitions lost by the shared AST conversion" {
   for
     source in [
-      "interface X { static undefined f(); };", "partial interface mixin X { undefined f(); };",
-      "interface X { stringifier; };", "[Exposed=Window] interface X {};", "callback X = undefined ([Clamp] long value);",
+      "partial interface mixin X { undefined f(); };", "interface X { stringifier; };",
+      "[Exposed=Window] interface X {};", "callback X = undefined ([Clamp] long value);",
     ] {
     let parsed = parse_webidl_raw(source)
     assert_true(is_parse_success(parsed))
@@ -176,4 +182,49 @@ test "WasmGC constructors are not inherited as child constructors" {
   assert_true(code.contains("Parent::new("))
   assert_true(!code.contains("Child::new("))
   assert_true(runtime.contains("new globalThis.Parent("))
+}
+
+///|
+test "WasmGC static operations retain their constructor receiver without an instance argument" {
+  let parsed = parse_webidl_raw(
+    "interface Factory { static long echo(long value); static boolean enabled(); long instanceEcho(long value); };",
+  )
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("Factory::echo(arg0 : Int) -> Int"))
+  assert_true(code.contains("Factory::enabled() -> Bool"))
+  assert_true(
+    code.contains("Factory::instance_echo(self : Factory, arg0 : Int) -> Int"),
+  )
+  assert_true(
+    runtime.contains("Factory_echo: (arg0) => globalThis.Factory.echo(arg0)"),
+  )
+  assert_true(
+    runtime.contains("Factory_enabled: () => globalThis.Factory.enabled()"),
+  )
+  assert_true(
+    runtime.contains(
+      "Factory_instance_echo: (self, arg0) => self.instanceEcho(arg0)",
+    ),
+  )
+}
+
+///|
+test "WasmGC constructors convert sequence and union arguments through the existing input contract" {
+  let parsed = parse_webidl_raw(
+    "interface Factory { constructor(sequence<long> values, (DOMString or long) flag); };",
+  )
+  assert_eq(validate_wasm_input(parsed), None)
+  let (code, runtime) = generate_wasm(convert_to_definitions(parsed))
+  assert_true(code.contains("Factory::new("))
+  assert_true(code.contains("websys_arg_Factory_new_0"))
+  assert_true(code.contains("websys_arg_Factory_new_1"))
+  assert_true(runtime.contains("new globalThis.Factory("))
+  assert_true(code.contains("websys_arg_Factory_new_0(arg0)"))
+  assert_true(code.contains("websys_arg_Factory_new_1(arg1)"))
+  assert_true(
+    runtime.contains(
+      "Factory_new: (arg0, arg1) => new globalThis.Factory(arg0, arg1)",
+    ),
+  )
 }

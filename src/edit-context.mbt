@@ -3,17 +3,22 @@
 
 ///|
 /// UnderlineStyle enum
+#derive(Eq, Debug)
 pub(all) enum UnderlineStyle {
   None
   Solid
   Dotted
   Dashed
   Wavy
-} derive(Eq, Debug)
+}
 
+///|
 pub extend UnderlineStyle with Eq::{equal, not_equal}
+
+///|
 pub extend UnderlineStyle with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn UnderlineStyle::to_string(self : UnderlineStyle) -> String {
   match self {
@@ -25,6 +30,7 @@ pub fn UnderlineStyle::to_string(self : UnderlineStyle) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn UnderlineStyle::from_string(s : String) -> UnderlineStyle? {
   match s {
@@ -39,15 +45,20 @@ pub fn UnderlineStyle::from_string(s : String) -> UnderlineStyle? {
 
 ///|
 /// UnderlineThickness enum
+#derive(Eq, Debug)
 pub(all) enum UnderlineThickness {
   None
   Thin
   Thick
-} derive(Eq, Debug)
+}
 
+///|
 pub extend UnderlineThickness with Eq::{equal, not_equal}
+
+///|
 pub extend UnderlineThickness with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn UnderlineThickness::to_string(self : UnderlineThickness) -> String {
   match self {
@@ -57,6 +68,7 @@ pub fn UnderlineThickness::to_string(self : UnderlineThickness) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn UnderlineThickness::from_string(s : String) -> UnderlineThickness? {
   match s {
@@ -71,19 +83,17 @@ pub fn UnderlineThickness::from_string(s : String) -> UnderlineThickness? {
 /// EditContextInit dictionary
 pub(all) struct EditContextInit {
   text : String?
-  selectionStart : Int?
-  selectionEnd : Int?
+  selectionStart : Int32?
+  selectionEnd : Int32?
 }
 
+///|
 /// Create a new EditContextInit with default values
 pub fn EditContextInit::default() -> EditContextInit {
-  EditContextInit::{
-    text: None,
-    selectionStart: None,
-    selectionEnd: None,
-  }
+  EditContextInit::{ text: None, selectionStart: None, selectionEnd: None, }
 }
 
+///|
 extern "js" fn EditContextInit::to_js_ffi(self : EditContextInit) -> JsValue =
   #| (self) => ({
   #|   text: self.text,
@@ -91,11 +101,13 @@ extern "js" fn EditContextInit::to_js_ffi(self : EditContextInit) -> JsValue =
   #|   selectionEnd: self.selectionEnd
   #| })
 
+///|
 /// Convert to JsValue
 pub fn EditContextInit::to_js(self : EditContextInit) -> JsValue {
   EditContextInit::to_js_ffi(self)
 }
 
+///|
 extern "js" fn EditContextInit::from_js_ffi(value : JsValue) -> EditContextInit =
   #| (v) => ({
   #|   text: v.text,
@@ -103,6 +115,7 @@ extern "js" fn EditContextInit::from_js_ffi(value : JsValue) -> EditContextInit 
   #|   selectionEnd: v.selectionEnd
   #| })
 
+///|
 /// Convert from JsValue
 pub fn EditContextInit::from_js(value : JsValue) -> EditContextInit {
   EditContextInit::from_js_ffi(value)
@@ -111,13 +124,14 @@ pub fn EditContextInit::from_js(value : JsValue) -> EditContextInit {
 ///|
 /// TextUpdateEventInit dictionary
 pub(all) struct TextUpdateEventInit {
-  updateRangeStart : Int?
-  updateRangeEnd : Int?
+  updateRangeStart : Int32?
+  updateRangeEnd : Int32?
   text : String?
-  selectionStart : Int?
-  selectionEnd : Int?
+  selectionStart : Int32?
+  selectionEnd : Int32?
 }
 
+///|
 /// Create a new TextUpdateEventInit with default values
 pub fn TextUpdateEventInit::default() -> TextUpdateEventInit {
   TextUpdateEventInit::{
@@ -129,7 +143,10 @@ pub fn TextUpdateEventInit::default() -> TextUpdateEventInit {
   }
 }
 
-extern "js" fn TextUpdateEventInit::to_js_ffi(self : TextUpdateEventInit) -> JsValue =
+///|
+extern "js" fn TextUpdateEventInit::to_js_ffi(
+  self : TextUpdateEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   updateRangeStart: self.updateRangeStart,
   #|   updateRangeEnd: self.updateRangeEnd,
@@ -138,12 +155,16 @@ extern "js" fn TextUpdateEventInit::to_js_ffi(self : TextUpdateEventInit) -> JsV
   #|   selectionEnd: self.selectionEnd
   #| })
 
+///|
 /// Convert to JsValue
 pub fn TextUpdateEventInit::to_js(self : TextUpdateEventInit) -> JsValue {
   TextUpdateEventInit::to_js_ffi(self)
 }
 
-extern "js" fn TextUpdateEventInit::from_js_ffi(value : JsValue) -> TextUpdateEventInit =
+///|
+extern "js" fn TextUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> TextUpdateEventInit =
   #| (v) => ({
   #|   updateRangeStart: v.updateRangeStart,
   #|   updateRangeEnd: v.updateRangeEnd,
@@ -152,6 +173,7 @@ extern "js" fn TextUpdateEventInit::from_js_ffi(value : JsValue) -> TextUpdateEv
   #|   selectionEnd: v.selectionEnd
   #| })
 
+///|
 /// Convert from JsValue
 pub fn TextUpdateEventInit::from_js(value : JsValue) -> TextUpdateEventInit {
   TextUpdateEventInit::from_js_ffi(value)
@@ -160,12 +182,13 @@ pub fn TextUpdateEventInit::from_js(value : JsValue) -> TextUpdateEventInit {
 ///|
 /// TextFormatInit dictionary
 pub(all) struct TextFormatInit {
-  rangeStart : Int?
-  rangeEnd : Int?
+  rangeStart : Int32?
+  rangeEnd : Int32?
   underlineStyle : UnderlineStyle?
   underlineThickness : UnderlineThickness?
 }
 
+///|
 /// Create a new TextFormatInit with default values
 pub fn TextFormatInit::default() -> TextFormatInit {
   TextFormatInit::{
@@ -176,6 +199,7 @@ pub fn TextFormatInit::default() -> TextFormatInit {
   }
 }
 
+///|
 extern "js" fn TextFormatInit::to_js_ffi(self : TextFormatInit) -> JsValue =
   #| (self) => ({
   #|   rangeStart: self.rangeStart,
@@ -184,11 +208,13 @@ extern "js" fn TextFormatInit::to_js_ffi(self : TextFormatInit) -> JsValue =
   #|   underlineThickness: ((() => { const v = self.underlineThickness; if (v === undefined) return undefined; return ['none', 'thin', 'thick'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn TextFormatInit::to_js(self : TextFormatInit) -> JsValue {
   TextFormatInit::to_js_ffi(self)
 }
 
+///|
 extern "js" fn TextFormatInit::from_js_ffi(value : JsValue) -> TextFormatInit =
   #| (v) => ({
   #|   rangeStart: v.rangeStart,
@@ -197,6 +223,7 @@ extern "js" fn TextFormatInit::from_js_ffi(value : JsValue) -> TextFormatInit =
   #|   underlineThickness: (v.underlineThickness === undefined ? undefined : ['none', 'thin', 'thick'].indexOf(v.underlineThickness))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn TextFormatInit::from_js(value : JsValue) -> TextFormatInit {
   TextFormatInit::from_js_ffi(value)
@@ -208,67 +235,88 @@ pub(all) struct TextFormatUpdateEventInit {
   textFormats : FixedArray[TextFormat]?
 }
 
+///|
 /// Create a new TextFormatUpdateEventInit with default values
 pub fn TextFormatUpdateEventInit::default() -> TextFormatUpdateEventInit {
-  TextFormatUpdateEventInit::{
-    textFormats: None,
-  }
+  TextFormatUpdateEventInit::{ textFormats: None, }
 }
 
-extern "js" fn TextFormatUpdateEventInit::to_js_ffi(self : TextFormatUpdateEventInit) -> JsValue =
+///|
+extern "js" fn TextFormatUpdateEventInit::to_js_ffi(
+  self : TextFormatUpdateEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   textFormats: self.textFormats
   #| })
 
+///|
 /// Convert to JsValue
-pub fn TextFormatUpdateEventInit::to_js(self : TextFormatUpdateEventInit) -> JsValue {
+pub fn TextFormatUpdateEventInit::to_js(
+  self : TextFormatUpdateEventInit,
+) -> JsValue {
   TextFormatUpdateEventInit::to_js_ffi(self)
 }
 
-extern "js" fn TextFormatUpdateEventInit::from_js_ffi(value : JsValue) -> TextFormatUpdateEventInit =
+///|
+extern "js" fn TextFormatUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> TextFormatUpdateEventInit =
   #| (v) => ({
   #|   textFormats: v.textFormats
   #| })
 
+///|
 /// Convert from JsValue
-pub fn TextFormatUpdateEventInit::from_js(value : JsValue) -> TextFormatUpdateEventInit {
+pub fn TextFormatUpdateEventInit::from_js(
+  value : JsValue,
+) -> TextFormatUpdateEventInit {
   TextFormatUpdateEventInit::from_js_ffi(value)
 }
 
 ///|
 /// CharacterBoundsUpdateEventInit dictionary
 pub(all) struct CharacterBoundsUpdateEventInit {
-  rangeStart : Int?
-  rangeEnd : Int?
+  rangeStart : Int32?
+  rangeEnd : Int32?
 }
 
+///|
 /// Create a new CharacterBoundsUpdateEventInit with default values
 pub fn CharacterBoundsUpdateEventInit::default() -> CharacterBoundsUpdateEventInit {
-  CharacterBoundsUpdateEventInit::{
-    rangeStart: None,
-    rangeEnd: None,
-  }
+  CharacterBoundsUpdateEventInit::{ rangeStart: None, rangeEnd: None, }
 }
 
-extern "js" fn CharacterBoundsUpdateEventInit::to_js_ffi(self : CharacterBoundsUpdateEventInit) -> JsValue =
+///|
+extern "js" fn CharacterBoundsUpdateEventInit::to_js_ffi(
+  self : CharacterBoundsUpdateEventInit,
+) -> JsValue =
   #| (self) => ({
   #|   rangeStart: self.rangeStart,
   #|   rangeEnd: self.rangeEnd
   #| })
 
+///|
 /// Convert to JsValue
-pub fn CharacterBoundsUpdateEventInit::to_js(self : CharacterBoundsUpdateEventInit) -> JsValue {
+pub fn CharacterBoundsUpdateEventInit::to_js(
+  self : CharacterBoundsUpdateEventInit,
+) -> JsValue {
   CharacterBoundsUpdateEventInit::to_js_ffi(self)
 }
 
-extern "js" fn CharacterBoundsUpdateEventInit::from_js_ffi(value : JsValue) -> CharacterBoundsUpdateEventInit =
+///|
+extern "js" fn CharacterBoundsUpdateEventInit::from_js_ffi(
+  value : JsValue,
+) -> CharacterBoundsUpdateEventInit =
   #| (v) => ({
   #|   rangeStart: v.rangeStart,
   #|   rangeEnd: v.rangeEnd
   #| })
 
+///|
 /// Convert from JsValue
-pub fn CharacterBoundsUpdateEventInit::from_js(value : JsValue) -> CharacterBoundsUpdateEventInit {
+pub fn CharacterBoundsUpdateEventInit::from_js(
+  value : JsValue,
+) -> CharacterBoundsUpdateEventInit {
   CharacterBoundsUpdateEventInit::from_js_ffi(value)
 }
 
@@ -276,319 +324,536 @@ pub fn CharacterBoundsUpdateEventInit::from_js(value : JsValue) -> CharacterBoun
 /// EditContext interface
 pub type EditContext
 
+///|
 pub extern "js" fn EditContext::to_js_value(self : EditContext) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to EditContext (unchecked)
 pub extern "js" fn EditContext::from_js_value(v : JsValue) -> EditContext =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to EditContext (checked with instanceof)
 pub extern "js" fn EditContext::from_js_value_opt(v : JsValue) -> EditContext? =
   #| (v) => (v instanceof EditContext) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to EditContext (checked with instanceof)
 pub extern "js" fn JsValue::as_edit_context(self : JsValue) -> EditContext? =
   #| (self) => (self instanceof EditContext) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to EditContext (unchecked)
 pub extern "js" fn JsValue::to_edit_context(self : JsValue) -> EditContext =
   #| (self) => self
 
-pub extern "js" fn EditContext::to_event_target(self : EditContext) -> EventTarget =
+///|
+pub extern "js" fn EditContext::to_event_target(
+  self : EditContext,
+) -> EventTarget =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum EditContextUpdateTextError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend EditContextUpdateTextError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum EditContextUpdateSelectionError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend EditContextUpdateSelectionError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum EditContextUpdateControlBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend EditContextUpdateControlBoundsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum EditContextUpdateSelectionBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend EditContextUpdateSelectionBoundsError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum EditContextUpdateCharacterBoundsError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend EditContextUpdateCharacterBoundsError with @debug.Debug::{to_repr}
 
+///|
 pub extern "js" fn EditContext::new() -> EditContext =
   #| () => new EditContext()
 
-extern "js" fn EditContext::new_with_options_ffi(options : JsValue) -> EditContext =
+///|
+extern "js" fn EditContext::new_with_options_ffi(
+  options : JsValue,
+) -> EditContext =
   #| (options) => new EditContext(options)
 
+///|
 pub fn EditContext::new_with_options(options : EditContextInit) -> EditContext {
   EditContext::new_with_options_ffi(options.to_js())
 }
 
-pub extern "js" fn EditContext::update_text(self : EditContext, range_start : Int, range_end : Int, text : String) -> Result[Unit, EditContextUpdateTextError] =
+///|
+pub extern "js" fn EditContext::update_text(
+  self : EditContext,
+  range_start : Int32,
+  range_end : Int32,
+  text : String,
+) -> Result[Unit, EditContextUpdateTextError] =
   #| (self, range_start, range_end, text) => (() => { try { self.updateText(range_start, range_end, text); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn EditContext::update_selection(self : EditContext, start : Int, end : Int) -> Result[Unit, EditContextUpdateSelectionError] =
+///|
+pub extern "js" fn EditContext::update_selection(
+  self : EditContext,
+  start : Int32,
+  end : Int32,
+) -> Result[Unit, EditContextUpdateSelectionError] =
   #| (self, start, end) => (() => { try { self.updateSelection(start, end); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn EditContext::update_control_bounds(self : EditContext, control_bounds : DOMRect) -> Result[Unit, EditContextUpdateControlBoundsError] =
+///|
+pub extern "js" fn EditContext::update_control_bounds(
+  self : EditContext,
+  control_bounds : DOMRect,
+) -> Result[Unit, EditContextUpdateControlBoundsError] =
   #| (self, control_bounds) => (() => { try { self.updateControlBounds(control_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn EditContext::update_selection_bounds(self : EditContext, selection_bounds : DOMRect) -> Result[Unit, EditContextUpdateSelectionBoundsError] =
+///|
+pub extern "js" fn EditContext::update_selection_bounds(
+  self : EditContext,
+  selection_bounds : DOMRect,
+) -> Result[Unit, EditContextUpdateSelectionBoundsError] =
   #| (self, selection_bounds) => (() => { try { self.updateSelectionBounds(selection_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn EditContext::update_character_bounds(self : EditContext, range_start : Int, character_bounds : FixedArray[DOMRect]) -> Result[Unit, EditContextUpdateCharacterBoundsError] =
+///|
+pub extern "js" fn EditContext::update_character_bounds(
+  self : EditContext,
+  range_start : Int32,
+  character_bounds : FixedArray[DOMRect],
+) -> Result[Unit, EditContextUpdateCharacterBoundsError] =
   #| (self, range_start, character_bounds) => (() => { try { self.updateCharacterBounds(range_start, character_bounds); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn EditContext::attached_elements(self : EditContext) -> FixedArray[HTMLElement] =
+///|
+pub extern "js" fn EditContext::attached_elements(
+  self : EditContext,
+) -> FixedArray[HTMLElement] =
   #| (self) => self.attachedElements()
 
+///|
 pub extern "js" fn EditContext::get_text(self : EditContext) -> String =
   #| (self) => self.text
 
-pub extern "js" fn EditContext::get_selection_start(self : EditContext) -> Int =
+///|
+pub extern "js" fn EditContext::get_selection_start(
+  self : EditContext,
+) -> Int32 =
   #| (self) => self.selectionStart
 
-pub extern "js" fn EditContext::get_selection_end(self : EditContext) -> Int =
+///|
+pub extern "js" fn EditContext::get_selection_end(self : EditContext) -> Int32 =
   #| (self) => self.selectionEnd
 
-pub extern "js" fn EditContext::get_character_bounds_range_start(self : EditContext) -> Int =
+///|
+pub extern "js" fn EditContext::get_character_bounds_range_start(
+  self : EditContext,
+) -> Int32 =
   #| (self) => self.characterBoundsRangeStart
 
-pub extern "js" fn EditContext::character_bounds(self : EditContext) -> FixedArray[DOMRect] =
+///|
+pub extern "js" fn EditContext::character_bounds(
+  self : EditContext,
+) -> FixedArray[DOMRect] =
   #| (self) => self.characterBounds()
 
-pub extern "js" fn EditContext::set_ontextupdate(self : EditContext, handler : (TextUpdateEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn EditContext::set_ontextupdate(
+  self : EditContext,
+  handler : (TextUpdateEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.ontextupdate = (e) => handler(e) }
 
+///|
 pub extern "js" fn EditContext::clear_ontextupdate(self : EditContext) -> Unit =
   #| (self) => { self.ontextupdate = null }
 
-pub extern "js" fn EditContext::set_ontextformatupdate(self : EditContext, handler : (TextFormatUpdateEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn EditContext::set_ontextformatupdate(
+  self : EditContext,
+  handler : (TextFormatUpdateEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.ontextformatupdate = (e) => handler(e) }
 
-pub extern "js" fn EditContext::clear_ontextformatupdate(self : EditContext) -> Unit =
+///|
+pub extern "js" fn EditContext::clear_ontextformatupdate(
+  self : EditContext,
+) -> Unit =
   #| (self) => { self.ontextformatupdate = null }
 
-pub extern "js" fn EditContext::set_oncharacterboundsupdate(self : EditContext, handler : (CharacterBoundsUpdateEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn EditContext::set_oncharacterboundsupdate(
+  self : EditContext,
+  handler : (CharacterBoundsUpdateEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.oncharacterboundsupdate = (e) => handler(e) }
 
-pub extern "js" fn EditContext::clear_oncharacterboundsupdate(self : EditContext) -> Unit =
+///|
+pub extern "js" fn EditContext::clear_oncharacterboundsupdate(
+  self : EditContext,
+) -> Unit =
   #| (self) => { self.oncharacterboundsupdate = null }
 
-pub extern "js" fn EditContext::set_oncompositionstart(self : EditContext, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn EditContext::set_oncompositionstart(
+  self : EditContext,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.oncompositionstart = (e) => handler(e) }
 
-pub extern "js" fn EditContext::clear_oncompositionstart(self : EditContext) -> Unit =
+///|
+pub extern "js" fn EditContext::clear_oncompositionstart(
+  self : EditContext,
+) -> Unit =
   #| (self) => { self.oncompositionstart = null }
 
-pub extern "js" fn EditContext::set_oncompositionend(self : EditContext, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn EditContext::set_oncompositionend(
+  self : EditContext,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.oncompositionend = (e) => handler(e) }
 
-pub extern "js" fn EditContext::clear_oncompositionend(self : EditContext) -> Unit =
+///|
+pub extern "js" fn EditContext::clear_oncompositionend(
+  self : EditContext,
+) -> Unit =
   #| (self) => { self.oncompositionend = null }
 
 ///|
 /// TextUpdateEvent interface
 pub type TextUpdateEvent
 
-pub extern "js" fn TextUpdateEvent::to_js_value(self : TextUpdateEvent) -> JsValue =
+///|
+pub extern "js" fn TextUpdateEvent::to_js_value(
+  self : TextUpdateEvent,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to TextUpdateEvent (unchecked)
-pub extern "js" fn TextUpdateEvent::from_js_value(v : JsValue) -> TextUpdateEvent =
+pub extern "js" fn TextUpdateEvent::from_js_value(
+  v : JsValue,
+) -> TextUpdateEvent =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to TextUpdateEvent (checked with instanceof)
-pub extern "js" fn TextUpdateEvent::from_js_value_opt(v : JsValue) -> TextUpdateEvent? =
+pub extern "js" fn TextUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> TextUpdateEvent? =
   #| (v) => (v instanceof TextUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to TextUpdateEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_text_update_event(self : JsValue) -> TextUpdateEvent? =
+pub extern "js" fn JsValue::as_text_update_event(
+  self : JsValue,
+) -> TextUpdateEvent? =
   #| (self) => (self instanceof TextUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to TextUpdateEvent (unchecked)
-pub extern "js" fn JsValue::to_text_update_event(self : JsValue) -> TextUpdateEvent =
+pub extern "js" fn JsValue::to_text_update_event(
+  self : JsValue,
+) -> TextUpdateEvent =
   #| (self) => self
 
+///|
 pub extern "js" fn TextUpdateEvent::to_event(self : TextUpdateEvent) -> Event =
   #| (self) => self
 
+///|
 pub extern "js" fn TextUpdateEvent::new(type_ : String) -> TextUpdateEvent =
   #| (type_) => new TextUpdateEvent(type_)
 
-extern "js" fn TextUpdateEvent::new_with_options_ffi(type_ : String, options : JsValue) -> TextUpdateEvent =
+///|
+extern "js" fn TextUpdateEvent::new_with_options_ffi(
+  type_ : String,
+  options : JsValue,
+) -> TextUpdateEvent =
   #| (type_, options) => new TextUpdateEvent(type_, options)
 
-pub fn TextUpdateEvent::new_with_options(type_ : String, options : TextUpdateEventInit) -> TextUpdateEvent {
+///|
+pub fn TextUpdateEvent::new_with_options(
+  type_ : String,
+  options : TextUpdateEventInit,
+) -> TextUpdateEvent {
   TextUpdateEvent::new_with_options_ffi(type_, options.to_js())
 }
 
-pub extern "js" fn TextUpdateEvent::get_update_range_start(self : TextUpdateEvent) -> Int =
+///|
+pub extern "js" fn TextUpdateEvent::get_update_range_start(
+  self : TextUpdateEvent,
+) -> Int32 =
   #| (self) => self.updateRangeStart
 
-pub extern "js" fn TextUpdateEvent::get_update_range_end(self : TextUpdateEvent) -> Int =
+///|
+pub extern "js" fn TextUpdateEvent::get_update_range_end(
+  self : TextUpdateEvent,
+) -> Int32 =
   #| (self) => self.updateRangeEnd
 
+///|
 pub extern "js" fn TextUpdateEvent::get_text(self : TextUpdateEvent) -> String =
   #| (self) => self.text
 
-pub extern "js" fn TextUpdateEvent::get_selection_start(self : TextUpdateEvent) -> Int =
+///|
+pub extern "js" fn TextUpdateEvent::get_selection_start(
+  self : TextUpdateEvent,
+) -> Int32 =
   #| (self) => self.selectionStart
 
-pub extern "js" fn TextUpdateEvent::get_selection_end(self : TextUpdateEvent) -> Int =
+///|
+pub extern "js" fn TextUpdateEvent::get_selection_end(
+  self : TextUpdateEvent,
+) -> Int32 =
   #| (self) => self.selectionEnd
 
 ///|
 /// TextFormat interface
 pub type TextFormat
 
+///|
 pub extern "js" fn TextFormat::to_js_value(self : TextFormat) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to TextFormat (unchecked)
 pub extern "js" fn TextFormat::from_js_value(v : JsValue) -> TextFormat =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to TextFormat (checked with instanceof)
 pub extern "js" fn TextFormat::from_js_value_opt(v : JsValue) -> TextFormat? =
   #| (v) => (v instanceof TextFormat) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to TextFormat (checked with instanceof)
 pub extern "js" fn JsValue::as_text_format(self : JsValue) -> TextFormat? =
   #| (self) => (self instanceof TextFormat) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to TextFormat (unchecked)
 pub extern "js" fn JsValue::to_text_format(self : JsValue) -> TextFormat =
   #| (self) => self
 
+///|
 pub extern "js" fn TextFormat::new() -> TextFormat =
   #| () => new TextFormat()
 
-extern "js" fn TextFormat::new_with_options_ffi(options : JsValue) -> TextFormat =
+///|
+extern "js" fn TextFormat::new_with_options_ffi(
+  options : JsValue,
+) -> TextFormat =
   #| (options) => new TextFormat(options)
 
+///|
 pub fn TextFormat::new_with_options(options : TextFormatInit) -> TextFormat {
   TextFormat::new_with_options_ffi(options.to_js())
 }
 
-pub extern "js" fn TextFormat::get_range_start(self : TextFormat) -> Int =
+///|
+pub extern "js" fn TextFormat::get_range_start(self : TextFormat) -> Int32 =
   #| (self) => self.rangeStart
 
-pub extern "js" fn TextFormat::get_range_end(self : TextFormat) -> Int =
+///|
+pub extern "js" fn TextFormat::get_range_end(self : TextFormat) -> Int32 =
   #| (self) => self.rangeEnd
 
-pub extern "js" fn TextFormat::get_underline_style(self : TextFormat) -> UnderlineStyle =
+///|
+pub extern "js" fn TextFormat::get_underline_style(
+  self : TextFormat,
+) -> UnderlineStyle =
   #| (self) => ['none', 'solid', 'dotted', 'dashed', 'wavy'].indexOf(self.underlineStyle)
 
-pub extern "js" fn TextFormat::get_underline_thickness(self : TextFormat) -> UnderlineThickness =
+///|
+pub extern "js" fn TextFormat::get_underline_thickness(
+  self : TextFormat,
+) -> UnderlineThickness =
   #| (self) => ['none', 'thin', 'thick'].indexOf(self.underlineThickness)
 
 ///|
 /// TextFormatUpdateEvent interface
 pub type TextFormatUpdateEvent
 
-pub extern "js" fn TextFormatUpdateEvent::to_js_value(self : TextFormatUpdateEvent) -> JsValue =
+///|
+pub extern "js" fn TextFormatUpdateEvent::to_js_value(
+  self : TextFormatUpdateEvent,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to TextFormatUpdateEvent (unchecked)
-pub extern "js" fn TextFormatUpdateEvent::from_js_value(v : JsValue) -> TextFormatUpdateEvent =
+pub extern "js" fn TextFormatUpdateEvent::from_js_value(
+  v : JsValue,
+) -> TextFormatUpdateEvent =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to TextFormatUpdateEvent (checked with instanceof)
-pub extern "js" fn TextFormatUpdateEvent::from_js_value_opt(v : JsValue) -> TextFormatUpdateEvent? =
+pub extern "js" fn TextFormatUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> TextFormatUpdateEvent? =
   #| (v) => (v instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to TextFormatUpdateEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_text_format_update_event(self : JsValue) -> TextFormatUpdateEvent? =
+pub extern "js" fn JsValue::as_text_format_update_event(
+  self : JsValue,
+) -> TextFormatUpdateEvent? =
   #| (self) => (self instanceof TextFormatUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to TextFormatUpdateEvent (unchecked)
-pub extern "js" fn JsValue::to_text_format_update_event(self : JsValue) -> TextFormatUpdateEvent =
+pub extern "js" fn JsValue::to_text_format_update_event(
+  self : JsValue,
+) -> TextFormatUpdateEvent =
   #| (self) => self
 
-pub extern "js" fn TextFormatUpdateEvent::to_event(self : TextFormatUpdateEvent) -> Event =
+///|
+pub extern "js" fn TextFormatUpdateEvent::to_event(
+  self : TextFormatUpdateEvent,
+) -> Event =
   #| (self) => self
 
-pub extern "js" fn TextFormatUpdateEvent::new(type_ : String) -> TextFormatUpdateEvent =
+///|
+pub extern "js" fn TextFormatUpdateEvent::new(
+  type_ : String,
+) -> TextFormatUpdateEvent =
   #| (type_) => new TextFormatUpdateEvent(type_)
 
-extern "js" fn TextFormatUpdateEvent::new_with_options_ffi(type_ : String, options : JsValue) -> TextFormatUpdateEvent =
+///|
+extern "js" fn TextFormatUpdateEvent::new_with_options_ffi(
+  type_ : String,
+  options : JsValue,
+) -> TextFormatUpdateEvent =
   #| (type_, options) => new TextFormatUpdateEvent(type_, options)
 
-pub fn TextFormatUpdateEvent::new_with_options(type_ : String, options : TextFormatUpdateEventInit) -> TextFormatUpdateEvent {
+///|
+pub fn TextFormatUpdateEvent::new_with_options(
+  type_ : String,
+  options : TextFormatUpdateEventInit,
+) -> TextFormatUpdateEvent {
   TextFormatUpdateEvent::new_with_options_ffi(type_, options.to_js())
 }
 
-pub extern "js" fn TextFormatUpdateEvent::get_text_formats(self : TextFormatUpdateEvent) -> FixedArray[TextFormat] =
+///|
+pub extern "js" fn TextFormatUpdateEvent::get_text_formats(
+  self : TextFormatUpdateEvent,
+) -> FixedArray[TextFormat] =
   #| (self) => self.getTextFormats()
 
 ///|
 /// CharacterBoundsUpdateEvent interface
 pub type CharacterBoundsUpdateEvent
 
-pub extern "js" fn CharacterBoundsUpdateEvent::to_js_value(self : CharacterBoundsUpdateEvent) -> JsValue =
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::to_js_value(
+  self : CharacterBoundsUpdateEvent,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to CharacterBoundsUpdateEvent (unchecked)
-pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value(v : JsValue) -> CharacterBoundsUpdateEvent =
+pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value(
+  v : JsValue,
+) -> CharacterBoundsUpdateEvent =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to CharacterBoundsUpdateEvent (checked with instanceof)
-pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value_opt(v : JsValue) -> CharacterBoundsUpdateEvent? =
+pub extern "js" fn CharacterBoundsUpdateEvent::from_js_value_opt(
+  v : JsValue,
+) -> CharacterBoundsUpdateEvent? =
   #| (v) => (v instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to CharacterBoundsUpdateEvent (checked with instanceof)
-pub extern "js" fn JsValue::as_character_bounds_update_event(self : JsValue) -> CharacterBoundsUpdateEvent? =
+pub extern "js" fn JsValue::as_character_bounds_update_event(
+  self : JsValue,
+) -> CharacterBoundsUpdateEvent? =
   #| (self) => (self instanceof CharacterBoundsUpdateEvent) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to CharacterBoundsUpdateEvent (unchecked)
-pub extern "js" fn JsValue::to_character_bounds_update_event(self : JsValue) -> CharacterBoundsUpdateEvent =
+pub extern "js" fn JsValue::to_character_bounds_update_event(
+  self : JsValue,
+) -> CharacterBoundsUpdateEvent =
   #| (self) => self
 
-pub extern "js" fn CharacterBoundsUpdateEvent::to_event(self : CharacterBoundsUpdateEvent) -> Event =
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::to_event(
+  self : CharacterBoundsUpdateEvent,
+) -> Event =
   #| (self) => self
 
-pub extern "js" fn CharacterBoundsUpdateEvent::new(type_ : String) -> CharacterBoundsUpdateEvent =
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::new(
+  type_ : String,
+) -> CharacterBoundsUpdateEvent =
   #| (type_) => new CharacterBoundsUpdateEvent(type_)
 
-extern "js" fn CharacterBoundsUpdateEvent::new_with_options_ffi(type_ : String, options : JsValue) -> CharacterBoundsUpdateEvent =
+///|
+extern "js" fn CharacterBoundsUpdateEvent::new_with_options_ffi(
+  type_ : String,
+  options : JsValue,
+) -> CharacterBoundsUpdateEvent =
   #| (type_, options) => new CharacterBoundsUpdateEvent(type_, options)
 
-pub fn CharacterBoundsUpdateEvent::new_with_options(type_ : String, options : CharacterBoundsUpdateEventInit) -> CharacterBoundsUpdateEvent {
+///|
+pub fn CharacterBoundsUpdateEvent::new_with_options(
+  type_ : String,
+  options : CharacterBoundsUpdateEventInit,
+) -> CharacterBoundsUpdateEvent {
   CharacterBoundsUpdateEvent::new_with_options_ffi(type_, options.to_js())
 }
 
-pub extern "js" fn CharacterBoundsUpdateEvent::get_range_start(self : CharacterBoundsUpdateEvent) -> Int =
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::get_range_start(
+  self : CharacterBoundsUpdateEvent,
+) -> Int32 =
   #| (self) => self.rangeStart
 
-pub extern "js" fn CharacterBoundsUpdateEvent::get_range_end(self : CharacterBoundsUpdateEvent) -> Int =
+///|
+pub extern "js" fn CharacterBoundsUpdateEvent::get_range_end(
+  self : CharacterBoundsUpdateEvent,
+) -> Int32 =
   #| (self) => self.rangeEnd

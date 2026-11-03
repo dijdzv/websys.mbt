@@ -3,6 +3,7 @@
 
 ///|
 /// KeyFormat enum
+#derive(Eq, Debug)
 pub(all) enum KeyFormat {
   RawPublic
   RawPrivate
@@ -12,11 +13,15 @@ pub(all) enum KeyFormat {
   Spki
   Pkcs8
   Jwk
-} derive(Eq, Debug)
+}
 
+///|
 pub extend KeyFormat with Eq::{equal, not_equal}
+
+///|
 pub extend KeyFormat with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn KeyFormat::to_string(self : KeyFormat) -> String {
   match self {
@@ -31,6 +36,7 @@ pub fn KeyFormat::to_string(self : KeyFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KeyFormat::from_string(s : String) -> KeyFormat? {
   match s {
@@ -48,6 +54,7 @@ pub fn KeyFormat::from_string(s : String) -> KeyFormat? {
 
 ///|
 /// KeyUsage enum
+#derive(Eq, Debug)
 pub(all) enum KeyUsage {
   Encrypt
   Decrypt
@@ -61,11 +68,15 @@ pub(all) enum KeyUsage {
   EncapsulateBits
   DecapsulateKey
   DecapsulateBits
-} derive(Eq, Debug)
+}
 
+///|
 pub extend KeyUsage with Eq::{equal, not_equal}
+
+///|
 pub extend KeyUsage with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn KeyUsage::to_string(self : KeyUsage) -> String {
   match self {
@@ -84,6 +95,7 @@ pub fn KeyUsage::to_string(self : KeyUsage) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn KeyUsage::from_string(s : String) -> KeyUsage? {
   match s {
@@ -110,31 +122,33 @@ pub(all) struct EncapsulatedKey {
   ciphertext : ArrayBuffer?
 }
 
+///|
 /// Create a new EncapsulatedKey with default values
 pub fn EncapsulatedKey::default() -> EncapsulatedKey {
-  EncapsulatedKey::{
-    sharedKey: None,
-    ciphertext: None,
-  }
+  EncapsulatedKey::{ sharedKey: None, ciphertext: None, }
 }
 
+///|
 extern "js" fn EncapsulatedKey::to_js_ffi(self : EncapsulatedKey) -> JsValue =
   #| (self) => ({
   #|   sharedKey: ((() => { const v = self.sharedKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   ciphertext: ((() => { const v = self.ciphertext; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn EncapsulatedKey::to_js(self : EncapsulatedKey) -> JsValue {
   EncapsulatedKey::to_js_ffi(self)
 }
 
+///|
 extern "js" fn EncapsulatedKey::from_js_ffi(value : JsValue) -> EncapsulatedKey =
   #| (v) => ({
   #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
   #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn EncapsulatedKey::from_js(value : JsValue) -> EncapsulatedKey {
   EncapsulatedKey::from_js_ffi(value)
@@ -147,31 +161,35 @@ pub(all) struct EncapsulatedBits {
   ciphertext : ArrayBuffer?
 }
 
+///|
 /// Create a new EncapsulatedBits with default values
 pub fn EncapsulatedBits::default() -> EncapsulatedBits {
-  EncapsulatedBits::{
-    sharedKey: None,
-    ciphertext: None,
-  }
+  EncapsulatedBits::{ sharedKey: None, ciphertext: None, }
 }
 
+///|
 extern "js" fn EncapsulatedBits::to_js_ffi(self : EncapsulatedBits) -> JsValue =
   #| (self) => ({
   #|   sharedKey: ((() => { const v = self.sharedKey; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   ciphertext: ((() => { const v = self.ciphertext; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn EncapsulatedBits::to_js(self : EncapsulatedBits) -> JsValue {
   EncapsulatedBits::to_js_ffi(self)
 }
 
-extern "js" fn EncapsulatedBits::from_js_ffi(value : JsValue) -> EncapsulatedBits =
+///|
+extern "js" fn EncapsulatedBits::from_js_ffi(
+  value : JsValue,
+) -> EncapsulatedBits =
   #| (v) => ({
   #|   sharedKey: (v.sharedKey === undefined ? { $tag: 0 } : { $tag: 1, _0: v.sharedKey }),
   #|   ciphertext: (v.ciphertext === undefined ? { $tag: 0 } : { $tag: 1, _0: v.ciphertext })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn EncapsulatedBits::from_js(value : JsValue) -> EncapsulatedBits {
   EncapsulatedBits::from_js_ffi(value)
@@ -202,6 +220,7 @@ pub(all) struct JsonWebKey {
   k : String?
 }
 
+///|
 /// Create a new JsonWebKey with default values
 pub fn JsonWebKey::default() -> JsonWebKey {
   JsonWebKey::{
@@ -228,6 +247,7 @@ pub fn JsonWebKey::default() -> JsonWebKey {
   }
 }
 
+///|
 extern "js" fn JsonWebKey::to_js_ffi(self : JsonWebKey) -> JsValue =
   #| (self) => ({
   #|   pub: self.pub_,
@@ -252,11 +272,13 @@ extern "js" fn JsonWebKey::to_js_ffi(self : JsonWebKey) -> JsValue =
   #|   k: self.k
   #| })
 
+///|
 /// Convert to JsValue
 pub fn JsonWebKey::to_js(self : JsonWebKey) -> JsValue {
   JsonWebKey::to_js_ffi(self)
 }
 
+///|
 extern "js" fn JsonWebKey::from_js_ffi(value : JsValue) -> JsonWebKey =
   #| (v) => ({
   #|   pub_: v.pub,
@@ -281,6 +303,7 @@ extern "js" fn JsonWebKey::from_js_ffi(value : JsValue) -> JsonWebKey =
   #|   k: v.k
   #| })
 
+///|
 /// Convert from JsValue
 pub fn JsonWebKey::from_js(value : JsValue) -> JsonWebKey {
   JsonWebKey::from_js_ffi(value)
@@ -292,28 +315,31 @@ pub(all) struct ContextParams {
   context : BufferSource?
 }
 
+///|
 /// Create a new ContextParams with default values
 pub fn ContextParams::default() -> ContextParams {
-  ContextParams::{
-    context: None,
-  }
+  ContextParams::{ context: None, }
 }
 
+///|
 extern "js" fn ContextParams::to_js_ffi(self : ContextParams) -> JsValue =
   #| (self) => ({
   #|   context: ((() => { const v = self.context; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn ContextParams::to_js(self : ContextParams) -> JsValue {
   ContextParams::to_js_ffi(self)
 }
 
+///|
 extern "js" fn ContextParams::from_js_ffi(value : JsValue) -> ContextParams =
   #| (v) => ({
   #|   context: (v.context === undefined ? { $tag: 0 } : { $tag: 1, _0: v.context })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn ContextParams::from_js(value : JsValue) -> ContextParams {
   ContextParams::from_js_ffi(value)
@@ -324,18 +350,16 @@ pub fn ContextParams::from_js(value : JsValue) -> ContextParams {
 pub(all) struct AeadParams {
   iv : BufferSource
   additionalData : BufferSource?
-  tagLength : Int?
+  tagLength : Int32?
 }
 
+///|
 /// Create a new AeadParams
 pub fn AeadParams::new(iv~ : BufferSource) -> AeadParams {
-  AeadParams::{
-    iv: iv,
-    additionalData: None,
-    tagLength: None,
-  }
+  AeadParams::{ iv, additionalData: None, tagLength: None, }
 }
 
+///|
 extern "js" fn AeadParams::to_js_ffi(self : AeadParams) -> JsValue =
   #| (self) => ({
   #|   iv: self.iv,
@@ -343,11 +367,13 @@ extern "js" fn AeadParams::to_js_ffi(self : AeadParams) -> JsValue =
   #|   tagLength: self.tagLength
   #| })
 
+///|
 /// Convert to JsValue
 pub fn AeadParams::to_js(self : AeadParams) -> JsValue {
   AeadParams::to_js_ffi(self)
 }
 
+///|
 extern "js" fn AeadParams::from_js_ffi(value : JsValue) -> AeadParams =
   #| (v) => ({
   #|   iv: v.iv,
@@ -355,6 +381,7 @@ extern "js" fn AeadParams::from_js_ffi(value : JsValue) -> AeadParams =
   #|   tagLength: v.tagLength
   #| })
 
+///|
 /// Convert from JsValue
 pub fn AeadParams::from_js(value : JsValue) -> AeadParams {
   AeadParams::from_js_ffi(value)
@@ -363,20 +390,18 @@ pub fn AeadParams::from_js(value : JsValue) -> AeadParams {
 ///|
 /// CShakeParams dictionary
 pub(all) struct CShakeParams {
-  outputLength : Int
+  outputLength : Int32
   functionName : BufferSource?
   customization : BufferSource?
 }
 
+///|
 /// Create a new CShakeParams with default values
 pub fn CShakeParams::default() -> CShakeParams {
-  CShakeParams::{
-    outputLength: 0,
-    functionName: None,
-    customization: None,
-  }
+  CShakeParams::{ outputLength: 0, functionName: None, customization: None, }
 }
 
+///|
 extern "js" fn CShakeParams::to_js_ffi(self : CShakeParams) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
@@ -384,11 +409,13 @@ extern "js" fn CShakeParams::to_js_ffi(self : CShakeParams) -> JsValue =
   #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn CShakeParams::to_js(self : CShakeParams) -> JsValue {
   CShakeParams::to_js_ffi(self)
 }
 
+///|
 extern "js" fn CShakeParams::from_js_ffi(value : JsValue) -> CShakeParams =
   #| (v) => ({
   #|   outputLength: v.outputLength,
@@ -396,6 +423,7 @@ extern "js" fn CShakeParams::from_js_ffi(value : JsValue) -> CShakeParams =
   #|   customization: (v.customization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customization })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn CShakeParams::from_js(value : JsValue) -> CShakeParams {
   CShakeParams::from_js_ffi(value)
@@ -404,35 +432,39 @@ pub fn CShakeParams::from_js(value : JsValue) -> CShakeParams {
 ///|
 /// TurboShakeParams dictionary
 pub(all) struct TurboShakeParams {
-  outputLength : Int
-  domainSeparation : Int?
+  outputLength : Int32
+  domainSeparation : Int32?
 }
 
+///|
 /// Create a new TurboShakeParams with default values
 pub fn TurboShakeParams::default() -> TurboShakeParams {
-  TurboShakeParams::{
-    outputLength: 0,
-    domainSeparation: None,
-  }
+  TurboShakeParams::{ outputLength: 0, domainSeparation: None, }
 }
 
+///|
 extern "js" fn TurboShakeParams::to_js_ffi(self : TurboShakeParams) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
   #|   domainSeparation: self.domainSeparation
   #| })
 
+///|
 /// Convert to JsValue
 pub fn TurboShakeParams::to_js(self : TurboShakeParams) -> JsValue {
   TurboShakeParams::to_js_ffi(self)
 }
 
-extern "js" fn TurboShakeParams::from_js_ffi(value : JsValue) -> TurboShakeParams =
+///|
+extern "js" fn TurboShakeParams::from_js_ffi(
+  value : JsValue,
+) -> TurboShakeParams =
   #| (v) => ({
   #|   outputLength: v.outputLength,
   #|   domainSeparation: v.domainSeparation
   #| })
 
+///|
 /// Convert from JsValue
 pub fn TurboShakeParams::from_js(value : JsValue) -> TurboShakeParams {
   TurboShakeParams::from_js_ffi(value)
@@ -441,35 +473,41 @@ pub fn TurboShakeParams::from_js(value : JsValue) -> TurboShakeParams {
 ///|
 /// KangarooTwelveParams dictionary
 pub(all) struct KangarooTwelveParams {
-  outputLength : Int
+  outputLength : Int32
   customization : BufferSource?
 }
 
+///|
 /// Create a new KangarooTwelveParams with default values
 pub fn KangarooTwelveParams::default() -> KangarooTwelveParams {
-  KangarooTwelveParams::{
-    outputLength: 0,
-    customization: None,
-  }
+  KangarooTwelveParams::{ outputLength: 0, customization: None, }
 }
 
-extern "js" fn KangarooTwelveParams::to_js_ffi(self : KangarooTwelveParams) -> JsValue =
+///|
+extern "js" fn KangarooTwelveParams::to_js_ffi(
+  self : KangarooTwelveParams,
+) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
   #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn KangarooTwelveParams::to_js(self : KangarooTwelveParams) -> JsValue {
   KangarooTwelveParams::to_js_ffi(self)
 }
 
-extern "js" fn KangarooTwelveParams::from_js_ffi(value : JsValue) -> KangarooTwelveParams =
+///|
+extern "js" fn KangarooTwelveParams::from_js_ffi(
+  value : JsValue,
+) -> KangarooTwelveParams =
   #| (v) => ({
   #|   outputLength: v.outputLength,
   #|   customization: (v.customization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customization })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn KangarooTwelveParams::from_js(value : JsValue) -> KangarooTwelveParams {
   KangarooTwelveParams::from_js_ffi(value)
@@ -478,31 +516,36 @@ pub fn KangarooTwelveParams::from_js(value : JsValue) -> KangarooTwelveParams {
 ///|
 /// KmacKeyGenParams dictionary
 pub(all) struct KmacKeyGenParams {
-  length : Int?
+  length : Int32?
 }
 
+///|
 /// Create a new KmacKeyGenParams with default values
 pub fn KmacKeyGenParams::default() -> KmacKeyGenParams {
-  KmacKeyGenParams::{
-    length: None,
-  }
+  KmacKeyGenParams::{ length: None, }
 }
 
+///|
 extern "js" fn KmacKeyGenParams::to_js_ffi(self : KmacKeyGenParams) -> JsValue =
   #| (self) => ({
   #|   length: self.length
   #| })
 
+///|
 /// Convert to JsValue
 pub fn KmacKeyGenParams::to_js(self : KmacKeyGenParams) -> JsValue {
   KmacKeyGenParams::to_js_ffi(self)
 }
 
-extern "js" fn KmacKeyGenParams::from_js_ffi(value : JsValue) -> KmacKeyGenParams =
+///|
+extern "js" fn KmacKeyGenParams::from_js_ffi(
+  value : JsValue,
+) -> KmacKeyGenParams =
   #| (v) => ({
   #|   length: v.length
   #| })
 
+///|
 /// Convert from JsValue
 pub fn KmacKeyGenParams::from_js(value : JsValue) -> KmacKeyGenParams {
   KmacKeyGenParams::from_js_ffi(value)
@@ -511,31 +554,36 @@ pub fn KmacKeyGenParams::from_js(value : JsValue) -> KmacKeyGenParams {
 ///|
 /// KmacImportParams dictionary
 pub(all) struct KmacImportParams {
-  length : Int?
+  length : Int32?
 }
 
+///|
 /// Create a new KmacImportParams with default values
 pub fn KmacImportParams::default() -> KmacImportParams {
-  KmacImportParams::{
-    length: None,
-  }
+  KmacImportParams::{ length: None, }
 }
 
+///|
 extern "js" fn KmacImportParams::to_js_ffi(self : KmacImportParams) -> JsValue =
   #| (self) => ({
   #|   length: self.length
   #| })
 
+///|
 /// Convert to JsValue
 pub fn KmacImportParams::to_js(self : KmacImportParams) -> JsValue {
   KmacImportParams::to_js_ffi(self)
 }
 
-extern "js" fn KmacImportParams::from_js_ffi(value : JsValue) -> KmacImportParams =
+///|
+extern "js" fn KmacImportParams::from_js_ffi(
+  value : JsValue,
+) -> KmacImportParams =
   #| (v) => ({
   #|   length: v.length
   #| })
 
+///|
 /// Convert from JsValue
 pub fn KmacImportParams::from_js(value : JsValue) -> KmacImportParams {
   KmacImportParams::from_js_ffi(value)
@@ -544,31 +592,36 @@ pub fn KmacImportParams::from_js(value : JsValue) -> KmacImportParams {
 ///|
 /// KmacKeyAlgorithm dictionary
 pub(all) struct KmacKeyAlgorithm {
-  length : Int
+  length : Int32
 }
 
+///|
 /// Create a new KmacKeyAlgorithm with default values
 pub fn KmacKeyAlgorithm::default() -> KmacKeyAlgorithm {
-  KmacKeyAlgorithm::{
-    length: 0,
-  }
+  KmacKeyAlgorithm::{ length: 0, }
 }
 
+///|
 extern "js" fn KmacKeyAlgorithm::to_js_ffi(self : KmacKeyAlgorithm) -> JsValue =
   #| (self) => ({
   #|   length: self.length
   #| })
 
+///|
 /// Convert to JsValue
 pub fn KmacKeyAlgorithm::to_js(self : KmacKeyAlgorithm) -> JsValue {
   KmacKeyAlgorithm::to_js_ffi(self)
 }
 
-extern "js" fn KmacKeyAlgorithm::from_js_ffi(value : JsValue) -> KmacKeyAlgorithm =
+///|
+extern "js" fn KmacKeyAlgorithm::from_js_ffi(
+  value : JsValue,
+) -> KmacKeyAlgorithm =
   #| (v) => ({
   #|   length: v.length
   #| })
 
+///|
 /// Convert from JsValue
 pub fn KmacKeyAlgorithm::from_js(value : JsValue) -> KmacKeyAlgorithm {
   KmacKeyAlgorithm::from_js_ffi(value)
@@ -577,35 +630,37 @@ pub fn KmacKeyAlgorithm::from_js(value : JsValue) -> KmacKeyAlgorithm {
 ///|
 /// KmacParams dictionary
 pub(all) struct KmacParams {
-  outputLength : Int
+  outputLength : Int32
   customization : BufferSource?
 }
 
+///|
 /// Create a new KmacParams with default values
 pub fn KmacParams::default() -> KmacParams {
-  KmacParams::{
-    outputLength: 0,
-    customization: None,
-  }
+  KmacParams::{ outputLength: 0, customization: None, }
 }
 
+///|
 extern "js" fn KmacParams::to_js_ffi(self : KmacParams) -> JsValue =
   #| (self) => ({
   #|   outputLength: self.outputLength,
   #|   customization: ((() => { const v = self.customization; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn KmacParams::to_js(self : KmacParams) -> JsValue {
   KmacParams::to_js_ffi(self)
 }
 
+///|
 extern "js" fn KmacParams::from_js_ffi(value : JsValue) -> KmacParams =
   #| (v) => ({
   #|   outputLength: v.outputLength,
   #|   customization: (v.customization === undefined ? { $tag: 0 } : { $tag: 1, _0: v.customization })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn KmacParams::from_js(value : JsValue) -> KmacParams {
   KmacParams::from_js_ffi(value)
@@ -615,18 +670,19 @@ pub fn KmacParams::from_js(value : JsValue) -> KmacParams {
 /// Argon2Params dictionary
 pub(all) struct Argon2Params {
   nonce : BufferSource
-  parallelism : Int
-  memory : Int
-  passes : Int
-  version : Int?
+  parallelism : Int32
+  memory : Int32
+  passes : Int32
+  version : Int32?
   secretValue : BufferSource?
   associatedData : BufferSource?
 }
 
+///|
 /// Create a new Argon2Params
 pub fn Argon2Params::new(nonce~ : BufferSource) -> Argon2Params {
   Argon2Params::{
-    nonce: nonce,
+    nonce,
     parallelism: 0,
     memory: 0,
     passes: 0,
@@ -636,6 +692,7 @@ pub fn Argon2Params::new(nonce~ : BufferSource) -> Argon2Params {
   }
 }
 
+///|
 extern "js" fn Argon2Params::to_js_ffi(self : Argon2Params) -> JsValue =
   #| (self) => ({
   #|   nonce: self.nonce,
@@ -647,11 +704,13 @@ extern "js" fn Argon2Params::to_js_ffi(self : Argon2Params) -> JsValue =
   #|   associatedData: ((() => { const v = self.associatedData; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn Argon2Params::to_js(self : Argon2Params) -> JsValue {
   Argon2Params::to_js_ffi(self)
 }
 
+///|
 extern "js" fn Argon2Params::from_js_ffi(value : JsValue) -> Argon2Params =
   #| (v) => ({
   #|   nonce: v.nonce,
@@ -663,6 +722,7 @@ extern "js" fn Argon2Params::from_js_ffi(value : JsValue) -> Argon2Params =
   #|   associatedData: (v.associatedData === undefined ? { $tag: 0 } : { $tag: 1, _0: v.associatedData })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn Argon2Params::from_js(value : JsValue) -> Argon2Params {
   Argon2Params::from_js_ffi(value)

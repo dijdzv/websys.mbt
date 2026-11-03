@@ -2,8 +2,9 @@
 shell = "{% if os() == 'windows' %}cmd /d /s /c{% else %}sh -e -c{% endif %}"
 
 [vars]
-compiler_archive = "{% if arch() != 'x64' %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}{% if os() == 'windows' %}moonbit-windows-x86_64.zip{% elif os() == 'linux' %}moonbit-linux-x86_64.tar.gz{% else %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}"
-compiler_sha = "{% if os() == 'windows' %}6e3ef6cb96aa5086d122183972687f79fc912f80652000907d96ee6ad967e3bf{% else %}24b93a5409d2a4fb8e3d1b84b473f27b63476cef4418094764df96cb26b03c09{% endif %}"
+_.file = "toolchain.json"
+compiler_url = "{% if arch() != 'x64' %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}{% if os() == 'windows' %}{{vars.archiveUrl}}{% elif os() == 'linux' %}{{vars.linuxArchiveUrl}}{% else %}{{throw(message='Supported setup platforms: Windows/Linux x64')}}{% endif %}"
+compiler_sha = "{% if os() == 'windows' %}{{vars.archiveSha256}}{% else %}{{vars.linuxArchiveSha256}}{% endif %}"
 
 [tools]
 bun = "1.3.14"
@@ -20,10 +21,10 @@ run = ['"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --
 [tasks.setup]
 description = "Install the pinned MoonBit compiler and core (Windows/Linux x64)"
 run = [
-  'mise install-into --yes "http:websys-moonbit[url=https://cli.moonbitlang.com/binaries/0.10.15%2B943464bfa/{{vars.compiler_archive}},checksum=sha256:{{vars.compiler_sha}}]@0.10.15" .tools/moonbit',
-  'mise install-into --yes "http:websys-core[url=https://cli.moonbitlang.com/cores/core-0.10.15%2B943464bfa.zip,checksum=sha256:05556b27b156348950ea88ae6838032c8b478ae532b18b3929387d1da4c18d55]@0.10.15" .tools/moonbit/lib/core',
+  'mise install-into --yes "http:websys-moonbit[url={{vars.compiler_url}},checksum=sha256:{{vars.compiler_sha}}]@{{vars.compiler_sha}}" .tools/moonbit',
+  'mise install-into --yes "http:websys-core[url={{vars.coreUrl}},checksum=sha256:{{vars.coreSha256}}]@{{vars.coreSha256}}" .tools/moonbit/lib/core',
   '{% if os() == "linux" %}chmod u+x .tools/moonbit/bin/*{% else %}"{{env.MOON_HOME}}/bin/moon" version{% endif %}',
-  '"{{env.MOON_HOME}}/bin/moon" -C .tools/moonbit/lib/core bundle --all',
+  '"{{env.MOON_HOME}}/bin/moon" -C .tools/moonbit/lib/core bundle --all --deny-warn --warn-list -deprecated_syntax',
   '"{{env.MOON_HOME}}/bin/moon" update',
 ]
 
@@ -70,21 +71,19 @@ run = [
 ]
 
 [tasks."test-async"]
-description = "Verify the pinned async candidate from a separate JS/WasmGC consumer"
+description = "Verify core Async with the browser profile from a separate JS/WasmGC consumer"
 run = [
-  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-async-wasmgc.mbtx',
-  '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target wasm-gc --release --deny-warn',
-  '"{{env.MOON_HOME}}/bin/moon" -C test/async build --target js --release --deny-warn',
-  '"{{mise_bin}}" exec -- node test/async/run.mjs test/async/_build/wasm-gc/release/build/dijdzv/websys-async-tests/websys-async-tests.wasm test/async/_build/js/release/build/dijdzv/websys-async-tests/websys-async-tests.js',
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-browser-core.mbtx -- -- -C test/async build --target wasm-gc --release --deny-warn',
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-browser-core.mbtx -- -- -C test/async build --target js --release --deny-warn',
+  '"{{mise_bin}}" exec -- node test/async/run.mjs test/async/_build/wasm-gc/release/build/websys-async-tests.wasm test/async/_build/js/release/build/websys-async-tests.js',
 ]
 
 [tasks."test-promises"]
 description = "Generate and verify WasmGC Promise methods through an external consumer"
 run = [
-  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-async-wasmgc.mbtx',
   '"{{env.MOON_HOME}}/bin/moon" -C generator build --target js --release --deny-warn',
   '"{{mise_bin}}" exec -- bun generator/_build/js/release/build/webidl-bindgen.js --wasm-gc-input test/promise/api.idl --wasm-gc-module dijdzv/websys-promise-fixture -o test/promise/generated',
-  '"{{env.MOON_HOME}}/bin/moon" -C test/promise build --target wasm-gc --release --deny-warn',
+  '"{{env.MOON_HOME}}/bin/moon" run scripts/prepare-browser-core.mbtx -- -- -C test/promise build --target wasm-gc --release --deny-warn',
   '"{{mise_bin}}" exec -- node test/promise/run.mjs',
   '"{{env.MOON_HOME}}/bin/moon" run scripts/verify-result-diagnostics.mbtx',
   '"{{env.MOON_HOME}}/bin/moon" run scripts/verify-wasmgc-bundle.mbtx',

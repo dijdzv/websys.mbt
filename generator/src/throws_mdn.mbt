@@ -33,13 +33,14 @@ fn build_includes_map(
 }
 
 ///|
+#derive(Eq)
 enum MdnEntryType {
   Method
   StaticMethod
   Constructor
   Attribute
   Event
-} derive(Eq)
+}
 
 ///|
 fn MdnEntryType::to_string(self : MdnEntryType) -> String {
@@ -193,10 +194,10 @@ fn format_entry_label(entry : MdnLookupEntry) -> String {
 ///|
 pub struct MdnThrowsResult {
   throws_map : ThrowsMap
-  total_fetched : Int
-  not_found : Int
+  total_fetched : Int32
+  not_found : Int32
   not_found_entries : Array[String] // "Interface.member" entries with 404
-  has_section_but_no_parse : Int // pages with ### Exceptions but no exceptions extracted
+  has_section_but_no_parse : Int32 // pages with ### Exceptions but no exceptions extracted
   has_section_but_no_parse_entries : Array[String]
   deprecated_set : Array[String] // "Interface.member" or "Interface.constructor"
   event_type_map : Array[(String, String)] // "Interface.onclick" → "PointerEvent"
@@ -641,7 +642,7 @@ let builtin_event_type_overrides : Array[(String, String)] = [
 pub fn apply_event_type_overrides(
   event_type_map : Array[(String, String)],
   definitions : Array[Definition],
-) -> Int {
+) -> Int32 {
   let includes_map = build_includes_map(definitions)
   let mut added = 0
   for override_ in builtin_event_type_overrides {
@@ -691,7 +692,7 @@ let builtin_throws_remove : Array[(String, String)] = [
 
 ///|
 /// Apply built-in overrides to the ThrowsMap.
-pub fn apply_throws_overrides(map : ThrowsMap) -> (Int, Int) {
+pub fn apply_throws_overrides(map : ThrowsMap) -> (Int32, Int32) {
   let mut added = 0
   for entry in builtin_throws_add {
     let (iface, op, exceptions) = entry

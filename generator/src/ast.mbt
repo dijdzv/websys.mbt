@@ -188,10 +188,11 @@ pub enum IdlType {
 
 ///|
 /// Extended attribute (for future parsing implementation)
+#derive(Debug)
 pub(all) struct ExtendedAttribute {
   name : String
   value : String?
-} derive(Debug)
+}
 
 ///|
 /// Collector type for inline unions (union name -> member types)
@@ -224,7 +225,7 @@ pub fn InlineUnionCollector::iter(
 
 ///|
 /// Length of collector
-pub fn InlineUnionCollector::length(self : InlineUnionCollector) -> Int {
+pub fn InlineUnionCollector::length(self : InlineUnionCollector) -> Int32 {
   self.entries.length()
 }
 

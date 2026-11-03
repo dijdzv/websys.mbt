@@ -31,12 +31,12 @@ extern "js" fn batch_fetch_mdn_promise(
 
 ///|
 /// Get number of results from batch fetch
-extern "js" fn mdn_results_count(data : JsValue) -> Int =
+extern "js" fn mdn_results_count(data : JsValue) -> Int32 =
   #| (d) => d.length
 
 ///|
 /// Get content of result at index
-extern "js" fn mdn_result_content(data : JsValue, i : Int) -> String =
+extern "js" fn mdn_result_content(data : JsValue, i : Int32) -> String =
   #| (d, i) => d[i]
 
 ///|

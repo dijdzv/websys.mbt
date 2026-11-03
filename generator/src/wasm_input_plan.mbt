@@ -1,4 +1,5 @@
 ///|
+#derive(Eq, Debug)
 enum WasmInputPlan {
   DictionaryValue(String)
   NullableValue(WasmInputPlan)
@@ -7,14 +8,14 @@ enum WasmInputPlan {
   Sequence(WasmInputPlan)
   Record(WasmInputPlan, WasmInputPlan)
   Union(Array[WasmInputPlan])
-} derive(Eq, Debug)
+}
 
 ///|
 fn plan_wasm_input(
   typ : WasmSemanticType,
-  references? : Array[String] = [],
-  enums? : Array[String] = [],
-  dictionaries? : Array[String] = [],
+  references~ : Array[String] = [],
+  enums~ : Array[String] = [],
+  dictionaries~ : Array[String] = [],
 ) -> WasmInputPlan? {
   if typ.nullable {
     return plan_wasm_input(
@@ -177,5 +178,7 @@ fn emit_wasm_input_plan(
 
 ///|
 fn wasm_object_input(value : String) -> String {
-  "(() => { const object = " + value + "; if (object === null || (typeof object !== 'object' && typeof object !== 'function')) throw new TypeError('WebIDL object requires an object'); return object; })()"
+  "(() => { const object = " +
+  value +
+  "; if (object === null || (typeof object !== 'object' && typeof object !== 'function')) throw new TypeError('WebIDL object requires an object'); return object; })()"
 }

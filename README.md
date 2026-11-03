@@ -42,7 +42,12 @@ mise run generate
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
-Development uses MoonBit `0.10.15+943464bfa` and `moonbitlang/async` `0.22.5`.
+Development uses MoonBit compiler/core `0.10.19+bee578715` and
+moon `0.1.20261102`; the official archive URLs and hashes are in `toolchain.json`.
+The generator and JS bindings in this repository use `moonbitlang/core/async`
+packages; existing registry releases keep their recorded dependencies. Applications
+that explicitly name external Async's Promise type must switch that import to
+core Async's Promise type when adopting this source update.
 Generation uses `@webref/idl` `3.85.0` and `webidl2` `24.5.0`.
 Adopt new published compiler and dependency releases as they become available;
 exact pins and checksums make the validated inputs reproducible.
@@ -62,22 +67,21 @@ generator tests plus headless browser integration. Install the browser once with
 Chromium can be selected with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 Playwright runs on Node; Bun remains the generator host and dependency installer.
 
-`mise run test-async` verifies an experimental pinned official-async WasmGC
-adapter from a separate consumer module. The normal test task includes it;
-Git/network access is needed for first preparation. See the
-[adapter boundary](patches/async-wasmgc.md). This does not change the published
-JS dependency. Generated Promise/Fetch/Streams/WebGPU coverage and relocated
+`mise run test-async` verifies an experimental browser profile of released core
+from a separate JS/WasmGC consumer module. The normal test task includes it;
+Git and network access are needed for first preparation. The profile reuses the
+core scheduler and adds the missing browser timers and Promise boundary; it is
+not official WasmGC support. See the [adapter boundary](patches/browser-core.md).
+The ordinary JS library uses unmodified core. Generated Promise/Fetch/Streams/WebGPU coverage and relocated
 source delivery are verified separately by `mise run test-promises`, also part
 of the normal test task.
 
-Environment and task configuration lives only in `mise.toml`; Nix/devenv,
+Environment and task configuration uses `mise.toml` and its `toolchain.json` pins; Nix/devenv,
 direnv and just are not required. Nix-managed Linux machines can supply mise
 through their system configuration. NixOS may additionally need its usual
 foreign-binary support to run the downloaded Linux tools.
-Formatting normally uses `mise run fmt` / `mise run fmt-check`. Formatter
-execution, including the formatting step during generation, is currently
-suspended while the Windows executable's quarantine is investigated. Generation
-still validates its output with the compiler before installing it.
+Formatting uses `mise run fmt` / `mise run fmt-check`, including the formatting
+step during generation. Current output uses the compiler's `#derive` syntax.
 
 The library continues to publish to Mooncakes through the Release workflow.
 The generator is maintained locally and is not published to npm.

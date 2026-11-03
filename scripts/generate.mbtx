@@ -1,8 +1,10 @@
+----
 import {
-  "moonbitlang/async@0.22.5",
-  "moonbitlang/async@0.22.5/fs",
-  "moonbitlang/async@0.22.5/process",
+  "moonbitlang/core/async",
+  "moonbitlang/core/async/fs",
+  "moonbitlang/core/async/process",
 }
+----
 
 async fn main {
   let stage = ".work/generated"
@@ -12,17 +14,17 @@ async fn main {
     if name.has_suffix(".mbt") { @fs.remove(stage + "/src/" + name) }
   }
   if @fs.exists(stage + "/moon.mod.json") { @fs.remove(stage + "/moon.mod.json") }
-  @fs.write_file(stage + "/moon.mod", @fs.read_file("moon.mod"))
-  @fs.write_file(stage + "/src/moon.pkg", @fs.read_file("src/moon.pkg"))
-  assert_eq(@process.run("mise", ["exec", "--", "bun", "generator/_build/js/release/build/webidl-bindgen.js", "-o", stage + "/src"]), 0)
+  @fs.write_text(stage + "/moon.mod", @fs.read_text("moon.mod"))
+  @fs.write_text(stage + "/src/moon.pkg", @fs.read_text("src/moon.pkg"))
+  assert_eq(@process.run("mise", ["exec", "--", "bun", "generator/_build/js/release/build/webidl-bindgen.js", "-o", stage + "/src"]).exit_code, 0)
   let moon = ".tools/moonbit/bin/moon"
-  assert_eq(@process.run(moon, ["-C", stage, "fmt", "src"]), 0)
-  assert_eq(@process.run(moon, ["-C", stage, "check", "--target", "js", "--deny-warn"]), 0)
+  assert_eq(@process.run(moon, ["-C", stage, "fmt", "src"]).exit_code, 0)
+  assert_eq(@process.run(moon, ["-C", stage, "check", "--target", "js", "--deny-warn"]).exit_code, 0)
   let generated = @fs.readdir(stage + "/src")
   assert_true(generated.contains("shared.mbt"))
   for name in generated {
     if name.has_suffix(".mbt") || name.has_suffix(".md") {
-      @fs.write_file("src/" + name, @fs.read_file(stage + "/src/" + name))
+      @fs.write_text("src/" + name, @fs.read_text(stage + "/src/" + name))
     }
   }
   for name in @fs.readdir("src") {

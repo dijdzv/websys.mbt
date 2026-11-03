@@ -118,8 +118,8 @@ pub fn gen_static_operation(
   interface_name : String,
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   gen_static_operation_with_suffix(
     interface_name,
@@ -138,8 +138,8 @@ pub fn gen_static_operation_with_suffix(
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
   suffix : String,
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   // Skip special methods without name
   if op.name.is_empty() {
@@ -261,10 +261,10 @@ pub fn gen_static_operation_with_arg_count(
   interface_name : String,
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
-  arg_count : Int,
+  arg_count : Int32,
   fn_suffix : String,
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   if op.name.is_empty() {
     return ""
@@ -560,8 +560,8 @@ pub fn gen_operation(
   interface_name : String,
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   // Skip regular methods without name
   // (special operations are handled in gen_interface_binding)
@@ -874,7 +874,7 @@ pub fn gen_overload_suffix_from_all(args : Array[Argument]) -> String {
 
 ///|
 /// Get index of first optional argument (-1 if none)
-fn find_first_optional_arg_index(args : Array[Argument]) -> Int {
+fn find_first_optional_arg_index(args : Array[Argument]) -> Int32 {
   args
   .iter()
   .fold(init=(-1, 0), fn(state, arg) {
@@ -896,10 +896,10 @@ pub fn gen_operation_with_arg_count(
   interface_name : String,
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
-  arg_count : Int,
+  arg_count : Int32,
   fn_suffix : String,
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   if op.name.is_empty() {
     return ""
@@ -1017,8 +1017,8 @@ pub fn gen_operation_variants(
   interface_name : String,
   op : OperationDef,
   enum_map : Array[(String, Array[String])],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> (String, Array[String]) {
   let result = StringBuilder()
   let fn_names : Array[String] = []
@@ -1083,8 +1083,8 @@ pub fn gen_overloaded_operations(
   ops : Array[OperationDef],
   enum_map : Array[(String, Array[String])],
   generated_methods : Array[String],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
 
@@ -1218,8 +1218,8 @@ pub fn gen_overloaded_static_operations(
   ops : Array[OperationDef],
   enum_map : Array[(String, Array[String])],
   generated_methods : Array[String],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
 
@@ -1380,7 +1380,7 @@ pub fn gen_overloaded_static_operations(
 pub fn gen_attribute_getter(
   interface_name : String,
   attr : AttributeDef,
-  enum_map? : Array[(String, Array[String])] = [],
+  enum_map~ : Array[(String, Array[String])] = [],
 ) -> String {
   let fn_name = "get_" + to_snake_case(attr.name)
   let value_type = idl_type_to_moonbit(attr.idl_type)
@@ -1446,7 +1446,7 @@ pub fn gen_attribute_getter(
 pub fn gen_attribute_setter(
   interface_name : String,
   attr : AttributeDef,
-  enum_map? : Array[(String, Array[String])] = [],
+  enum_map~ : Array[(String, Array[String])] = [],
 ) -> String {
   if attr.is_readonly {
     return "" // readonly has no setter
@@ -1604,8 +1604,8 @@ pub fn gen_constructor_with_suffix(
   ctor : ConstructorDef,
   enum_map : Array[(String, Array[String])],
   suffix : String,
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let (return_type, is_throwing) = compute_throws_context(
     ctor.throws,
@@ -1713,10 +1713,10 @@ pub fn gen_constructor_with_arg_count(
   interface_name : String,
   ctor : ConstructorDef,
   enum_map : Array[(String, Array[String])],
-  arg_count : Int,
+  arg_count : Int32,
   suffix : String,
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let (return_type, is_throwing) = compute_throws_context(
     ctor.throws,
@@ -1821,8 +1821,8 @@ pub fn gen_constructor(
   interface_name : String,
   ctor : ConstructorDef,
   enum_map : Array[(String, Array[String])],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   gen_constructor_with_suffix(
     interface_name,
@@ -1937,7 +1937,7 @@ fn constructor_signature(ctor : ConstructorDef) -> String {
 
 ///|
 /// Generate suffix from required argument names (for collision avoidance)
-fn gen_required_args_suffix(args : Array[Argument], count : Int) -> String {
+fn gen_required_args_suffix(args : Array[Argument], count : Int32) -> String {
   if count == 0 {
     return ""
   }
@@ -1966,8 +1966,8 @@ pub fn gen_all_constructors(
   interface_name : String,
   members : Array[InterfaceMember],
   enum_map : Array[(String, Array[String])],
-  dict_map? : Array[(String, DictionaryDef)] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  dict_map~ : Array[(String, DictionaryDef)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let constructors = collect_constructors(members)
   if constructors.length() == 0 {

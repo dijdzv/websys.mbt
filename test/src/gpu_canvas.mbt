@@ -5,8 +5,8 @@ extern "js" fn canvas_fixture() -> @websys.GPUCanvasContext =
 ///|
 extern "js" fn resize_canvas_fixture(
   context : @websys.GPUCanvasContext,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
 ) -> Unit =
   #| (context, width, height) => { context.canvas.width = width; context.canvas.height = height; }
 

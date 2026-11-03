@@ -8,7 +8,7 @@ fn gen_js_call_arg(
   arg : Argument,
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let arg_name = arg.name |> to_snake_case |> escape_parameter
   match resolve_dictionary_alias(arg.idl_type, primitive_typedef_map) {
@@ -59,7 +59,7 @@ pub fn lookup_dict(
 /// Check if any argument in the list is a dictionary type
 fn has_dict_args(
   args : Array[Argument],
-  arg_count : Int,
+  arg_count : Int32,
   dict_map : Array[(String, DictionaryDef)],
 ) -> Bool {
   for i = 0; i < arg_count; i = i + 1 {
@@ -115,7 +115,7 @@ fn gen_dict_wrapper(
   result : StringBuilder,
   full_fn_name : String,
   args : Array[Argument],
-  arg_count : Int,
+  arg_count : Int32,
   return_type : String,
   dict_map : Array[(String, DictionaryDef)],
   has_self : Bool,

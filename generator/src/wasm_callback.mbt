@@ -14,11 +14,25 @@ fn emit_wasm_resolvers(
   for value in values {
     let name = value.name
     let key = value.key()
-    guard !name.has_suffix("?") else { abort("Nullable callback Promise results are not implemented") }
+    guard !name.has_suffix("?") else {
+      abort("Nullable callback Promise results are not implemented")
+    }
     let factory = "new_" + to_snake_case(key) + "_promise"
     let raw = if dictionaries.contains(name) { "JsValue" } else { name }
-    let argument = if dictionaries.contains(name) { "value.to_js()" } else { "value" }
-    let conversion = if name == "Unit" { "undefined" } else if name == "Bool" { "Boolean(value)" } else if name == "UInt" { "value >>> 0" } else { "value" }
+    let argument = if dictionaries.contains(name) {
+      "value.to_js()"
+    } else {
+      "value"
+    }
+    let conversion = if name == "Unit" {
+      "undefined"
+    } else if name == "Bool" {
+      "Boolean(value)"
+    } else if name == "UInt" {
+      "value >>> 0"
+    } else {
+      "value"
+    }
     mbt.write_string(
       "fn websys_resolver_promise_\{key}(slot : JsValue) -> @js_async.Promise[\{name}] = \"websys\" \"resolver_promise_\{key}\"\nfn websys_resolver_resolve_\{key}(slot : JsValue, value : \{raw}) -> Bool = \"websys\" \"resolver_resolve_\{key}\"\npub fn \{factory}() -> PromiseResolver[\{name}] { let slot = websys_resolver_new(); { promise_value: { raw: websys_resolver_promise_\{key}(slot), decode: websys_promise_decode_\{key} }, resolve_value: value => websys_resolver_resolve_\{key}(slot, \{argument}), reject_value: reason => websys_resolver_reject(slot, reason) } }\n",
     )
@@ -37,7 +51,9 @@ fn emit_wasm_promise_callback(
   dictionaries : Array[String],
   interfaces : Array[String],
 ) -> Unit {
-  guard callback.return_type is Some(Promise(inner)) else { abort("Expected Promise callback") }
+  guard callback.return_type is Some(Promise(inner)) else {
+    abort("Expected Promise callback")
+  }
   let result = require_wasm_promise_value(inner, interfaces~, dictionaries~)
   let raw_parameters : Array[String] = []
   let public_parameters : Array[String] = []
@@ -46,8 +62,12 @@ fn emit_wasm_promise_callback(
   let checks = StringBuilder()
   let mut dictionary_argument = false
   for index, argument in callback.arguments {
-    guard !argument.optional && !argument.variadic && !(argument.idl_type is Nullable(_)) else {
-      abort("Optional/nullable/variadic WasmGC callback arguments are not implemented")
+    guard !argument.optional &&
+      !argument.variadic &&
+      !(argument.idl_type is Nullable(_)) else {
+      abort(
+        "Optional/nullable/variadic WasmGC callback arguments are not implemented",
+      )
     }
     let key = "a" + index.to_string()
     arguments.push(key)
@@ -61,7 +81,9 @@ fn emit_wasm_promise_callback(
       public_parameters.push("JsValue")
       decoded.push(key)
       if argument.idl_type is Named("object") {
-        checks.write_string("if (\{key} === null || (typeof \{key} !== 'object' && typeof \{key} !== 'function')) throw new TypeError('Expected object callback argument'); ")
+        checks.write_string(
+          "if (\{key} === null || (typeof \{key} !== 'object' && typeof \{key} !== 'function')) throw new TypeError('Expected object callback argument'); ",
+        )
       }
     } else {
       let typ = require_wasm_type(argument.idl_type, names)
@@ -69,17 +91,25 @@ fn emit_wasm_promise_callback(
       raw_parameters.push(typ)
       public_parameters.push(typ)
       decoded.push(key)
-      checks.write_string("{ const value = \{key}; if (!(\{plan.predicate})) throw new TypeError('Invalid callback argument'); } ")
+      checks.write_string(
+        "{ const value = \{key}; if (!(\{plan.predicate})) throw new TypeError('Invalid callback argument'); } ",
+      )
     }
   }
   let name = callback.name
   let raw_type = "@js_async.Promise[" + result.name + "]"
   let dictionary_catch = if dictionary_argument {
-    "DictionaryReadError(reason) => websys_callback_reject_" + name + "(reason); "
-  } else { "" }
+    "DictionaryReadError(reason) => websys_callback_reject_" +
+    name +
+    "(reason); "
+  } else {
+    ""
+  }
   let reject_declaration = if dictionary_argument {
     "fn websys_callback_reject_\{name}(reason : @wasm_async.JsValue) -> \{raw_type} = \"websys\" \"\{name}_reject\"\n"
-  } else { "" }
+  } else {
+    ""
+  }
   mbt.write_string(
     "#external\npub type \{name}\nfn websys_callback_new_\{name}(callback : (\{raw_parameters.join(", ")}) -> \{raw_type}) -> \{name} = \"websys\" \"\{name}_new\"\n\{reject_declaration}fn websys_callback_error_\{name}(message : String) -> \{raw_type} = \"websys\" \"\{name}_error\"\npub fn \{name}::new(callback : (\{public_parameters.join(", ")}) -> WebsysPromise[\{result.name}] raise) -> \{name} { websys_callback_new_\{name}((\{arguments.join(", ")}) => { try { callback(\{decoded.join(", ")}).raw } catch { \{dictionary_catch}error => websys_callback_error_\{name}(error.to_string()) } }) }\n",
   )

@@ -1,5 +1,5 @@
 ///|
-extern "js" fn execute_getter_expression(code : String, mode : Int) -> String =
+extern "js" fn execute_getter_expression(code : String, mode : Int32) -> String =
   #| (code, mode) => {
   #|   const expression = code.split('\n').filter(line => line.trimStart().startsWith('#|')).map(line => line.slice(line.indexOf('#|') + 2)).join('\n');
   #|   const getter = new Function('return (' + expression + ')')();

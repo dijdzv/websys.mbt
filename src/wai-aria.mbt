@@ -3,14 +3,19 @@
 
 ///|
 /// AriaNotifyPriority enum
+#derive(Eq, Debug)
 pub(all) enum AriaNotifyPriority {
   Normal
   High
-} derive(Eq, Debug)
+}
 
+///|
 pub extend AriaNotifyPriority with Eq::{equal, not_equal}
+
+///|
 pub extend AriaNotifyPriority with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn AriaNotifyPriority::to_string(self : AriaNotifyPriority) -> String {
   match self {
@@ -19,6 +24,7 @@ pub fn AriaNotifyPriority::to_string(self : AriaNotifyPriority) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AriaNotifyPriority::from_string(s : String) -> AriaNotifyPriority? {
   match s {
@@ -34,29 +40,40 @@ pub(all) struct AriaNotificationOptions {
   priority : AriaNotifyPriority?
 }
 
+///|
 /// Create a new AriaNotificationOptions with default values
 pub fn AriaNotificationOptions::default() -> AriaNotificationOptions {
-  AriaNotificationOptions::{
-    priority: None,
-  }
+  AriaNotificationOptions::{ priority: None, }
 }
 
-extern "js" fn AriaNotificationOptions::to_js_ffi(self : AriaNotificationOptions) -> JsValue =
+///|
+extern "js" fn AriaNotificationOptions::to_js_ffi(
+  self : AriaNotificationOptions,
+) -> JsValue =
   #| (self) => ({
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['normal', 'high'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn AriaNotificationOptions::to_js(self : AriaNotificationOptions) -> JsValue {
+pub fn AriaNotificationOptions::to_js(
+  self : AriaNotificationOptions,
+) -> JsValue {
   AriaNotificationOptions::to_js_ffi(self)
 }
 
-extern "js" fn AriaNotificationOptions::from_js_ffi(value : JsValue) -> AriaNotificationOptions =
+///|
+extern "js" fn AriaNotificationOptions::from_js_ffi(
+  value : JsValue,
+) -> AriaNotificationOptions =
   #| (v) => ({
   #|   priority: (v.priority === undefined ? undefined : ['normal', 'high'].indexOf(v.priority))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn AriaNotificationOptions::from_js(value : JsValue) -> AriaNotificationOptions {
+pub fn AriaNotificationOptions::from_js(
+  value : JsValue,
+) -> AriaNotificationOptions {
   AriaNotificationOptions::from_js_ffi(value)
 }

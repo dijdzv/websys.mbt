@@ -1,0 +1,221 @@
+----
+import {
+  "moonbitlang/core/async",
+  "moonbitlang/core/async/fs",
+  "moonbitlang/core/async/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/core/encoding/utf8",
+  "moonbitlang/x@0.5.5/crypto",
+}
+----
+
+#derive(FromJson)
+struct Toolchain {
+  compiler : String
+  moon : String
+  coreUrl : String
+  coreSha256 : String
+}
+
+#derive(FromJson)
+struct ProfilePin {
+  patchSha256 : String
+  sourceTreeSha256 : String
+  sourceFileCount : Int
+}
+
+fn digest(bytes : Bytes) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(bytes))
+}
+
+async fn file_digest(path : String) -> String {
+  assert_eq(@fs.kind(path, follow_symlink=false), @fs.Regular)
+  digest(@fs.read_binary(path))
+}
+
+async fn canonical(path : String) -> String {
+  @fs.realpath(path).replace_all(old="\\", new="/")
+}
+
+fn equal_path(left : String, right : String) -> Bool {
+  if @env.get_env_var("OS") == Some("Windows_NT") {
+    left.to_lower() == right.to_lower()
+  } else {
+    left == right
+  }
+}
+
+fn below(path : String, parent : String) -> Bool {
+  if @env.get_env_var("OS") == Some("Windows_NT") {
+    path.to_lower().has_prefix(parent.to_lower() + "/")
+  } else {
+    path.has_prefix(parent + "/")
+  }
+}
+
+async fn collect(path : String, prefix : String, files : Map[String, String]) -> Unit {
+  for name in @fs.readdir(path, include_hidden=true) {
+    if prefix.is_empty() && ["_build", ".moon"].contains(name) {
+      assert_eq(@fs.kind(path + "/" + name, follow_symlink=false), @fs.Directory)
+      continue
+    }
+    assert_false(name.contains("\n") || name.contains("\u0000"))
+    let relative = prefix + name
+    let full = path + "/" + name
+    match @fs.kind(full, follow_symlink=false) {
+      @fs.Directory => collect(full, relative + "/", files)
+      @fs.Regular => files[relative] = file_digest(full)
+      _ => raise Failure("Profile input contains a link or special file: " + relative)
+    }
+  }
+}
+
+async fn tree_digest(path : String) -> (String, Int) {
+  let files = Map([])
+  collect(path, "", files)
+  let names = files.keys().collect()
+  names.sort()
+  let rows = names.map(name => name + "\u0000" + files[name] + "\n")
+  (digest(@utf8.encode(rows.join(""))), names.length())
+}
+
+async fn checked(program : String, args : Array[String], environment~ : Map[String, String] = Map([])) -> String {
+  let result = @process.run(program, args, extra_env=environment, stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  if result.exit_code != 0 {
+    let detail = @utf8.decode_lossy(result.stderr_binary())
+    raise Failure(program + " failed: " + detail[(detail.length() - 8000).max(0):].to_owned())
+  }
+  @utf8.decode_lossy(result.stdout_binary())
+}
+
+async fn main {
+  let args = @env.args()[1:].to_owned()
+  let cwd = canonical(".")
+  let mut source_root = cwd
+  let mut destination : String? = None
+  let mut child_args : Array[String] = []
+  let mut source_seen = false
+  let mut index = 0
+  while index < args.length() {
+    if args[index] == "--" {
+      child_args = args[index + 1:].to_owned()
+      break
+    }
+    assert_true(index + 1 < args.length(), msg="Expected --source-root or --root path")
+    match args[index] {
+      "--source-root" => {
+        assert_false(source_seen, msg="Duplicate --source-root")
+        source_seen = true
+        source_root = canonical(args[index + 1])
+      }
+      "--root" => {
+        assert_true(destination is None, msg="Duplicate --root")
+        destination = Some(args[index + 1])
+      }
+      _ => raise Failure("Unknown browser core option: " + args[index])
+    }
+    index += 2
+  }
+  let toolchain_text = @fs.read_text(source_root + "/toolchain.json")
+  let profile_text = @fs.read_text(source_root + "/patches/browser-core.json")
+  let toolchain : Toolchain = @json.from_json(@json.parse(toolchain_text))
+  let profile : ProfilePin = @json.from_json(@json.parse(profile_text))
+  let patch = source_root + "/patches/core-async-wasmgc.patch"
+  assert_eq(file_digest(patch), profile.patchSha256)
+  let home = canonical(@env.get_env_var("MOON_HOME").unwrap())
+  let executable = if @env.get_env_var("OS") == Some("Windows_NT") { ".exe" } else { "" }
+  let moon = home + "/bin/moon" + executable
+  let version = checked(moon, ["version", "--all"])
+  assert_true(version.contains("moonc " + toolchain.compiler) && version.contains("moon " + toolchain.moon), msg="Browser core/toolchain version mismatch")
+  assert_eq(@env.get_env_var("MOON_CORE_OVERRIDE"), None, msg="Prepare from the ordinary core; override belongs only to the build child")
+  let host : String = match @async.platform { Windows => "windows"; Linux => "linux"; MacOS => "macos" }
+  let identity = digest(@utf8.encode(toolchain_text + profile_text + host))
+  let identity_record : Json = { "profile_identity": identity, "host": host, "compiler": toolchain.compiler, "moon": toolchain.moon, "core_archive_sha256": toolchain.coreSha256, "patch_sha256": profile.patchSha256, "source_tree_sha256": profile.sourceTreeSha256 }
+  let identity_text = identity_record.stringify()
+  // Why Not: repeating full version strings exceeds Windows path limits in relocated consumers.
+  // The short directory name is not trusted without the complete identity record below.
+  let root = destination.unwrap_or(cwd + "/.work/dependencies/bc-" + identity[:16].to_owned() + "-" + host)
+  if !@fs.exists(cwd + "/.work") { @fs.mkdir(cwd + "/.work") }
+  assert_eq(@fs.kind(cwd + "/.work", follow_symlink=false), @fs.Directory)
+  let work = canonical(cwd + "/.work")
+  let root = root.replace_all(old="\\", new="/")
+  let root = if root.has_prefix(".work/") { cwd + "/" + root } else { root }
+  assert_true(below(root, work), msg="Browser core destination must stay under the current .work directory")
+  let pieces = root[work.length() + 1:].split("/").to_array()
+  for part in pieces { assert_false(part.is_empty() || part == "." || part == ".." || part.contains(":")) }
+  let mut parent = work
+  for part in pieces[:pieces.length() - 1] {
+    parent += "/" + part.to_owned()
+    if !@fs.exists(parent) { @fs.mkdir(parent) }
+    assert_eq(@fs.kind(parent, follow_symlink=false), @fs.Directory)
+    assert_true(equal_path(canonical(parent), parent))
+  }
+  let basename = pieces[pieces.length() - 1].to_owned()
+  let root = parent + "/" + basename
+  let lock = root + ".prepare.lock"
+  @fs.mkdir(lock)
+  defer @fs.rmdir(lock)
+  let core = root + "/core"
+  if !@fs.exists(root) {
+    let stage = root + ".stage"
+    assert_false(@fs.exists(stage), msg="Incomplete browser core stage exists; inspect it before preparing again")
+    @fs.mkdir(stage)
+    let archive = stage + "/core.zip"
+    let curl = if executable == ".exe" { "curl.exe" } else { "curl" }
+    ignore(checked(curl, ["--fail", "--location", "--silent", "--show-error", "--max-time", "60", toolchain.coreUrl, "--output", archive]))
+    assert_eq(file_digest(archive), toolchain.coreSha256)
+    let listing = checked(if executable == ".exe" { "tar.exe" } else { "unzip" }, if executable == ".exe" { ["-tf", archive] } else { ["-Z1", archive] })
+    for entry in listing.split("\n") {
+      let entry = entry.trim().to_owned()
+      if entry.is_empty() { continue }
+      assert_true(entry.has_prefix("core/"))
+      assert_false(entry.contains("../") || entry.contains("\\") || entry.contains(":"))
+    }
+    ignore(checked(if executable == ".exe" { "tar.exe" } else { "unzip" }, if executable == ".exe" { ["-xf", archive, "-C", stage] } else { ["-q", archive, "-d", stage] }))
+    let relative = stage + "/core"
+    let relative = relative.strip_prefix(cwd + "/").unwrap().to_owned()
+    ignore(checked("git", ["apply", "--check", "--directory=" + relative, patch]))
+    ignore(checked("git", ["apply", "--directory=" + relative, patch]))
+    assert_eq(tree_digest(stage + "/core"), (profile.sourceTreeSha256, profile.sourceFileCount))
+    @fs.write_binary(stage + "/LICENSE-websys", @fs.read_binary(source_root + "/LICENSE"))
+    @fs.write_text(stage + "/profile-identity.json", identity_text)
+    @fs.rename(stage, root, replace=false)
+  }
+  assert_eq(@fs.kind(root, follow_symlink=false), @fs.Directory)
+  assert_true(equal_path(canonical(root), root))
+  assert_eq(@fs.read_text(root + "/profile-identity.json"), identity_text, msg="Browser core directory identity differs; do not overwrite the existing preparation")
+  assert_eq(tree_digest(core), (profile.sourceTreeSha256, profile.sourceFileCount))
+  let compiler_hash = file_digest(home + "/bin/moonc" + executable)
+  let receipt_path = root + "/prepared.json"
+  let bundle_recipe = "browser-core-v1:deny-warn:upstream-deprecated_syntax-exempt"
+  let bundle_key = digest(@utf8.encode(identity + compiler_hash + bundle_recipe))
+  let mut reuse = false
+  if @fs.exists(receipt_path) {
+    let receipt : Map[String, Json] = @json.from_json(@json.parse(@fs.read_text(receipt_path)))
+    if receipt.get("bundle_key") == Some(Json::string(bundle_key)) && @fs.exists(core + "/_build") {
+      let (hash, count) = tree_digest(core + "/_build")
+      reuse = receipt.get("bundle_hash") == Some(Json::string(hash)) && receipt.get("bundle_file_count") == Some(Json::number(count.to_double()))
+    }
+  }
+  if !reuse {
+    for target in ["js", "wasm-gc"] {
+      // Why Not: the fixed official core contains trailing derive syntax; do not
+      // add unrelated standard-library edits to this browser-only patch.
+      let result = @process.run(moon, ["-C", core, "bundle", "--target", target, "--deny-warn", "--warn-list", "-deprecated_syntax"], extra_env=Map([("MOON_CORE_OVERRIDE", core)]), stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+      let log = @utf8.decode_lossy(result.stdout_binary()) + @utf8.decode_lossy(result.stderr_binary())
+      @fs.write_text(root + "/bundle-" + target + ".log", log)
+      assert_eq(result.exit_code, 0, msg=log[(log.length() - 8000).max(0):].to_owned())
+    }
+    assert_eq(tree_digest(core), (profile.sourceTreeSha256, profile.sourceFileCount))
+    let (hash, count) = tree_digest(core + "/_build")
+    let receipt : Json = { "bundle_key": bundle_key, "bundle_recipe": bundle_recipe, "bundle_hash": hash, "bundle_file_count": count, "profile_identity": identity, "host": host, "patch_sha256": profile.patchSha256, "core_archive_sha256": toolchain.coreSha256, "source_tree_sha256": profile.sourceTreeSha256, "source_file_count": profile.sourceFileCount, "moonc_sha256": compiler_hash, "compiler": toolchain.compiler, "moon": toolchain.moon }
+    @fs.write_text(receipt_path, receipt.stringify())
+  }
+  let result : Json = { "core": core, "receipt": receipt_path, "source_tree_sha256": profile.sourceTreeSha256, "bundle_reused": reuse }
+  println(result.stringify())
+  if !child_args.is_empty() {
+    let child = @process.run(moon, child_args, extra_env=Map([("MOON_CORE_OVERRIDE", core)]), no_console_window=true)
+    assert_eq(child.exit_code, 0)
+  }
+}

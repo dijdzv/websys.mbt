@@ -148,11 +148,12 @@ and finite double settlement through generated `WebsysPromise[T]` values.
 Declared interface results are also supported with a same-realm `instanceof`
 check before preserving the host reference. Unknown, dictionary and callback
 types are not treated as interfaces. This is not cross-realm brand validation.
-`wait(abort=...)` uses the pinned experimental official-async adapter described
-in [the adapter boundary](../patches/async-wasmgc.md). Generated modules require
-that patched workspace dependency; an unmodified registry version does not
-provide the experimental `wasm_async` package. Generated host imports include
-its timer/subscription boundary. Existing published JS Promise APIs are unchanged.
+`wait(abort=...)` uses the pinned experimental browser core profile described
+in [the adapter boundary](../patches/browser-core.md). Generated modules require
+that prepared core via the child-only `MOON_CORE_OVERRIDE`; unmodified released
+core does not provide the experimental `async/wasm_async` package. Generated host imports include
+its timer/subscription boundary. Published JS Promise signatures remain, with
+their Promise alias now supplied by core rather than the external Async library.
 
 Values are checked after suspension and converted through typed imports. Invalid
 values raise `PromiseDecodeError`; host rejection remains the adapter's Rejection

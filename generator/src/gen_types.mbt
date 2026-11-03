@@ -38,8 +38,8 @@ pub fn gen_dictionary(
   dict : DictionaryDef,
   enum_map : Array[(String, Array[String])],
   union_set : Array[String],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  dictionary_names? : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  dictionary_names~ : Array[String] = [],
 ) -> String {
   let mut result = ""
   let nested = dict.members.filter_map(field => {
@@ -334,7 +334,7 @@ pub fn gen_dictionary(
 fn js_dictionary_int64_conversion(
   value : String,
   to_host : Bool,
-  signed? : Bool = false,
+  signed~ : Bool = false,
 ) -> String {
   if to_host {
     let normalize = if signed { "BigInt.asIntN" } else { "BigInt.asUintN" }
@@ -643,7 +643,7 @@ pub fn gen_enum(enum_def : EnumDef) -> String {
   result = result + " enum\n"
 
   // enum definition
-  result = result + "pub(all) enum "
+  result = result + "#derive(Eq, Debug)\npub(all) enum "
   result = result + enum_def.name
   result = result + " {\n"
   result = enum_def.values
@@ -653,9 +653,15 @@ pub fn gen_enum(enum_def : EnumDef) -> String {
       let variant = to_pascal_case(value)
       acc + "  " + variant + "\n"
     })
-  result = result + "} derive(Eq, Debug)\n\n"
-  result = result + "pub extend " + enum_def.name + " with Eq::{equal, not_equal}\n"
-  result = result + "pub extend " + enum_def.name + " with @debug.Debug::{to_repr}\n\n"
+  result = result + "}\n\n"
+  result = result +
+    "pub extend " +
+    enum_def.name +
+    " with Eq::{equal, not_equal}\n"
+  result = result +
+    "pub extend " +
+    enum_def.name +
+    " with @debug.Debug::{to_repr}\n\n"
 
   // Conversion function to string
   result = result + "/// Convert to string value\n"
@@ -754,11 +760,11 @@ fn is_primitive_type_name(name : String) -> Bool {
 /// callback_interface_names: List of callback interface type names (instanceof -> typeof === 'function')
 pub fn gen_typedef(
   typedef_def : TypedefDef,
-  dictionary_names? : Array[String] = [],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  dictionary_names~ : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   // Avoid conflict with primitive type names
   if is_primitive_type_name(typedef_def.name) {
@@ -1028,10 +1034,10 @@ fn gen_union_is_check(
   union_name : String,
   member_type : IdlType,
   dictionary_names : Array[String],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   let moonbit_type = member_type.to_moonbit_simple()
   let factory_name = get_factory_name(member_type)
@@ -1072,10 +1078,10 @@ fn gen_union_as_cast(
   union_name : String,
   member_type : IdlType,
   dictionary_names : Array[String],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   let moonbit_type = member_type.to_moonbit_simple()
   let factory_name = get_factory_name(member_type)
@@ -1137,10 +1143,10 @@ fn gen_union_bind_as(
   union_name : String,
   member_type : IdlType,
   dictionary_names : Array[String],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   let moonbit_type = member_type.to_moonbit_simple()
   let factory_name = get_factory_name(member_type)
@@ -1192,10 +1198,10 @@ fn gen_union_bind_as(
 fn get_js_type_check(
   idl_type : IdlType,
   dictionary_names : Array[String],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   match idl_type {
     Primitive(name) =>

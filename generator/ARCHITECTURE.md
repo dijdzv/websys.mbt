@@ -47,13 +47,14 @@ identity and error propagation. A missing WasmGC adapter is an upstream design
 question, not proof that a library is broken or unmaintained. Upstream work must
 include a minimal reproduction and a clearly delimited public API proposal.
 
-The 2026-09-30 dependency update uses official async 0.22.4, commit
-`00aa493c5a674988dc0f4dc3f9bf0a0e654427ac`, with MoonBit
-`0.10.14+7d59c7ec9`. Upstream still selects an unimplemented event loop for
-WasmGC. The maintained experimental adapter reuses that release's coroutine
-and event-loop code; its separate JS/WasmGC consumer passes 218 cases, including
-cancellation, late settlement and callback reclamation. This does not establish
-full generated API coverage or remove the adapter's host preconditions.
+The current dependency boundary uses released compiler/core
+`0.10.19+bee578715`; normal JS code imports core Async. Released core still
+lacks the required WasmGC browser entry. A separate seven-file
+[browser core profile](../patches/browser-core.md) enables its existing event loop
+and adds timers and generic Promise waiting. It does not add another scheduler
+or patch Native C. The separate JS/WasmGC consumer has 218 cases, including
+cancellation, late settlement and callback detachment. This does not establish
+full generated API coverage or remove the host preconditions.
 
 ### Selected dependency boundary
 

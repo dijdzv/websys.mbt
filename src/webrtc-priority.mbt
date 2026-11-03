@@ -3,16 +3,21 @@
 
 ///|
 /// RTCPriorityType enum
+#derive(Eq, Debug)
 pub(all) enum RTCPriorityType {
   VeryLow
   Low
   Medium
   High
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RTCPriorityType with Eq::{equal, not_equal}
+
+///|
 pub extend RTCPriorityType with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
   match self {
@@ -23,6 +28,7 @@ pub fn RTCPriorityType::to_string(self : RTCPriorityType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RTCPriorityType::from_string(s : String) -> RTCPriorityType? {
   match s {
@@ -42,11 +48,12 @@ pub(all) struct RTCRtpEncodingParameters {
   scalabilityMode : String?
   active : Bool?
   codec : RTCRtpCodec?
-  maxBitrate : Int?
+  maxBitrate : Int32?
   maxFramerate : Double?
   scaleResolutionDownBy : Double?
 }
 
+///|
 /// Create a new RTCRtpEncodingParameters with default values
 pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   RTCRtpEncodingParameters::{
@@ -61,7 +68,11 @@ pub fn RTCRtpEncodingParameters::default() -> RTCRtpEncodingParameters {
   }
 }
 
-extern "js" fn RTCRtpEncodingParameters::to_js_ffi(self : RTCRtpEncodingParameters, convert_codec : (RTCRtpCodec?) -> JsValue) -> JsValue =
+///|
+extern "js" fn RTCRtpEncodingParameters::to_js_ffi(
+  self : RTCRtpEncodingParameters,
+  convert_codec : (RTCRtpCodec?) -> JsValue,
+) -> JsValue =
   #| (self, convert_codec) => ({
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
   #|   networkPriority: ((() => { const v = self.networkPriority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
@@ -73,12 +84,24 @@ extern "js" fn RTCRtpEncodingParameters::to_js_ffi(self : RTCRtpEncodingParamete
   #|   scaleResolutionDownBy: ((() => { const v = self.scaleResolutionDownBy; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCRtpEncodingParameters::to_js(self : RTCRtpEncodingParameters) -> JsValue {
-  RTCRtpEncodingParameters::to_js_ffi(self, fn(value) { match value { Some(value) => value.to_js(); None => dictionary_undefined() } })
+pub fn RTCRtpEncodingParameters::to_js(
+  self : RTCRtpEncodingParameters,
+) -> JsValue {
+  RTCRtpEncodingParameters::to_js_ffi(self, fn(value) {
+    match value {
+      Some(value) => value.to_js()
+      None => dictionary_undefined()
+    }
+  })
 }
 
-extern "js" fn RTCRtpEncodingParameters::from_js_ffi(value : JsValue, convert_codec : (JsValue) -> RTCRtpCodec?) -> RTCRtpEncodingParameters =
+///|
+extern "js" fn RTCRtpEncodingParameters::from_js_ffi(
+  value : JsValue,
+  convert_codec : (JsValue) -> RTCRtpCodec?,
+) -> RTCRtpEncodingParameters =
   #| (v, convert_codec) => ({
   #|   priority: (v.priority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.priority)),
   #|   networkPriority: (v.networkPriority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.networkPriority)),
@@ -90,9 +113,18 @@ extern "js" fn RTCRtpEncodingParameters::from_js_ffi(value : JsValue, convert_co
   #|   scaleResolutionDownBy: (v.scaleResolutionDownBy === undefined ? { $tag: 0 } : { $tag: 1, _0: v.scaleResolutionDownBy })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCRtpEncodingParameters::from_js(value : JsValue) -> RTCRtpEncodingParameters {
-  RTCRtpEncodingParameters::from_js_ffi(value, fn(value) { if value.is_undefined() { None } else { Some(RTCRtpCodec::from_js(value)) } })
+pub fn RTCRtpEncodingParameters::from_js(
+  value : JsValue,
+) -> RTCRtpEncodingParameters {
+  RTCRtpEncodingParameters::from_js_ffi(value, fn(value) {
+    if value.is_undefined() {
+      None
+    } else {
+      Some(RTCRtpCodec::from_js(value))
+    }
+  })
 }
 
 ///|
@@ -100,13 +132,14 @@ pub fn RTCRtpEncodingParameters::from_js(value : JsValue) -> RTCRtpEncodingParam
 pub(all) struct RTCDataChannelInit {
   priority : RTCPriorityType?
   ordered : Bool?
-  maxPacketLifeTime : Int?
-  maxRetransmits : Int?
+  maxPacketLifeTime : Int32?
+  maxRetransmits : Int32?
   protocol : String?
   negotiated : Bool?
-  id : Int?
+  id : Int32?
 }
 
+///|
 /// Create a new RTCDataChannelInit with default values
 pub fn RTCDataChannelInit::default() -> RTCDataChannelInit {
   RTCDataChannelInit::{
@@ -120,7 +153,10 @@ pub fn RTCDataChannelInit::default() -> RTCDataChannelInit {
   }
 }
 
-extern "js" fn RTCDataChannelInit::to_js_ffi(self : RTCDataChannelInit) -> JsValue =
+///|
+extern "js" fn RTCDataChannelInit::to_js_ffi(
+  self : RTCDataChannelInit,
+) -> JsValue =
   #| (self) => ({
   #|   priority: ((() => { const v = self.priority; if (v === undefined) return undefined; return ['very-low', 'low', 'medium', 'high'][v]; })()),
   #|   ordered: (self.ordered === -1 ? undefined : self.ordered),
@@ -131,12 +167,16 @@ extern "js" fn RTCDataChannelInit::to_js_ffi(self : RTCDataChannelInit) -> JsVal
   #|   id: self.id
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCDataChannelInit::to_js(self : RTCDataChannelInit) -> JsValue {
   RTCDataChannelInit::to_js_ffi(self)
 }
 
-extern "js" fn RTCDataChannelInit::from_js_ffi(value : JsValue) -> RTCDataChannelInit =
+///|
+extern "js" fn RTCDataChannelInit::from_js_ffi(
+  value : JsValue,
+) -> RTCDataChannelInit =
   #| (v) => ({
   #|   priority: (v.priority === undefined ? undefined : ['very-low', 'low', 'medium', 'high'].indexOf(v.priority)),
   #|   ordered: (v.ordered === undefined ? -1 : v.ordered),
@@ -147,6 +187,7 @@ extern "js" fn RTCDataChannelInit::from_js_ffi(value : JsValue) -> RTCDataChanne
   #|   id: v.id
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCDataChannelInit::from_js(value : JsValue) -> RTCDataChannelInit {
   RTCDataChannelInit::from_js_ffi(value)

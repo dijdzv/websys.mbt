@@ -111,7 +111,7 @@ pub extern "js" fn delete_throws(
 
 ///|
 /// Get throws map size (for stats)
-pub extern "js" fn throws_map_size(throws_map : ThrowsMap) -> Int =
+pub extern "js" fn throws_map_size(throws_map : ThrowsMap) -> Int32 =
   #| (map) => map.size
 
 ///|

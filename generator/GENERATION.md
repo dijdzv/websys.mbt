@@ -2,7 +2,7 @@
 
 `src/*.mbt` is generated from the local generator and the installed Webref IDL.
 The lockfile pins `@webref/idl` 3.85.0 and `webidl2` 24.5.0. Development compiler
-and runtime pins live in `mise.toml`; they do not identify the remote MDN input.
+and runtime pins live in `toolchain.json` and `mise.toml`; they do not identify the remote MDN input.
 
 The default generator fetches method/constructor/attribute/event pages from
 `https://raw.githubusercontent.com/mdn/content/main/files/en-us/web/api/`.
@@ -68,3 +68,14 @@ generator output matches the repository.
 
 For a future full regeneration, inspect the stage, validate intended API
 differences, and run the affected consumer checks before installing output.
+
+## Core Async and current compiler syntax
+
+The core Async migration updates package import metadata and generator templates
+for `#derive`. The existing 309 generated `.mbt` files are formatted with the
+official 0.10.19 formatter. An independent stage extracted from the prior commit
+and formatted with the same executable matches every one of those files (after
+line-ending normalization). No live MDN regeneration is installed by this change;
+the five API differences above remain unadopted. The Promise alias dependency
+changes from external Async to core Async and is verified by the JS consumer;
+that dependency/type boundary is separate from formatting-only source changes.

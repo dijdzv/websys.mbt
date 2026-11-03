@@ -1,9 +1,16 @@
 import {
   "moonbitlang/core/debug",
   "dijdzv/websys",
-  "moonbitlang/async",
-  "moonbitlang/async/js_async",
+  "moonbitlang/core/async",
+  "moonbitlang/core/async/js_async",
 }
+
+options(
+  "allow-experimental-packages": [
+    "moonbitlang/core/async",
+    "moonbitlang/core/async/js_async",
+  ],
+)
 
 pkgtype(kind: "executable")
 

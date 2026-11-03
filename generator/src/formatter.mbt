@@ -323,10 +323,10 @@ pub fn gen_shared_types_with_externals(
   inline_unions : InlineUnionCollector,
   defined_types : Array[String],
   dictionary_names : Array[String],
-  union_typedef_map? : Array[(String, Array[IdlType])] = [],
-  enum_names? : Array[String] = [],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
-  callback_interface_names? : Array[String] = [],
+  union_typedef_map~ : Array[(String, Array[IdlType])] = [],
+  enum_names~ : Array[String] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
+  callback_interface_names~ : Array[String] = [],
 ) -> String {
   let result = StringBuilder()
   result.write_string("// Shared types for websys\n")

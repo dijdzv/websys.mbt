@@ -196,7 +196,7 @@ async fn main {
         path_join(args.output, "moon.pkg"),
         "import { " +
         (if moonbit.contains("pub struct WebsysPromise") {
-          "\"moonbitlang/async/js_async\", \"moonbitlang/async/wasm_async\", "
+          "\"moonbitlang/core/async/js_async\", \"moonbitlang/core/async/wasm_async\", "
         } else {
           ""
         }) +
@@ -206,7 +206,12 @@ async fn main {
           ""
         }) +
         "}\n" +
-        "supported_targets = \"wasm-gc\"\n",
+        "supported_targets = \"wasm-gc\"\n" +
+        (if moonbit.contains("pub struct WebsysPromise") {
+          "options(\"allow-experimental-packages\": [\"moonbitlang/core/async/js_async\", \"moonbitlang/core/async/wasm_async\"])\n"
+        } else {
+          ""
+        }),
       )
     }
     return

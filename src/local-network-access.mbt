@@ -3,15 +3,20 @@
 
 ///|
 /// IPAddressSpace enum
+#derive(Eq, Debug)
 pub(all) enum IPAddressSpace {
   Public
   Local
   Loopback
-} derive(Eq, Debug)
+}
 
+///|
 pub extend IPAddressSpace with Eq::{equal, not_equal}
+
+///|
 pub extend IPAddressSpace with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
   match self {
@@ -21,6 +26,7 @@ pub fn IPAddressSpace::to_string(self : IPAddressSpace) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn IPAddressSpace::from_string(s : String) -> IPAddressSpace? {
   match s {

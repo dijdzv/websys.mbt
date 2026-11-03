@@ -1,9 +1,9 @@
-diff --git a/src/integration.mbt b/src/integration.mbt
-index 2db679c..d31833d 100644
---- a/src/integration.mbt
-+++ b/src/integration.mbt
+diff --git a/async/integration.mbt b/async/integration.mbt
+index 73caf005..af2df9af 100644
+--- a/async/integration.mbt
++++ b/async/integration.mbt
 @@ -59,7 +59,7 @@ extern "C" fn exit(code : Int32) = "exit"
-
+ 
  ///|
  #coverage.skip
 -#cfg(target="js")
@@ -11,12 +11,22 @@ index 2db679c..d31833d 100644
  #doc(hidden)
  pub fn run_async_main(main : async () -> Unit) -> Unit {
    let _ = @coroutine.spawn <| () => {
-diff --git a/src/internal/event_loop/moon.pkg b/src/internal/event_loop/moon.pkg
-index 2bcb63d..3984c4d 100644
---- a/src/internal/event_loop/moon.pkg
-+++ b/src/internal/event_loop/moon.pkg
-@@ -43,7 +43,8 @@ options(
-   ],
+
+diff --git a/async/internal/event_loop/moon.pkg b/async/internal/event_loop/moon.pkg
+index a9fdb607..d6e83c3c 100644
+--- a/async/internal/event_loop/moon.pkg
++++ b/async/internal/event_loop/moon.pkg
+@@ -3,7 +3,7 @@ import {
+   "moonbitlang/core/env",
+ }
+ 
+-#cfg(any(target="native", target="wasm", target="js"))
++#cfg(any(target="native", target="wasm", target="js", target="wasm-gc"))
+ import {
+   "moonbitlang/core/async/internal/coroutine",
+ }
+@@ -55,7 +55,8 @@ options(
+   "allow-experimental-packages": true,
    targets: {
      "cancel_before_submit_test.mbt": [ "native", "wasm" ],
 -    "event_loop.js.mbt": [ "js" ],
@@ -25,7 +35,7 @@ index 2bcb63d..3984c4d 100644
      "event_loop.mbt": [ "native", "wasm" ],
      "event_loop_unix.mbt": [ "native", "wasm" ],
      "event_loop_windows.mbt": [ "native", "wasm" ],
-@@ -71,7 +72,6 @@ options(
+@@ -83,7 +84,6 @@ options(
      "thread_pool.mbt": [ "native" ],
      "timer.mbt": [ "native", "wasm" ],
      "io.wasm.mbt": [ "wasm" ],
@@ -33,50 +43,50 @@ index 2bcb63d..3984c4d 100644
      "worker_wbtest.mbt": [ "native", "wasm", "js" ],
      "thread_pool.wasm.mbt": [ "wasm" ],
    },
-diff --git a/src/internal/event_loop/timer.js.mbt b/src/internal/event_loop/timer.js.mbt
-index 71ea052..8d2bd90 100644
---- a/src/internal/event_loop/timer.js.mbt
-+++ b/src/internal/event_loop/timer.js.mbt
-@@ -17,9 +17,14 @@
- type Timer
 
+diff --git a/async/internal/event_loop/timer.js.mbt b/async/internal/event_loop/timer.js.mbt
+index 47d043aa..0e0824ce 100644
+--- a/async/internal/event_loop/timer.js.mbt
++++ b/async/internal/event_loop/timer.js.mbt
+@@ -18,9 +18,14 @@
+ type Timer
+ 
  ///|
 +#cfg(target="js")
  extern "js" fn set_timeout(duration : Int32, f : () -> Unit) -> Timer =
    #| (duration, f) => setTimeout(f, duration)
-
+ 
 +///|
 +#cfg(target="wasm-gc")
 +fn set_timeout(duration : Int32, f : () -> Unit) -> Timer = "moonbit:async" "set_timeout"
 +
  ///|
- pub fn Timer::new(duration : Int32, f : () -> Unit) -> Timer {
-   set_timeout(duration) <| () => {
-@@ -29,11 +34,16 @@ pub fn Timer::new(duration : Int32, f : () -> Unit) -> Timer {
- }
-
+ /// Create a new one-shot timer that expires `duration` milliseconds later.
+ /// `callback` will be invoked if the timer expires normally.
+@@ -33,9 +38,15 @@ pub fn Timer::new(duration : Int32, f : () -> Unit) -> Timer {
+ 
  ///|
+ /// Cancel a timer
 +#cfg(target="js")
  pub extern "js" fn Timer::cancel(self : Timer) =
    #| (timer) => clearTimeout(timer)
-
- ///|
--pub async fn sleep(duration : Int32) -> Unit noraise {
+ 
++///|
++/// Cancel the pending browser timer; an already-fired handle is harmless.
 +#cfg(target="wasm-gc")
 +pub fn Timer::cancel(self : Timer) -> Unit = "moonbit:async" "clear_timeout"
 +
-+///|
-+pub async fn sleep(duration : Int32) -> Unit {
-   let coro = @coroutine.current_coroutine()
-   let timer = Timer::new(duration, () => coro.wake())
-   defer timer.cancel()
-diff --git a/src/internal/event_loop/unimplemented.mbt b/src/internal/event_loop/unimplemented.mbt
+ ///|
+ /// Sleep for `duration` milliseconds.
+ /// This function can run in parallel with other `async` code
+
+diff --git a/async/internal/event_loop/unimplemented.mbt b/async/internal/event_loop/unimplemented.mbt
 deleted file mode 100644
-index 094b146..0000000
---- a/src/internal/event_loop/unimplemented.mbt
+index c1b1f994..00000000
+--- a/async/internal/event_loop/unimplemented.mbt
 +++ /dev/null
-@@ -1,58 +0,0 @@
--// Copyright 2025 International Digital Economy Academy
+@@ -1,47 +0,0 @@
+-// Copyright 2026 International Digital Economy Academy
 -//
 -// Licensed under the Apache License, Version 2.0 (the "License");
 -// you may not use this file except in compliance with the License.
@@ -91,31 +101,18 @@ index 094b146..0000000
 -// limitations under the License.
 -
 -///|
--#coverage.skip
--let _ignore_unused_import : Unit = {
--  let _ : (@deque.Deque[Int32]) -> Unit = ignore
--  let _ : (@sorted_set.SortedSet[Int32]) -> Unit = ignore
--  ignore(@cmp.minimum(0, 0))
--  ignore(@debug.to_string(0))
--  ignore(@c_buffer.unimplemented)
--  ignore(@fd_util.unimplemented)
--  ignore(@os_string.unimplemented)
--  ignore(@os_error.unimplemented)
--  ignore(@coroutine.is_being_cancelled)
--  ignore((_ : @env_util.Platform) => ())
--  let _ : (&@external_loop_integration.ExternalEventLoop) -> Unit = ignore
--  ignore(@utf8.encode(""))
--}
--
--///|
+-/// Get current time since Unix EPOCH in milliseconds.
+-/// The event loop uses the same timer as `now()` for timers.
 -pub fn now() -> Int64 {
 -  @env.now().reinterpret_as_int64()
 -}
 -
 -///|
+-/// This type is not implemented on wasm-gc backend
 -type Timer
 -
 -///|
+-/// This function is not implemented on wasm-gc backend
 -pub fn Timer::new(duration : Int32, callback : () -> Unit) -> Timer {
 -  ignore(duration)
 -  ignore(callback)
@@ -123,23 +120,26 @@ index 094b146..0000000
 -}
 -
 -///|
+-/// This function is not implemented on wasm-gc backend
 -pub fn Timer::cancel(timer : Timer) -> Unit {
 -  ignore(timer)
 -  abort("`Timer::cancel()` is unimplemented on WASM backend")
 -}
 -
 -///|
+-/// This function is not implemented on wasm-gc backend
 -#warnings("-unused_async")
 -pub async fn sleep(duration : Int32) -> Unit {
 -  ignore(duration)
 -  abort("`sleep()` is unimplemented on WASM backend")
 -}
-diff --git a/src/js_async/unimplemented.mbt b/src/js_async/unimplemented.mbt
-index 4b5c228..221ea56 100644
---- a/src/js_async/unimplemented.mbt
-+++ b/src/js_async/unimplemented.mbt
-@@ -21,11 +21,17 @@ let _ignore_unused_import : Unit = {
 
+diff --git a/async/js_async/unimplemented.mbt b/async/js_async/unimplemented.mbt
+index 8f948315..ba2c5ae8 100644
+--- a/async/js_async/unimplemented.mbt
++++ b/async/js_async/unimplemented.mbt
+@@ -14,11 +14,18 @@
+ 
  ///|
  /// A JavaScript promise that resolves to a value of type `X`
 +#cfg(not(target="wasm-gc"))
@@ -147,8 +147,9 @@ index 4b5c228..221ea56 100644
  #internal(unimplemented, "unimplemented in native backend")
  #coverage.skip
  pub type Promise[X]
-
+ 
 +///|
++/// A JavaScript promise whose value representation is supplied by the WasmGC host.
 +#cfg(target="wasm-gc")
 +#external
 +pub type Promise[X]
@@ -156,24 +157,33 @@ index 4b5c228..221ea56 100644
  ///|
  /// A JavaScript exception wrapped in MoonBit error
  #internal(unimplemented, "unimplemented in native backend")
-diff --git a/src/wasm_async/moon.pkg b/src/wasm_async/moon.pkg
+
+diff --git a/async/wasm_async/moon.pkg b/async/wasm_async/moon.pkg
 new file mode 100644
-index 0000000..a9eab53
+index 00000000..307d8c0f
 --- /dev/null
-+++ b/src/wasm_async/moon.pkg
-@@ -0,0 +1,5 @@
++++ b/async/wasm_async/moon.pkg
+@@ -0,0 +1,8 @@
 +import {
-+  "moonbitlang/async/js_async",
-+  "moonbitlang/async/internal/coroutine",
-+  "moonbitlang/async/internal/event_loop",
++  "moonbitlang/core/builtin",
++  "moonbitlang/core/async/js_async",
++  "moonbitlang/core/async/internal/coroutine",
++  "moonbitlang/core/async/internal/event_loop",
 +}
-diff --git a/src/wasm_async/wait.mbt b/src/wasm_async/wait.mbt
++supported_targets = "-all+js+wasm-gc"
++options("allow-experimental-packages": true, experimental: true)
+
+diff --git a/async/wasm_async/wait.mbt b/async/wasm_async/wait.mbt
 new file mode 100644
-index 0000000..f80d4b5
+index 00000000..a32cda02
 --- /dev/null
-+++ b/src/wasm_async/wait.mbt
-@@ -0,0 +1,96 @@
++++ b/async/wasm_async/wait.mbt
+@@ -0,0 +1,107 @@
++// Copyright (c) 2026 dijdzv
++// SPDX-License-Identifier: MIT
++
 +///|
++/// An opaque JavaScript value whose representation is owned by the host.
 +#external
 +pub type JsValue
 +
@@ -182,6 +192,7 @@ index 0000000..f80d4b5
 +priv type Subscription
 +
 +///|
++/// A settled Promise rejection, preserving the original host value.
 +pub suberror Rejection {
 +  Rejection(JsValue)
 +}
@@ -227,6 +238,12 @@ index 0000000..f80d4b5
 +fn[T] promise_reference(promise : @js_async.Promise[T]) -> JsValue = "%identity"
 +
 +///|
++/// Wait for a host Promise using the selected browser runtime.
++///
++/// Cancellation while suspended detaches callbacks and invokes the caller's
++/// nonthrowing abort action. Rejection or decoding failure after settlement
++/// does not abort settled work. Shared-operation abort ownership stays with
++/// the caller; detachment does not close the underlying host operation.
 +pub async fn[T] wait(
 +  promise : @js_async.Promise[T],
 +  decode : (JsValue) -> T raise,

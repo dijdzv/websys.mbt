@@ -2,7 +2,7 @@
 
 The published `dijdzv/websys` package targets JS. The experimental WasmGC
 generator emits a selected WebIDL surface and a matching host runtime; its
-source bundle includes a pinned async adapter when needed. These paths share
+source bundle includes pinned browser-core preparation inputs when needed. These paths share
 the representative browser behavior below, but not identical APIs or full WebIDL
 coverage. A successful row does not cover every overload or option in its family.
 
@@ -16,13 +16,13 @@ coverage. A successful row does not cover every overload or option in its family
 | Abort during a pending body read rejects the read and releases the reader; server observes connection closure | [pending-body contract](../test/src/fetch_contract.mbt) and browser runner | `fetch_body` in [generated consumer](../test/promise/check.mbt) and its runner | Transport cancellation does not replace application stale-result protection |
 | Uint8Array snapshots respect view offset/length and own their bytes; ArrayBuffer transfer does not alias mutable storage | [stream bytes](../test/src/stream_bytes.mbt), [ArrayBuffer bytes](../test/src/arraybuffer_bytes.mbt) | [buffer snapshots](../test/wasm/buffer.mbt), `read_bytes` in [generated consumer](../test/promise/check.mbt) | Checked buffer/view contracts, not arbitrary TypedArray serialization or cross-realm guarantees |
 | GPU resource creation, clear/readback, shader rendering, texture upload and canvas configure/render/unconfigure | [readback](../test/src/gpu_readback.mbt), [shader](../test/src/gpu_shader.mbt), [texture](../test/src/gpu_texture.mbt), [canvas](../test/src/gpu_canvas.mbt) | [readback](../test/promise/check.mbt), [shader](../test/promise/gpu_shader.mbt), [texture](../test/promise/gpu_texture.mbt), [canvas](../test/promise/gpu_canvas.mbt) | Headless Chromium software-GPU contracts, not all descriptors or hardware/browser combinations |
-| Experimental async value/rejection identity, checked decoding, cancellation precedence and callback detachment | [shared consumer](../test/async/) built for JS | Same consumer built for WasmGC | Compares the pinned experimental adapter, not the published JS async dependency |
+| Experimental async value/rejection identity, checked decoding, cancellation precedence and callback detachment | [shared consumer](../test/async/) built for JS | Same consumer built for WasmGC | Both use the browser core profile; ordinary published JS uses unmodified core |
 
 The generated WasmGC Promise suite also validates nullable interface/buffer
 results, flat dictionaries, wrong types/brands and throwing getters. Those cases
 do not establish identical result validation in the published JS Promise API.
 JS's wider API and typed Result errors are not reproduced wholesale by WasmGC.
-See [supported shapes](WASM.md) and the [async contract](../patches/async-wasmgc.md).
+See [supported shapes](WASM.md) and the [async contract](../patches/browser-core.md).
 
 ## Reproduce from source
 
@@ -41,7 +41,7 @@ The JS consumer is a [separate workspace module](../test/moon.work) importing
 the source package. It is not a test of a freshly downloaded Mooncakes release.
 The [relocation verifier](../scripts/verify-wasmgc-bundle.mbtx) creates a fresh
 system temporary directory outside this repository, exports bindings/runtime
-and pinned async source, adds an application with relative workspace members,
+and browser-core preparation inputs, adds an application with relative workspace members,
 compiles it and runs that artifact with the exported runtime. It also checks
 rejection of an existing destination. Compiler and browser harness remain
 prerequisites; they are not part of the exported library.
@@ -62,11 +62,15 @@ For experimental WasmGC:
    diagnostics rather than silently degraded bindings.
 2. Generate a separate module with `--wasm-gc-input` and `--wasm-gc-module`,
    following [generation and export](WASM.md#experimental-source-bundle).
-3. Export to a new directory. Keep `bindings/`, `async/`, their licenses,
-   `async-wasmgc.patch` and `PROVENANCE.txt` together.
+3. Export to a new directory. Keep `bindings/`, `scripts/`, `patches/`,
+   `toolchain.json`, `LICENSE` and `PROVENANCE.txt` together. The preparation
+   script obtains the hash-pinned official core source and applies the browser patch.
 4. Add the application to the bundle's relative-member `moon.work`, import the
    generated module, and apply the pinned compiler and [string-builtin
-   settings](WASM.md#abi-choices).
+   settings](WASM.md#abi-choices). From the bundle root, run
+   `moon run scripts/prepare-browser-core.mbtx -- -- -C application build --target wasm-gc --release --deny-warn`.
+   This sets `MOON_CORE_OVERRIDE` only for the child build. Do not export it
+   globally or resolve the profile-only `wasm_async` import against ordinary core.
 5. Instantiate with `runtime.mjs` from the same generation. Do not substitute a
    different runtime or resolve async to an unsupported backend. The [consumer
    module](../test/promise/moon.mod) and [linker configuration](../test/promise/moon.pkg)

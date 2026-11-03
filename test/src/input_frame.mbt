@@ -8,7 +8,7 @@ async fn test_input_frame_cleanup() -> Unit {
   let target = @websys.EventTarget::new()
   let calls = Ref(0)
   let frames = Ref(0)
-  let pending : Ref[Int?] = Ref(None)
+  let pending : Ref[Int32?] = Ref(None)
   let listener = @websys.EventListener::from_fn(fn(_) {
     calls.val += 1
     if pending.val is None {

@@ -54,7 +54,7 @@ async fn test_js_input_lifecycle() -> Unit {
         )
       }
     }
-    let select = fn(start : Int, end : Int, direction : String) {
+    let select = fn(start : Int32, end : Int32, direction : String) {
       if @websys.HTMLInputElement::from_js_value_opt(element.to_js_value())
         is Some(field) {
         field.set_selection_range_with_direction(start, end, direction).unwrap()
@@ -64,11 +64,11 @@ async fn test_js_input_lifecycle() -> Unit {
         .set_selection_range_with_direction(start, end, direction)
       }
     }
-    let observed_selection : Ref[(Int?, Int?, String?)] = Ref(
+    let observed_selection : Ref[(Int32?, Int32?, String?)] = Ref(
       (None, None, None),
     )
     let preedit = Ref("")
-    let pending : Ref[Int?] = Ref(None)
+    let pending : Ref[Int32?] = Ref(None)
     let active = Ref(true)
     let frames = Ref(0)
     let calls = Ref(0)

@@ -7,7 +7,7 @@ pub fn test_event_handler_onclick() -> Unit {
   let doc = get_document()
   let div = create_element(doc, "div")
   let el = @websys.HTMLElement::from_js_value(div.to_js_value())
-  let call_count : Ref[Int] = Ref(0)
+  let call_count : Ref[Int32] = Ref(0)
   el.set_onclick(fn(_event : @websys.PointerEvent) {
     call_count.val = call_count.val + 1
   })

@@ -1,5 +1,5 @@
 ///|
-extern "js" fn invalid_dictionary_size(mode : Int) -> @websys.JsValue =
+extern "js" fn invalid_dictionary_size(mode : Int32) -> @websys.JsValue =
   #| mode => ({ size: [9007199254740992, -9007199254740992, Infinity, NaN, 1.5, -1, '512', 512n, null][mode], usage: 9 })
 
 ///|

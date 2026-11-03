@@ -8,10 +8,11 @@ pub(all) struct DeprecationReportBody {
   anticipatedRemoval : Nullable[JsValue]
   message : String?
   sourceFile : Nullable[String]
-  lineNumber : Nullable[Int]
-  columnNumber : Nullable[Int]
+  lineNumber : Nullable[Int32]
+  columnNumber : Nullable[Int32]
 }
 
+///|
 /// Create a new DeprecationReportBody with default values
 pub fn DeprecationReportBody::default() -> DeprecationReportBody {
   DeprecationReportBody::{
@@ -24,7 +25,10 @@ pub fn DeprecationReportBody::default() -> DeprecationReportBody {
   }
 }
 
-extern "js" fn DeprecationReportBody::to_js_ffi(self : DeprecationReportBody) -> JsValue =
+///|
+extern "js" fn DeprecationReportBody::to_js_ffi(
+  self : DeprecationReportBody,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   anticipatedRemoval: ((() => { const v = self.anticipatedRemoval; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -34,12 +38,16 @@ extern "js" fn DeprecationReportBody::to_js_ffi(self : DeprecationReportBody) ->
   #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn DeprecationReportBody::to_js(self : DeprecationReportBody) -> JsValue {
   DeprecationReportBody::to_js_ffi(self)
 }
 
-extern "js" fn DeprecationReportBody::from_js_ffi(value : JsValue) -> DeprecationReportBody =
+///|
+extern "js" fn DeprecationReportBody::from_js_ffi(
+  value : JsValue,
+) -> DeprecationReportBody =
   #| (v) => ({
   #|   id: v.id,
   #|   anticipatedRemoval: (v.anticipatedRemoval === undefined ? { $tag: 0 } : v.anticipatedRemoval === null ? { $tag: 1 } : { $tag: 2, _0: v.anticipatedRemoval }),
@@ -49,6 +57,7 @@ extern "js" fn DeprecationReportBody::from_js_ffi(value : JsValue) -> Deprecatio
   #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn DeprecationReportBody::from_js(value : JsValue) -> DeprecationReportBody {
   DeprecationReportBody::from_js_ffi(value)

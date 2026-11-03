@@ -20,9 +20,9 @@ fn lookup_union_typedef(
 /// Find first union arg in an operation. Returns (arg_index, union_members) or None.
 fn find_union_arg(
   args : Array[Argument],
-  arg_count : Int,
+  arg_count : Int32,
   union_typedef_map : Array[(String, Array[IdlType])],
-) -> (Int, Array[IdlType])? {
+) -> (Int32, Array[IdlType])? {
   for i = 0; i < arg_count; i = i + 1 {
     match args[i].idl_type {
       Named(type_name) =>
@@ -42,12 +42,12 @@ fn find_union_arg(
 fn gen_union_arg_overloads(
   interface_name : String,
   op : OperationDef,
-  union_arg_index : Int,
+  union_arg_index : Int32,
   union_members : Array[IdlType],
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let base_fn_name = op.name |> to_snake_case |> escape_reserved
@@ -175,12 +175,12 @@ fn gen_union_arg_overloads(
 fn gen_static_union_arg_overloads(
   interface_name : String,
   op : OperationDef,
-  union_arg_index : Int,
+  union_arg_index : Int32,
   union_members : Array[IdlType],
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let base_fn_name = op.name |> to_snake_case |> escape_reserved
@@ -315,12 +315,12 @@ fn gen_constructor_union_arg_overloads(
   interface_name : String,
   ctor : ConstructorDef,
   suffix : String,
-  union_arg_index : Int,
+  union_arg_index : Int32,
   union_members : Array[IdlType],
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
   generated_methods : Array[String],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let result = StringBuilder()
   let args_len = ctor.arguments.length()

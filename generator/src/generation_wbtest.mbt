@@ -164,7 +164,7 @@ test "browser names that are MoonBit keywords are escaped" {
 ///|
 test "typed browser errors expose Debug without deprecated derivation" {
   let code = gen_error_enum("ExampleError", ["TypeError"])
-  assert_true(code.contains("derive(Debug)"))
+  assert_true(code.contains("#derive(Debug)\npub(all) enum"))
   assert_true(!code.contains("derive(Show)"))
   assert_true(code.contains("OtherError(JsError)"))
   assert_true(

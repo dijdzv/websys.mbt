@@ -10,17 +10,16 @@ pub(all) struct RelatedApplication {
   version : String?
 }
 
+///|
 /// Create a new RelatedApplication with default values
 pub fn RelatedApplication::default() -> RelatedApplication {
-  RelatedApplication::{
-    platform: "",
-    url: None,
-    id: None,
-    version: None,
-  }
+  RelatedApplication::{ platform: "", url: None, id: None, version: None, }
 }
 
-extern "js" fn RelatedApplication::to_js_ffi(self : RelatedApplication) -> JsValue =
+///|
+extern "js" fn RelatedApplication::to_js_ffi(
+  self : RelatedApplication,
+) -> JsValue =
   #| (self) => ({
   #|   platform: self.platform,
   #|   url: self.url,
@@ -28,12 +27,16 @@ extern "js" fn RelatedApplication::to_js_ffi(self : RelatedApplication) -> JsVal
   #|   version: self.version
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RelatedApplication::to_js(self : RelatedApplication) -> JsValue {
   RelatedApplication::to_js_ffi(self)
 }
 
-extern "js" fn RelatedApplication::from_js_ffi(value : JsValue) -> RelatedApplication =
+///|
+extern "js" fn RelatedApplication::from_js_ffi(
+  value : JsValue,
+) -> RelatedApplication =
   #| (v) => ({
   #|   platform: v.platform,
   #|   url: v.url,
@@ -41,6 +44,7 @@ extern "js" fn RelatedApplication::from_js_ffi(value : JsValue) -> RelatedApplic
   #|   version: v.version
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RelatedApplication::from_js(value : JsValue) -> RelatedApplication {
   RelatedApplication::from_js_ffi(value)

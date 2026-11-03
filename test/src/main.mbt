@@ -2,7 +2,7 @@
 fn[T : Eq + Debug] assert_eq(
   actual : T,
   expected : T,
-  label? : String = "",
+  label~ : String = "",
 ) -> Unit {
   if actual != expected {
     let actual = @debug.to_string(actual)
@@ -18,7 +18,7 @@ fn[T : Eq + Debug] assert_eq(
 }
 
 ///|
-fn assert_true(value : Bool, label? : String = "") -> Unit {
+fn assert_true(value : Bool, label~ : String = "") -> Unit {
   if !value {
     let msg = if label != "" {
       "FAIL [\{label}]: expected true, got false"
@@ -31,7 +31,7 @@ fn assert_true(value : Bool, label? : String = "") -> Unit {
 }
 
 ///|
-fn assert_false(value : Bool, label? : String = "") -> Unit {
+fn assert_false(value : Bool, label~ : String = "") -> Unit {
   if value {
     let msg = if label != "" {
       "FAIL [\{label}]: expected false, got true"

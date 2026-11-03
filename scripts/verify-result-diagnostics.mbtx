@@ -1,7 +1,14 @@
+----
 import {
-  "moonbitlang/async@0.22.5",
-  "moonbitlang/async@0.22.5/fs",
-  "moonbitlang/async@0.22.5/process",
+  "moonbitlang/core/async",
+  "moonbitlang/core/async/fs",
+  "moonbitlang/core/async/process",
+}
+----
+
+async fn collect(command : String, args : Array[String]) -> (Int, String, String) {
+  let result = @process.run(command, args, stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  (result.exit_code, result.stdout_text(), result.stderr_text())
 }
 
 async fn main {
@@ -14,22 +21,22 @@ async fn main {
   ]
   for (name, field_source, extra, expected) in cases {
     let input = root + "/" + name + ".idl"
-    @fs.write_file(input, "interface Source { Promise<Result> read(); }; dictionary Result { " + field_source + " }; " + extra)
-    let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name], no_console_window=true)
+    @fs.write_text(input, "interface Source { Promise<Result> read(); }; dictionary Result { " + field_source + " }; " + extra)
+    let (code, output, errors) = collect("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name])
     assert_true(code != 0, msg="Unsupported result accepted: " + name)
-    assert_true((output.text() + errors.text()).contains(expected), msg="Missing result diagnostic: " + name)
+    assert_true((output + errors).contains(expected), msg="Missing result diagnostic: " + name)
   }
   println("Result dictionary diagnostics: 3 cases passed")
   let input = root + "/cycle.idl"
-  @fs.write_file(input, "typedef Second First; typedef First Second;")
-  let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/cycle"], no_console_window=true)
+  @fs.write_text(input, "typedef Second First; typedef First Second;")
+  let (code, output, errors) = collect("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/cycle"])
   assert_true(code != 0)
-  assert_true((output.text() + errors.text()).contains("Cyclic WasmGC typedef"))
+  assert_true((output + errors).contains("Cyclic WasmGC typedef"))
   println("Typedef cycle diagnostic: passed")
-  @fs.write_file(input, "dictionary Options { record<DOMString, Promise<DOMString>> headers; };")
-  let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/record"], no_console_window=true)
+  @fs.write_text(input, "dictionary Options { record<DOMString, Promise<DOMString>> headers; };")
+  let (code, output, errors) = collect("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/record"])
   assert_true(code != 0)
-  assert_true((output.text() + errors.text()).contains("record key/value conversion"))
+  assert_true((output + errors).contains("record key/value conversion"))
   println("Lossy record conversion diagnostic: passed")
   let callback_cases = [
     ("nullable-callback", "interface Value {}; callback Run = Promise<Value?> ();", "Nullable callback Promise results"),
@@ -38,10 +45,10 @@ async fn main {
   ]
   for (name, source, expected) in callback_cases {
     let input = root + "/" + name + ".idl"
-    @fs.write_file(input, source)
-    let (code, output, errors) = @process.collect_output("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name], no_console_window=true)
+    @fs.write_text(input, source)
+    let (code, output, errors) = collect("bun", ["generator/_build/js/release/build/webidl-bindgen.js", "--wasm-gc-input", input, "-o", root + "/" + name])
     assert_true(code != 0, msg="Unsupported callback accepted: " + name)
-    assert_true((output.text() + errors.text()).contains(expected), msg="Missing callback diagnostic: " + name)
+    assert_true((output + errors).contains(expected), msg="Missing callback diagnostic: " + name)
   }
   println("Callback unsupported-shape diagnostics: 3 cases passed")
 }

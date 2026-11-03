@@ -16,11 +16,11 @@ fn WasmPromiseValue::key(self : WasmPromiseValue) -> String {
 ///|
 fn wasm_promise_value(
   t : IdlType,
-  interfaces? : Array[String] = [],
-  dictionaries? : Array[String] = [],
+  interfaces~ : Array[String] = [],
+  dictionaries~ : Array[String] = [],
 ) -> WasmPromiseValue? {
   match t {
-    Any => Some({ name: "JsValue", predicate: "true" })
+    Any => Some({ name: "JsValue", predicate: "true", })
     Void => Some({ name: "Unit", predicate: "value === undefined", })
     String => Some({ name: "String", predicate: "typeof value === 'string'", })
     Primitive("boolean") =>
@@ -71,8 +71,8 @@ fn wasm_promise_value(
 ///|
 fn require_wasm_promise_value(
   t : IdlType,
-  interfaces? : Array[String] = [],
-  dictionaries? : Array[String] = [],
+  interfaces~ : Array[String] = [],
+  dictionaries~ : Array[String] = [],
 ) -> WasmPromiseValue {
   match wasm_promise_value(t, interfaces~, dictionaries~) {
     Some(plan) => plan

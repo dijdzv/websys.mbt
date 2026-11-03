@@ -8,33 +8,41 @@ pub(all) struct PerformanceMarkOptions {
   startTime : DOMHighResTimeStamp?
 }
 
+///|
 /// Create a new PerformanceMarkOptions with default values
 pub fn PerformanceMarkOptions::default() -> PerformanceMarkOptions {
-  PerformanceMarkOptions::{
-    detail: None,
-    startTime: None,
-  }
+  PerformanceMarkOptions::{ detail: None, startTime: None, }
 }
 
-extern "js" fn PerformanceMarkOptions::to_js_ffi(self : PerformanceMarkOptions) -> JsValue =
+///|
+extern "js" fn PerformanceMarkOptions::to_js_ffi(
+  self : PerformanceMarkOptions,
+) -> JsValue =
   #| (self) => ({
   #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   startTime: ((() => { const v = self.startTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn PerformanceMarkOptions::to_js(self : PerformanceMarkOptions) -> JsValue {
   PerformanceMarkOptions::to_js_ffi(self)
 }
 
-extern "js" fn PerformanceMarkOptions::from_js_ffi(value : JsValue) -> PerformanceMarkOptions =
+///|
+extern "js" fn PerformanceMarkOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMarkOptions =
   #| (v) => ({
   #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
   #|   startTime: (v.startTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.startTime })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn PerformanceMarkOptions::from_js(value : JsValue) -> PerformanceMarkOptions {
+pub fn PerformanceMarkOptions::from_js(
+  value : JsValue,
+) -> PerformanceMarkOptions {
   PerformanceMarkOptions::from_js_ffi(value)
 }
 
@@ -47,6 +55,7 @@ pub(all) struct PerformanceMeasureOptions {
   end : StringOrDOMHighResTimeStamp?
 }
 
+///|
 /// Create a new PerformanceMeasureOptions with default values
 pub fn PerformanceMeasureOptions::default() -> PerformanceMeasureOptions {
   PerformanceMeasureOptions::{
@@ -57,7 +66,10 @@ pub fn PerformanceMeasureOptions::default() -> PerformanceMeasureOptions {
   }
 }
 
-extern "js" fn PerformanceMeasureOptions::to_js_ffi(self : PerformanceMeasureOptions) -> JsValue =
+///|
+extern "js" fn PerformanceMeasureOptions::to_js_ffi(
+  self : PerformanceMeasureOptions,
+) -> JsValue =
   #| (self) => ({
   #|   detail: ((() => { const v = self.detail; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   start: ((() => { const v = self.start; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -65,12 +77,18 @@ extern "js" fn PerformanceMeasureOptions::to_js_ffi(self : PerformanceMeasureOpt
   #|   end: ((() => { const v = self.end; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn PerformanceMeasureOptions::to_js(self : PerformanceMeasureOptions) -> JsValue {
+pub fn PerformanceMeasureOptions::to_js(
+  self : PerformanceMeasureOptions,
+) -> JsValue {
   PerformanceMeasureOptions::to_js_ffi(self)
 }
 
-extern "js" fn PerformanceMeasureOptions::from_js_ffi(value : JsValue) -> PerformanceMeasureOptions =
+///|
+extern "js" fn PerformanceMeasureOptions::from_js_ffi(
+  value : JsValue,
+) -> PerformanceMeasureOptions =
   #| (v) => ({
   #|   detail: (v.detail === undefined ? { $tag: 0 } : { $tag: 1, _0: v.detail }),
   #|   start: (v.start === undefined ? { $tag: 0 } : { $tag: 1, _0: v.start }),
@@ -78,8 +96,11 @@ extern "js" fn PerformanceMeasureOptions::from_js_ffi(value : JsValue) -> Perfor
   #|   end: (v.end === undefined ? { $tag: 0 } : { $tag: 1, _0: v.end })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn PerformanceMeasureOptions::from_js(value : JsValue) -> PerformanceMeasureOptions {
+pub fn PerformanceMeasureOptions::from_js(
+  value : JsValue,
+) -> PerformanceMeasureOptions {
   PerformanceMeasureOptions::from_js_ffi(value)
 }
 
@@ -87,76 +108,131 @@ pub fn PerformanceMeasureOptions::from_js(value : JsValue) -> PerformanceMeasure
 /// PerformanceMark interface
 pub type PerformanceMark
 
-pub extern "js" fn PerformanceMark::to_js_value(self : PerformanceMark) -> JsValue =
+///|
+pub extern "js" fn PerformanceMark::to_js_value(
+  self : PerformanceMark,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to PerformanceMark (unchecked)
-pub extern "js" fn PerformanceMark::from_js_value(v : JsValue) -> PerformanceMark =
+pub extern "js" fn PerformanceMark::from_js_value(
+  v : JsValue,
+) -> PerformanceMark =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to PerformanceMark (checked with instanceof)
-pub extern "js" fn PerformanceMark::from_js_value_opt(v : JsValue) -> PerformanceMark? =
+pub extern "js" fn PerformanceMark::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceMark? =
   #| (v) => (v instanceof PerformanceMark) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to PerformanceMark (checked with instanceof)
-pub extern "js" fn JsValue::as_performance_mark(self : JsValue) -> PerformanceMark? =
+pub extern "js" fn JsValue::as_performance_mark(
+  self : JsValue,
+) -> PerformanceMark? =
   #| (self) => (self instanceof PerformanceMark) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to PerformanceMark (unchecked)
-pub extern "js" fn JsValue::to_performance_mark(self : JsValue) -> PerformanceMark =
+pub extern "js" fn JsValue::to_performance_mark(
+  self : JsValue,
+) -> PerformanceMark =
   #| (self) => self
 
-pub extern "js" fn PerformanceMark::to_performance_entry(self : PerformanceMark) -> PerformanceEntry =
+///|
+pub extern "js" fn PerformanceMark::to_performance_entry(
+  self : PerformanceMark,
+) -> PerformanceEntry =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum PerformanceMarkConstructorError {
   TypeError(JsError)
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend PerformanceMarkConstructorError with @debug.Debug::{to_repr}
 
-pub extern "js" fn PerformanceMark::new(mark_name : String) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
+///|
+pub extern "js" fn PerformanceMark::new(
+  mark_name : String,
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
   #| (mark_name) => (() => { try { return { $tag: 1, _0: new PerformanceMark(mark_name) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-extern "js" fn PerformanceMark::new_with_mark_options_ffi(mark_name : String, mark_options : JsValue) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
+///|
+extern "js" fn PerformanceMark::new_with_mark_options_ffi(
+  mark_name : String,
+  mark_options : JsValue,
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] =
   #| (mark_name, mark_options) => (() => { try { return { $tag: 1, _0: new PerformanceMark(mark_name, mark_options) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; if (n === 'SyntaxError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }; } })()
 
-pub fn PerformanceMark::new_with_mark_options(mark_name : String, mark_options : PerformanceMarkOptions) -> Result[PerformanceMark, PerformanceMarkConstructorError] {
+///|
+pub fn PerformanceMark::new_with_mark_options(
+  mark_name : String,
+  mark_options : PerformanceMarkOptions,
+) -> Result[PerformanceMark, PerformanceMarkConstructorError] {
   PerformanceMark::new_with_mark_options_ffi(mark_name, mark_options.to_js())
 }
 
-pub extern "js" fn PerformanceMark::get_detail(self : PerformanceMark) -> JsValue =
+///|
+pub extern "js" fn PerformanceMark::get_detail(
+  self : PerformanceMark,
+) -> JsValue =
   #| (self) => self.detail
 
 ///|
 /// PerformanceMeasure interface
 pub type PerformanceMeasure
 
-pub extern "js" fn PerformanceMeasure::to_js_value(self : PerformanceMeasure) -> JsValue =
+///|
+pub extern "js" fn PerformanceMeasure::to_js_value(
+  self : PerformanceMeasure,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to PerformanceMeasure (unchecked)
-pub extern "js" fn PerformanceMeasure::from_js_value(v : JsValue) -> PerformanceMeasure =
+pub extern "js" fn PerformanceMeasure::from_js_value(
+  v : JsValue,
+) -> PerformanceMeasure =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to PerformanceMeasure (checked with instanceof)
-pub extern "js" fn PerformanceMeasure::from_js_value_opt(v : JsValue) -> PerformanceMeasure? =
+pub extern "js" fn PerformanceMeasure::from_js_value_opt(
+  v : JsValue,
+) -> PerformanceMeasure? =
   #| (v) => (v instanceof PerformanceMeasure) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to PerformanceMeasure (checked with instanceof)
-pub extern "js" fn JsValue::as_performance_measure(self : JsValue) -> PerformanceMeasure? =
+pub extern "js" fn JsValue::as_performance_measure(
+  self : JsValue,
+) -> PerformanceMeasure? =
   #| (self) => (self instanceof PerformanceMeasure) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to PerformanceMeasure (unchecked)
-pub extern "js" fn JsValue::to_performance_measure(self : JsValue) -> PerformanceMeasure =
+pub extern "js" fn JsValue::to_performance_measure(
+  self : JsValue,
+) -> PerformanceMeasure =
   #| (self) => self
 
-pub extern "js" fn PerformanceMeasure::to_performance_entry(self : PerformanceMeasure) -> PerformanceEntry =
+///|
+pub extern "js" fn PerformanceMeasure::to_performance_entry(
+  self : PerformanceMeasure,
+) -> PerformanceEntry =
   #| (self) => self
 
-pub extern "js" fn PerformanceMeasure::get_detail(self : PerformanceMeasure) -> JsValue =
+///|
+pub extern "js" fn PerformanceMeasure::get_detail(
+  self : PerformanceMeasure,
+) -> JsValue =
   #| (self) => self.detail

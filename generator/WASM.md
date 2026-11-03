@@ -80,6 +80,18 @@ and [WasmGC linker options](https://docs.moonbitlang.com/en/latest/toolchain/moo
 
 ## Current scope
 
+### Static operations and compound constructors
+
+Static operations call the interface constructor in the current realm and do not
+take an instance argument. Instance operations retain their receiver. Required
+constructor arguments can use the same sequence/union input conversion as
+operations: MoonBit values are converted before entering the JavaScript
+constructor. Optional/variadic constructor arguments remain unsupported.
+
+Generator contracts cover the emitted call boundary, and the independent
+browser consumer checks the static receiver and both union alternatives with
+a sequence argument. This does not add application-specific constructors.
+
 ### WebGPU discovery
 
 The browser fixtures require a SwiftShader adapter and create/destroy a device
@@ -136,11 +148,12 @@ and finite double settlement through generated `WebsysPromise[T]` values.
 Declared interface results are also supported with a same-realm `instanceof`
 check before preserving the host reference. Unknown, dictionary and callback
 types are not treated as interfaces. This is not cross-realm brand validation.
-`wait(abort=...)` uses the pinned experimental official-async adapter described
-in [the adapter boundary](../patches/async-wasmgc.md). Generated modules require
-that patched workspace dependency; an unmodified registry version does not
-provide the experimental `wasm_async` package. Generated host imports include
-its timer/subscription boundary. Existing published JS Promise APIs are unchanged.
+`wait(abort=...)` uses the pinned experimental browser core profile described
+in [the adapter boundary](../patches/browser-core.md). Generated modules require
+that prepared core via the child-only `MOON_CORE_OVERRIDE`; unmodified released
+core does not provide the experimental `async/wasm_async` package. Generated host imports include
+its timer/subscription boundary. Published JS Promise signatures remain, with
+their Promise alias now supplied by core rather than the external Async library.
 
 Values are checked after suspension and converted through typed imports. Invalid
 values raise `PromiseDecodeError`; host rejection remains the adapter's Rejection
@@ -197,6 +210,21 @@ bytes into it without exposing the GC array layout. The consumer checks empty
 and nonempty copies and verifies that host mutation cannot change the source.
 This is an explicit copy, not a zero-copy or atomic shared-memory operation.
 
+`JsValue::to_bytes_bounded(max_bytes~ : Int)` is a separate snapshot API on the
+JS and WasmGC generation paths. It returns owned bytes for a same-realm stable
+`Uint8Array` view, respecting the view's offset and length. Oversize input returns
+`BytesConversionError::TooLarge` before allocating the copy. A negative limit,
+wrong source kind, detached view, shared backing buffer or resizable backing
+buffer returns `InvalidValue`. Empty views with a zero limit succeed. Intrinsic
+typed-array getters avoid reading user-provided `length` properties.
+
+These sharing/resizing restrictions belong to this snapshot API, not to WebIDL
+`BufferSource` generally or the existing opaque-reference conversions. The
+unbounded conversion retains its earlier policy. The shared snapshot function is
+executed by the generator's JS tests; an independent WasmGC consumer also checks
+the generated ABI in isolated headless Chromium. This does not claim a separately
+compiled JS consumer for the new method.
+
 SharedArrayBuffer and ArrayBufferView are opaque built-in references. The standard
 AllowSharedBufferSource union retains its three branches, including AllowShared
 on ArrayBufferView. Inputs preserve host identity and view offset/length; native
@@ -226,6 +254,9 @@ the complete standard Event constructor signature or real keyboard/IME input.
 WebIDL `unsigned long` uses UInt on WasmGC. Outgoing i32 values are explicitly
 converted to unsigned JS numbers, including dictionary fields. The browser
 fixture checks 2147483648 and 4294967295 directly in the host object.
+Nonnullable WebIDL `short` uses Int, including signed event properties such as
+`MouseEvent.button`. Int does not enforce the 16-bit WebIDL range; arguments
+retain the existing conversion performed by the receiving browser API.
 Nullable unsigned long values use UInt?. Other nullable numeric interface values
 remain unsupported. The input fixture checks UTF-16 selection endpoints around
 an emoji, backward selection on input/textarea, and null selection positions on

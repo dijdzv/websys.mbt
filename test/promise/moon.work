@@ -1,1 +1,1 @@
-members = [".", "generated", "../../.work/dependencies/async-wasmgc"]
+members = [".", "generated"]

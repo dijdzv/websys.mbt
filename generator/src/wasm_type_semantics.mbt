@@ -1,16 +1,18 @@
 ///|
+#derive(Eq, Debug)
 enum WasmTypeKind {
   Name(String)
   Generic(String, Array[WasmSemanticType])
   Union(Array[WasmSemanticType])
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 struct WasmSemanticType {
   kind : WasmTypeKind
   nullable : Bool
   annotations : Array[String]
-} derive(Eq, Debug)
+}
 
 ///|
 extern "js" fn wasm_generic_name(value : JsValue) -> String =

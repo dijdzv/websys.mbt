@@ -1,5 +1,5 @@
 ///|
-extern "js" fn storage_window(mode : Int) -> @websys.Window =
+extern "js" fn storage_window(mode : Int32) -> @websys.Window =
   #| (mode) => ({ get localStorage() {
   #|   if (mode === 1) throw new DOMException('denied', 'SecurityError');
   #|   if (mode === 2) throw new TypeError('unexpected');

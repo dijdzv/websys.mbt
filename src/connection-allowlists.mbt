@@ -3,24 +3,34 @@
 
 ///|
 /// ConnectionAllowlistDisposition enum
+#derive(Eq, Debug)
 pub(all) enum ConnectionAllowlistDisposition {
   Enforce
   Report
-} derive(Eq, Debug)
+}
 
+///|
 pub extend ConnectionAllowlistDisposition with Eq::{equal, not_equal}
+
+///|
 pub extend ConnectionAllowlistDisposition with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn ConnectionAllowlistDisposition::to_string(self : ConnectionAllowlistDisposition) -> String {
+pub fn ConnectionAllowlistDisposition::to_string(
+  self : ConnectionAllowlistDisposition,
+) -> String {
   match self {
     ConnectionAllowlistDisposition::Enforce => "enforce"
     ConnectionAllowlistDisposition::Report => "report"
   }
 }
 
+///|
 /// Parse from string value
-pub fn ConnectionAllowlistDisposition::from_string(s : String) -> ConnectionAllowlistDisposition? {
+pub fn ConnectionAllowlistDisposition::from_string(
+  s : String,
+) -> ConnectionAllowlistDisposition? {
   match s {
     "enforce" => Some(ConnectionAllowlistDisposition::Enforce)
     "report" => Some(ConnectionAllowlistDisposition::Report)
@@ -37,6 +47,7 @@ pub(all) struct ConnectionAllowlistViolationReport {
   disposition : ConnectionAllowlistDisposition?
 }
 
+///|
 /// Create a new ConnectionAllowlistViolationReport with default values
 pub fn ConnectionAllowlistViolationReport::default() -> ConnectionAllowlistViolationReport {
   ConnectionAllowlistViolationReport::{
@@ -47,7 +58,10 @@ pub fn ConnectionAllowlistViolationReport::default() -> ConnectionAllowlistViola
   }
 }
 
-extern "js" fn ConnectionAllowlistViolationReport::to_js_ffi(self : ConnectionAllowlistViolationReport) -> JsValue =
+///|
+extern "js" fn ConnectionAllowlistViolationReport::to_js_ffi(
+  self : ConnectionAllowlistViolationReport,
+) -> JsValue =
   #| (self) => ({
   #|   url: self.url,
   #|   connection: self.connection,
@@ -55,12 +69,18 @@ extern "js" fn ConnectionAllowlistViolationReport::to_js_ffi(self : ConnectionAl
   #|   disposition: ((() => { const v = self.disposition; if (v === undefined) return undefined; return ['enforce', 'report'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn ConnectionAllowlistViolationReport::to_js(self : ConnectionAllowlistViolationReport) -> JsValue {
+pub fn ConnectionAllowlistViolationReport::to_js(
+  self : ConnectionAllowlistViolationReport,
+) -> JsValue {
   ConnectionAllowlistViolationReport::to_js_ffi(self)
 }
 
-extern "js" fn ConnectionAllowlistViolationReport::from_js_ffi(value : JsValue) -> ConnectionAllowlistViolationReport =
+///|
+extern "js" fn ConnectionAllowlistViolationReport::from_js_ffi(
+  value : JsValue,
+) -> ConnectionAllowlistViolationReport =
   #| (v) => ({
   #|   url: v.url,
   #|   connection: v.connection,
@@ -68,7 +88,10 @@ extern "js" fn ConnectionAllowlistViolationReport::from_js_ffi(value : JsValue) 
   #|   disposition: (v.disposition === undefined ? undefined : ['enforce', 'report'].indexOf(v.disposition))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn ConnectionAllowlistViolationReport::from_js(value : JsValue) -> ConnectionAllowlistViolationReport {
+pub fn ConnectionAllowlistViolationReport::from_js(
+  value : JsValue,
+) -> ConnectionAllowlistViolationReport {
   ConnectionAllowlistViolationReport::from_js_ffi(value)
 }

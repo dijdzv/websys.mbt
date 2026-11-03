@@ -1,9 +1,10 @@
 ///|
+#derive(Eq, Debug)
 enum DictionaryPresence {
   Required
   Optional
   OptionalNullable
-} derive(Eq, Debug)
+}
 
 ///|
 struct DictionaryFieldPlan {

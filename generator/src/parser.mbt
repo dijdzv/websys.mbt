@@ -36,12 +36,12 @@ pub extern "js" fn get_parse_data(result : JsValue) -> JsArray =
 
 ///|
 /// Get array length
-pub extern "js" fn js_array_length(arr : JsArray) -> Int =
+pub extern "js" fn js_array_length(arr : JsArray) -> Int32 =
   #| (arr) => arr.length
 
 ///|
 /// Get element from array by index
-pub extern "js" fn js_array_get(arr : JsArray, index : Int) -> JsValue =
+pub extern "js" fn js_array_get(arr : JsArray, index : Int32) -> JsValue =
   #| (arr, index) => arr[index]
 
 ///|
@@ -135,7 +135,10 @@ pub extern "js" fn get_maplike_types(obj : JsValue) -> JsArray =
 
 ///|
 /// Get element from maplike/setlike idlType array
-pub extern "js" fn get_maplike_type_at(types : JsArray, index : Int) -> JsValue =
+pub extern "js" fn get_maplike_type_at(
+  types : JsArray,
+  index : Int32,
+) -> JsValue =
   #| (types, index) => types[index] || null
 
 ///|
@@ -155,7 +158,7 @@ pub extern "js" fn get_values(obj : JsValue) -> JsArray =
 
 ///|
 /// Get string value from array
-pub extern "js" fn get_string_value(arr : JsArray, index : Int) -> String =
+pub extern "js" fn get_string_value(arr : JsArray, index : Int32) -> String =
   #| (arr, index) => {
   #|   const v = arr[index];
   #|   return typeof v === 'string' ? v : (v && v.value) || '';
@@ -197,7 +200,7 @@ pub extern "js" fn is_async(obj : JsValue) -> Bool =
 
 ///|
 /// Get idlType array length for iterable
-pub extern "js" fn get_idl_type_array_length(obj : JsValue) -> Int =
+pub extern "js" fn get_idl_type_array_length(obj : JsValue) -> Int32 =
   #| (obj) => (obj.idlType && Array.isArray(obj.idlType)) ? obj.idlType.length : 0
 
 ///|

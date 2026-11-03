@@ -5,8 +5,8 @@ fn emit_wasm_dictionary(
   js : StringBuilder,
   references : Array[String],
   dictionaries : Array[String],
-  dictionary_types? : Map[String, WasmSemanticType] = Map([]),
-  enums? : Array[String] = [],
+  dictionary_types~ : Map[String, WasmSemanticType] = Map([]),
+  enums~ : Array[String] = [],
 ) -> Unit {
   let name = dict.name
   let compound_types : Map[String, String] = Map([])
@@ -26,7 +26,7 @@ fn emit_wasm_dictionary(
       (
         !(typ.kind is Name(_)) ||
         !typ.annotations.is_empty() ||
-        (typ.kind is Name("object")) ||
+        typ.kind is Name("object") ||
         (typ.kind is Name(name) && enums.contains(name))
       ) {
       guard plan_wasm_input(
@@ -113,7 +113,8 @@ fn emit_wasm_dictionary(
     mbt.write_string(
       "fn websys_dict_\{name}_\{key}(target : JsValue, value : \{typ}) -> Unit = \"websys\" \"dict_\{name}_\{key}\"\n",
     )
-    let value = if value_type is Named("object") && !compound_types.contains(field.name) {
+    let value = if value_type is Named("object") &&
+      !compound_types.contains(field.name) {
       wasm_object_input("value")
     } else {
       wasm_js_arg(value_type, "value")

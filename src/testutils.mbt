@@ -3,6 +3,5 @@
 
 ///|
 /// TestUtils namespace
-
 pub extern "js" fn test_utils_gc() -> Promise[Unit] =
   #| () => TestUtils.gc()

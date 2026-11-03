@@ -56,7 +56,10 @@ pub extern "js" fn get_spec_names(specs : SpecsData) -> JsArray =
 
 ///|
 /// Get string from array
-pub extern "js" fn get_string_from_array(arr : JsArray, index : Int) -> String =
+pub extern "js" fn get_string_from_array(
+  arr : JsArray,
+  index : Int32,
+) -> String =
   #| (arr, index) => arr[index] || ''
 
 // =============================================================================

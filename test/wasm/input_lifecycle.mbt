@@ -4,23 +4,25 @@ priv struct InputLifecycle {
   input : @bindings.Element
   listener : @bindings.EventListener
   active : Ref[Bool]
-  pending : Ref[UInt?]
+  pending : Ref[UInt32?]
 }
 
 ///|
 let lifecycle : Ref[InputLifecycle?] = Ref(None)
 
 ///|
-let callbacks : Ref[Int] = Ref(0)
+let callbacks : Ref[Int32] = Ref(0)
 
 ///|
-let frames : Ref[Int] = Ref(0)
+let frames : Ref[Int32] = Ref(0)
 
 ///|
 let observed_text : Ref[String] = Ref("")
 
 ///|
-let observed_selection : Ref[(UInt?, UInt?, String?)] = Ref((None, None, None))
+let observed_selection : Ref[(UInt32?, UInt32?, String?)] = Ref(
+  (None, None, None),
+)
 
 ///|
 let observed_preedit : Ref[String] = Ref("")
@@ -78,7 +80,7 @@ pub fn input_start(
       )
     }
   }
-  let pending : Ref[UInt?] = Ref(None)
+  let pending : Ref[UInt32?] = Ref(None)
   let listener = @bindings.EventListener::new(fn(event) {
     if !active.val {
       return
@@ -123,12 +125,12 @@ pub fn input_start(
 }
 
 ///|
-pub fn input_callbacks() -> Int {
+pub fn input_callbacks() -> Int32 {
   callbacks.val
 }
 
 ///|
-pub fn input_frames() -> Int {
+pub fn input_frames() -> Int32 {
   frames.val
 }
 
@@ -139,8 +141,8 @@ pub fn input_text_matches(value : String) -> Bool {
 
 ///|
 pub fn input_snapshot_matches(
-  start : UInt,
-  end : UInt,
+  start : UInt32,
+  end : UInt32,
   direction : String,
   preedit : String,
 ) -> Bool {

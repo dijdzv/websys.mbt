@@ -62,6 +62,49 @@ try {
     const createResolver = imports.websys.resolver_new;
     imports.websys.resolver_new = () => { const slot = createResolver(); resolverSlots.push(slot); return slot; };
     const { instance } = await WebAssembly.instantiate(new Uint8Array(bytes), imports, { builtins: ['js-string'], importedStringConstants: '_' });
+    let extraCases = 0;
+    {
+    globalThis.ConstructionFixture = class {
+      constructor(values, flag) {
+        if (!Array.isArray(values)) throw Error('Constructor did not receive a sequence');
+        this.total = values.reduce((sum, value) => sum + value, 0) + (typeof flag === 'string' ? flag.length : flag);
+      }
+      static copy(value) {
+        if (this !== globalThis.ConstructionFixture) throw Error('Static receiver was lost');
+        return new this([value], 0);
+      }
+    };
+    for (const [number, expected] of [[false, 10], [true, 16]]) {
+      if (instance.exports.constructor_sum(number) !== expected) throw Error('Compound constructor input changed');
+      extraCases++;
+    }
+    if (instance.exports.static_sum() !== 11) throw Error('Static operation failed');
+    extraCases++;
+    const backing = new ArrayBuffer(6);
+    const view = new Uint8Array(backing, 2, 3);
+    view.set([7, 128, 255]);
+    Object.defineProperty(view, 'length', { get() { throw Error('Untrusted length getter was called'); } });
+    if (instance.exports.bounded_bytes_capture(view, 3) !== 3) throw Error('Bounded view copy failed');
+    view[0] = 99;
+    for (const [index, expected] of [7, 128, 255].entries()) {
+      if (instance.exports.bounded_bytes_at(index) !== expected) throw Error('Bounded bytes did not retain an owned view snapshot');
+    }
+    extraCases++;
+    for (const [value, limit, expected] of [[view, 2, -2], [view, -1, -1], [new Uint8Array(), 0, 0], [new ArrayBuffer(1), 1, -1], [{ length: 1 }, 1, -1]]) {
+      if (instance.exports.bounded_bytes_capture(value, limit) !== expected) throw Error('Bounded snapshot admission changed');
+      extraCases++;
+    }
+    structuredClone(backing, { transfer: [backing] });
+    if (instance.exports.bounded_bytes_capture(view, 3) !== -1) throw Error('Detached snapshot accepted');
+    extraCases++;
+    if (!crossOriginIsolated || typeof SharedArrayBuffer === 'undefined') throw Error('Bounded shared snapshot fixture requires isolation');
+    if (instance.exports.bounded_bytes_capture(new Uint8Array(new SharedArrayBuffer(4)), 4) !== -1) throw Error('Shared snapshot accepted');
+    extraCases++;
+    const resizable = new ArrayBuffer(4, { maxByteLength: 8 });
+    if (!resizable.resizable) throw Error('Resizable snapshot fixture is unavailable');
+    if (instance.exports.bounded_bytes_capture(new Uint8Array(resizable), 4) !== -1) throw Error('Resizable snapshot accepted');
+    extraCases++;
+    }
     async function check(response, expected, text = '', timeout = 1000) {
       let calls = 0;
       await new Promise((resolve, reject) => {
@@ -88,7 +131,7 @@ try {
     finish('late');
     await new Promise(resolve => setTimeout(resolve, 20));
     if (calls() !== 1) throw Error('Late settlement delivered twice');
-    let count = 6;
+    let count = 6 + extraCases;
     for (const schema of [{ type: 'object' }, [], () => {}]) {
       for (const mode of [0, 1, 2]) {
         const value = instance.exports.object_inputs(schema, schema, mode);

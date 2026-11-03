@@ -385,7 +385,7 @@ pub fn primitive_to_moonbit(name : String) -> String {
 /// If interface_prefix is provided: "ElementSetAttributeError"
 pub fn gen_error_enum_name(
   method_name : String,
-  interface_prefix? : String = "",
+  interface_prefix~ : String = "",
 ) -> String {
   let pascal = to_pascal_case(method_name)
   if interface_prefix == "" {
@@ -471,7 +471,7 @@ pub fn compute_throws_context(
   method_name : String,
   interface_name : String,
   base_return_type : String,
-  idl_return_type? : IdlType = Void,
+  idl_return_type~ : IdlType = Void,
 ) -> (String, Bool) {
   if throws.length() > 0 {
     let error_enum_name = gen_error_enum_name(
@@ -516,7 +516,7 @@ extern "js" fn starts_with(s : String, prefix : String) -> Bool =
 
 ///|
 /// Slice string from start index (JS String.slice)
-extern "js" fn string_from(s : String, start : Int) -> String =
+extern "js" fn string_from(s : String, start : Int32) -> String =
   #| (s, start) => s.slice(start)
 
 ///|
@@ -548,12 +548,12 @@ pub fn set_pair(
 
 ///|
 /// Find index of first dot in string (-1 if not found)
-extern "js" fn find_dot_index(s : String) -> Int =
+extern "js" fn find_dot_index(s : String) -> Int32 =
   #| (s) => s.indexOf('.')
 
 ///|
 /// Slice string from start to end index (JS String.slice)
-extern "js" fn string_slice(s : String, start : Int, end : Int) -> String =
+extern "js" fn string_slice(s : String, start : Int32, end : Int32) -> String =
   #| (s, start, end) => s.slice(start, end)
 
 ///|
@@ -625,7 +625,7 @@ pub fn gen_error_enum(enum_name : String, exceptions : Array[String]) -> String 
   // Segment marker
   result.write_string("///|\n")
   result.write_string("/// Error type for throwing methods\n")
-  result.write_string("pub(all) enum ")
+  result.write_string("#derive(Debug)\npub(all) enum ")
   result.write_string(enum_name)
   result.write_string(" {\n")
   let sorted = sort_exceptions(exceptions)
@@ -638,8 +638,10 @@ pub fn gen_error_enum(enum_name : String, exceptions : Array[String]) -> String 
   })
   // OtherError catch-all (always last)
   result.write_string("  OtherError(JsError)\n")
-  result.write_string("} derive(Debug)\n\n")
-  result.write_string("pub extend " + enum_name + " with @debug.Debug::{to_repr}\n\n")
+  result.write_string("}\n\n")
+  result.write_string(
+    "pub extend " + enum_name + " with @debug.Debug::{to_repr}\n\n",
+  )
   result.to_string()
 }
 

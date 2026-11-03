@@ -22,9 +22,13 @@ fn valid_wasm_module_name(name : String) -> Bool {
 }
 
 ///|
-fn wasm_module_manifest(name : String, promises? : Bool = false) -> String {
+fn wasm_module_manifest(name : String, promises~ : Bool = false) -> String {
   "name = " +
-  name.to_json().stringify() +
+  Json(name).stringify() +
   "\npreferred_target = \"wasm-gc\"\n" +
-  (if promises { "import { \"moonbitlang/async@0.22.4\" }\n" } else { "" })
+  (if promises {
+    "// Promise support requires the WebSys browser core profile.\n"
+  } else {
+    ""
+  })
 }

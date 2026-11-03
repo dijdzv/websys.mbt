@@ -1,11 +1,13 @@
 ///|
-pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
+pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int32 {
   let headers = @bindings.Headers::new()
   headers.append("X-Example", "café")
   let values : Array[(String, String, String?)] = []
-  headers.for_each(@bindings.HeaderCallback::new((value, name, owner) => {
-    values.push((value, name, owner.get(name)))
-  }))
+  headers.for_each(
+    @bindings.HeaderCallback::new((value, name, owner) => {
+      values.push((value, name, owner.get(name)))
+    }),
+  )
   guard values == [("café", "x-example", Some("café"))] else { return 55 }
   guard @bindings.HTMLInputElement::from_element_opt(
       document.create_element("input"),
@@ -157,7 +159,7 @@ pub fn run(document : @bindings.Document, event : @bindings.Event) -> Int {
 }
 
 ///|
-pub fn nested_dictionary_sample(mode : Int) -> @bindings.JsValue {
+pub fn nested_dictionary_sample(mode : Int32) -> @bindings.JsValue {
   let child : @bindings.NestedLeaf = { label: "入れ子😀", count: Some(0), }
   let options : @bindings.NestedOptions = {
     child,
@@ -182,7 +184,7 @@ pub fn nested_dictionary_sample(mode : Int) -> @bindings.JsValue {
 
 ///|
 pub fn dictionary_sample(
-  mode : Int,
+  mode : Int32,
   document : @bindings.Document,
 ) -> @bindings.JsValue {
   let options : @bindings.TestOptions = {

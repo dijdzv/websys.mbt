@@ -227,10 +227,10 @@ fn gen_namespace_operation_single(
   op : OperationDef,
   fn_suffix : String,
   args : Array[Argument],
-  arg_count : Int,
+  arg_count : Int32,
   enum_map : Array[(String, Array[String])],
   dict_map : Array[(String, DictionaryDef)],
-  primitive_typedef_map? : Array[(String, IdlType)] = [],
+  primitive_typedef_map~ : Array[(String, IdlType)] = [],
 ) -> String {
   let op_snake = op.name |> to_snake_case |> escape_reserved
   let fn_name = ns_snake + "_" + op_snake + fn_suffix

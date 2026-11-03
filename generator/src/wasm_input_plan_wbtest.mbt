@@ -5,8 +5,14 @@ test "object dictionary inputs preserve opaque values and nullable presence" {
   )
   assert_true(validate_wasm_input(parsed) is None)
   let types = wasm_dictionary_semantics(parsed)
-  assert_eq(plan_wasm_input(types["Options.schema"]), Some(Scalar("JsValue", "object")))
-  let (code, host) = generate_wasm(convert_to_definitions(parsed), dictionary_types=types)
+  assert_eq(
+    plan_wasm_input(types["Options.schema"]),
+    Some(Scalar("JsValue", "object")),
+  )
+  let (code, host) = generate_wasm(
+    convert_to_definitions(parsed),
+    dictionary_types=types,
+  )
   assert_true(code.contains("schema : JsValue"), msg=code)
   assert_true(code.contains("nullableObject : Nullable[JsValue]"))
   assert_true(code.contains("objects : Array[JsValue]"))

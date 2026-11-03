@@ -2,7 +2,7 @@
 let saved_buffer_bytes : Ref[Bytes?] = Ref(None)
 
 ///|
-pub fn buffer_capture(buffer : @bindings.ArrayBuffer) -> Int {
+pub fn buffer_capture(buffer : @bindings.ArrayBuffer) -> Int32 {
   saved_buffer_bytes.val = buffer.to_bytes()
   match saved_buffer_bytes.val {
     None => -1
@@ -11,7 +11,7 @@ pub fn buffer_capture(buffer : @bindings.ArrayBuffer) -> Int {
 }
 
 ///|
-pub fn buffer_snapshot_at(index : Int) -> Int {
+pub fn buffer_snapshot_at(index : Int32) -> Int32 {
   saved_buffer_bytes.val.unwrap()[index].to_int()
 }
 

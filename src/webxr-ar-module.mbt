@@ -3,17 +3,24 @@
 
 ///|
 /// XREnvironmentBlendMode enum
+#derive(Eq, Debug)
 pub(all) enum XREnvironmentBlendMode {
   Opaque
   AlphaBlend
   Additive
-} derive(Eq, Debug)
+}
 
+///|
 pub extend XREnvironmentBlendMode with Eq::{equal, not_equal}
+
+///|
 pub extend XREnvironmentBlendMode with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn XREnvironmentBlendMode::to_string(self : XREnvironmentBlendMode) -> String {
+pub fn XREnvironmentBlendMode::to_string(
+  self : XREnvironmentBlendMode,
+) -> String {
   match self {
     XREnvironmentBlendMode::Opaque => "opaque"
     XREnvironmentBlendMode::AlphaBlend => "alpha-blend"
@@ -21,8 +28,11 @@ pub fn XREnvironmentBlendMode::to_string(self : XREnvironmentBlendMode) -> Strin
   }
 }
 
+///|
 /// Parse from string value
-pub fn XREnvironmentBlendMode::from_string(s : String) -> XREnvironmentBlendMode? {
+pub fn XREnvironmentBlendMode::from_string(
+  s : String,
+) -> XREnvironmentBlendMode? {
   match s {
     "opaque" => Some(XREnvironmentBlendMode::Opaque)
     "alpha-blend" => Some(XREnvironmentBlendMode::AlphaBlend)
@@ -33,14 +43,19 @@ pub fn XREnvironmentBlendMode::from_string(s : String) -> XREnvironmentBlendMode
 
 ///|
 /// XRInteractionMode enum
+#derive(Eq, Debug)
 pub(all) enum XRInteractionMode {
   ScreenSpace
   WorldSpace
-} derive(Eq, Debug)
+}
 
+///|
 pub extend XRInteractionMode with Eq::{equal, not_equal}
+
+///|
 pub extend XRInteractionMode with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
   match self {
@@ -49,6 +64,7 @@ pub fn XRInteractionMode::to_string(self : XRInteractionMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn XRInteractionMode::from_string(s : String) -> XRInteractionMode? {
   match s {

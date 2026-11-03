@@ -3,6 +3,7 @@
 
 ///|
 /// RTCStatsType enum
+#derive(Eq, Debug)
 pub(all) enum RTCStatsType {
   Codec
   InboundRtp
@@ -18,11 +19,15 @@ pub(all) enum RTCStatsType {
   LocalCandidate
   RemoteCandidate
   Certificate
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RTCStatsType with Eq::{equal, not_equal}
+
+///|
 pub extend RTCStatsType with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn RTCStatsType::to_string(self : RTCStatsType) -> String {
   match self {
@@ -43,6 +48,7 @@ pub fn RTCStatsType::to_string(self : RTCStatsType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RTCStatsType::from_string(s : String) -> RTCStatsType? {
   match s {
@@ -66,18 +72,25 @@ pub fn RTCStatsType::from_string(s : String) -> RTCStatsType? {
 
 ///|
 /// RTCQualityLimitationReason enum
+#derive(Eq, Debug)
 pub(all) enum RTCQualityLimitationReason {
   None
   Cpu
   Bandwidth
   Other
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RTCQualityLimitationReason with Eq::{equal, not_equal}
+
+///|
 pub extend RTCQualityLimitationReason with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn RTCQualityLimitationReason::to_string(self : RTCQualityLimitationReason) -> String {
+pub fn RTCQualityLimitationReason::to_string(
+  self : RTCQualityLimitationReason,
+) -> String {
   match self {
     RTCQualityLimitationReason::None => "none"
     RTCQualityLimitationReason::Cpu => "cpu"
@@ -86,8 +99,11 @@ pub fn RTCQualityLimitationReason::to_string(self : RTCQualityLimitationReason) 
   }
 }
 
+///|
 /// Parse from string value
-pub fn RTCQualityLimitationReason::from_string(s : String) -> RTCQualityLimitationReason? {
+pub fn RTCQualityLimitationReason::from_string(
+  s : String,
+) -> RTCQualityLimitationReason? {
   match s {
     "none" => Some(RTCQualityLimitationReason::None)
     "cpu" => Some(RTCQualityLimitationReason::Cpu)
@@ -99,15 +115,20 @@ pub fn RTCQualityLimitationReason::from_string(s : String) -> RTCQualityLimitati
 
 ///|
 /// RTCDtlsRole enum
+#derive(Eq, Debug)
 pub(all) enum RTCDtlsRole {
   Client
   Server
   Unknown
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RTCDtlsRole with Eq::{equal, not_equal}
+
+///|
 pub extend RTCDtlsRole with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn RTCDtlsRole::to_string(self : RTCDtlsRole) -> String {
   match self {
@@ -117,6 +138,7 @@ pub fn RTCDtlsRole::to_string(self : RTCDtlsRole) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RTCDtlsRole::from_string(s : String) -> RTCDtlsRole? {
   match s {
@@ -129,19 +151,26 @@ pub fn RTCDtlsRole::from_string(s : String) -> RTCDtlsRole? {
 
 ///|
 /// RTCStatsIceCandidatePairState enum
+#derive(Eq, Debug)
 pub(all) enum RTCStatsIceCandidatePairState {
   Frozen
   Waiting
   InProgress
   Failed
   Succeeded
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RTCStatsIceCandidatePairState with Eq::{equal, not_equal}
+
+///|
 pub extend RTCStatsIceCandidatePairState with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn RTCStatsIceCandidatePairState::to_string(self : RTCStatsIceCandidatePairState) -> String {
+pub fn RTCStatsIceCandidatePairState::to_string(
+  self : RTCStatsIceCandidatePairState,
+) -> String {
   match self {
     RTCStatsIceCandidatePairState::Frozen => "frozen"
     RTCStatsIceCandidatePairState::Waiting => "waiting"
@@ -151,8 +180,11 @@ pub fn RTCStatsIceCandidatePairState::to_string(self : RTCStatsIceCandidatePairS
   }
 }
 
+///|
 /// Parse from string value
-pub fn RTCStatsIceCandidatePairState::from_string(s : String) -> RTCStatsIceCandidatePairState? {
+pub fn RTCStatsIceCandidatePairState::from_string(
+  s : String,
+) -> RTCStatsIceCandidatePairState? {
   match s {
     "frozen" => Some(RTCStatsIceCandidatePairState::Frozen)
     "waiting" => Some(RTCStatsIceCandidatePairState::Waiting)
@@ -166,23 +198,22 @@ pub fn RTCStatsIceCandidatePairState::from_string(s : String) -> RTCStatsIceCand
 ///|
 /// RTCRtpStreamStats dictionary
 pub(all) struct RTCRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
 }
 
+///|
 /// Create a new RTCRtpStreamStats with default values
 pub fn RTCRtpStreamStats::default() -> RTCRtpStreamStats {
-  RTCRtpStreamStats::{
-    ssrc: 0,
-    kind: "",
-    transportId: None,
-    codecId: None,
-  }
+  RTCRtpStreamStats::{ ssrc: 0, kind: "", transportId: None, codecId: None, }
 }
 
-extern "js" fn RTCRtpStreamStats::to_js_ffi(self : RTCRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCRtpStreamStats::to_js_ffi(
+  self : RTCRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -190,12 +221,16 @@ extern "js" fn RTCRtpStreamStats::to_js_ffi(self : RTCRtpStreamStats) -> JsValue
   #|   codecId: self.codecId
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCRtpStreamStats::to_js(self : RTCRtpStreamStats) -> JsValue {
   RTCRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCRtpStreamStats::from_js_ffi(value : JsValue) -> RTCRtpStreamStats =
+///|
+extern "js" fn RTCRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -203,6 +238,7 @@ extern "js" fn RTCRtpStreamStats::from_js_ffi(value : JsValue) -> RTCRtpStreamSt
   #|   codecId: v.codecId
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCRtpStreamStats::from_js(value : JsValue) -> RTCRtpStreamStats {
   RTCRtpStreamStats::from_js_ffi(value)
@@ -211,14 +247,15 @@ pub fn RTCRtpStreamStats::from_js(value : JsValue) -> RTCRtpStreamStats {
 ///|
 /// RTCCodecStats dictionary
 pub(all) struct RTCCodecStats {
-  payloadType : Int
+  payloadType : Int32
   transportId : String
   mimeType : String
-  clockRate : Int?
-  channels : Int?
+  clockRate : Int32?
+  channels : Int32?
   sdpFmtpLine : String?
 }
 
+///|
 /// Create a new RTCCodecStats with default values
 pub fn RTCCodecStats::default() -> RTCCodecStats {
   RTCCodecStats::{
@@ -231,6 +268,7 @@ pub fn RTCCodecStats::default() -> RTCCodecStats {
   }
 }
 
+///|
 extern "js" fn RTCCodecStats::to_js_ffi(self : RTCCodecStats) -> JsValue =
   #| (self) => ({
   #|   payloadType: self.payloadType,
@@ -241,11 +279,13 @@ extern "js" fn RTCCodecStats::to_js_ffi(self : RTCCodecStats) -> JsValue =
   #|   sdpFmtpLine: self.sdpFmtpLine
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCCodecStats::to_js(self : RTCCodecStats) -> JsValue {
   RTCCodecStats::to_js_ffi(self)
 }
 
+///|
 extern "js" fn RTCCodecStats::from_js_ffi(value : JsValue) -> RTCCodecStats =
   #| (v) => ({
   #|   payloadType: v.payloadType,
@@ -256,6 +296,7 @@ extern "js" fn RTCCodecStats::from_js_ffi(value : JsValue) -> RTCCodecStats =
   #|   sdpFmtpLine: v.sdpFmtpLine
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCCodecStats::from_js(value : JsValue) -> RTCCodecStats {
   RTCCodecStats::from_js_ffi(value)
@@ -264,7 +305,7 @@ pub fn RTCCodecStats::from_js(value : JsValue) -> RTCCodecStats {
 ///|
 /// RTCReceivedRtpStreamStats dictionary
 pub(all) struct RTCReceivedRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -277,6 +318,7 @@ pub(all) struct RTCReceivedRtpStreamStats {
   jitter : Double?
 }
 
+///|
 /// Create a new RTCReceivedRtpStreamStats with default values
 pub fn RTCReceivedRtpStreamStats::default() -> RTCReceivedRtpStreamStats {
   RTCReceivedRtpStreamStats::{
@@ -294,7 +336,10 @@ pub fn RTCReceivedRtpStreamStats::default() -> RTCReceivedRtpStreamStats {
   }
 }
 
-extern "js" fn RTCReceivedRtpStreamStats::to_js_ffi(self : RTCReceivedRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCReceivedRtpStreamStats::to_js_ffi(
+  self : RTCReceivedRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -309,12 +354,18 @@ extern "js" fn RTCReceivedRtpStreamStats::to_js_ffi(self : RTCReceivedRtpStreamS
   #|   jitter: ((() => { const v = self.jitter; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCReceivedRtpStreamStats::to_js(self : RTCReceivedRtpStreamStats) -> JsValue {
+pub fn RTCReceivedRtpStreamStats::to_js(
+  self : RTCReceivedRtpStreamStats,
+) -> JsValue {
   RTCReceivedRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCReceivedRtpStreamStats::from_js_ffi(value : JsValue) -> RTCReceivedRtpStreamStats =
+///|
+extern "js" fn RTCReceivedRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCReceivedRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -329,27 +380,42 @@ extern "js" fn RTCReceivedRtpStreamStats::from_js_ffi(value : JsValue) -> RTCRec
   #|   jitter: (v.jitter === undefined ? { $tag: 0 } : { $tag: 1, _0: v.jitter })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCReceivedRtpStreamStats::from_js(value : JsValue) -> RTCReceivedRtpStreamStats {
+pub fn RTCReceivedRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCReceivedRtpStreamStats {
   RTCReceivedRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCReceivedRtpStreamStats::to_js_checked(self : RTCReceivedRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCReceivedRtpStreamStats::to_js_checked(
+  self : RTCReceivedRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCReceivedRtpStreamStats(convert : () -> RTCReceivedRtpStreamStats) -> Result[RTCReceivedRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCReceivedRtpStreamStats(
+  convert : () -> RTCReceivedRtpStreamStats,
+) -> Result[RTCReceivedRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCReceivedRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCReceivedRtpStreamStats, JsError] { try_dictionary_RTCReceivedRtpStreamStats(() => RTCReceivedRtpStreamStats::from_js(value)) }
+pub fn RTCReceivedRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCReceivedRtpStreamStats, JsError] {
+  try_dictionary_RTCReceivedRtpStreamStats(() => {
+    RTCReceivedRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCInboundRtpStreamStats dictionary
 pub(all) struct RTCInboundRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -363,20 +429,20 @@ pub(all) struct RTCInboundRtpStreamStats {
   trackIdentifier : String
   mid : String?
   remoteId : String?
-  framesDecoded : Int?
-  keyFramesDecoded : Int?
-  framesRendered : Int?
-  framesDropped : Int?
-  frameWidth : Int?
-  frameHeight : Int?
+  framesDecoded : Int32?
+  keyFramesDecoded : Int32?
+  framesRendered : Int32?
+  framesDropped : Int32?
+  frameWidth : Int32?
+  frameHeight : Int32?
   framesPerSecond : Double?
   qpSum : Int64?
   totalDecodeTime : Double?
   totalInterFrameDelay : Double?
   totalSquaredInterFrameDelay : Double?
-  pauseCount : Int?
+  pauseCount : Int32?
   totalPausesDuration : Double?
-  freezeCount : Int?
+  freezeCount : Int32?
   totalFreezesDuration : Double?
   lastPacketReceivedTimestamp : DOMHighResTimeStamp?
   headerBytesReceived : Int64?
@@ -385,9 +451,9 @@ pub(all) struct RTCInboundRtpStreamStats {
   fecPacketsReceived : Int64?
   fecPacketsDiscarded : Int64?
   bytesReceived : Int64?
-  nackCount : Int?
-  firCount : Int?
-  pliCount : Int?
+  nackCount : Int32?
+  firCount : Int32?
+  pliCount : Int32?
   totalProcessingDelay : Double?
   estimatedPlayoutTimestamp : DOMHighResTimeStamp?
   jitterBufferDelay : Double?
@@ -403,21 +469,22 @@ pub(all) struct RTCInboundRtpStreamStats {
   audioLevel : Double?
   totalAudioEnergy : Double?
   totalSamplesDuration : Double?
-  framesReceived : Int?
+  framesReceived : Int32?
   decoderImplementation : String?
   playoutId : String?
   powerEfficientDecoder : Bool?
-  framesAssembledFromMultiplePackets : Int?
+  framesAssembledFromMultiplePackets : Int32?
   totalAssemblyTime : Double?
   retransmittedPacketsReceived : Int64?
   retransmittedBytesReceived : Int64?
-  rtxSsrc : Int?
-  fecSsrc : Int?
+  rtxSsrc : Int32?
+  fecSsrc : Int32?
   totalCorruptionProbability : Double?
   totalSquaredCorruptionProbability : Double?
   corruptionMeasurements : Int64?
 }
 
+///|
 /// Create a new RTCInboundRtpStreamStats with default values
 pub fn RTCInboundRtpStreamStats::default() -> RTCInboundRtpStreamStats {
   RTCInboundRtpStreamStats::{
@@ -491,7 +558,10 @@ pub fn RTCInboundRtpStreamStats::default() -> RTCInboundRtpStreamStats {
   }
 }
 
-extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(self : RTCInboundRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(
+  self : RTCInboundRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -562,12 +632,18 @@ extern "js" fn RTCInboundRtpStreamStats::to_js_ffi(self : RTCInboundRtpStreamSta
   #|   corruptionMeasurements: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.corruptionMeasurements)
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCInboundRtpStreamStats::to_js(self : RTCInboundRtpStreamStats) -> JsValue {
+pub fn RTCInboundRtpStreamStats::to_js(
+  self : RTCInboundRtpStreamStats,
+) -> JsValue {
   RTCInboundRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCInboundRtpStreamStats =
+///|
+extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCInboundRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -638,27 +714,42 @@ extern "js" fn RTCInboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCInbo
   #|   corruptionMeasurements: (v.corruptionMeasurements === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.corruptionMeasurements))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCInboundRtpStreamStats::from_js(value : JsValue) -> RTCInboundRtpStreamStats {
+pub fn RTCInboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCInboundRtpStreamStats {
   RTCInboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCInboundRtpStreamStats::to_js_checked(self : RTCInboundRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCInboundRtpStreamStats::to_js_checked(
+  self : RTCInboundRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCInboundRtpStreamStats(convert : () -> RTCInboundRtpStreamStats) -> Result[RTCInboundRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCInboundRtpStreamStats(
+  convert : () -> RTCInboundRtpStreamStats,
+) -> Result[RTCInboundRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCInboundRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCInboundRtpStreamStats, JsError] { try_dictionary_RTCInboundRtpStreamStats(() => RTCInboundRtpStreamStats::from_js(value)) }
+pub fn RTCInboundRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCInboundRtpStreamStats, JsError] {
+  try_dictionary_RTCInboundRtpStreamStats(() => {
+    RTCInboundRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCRemoteInboundRtpStreamStats dictionary
 pub(all) struct RTCRemoteInboundRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -677,6 +768,7 @@ pub(all) struct RTCRemoteInboundRtpStreamStats {
   packetsWithBleachedEct1Marking : Int64?
 }
 
+///|
 /// Create a new RTCRemoteInboundRtpStreamStats with default values
 pub fn RTCRemoteInboundRtpStreamStats::default() -> RTCRemoteInboundRtpStreamStats {
   RTCRemoteInboundRtpStreamStats::{
@@ -700,7 +792,10 @@ pub fn RTCRemoteInboundRtpStreamStats::default() -> RTCRemoteInboundRtpStreamSta
   }
 }
 
-extern "js" fn RTCRemoteInboundRtpStreamStats::to_js_ffi(self : RTCRemoteInboundRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCRemoteInboundRtpStreamStats::to_js_ffi(
+  self : RTCRemoteInboundRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -721,12 +816,18 @@ extern "js" fn RTCRemoteInboundRtpStreamStats::to_js_ffi(self : RTCRemoteInbound
   #|   packetsWithBleachedEct1Marking: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.packetsWithBleachedEct1Marking)
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCRemoteInboundRtpStreamStats::to_js(self : RTCRemoteInboundRtpStreamStats) -> JsValue {
+pub fn RTCRemoteInboundRtpStreamStats::to_js(
+  self : RTCRemoteInboundRtpStreamStats,
+) -> JsValue {
   RTCRemoteInboundRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCRemoteInboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCRemoteInboundRtpStreamStats =
+///|
+extern "js" fn RTCRemoteInboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRemoteInboundRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -747,27 +848,42 @@ extern "js" fn RTCRemoteInboundRtpStreamStats::from_js_ffi(value : JsValue) -> R
   #|   packetsWithBleachedEct1Marking: (v.packetsWithBleachedEct1Marking === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.packetsWithBleachedEct1Marking))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCRemoteInboundRtpStreamStats::from_js(value : JsValue) -> RTCRemoteInboundRtpStreamStats {
+pub fn RTCRemoteInboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCRemoteInboundRtpStreamStats {
   RTCRemoteInboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCRemoteInboundRtpStreamStats::to_js_checked(self : RTCRemoteInboundRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCRemoteInboundRtpStreamStats::to_js_checked(
+  self : RTCRemoteInboundRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCRemoteInboundRtpStreamStats(convert : () -> RTCRemoteInboundRtpStreamStats) -> Result[RTCRemoteInboundRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCRemoteInboundRtpStreamStats(
+  convert : () -> RTCRemoteInboundRtpStreamStats,
+) -> Result[RTCRemoteInboundRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCRemoteInboundRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCRemoteInboundRtpStreamStats, JsError] { try_dictionary_RTCRemoteInboundRtpStreamStats(() => RTCRemoteInboundRtpStreamStats::from_js(value)) }
+pub fn RTCRemoteInboundRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCRemoteInboundRtpStreamStats, JsError] {
+  try_dictionary_RTCRemoteInboundRtpStreamStats(() => {
+    RTCRemoteInboundRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCSentRtpStreamStats dictionary
 pub(all) struct RTCSentRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -775,6 +891,7 @@ pub(all) struct RTCSentRtpStreamStats {
   bytesSent : Int64?
 }
 
+///|
 /// Create a new RTCSentRtpStreamStats with default values
 pub fn RTCSentRtpStreamStats::default() -> RTCSentRtpStreamStats {
   RTCSentRtpStreamStats::{
@@ -787,7 +904,10 @@ pub fn RTCSentRtpStreamStats::default() -> RTCSentRtpStreamStats {
   }
 }
 
-extern "js" fn RTCSentRtpStreamStats::to_js_ffi(self : RTCSentRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCSentRtpStreamStats::to_js_ffi(
+  self : RTCSentRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -797,12 +917,16 @@ extern "js" fn RTCSentRtpStreamStats::to_js_ffi(self : RTCSentRtpStreamStats) ->
   #|   bytesSent: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesSent)
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCSentRtpStreamStats::to_js(self : RTCSentRtpStreamStats) -> JsValue {
   RTCSentRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCSentRtpStreamStats::from_js_ffi(value : JsValue) -> RTCSentRtpStreamStats =
+///|
+extern "js" fn RTCSentRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCSentRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -812,6 +936,7 @@ extern "js" fn RTCSentRtpStreamStats::from_js_ffi(value : JsValue) -> RTCSentRtp
   #|   bytesSent: (v.bytesSent === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesSent))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCSentRtpStreamStats::from_js(value : JsValue) -> RTCSentRtpStreamStats {
   RTCSentRtpStreamStats::from_js_ffi(value)
@@ -819,20 +944,32 @@ pub fn RTCSentRtpStreamStats::from_js(value : JsValue) -> RTCSentRtpStreamStats 
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCSentRtpStreamStats::to_js_checked(self : RTCSentRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCSentRtpStreamStats::to_js_checked(
+  self : RTCSentRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCSentRtpStreamStats(convert : () -> RTCSentRtpStreamStats) -> Result[RTCSentRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCSentRtpStreamStats(
+  convert : () -> RTCSentRtpStreamStats,
+) -> Result[RTCSentRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCSentRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCSentRtpStreamStats, JsError] { try_dictionary_RTCSentRtpStreamStats(() => RTCSentRtpStreamStats::from_js(value)) }
+pub fn RTCSentRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCSentRtpStreamStats, JsError] {
+  try_dictionary_RTCSentRtpStreamStats(() => {
+    RTCSentRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCOutboundRtpStreamStats dictionary
 pub(all) struct RTCOutboundRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -842,20 +979,20 @@ pub(all) struct RTCOutboundRtpStreamStats {
   mediaSourceId : String?
   remoteId : String?
   rid : String?
-  encodingIndex : Int?
+  encodingIndex : Int32?
   headerBytesSent : Int64?
   retransmittedPacketsSent : Int64?
   retransmittedBytesSent : Int64?
-  rtxSsrc : Int?
+  rtxSsrc : Int32?
   targetBitrate : Double?
   totalEncodedBytesTarget : Int64?
-  frameWidth : Int?
-  frameHeight : Int?
+  frameWidth : Int32?
+  frameHeight : Int32?
   framesPerSecond : Double?
-  framesSent : Int?
-  hugeFramesSent : Int?
-  framesEncoded : Int?
-  keyFramesEncoded : Int?
+  framesSent : Int32?
+  hugeFramesSent : Int32?
+  framesEncoded : Int32?
+  keyFramesEncoded : Int32?
   qpSum : Int64?
   psnrSum : JsValue?
   psnrMeasurements : Int64?
@@ -863,10 +1000,10 @@ pub(all) struct RTCOutboundRtpStreamStats {
   totalPacketSendDelay : Double?
   qualityLimitationReason : RTCQualityLimitationReason?
   qualityLimitationDurations : JsValue?
-  qualityLimitationResolutionChanges : Int?
-  nackCount : Int?
-  firCount : Int?
-  pliCount : Int?
+  qualityLimitationResolutionChanges : Int32?
+  nackCount : Int32?
+  firCount : Int32?
+  pliCount : Int32?
   encoderImplementation : String?
   powerEfficientEncoder : Bool?
   active : Bool?
@@ -874,6 +1011,7 @@ pub(all) struct RTCOutboundRtpStreamStats {
   packetsSentWithEct1 : Int64?
 }
 
+///|
 /// Create a new RTCOutboundRtpStreamStats with default values
 pub fn RTCOutboundRtpStreamStats::default() -> RTCOutboundRtpStreamStats {
   RTCOutboundRtpStreamStats::{
@@ -920,7 +1058,10 @@ pub fn RTCOutboundRtpStreamStats::default() -> RTCOutboundRtpStreamStats {
   }
 }
 
-extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(self : RTCOutboundRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(
+  self : RTCOutboundRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -964,12 +1105,18 @@ extern "js" fn RTCOutboundRtpStreamStats::to_js_ffi(self : RTCOutboundRtpStreamS
   #|   packetsSentWithEct1: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.packetsSentWithEct1)
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCOutboundRtpStreamStats::to_js(self : RTCOutboundRtpStreamStats) -> JsValue {
+pub fn RTCOutboundRtpStreamStats::to_js(
+  self : RTCOutboundRtpStreamStats,
+) -> JsValue {
   RTCOutboundRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCOutboundRtpStreamStats =
+///|
+extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCOutboundRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -1013,27 +1160,42 @@ extern "js" fn RTCOutboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCOut
   #|   packetsSentWithEct1: (v.packetsSentWithEct1 === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.packetsSentWithEct1))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCOutboundRtpStreamStats::from_js(value : JsValue) -> RTCOutboundRtpStreamStats {
+pub fn RTCOutboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCOutboundRtpStreamStats {
   RTCOutboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCOutboundRtpStreamStats::to_js_checked(self : RTCOutboundRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCOutboundRtpStreamStats::to_js_checked(
+  self : RTCOutboundRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCOutboundRtpStreamStats(convert : () -> RTCOutboundRtpStreamStats) -> Result[RTCOutboundRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCOutboundRtpStreamStats(
+  convert : () -> RTCOutboundRtpStreamStats,
+) -> Result[RTCOutboundRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCOutboundRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCOutboundRtpStreamStats, JsError] { try_dictionary_RTCOutboundRtpStreamStats(() => RTCOutboundRtpStreamStats::from_js(value)) }
+pub fn RTCOutboundRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCOutboundRtpStreamStats, JsError] {
+  try_dictionary_RTCOutboundRtpStreamStats(() => {
+    RTCOutboundRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCRemoteOutboundRtpStreamStats dictionary
 pub(all) struct RTCRemoteOutboundRtpStreamStats {
-  ssrc : Int
+  ssrc : Int32
   kind : String
   transportId : String?
   codecId : String?
@@ -1047,6 +1209,7 @@ pub(all) struct RTCRemoteOutboundRtpStreamStats {
   roundTripTimeMeasurements : Int64?
 }
 
+///|
 /// Create a new RTCRemoteOutboundRtpStreamStats with default values
 pub fn RTCRemoteOutboundRtpStreamStats::default() -> RTCRemoteOutboundRtpStreamStats {
   RTCRemoteOutboundRtpStreamStats::{
@@ -1065,7 +1228,10 @@ pub fn RTCRemoteOutboundRtpStreamStats::default() -> RTCRemoteOutboundRtpStreamS
   }
 }
 
-extern "js" fn RTCRemoteOutboundRtpStreamStats::to_js_ffi(self : RTCRemoteOutboundRtpStreamStats) -> JsValue =
+///|
+extern "js" fn RTCRemoteOutboundRtpStreamStats::to_js_ffi(
+  self : RTCRemoteOutboundRtpStreamStats,
+) -> JsValue =
   #| (self) => ({
   #|   ssrc: self.ssrc,
   #|   kind: self.kind,
@@ -1081,12 +1247,18 @@ extern "js" fn RTCRemoteOutboundRtpStreamStats::to_js_ffi(self : RTCRemoteOutbou
   #|   roundTripTimeMeasurements: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.roundTripTimeMeasurements)
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCRemoteOutboundRtpStreamStats::to_js(self : RTCRemoteOutboundRtpStreamStats) -> JsValue {
+pub fn RTCRemoteOutboundRtpStreamStats::to_js(
+  self : RTCRemoteOutboundRtpStreamStats,
+) -> JsValue {
   RTCRemoteOutboundRtpStreamStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCRemoteOutboundRtpStreamStats::from_js_ffi(value : JsValue) -> RTCRemoteOutboundRtpStreamStats =
+///|
+extern "js" fn RTCRemoteOutboundRtpStreamStats::from_js_ffi(
+  value : JsValue,
+) -> RTCRemoteOutboundRtpStreamStats =
   #| (v) => ({
   #|   ssrc: v.ssrc,
   #|   kind: v.kind,
@@ -1102,22 +1274,37 @@ extern "js" fn RTCRemoteOutboundRtpStreamStats::from_js_ffi(value : JsValue) -> 
   #|   roundTripTimeMeasurements: (v.roundTripTimeMeasurements === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.roundTripTimeMeasurements))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCRemoteOutboundRtpStreamStats::from_js(value : JsValue) -> RTCRemoteOutboundRtpStreamStats {
+pub fn RTCRemoteOutboundRtpStreamStats::from_js(
+  value : JsValue,
+) -> RTCRemoteOutboundRtpStreamStats {
   RTCRemoteOutboundRtpStreamStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCRemoteOutboundRtpStreamStats::to_js_checked(self : RTCRemoteOutboundRtpStreamStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCRemoteOutboundRtpStreamStats::to_js_checked(
+  self : RTCRemoteOutboundRtpStreamStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCRemoteOutboundRtpStreamStats(convert : () -> RTCRemoteOutboundRtpStreamStats) -> Result[RTCRemoteOutboundRtpStreamStats, JsError] =
+extern "js" fn try_dictionary_RTCRemoteOutboundRtpStreamStats(
+  convert : () -> RTCRemoteOutboundRtpStreamStats,
+) -> Result[RTCRemoteOutboundRtpStreamStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCRemoteOutboundRtpStreamStats::from_js_checked(value : JsValue) -> Result[RTCRemoteOutboundRtpStreamStats, JsError] { try_dictionary_RTCRemoteOutboundRtpStreamStats(() => RTCRemoteOutboundRtpStreamStats::from_js(value)) }
+pub fn RTCRemoteOutboundRtpStreamStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCRemoteOutboundRtpStreamStats, JsError] {
+  try_dictionary_RTCRemoteOutboundRtpStreamStats(() => {
+    RTCRemoteOutboundRtpStreamStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCMediaSourceStats dictionary
@@ -1126,31 +1313,37 @@ pub(all) struct RTCMediaSourceStats {
   kind : String
 }
 
+///|
 /// Create a new RTCMediaSourceStats with default values
 pub fn RTCMediaSourceStats::default() -> RTCMediaSourceStats {
-  RTCMediaSourceStats::{
-    trackIdentifier: "",
-    kind: "",
-  }
+  RTCMediaSourceStats::{ trackIdentifier: "", kind: "", }
 }
 
-extern "js" fn RTCMediaSourceStats::to_js_ffi(self : RTCMediaSourceStats) -> JsValue =
+///|
+extern "js" fn RTCMediaSourceStats::to_js_ffi(
+  self : RTCMediaSourceStats,
+) -> JsValue =
   #| (self) => ({
   #|   trackIdentifier: self.trackIdentifier,
   #|   kind: self.kind
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCMediaSourceStats::to_js(self : RTCMediaSourceStats) -> JsValue {
   RTCMediaSourceStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCMediaSourceStats::from_js_ffi(value : JsValue) -> RTCMediaSourceStats =
+///|
+extern "js" fn RTCMediaSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCMediaSourceStats =
   #| (v) => ({
   #|   trackIdentifier: v.trackIdentifier,
   #|   kind: v.kind
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCMediaSourceStats::from_js(value : JsValue) -> RTCMediaSourceStats {
   RTCMediaSourceStats::from_js_ffi(value)
@@ -1168,6 +1361,7 @@ pub(all) struct RTCAudioSourceStats {
   echoReturnLossEnhancement : Double?
 }
 
+///|
 /// Create a new RTCAudioSourceStats with default values
 pub fn RTCAudioSourceStats::default() -> RTCAudioSourceStats {
   RTCAudioSourceStats::{
@@ -1181,7 +1375,10 @@ pub fn RTCAudioSourceStats::default() -> RTCAudioSourceStats {
   }
 }
 
-extern "js" fn RTCAudioSourceStats::to_js_ffi(self : RTCAudioSourceStats) -> JsValue =
+///|
+extern "js" fn RTCAudioSourceStats::to_js_ffi(
+  self : RTCAudioSourceStats,
+) -> JsValue =
   #| (self) => ({
   #|   trackIdentifier: self.trackIdentifier,
   #|   kind: self.kind,
@@ -1192,12 +1389,16 @@ extern "js" fn RTCAudioSourceStats::to_js_ffi(self : RTCAudioSourceStats) -> JsV
   #|   echoReturnLossEnhancement: ((() => { const v = self.echoReturnLossEnhancement; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCAudioSourceStats::to_js(self : RTCAudioSourceStats) -> JsValue {
   RTCAudioSourceStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCAudioSourceStats::from_js_ffi(value : JsValue) -> RTCAudioSourceStats =
+///|
+extern "js" fn RTCAudioSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCAudioSourceStats =
   #| (v) => ({
   #|   trackIdentifier: v.trackIdentifier,
   #|   kind: v.kind,
@@ -1208,6 +1409,7 @@ extern "js" fn RTCAudioSourceStats::from_js_ffi(value : JsValue) -> RTCAudioSour
   #|   echoReturnLossEnhancement: (v.echoReturnLossEnhancement === undefined ? { $tag: 0 } : { $tag: 1, _0: v.echoReturnLossEnhancement })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCAudioSourceStats::from_js(value : JsValue) -> RTCAudioSourceStats {
   RTCAudioSourceStats::from_js_ffi(value)
@@ -1218,12 +1420,13 @@ pub fn RTCAudioSourceStats::from_js(value : JsValue) -> RTCAudioSourceStats {
 pub(all) struct RTCVideoSourceStats {
   trackIdentifier : String
   kind : String
-  width : Int?
-  height : Int?
-  frames : Int?
+  width : Int32?
+  height : Int32?
+  frames : Int32?
   framesPerSecond : Double?
 }
 
+///|
 /// Create a new RTCVideoSourceStats with default values
 pub fn RTCVideoSourceStats::default() -> RTCVideoSourceStats {
   RTCVideoSourceStats::{
@@ -1236,7 +1439,10 @@ pub fn RTCVideoSourceStats::default() -> RTCVideoSourceStats {
   }
 }
 
-extern "js" fn RTCVideoSourceStats::to_js_ffi(self : RTCVideoSourceStats) -> JsValue =
+///|
+extern "js" fn RTCVideoSourceStats::to_js_ffi(
+  self : RTCVideoSourceStats,
+) -> JsValue =
   #| (self) => ({
   #|   trackIdentifier: self.trackIdentifier,
   #|   kind: self.kind,
@@ -1246,12 +1452,16 @@ extern "js" fn RTCVideoSourceStats::to_js_ffi(self : RTCVideoSourceStats) -> JsV
   #|   framesPerSecond: ((() => { const v = self.framesPerSecond; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCVideoSourceStats::to_js(self : RTCVideoSourceStats) -> JsValue {
   RTCVideoSourceStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCVideoSourceStats::from_js_ffi(value : JsValue) -> RTCVideoSourceStats =
+///|
+extern "js" fn RTCVideoSourceStats::from_js_ffi(
+  value : JsValue,
+) -> RTCVideoSourceStats =
   #| (v) => ({
   #|   trackIdentifier: v.trackIdentifier,
   #|   kind: v.kind,
@@ -1261,6 +1471,7 @@ extern "js" fn RTCVideoSourceStats::from_js_ffi(value : JsValue) -> RTCVideoSour
   #|   framesPerSecond: (v.framesPerSecond === undefined ? { $tag: 0 } : { $tag: 1, _0: v.framesPerSecond })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCVideoSourceStats::from_js(value : JsValue) -> RTCVideoSourceStats {
   RTCVideoSourceStats::from_js_ffi(value)
@@ -1271,12 +1482,13 @@ pub fn RTCVideoSourceStats::from_js(value : JsValue) -> RTCVideoSourceStats {
 pub(all) struct RTCAudioPlayoutStats {
   kind : String
   synthesizedSamplesDuration : Double?
-  synthesizedSamplesEvents : Int?
+  synthesizedSamplesEvents : Int32?
   totalSamplesDuration : Double?
   totalPlayoutDelay : Double?
   totalSamplesCount : Int64?
 }
 
+///|
 /// Create a new RTCAudioPlayoutStats with default values
 pub fn RTCAudioPlayoutStats::default() -> RTCAudioPlayoutStats {
   RTCAudioPlayoutStats::{
@@ -1289,7 +1501,10 @@ pub fn RTCAudioPlayoutStats::default() -> RTCAudioPlayoutStats {
   }
 }
 
-extern "js" fn RTCAudioPlayoutStats::to_js_ffi(self : RTCAudioPlayoutStats) -> JsValue =
+///|
+extern "js" fn RTCAudioPlayoutStats::to_js_ffi(
+  self : RTCAudioPlayoutStats,
+) -> JsValue =
   #| (self) => ({
   #|   kind: self.kind,
   #|   synthesizedSamplesDuration: ((() => { const v = self.synthesizedSamplesDuration; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -1299,12 +1514,16 @@ extern "js" fn RTCAudioPlayoutStats::to_js_ffi(self : RTCAudioPlayoutStats) -> J
   #|   totalSamplesCount: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.totalSamplesCount)
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCAudioPlayoutStats::to_js(self : RTCAudioPlayoutStats) -> JsValue {
   RTCAudioPlayoutStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCAudioPlayoutStats::from_js_ffi(value : JsValue) -> RTCAudioPlayoutStats =
+///|
+extern "js" fn RTCAudioPlayoutStats::from_js_ffi(
+  value : JsValue,
+) -> RTCAudioPlayoutStats =
   #| (v) => ({
   #|   kind: v.kind,
   #|   synthesizedSamplesDuration: (v.synthesizedSamplesDuration === undefined ? { $tag: 0 } : { $tag: 1, _0: v.synthesizedSamplesDuration }),
@@ -1314,6 +1533,7 @@ extern "js" fn RTCAudioPlayoutStats::from_js_ffi(value : JsValue) -> RTCAudioPla
   #|   totalSamplesCount: (v.totalSamplesCount === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.totalSamplesCount))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCAudioPlayoutStats::from_js(value : JsValue) -> RTCAudioPlayoutStats {
   RTCAudioPlayoutStats::from_js_ffi(value)
@@ -1321,23 +1541,34 @@ pub fn RTCAudioPlayoutStats::from_js(value : JsValue) -> RTCAudioPlayoutStats {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCAudioPlayoutStats::to_js_checked(self : RTCAudioPlayoutStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCAudioPlayoutStats::to_js_checked(
+  self : RTCAudioPlayoutStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCAudioPlayoutStats(convert : () -> RTCAudioPlayoutStats) -> Result[RTCAudioPlayoutStats, JsError] =
+extern "js" fn try_dictionary_RTCAudioPlayoutStats(
+  convert : () -> RTCAudioPlayoutStats,
+) -> Result[RTCAudioPlayoutStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCAudioPlayoutStats::from_js_checked(value : JsValue) -> Result[RTCAudioPlayoutStats, JsError] { try_dictionary_RTCAudioPlayoutStats(() => RTCAudioPlayoutStats::from_js(value)) }
+pub fn RTCAudioPlayoutStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCAudioPlayoutStats, JsError] {
+  try_dictionary_RTCAudioPlayoutStats(() => RTCAudioPlayoutStats::from_js(value))
+}
 
 ///|
 /// RTCPeerConnectionStats dictionary
 pub(all) struct RTCPeerConnectionStats {
-  dataChannelsOpened : Int?
-  dataChannelsClosed : Int?
+  dataChannelsOpened : Int32?
+  dataChannelsClosed : Int32?
 }
 
+///|
 /// Create a new RTCPeerConnectionStats with default values
 pub fn RTCPeerConnectionStats::default() -> RTCPeerConnectionStats {
   RTCPeerConnectionStats::{
@@ -1346,25 +1577,35 @@ pub fn RTCPeerConnectionStats::default() -> RTCPeerConnectionStats {
   }
 }
 
-extern "js" fn RTCPeerConnectionStats::to_js_ffi(self : RTCPeerConnectionStats) -> JsValue =
+///|
+extern "js" fn RTCPeerConnectionStats::to_js_ffi(
+  self : RTCPeerConnectionStats,
+) -> JsValue =
   #| (self) => ({
   #|   dataChannelsOpened: self.dataChannelsOpened,
   #|   dataChannelsClosed: self.dataChannelsClosed
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCPeerConnectionStats::to_js(self : RTCPeerConnectionStats) -> JsValue {
   RTCPeerConnectionStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCPeerConnectionStats::from_js_ffi(value : JsValue) -> RTCPeerConnectionStats =
+///|
+extern "js" fn RTCPeerConnectionStats::from_js_ffi(
+  value : JsValue,
+) -> RTCPeerConnectionStats =
   #| (v) => ({
   #|   dataChannelsOpened: v.dataChannelsOpened,
   #|   dataChannelsClosed: v.dataChannelsClosed
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCPeerConnectionStats::from_js(value : JsValue) -> RTCPeerConnectionStats {
+pub fn RTCPeerConnectionStats::from_js(
+  value : JsValue,
+) -> RTCPeerConnectionStats {
   RTCPeerConnectionStats::from_js_ffi(value)
 }
 
@@ -1373,21 +1614,24 @@ pub fn RTCPeerConnectionStats::from_js(value : JsValue) -> RTCPeerConnectionStat
 pub(all) struct RTCDataChannelStats {
   label : String?
   protocol : String?
-  dataChannelIdentifier : Int?
+  dataChannelIdentifier : Int32?
   state : RTCDataChannelState
-  messagesSent : Int?
+  messagesSent : Int32?
   bytesSent : Int64?
-  messagesReceived : Int?
+  messagesReceived : Int32?
   bytesReceived : Int64?
 }
 
+///|
 /// Create a new RTCDataChannelStats
-pub fn RTCDataChannelStats::new(state~ : RTCDataChannelState) -> RTCDataChannelStats {
+pub fn RTCDataChannelStats::new(
+  state~ : RTCDataChannelState,
+) -> RTCDataChannelStats {
   RTCDataChannelStats::{
     label: None,
     protocol: None,
     dataChannelIdentifier: None,
-    state: state,
+    state,
     messagesSent: None,
     bytesSent: None,
     messagesReceived: None,
@@ -1395,7 +1639,10 @@ pub fn RTCDataChannelStats::new(state~ : RTCDataChannelState) -> RTCDataChannelS
   }
 }
 
-extern "js" fn RTCDataChannelStats::to_js_ffi(self : RTCDataChannelStats) -> JsValue =
+///|
+extern "js" fn RTCDataChannelStats::to_js_ffi(
+  self : RTCDataChannelStats,
+) -> JsValue =
   #| (self) => ({
   #|   label: self.label,
   #|   protocol: self.protocol,
@@ -1407,12 +1654,16 @@ extern "js" fn RTCDataChannelStats::to_js_ffi(self : RTCDataChannelStats) -> JsV
   #|   bytesReceived: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesReceived)
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCDataChannelStats::to_js(self : RTCDataChannelStats) -> JsValue {
   RTCDataChannelStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCDataChannelStats::from_js_ffi(value : JsValue) -> RTCDataChannelStats =
+///|
+extern "js" fn RTCDataChannelStats::from_js_ffi(
+  value : JsValue,
+) -> RTCDataChannelStats =
   #| (v) => ({
   #|   label: v.label,
   #|   protocol: v.protocol,
@@ -1424,6 +1675,7 @@ extern "js" fn RTCDataChannelStats::from_js_ffi(value : JsValue) -> RTCDataChann
   #|   bytesReceived: (v.bytesReceived === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesReceived))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCDataChannelStats::from_js(value : JsValue) -> RTCDataChannelStats {
   RTCDataChannelStats::from_js_ffi(value)
@@ -1431,15 +1683,25 @@ pub fn RTCDataChannelStats::from_js(value : JsValue) -> RTCDataChannelStats {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCDataChannelStats::to_js_checked(self : RTCDataChannelStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCDataChannelStats::to_js_checked(
+  self : RTCDataChannelStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCDataChannelStats(convert : () -> RTCDataChannelStats) -> Result[RTCDataChannelStats, JsError] =
+extern "js" fn try_dictionary_RTCDataChannelStats(
+  convert : () -> RTCDataChannelStats,
+) -> Result[RTCDataChannelStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCDataChannelStats::from_js_checked(value : JsValue) -> Result[RTCDataChannelStats, JsError] { try_dictionary_RTCDataChannelStats(() => RTCDataChannelStats::from_js(value)) }
+pub fn RTCDataChannelStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCDataChannelStats, JsError] {
+  try_dictionary_RTCDataChannelStats(() => RTCDataChannelStats::from_js(value))
+}
 
 ///|
 /// RTCTransportStats dictionary
@@ -1459,13 +1721,16 @@ pub(all) struct RTCTransportStats {
   dtlsCipher : String?
   dtlsRole : RTCDtlsRole?
   srtpCipher : String?
-  selectedCandidatePairChanges : Int?
-  ccfbMessagesSent : Int?
-  ccfbMessagesReceived : Int?
+  selectedCandidatePairChanges : Int32?
+  ccfbMessagesSent : Int32?
+  ccfbMessagesReceived : Int32?
 }
 
+///|
 /// Create a new RTCTransportStats
-pub fn RTCTransportStats::new(dtlsState~ : RTCDtlsTransportState) -> RTCTransportStats {
+pub fn RTCTransportStats::new(
+  dtlsState~ : RTCDtlsTransportState,
+) -> RTCTransportStats {
   RTCTransportStats::{
     packetsSent: None,
     packetsReceived: None,
@@ -1473,7 +1738,7 @@ pub fn RTCTransportStats::new(dtlsState~ : RTCDtlsTransportState) -> RTCTranspor
     bytesReceived: None,
     iceRole: None,
     iceLocalUsernameFragment: None,
-    dtlsState: dtlsState,
+    dtlsState,
     iceState: None,
     selectedCandidatePairId: None,
     localCertificateId: None,
@@ -1488,7 +1753,10 @@ pub fn RTCTransportStats::new(dtlsState~ : RTCDtlsTransportState) -> RTCTranspor
   }
 }
 
-extern "js" fn RTCTransportStats::to_js_ffi(self : RTCTransportStats) -> JsValue =
+///|
+extern "js" fn RTCTransportStats::to_js_ffi(
+  self : RTCTransportStats,
+) -> JsValue =
   #| (self) => ({
   #|   packetsSent: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.packetsSent),
   #|   packetsReceived: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.packetsReceived),
@@ -1510,12 +1778,16 @@ extern "js" fn RTCTransportStats::to_js_ffi(self : RTCTransportStats) -> JsValue
   #|   ccfbMessagesReceived: self.ccfbMessagesReceived
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCTransportStats::to_js(self : RTCTransportStats) -> JsValue {
   RTCTransportStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCTransportStats::from_js_ffi(value : JsValue) -> RTCTransportStats =
+///|
+extern "js" fn RTCTransportStats::from_js_ffi(
+  value : JsValue,
+) -> RTCTransportStats =
   #| (v) => ({
   #|   packetsSent: (v.packetsSent === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.packetsSent)),
   #|   packetsReceived: (v.packetsReceived === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.packetsReceived)),
@@ -1537,6 +1809,7 @@ extern "js" fn RTCTransportStats::from_js_ffi(value : JsValue) -> RTCTransportSt
   #|   ccfbMessagesReceived: v.ccfbMessagesReceived
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCTransportStats::from_js(value : JsValue) -> RTCTransportStats {
   RTCTransportStats::from_js_ffi(value)
@@ -1544,42 +1817,55 @@ pub fn RTCTransportStats::from_js(value : JsValue) -> RTCTransportStats {
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCTransportStats::to_js_checked(self : RTCTransportStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCTransportStats::to_js_checked(
+  self : RTCTransportStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCTransportStats(convert : () -> RTCTransportStats) -> Result[RTCTransportStats, JsError] =
+extern "js" fn try_dictionary_RTCTransportStats(
+  convert : () -> RTCTransportStats,
+) -> Result[RTCTransportStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCTransportStats::from_js_checked(value : JsValue) -> Result[RTCTransportStats, JsError] { try_dictionary_RTCTransportStats(() => RTCTransportStats::from_js(value)) }
+pub fn RTCTransportStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCTransportStats, JsError] {
+  try_dictionary_RTCTransportStats(() => RTCTransportStats::from_js(value))
+}
 
 ///|
 /// RTCIceCandidateStats dictionary
 pub(all) struct RTCIceCandidateStats {
   transportId : String
   address : Nullable[String]
-  port : Int?
+  port : Int32?
   protocol : String?
   candidateType : RTCIceCandidateType
-  priority : Int?
+  priority : Int32?
   url : String?
   relayProtocol : RTCIceServerTransportProtocol?
   foundation : String?
   relatedAddress : String?
-  relatedPort : Int?
+  relatedPort : Int32?
   usernameFragment : String?
   tcpType : RTCIceTcpCandidateType?
 }
 
+///|
 /// Create a new RTCIceCandidateStats
-pub fn RTCIceCandidateStats::new(candidateType~ : RTCIceCandidateType) -> RTCIceCandidateStats {
+pub fn RTCIceCandidateStats::new(
+  candidateType~ : RTCIceCandidateType,
+) -> RTCIceCandidateStats {
   RTCIceCandidateStats::{
     transportId: "",
     address: Nullable::Undefined,
     port: None,
     protocol: None,
-    candidateType: candidateType,
+    candidateType,
     priority: None,
     url: None,
     relayProtocol: None,
@@ -1591,7 +1877,10 @@ pub fn RTCIceCandidateStats::new(candidateType~ : RTCIceCandidateType) -> RTCIce
   }
 }
 
-extern "js" fn RTCIceCandidateStats::to_js_ffi(self : RTCIceCandidateStats) -> JsValue =
+///|
+extern "js" fn RTCIceCandidateStats::to_js_ffi(
+  self : RTCIceCandidateStats,
+) -> JsValue =
   #| (self) => ({
   #|   transportId: self.transportId,
   #|   address: ((() => { const v = self.address; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -1608,12 +1897,16 @@ extern "js" fn RTCIceCandidateStats::to_js_ffi(self : RTCIceCandidateStats) -> J
   #|   tcpType: ((() => { const v = self.tcpType; if (v === undefined) return undefined; return ['active', 'passive', 'so'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCIceCandidateStats::to_js(self : RTCIceCandidateStats) -> JsValue {
   RTCIceCandidateStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCIceCandidateStats::from_js_ffi(value : JsValue) -> RTCIceCandidateStats =
+///|
+extern "js" fn RTCIceCandidateStats::from_js_ffi(
+  value : JsValue,
+) -> RTCIceCandidateStats =
   #| (v) => ({
   #|   transportId: v.transportId,
   #|   address: (v.address === undefined ? { $tag: 0 } : v.address === null ? { $tag: 1 } : { $tag: 2, _0: v.address }),
@@ -1630,6 +1923,7 @@ extern "js" fn RTCIceCandidateStats::from_js_ffi(value : JsValue) -> RTCIceCandi
   #|   tcpType: (v.tcpType === undefined ? undefined : ['active', 'passive', 'so'].indexOf(v.tcpType))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCIceCandidateStats::from_js(value : JsValue) -> RTCIceCandidateStats {
   RTCIceCandidateStats::from_js_ffi(value)
@@ -1658,17 +1952,20 @@ pub(all) struct RTCIceCandidatePairStats {
   responsesReceived : Int64?
   responsesSent : Int64?
   consentRequestsSent : Int64?
-  packetsDiscardedOnSend : Int?
+  packetsDiscardedOnSend : Int32?
   bytesDiscardedOnSend : Int64?
 }
 
+///|
 /// Create a new RTCIceCandidatePairStats
-pub fn RTCIceCandidatePairStats::new(state~ : RTCStatsIceCandidatePairState) -> RTCIceCandidatePairStats {
+pub fn RTCIceCandidatePairStats::new(
+  state~ : RTCStatsIceCandidatePairState,
+) -> RTCIceCandidatePairStats {
   RTCIceCandidatePairStats::{
     transportId: "",
     localCandidateId: "",
     remoteCandidateId: "",
-    state: state,
+    state,
     nominated: None,
     packetsSent: None,
     packetsReceived: None,
@@ -1690,7 +1987,10 @@ pub fn RTCIceCandidatePairStats::new(state~ : RTCStatsIceCandidatePairState) -> 
   }
 }
 
-extern "js" fn RTCIceCandidatePairStats::to_js_ffi(self : RTCIceCandidatePairStats) -> JsValue =
+///|
+extern "js" fn RTCIceCandidatePairStats::to_js_ffi(
+  self : RTCIceCandidatePairStats,
+) -> JsValue =
   #| (self) => ({
   #|   transportId: self.transportId,
   #|   localCandidateId: self.localCandidateId,
@@ -1716,12 +2016,18 @@ extern "js" fn RTCIceCandidatePairStats::to_js_ffi(self : RTCIceCandidatePairSta
   #|   bytesDiscardedOnSend: ((value) => value === undefined ? undefined : ((value) => { const number = Number(BigInt.asUintN(64, value)); if (!Number.isSafeInteger(number)) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return number; })(value))(self.bytesDiscardedOnSend)
   #| })
 
+///|
 /// Convert to JsValue
-pub fn RTCIceCandidatePairStats::to_js(self : RTCIceCandidatePairStats) -> JsValue {
+pub fn RTCIceCandidatePairStats::to_js(
+  self : RTCIceCandidatePairStats,
+) -> JsValue {
   RTCIceCandidatePairStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCIceCandidatePairStats::from_js_ffi(value : JsValue) -> RTCIceCandidatePairStats =
+///|
+extern "js" fn RTCIceCandidatePairStats::from_js_ffi(
+  value : JsValue,
+) -> RTCIceCandidatePairStats =
   #| (v) => ({
   #|   transportId: v.transportId,
   #|   localCandidateId: v.localCandidateId,
@@ -1747,22 +2053,37 @@ extern "js" fn RTCIceCandidatePairStats::from_js_ffi(value : JsValue) -> RTCIceC
   #|   bytesDiscardedOnSend: (v.bytesDiscardedOnSend === undefined ? undefined : ((value) => { if (typeof value !== 'number') throw new TypeError('Dictionary integer must be a Number'); if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('Dictionary integer exceeds the exact JavaScript Number range'); return BigInt.asUintN(64, BigInt(value)); })(v.bytesDiscardedOnSend))
   #| })
 
+///|
 /// Convert from JsValue
-pub fn RTCIceCandidatePairStats::from_js(value : JsValue) -> RTCIceCandidatePairStats {
+pub fn RTCIceCandidatePairStats::from_js(
+  value : JsValue,
+) -> RTCIceCandidatePairStats {
   RTCIceCandidatePairStats::from_js_ffi(value)
 }
 
 ///|
 /// Catch dictionary conversion errors, including unsafe integer ranges.
-pub fn RTCIceCandidatePairStats::to_js_checked(self : RTCIceCandidatePairStats) -> Result[JsValue, JsError] { try_dictionary_conversion(() => self.to_js()) }
+pub fn RTCIceCandidatePairStats::to_js_checked(
+  self : RTCIceCandidatePairStats,
+) -> Result[JsValue, JsError] {
+  try_dictionary_conversion(() => self.to_js())
+}
 
 ///|
-extern "js" fn try_dictionary_RTCIceCandidatePairStats(convert : () -> RTCIceCandidatePairStats) -> Result[RTCIceCandidatePairStats, JsError] =
+extern "js" fn try_dictionary_RTCIceCandidatePairStats(
+  convert : () -> RTCIceCandidatePairStats,
+) -> Result[RTCIceCandidatePairStats, JsError] =
   #| convert => { try { return { $tag: 1, _0: convert() }; } catch (error) { return { $tag: 0, _0: error }; } }
 
 ///|
 /// Catch invalid host fields, including unsafe integer ranges.
-pub fn RTCIceCandidatePairStats::from_js_checked(value : JsValue) -> Result[RTCIceCandidatePairStats, JsError] { try_dictionary_RTCIceCandidatePairStats(() => RTCIceCandidatePairStats::from_js(value)) }
+pub fn RTCIceCandidatePairStats::from_js_checked(
+  value : JsValue,
+) -> Result[RTCIceCandidatePairStats, JsError] {
+  try_dictionary_RTCIceCandidatePairStats(() => {
+    RTCIceCandidatePairStats::from_js(value)
+  })
+}
 
 ///|
 /// RTCCertificateStats dictionary
@@ -1773,6 +2094,7 @@ pub(all) struct RTCCertificateStats {
   issuerCertificateId : String?
 }
 
+///|
 /// Create a new RTCCertificateStats with default values
 pub fn RTCCertificateStats::default() -> RTCCertificateStats {
   RTCCertificateStats::{
@@ -1783,7 +2105,10 @@ pub fn RTCCertificateStats::default() -> RTCCertificateStats {
   }
 }
 
-extern "js" fn RTCCertificateStats::to_js_ffi(self : RTCCertificateStats) -> JsValue =
+///|
+extern "js" fn RTCCertificateStats::to_js_ffi(
+  self : RTCCertificateStats,
+) -> JsValue =
   #| (self) => ({
   #|   fingerprint: self.fingerprint,
   #|   fingerprintAlgorithm: self.fingerprintAlgorithm,
@@ -1791,12 +2116,16 @@ extern "js" fn RTCCertificateStats::to_js_ffi(self : RTCCertificateStats) -> JsV
   #|   issuerCertificateId: self.issuerCertificateId
   #| })
 
+///|
 /// Convert to JsValue
 pub fn RTCCertificateStats::to_js(self : RTCCertificateStats) -> JsValue {
   RTCCertificateStats::to_js_ffi(self)
 }
 
-extern "js" fn RTCCertificateStats::from_js_ffi(value : JsValue) -> RTCCertificateStats =
+///|
+extern "js" fn RTCCertificateStats::from_js_ffi(
+  value : JsValue,
+) -> RTCCertificateStats =
   #| (v) => ({
   #|   fingerprint: v.fingerprint,
   #|   fingerprintAlgorithm: v.fingerprintAlgorithm,
@@ -1804,6 +2133,7 @@ extern "js" fn RTCCertificateStats::from_js_ffi(value : JsValue) -> RTCCertifica
   #|   issuerCertificateId: v.issuerCertificateId
   #| })
 
+///|
 /// Convert from JsValue
 pub fn RTCCertificateStats::from_js(value : JsValue) -> RTCCertificateStats {
   RTCCertificateStats::from_js_ffi(value)

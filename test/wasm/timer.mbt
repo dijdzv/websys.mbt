@@ -1,5 +1,5 @@
 ///|
-let timer_calls : Ref[Int] = Ref(0)
+let timer_calls : Ref[Int32] = Ref(0)
 
 ///|
 pub fn timer_start(window : @bindings.Window) -> Unit {
@@ -14,6 +14,6 @@ pub fn timer_start(window : @bindings.Window) -> Unit {
 }
 
 ///|
-pub fn timer_count() -> Int {
+pub fn timer_count() -> Int32 {
   timer_calls.val
 }

@@ -37,6 +37,10 @@ const server = createServer(async (req, res) => {
     const path = resolve(root, "." + (pathname === "/" ? "/index.html" : decodeURIComponent(pathname)));
     if (!path.startsWith(resolve(root) + sep)) throw new Error("Outside test root");
     const content = await readFile(path);
+    if (extname(path) === '.html') {
+      res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+      res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    }
     const types = { ".html": "text/html", ".js": "application/javascript", ".mjs": "application/javascript" };
     res.writeHead(200, { "Content-Type": types[extname(path)] || "application/octet-stream" });
     res.end(content);

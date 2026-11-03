@@ -3,16 +3,21 @@
 
 ///|
 /// AnimationPlayState enum
+#derive(Eq, Debug)
 pub(all) enum AnimationPlayState {
   Idle
   Running
   Paused
   Finished
-} derive(Eq, Debug)
+}
 
+///|
 pub extend AnimationPlayState with Eq::{equal, not_equal}
+
+///|
 pub extend AnimationPlayState with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn AnimationPlayState::to_string(self : AnimationPlayState) -> String {
   match self {
@@ -23,6 +28,7 @@ pub fn AnimationPlayState::to_string(self : AnimationPlayState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn AnimationPlayState::from_string(s : String) -> AnimationPlayState? {
   match s {
@@ -36,15 +42,20 @@ pub fn AnimationPlayState::from_string(s : String) -> AnimationPlayState? {
 
 ///|
 /// AnimationReplaceState enum
+#derive(Eq, Debug)
 pub(all) enum AnimationReplaceState {
   Active
   Removed
   Persisted
-} derive(Eq, Debug)
+}
 
+///|
 pub extend AnimationReplaceState with Eq::{equal, not_equal}
+
+///|
 pub extend AnimationReplaceState with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn AnimationReplaceState::to_string(self : AnimationReplaceState) -> String {
   match self {
@@ -54,6 +65,7 @@ pub fn AnimationReplaceState::to_string(self : AnimationReplaceState) -> String 
   }
 }
 
+///|
 /// Parse from string value
 pub fn AnimationReplaceState::from_string(s : String) -> AnimationReplaceState? {
   match s {
@@ -66,17 +78,22 @@ pub fn AnimationReplaceState::from_string(s : String) -> AnimationReplaceState? 
 
 ///|
 /// FillMode enum
+#derive(Eq, Debug)
 pub(all) enum FillMode {
   None
   Forwards
   Backwards
   Both
   Auto
-} derive(Eq, Debug)
+}
 
+///|
 pub extend FillMode with Eq::{equal, not_equal}
+
+///|
 pub extend FillMode with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn FillMode::to_string(self : FillMode) -> String {
   match self {
@@ -88,6 +105,7 @@ pub fn FillMode::to_string(self : FillMode) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn FillMode::from_string(s : String) -> FillMode? {
   match s {
@@ -102,16 +120,21 @@ pub fn FillMode::from_string(s : String) -> FillMode? {
 
 ///|
 /// PlaybackDirection enum
+#derive(Eq, Debug)
 pub(all) enum PlaybackDirection {
   Normal
   Reverse
   Alternate
   AlternateReverse
-} derive(Eq, Debug)
+}
 
+///|
 pub extend PlaybackDirection with Eq::{equal, not_equal}
+
+///|
 pub extend PlaybackDirection with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn PlaybackDirection::to_string(self : PlaybackDirection) -> String {
   match self {
@@ -122,6 +145,7 @@ pub fn PlaybackDirection::to_string(self : PlaybackDirection) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn PlaybackDirection::from_string(s : String) -> PlaybackDirection? {
   match s {
@@ -135,15 +159,20 @@ pub fn PlaybackDirection::from_string(s : String) -> PlaybackDirection? {
 
 ///|
 /// CompositeOperation enum
+#derive(Eq, Debug)
 pub(all) enum CompositeOperation {
   Replace
   Add
   Accumulate
-} derive(Eq, Debug)
+}
 
+///|
 pub extend CompositeOperation with Eq::{equal, not_equal}
+
+///|
 pub extend CompositeOperation with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn CompositeOperation::to_string(self : CompositeOperation) -> String {
   match self {
@@ -153,6 +182,7 @@ pub fn CompositeOperation::to_string(self : CompositeOperation) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn CompositeOperation::from_string(s : String) -> CompositeOperation? {
   match s {
@@ -165,18 +195,25 @@ pub fn CompositeOperation::from_string(s : String) -> CompositeOperation? {
 
 ///|
 /// CompositeOperationOrAuto enum
+#derive(Eq, Debug)
 pub(all) enum CompositeOperationOrAuto {
   Replace
   Add
   Accumulate
   Auto
-} derive(Eq, Debug)
+}
 
+///|
 pub extend CompositeOperationOrAuto with Eq::{equal, not_equal}
+
+///|
 pub extend CompositeOperationOrAuto with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn CompositeOperationOrAuto::to_string(self : CompositeOperationOrAuto) -> String {
+pub fn CompositeOperationOrAuto::to_string(
+  self : CompositeOperationOrAuto,
+) -> String {
   match self {
     CompositeOperationOrAuto::Replace => "replace"
     CompositeOperationOrAuto::Add => "add"
@@ -185,8 +222,11 @@ pub fn CompositeOperationOrAuto::to_string(self : CompositeOperationOrAuto) -> S
   }
 }
 
+///|
 /// Parse from string value
-pub fn CompositeOperationOrAuto::from_string(s : String) -> CompositeOperationOrAuto? {
+pub fn CompositeOperationOrAuto::from_string(
+  s : String,
+) -> CompositeOperationOrAuto? {
   match s {
     "replace" => Some(CompositeOperationOrAuto::Replace)
     "add" => Some(CompositeOperationOrAuto::Add)
@@ -202,30 +242,41 @@ pub(all) struct DocumentTimelineOptions {
   originTime : DOMHighResTimeStamp?
 }
 
+///|
 /// Create a new DocumentTimelineOptions with default values
 pub fn DocumentTimelineOptions::default() -> DocumentTimelineOptions {
-  DocumentTimelineOptions::{
-    originTime: None,
-  }
+  DocumentTimelineOptions::{ originTime: None, }
 }
 
-extern "js" fn DocumentTimelineOptions::to_js_ffi(self : DocumentTimelineOptions) -> JsValue =
+///|
+extern "js" fn DocumentTimelineOptions::to_js_ffi(
+  self : DocumentTimelineOptions,
+) -> JsValue =
   #| (self) => ({
   #|   originTime: ((() => { const v = self.originTime; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn DocumentTimelineOptions::to_js(self : DocumentTimelineOptions) -> JsValue {
+pub fn DocumentTimelineOptions::to_js(
+  self : DocumentTimelineOptions,
+) -> JsValue {
   DocumentTimelineOptions::to_js_ffi(self)
 }
 
-extern "js" fn DocumentTimelineOptions::from_js_ffi(value : JsValue) -> DocumentTimelineOptions =
+///|
+extern "js" fn DocumentTimelineOptions::from_js_ffi(
+  value : JsValue,
+) -> DocumentTimelineOptions =
   #| (v) => ({
   #|   originTime: (v.originTime === undefined ? { $tag: 0 } : { $tag: 1, _0: v.originTime })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn DocumentTimelineOptions::from_js(value : JsValue) -> DocumentTimelineOptions {
+pub fn DocumentTimelineOptions::from_js(
+  value : JsValue,
+) -> DocumentTimelineOptions {
   DocumentTimelineOptions::from_js_ffi(value)
 }
 
@@ -238,6 +289,7 @@ pub(all) struct BaseComputedKeyframe {
   composite : CompositeOperationOrAuto?
 }
 
+///|
 /// Create a new BaseComputedKeyframe with default values
 pub fn BaseComputedKeyframe::default() -> BaseComputedKeyframe {
   BaseComputedKeyframe::{
@@ -248,7 +300,10 @@ pub fn BaseComputedKeyframe::default() -> BaseComputedKeyframe {
   }
 }
 
-extern "js" fn BaseComputedKeyframe::to_js_ffi(self : BaseComputedKeyframe) -> JsValue =
+///|
+extern "js" fn BaseComputedKeyframe::to_js_ffi(
+  self : BaseComputedKeyframe,
+) -> JsValue =
   #| (self) => ({
   #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
   #|   computedOffset: ((() => { const v = self.computedOffset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
@@ -256,12 +311,16 @@ extern "js" fn BaseComputedKeyframe::to_js_ffi(self : BaseComputedKeyframe) -> J
   #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn BaseComputedKeyframe::to_js(self : BaseComputedKeyframe) -> JsValue {
   BaseComputedKeyframe::to_js_ffi(self)
 }
 
-extern "js" fn BaseComputedKeyframe::from_js_ffi(value : JsValue) -> BaseComputedKeyframe =
+///|
+extern "js" fn BaseComputedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BaseComputedKeyframe =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
   #|   computedOffset: (v.computedOffset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.computedOffset }),
@@ -269,6 +328,7 @@ extern "js" fn BaseComputedKeyframe::from_js_ffi(value : JsValue) -> BaseCompute
   #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn BaseComputedKeyframe::from_js(value : JsValue) -> BaseComputedKeyframe {
   BaseComputedKeyframe::from_js_ffi(value)
@@ -282,36 +342,45 @@ pub(all) struct BasePropertyIndexedKeyframe {
   composite : CompositeOperationOrAutoOrArrayOfCompositeOperationOrAuto?
 }
 
+///|
 /// Create a new BasePropertyIndexedKeyframe with default values
 pub fn BasePropertyIndexedKeyframe::default() -> BasePropertyIndexedKeyframe {
-  BasePropertyIndexedKeyframe::{
-    offset: None,
-    easing: None,
-    composite: None,
-  }
+  BasePropertyIndexedKeyframe::{ offset: None, easing: None, composite: None, }
 }
 
-extern "js" fn BasePropertyIndexedKeyframe::to_js_ffi(self : BasePropertyIndexedKeyframe) -> JsValue =
+///|
+extern "js" fn BasePropertyIndexedKeyframe::to_js_ffi(
+  self : BasePropertyIndexedKeyframe,
+) -> JsValue =
   #| (self) => ({
   #|   offset: ((() => { const v = self.offset; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   easing: ((() => { const v = self.easing; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })()),
   #|   composite: ((() => { const v = self.composite; if (v === undefined || v.$tag !== 1) return undefined; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
-pub fn BasePropertyIndexedKeyframe::to_js(self : BasePropertyIndexedKeyframe) -> JsValue {
+pub fn BasePropertyIndexedKeyframe::to_js(
+  self : BasePropertyIndexedKeyframe,
+) -> JsValue {
   BasePropertyIndexedKeyframe::to_js_ffi(self)
 }
 
-extern "js" fn BasePropertyIndexedKeyframe::from_js_ffi(value : JsValue) -> BasePropertyIndexedKeyframe =
+///|
+extern "js" fn BasePropertyIndexedKeyframe::from_js_ffi(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? { $tag: 0 } : { $tag: 1, _0: v.offset }),
   #|   easing: (v.easing === undefined ? { $tag: 0 } : { $tag: 1, _0: v.easing }),
   #|   composite: (v.composite === undefined ? { $tag: 0 } : { $tag: 1, _0: v.composite })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn BasePropertyIndexedKeyframe::from_js(value : JsValue) -> BasePropertyIndexedKeyframe {
+pub fn BasePropertyIndexedKeyframe::from_js(
+  value : JsValue,
+) -> BasePropertyIndexedKeyframe {
   BasePropertyIndexedKeyframe::from_js_ffi(value)
 }
 
@@ -323,15 +392,13 @@ pub(all) struct BaseKeyframe {
   composite : CompositeOperationOrAuto?
 }
 
+///|
 /// Create a new BaseKeyframe with default values
 pub fn BaseKeyframe::default() -> BaseKeyframe {
-  BaseKeyframe::{
-    offset: Nullable::Undefined,
-    easing: None,
-    composite: None,
-  }
+  BaseKeyframe::{ offset: Nullable::Undefined, easing: None, composite: None, }
 }
 
+///|
 extern "js" fn BaseKeyframe::to_js_ffi(self : BaseKeyframe) -> JsValue =
   #| (self) => ({
   #|   offset: ((() => { const v = self.offset; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })()),
@@ -339,11 +406,13 @@ extern "js" fn BaseKeyframe::to_js_ffi(self : BaseKeyframe) -> JsValue =
   #|   composite: ((() => { const v = self.composite; if (v === undefined) return undefined; return ['replace', 'add', 'accumulate', 'auto'][v]; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn BaseKeyframe::to_js(self : BaseKeyframe) -> JsValue {
   BaseKeyframe::to_js_ffi(self)
 }
 
+///|
 extern "js" fn BaseKeyframe::from_js_ffi(value : JsValue) -> BaseKeyframe =
   #| (v) => ({
   #|   offset: (v.offset === undefined ? { $tag: 0 } : v.offset === null ? { $tag: 1 } : { $tag: 2, _0: v.offset }),
@@ -351,6 +420,7 @@ extern "js" fn BaseKeyframe::from_js_ffi(value : JsValue) -> BaseKeyframe =
   #|   composite: (v.composite === undefined ? undefined : ['replace', 'add', 'accumulate', 'auto'].indexOf(v.composite))
   #| })
 
+///|
 /// Convert from JsValue
 pub fn BaseKeyframe::from_js(value : JsValue) -> BaseKeyframe {
   BaseKeyframe::from_js_ffi(value)
@@ -363,31 +433,37 @@ pub(all) struct GetAnimationsOptions {
   pseudoElement : Nullable[String]
 }
 
+///|
 /// Create a new GetAnimationsOptions with default values
 pub fn GetAnimationsOptions::default() -> GetAnimationsOptions {
-  GetAnimationsOptions::{
-    subtree: None,
-    pseudoElement: Nullable::Undefined,
-  }
+  GetAnimationsOptions::{ subtree: None, pseudoElement: Nullable::Undefined, }
 }
 
-extern "js" fn GetAnimationsOptions::to_js_ffi(self : GetAnimationsOptions) -> JsValue =
+///|
+extern "js" fn GetAnimationsOptions::to_js_ffi(
+  self : GetAnimationsOptions,
+) -> JsValue =
   #| (self) => ({
   #|   subtree: (self.subtree === -1 ? undefined : self.subtree),
   #|   pseudoElement: ((() => { const v = self.pseudoElement; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn GetAnimationsOptions::to_js(self : GetAnimationsOptions) -> JsValue {
   GetAnimationsOptions::to_js_ffi(self)
 }
 
-extern "js" fn GetAnimationsOptions::from_js_ffi(value : JsValue) -> GetAnimationsOptions =
+///|
+extern "js" fn GetAnimationsOptions::from_js_ffi(
+  value : JsValue,
+) -> GetAnimationsOptions =
   #| (v) => ({
   #|   subtree: (v.subtree === undefined ? -1 : v.subtree),
   #|   pseudoElement: (v.pseudoElement === undefined ? { $tag: 0 } : v.pseudoElement === null ? { $tag: 1 } : { $tag: 2, _0: v.pseudoElement })
   #| })
 
+///|
 /// Convert from JsValue
 pub fn GetAnimationsOptions::from_js(value : JsValue) -> GetAnimationsOptions {
   GetAnimationsOptions::from_js_ffi(value)
@@ -397,82 +473,147 @@ pub fn GetAnimationsOptions::from_js(value : JsValue) -> GetAnimationsOptions {
 /// AnimationTimeline interface
 pub type AnimationTimeline
 
-pub extern "js" fn AnimationTimeline::to_js_value(self : AnimationTimeline) -> JsValue =
+///|
+pub extern "js" fn AnimationTimeline::to_js_value(
+  self : AnimationTimeline,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to AnimationTimeline (unchecked)
-pub extern "js" fn AnimationTimeline::from_js_value(v : JsValue) -> AnimationTimeline =
+pub extern "js" fn AnimationTimeline::from_js_value(
+  v : JsValue,
+) -> AnimationTimeline =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to AnimationTimeline (checked with instanceof)
-pub extern "js" fn AnimationTimeline::from_js_value_opt(v : JsValue) -> AnimationTimeline? =
+pub extern "js" fn AnimationTimeline::from_js_value_opt(
+  v : JsValue,
+) -> AnimationTimeline? =
   #| (v) => (v instanceof AnimationTimeline) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to AnimationTimeline (checked with instanceof)
-pub extern "js" fn JsValue::as_animation_timeline(self : JsValue) -> AnimationTimeline? =
+pub extern "js" fn JsValue::as_animation_timeline(
+  self : JsValue,
+) -> AnimationTimeline? =
   #| (self) => (self instanceof AnimationTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to AnimationTimeline (unchecked)
-pub extern "js" fn JsValue::to_animation_timeline(self : JsValue) -> AnimationTimeline =
+pub extern "js" fn JsValue::to_animation_timeline(
+  self : JsValue,
+) -> AnimationTimeline =
   #| (self) => self
 
-pub extern "js" fn AnimationTimeline::as_pointer_timeline(self : AnimationTimeline) -> PointerTimeline? =
+///|
+pub extern "js" fn AnimationTimeline::as_pointer_timeline(
+  self : AnimationTimeline,
+) -> PointerTimeline? =
   #| (self) => (self instanceof PointerTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn AnimationTimeline::as_scroll_timeline(self : AnimationTimeline) -> ScrollTimeline? =
+///|
+pub extern "js" fn AnimationTimeline::as_scroll_timeline(
+  self : AnimationTimeline,
+) -> ScrollTimeline? =
   #| (self) => (self instanceof ScrollTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn AnimationTimeline::as_view_timeline(self : AnimationTimeline) -> ViewTimeline? =
+///|
+pub extern "js" fn AnimationTimeline::as_view_timeline(
+  self : AnimationTimeline,
+) -> ViewTimeline? =
   #| (self) => (self instanceof ViewTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn AnimationTimeline::as_document_timeline(self : AnimationTimeline) -> DocumentTimeline? =
+///|
+pub extern "js" fn AnimationTimeline::as_document_timeline(
+  self : AnimationTimeline,
+) -> DocumentTimeline? =
   #| (self) => (self instanceof DocumentTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn AnimationTimeline::get_current_time(self : AnimationTimeline) -> CSSNumberish? =
+///|
+pub extern "js" fn AnimationTimeline::get_current_time(
+  self : AnimationTimeline,
+) -> CSSNumberish? =
   #| (self) => (() => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn AnimationTimeline::get_duration(self : AnimationTimeline) -> CSSNumberish? =
+///|
+pub extern "js" fn AnimationTimeline::get_duration(
+  self : AnimationTimeline,
+) -> CSSNumberish? =
   #| (self) => (() => { const v = self.duration; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn AnimationTimeline::play(self : AnimationTimeline) -> Animation =
+///|
+pub extern "js" fn AnimationTimeline::play(
+  self : AnimationTimeline,
+) -> Animation =
   #| (self) => self.play()
 
-pub extern "js" fn AnimationTimeline::play_with_effect(self : AnimationTimeline, effect : AnimationEffect?) -> Animation =
+///|
+pub extern "js" fn AnimationTimeline::play_with_effect(
+  self : AnimationTimeline,
+  effect : AnimationEffect?,
+) -> Animation =
   #| (self, effect) => self.play((effect.$tag === 1 ? effect._0 : null))
 
 ///|
 /// DocumentTimeline interface
 pub type DocumentTimeline
 
-pub extern "js" fn DocumentTimeline::to_js_value(self : DocumentTimeline) -> JsValue =
+///|
+pub extern "js" fn DocumentTimeline::to_js_value(
+  self : DocumentTimeline,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to DocumentTimeline (unchecked)
-pub extern "js" fn DocumentTimeline::from_js_value(v : JsValue) -> DocumentTimeline =
+pub extern "js" fn DocumentTimeline::from_js_value(
+  v : JsValue,
+) -> DocumentTimeline =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to DocumentTimeline (checked with instanceof)
-pub extern "js" fn DocumentTimeline::from_js_value_opt(v : JsValue) -> DocumentTimeline? =
+pub extern "js" fn DocumentTimeline::from_js_value_opt(
+  v : JsValue,
+) -> DocumentTimeline? =
   #| (v) => (v instanceof DocumentTimeline) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to DocumentTimeline (checked with instanceof)
-pub extern "js" fn JsValue::as_document_timeline(self : JsValue) -> DocumentTimeline? =
+pub extern "js" fn JsValue::as_document_timeline(
+  self : JsValue,
+) -> DocumentTimeline? =
   #| (self) => (self instanceof DocumentTimeline) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to DocumentTimeline (unchecked)
-pub extern "js" fn JsValue::to_document_timeline(self : JsValue) -> DocumentTimeline =
+pub extern "js" fn JsValue::to_document_timeline(
+  self : JsValue,
+) -> DocumentTimeline =
   #| (self) => self
 
-pub extern "js" fn DocumentTimeline::to_animation_timeline(self : DocumentTimeline) -> AnimationTimeline =
+///|
+pub extern "js" fn DocumentTimeline::to_animation_timeline(
+  self : DocumentTimeline,
+) -> AnimationTimeline =
   #| (self) => self
 
+///|
 pub extern "js" fn DocumentTimeline::new() -> DocumentTimeline =
   #| () => new DocumentTimeline()
 
-extern "js" fn DocumentTimeline::new_with_options_ffi(options : JsValue) -> DocumentTimeline =
+///|
+extern "js" fn DocumentTimeline::new_with_options_ffi(
+  options : JsValue,
+) -> DocumentTimeline =
   #| (options) => new DocumentTimeline(options)
 
-pub fn DocumentTimeline::new_with_options(options : DocumentTimelineOptions) -> DocumentTimeline {
+///|
+pub fn DocumentTimeline::new_with_options(
+  options : DocumentTimelineOptions,
+) -> DocumentTimeline {
   DocumentTimeline::new_with_options_ffi(options.to_js())
 }
 
@@ -480,163 +621,270 @@ pub fn DocumentTimeline::new_with_options(options : DocumentTimelineOptions) -> 
 /// Animation interface
 pub type Animation
 
+///|
 pub extern "js" fn Animation::to_js_value(self : Animation) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to Animation (unchecked)
 pub extern "js" fn Animation::from_js_value(v : JsValue) -> Animation =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to Animation (checked with instanceof)
 pub extern "js" fn Animation::from_js_value_opt(v : JsValue) -> Animation? =
   #| (v) => (v instanceof Animation) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to Animation (checked with instanceof)
 pub extern "js" fn JsValue::as_animation(self : JsValue) -> Animation? =
   #| (self) => (self instanceof Animation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to Animation (unchecked)
 pub extern "js" fn JsValue::to_animation(self : JsValue) -> Animation =
   #| (self) => self
 
+///|
 pub extern "js" fn Animation::to_event_target(self : Animation) -> EventTarget =
   #| (self) => self
 
-pub extern "js" fn Animation::as_worklet_animation(self : Animation) -> WorkletAnimation? =
+///|
+pub extern "js" fn Animation::as_worklet_animation(
+  self : Animation,
+) -> WorkletAnimation? =
   #| (self) => (self instanceof WorkletAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn Animation::as_css_animation(self : Animation) -> CSSAnimation? =
+///|
+pub extern "js" fn Animation::as_css_animation(
+  self : Animation,
+) -> CSSAnimation? =
   #| (self) => (self instanceof CSSAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn Animation::as_css_transition(self : Animation) -> CSSTransition? =
+///|
+pub extern "js" fn Animation::as_css_transition(
+  self : Animation,
+) -> CSSTransition? =
   #| (self) => (self instanceof CSSTransition) ? { $tag: 1, _0: self } : { $tag: 0 }
 
-pub extern "js" fn Animation::as_shadow_animation(self : Animation) -> ShadowAnimation? =
+///|
+pub extern "js" fn Animation::as_shadow_animation(
+  self : Animation,
+) -> ShadowAnimation? =
   #| (self) => (self instanceof ShadowAnimation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum AnimationFinishError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend AnimationFinishError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum AnimationPauseError {
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend AnimationPauseError with @debug.Debug::{to_repr}
 
+///|
 pub extern "js" fn Animation::new() -> Animation =
   #| () => new Animation()
 
-pub extern "js" fn Animation::new_with_timeline(effect : AnimationEffect?, timeline : AnimationTimeline?) -> Animation =
+///|
+pub extern "js" fn Animation::new_with_timeline(
+  effect : AnimationEffect?,
+  timeline : AnimationTimeline?,
+) -> Animation =
   #| (effect, timeline) => new Animation((effect.$tag === 1 ? effect._0 : null), (timeline.$tag === 1 ? timeline._0 : null))
 
+///|
 pub extern "js" fn Animation::get_id(self : Animation) -> String =
   #| (self) => self.id
 
+///|
 pub extern "js" fn Animation::set_id(self : Animation, value : String) -> Unit =
   #| (self, value) => { self.id = value }
 
+///|
 pub extern "js" fn Animation::get_effect(self : Animation) -> AnimationEffect? =
   #| (self) => (() => { const v = self.effect; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn Animation::set_effect(self : Animation, value : AnimationEffect?) -> Unit =
+///|
+pub extern "js" fn Animation::set_effect(
+  self : Animation,
+  value : AnimationEffect?,
+) -> Unit =
   #| (self, value) => { self.effect = (value.$tag === 1 ? value._0 : null) }
 
-pub extern "js" fn Animation::get_timeline(self : Animation) -> AnimationTimeline? =
+///|
+pub extern "js" fn Animation::get_timeline(
+  self : Animation,
+) -> AnimationTimeline? =
   #| (self) => (() => { const v = self.timeline; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn Animation::set_timeline(self : Animation, value : AnimationTimeline?) -> Unit =
+///|
+pub extern "js" fn Animation::set_timeline(
+  self : Animation,
+  value : AnimationTimeline?,
+) -> Unit =
   #| (self, value) => { self.timeline = (value.$tag === 1 ? value._0 : null) }
 
+///|
 pub extern "js" fn Animation::get_playback_rate(self : Animation) -> Double =
   #| (self) => self.playbackRate
 
-pub extern "js" fn Animation::set_playback_rate(self : Animation, value : Double) -> Unit =
+///|
+pub extern "js" fn Animation::set_playback_rate(
+  self : Animation,
+  value : Double,
+) -> Unit =
   #| (self, value) => { self.playbackRate = value }
 
-pub extern "js" fn Animation::get_play_state(self : Animation) -> AnimationPlayState =
+///|
+pub extern "js" fn Animation::get_play_state(
+  self : Animation,
+) -> AnimationPlayState =
   #| (self) => ['idle', 'running', 'paused', 'finished'].indexOf(self.playState)
 
-pub extern "js" fn Animation::get_replace_state(self : Animation) -> AnimationReplaceState =
+///|
+pub extern "js" fn Animation::get_replace_state(
+  self : Animation,
+) -> AnimationReplaceState =
   #| (self) => ['active', 'removed', 'persisted'].indexOf(self.replaceState)
 
+///|
 pub extern "js" fn Animation::get_pending(self : Animation) -> Bool =
   #| (self) => self.pending
 
+///|
 pub extern "js" fn Animation::get_ready(self : Animation) -> Promise[Animation] =
   #| (self) => self.ready
 
-pub extern "js" fn Animation::get_finished(self : Animation) -> Promise[Animation] =
+///|
+pub extern "js" fn Animation::get_finished(
+  self : Animation,
+) -> Promise[Animation] =
   #| (self) => self.finished
 
-pub extern "js" fn Animation::set_onfinish(self : Animation, handler : (AnimationPlaybackEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn Animation::set_onfinish(
+  self : Animation,
+  handler : (AnimationPlaybackEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.onfinish = (e) => handler(e) }
 
+///|
 pub extern "js" fn Animation::clear_onfinish(self : Animation) -> Unit =
   #| (self) => { self.onfinish = null }
 
-pub extern "js" fn Animation::set_oncancel(self : Animation, handler : (AnimationPlaybackEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn Animation::set_oncancel(
+  self : Animation,
+  handler : (AnimationPlaybackEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.oncancel = (e) => handler(e) }
 
+///|
 pub extern "js" fn Animation::clear_oncancel(self : Animation) -> Unit =
   #| (self) => { self.oncancel = null }
 
-pub extern "js" fn Animation::set_onremove(self : Animation, handler : (AnimationPlaybackEvent) -> Unit) -> Unit =
+///|
+pub extern "js" fn Animation::set_onremove(
+  self : Animation,
+  handler : (AnimationPlaybackEvent) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.onremove = (e) => handler(e) }
 
+///|
 pub extern "js" fn Animation::clear_onremove(self : Animation) -> Unit =
   #| (self) => { self.onremove = null }
 
+///|
 pub extern "js" fn Animation::cancel(self : Animation) -> Unit =
   #| (self) => self.cancel()
 
-pub extern "js" fn Animation::finish(self : Animation) -> Result[Unit, AnimationFinishError] =
+///|
+pub extern "js" fn Animation::finish(
+  self : Animation,
+) -> Result[Unit, AnimationFinishError] =
   #| (self) => (() => { try { self.finish(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
+///|
 pub extern "js" fn Animation::play(self : Animation) -> Unit =
   #| (self) => self.play()
 
-pub extern "js" fn Animation::pause(self : Animation) -> Result[Unit, AnimationPauseError] =
+///|
+pub extern "js" fn Animation::pause(
+  self : Animation,
+) -> Result[Unit, AnimationPauseError] =
   #| (self) => (() => { try { self.pause(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn Animation::update_playback_rate(self : Animation, playback_rate : Double) -> Unit =
+///|
+pub extern "js" fn Animation::update_playback_rate(
+  self : Animation,
+  playback_rate : Double,
+) -> Unit =
   #| (self, playback_rate) => self.updatePlaybackRate(playback_rate)
 
+///|
 pub extern "js" fn Animation::reverse(self : Animation) -> Unit =
   #| (self) => self.reverse()
 
+///|
 pub extern "js" fn Animation::persist(self : Animation) -> Unit =
   #| (self) => self.persist()
 
+///|
 pub extern "js" fn Animation::commit_styles(self : Animation) -> Unit =
   #| (self) => self.commitStyles()
 
+///|
 pub extern "js" fn Animation::get_start_time(self : Animation) -> CSSNumberish? =
   #| (self) => (() => { const v = self.startTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn Animation::set_start_time(self : Animation, value : CSSNumberish?) -> Unit =
+///|
+pub extern "js" fn Animation::set_start_time(
+  self : Animation,
+  value : CSSNumberish?,
+) -> Unit =
   #| (self, value) => { self.startTime = (value.$tag === 1 ? value._0 : null) }
 
-pub extern "js" fn Animation::get_current_time(self : Animation) -> CSSNumberish? =
+///|
+pub extern "js" fn Animation::get_current_time(
+  self : Animation,
+) -> CSSNumberish? =
   #| (self) => (() => { const v = self.currentTime; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn Animation::set_current_time(self : Animation, value : CSSNumberish?) -> Unit =
+///|
+pub extern "js" fn Animation::set_current_time(
+  self : Animation,
+  value : CSSNumberish?,
+) -> Unit =
   #| (self, value) => { self.currentTime = (value.$tag === 1 ? value._0 : null) }
 
-pub extern "js" fn Animation::get_trigger(self : Animation) -> AnimationTrigger? =
+///|
+pub extern "js" fn Animation::get_trigger(
+  self : Animation,
+) -> AnimationTrigger? =
   #| (self) => (() => { const v = self.trigger; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn Animation::set_trigger(self : Animation, value : AnimationTrigger?) -> Unit =
+///|
+pub extern "js" fn Animation::set_trigger(
+  self : Animation,
+  value : AnimationTrigger?,
+) -> Unit =
   #| (self, value) => { self.trigger = (value.$tag === 1 ? value._0 : null) }
 
+///|
 pub extern "js" fn Animation::get_overall_progress(self : Animation) -> Double? =
   #| (self) => (() => { const v = self.overallProgress; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
@@ -644,71 +892,130 @@ pub extern "js" fn Animation::get_overall_progress(self : Animation) -> Double? 
 /// AnimationEffect interface
 pub type AnimationEffect
 
-pub extern "js" fn AnimationEffect::to_js_value(self : AnimationEffect) -> JsValue =
+///|
+pub extern "js" fn AnimationEffect::to_js_value(
+  self : AnimationEffect,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to AnimationEffect (unchecked)
-pub extern "js" fn AnimationEffect::from_js_value(v : JsValue) -> AnimationEffect =
+pub extern "js" fn AnimationEffect::from_js_value(
+  v : JsValue,
+) -> AnimationEffect =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to AnimationEffect (checked with instanceof)
-pub extern "js" fn AnimationEffect::from_js_value_opt(v : JsValue) -> AnimationEffect? =
+pub extern "js" fn AnimationEffect::from_js_value_opt(
+  v : JsValue,
+) -> AnimationEffect? =
   #| (v) => (v instanceof AnimationEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to AnimationEffect (checked with instanceof)
-pub extern "js" fn JsValue::as_animation_effect(self : JsValue) -> AnimationEffect? =
+pub extern "js" fn JsValue::as_animation_effect(
+  self : JsValue,
+) -> AnimationEffect? =
   #| (self) => (self instanceof AnimationEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to AnimationEffect (unchecked)
-pub extern "js" fn JsValue::to_animation_effect(self : JsValue) -> AnimationEffect =
+pub extern "js" fn JsValue::to_animation_effect(
+  self : JsValue,
+) -> AnimationEffect =
   #| (self) => self
 
-pub extern "js" fn AnimationEffect::as_keyframe_effect(self : AnimationEffect) -> KeyframeEffect? =
+///|
+pub extern "js" fn AnimationEffect::as_keyframe_effect(
+  self : AnimationEffect,
+) -> KeyframeEffect? =
   #| (self) => (self instanceof KeyframeEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum AnimationEffectUpdateTimingError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend AnimationEffectUpdateTimingError with @debug.Debug::{to_repr}
 
-pub extern "js" fn AnimationEffect::get_timing(self : AnimationEffect) -> EffectTiming =
+///|
+pub extern "js" fn AnimationEffect::get_timing(
+  self : AnimationEffect,
+) -> EffectTiming =
   #| (self) => self.getTiming()
 
-pub extern "js" fn AnimationEffect::get_computed_timing(self : AnimationEffect) -> ComputedEffectTiming =
+///|
+pub extern "js" fn AnimationEffect::get_computed_timing(
+  self : AnimationEffect,
+) -> ComputedEffectTiming =
   #| (self) => self.getComputedTiming()
 
-pub extern "js" fn AnimationEffect::update_timing(self : AnimationEffect) -> Result[Unit, AnimationEffectUpdateTimingError] =
+///|
+pub extern "js" fn AnimationEffect::update_timing(
+  self : AnimationEffect,
+) -> Result[Unit, AnimationEffectUpdateTimingError] =
   #| (self) => (() => { try { self.updateTiming(); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-extern "js" fn AnimationEffect::update_timing_with_timing_ffi(self : AnimationEffect, timing : JsValue) -> Result[Unit, AnimationEffectUpdateTimingError] =
+///|
+extern "js" fn AnimationEffect::update_timing_with_timing_ffi(
+  self : AnimationEffect,
+  timing : JsValue,
+) -> Result[Unit, AnimationEffectUpdateTimingError] =
   #| (self, timing) => (() => { try { self.updateTiming(timing); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub fn AnimationEffect::update_timing_with_timing(self : AnimationEffect, timing : OptionalEffectTiming) -> Result[Unit, AnimationEffectUpdateTimingError] {
+///|
+pub fn AnimationEffect::update_timing_with_timing(
+  self : AnimationEffect,
+  timing : OptionalEffectTiming,
+) -> Result[Unit, AnimationEffectUpdateTimingError] {
   AnimationEffect::update_timing_with_timing_ffi(self, timing.to_js())
 }
 
-pub extern "js" fn AnimationEffect::get_parent(self : AnimationEffect) -> GroupEffect? =
+///|
+pub extern "js" fn AnimationEffect::get_parent(
+  self : AnimationEffect,
+) -> GroupEffect? =
   #| (self) => (() => { const v = self.parent; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn AnimationEffect::get_previous_sibling(self : AnimationEffect) -> AnimationEffect? =
+///|
+pub extern "js" fn AnimationEffect::get_previous_sibling(
+  self : AnimationEffect,
+) -> AnimationEffect? =
   #| (self) => (() => { const v = self.previousSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn AnimationEffect::get_next_sibling(self : AnimationEffect) -> AnimationEffect? =
+///|
+pub extern "js" fn AnimationEffect::get_next_sibling(
+  self : AnimationEffect,
+) -> AnimationEffect? =
   #| (self) => (() => { const v = self.nextSibling; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn AnimationEffect::before(self : AnimationEffect, effects : AnimationEffect) -> Unit =
+///|
+pub extern "js" fn AnimationEffect::before(
+  self : AnimationEffect,
+  effects : AnimationEffect,
+) -> Unit =
   #| (self, effects) => self.before(effects)
 
-pub extern "js" fn AnimationEffect::after(self : AnimationEffect, effects : AnimationEffect) -> Unit =
+///|
+pub extern "js" fn AnimationEffect::after(
+  self : AnimationEffect,
+  effects : AnimationEffect,
+) -> Unit =
   #| (self, effects) => self.after(effects)
 
-pub extern "js" fn AnimationEffect::replace(self : AnimationEffect, effects : AnimationEffect) -> Unit =
+///|
+pub extern "js" fn AnimationEffect::replace(
+  self : AnimationEffect,
+  effects : AnimationEffect,
+) -> Unit =
   #| (self, effects) => self.replace(effects)
 
+///|
 pub extern "js" fn AnimationEffect::remove(self : AnimationEffect) -> Unit =
   #| (self) => self.remove()
 
@@ -716,81 +1023,148 @@ pub extern "js" fn AnimationEffect::remove(self : AnimationEffect) -> Unit =
 /// KeyframeEffect interface
 pub type KeyframeEffect
 
-pub extern "js" fn KeyframeEffect::to_js_value(self : KeyframeEffect) -> JsValue =
+///|
+pub extern "js" fn KeyframeEffect::to_js_value(
+  self : KeyframeEffect,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to KeyframeEffect (unchecked)
 pub extern "js" fn KeyframeEffect::from_js_value(v : JsValue) -> KeyframeEffect =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to KeyframeEffect (checked with instanceof)
-pub extern "js" fn KeyframeEffect::from_js_value_opt(v : JsValue) -> KeyframeEffect? =
+pub extern "js" fn KeyframeEffect::from_js_value_opt(
+  v : JsValue,
+) -> KeyframeEffect? =
   #| (v) => (v instanceof KeyframeEffect) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to KeyframeEffect (checked with instanceof)
-pub extern "js" fn JsValue::as_keyframe_effect(self : JsValue) -> KeyframeEffect? =
+pub extern "js" fn JsValue::as_keyframe_effect(
+  self : JsValue,
+) -> KeyframeEffect? =
   #| (self) => (self instanceof KeyframeEffect) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to KeyframeEffect (unchecked)
-pub extern "js" fn JsValue::to_keyframe_effect(self : JsValue) -> KeyframeEffect =
+pub extern "js" fn JsValue::to_keyframe_effect(
+  self : JsValue,
+) -> KeyframeEffect =
   #| (self) => self
 
-pub extern "js" fn KeyframeEffect::to_animation_effect(self : KeyframeEffect) -> AnimationEffect =
+///|
+pub extern "js" fn KeyframeEffect::to_animation_effect(
+  self : KeyframeEffect,
+) -> AnimationEffect =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum KeyframeEffectSetPseudoElementError {
   SyntaxError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend KeyframeEffectSetPseudoElementError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum KeyframeEffectSetKeyframesError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend KeyframeEffectSetKeyframesError with @debug.Debug::{to_repr}
 
-pub extern "js" fn KeyframeEffect::new(source : KeyframeEffect) -> KeyframeEffect =
+///|
+pub extern "js" fn KeyframeEffect::new(
+  source : KeyframeEffect,
+) -> KeyframeEffect =
   #| (source) => new KeyframeEffect(source)
 
-pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options(target : Element?, keyframes : JsValue?) -> KeyframeEffect =
+///|
+pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options(
+  target : Element?,
+  keyframes : JsValue?,
+) -> KeyframeEffect =
   #| (target, keyframes) => new KeyframeEffect((target.$tag === 1 ? target._0 : null), (keyframes.$tag === 1 ? keyframes._0 : null))
 
-pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options_with_options(target : Element?, keyframes : JsValue?, options : DoubleOrKeyframeEffectOptions) -> KeyframeEffect =
+///|
+pub extern "js" fn KeyframeEffect::new_with_keyframes_and_options_with_options(
+  target : Element?,
+  keyframes : JsValue?,
+  options : DoubleOrKeyframeEffectOptions,
+) -> KeyframeEffect =
   #| (target, keyframes, options) => new KeyframeEffect((target.$tag === 1 ? target._0 : null), (keyframes.$tag === 1 ? keyframes._0 : null), options)
 
-pub extern "js" fn KeyframeEffect::get_target(self : KeyframeEffect) -> Element? =
+///|
+pub extern "js" fn KeyframeEffect::get_target(
+  self : KeyframeEffect,
+) -> Element? =
   #| (self) => (() => { const v = self.target; return v == null ? { $tag: 0 } : { $tag: 1, _0: v }; })()
 
-pub extern "js" fn KeyframeEffect::set_target(self : KeyframeEffect, value : Element?) -> Unit =
+///|
+pub extern "js" fn KeyframeEffect::set_target(
+  self : KeyframeEffect,
+  value : Element?,
+) -> Unit =
   #| (self, value) => { self.target = (value.$tag === 1 ? value._0 : null) }
 
-pub extern "js" fn KeyframeEffect::get_pseudo_element(self : KeyframeEffect) -> String? =
+///|
+pub extern "js" fn KeyframeEffect::get_pseudo_element(
+  self : KeyframeEffect,
+) -> String? =
   #| (self) => (self.pseudoElement) ?? undefined
 
-pub extern "js" fn KeyframeEffect::set_pseudo_element(self : KeyframeEffect, value : String?) -> Result[Unit, KeyframeEffectSetPseudoElementError] =
+///|
+pub extern "js" fn KeyframeEffect::set_pseudo_element(
+  self : KeyframeEffect,
+  value : String?,
+) -> Result[Unit, KeyframeEffectSetPseudoElementError] =
   #| (self, value) => (() => { try { self.pseudoElement = value; return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'SyntaxError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn KeyframeEffect::get_composite(self : KeyframeEffect) -> CompositeOperation =
+///|
+pub extern "js" fn KeyframeEffect::get_composite(
+  self : KeyframeEffect,
+) -> CompositeOperation =
   #| (self) => ['replace', 'add', 'accumulate'].indexOf(self.composite)
 
-pub extern "js" fn KeyframeEffect::set_composite(self : KeyframeEffect, value : CompositeOperation) -> Unit =
+///|
+pub extern "js" fn KeyframeEffect::set_composite(
+  self : KeyframeEffect,
+  value : CompositeOperation,
+) -> Unit =
   #| (self, value) => { self.composite = ['replace', 'add', 'accumulate'][value] }
 
-pub extern "js" fn KeyframeEffect::get_keyframes(self : KeyframeEffect) -> FixedArray[JsValue] =
+///|
+pub extern "js" fn KeyframeEffect::get_keyframes(
+  self : KeyframeEffect,
+) -> FixedArray[JsValue] =
   #| (self) => self.getKeyframes()
 
-pub extern "js" fn KeyframeEffect::set_keyframes(self : KeyframeEffect, keyframes : JsValue?) -> Result[Unit, KeyframeEffectSetKeyframesError] =
+///|
+pub extern "js" fn KeyframeEffect::set_keyframes(
+  self : KeyframeEffect,
+  keyframes : JsValue?,
+) -> Result[Unit, KeyframeEffectSetKeyframesError] =
   #| (self, keyframes) => (() => { try { self.setKeyframes((keyframes.$tag === 1 ? keyframes._0 : null)); return { $tag: 1, _0: undefined }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn KeyframeEffect::get_iteration_composite(self : KeyframeEffect) -> IterationCompositeOperation =
+///|
+pub extern "js" fn KeyframeEffect::get_iteration_composite(
+  self : KeyframeEffect,
+) -> IterationCompositeOperation =
   #| (self) => ['replace', 'accumulate'].indexOf(self.iterationComposite)
 
-pub extern "js" fn KeyframeEffect::set_iteration_composite(self : KeyframeEffect, value : IterationCompositeOperation) -> Unit =
+///|
+pub extern "js" fn KeyframeEffect::set_iteration_composite(
+  self : KeyframeEffect,
+  value : IterationCompositeOperation,
+) -> Unit =
   #| (self, value) => { self.iterationComposite = ['replace', 'accumulate'][value] }

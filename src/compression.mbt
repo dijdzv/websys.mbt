@@ -3,16 +3,21 @@
 
 ///|
 /// CompressionFormat enum
+#derive(Eq, Debug)
 pub(all) enum CompressionFormat {
   Brotli
   Deflate
   DeflateRaw
   Gzip
-} derive(Eq, Debug)
+}
 
+///|
 pub extend CompressionFormat with Eq::{equal, not_equal}
+
+///|
 pub extend CompressionFormat with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn CompressionFormat::to_string(self : CompressionFormat) -> String {
   match self {
@@ -23,6 +28,7 @@ pub fn CompressionFormat::to_string(self : CompressionFormat) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn CompressionFormat::from_string(s : String) -> CompressionFormat? {
   match s {
@@ -38,80 +44,132 @@ pub fn CompressionFormat::from_string(s : String) -> CompressionFormat? {
 /// CompressionStream interface
 pub type CompressionStream
 
-pub extern "js" fn CompressionStream::to_js_value(self : CompressionStream) -> JsValue =
+///|
+pub extern "js" fn CompressionStream::to_js_value(
+  self : CompressionStream,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to CompressionStream (unchecked)
-pub extern "js" fn CompressionStream::from_js_value(v : JsValue) -> CompressionStream =
+pub extern "js" fn CompressionStream::from_js_value(
+  v : JsValue,
+) -> CompressionStream =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to CompressionStream (checked with instanceof)
-pub extern "js" fn CompressionStream::from_js_value_opt(v : JsValue) -> CompressionStream? =
+pub extern "js" fn CompressionStream::from_js_value_opt(
+  v : JsValue,
+) -> CompressionStream? =
   #| (v) => (v instanceof CompressionStream) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to CompressionStream (checked with instanceof)
-pub extern "js" fn JsValue::as_compression_stream(self : JsValue) -> CompressionStream? =
+pub extern "js" fn JsValue::as_compression_stream(
+  self : JsValue,
+) -> CompressionStream? =
   #| (self) => (self instanceof CompressionStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to CompressionStream (unchecked)
-pub extern "js" fn JsValue::to_compression_stream(self : JsValue) -> CompressionStream =
+pub extern "js" fn JsValue::to_compression_stream(
+  self : JsValue,
+) -> CompressionStream =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum CompressionStreamConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend CompressionStreamConstructorError with @debug.Debug::{to_repr}
 
-pub extern "js" fn CompressionStream::new(format : CompressionFormat) -> Result[CompressionStream, CompressionStreamConstructorError] =
+///|
+pub extern "js" fn CompressionStream::new(
+  format : CompressionFormat,
+) -> Result[CompressionStream, CompressionStreamConstructorError] =
   #| (format) => (() => { try { return { $tag: 1, _0: new CompressionStream(['brotli', 'deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn CompressionStream::get_readable(self : CompressionStream) -> ReadableStream =
+///|
+pub extern "js" fn CompressionStream::get_readable(
+  self : CompressionStream,
+) -> ReadableStream =
   #| (self) => self.readable
 
-pub extern "js" fn CompressionStream::get_writable(self : CompressionStream) -> WritableStream =
+///|
+pub extern "js" fn CompressionStream::get_writable(
+  self : CompressionStream,
+) -> WritableStream =
   #| (self) => self.writable
 
 ///|
 /// DecompressionStream interface
 pub type DecompressionStream
 
-pub extern "js" fn DecompressionStream::to_js_value(self : DecompressionStream) -> JsValue =
+///|
+pub extern "js" fn DecompressionStream::to_js_value(
+  self : DecompressionStream,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to DecompressionStream (unchecked)
-pub extern "js" fn DecompressionStream::from_js_value(v : JsValue) -> DecompressionStream =
+pub extern "js" fn DecompressionStream::from_js_value(
+  v : JsValue,
+) -> DecompressionStream =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to DecompressionStream (checked with instanceof)
-pub extern "js" fn DecompressionStream::from_js_value_opt(v : JsValue) -> DecompressionStream? =
+pub extern "js" fn DecompressionStream::from_js_value_opt(
+  v : JsValue,
+) -> DecompressionStream? =
   #| (v) => (v instanceof DecompressionStream) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to DecompressionStream (checked with instanceof)
-pub extern "js" fn JsValue::as_decompression_stream(self : JsValue) -> DecompressionStream? =
+pub extern "js" fn JsValue::as_decompression_stream(
+  self : JsValue,
+) -> DecompressionStream? =
   #| (self) => (self instanceof DecompressionStream) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to DecompressionStream (unchecked)
-pub extern "js" fn JsValue::to_decompression_stream(self : JsValue) -> DecompressionStream =
+pub extern "js" fn JsValue::to_decompression_stream(
+  self : JsValue,
+) -> DecompressionStream =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum DecompressionStreamConstructorError {
   TypeError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend DecompressionStreamConstructorError with @debug.Debug::{to_repr}
 
-pub extern "js" fn DecompressionStream::new(format : CompressionFormat) -> Result[DecompressionStream, DecompressionStreamConstructorError] =
+///|
+pub extern "js" fn DecompressionStream::new(
+  format : CompressionFormat,
+) -> Result[DecompressionStream, DecompressionStreamConstructorError] =
   #| (format) => (() => { try { return { $tag: 1, _0: new DecompressionStream(['brotli', 'deflate', 'deflate-raw', 'gzip'][format]) }; } catch(e) { return { $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'TypeError') return { $tag: 0, _0: e }; return { $tag: 1, _0: e }; })() }; } })()
 
-pub extern "js" fn DecompressionStream::get_readable(self : DecompressionStream) -> ReadableStream =
+///|
+pub extern "js" fn DecompressionStream::get_readable(
+  self : DecompressionStream,
+) -> ReadableStream =
   #| (self) => self.readable
 
-pub extern "js" fn DecompressionStream::get_writable(self : DecompressionStream) -> WritableStream =
+///|
+pub extern "js" fn DecompressionStream::get_writable(
+  self : DecompressionStream,
+) -> WritableStream =
   #| (self) => self.writable

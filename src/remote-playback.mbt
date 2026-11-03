@@ -3,15 +3,20 @@
 
 ///|
 /// RemotePlaybackState enum
+#derive(Eq, Debug)
 pub(all) enum RemotePlaybackState {
   Connecting
   Connected
   Disconnected
-} derive(Eq, Debug)
+}
 
+///|
 pub extend RemotePlaybackState with Eq::{equal, not_equal}
+
+///|
 pub extend RemotePlaybackState with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
   match self {
@@ -21,6 +26,7 @@ pub fn RemotePlaybackState::to_string(self : RemotePlaybackState) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
   match s {
@@ -31,61 +37,88 @@ pub fn RemotePlaybackState::from_string(s : String) -> RemotePlaybackState? {
   }
 }
 
+///|
 /// RemotePlaybackAvailabilityCallback callback interface
 pub type RemotePlaybackAvailabilityCallback
 
+///|
 /// Create RemotePlaybackAvailabilityCallback from a MoonBit function
-pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(handler : (Bool) -> Unit) -> RemotePlaybackAvailabilityCallback =
+pub extern "js" fn RemotePlaybackAvailabilityCallback::from_fn(
+  handler : (Bool) -> Unit,
+) -> RemotePlaybackAvailabilityCallback =
   #| (handler) => (a0) => handler(a0)
 
 ///|
 /// RemotePlayback interface
 pub type RemotePlayback
 
-pub extern "js" fn RemotePlayback::to_js_value(self : RemotePlayback) -> JsValue =
+///|
+pub extern "js" fn RemotePlayback::to_js_value(
+  self : RemotePlayback,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to RemotePlayback (unchecked)
 pub extern "js" fn RemotePlayback::from_js_value(v : JsValue) -> RemotePlayback =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to RemotePlayback (checked with instanceof)
-pub extern "js" fn RemotePlayback::from_js_value_opt(v : JsValue) -> RemotePlayback? =
+pub extern "js" fn RemotePlayback::from_js_value_opt(
+  v : JsValue,
+) -> RemotePlayback? =
   #| (v) => (v instanceof RemotePlayback) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to RemotePlayback (checked with instanceof)
-pub extern "js" fn JsValue::as_remote_playback(self : JsValue) -> RemotePlayback? =
+pub extern "js" fn JsValue::as_remote_playback(
+  self : JsValue,
+) -> RemotePlayback? =
   #| (self) => (self instanceof RemotePlayback) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to RemotePlayback (unchecked)
-pub extern "js" fn JsValue::to_remote_playback(self : JsValue) -> RemotePlayback =
+pub extern "js" fn JsValue::to_remote_playback(
+  self : JsValue,
+) -> RemotePlayback =
   #| (self) => self
 
-pub extern "js" fn RemotePlayback::to_event_target(self : RemotePlayback) -> EventTarget =
+///|
+pub extern "js" fn RemotePlayback::to_event_target(
+  self : RemotePlayback,
+) -> EventTarget =
   #| (self) => self
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum RemotePlaybackWatchAvailabilityError {
   InvalidStateError(JsError)
   NotSupportedError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend RemotePlaybackWatchAvailabilityError with @debug.Debug::{to_repr}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum RemotePlaybackCancelWatchAvailabilityError {
   NotFoundError(JsError)
   InvalidStateError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
-pub extend RemotePlaybackCancelWatchAvailabilityError with @debug.Debug::{to_repr}
+///|
+pub extend RemotePlaybackCancelWatchAvailabilityError with @debug.Debug::{
+  to_repr,
+}
 
 ///|
 /// Error type for throwing methods
+#derive(Debug)
 pub(all) enum RemotePlaybackPromptError {
   NotFoundError(JsError)
   OperationError(JsError)
@@ -94,39 +127,78 @@ pub(all) enum RemotePlaybackPromptError {
   NotSupportedError(JsError)
   InvalidAccessError(JsError)
   OtherError(JsError)
-} derive(Debug)
+}
 
+///|
 pub extend RemotePlaybackPromptError with @debug.Debug::{to_repr}
 
-pub extern "js" fn RemotePlayback::watch_availability(self : RemotePlayback, callback : RemotePlaybackAvailabilityCallback) -> Promise[Result[Int, RemotePlaybackWatchAvailabilityError]] =
+///|
+pub extern "js" fn RemotePlayback::watch_availability(
+  self : RemotePlayback,
+  callback : RemotePlaybackAvailabilityCallback,
+) -> Promise[Result[Int32, RemotePlaybackWatchAvailabilityError]] =
   #| (self, callback) => self.watchAvailability(callback).then(r => ({ $tag: 1, _0: r })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'InvalidStateError') return { $tag: 0, _0: e }; if (n === 'NotSupportedError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-pub extern "js" fn RemotePlayback::cancel_watch_availability(self : RemotePlayback) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
+///|
+pub extern "js" fn RemotePlayback::cancel_watch_availability(
+  self : RemotePlayback,
+) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
   #| (self) => self.cancelWatchAvailability().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(self : RemotePlayback, id : Int) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
+///|
+pub extern "js" fn RemotePlayback::cancel_watch_availability_with_id(
+  self : RemotePlayback,
+  id : Int32,
+) -> Promise[Result[Unit, RemotePlaybackCancelWatchAvailabilityError]] =
   #| (self, id) => self.cancelWatchAvailability(id).then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'InvalidStateError') return { $tag: 1, _0: e }; return { $tag: 2, _0: e }; })() }))
 
-pub extern "js" fn RemotePlayback::get_state(self : RemotePlayback) -> RemotePlaybackState =
+///|
+pub extern "js" fn RemotePlayback::get_state(
+  self : RemotePlayback,
+) -> RemotePlaybackState =
   #| (self) => ['connecting', 'connected', 'disconnected'].indexOf(self.state)
 
-pub extern "js" fn RemotePlayback::set_onconnecting(self : RemotePlayback, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_onconnecting(
+  self : RemotePlayback,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.onconnecting = (e) => handler(e) }
 
-pub extern "js" fn RemotePlayback::clear_onconnecting(self : RemotePlayback) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::clear_onconnecting(
+  self : RemotePlayback,
+) -> Unit =
   #| (self) => { self.onconnecting = null }
 
-pub extern "js" fn RemotePlayback::set_onconnect(self : RemotePlayback, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_onconnect(
+  self : RemotePlayback,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.onconnect = (e) => handler(e) }
 
-pub extern "js" fn RemotePlayback::clear_onconnect(self : RemotePlayback) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::clear_onconnect(
+  self : RemotePlayback,
+) -> Unit =
   #| (self) => { self.onconnect = null }
 
-pub extern "js" fn RemotePlayback::set_ondisconnect(self : RemotePlayback, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::set_ondisconnect(
+  self : RemotePlayback,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.ondisconnect = (e) => handler(e) }
 
-pub extern "js" fn RemotePlayback::clear_ondisconnect(self : RemotePlayback) -> Unit =
+///|
+pub extern "js" fn RemotePlayback::clear_ondisconnect(
+  self : RemotePlayback,
+) -> Unit =
   #| (self) => { self.ondisconnect = null }
 
-pub extern "js" fn RemotePlayback::prompt(self : RemotePlayback) -> Promise[Result[Unit, RemotePlaybackPromptError]] =
+///|
+pub extern "js" fn RemotePlayback::prompt(
+  self : RemotePlayback,
+) -> Promise[Result[Unit, RemotePlaybackPromptError]] =
   #| (self) => self.prompt().then(r => ({ $tag: 1, _0: undefined })).catch(e => ({ $tag: 0, _0: (() => { const n = (e && e.name) || ''; if (n === 'NotFoundError') return { $tag: 0, _0: e }; if (n === 'OperationError') return { $tag: 1, _0: e }; if (n === 'NotAllowedError') return { $tag: 2, _0: e }; if (n === 'InvalidStateError') return { $tag: 3, _0: e }; if (n === 'NotSupportedError') return { $tag: 4, _0: e }; if (n === 'InvalidAccessError') return { $tag: 5, _0: e }; return { $tag: 6, _0: e }; })() }))

@@ -1,7 +1,7 @@
 ///|
 fn getter_error_metadata(
   text : String,
-  methods? : Bool = false,
+  methods~ : Bool = false,
 ) -> ThrowsMap raise {
   let entries : Map[String, Map[String, Array[String]]] = @json.from_json(
     @json.parse(text),

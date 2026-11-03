@@ -11,6 +11,7 @@ pub type Millisecond = Int64
 
 ///|
 /// ConnectionType enum
+#derive(Eq, Debug)
 pub(all) enum ConnectionType {
   Bluetooth
   Cellular
@@ -21,11 +22,15 @@ pub(all) enum ConnectionType {
   Unknown
   Wifi
   Wimax
-} derive(Eq, Debug)
+}
 
+///|
 pub extend ConnectionType with Eq::{equal, not_equal}
+
+///|
 pub extend ConnectionType with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
 pub fn ConnectionType::to_string(self : ConnectionType) -> String {
   match self {
@@ -41,6 +46,7 @@ pub fn ConnectionType::to_string(self : ConnectionType) -> String {
   }
 }
 
+///|
 /// Parse from string value
 pub fn ConnectionType::from_string(s : String) -> ConnectionType? {
   match s {
@@ -59,18 +65,25 @@ pub fn ConnectionType::from_string(s : String) -> ConnectionType? {
 
 ///|
 /// EffectiveConnectionType enum
+#derive(Eq, Debug)
 pub(all) enum EffectiveConnectionType {
   N2g
   N3g
   N4g
   Slow2g
-} derive(Eq, Debug)
+}
 
+///|
 pub extend EffectiveConnectionType with Eq::{equal, not_equal}
+
+///|
 pub extend EffectiveConnectionType with @debug.Debug::{to_repr}
 
+///|
 /// Convert to string value
-pub fn EffectiveConnectionType::to_string(self : EffectiveConnectionType) -> String {
+pub fn EffectiveConnectionType::to_string(
+  self : EffectiveConnectionType,
+) -> String {
   match self {
     EffectiveConnectionType::N2g => "2g"
     EffectiveConnectionType::N3g => "3g"
@@ -79,8 +92,11 @@ pub fn EffectiveConnectionType::to_string(self : EffectiveConnectionType) -> Str
   }
 }
 
+///|
 /// Parse from string value
-pub fn EffectiveConnectionType::from_string(s : String) -> EffectiveConnectionType? {
+pub fn EffectiveConnectionType::from_string(
+  s : String,
+) -> EffectiveConnectionType? {
   match s {
     "2g" => Some(EffectiveConnectionType::N2g)
     "3g" => Some(EffectiveConnectionType::N3g)
@@ -94,48 +110,91 @@ pub fn EffectiveConnectionType::from_string(s : String) -> EffectiveConnectionTy
 /// NetworkInformation interface
 pub type NetworkInformation
 
-pub extern "js" fn NetworkInformation::to_js_value(self : NetworkInformation) -> JsValue =
+///|
+pub extern "js" fn NetworkInformation::to_js_value(
+  self : NetworkInformation,
+) -> JsValue =
   #| (self) => self
 
+///|
 /// Cast JsValue to NetworkInformation (unchecked)
-pub extern "js" fn NetworkInformation::from_js_value(v : JsValue) -> NetworkInformation =
+pub extern "js" fn NetworkInformation::from_js_value(
+  v : JsValue,
+) -> NetworkInformation =
   #| (v) => v
 
+///|
 /// Safely cast JsValue to NetworkInformation (checked with instanceof)
-pub extern "js" fn NetworkInformation::from_js_value_opt(v : JsValue) -> NetworkInformation? =
+pub extern "js" fn NetworkInformation::from_js_value_opt(
+  v : JsValue,
+) -> NetworkInformation? =
   #| (v) => (v instanceof NetworkInformation) ? { $tag: 1, _0: v } : { $tag: 0 }
 
+///|
 /// Safely cast JsValue to NetworkInformation (checked with instanceof)
-pub extern "js" fn JsValue::as_network_information(self : JsValue) -> NetworkInformation? =
+pub extern "js" fn JsValue::as_network_information(
+  self : JsValue,
+) -> NetworkInformation? =
   #| (self) => (self instanceof NetworkInformation) ? { $tag: 1, _0: self } : { $tag: 0 }
 
+///|
 /// Cast JsValue to NetworkInformation (unchecked)
-pub extern "js" fn JsValue::to_network_information(self : JsValue) -> NetworkInformation =
+pub extern "js" fn JsValue::to_network_information(
+  self : JsValue,
+) -> NetworkInformation =
   #| (self) => self
 
-pub extern "js" fn NetworkInformation::to_event_target(self : NetworkInformation) -> EventTarget =
+///|
+pub extern "js" fn NetworkInformation::to_event_target(
+  self : NetworkInformation,
+) -> EventTarget =
   #| (self) => self
 
-pub extern "js" fn NetworkInformation::get_type(self : NetworkInformation) -> ConnectionType =
+///|
+pub extern "js" fn NetworkInformation::get_type(
+  self : NetworkInformation,
+) -> ConnectionType =
   #| (self) => ['bluetooth', 'cellular', 'ethernet', 'mixed', 'none', 'other', 'unknown', 'wifi', 'wimax'].indexOf(self.type)
 
-pub extern "js" fn NetworkInformation::get_effective_type(self : NetworkInformation) -> EffectiveConnectionType =
+///|
+pub extern "js" fn NetworkInformation::get_effective_type(
+  self : NetworkInformation,
+) -> EffectiveConnectionType =
   #| (self) => ['2g', '3g', '4g', 'slow-2g'].indexOf(self.effectiveType)
 
-pub extern "js" fn NetworkInformation::get_downlink_max(self : NetworkInformation) -> Megabit =
+///|
+pub extern "js" fn NetworkInformation::get_downlink_max(
+  self : NetworkInformation,
+) -> Megabit =
   #| (self) => self.downlinkMax
 
-pub extern "js" fn NetworkInformation::get_downlink(self : NetworkInformation) -> Megabit =
+///|
+pub extern "js" fn NetworkInformation::get_downlink(
+  self : NetworkInformation,
+) -> Megabit =
   #| (self) => self.downlink
 
-pub extern "js" fn NetworkInformation::get_rtt(self : NetworkInformation) -> Millisecond =
+///|
+pub extern "js" fn NetworkInformation::get_rtt(
+  self : NetworkInformation,
+) -> Millisecond =
   #| (self) => self.rtt
 
-pub extern "js" fn NetworkInformation::set_onchange(self : NetworkInformation, handler : (Event) -> Unit) -> Unit =
+///|
+pub extern "js" fn NetworkInformation::set_onchange(
+  self : NetworkInformation,
+  handler : (Event) -> Unit,
+) -> Unit =
   #| (self, handler) => { self.onchange = (e) => handler(e) }
 
-pub extern "js" fn NetworkInformation::clear_onchange(self : NetworkInformation) -> Unit =
+///|
+pub extern "js" fn NetworkInformation::clear_onchange(
+  self : NetworkInformation,
+) -> Unit =
   #| (self) => { self.onchange = null }
 
-pub extern "js" fn NetworkInformation::get_save_data(self : NetworkInformation) -> Bool =
+///|
+pub extern "js" fn NetworkInformation::get_save_data(
+  self : NetworkInformation,
+) -> Bool =
   #| (self) => self.saveData

@@ -1,18 +1,19 @@
 ///|
+#derive(ToJson)
 struct WasmInventory {
-  definitions : Int
-  constructs : Map[String, Int]
+  definitions : Int32
+  constructs : Map[String, Int32]
   first_raw_rejection : String?
   parse_error : String?
-} derive(ToJson)
+}
 
 ///|
-fn inventory_count(counts : Map[String, Int], key : String) -> Unit {
+fn inventory_count(counts : Map[String, Int32], key : String) -> Unit {
   counts[key] = counts.get(key).unwrap_or(0) + 1
 }
 
 ///|
-fn inventory_type(value : JsValue, counts : Map[String, Int]) -> Unit {
+fn inventory_type(value : JsValue, counts : Map[String, Int32]) -> Unit {
   if is_nullable_type(value) {
     inventory_count(counts, "type:nullable")
   }
@@ -43,7 +44,7 @@ fn inventory_type(value : JsValue, counts : Map[String, Int]) -> Unit {
 }
 
 ///|
-fn inventory_item(item : JsValue, counts : Map[String, Int]) -> Unit {
+fn inventory_item(item : JsValue, counts : Map[String, Int32]) -> Unit {
   let kind = get_type(item)
   inventory_count(counts, "construct:" + kind)
   if is_partial(item) {
@@ -91,7 +92,7 @@ fn inventory_item(item : JsValue, counts : Map[String, Int]) -> Unit {
 ///|
 fn inventory_wasm_source(source : String) -> WasmInventory {
   let parsed = parse_webidl_raw(source)
-  let constructs : Map[String, Int] = Map([])
+  let constructs : Map[String, Int32] = Map([])
   if !is_parse_success(parsed) {
     return {
       definitions: 0,

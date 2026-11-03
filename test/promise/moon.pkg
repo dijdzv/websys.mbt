@@ -1,15 +1,20 @@
 import {
   "dijdzv/websys-promise-fixture" @web,
-  "moonbitlang/async",
-  "moonbitlang/async/wasm_async" @bridge,
+  "moonbitlang/core/async",
+  "moonbitlang/core/async/wasm_async" @bridge,
 }
 
 supported_targets = "wasm-gc"
 
 options(
+  "allow-experimental-packages": ["moonbitlang/core/async", "moonbitlang/core/async/wasm_async"],
   link: {
     "wasm-gc": {
       "exports": [
+        "bounded_bytes_capture",
+        "bounded_bytes_at",
+        "constructor_sum",
+        "static_sum",
         "render_options",
         "encode_clear",
         "submit_clear",

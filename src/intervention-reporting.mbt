@@ -7,10 +7,11 @@ pub(all) struct InterventionReportBody {
   id : String?
   message : String?
   sourceFile : Nullable[String]
-  lineNumber : Nullable[Int]
-  columnNumber : Nullable[Int]
+  lineNumber : Nullable[Int32]
+  columnNumber : Nullable[Int32]
 }
 
+///|
 /// Create a new InterventionReportBody with default values
 pub fn InterventionReportBody::default() -> InterventionReportBody {
   InterventionReportBody::{
@@ -22,7 +23,10 @@ pub fn InterventionReportBody::default() -> InterventionReportBody {
   }
 }
 
-extern "js" fn InterventionReportBody::to_js_ffi(self : InterventionReportBody) -> JsValue =
+///|
+extern "js" fn InterventionReportBody::to_js_ffi(
+  self : InterventionReportBody,
+) -> JsValue =
   #| (self) => ({
   #|   id: self.id,
   #|   message: self.message,
@@ -31,12 +35,16 @@ extern "js" fn InterventionReportBody::to_js_ffi(self : InterventionReportBody) 
   #|   columnNumber: ((() => { const v = self.columnNumber; if (v.$tag === 0) return undefined; if (v.$tag === 1) return null; return v._0; })())
   #| })
 
+///|
 /// Convert to JsValue
 pub fn InterventionReportBody::to_js(self : InterventionReportBody) -> JsValue {
   InterventionReportBody::to_js_ffi(self)
 }
 
-extern "js" fn InterventionReportBody::from_js_ffi(value : JsValue) -> InterventionReportBody =
+///|
+extern "js" fn InterventionReportBody::from_js_ffi(
+  value : JsValue,
+) -> InterventionReportBody =
   #| (v) => ({
   #|   id: v.id,
   #|   message: v.message,
@@ -45,7 +53,10 @@ extern "js" fn InterventionReportBody::from_js_ffi(value : JsValue) -> Intervent
   #|   columnNumber: (v.columnNumber === undefined ? { $tag: 0 } : v.columnNumber === null ? { $tag: 1 } : { $tag: 2, _0: v.columnNumber })
   #| })
 
+///|
 /// Convert from JsValue
-pub fn InterventionReportBody::from_js(value : JsValue) -> InterventionReportBody {
+pub fn InterventionReportBody::from_js(
+  value : JsValue,
+) -> InterventionReportBody {
   InterventionReportBody::from_js_ffi(value)
 }

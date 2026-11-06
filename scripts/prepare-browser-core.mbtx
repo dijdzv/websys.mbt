@@ -81,7 +81,7 @@ async fn tree_digest(path : String) -> (String, Int) {
 }
 
 async fn checked(program : String, args : Array[String], environment~ : Map[String, String] = Map([])) -> String {
-  let result = @process.run(program, args, extra_env=environment, stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  let result = @process.run(program, args, extra_env=environment, stdout=Collect, stderr=Collect, no_console_window=true)
   if result.exit_code != 0 {
     let detail = @utf8.decode_lossy(result.stderr_binary())
     raise Failure(program + " failed: " + detail[(detail.length() - 8000).max(0):].to_owned())
@@ -202,7 +202,7 @@ async fn main {
     for target in ["js", "wasm-gc"] {
       // Why Not: the fixed official core contains trailing derive syntax; do not
       // add unrelated standard-library edits to this browser-only patch.
-      let result = @process.run(moon, ["-C", core, "bundle", "--target", target, "--deny-warn", "--warn-list", "-deprecated_syntax"], extra_env=Map([("MOON_CORE_OVERRIDE", core)]), stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+      let result = @process.run(moon, ["-C", core, "bundle", "--target", target, "--deny-warn", "--warn-list", "-deprecated_syntax"], extra_env=Map([("MOON_CORE_OVERRIDE", core)]), stdout=Collect, stderr=Collect, no_console_window=true)
       let log = @utf8.decode_lossy(result.stdout_binary()) + @utf8.decode_lossy(result.stderr_binary())
       @fs.write_text(root + "/bundle-" + target + ".log", log)
       assert_eq(result.exit_code, 0, msg=log[(log.length() - 8000).max(0):].to_owned())

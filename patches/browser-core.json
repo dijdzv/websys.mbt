@@ -1,6 +1,6 @@
 {
   "patchSha256": "793469e77e6b3f8dc574449d14f7c1d4e5ad0e62cf9625de32521bfadebadaef",
-  "sourceTreeSha256": "1173baa787661e05ab7bfdabb8ee7e38ec10c2e24eebc90fd0a6fc4c20bb6dd7",
-  "sourceFileCount": 1906,
+  "sourceTreeSha256": "860dd3bf104b3cdcf8e7aad391666939b1988cb33ee5bfe3fcd1aae14df0fd01",
+  "sourceFileCount": 1917,
   "hashFormat": "sorted relative path + NUL + lowercase file SHA256 + LF; excludes generated _build and .moon roots"
 }

@@ -42,8 +42,8 @@ mise run generate
 
 Source specifications: [@webref/idl](https://www.npmjs.com/package/@webref/idl)
 
-Development uses MoonBit compiler/core `0.10.19+bee578715` and
-moon `0.1.20261102`; the official archive URLs and hashes are in `toolchain.json`.
+Development uses MoonBit compiler/core `0.10.20+65efd5b93` and
+moon `0.1.20261104`; the official archive URLs and hashes are in `toolchain.json`.
 The generator and JS bindings in this repository use `moonbitlang/core/async`
 packages; existing registry releases keep their recorded dependencies. Applications
 that explicitly name external Async's Promise type must switch that import to

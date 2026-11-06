@@ -1,7 +1,7 @@
 # Experimental browser core profile
 
-The fixed official compiler and standard core are `0.10.19+bee578715`, with
-moon `0.1.20261102`. Distribution URLs and archive SHA-256 pins are in
+The fixed official compiler and standard core are `0.10.20+65efd5b93`, with
+moon `0.1.20261104`. Distribution URLs and archive SHA-256 pins are in
 [`toolchain.json`](../toolchain.json). The compiler archives have official
 adjacent checksums; the core archive hash is a computed content pin, not an
 independently verified published checksum.
@@ -34,6 +34,14 @@ browser WasmGC entry, timers and cancellation-aware Promise boundary, or an
 available supported alternative passes the same consumer contract. Reassess
 each hunk on dependency updates; do not carry it forward mechanically. External
 upstream proposals and approval are separate from this local compatibility path.
+
+The 0.10.20 review still finds the entry point restricted to JS, WasmGC timers
+unimplemented, and no corresponding WasmGC Promise waiter. All seven patch hunks
+therefore remain; the coroutine implementation and its new cancellation effects
+stay upstream. The same patch applied to the verified new archive produces
+1,917 source files with tree SHA-256
+`860dd3bf104b3cdcf8e7aad391666939b1988cb33ee5bfe3fcd1aae14df0fd01`.
+Source review and patch application are separate from browser execution evidence.
 
 ## Preparation and ownership
 
@@ -95,6 +103,13 @@ Fetch/Streams and software-GPU contracts. The relocation verifier exports the
 bindings, matching host runtime, pinned preparation inputs and licenses into a
 fresh directory, then builds/runs that independent application. It rejects an
 existing export destination. See the [application instructions](../generator/COMPATIBILITY.md).
+
+The Windows 0.10.20 adoption passed formal setup, strict library/generator checks,
+54 generator tests, formatting checks, the existing 218-case JS/WasmGC Async
+suite and 197-case generated Promise suite, diagnostics and relocated source
+consumer. The Async suite observed zero pending timers and no surviving observed
+callbacks after its GC probe, with the control and instance still alive. These
+results do not qualify Linux execution with this new profile.
 
 These are bounded compatibility observations. Zero pending timers and zero
 surviving observed callback references are not proof of all heap reclamation or

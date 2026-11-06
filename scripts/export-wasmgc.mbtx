@@ -8,7 +8,7 @@ import {
 ----
 
 async fn checked(command : String, args : Array[String]) -> String {
-  let result = @process.run(command, args, stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  let result = @process.run(command, args, stdout=Collect, stderr=Collect, no_console_window=true)
   assert_eq(result.exit_code, 0, msg=result.stdout_text() + result.stderr_text())
   result.stdout_text().trim().to_owned()
 }

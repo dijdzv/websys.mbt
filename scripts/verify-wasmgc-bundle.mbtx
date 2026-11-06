@@ -7,7 +7,7 @@ import {
 ----
 
 async fn checked(command : String, args : Array[String]) -> Unit {
-  let result = @process.run(command, args, stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  let result = @process.run(command, args, stdout=Collect, stderr=Collect, no_console_window=true)
   assert_eq(result.exit_code, 0, msg=result.stdout_text() + result.stderr_text())
 }
 
@@ -16,7 +16,7 @@ async fn main {
   let root = temporary.replace_all(old="\\", new="/") + "/bundle"
   println("Checking relocated WasmGC consumer: " + root)
   checked("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root])
-  let repeat_result = @process.run("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root], stdout=@process.read_from_process(), stderr=@process.read_from_process(), no_console_window=true)
+  let repeat_result = @process.run("moon", ["run", "scripts/export-wasmgc.mbtx", "test/promise/generated", root], stdout=Collect, stderr=Collect, no_console_window=true)
   assert_true(repeat_result.exit_code != 0, msg="Export must reject an existing destination")
   @fs.mkdir(root + "/consumer")
   for name in ["moon.mod", "moon.pkg", "check.mbt", "gpu_shader.mbt", "gpu_texture.mbt", "gpu_canvas.mbt", "buffer_promise.mbt", "callback.mbt"] {
